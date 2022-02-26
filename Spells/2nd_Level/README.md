@@ -5,6 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Darkvision](#darkvision)
 * [Hold Person](#hold-person)
+* [Invisibility](#invisibiity)
 * [Knock](#knock)
 * [Locate Object](#locate-object)
 * [Mirror Image](#mirror-image)
@@ -34,6 +35,18 @@ The first of these effects causes affected token(s) to roll a wisdom saving thro
 The second effect places the CUB Paralyzed effect on the token.  This effect appears and can be managed by the *normal* CUB mechanisms.
 
 ![Hold_Person/Hold_Person_DAE_Effects.png](Hold_Person/Hold_Person_DAE_Effects.png)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Invisibility
+
+This spell requires that the user target token(s) before using it.  It will apply an effect that grants attack advantage and forces disadvantage on inbound attacks.  It drops when the affected token attacks or casts a spell.
+
+Note: concentration does not drop when one (or more of the invisible tokens lose their invisibility as others may still be invisible.  Concentration will need to be removed manually.
+
+![Invisibility.gif](Invisibility/Invisibility.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
