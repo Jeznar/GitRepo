@@ -1,0 +1,25 @@
+const targetActor = Array.from(targets)[0].document._actor;
+
+// *****************************************************************************
+// Only proceed if we have a success
+if (rollResult.isSuccess) {
+  // Either add 5 or 10 to the ML of the target
+  let bonus = 5;
+  if (rollResult.isCritical) {bonus = 10}
+  const changeData = [
+        {key: 'data.eph.meleeDMLMod', value: bonus, mode: 2 },
+        {key: 'data.eph.meleeAMLMod', value: bonus, mode: 2 }
+    ];
+
+  // *****************************************************************************
+  // Now find out if this actor already has an Active Effect for this spell.
+  const ae = targetActor.effects.find(m => m.data.label === spellName);
+  if (ae) {
+    // update the current active effect
+    const result = await ae.update({disabled: false, 
+                                    duration: {startTurn: game.combat.data.turn,
+                                    startRound: game.combat.data.round,
+                                    rounds: 10},
+                                   'changes': changeData});
+    if (result) console.log(`Active Effect ${spellName} activated!`);
+  } 

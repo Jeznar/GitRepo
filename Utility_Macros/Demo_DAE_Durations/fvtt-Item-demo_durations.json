@@ -1,0 +1,129 @@
+{
+  "name": "Demo_Durations",
+  "type": "feat",
+  "img": "Icons_JGB/Misc/Jez.png",
+  "data": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Demo_Durations",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Demo_DAE_Durations\"\nconsole.log(MACRONAME)\n/*****************************************************************************************\n * Test/Demonstrate Aspects of application of a dynamic active effect (DAE)\n * \n * This is intended t run as an OnUse ItemMacro macro.  It doesn't actually do anything \n * useful, beyond exercising some aspects of DAE.\n * \n * 02/08/22 0.1 Creation of Macro\n *****************************************************************************************/\n console.log(`============== Starting === ${MACRONAME} =================`);\n for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);\n const LAST_ARG = args[args.length - 1];\n let aActor;         // Acting actor, creature that invoked the macro\n let aToken;         // Acting token, token for creature that invoked the macro\n let aItem;          // Active Item information, item invoking this macro\n if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\n if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\n if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\n\nawait noDuration(\"HashTag\");\nawait durationSeconds(30, \"5\");\nawait durationRounds(4, \"4\");\nawait durationTurns(3, \"3\");\nawait durationSpecial(\"turnEnd\",\"2\");\nawait durationSpecial(\"turnStart\",\"1\");\nreturn\n\n/*******************************************************************************************************\n * Some interesting special duration flags\n * \n *  newDay: \"Is New Day?\"\n *  longRest: \"Long Rest\"\n *  shortRest: \"Short Rest\"\n *  turnEnd: \"Turn End: Expires at the end of the targets's next turn (in combat)\"\n *  turnEndSource: \"Turn End: Expires at the end of the source actor's next turn (in combat)\"\n *  turnStart: \"Turn Start: Expires at the start of the targets's next turn (in combat)\"\n *  turnStartSource: \"Turn Start: Expires at the start of the source actor's next turn (in combat)\"\n********************************************************************************************************/\n//------------------------------------------------------------------------------------------------------\n// Apply a special duration effect.\n// Note: A \"normal\" duration must be set for the buff to appear on the token.  \n//       It should be longer than the expected duration, if specialDuration is to trigger.\n//\nasync function durationSpecial(specDur, iconNum) {\n    console.log(`Setting Special Duration ${specDur}`);\n    let specialDuration = [specDur, \"newDay\", \"longRest\", \"shortRest\"]\n    let effectData = [{\n        label: `Special Duration: ${specDur}`,\n        icon: `Icons_JGB/Markers/Numbers_Transparent_Grey_Background/${iconNum}.png`,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        duration: { seconds: 60, startTime: game.time.worldTime },\n        flags: { dae: { itemData: aItem, specialDuration: specialDuration } },\n        changes: [\n            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: `Special Duration ${specDur}`, priority: 20 },\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: effectData });\n}\n\n//------------------------------------------------------------------------------------------------------\n// Apply an effect with duration set to 3 turns\n//\n// seemingly startTurn is not needed\n//\nasync function durationTurns(trns, iconNum) {\n    console.log(\"Setting Turn Based Effect\");\n    const GAME_TRN = game.combat ? game.combat.turn : 0;\n    console.log(`Current turn: ${GAME_TRN}`);\n    let effectData = [{\n        label: `${trns} Turns`,\n        icon: `Icons_JGB/Markers/Numbers_Transparent_Grey_Background/${iconNum}.png`,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        duration: { turns: trns },\n        //duration: { turns: trns },\n        changes: [\n            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: `${trns} Turn Duration`, priority: 20 },\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: effectData });\n}\n\n//------------------------------------------------------------------------------------------------------\n// Apply an effect with duration set to runds rounds\n//\nasync function durationRounds(rnds, iconNum) {\n    console.log(\"Setting Round Based Effect\");\n    const GAME_RND = game.combat ? game.combat.round : 0;\n    let effectData = [{\n        label: `${rnds} Rounds`,\n        icon: `Icons_JGB/Markers/Numbers_Transparent_Grey_Background/${iconNum}.png`,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        duration: { rounds: rnds, startRound: GAME_RND },\n        changes: [\n            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: `${rnds} Round Duration`, priority: 20 },\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: effectData });\n}\n\n//------------------------------------------------------------------------------------------------------\n// Apply an effect with duration set to dur seconds \n//\nasync function durationSeconds(dur, iconNum) {\n    console.log(\"Setting Time Based Effect\");\n    let effectData = [{\n        label: `${dur} Seconds`,\n        icon: `Icons_JGB/Markers/Numbers_Transparent_Grey_Background/${iconNum}.png`,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        duration: { seconds: dur, startTime: game.time.worldTime },\n        changes: [\n            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: `${dur} Seconds Duration`, priority: 20 },\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: effectData });\n}\n\n//------------------------------------------------------------------------------------------------------\n// Apply an effect with no durations set.\n//\nasync function noDuration(iconNum) {\n    let icon = `Icons_JGB/Markers/Numbers_Transparent_Grey_Background/${iconNum}.png`\n    console.log(\"Setting No Duration Effect\")\n    let effectData = [{\n        label: \"No Duration\",\n        icon: icon,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        changes: [\n            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: \"No Duration Effect\", priority: 20 },\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: effectData });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.424X7CkTVZc9kZYA"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

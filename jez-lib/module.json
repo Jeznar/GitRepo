@@ -1,0 +1,15 @@
+{
+  "description": "My library of common functions to avoid the need to cut-and-past the same function into many macros.",
+  "authors": [
+    {
+      "name": "Jez"
+    }
+  ],
+  "minimumCoreVersion": "0.8.8",
+  "name": "jez-lib",
+  "scripts": [
+    "scripts/jez-lib.js"
+  ],
+  "title": "Jez Library",
+  "version": "0.0"
+}
