@@ -1,0 +1,223 @@
+{
+  "name": "Darkvision",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/evil-eye-red-1.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You touch a willing creature to grant it the ability to see in the dark. For the duration, that creature has darkvision out to a range of 60 feet.</p>",
+      "chat": "<p>You touch a willing creature to grant it the ability to see in the dark. For the duration, that creature has darkvision out to a range of 60 feet.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 230",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 8,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "touch",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 2,
+    "school": "trs",
+    "components": {
+      "value": "either a pinch of dried carrot or an agate",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "either a pinch of dried carrot or an agate",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "7WRR5qfCKAAqq2eg",
+      "flags": {
+        "dae": {
+          "stackable": false,
+          "transfer": false,
+          "specialDuration": [
+            "None"
+          ],
+          "macroRepeat": "none"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "ignoreSelf": false,
+          "hidden": false,
+          "height": false,
+          "aura": "None",
+          "radius": null
+        }
+      },
+      "changes": [
+        {
+          "key": "data.attributes.senses.darkvision",
+          "value": "60",
+          "mode": 4,
+          "priority": 20
+        },
+        {
+          "key": "macro.itemMacro",
+          "value": "",
+          "mode": 0,
+          "priority": 20
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/spells/evil-eye-red-1.jpg",
+      "label": "Darkvision",
+      "tint": null,
+      "transfer": false
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 136497,
+      "definitionId": 2059,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 230,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Buff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "midi-qol": {
+      "onUseMacroName": ""
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Darkvision",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "//DAE Macro Execute, Effect Value = \"Macro Name\" @target\nconst LAST_ARG = args[args.length - 1];\nlet msg = \"\"\nlet tactor;\nif (LAST_ARG.tokenId) tactor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse tactor = game.actors.get(LAST_ARG.actorId);\nconst target = canvas.tokens.get(LAST_ARG.tokenId)\n\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n\nlet dimVision = target.data.dimSight;\nif (args[0] === \"on\") {\n    DAE.setFlag(tactor, 'darkvisionSpell', dimVision);\n    let newSight = dimVision < 60 ? 60 : dimVision\n    await target.update({\"dimSight\" : newSight});\n    await tactor.update({\"token.dimSight\" : newSight})\n    msg = `<b>${target.name}'s</b> vision has been improved by ${aItem.name}`;\n    jez.postMessage({color: jez.randomDarkColor(), \n                fSize: 14, \n                icon: target.data.img, \n                msg: msg, \n                title: `Vision has been improved`, \n                token: target})\n}\nif(args[0] === \"off\") {\n    let sight = DAE.getFlag(tactor, 'darkvisionSpell');\n    target.update({\"dimSight\" : sight });\n    await tactor.update({\"token.dimSight\" : sight})\n    DAE.unsetFlag(tactor, 'darkvisionSpell');\n    msg = `<b>${target.name}'s</b> vision has returned to normal, having lost the benefits of ${aItem.name}`;\n    jez.postMessage({color: jez.randomDarkColor(), \n                fSize: 14, \n                icon: target.data.img, \n                msg: msg, \n                title: `Vision is normal`, \n                token: target})\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_kw1jjhsz8u"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.QaqHkRmGkLJ7VpiE"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

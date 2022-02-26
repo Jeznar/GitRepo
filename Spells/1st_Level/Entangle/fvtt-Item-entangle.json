@@ -1,0 +1,155 @@
+{
+  "name": "Entangle",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/vines-acid-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Grasping weeds and vines sprout from the ground in a 20-foot square starting from a point within range. For the duration, these plants turn the ground in the area into difficult terrain.</p>\n<p>A creature in the area when you cast the spell must succeed on a Strength saving throw or be @JournalEntry[CZWEqV2uG9aDWJnD]{restrained} by the entangling plants until the spell ends. A creature restrained by the plants can use its action to make a Strength check against your spell save DC. On a success, it frees itself.</p>\n<p>When the spell ends, the conjured plants wilt away.</p>\n<p><strong>FoundryVTT:</strong> The effect is represented by a tile that seemingly needs to be manually removed. </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 20,
+      "width": null,
+      "units": "ft",
+      "type": "square"
+    },
+    "range": {
+      "value": 90,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "str",
+      "dc": 12,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.NGQ4ZjA3Y2YwNzBm"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Entangle",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Entangle.0.4.js\"\n/*****************************************************************************************\n * Apply the REstrained effect with cub to the tokens that fail their saves. \n *\n * 12/10/21 0.1 Creation of Macro\n * 01/01/22 0.2 Delayed further efforts...\n * 02/23/22 0.3 Partial rewrite to my current style\n * 02/24/22 0.4 Changes to enable a doEach checkng of saves on afflicted tokens\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet chatMessage = game.messages.get(LAST_ARG.itemCardId);\nconst SAVE_DC = aActor.data.data.attributes.spelldc;\nconst GAME_RND = game.combat ? game.combat.round : 0; \nconst CHK_TYPE = \"str\"\nlet msg = \"\";\nconst EFFECT = \"Restrained\"\nconst TEMPLATE_ID = args[0].templateId\nconst TOKEN_NAME_NOWHITESPACE = aToken.name.replace(/\\s+/g, '');\nconst VFX_NAME = `${MACRO}-${TOKEN_NAME_NOWHITESPACE}-${GAME_RND}`\nconst VFX_LOOP = \"modules/jb2a_patreon/Library/1st_Level/Entangle/Entangle_01_Green_400x400.webm\"\nconst VFX_OPACITY = 1.0;\nconst VFX_SCALE = 1.0;\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif ((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\n//if (args[0] === \"off\") await doOff();                   // DAE removal\n//if (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\n//if (args[0]?.tag === \"DamageBonus\") doBonusDamage();    // DAE Damage Bonus\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    // ---------------------------------------------------------------------------------------\n    // If no target failed a save, post result and terminate \n    //\n    if (args[0].failedSaves.length === 0) {\n        msg = `No (${args[0].failedSaves.length}) targets are affected by ${EFFECT}`\n        jez.log(` ${msg}`, args[0].saves);\n        jez.addMessage(chatMessage, msgParm) \n        //await postResults(msg);\n        return(false);\n    } else {\n        msg = `Some (${args[0].failedSaves.length}) targets are affected by ${EFFECT}`\n        jez.log(` ${msg}`, args[0].saves);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\nasync function doOnUse() {\n    let failures = [];\n    let numFailed = args[0].failedSaves.length;\n    msg = `${numFailed} targets are affected by ${EFFECT}<br><br>\n        A creature restrained by the plants can use its action to make a Strength check against \n        your spell save DC ${SAVE_DC}. On a success, it frees itself.`;\n    jez.log(msg, args[0].failedSaves);\n    // ---------------------------------------------------------------------------------------\n    // Launch the VFX that reprsents the grasping vines\n    //\n    runVFX();\n    // ---------------------------------------------------------------------------------------\n    // Place the debuff on tokens that failed saving throws\n    //\n    jez.log(`failues array:`, failures);\n    // await game.cub.addCondition(EFFECT, failures, {allowDuplicates:true, replaceExisting:true, warn:true});\n    await game.cub.addCondition(EFFECT, args[0].failedSaves, { allowDuplicates: true, replaceExisting: true, warn: true });\n    // ---------------------------------------------------------------------------------------\n    // Loop through those just debuffed and add a midi overtime element to each to roll saves.\n    // Also build a string of comma delimited token.ids for later use.\n    //\n    let failedTokenStr = \"\";\n    for (const element of args[0].failedSaves) {\n        jez.log(element.name, element);\n        modExistingEffect(element, EFFECT);\n        if (failedTokenStr)\n            failedTokenStr += ` ${element.id}`;\n        else\n            failedTokenStr = element.id;\n    }\n    modConcentratingEffect(aToken, failedTokenStr);\n    // ---------------------------------------------------------------------------------------\n    // Post results to the card\n    //\n    jez.addMessage(chatMessage, msg);\n}\n/***************************************************************************************************\n * Modify existing effect to include a midi-qol overtime saving throw element\n ***************************************************************************************************/\n// COOL-THING: Modify existing concentrating effect to enable cleanup of dependent items\n async function modConcentratingEffect(tToken, label) {\n    const EFFECT = \"Concentrating\"\n    //----------------------------------------------------------------------------------------------\n    // Seach the token to find the just added effect\n    //\n    await jez.wait(100)\n    let effect = await tToken.actor.effects.find(i => i.data.label === EFFECT);\n    //----------------------------------------------------------------------------------------------\n    // Define the desired modification to existing effect. In this case, a world macro that will be\n    // given arguments: VFX_Name and Token.id for all affected tokens\n    //    \n    effect.data.changes.push({key: `macro.execute`, mode: CUSTOM, value:`entangle_helper ${VFX_NAME} ${label}`, priority: 20})\n    jez.log(`effect.data.changes`, effect.data.changes)\n    //----------------------------------------------------------------------------------------------\n    // Apply the modification to existing effect\n    //\n    const result = await effect.update({ 'changes': effect.data.changes });\n    if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);\n}\n/***************************************************************************************************\n * Modify existing effect to include a midi-qol overtime saving throw element\n ***************************************************************************************************/\n// COOL-THING:  Adds a everyturn macro call to an existing effect\nasync function modExistingEffect(tToken, tEffect) {\n    jez.log(\"tToken\", tToken)\n    jez.log(\"tToken.actor\",tToken?.actor)\n    jez.log(\"Need to update the effect to include a save overtime\")\n    //----------------------------------------------------------------------------------------------\n    // Seach the token to find the just added effect\n    //\n    await jez.wait(100)\n    let effect = await tToken.actor.effects.find(i => i.data.label === tEffect);\n    jez.log(\"0 effect\", effect)\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // Define the desired modification to existing effect.\n    //    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects\n    // The following should be rollType=check per documentation, but this throws an error as of today\n    // let oTV=`turn=end,label=${tEffect},saveDC=${SAVE_DC},saveAbility=${CHK_TYPE},saveRemove=true,rollType=save`\n    // effect.data.changes.push({ key:`flags.midi-qol.OverTime`,mode:OVERRIDE,value:oTV,priority: 20 })\n    jez.log(\"1 effect\", effect)\n    await effect.data.changes.push({key:`macro.execute`,mode:CUSTOM,value:`entangle_helper2 ${EFFECT} ${CHK_TYPE} ${SAVE_DC} ${aToken.id}`, priority: 20})\n    jez.log(\"2 effect.data.flags\", effect.data.flags)\n    jez.log(\"2.1 effect\", effect)\n    jez.log(\"3 effect.data.flags.dae\", effect.data.flags.dae)\n    jez.log(\"3.1 effect\", effect)\n    effect.data.flags.dae.macroRepeat = \"startEveryTurn\"\n    //effect.data.flags.dae.specialDuration = []\n    jez.log(\"4 effect.data.flags.dae\", effect.data.flags.dae)\n    jez.log(\"4.1 effect\", effect)\n    jez.log(\"4.2 effect.data.flags\", effect.data.flags)\n    jez.log(`5 effect.data.changes`, effect.data.changes)\n    jez.log(`6 effect`, effect)\n    //----------------------------------------------------------------------------------------------\n    // Apply the modification to existing effect\n    //\n    const result = await effect.update({ 'changes': effect.data.changes, 'flags': effect.data.flags });\n    //const result = await effect.update({ 'changes': effect.data.changes });\n    if (result) jez.log(`Active Effect ${tEffect} updated!`, result);\n\n    //const result = await effect.data.flags.update({ 'flags': effect.data.flags.dae });\n\n    //if (result) jez.log(`Active Effect ${tEffect} updated!`, result);\n}\n/***************************************************************************************************\n * Launch the VFX and remove the template from the scene\n * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Effects\n ***************************************************************************************************/\n async function runVFX() {\n    jez.log(\"Launch VFX\")\n    const FUNCNAME = \"runVFX()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    const TEMPLATE_ID = args[0].templateId\n    jez.log('TEMPLATE_ID', TEMPLATE_ID)\n    new Sequence()\n    .effect()\n        .file(VFX_LOOP)\n        .atLocation(TEMPLATE_ID) // Effect will appear at  template, center\n        .scale(VFX_SCALE)\n        .scaleIn(0.1, 1500)    // Expand from 0.25 to 1 size over 1 second\n        .rotateIn(180, 1000)    // 1/2 Rotation over 1 second \n        .scaleOut(0.1, 1500)   // Contract from 1 to 0.25 size over 1 second\n        .rotateOut(180, 1000)   // 1/2 Counter Rotation over 1 second\n        .opacity(VFX_OPACITY)\n        .belowTokens()\n        .persist()\n        //.duration(6000)\n        .name(VFX_NAME)         // Give the effect a uniqueish name\n        .fadeIn(1500)             // Fade in for specified time in milliseconds\n        .fadeOut(1500)          // Fade out for specified time in milliseconds\n        //.extraEndDuration(1200) // Time padding on exit to connect to Outro effect\n    .play();\n    await jez.wait(100)         // Don't delete till VFX established\n    canvas.templates.get(TEMPLATE_ID).document.delete()\n }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "autoanimations": {
+      "killAnim": false,
+      "options": {
+        "ammo": false,
+        "overrideAuto": false
+      },
+      "override": false,
+      "allSounds": {
+        "item": {
+          "enableAudio": false
+        }
+      },
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "animLevel": false,
+      "animType": "t1"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

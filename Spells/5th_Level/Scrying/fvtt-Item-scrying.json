@@ -1,0 +1,121 @@
+{
+  "name": "Scrying",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/evil-eye-eerie-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You can see and hear a particular creature you choose that is on the same plane of existence as you. The target must make a Wisdom saving throw, which is modified by how well you know the target and the sort of physical connection you have to it. If a target knows you’re casting this spell, it can fail the saving throw voluntarily if it wants to be observed.</p>\n<table border=\"1\">\n<tbody>\n<tr>\n<td><strong>Knowledge</strong></td>\n<td><strong>Save Modifier</strong></td>\n</tr>\n<tr>\n<td>Secondhand (you have heard of the target)</td>\n<td>+5</td>\n</tr>\n<tr>\n<td>Firsthand (you have met the target)</td>\n<td>+0</td>\n</tr>\n<tr>\n<td>Familiar (you know the target well)</td>\n<td>-5</td>\n</tr>\n</tbody>\n</table>\n\n<table border=\"1\">\n<tbody>\n<tr>\n<td><strong>Connection</strong></td>\n<td><strong>Save Modifier</strong></td>\n</tr>\n<tr>\n<td>Likeness or picture</td>\n<td>-2</td>\n</tr>\n<tr>\n<td>Possession or garment</td>\n<td>-4</td>\n</tr>\n<tr>\n<td>Body part, lock of hair, bit of nail, or the like</td>\n<td>-10</td>\n</tr>\n</tbody>\n</table>\n<p>On a successful save, the target isn’t affected, and you can’t use this spell against it again for 24 hours.</p><p>On a failed save, the spell creates an Invisible sensor within 10 feet of the target. You can see and hear through the sensor as if you were there. The sensor moves with the target, remaining within 10 feet of it for the Duration. A creature that can see Invisile Objects sees the sensor as a luminous orb about the size of your fist.</p><p>Instead of targeting a creature, you can choose a location you have seen before as the target of this spell. When you do, the sensor appears at that location and doesn’t move.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 273",
+    "activation": {
+      "type": "minute",
+      "cost": 10,
+      "condition": ""
+    },
+    "duration": {
+      "value": 10,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 5,
+    "school": "div",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "A focus worth at least 1,000 gp, such as a crystal ball, a silver mirror, or a font filled with holy water.",
+      "consumed": false,
+      "cost": 1000,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Item.YjlkNzgyODUzNGY1"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Scrying",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Scrying\"\n/*****************************************************************************************\n * Scrying spell front end that sets modifier for saving throw and then performs save.\n * Requires that the target (token) to be scryed upon is targeted.\n * \n * 02/21/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst lastArg = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif ((args[0]?.tag === \"OnUse\") && !preCheck()) return\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\n//if (args[0] === \"off\") await doOff();                   // DAE removal\n//if (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n//if (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\n//if (args[0]?.tag === \"DamageBonus\") doBonusDamage();    // DAE Damage Bonus\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        ui.notifications.warn(msg)\n        console.log(`${MACRONAME} | ${msg}`)\n        console.log(`${MACRONAME} | ${msg}`)\n        let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n        jez.addMessage(chatMessage,{color:\"darkblue\",fSize:14,msg:msg,tag:\"saves\"})\n        return(false);\n    }\n    const SPELL_FOCUS = \"Scrying Focus\";\n    if (!hasItem(SPELL_FOCUS)) {\n        msg = `Must have a ${SPELL_FOCUS} in inventory to cast ${aItem.name}.`\n        ui.notifications.warn(msg)\n        console.log(`${MACRONAME} | ${msg}`)\n        let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n        jez.addMessage(chatMessage,{color:\"darkblue\",fSize:14,msg:msg,tag:\"saves\"})\n        return(false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n    popDialog(aToken, tToken);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function popDialog(token1, token2) {\n    const qTitle = \"Select Item in Question\"\n    const QUERY1 = `${token1.name}'s Knowledge of ${token2.name}`\n    const LIST1 = [\n        'Secondhand (you have heard of the target) [+5]',\n        'Firsthand (you have met the target) [+0]',\n        'Familiar (you know the target well) [-5]'\n    ]\n    const QUERY2 = `${token1.name}'s Connection to ${token2.name}`\n    const LIST2 = [\n        'Accurate Verbal Description [+5]',\n        'Detailed Verbal Description [+0]',\n        'Likeness or picture [-2]',\n        'Possession or garment [-4]',\n        'Body part, lock of hair, bit of nail, or the like [-10]'\n    ]\n    const QUERY3 = \"Additional modifier.  Must be a number prefixed with '+' or '-'\"\n    pickRadioListDouble(qTitle, QUERY1, QUERY2, QUERY3, pickRadioDoubleCallBack, LIST1, LIST2, token1, token2);\n    return\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function pickRadioDoubleCallBack(selection1, selection2, input1, token1, token2) {\n    jez.log(\"pickRadioDoubleCallBack\", \"selection1\", selection1, \"selection2\", selection2)\n    //----------------------------------------------------------------------------------\n    // Grab the modifiers out of the selections\n    //\n    let mod1 = extractMod(selection1)\n    if (!mod1) return(false)\n    let mod2 = extractMod(selection2)\n    if (!mod1) return(false)\n    //----------------------------------------------------------------------------------\n    // Deal with the additional input line\n    //\n    jez.log(\"input1\",input1)\n    let mod3 = 0\n    if (input1) {\n        mod3 = extractMod(input1)\n        if (!mod3) return(false)\n    }\n    jez.log(\"modifier 3\", mod3)\n    //----------------------------------------------------------------------------------\n    // Perform Save\n    //\n    let totalMod = parseInt(mod1) + parseInt(mod2) + parseInt(mod3)\n    let saved = await doSave(token1, token2, totalMod)\n     //----------------------------------------------------------------------------------\n    // Post a dialog\n    //  \n    jez.log(\"Saved?\", saved)\n    if (saved) msg = `<b>${token2.name}</b> resisted ${aItem.name} from <b>${token1.name}</b> and is unaffected. \n    They are you immune to this spell from this caster for 24 hours.`\n    else msg = `<b>${token2.name}</b> succumbed to ${aItem.name} from <b>${token1.name}</b>. ${token1.name} may \n    scry on the subject per spell description.`\n    let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMessage,{color:\"darkblue\",fSize:14,msg:msg,tag:\"saves\"})\n    //----------------------------------------------------------------------------------\n    // Check Selection Function.  Return value or null (if none)\n    //\n    function extractMod(selection) {\n        let selArray = selection.match(/[+-]\\d+/)\n        jez.log('selArray',selArray)\n        if (!selArray) {\n            msg = `No numeric value found in the selection: '${selection}'`\n            ui.notifications.warn(msg);\n            console.log(`${MACRO} |`, msg)\n            return(false)\n        }\n        let mod = selArray[0] // \"+3\"\n        jez.log(\"Modifier extracted\", mod)\n        return(mod)\n    }\n}\n/***************************************************************************************************\n * Check the saving throw\n ***************************************************************************************************/\n async function doSave(token1, token2, modifier) {\n    const FUNCNAME = \"doSave(token1, token2, modifier)\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,\n        `Caster ${token1.name}`, token1,\n        `Target ${token2.name}`, token2,\n        \"Total modifier\", modifier);\n    const SAVE_TYPE = \"wis\"\n    const SAVE_DC = aToken.actor.data.data.attributes.spelldc - modifier;\n    const FLAVOR = `${token2.name} ${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to resist ${aItem.name} from ${token1.name}`;\n    let save = (await aActor.rollAbilitySave(SAVE_TYPE, { flavor:FLAVOR, chatMessage:true, fastforward:true })).total;\n    jez.log(`save`, save)\n    if (save >= SAVE_DC) {\n        jez.log(`save was made with a ${save}`);\n        return(true)\n      } else jez.log(`save failed with a ${save}`);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (false);\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function pickRadioListDouble(qTitle, qText1, qText2, qText3, pickCallBack, options1, options2, token1, token2) {\n    const FUNCNAME = \"jez.pickFromList(qTitle, qText1, [options1]\";\n    jez.log(\"---------Starting ---${FUNCNAME}-------------------------------------------\",\n        `qTitle`, qTitle,\n        `qText1`, qText1,\n        `qText2`, qText2,\n        `pickCallBack`, pickCallBack,\n        `options1`, options1,\n        `options2`, options2);\n    let msg = \"\"\n    if (typeof (pickCallBack) != \"function\") {\n        msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`\n        ui.notifications.error(msg);\n        console.log(msg);\n        return\n    }\n    if (!qTitle || !qText1 || !qText2 || !options1) {\n        msg = `pickFromList arguments should be (qTitle, qText1, qText2, pickCallBack, [options1]),\n        but yours are: ${qTitle}, ${qText1}, ${qText2}, ${pickCallBack}, ${options1}`;\n        ui.notifications.error(msg);\n        console.log(msg);\n        return\n    }\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, first radio box\n    //\n    let template = `\n<div>\n<label>${qText1}</label>\n<div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n`   // Back tick on its on line to make the console output better formatted\n    for (let option of options1) {\n        template += `<input type=\"radio\" id=\"${option}\" name=\"selectedLine1\" value=\"${option}\"> <label for=\"${option}\">${option}</label><br>\n`   // Back tick on its on line to make the console output better formatted\n    }\n    template += `</div></div>`\n    jez.log(\"template 1\", template)\n    jez.log(\"\")\n    jez.log(\"\")\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, second radio box\n    //\n    template += `\n    <div>\n    <label>${qText2}</label>\n    <div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n`   // Back tick on its on line to make the console output better formatted\n    for (let option2 of options2) {\n        template += `<input type=\"radio\" id=\"${option2}\" name=\"selectedLine2\" value=\"${option2}\"> <label for=\"${option2}\">${option2}</label><br>\n`   // Back tick on its on line to make the console output better formatted\n    }\n    template += `</div></div>`\n    jez.log(\"template 2\", template)\n    jez.log(\"\")\n    jez.log(\"\")\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, third input box\n    //\n    template += `\n    <div>\n    <label>${qText3}</label>\n    <div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n    <div><input name=\"additionalInput\" style=\"width:350px\"/></div>\n`   // Back tick on its on line to make the console output better formatted\n    template += `</div></div>`\n    jez.log(\"template 3\", template)\n    jez.log(\"\")\n    jez.log(\"\")\n    //----------------------------------------------------------------------------------------------------\n    // Build Dialog \n    //\n    new Dialog({\n        title: qTitle,\n        content: template,\n        buttons: {\n            ok: {\n                icon: '<i class=\"fas fa-check\"></i>',\n                label: 'OK',\n                callback: async (html) => {\n                    jez.log(\"html contents\", html)\n                    const SELECTED_OPTION1 = html.find(\"[name=selectedLine1]:checked\").val();\n                    jez.log(\"Radio Button Selection\", SELECTED_OPTION1)\n                    jez.log('selected option', SELECTED_OPTION1)\n                    const SELECTED_OPTION2 = html.find(\"[name=selectedLine2]:checked\").val();\n                    jez.log(\"Radio Button Selection\", SELECTED_OPTION2)\n                    jez.log('selected option', SELECTED_OPTION2)\n                    const ADDITIONAL_INPUT = html.find(\"[name=additionalInput]\").val();\n                    jez.log(\"Additional Input\", ADDITIONAL_INPUT)\n                    pickCallBack(SELECTED_OPTION1, SELECTED_OPTION2, ADDITIONAL_INPUT, token1, token2)\n                },\n            },\n            cancel: {\n                icon: '<i class=\"fas fa-times\"></i>',\n                label: 'Cancel',\n                callback: async (html) => {\n                    jez.log('canceled')\n                    pickCallBack(null)\n                },\n            },\n        },\n        default: 'cancel',\n    }).render(true)\n    jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)\n    return;\n}\n/***************************************************************************************\n* Function to determine if passed actor has a specific item, returning a boolean result\n*\n* Parameters\n*  - itemName: A string naming the item to be found in actor's inventory\n*  - actor: Optional actor to be searched, defaults to actor launching this macro\n***************************************************************************************/\nfunction hasItem(itemName, actor) {\n    const FUNCNAME = \"hasItem\";\n    actor = actor ? actor : canvas.tokens.get(args[0].tokenId).actor;\n    jez.log(\"-------hasItem(itemName, actor)------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`,\n    \"itemName\", itemName, `actor ${actor.name}`, actor);\n    // If actor was not passed, pick up the actor invoking this macro\n    let item = actor.items.find(item => item.data.name == itemName)\n    if (item == null || item == undefined) {\n        jez.log(`${actor.name} does not have ${itemName}, ${FUNCNAME} returning false`);\n         return(false);\n    }\n    jez.log(`${actor.name} has ${itemName}, ${FUNCNAME} returning true`);\n    return(true);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "Silver, Powdered",
+  "type": "loot",
+  "img": "Icons_JGB/Items/Silver-Powdered.png",
+  "data": {
+    "description": {
+      "value": "<p>A pile of powdered silver worth 100 gp, useful when casting @Item[1Olg3jS4qwCygzgc]{Magic Circle} as a material component.</p>",
+      "chat": "<p>A block of incense, typically found in a priest's pack.</p>",
+      "unidentified": "Gear"
+    },
+    "source": "Homebrew",
+    "quantity": 1,
+    "weight": 20,
+    "price": 100,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": true
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {
+        "type": "Adventuring Gear",
+        "tags": [
+          "Social",
+          "Utility"
+        ],
+        "sources": []
+      },
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 2103445194,
+      "definitionId": 208,
+      "originalName": "Block of Incense"
+    },
+    "magicitems": {
+      "enabled": false
+    },
+    "cf": {
+      "id": "temp_fmdqgljfolf"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.items.2WAPvJZu8UGYL12z"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

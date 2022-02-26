@@ -1,0 +1,190 @@
+{
+  "name": "Consuming Bite",
+  "type": "weapon",
+  "img": "Tokens/CoS_NPC/Kresk/Ilya_Kreskov/Ilya_Kreskov_monster.jpg",
+  "data": {
+    "description": {
+      "value": "<p style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">llya regains hit points equal to the necrotic damage dealt by this attack. Ilya's mouth grows into a giant grotesque maw when this ability is used, Characters <strong>within 30 ft.</strong> of Ilya when he makes this attack for the first time and <strong>can see him </strong>must make a<strong> DC 12 Wisdom saving</strong> throw or become <strong>@JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} </strong>for 3 turns.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Basic Rules pg 352",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "day"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6 + @mod",
+          "piercing"
+        ],
+        [
+          "4d6",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "flat"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "natural",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ada": false,
+      "mgc": true,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": true,
+    "recharge": {
+      "value": null,
+      "charged": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "monsterMunch": {
+      "titleHTML": "<strong>Bite. (Bat or Vampire Form Only).</strong>",
+      "fullName": "Bite. (Bat or Vampire Form Only)."
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "ItemMacro"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.8sZeHXEdRHCVbXlB"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Consuming Bite",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Consuming_Bite.1.0\"\n/*****************************************************************************************\n * Ilyas Consuming Bite per MandyMod\n * \n * Mandy's Description\n * -------------------\n *  llya regains hit points equal to the necrotic damage dealt by this attack. Ilya's mouth \n *  grows into a giant grotesque maw when this ability is used, Characters within 30 ft. of \n *  Ilya when he makes this attack for the first time and can see him must make a DC 12 \n *  Wisdom saving throw or become frightened for 3 turns. \n * \n * This is buit from a Crymic macro and Horrifying_Visage.0.1\n * \n * 02/06/22 0.1 Rebuild of Macro to include fear element\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim off the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\n//----------------------------------------------------------------------------------\n// My typical initializations\n//\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nconst ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\nlet msg = \"\"\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst GAME_RND = game.combat ? game.combat.round : 0;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nconst HEAL_TYPE = \"healing\";\nconst DAMAGE_TYPE = \"necrotic\";\nconst BLIND_COND = \"Blinded\"\nconst PRIMARY_COND = \"Ilya Fright\"\nconst IMMUNE_COND = \"Ilya Fright, Immune\"\nconst PRIMARY_ICON = \"Icons_JGB/Monster_Features/Frightened.png\"\nconst IMMUNE_ICON = \"Icons_JGB/Monster_Features/Frightened_Immune.png\"\nconst PRIMARY_JRNL = \"@JournalEntry[tjg0x0jXlwvbdI9h]{Frightened}\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`${aToken.name} immune to ${PRIMARY_COND} for 24 hours`)\n    applyImmune(aToken)\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //---------------------------------------------------------------------------------------------\n    // Startup ye'ole VFX\n    //\n    runVFX();\n    //----------------------------------------------------------------------------------\n    // Apply AOE Fear similar to Horrifying_Visage.0.1\n    //\n    doFear()\n    //----------------------------------------------------------------------------------\n    // Make sure a ONE target was selected and hit before doing damage steps\n    //\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        ui.notifications.warn(msg)\n        console.log(msg)\n        return;\n    }\n    if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return\n        msg = `Target was missed.`\n        ui.notifications.info(msg)\n        return;\n    }\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // Targeted Token\n    //----------------------------------------------------------------------------------\n    // Perform the bite portion of this ability (borrowed from Crymic)\n    //\n    doBite(tToken);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the fear bit of this ability\n ***************************************************************************************************/\nasync function doFear() {\n    const FUNCNAME = \"doOnUse()\";\n    let tokensToSave = []\n    let failSaves = []  // Array to contain the tokens that failed their saving throws\n    let madeSaves = []  // Array to contain the tokens that made their saving throws\n    let madeNames = \"\"\n    let failNames = \"\"\n    let immuneNames = \"\"\n    const SAVE_TYPE = \"wis\"\n    const SAVE_DC = aActor.data.data.attributes.spelldc;\n    const FLAVOR = `${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to resisit <b>${aItem.name}</b>`;\n    //---------------------------------------------------------------------------------------------\n    // Fetch the spell effect range\n    //\n    let RANGE = aItem.data.range?.value ? aItem.data.range?.value : 60\n    let UNITS = aItem.data.range.units;\n    jez.log(`range ${RANGE}, units ${UNITS}`);\n    if (ALLOWED_UNITS.includes(UNITS)) {\n        jez.log(\"Units are ok\");\n    } else {\n        jez.log(`Unit ${UNITS} not in`, ALLOWED_UNITS);\n        ui.notifications.error(`Unit ${UNITS} not in allowed units`);\n        return (false);\n    }\n    //---------------------------------------------------------------------------------------------\n    // Proceed to doing actual things\n    //\n    let tTokens = await jez.tokensInRange(aToken, RANGE)\n    let tTokenCnt = tTokens?.length\n    jez.log(`${tTokenCnt} Token(s) found within ${RANGE} feet`, tTokens)\n    for (let i = 0; i < tTokenCnt; i++) {\n        //-----------------------------------------------------------------------------------------\n        // Check to see if the current target has the BLIND_COND\n        //\n        if (tTokens[i].actor.effects.find(ef => ef.data.label === BLIND_COND)) {\n            jez.log(`${tTokens[i].name} is afflicted by ${BLIND_COND}`)\n            immuneNames += `<b>${tTokens[i].name} (Blind)</b><br>`\n            continue\n        }\n        //-----------------------------------------------------------------------------------------\n        // Check to see if the current target has the IMMUNE_COND\n        //\n        if (tTokens[i].actor.effects.find(ef => ef.data.label === IMMUNE_COND)) {\n            jez.log(`${tTokens[i].name} has ${IMMUNE_COND} condition`)\n            immuneNames += `<b>${tTokens[i].name} (Immunized)</b><br>`\n            continue\n        }\n        //-----------------------------------------------------------------------------------------\n        // Check to see if vision is blocked by a wall between current pair\n        //\n        let blocked = canvas.walls.checkCollision(new Ray(tTokens[i].center, aToken.center),\n            { type: \"sight\", mode: \"any\" })\n        if (blocked) {\n            jez.log(`${tTokens[i].name} has no LoS to ${aToken.name}`)\n            immuneNames += `<b>${tTokens[i].name} (no LoS)</b><br>`\n            continue\n        }\n        //---------------------------------------------------------------------------------------------\n        // Proceed with the tokens that might be affected (need to roll saves)\n        //\n        tokensToSave.push(tTokens[i])\n        let save = (await tTokens[i].actor.rollAbilitySave(SAVE_TYPE, { FLAVOR, chatMessage: false, fastforward: true }));\n        if (save.total < SAVE_DC) {\n            jez.log(`${tTokens[i].name} failed ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            failSaves.push(tTokens[i])\n            failNames += `<b>${tTokens[i].name}</b> ${save.total} (${save._formula})<br>`\n        } else {\n            jez.log(`${tTokens[i].name} saved ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            madeSaves.push(tTokens[i])\n            madeNames += `<b>${tTokens[i].name}</b> ${save.total} (${save._formula})<br>`\n        }\n    }\n    //---------------------------------------------------------------------------------------------\n    // If no tokens need to roll saves, we're done, get on out of here.\n    //\n    if (tokensToSave.length < 1) {\n        msg = `There are no targets that need to save against ${aToken.name}'s ${aItem.name}`\n        jez.log(`msg`)\n        let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n        await jez.addMessage(chatMessage, { color: \"purple\", fSize: 15, msg: msg, tag: \"saves\" })\n        return;\n    }\n    //---------------------------------------------------------------------------------------------\n    // Process Tokens that Failed Saves, giving them the PRIMARY_COND\n    //\n    jez.log(`${failSaves.length} Tokens failed saves, need '${PRIMARY_COND}' added`)\n    for (let i = 0; i < failSaves.length; i++) {\n        jez.log(` ${i + 1}) ${failSaves[i].name}`, failSaves[i])\n        applyPrimary(failSaves[i], SAVE_TYPE, SAVE_DC);\n    }\n    //---------------------------------------------------------------------------------------------\n    // Process Tokens that made Saves, giving them the IMMUNE_COND\n    //\n    jez.log(`${madeSaves.length} Tokens passed saves, need '${IMMUNE_COND}' added`)\n    for (let i = 0; i < madeSaves.length; i++) {\n        jez.log(` ${i + 1}) ${madeSaves[i].name}`, madeSaves[i])\n        applyImmune(madeSaves[i])\n    }\n    //---------------------------------------------------------------------------------------------\n    // Craft results message and post it.\n    //\n    let chatMessage = await game.messages.get(args[args.length - 1].itemCardId);\n    await jez.wait(100)\n    if (immuneNames) {\n        msg = `<b><u>Immune</u></b><br>${immuneNames}`\n        await jez.wait(100)\n        // https://www.w3schools.com/tags/ref_colornames.asp\n        jez.addMessage(chatMessage, { color: \"purple\", fSize: 14, msg: msg, tag: \"saves\" })\n    }\n    if (madeNames) {\n        msg = `<b><u>Successful ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${madeNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkgreen\", fSize: 14, msg: msg, tag: \"saves\" })\n    }\n    if (failNames) {\n        msg = `Creatures that failed their save are <b>${PRIMARY_JRNL}</b> for 3 rounds.<br>`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkred\", fSize: 14, msg: msg, tag: \"saves\" })\n        msg = `<b><u>Failed ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${failNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkred\", fSize: 14, msg: msg, tag: \"saves\" })\n    }\n    await jez.wait(100)\n    msg = `Total of ${tTokenCnt} target(s) within ${RANGE}ft of ${aToken.name}<br>`\n    jez.addMessage(chatMessage, { color: \"darkblue\", fSize: 14, msg: msg, tag: \"saves\" })\n\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Apply the primary condition\n ***************************************************************************************************/\nasync function applyPrimary(token, saveType, saveDC) {\n    let effectData = [{\n        label: PRIMARY_COND,\n        icon: PRIMARY_ICON,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        flags: { dae: { stackable: false, macroRepeat: \"endEveryTurn\", specialDuration: [\"shortRest\"] } },\n        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },\n        changes: [\n            { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.skill.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.attack.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `macro.itemMacro`, mode: CUSTOM, value: `Save_DC ${saveDC} ${saveType}`, priority: 20 },           \n            //{ key: `flags.dae.deleteUuid`, mode: 5, value: conc.uuid, priority: 20 },\n            //{ key: `flags.midi-qol.OverTime`, mode: 5, value: `turn=start,label=Frightened,saveDC=${spellDC},saveAbility=${saveType},saveRemove=true`, priority: 20 }\n        ]\n    }];\n    let primary = token.actor.effects.find(i => i.data.label === PRIMARY_COND);\n    if (!primary) await applyEffect(token, effectData);\n    //await jez.wait(500);\n    // updateEffect(tokenD, target, conc);\n}\n/***************************************************************************************************\n * Apply the Immune to Frightened Condition\n ***************************************************************************************************/\nasync function applyImmune(token) {\n    let effectData = [{\n        label: IMMUNE_COND,\n        icon: IMMUNE_ICON,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        flags: { dae: { stackable: false, macroRepeat:\"none\", specialDuration:[\"shortRest\"] } },\n        duration: { rounds: 14400, seconds: 86400, startRound: GAME_RND, startTime: game.time.worldTime },\n        changes: [\n            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: \"Immune to Ilya's Fear\", priority: 20 },\n        ]\n    }];\n    let primary = token.actor.effects.find(i => i.data.label === PRIMARY_COND);\n    if (!primary) await applyEffect(token, effectData);\n}\n/***************************************************************************************************\n * Launch the VFX effects\n ***************************************************************************************************/\nasync function runVFX() {\n    const VFX_NAME = `${MACRO}-${aToken.id}`\n    const VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Template/Circle/OutPulse/OutPulse_02_Regular_PurplePink_Loop_600x600.webm\"\n    const VFX_OPACITY = 1.0;\n    const VFX_SCALE = 2.25;\n\n    new Sequence()\n        .effect()\n        .file(VFX_LOOP)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .duration(2500)\n        .name(VFX_NAME) // Give the effect a uniqueish name\n        .fadeIn(10) // Fade in for specified time in milliseconds\n        .fadeOut(1000) // Fade out for specified time in milliseconds\n        .play();\n}\n\n/***************************************************************************************************\n * Perform the damage/heal portion of this ability\n ***************************************************************************************************/\nasync function doBite(token1) {\n    const fracRec = 1.0; // Fraction of necrotic damage healed\n\n    let damageDetail = await LAST_ARG.damageDetail.find(i => i.type === DAMAGE_TYPE);\n    let damageTotal = (damageDetail.damage - damageDetail.DR) * damageDetail.damageMultiplier;\n    MidiQOL.applyTokenDamage([{ damage: damageTotal, type: HEAL_TYPE }],\n        damageTotal * fracRec, new Set([aToken]), aItem.name, new Set());\n    let healMsg = `<div class=\"midi-qol-flex-container\">\n    <div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${token1.id}\">\n    hits ${token1.name}</div><img src=\"${token1.data.img}\" \n    width=\"30\" height=\"30\" style=\"border:0px\"></div><div \n    class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" \n    id=\"${aToken.id}\">Heals ${aToken.name} \n    <span style=\"color:green;font-size:20px\">\n    <b>${damageTotal * fracRec}</b></span></div><img src=\"${aToken.data.img}\" \n    width=\"30\" height=\"30\" style=\"border:0px\"></div>`;\n    await jez.wait(400);\n    let chatMessage = await game.messages.get(args[0].itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    let srcStr = /<div class=\"midi-qol-hits-display\">[\\s\\S]*<div class=\"end-midi-qol-hits-display\">/g;\n    let repStr = `<div class=\"midi-qol-hits-display\"><div class=\"end-midi-qol-hits-display\">${healMsg}`;\n    content = await content.replace(srcStr, repStr);\n    await chatMessage.update({ content: content });\n}\n/***************************************************************************************************\n * Applies an effect\n ***************************************************************************************************/\nasync function applyEffect(target, effectData) {\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: target.actor.uuid, effects: effectData });\n}\n/***************************************************************************************************\n * Legacy Function -- Related to concentration management\n ***************************************************************************************************/\nasync function updateEffect(tokenD, target, conc) {\n    let primary = target.actor.effects.find(i => i.data.label === \"Frightened\");\n    await MidiQOL.socket().executeAsGM(\"updateEffects\", {\n        actorUuid: tokenD.actor.uuid,\n        updates: [{\n            _id: conc.id, changes: [{\n                key: `flags.dae.deleteUuid`, mode: 5,\n                value: primary.uuid, priority: 20\n            }]\n        }]\n    });\n    // Following line seemingly needed in call ing function just after use of this function\n    await MidiQOL.socket().executeAsGM(\"removeEffects\", { actorUuid: tokenD.actor.uuid, effects: [conc.id] });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "favtab": {
+      "isFavorite": true
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "name": "Polymorph",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/link-eerie-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>This spell transforms a creature that you can see within range into a new form. An unwilling creature must make a <strong>Wisdom saving throw </strong>to avoid the effect. The spell has no effect on a Shapechanger or a creature with 0 Hit Points.</p>\n<p>The transformation lasts for the Duration, or until the target drops to 0 Hit Points or dies. The new form can be any beast whose <strong>Challenge rating is equal to or less than the target&rsquo;s</strong> (or the target&rsquo;s level, if it doesn&rsquo;t have a c⁠hallenge rating). The target&rsquo;s game s⁠tatistics, including mental Ability Scores, are replaced by the Statistics of the chosen beast. It retains its Alignment and personality.</p>\n<p>The target assumes the Hit Points of its new form. When it reverts to its normal form, the creature returns to the number of hit po⁠ints it had before it transformed. If it reverts as a result of dropping to 0 h⁠it points, any excess damage carries over to its normal form. As long as the excess damage doesn&rsquo;t reduce the creature&rsquo;s normal form to 0 hit poin⁠ts, it isn&rsquo;t knocked Unconscious.</p>\n<p>The creature is <strong>limited in the Actions</strong> it can perform by the Nature of its new form, and it <strong>can&rsquo;t speak</strong>, <strong>cast Spells</strong>, or take any other <strong>action that requires hands or s⁠peech</strong>.</p>\n<p><span style=\"text-decoration: underline;\">The target&rsquo;s gear melds into the new form</span>. The creature can&rsquo;t activate, use, wield, or otherwise benefit from any of its Equipment.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 266",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 60,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 0,
+      "scaling": "spell"
+    },
+    "level": 4,
+    "school": "trs",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "A caterpillar cocoon",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "8fNdqg3sryqHfgwQ",
+      "changes": [
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 0,
+          "value": "See Spell Description",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 3600
+      },
+      "icon": "systems/dnd5e/icons/spells/link-eerie-2.jpg",
+      "label": "Polymorph",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "flags.gm-notes.notes"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": ""
+    },
+    "core": {
+      "sourceId": "Item.OWFlYjA0ODRiOGRh"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

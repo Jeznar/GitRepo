@@ -1,0 +1,2479 @@
+{
+  "name": "Coven",
+  "type": "npc",
+  "img": "Icons_JGB/Monster_Features/Coven.png",
+  "data": {
+    "abilities": {
+      "str": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "dex": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "con": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "int": {
+        "value": 18,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "wis": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "cha": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      }
+    },
+    "attributes": {
+      "ac": {
+        "flat": null,
+        "calc": "default",
+        "formula": ""
+      },
+      "hp": {
+        "value": 500,
+        "min": 0,
+        "max": 500,
+        "temp": null,
+        "tempmax": null,
+        "formula": "500"
+      },
+      "init": {
+        "value": 0,
+        "bonus": 0
+      },
+      "movement": {
+        "burrow": 0,
+        "climb": 0,
+        "fly": 0,
+        "swim": 0,
+        "walk": 30,
+        "units": "ft",
+        "hover": false
+      },
+      "senses": {
+        "darkvision": 0,
+        "blindsight": 0,
+        "tremorsense": 0,
+        "truesight": 0,
+        "units": "ft",
+        "special": ""
+      },
+      "spellcasting": "int"
+    },
+    "details": {
+      "biography": {
+        "value": "",
+        "public": ""
+      },
+      "alignment": "",
+      "race": "",
+      "type": {
+        "value": "",
+        "subtype": "",
+        "swarm": "",
+        "custom": ""
+      },
+      "environment": "",
+      "cr": 7,
+      "spellLevel": 0,
+      "xp": {
+        "value": 10
+      },
+      "source": "",
+      "gender": "",
+      "age": "",
+      "height": "",
+      "weight": "",
+      "eyes": "",
+      "skin": "",
+      "hair": "",
+      "notes1name": "",
+      "notes2name": "",
+      "notes3name": "",
+      "notes4name": ""
+    },
+    "traits": {
+      "size": "lg",
+      "di": {
+        "value": [],
+        "custom": ""
+      },
+      "dr": {
+        "value": [],
+        "custom": ""
+      },
+      "dv": {
+        "value": [],
+        "custom": ""
+      },
+      "ci": {
+        "value": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "diseased",
+          "exhaustion",
+          "frightened",
+          "grappled",
+          "incapacitated",
+          "invisible",
+          "paralyzed",
+          "petrified",
+          "poisoned",
+          "prone",
+          "restrained",
+          "stunned",
+          "unconscious"
+        ],
+        "custom": ""
+      },
+      "languages": {
+        "value": [],
+        "custom": ""
+      }
+    },
+    "currency": {
+      "pp": 0,
+      "gp": 0,
+      "ep": 0,
+      "sp": 0,
+      "cp": 0
+    },
+    "skills": {
+      "acr": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ani": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "arc": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ath": {
+        "value": 0,
+        "ability": "str",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "dec": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "his": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ins": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "itm": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "inv": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "med": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "nat": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "prc": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "prf": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "per": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "rel": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "slt": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ste": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "sur": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      }
+    },
+    "spells": {
+      "spell1": {
+        "value": 4,
+        "override": 4
+      },
+      "spell2": {
+        "value": 3,
+        "override": 3
+      },
+      "spell3": {
+        "value": 3,
+        "override": 3
+      },
+      "spell4": {
+        "value": 3,
+        "override": 3
+      },
+      "spell5": {
+        "value": 2,
+        "override": 2
+      },
+      "spell6": {
+        "value": 1,
+        "override": 1
+      },
+      "spell7": {
+        "value": 0,
+        "override": null
+      },
+      "spell8": {
+        "value": 0,
+        "override": null
+      },
+      "spell9": {
+        "value": 0,
+        "override": null
+      },
+      "pact": {
+        "value": 0,
+        "override": null
+      }
+    },
+    "bonuses": {
+      "mwak": {
+        "attack": "",
+        "damage": ""
+      },
+      "rwak": {
+        "attack": "",
+        "damage": ""
+      },
+      "msak": {
+        "attack": "",
+        "damage": ""
+      },
+      "rsak": {
+        "attack": "",
+        "damage": ""
+      },
+      "abilities": {
+        "check": "",
+        "save": "",
+        "skill": ""
+      },
+      "spell": {
+        "dc": ""
+      }
+    },
+    "resources": {
+      "legact": {
+        "value": 0,
+        "max": 0
+      },
+      "legres": {
+        "value": 0,
+        "max": 0
+      },
+      "lair": {
+        "value": false,
+        "initiative": 0
+      }
+    }
+  },
+  "token": {
+    "name": "Coven",
+    "img": "Icons_JGB/Monster_Features/Coven.png",
+    "displayName": 30,
+    "actorLink": false,
+    "width": 2,
+    "height": 2,
+    "scale": 1,
+    "mirrorX": false,
+    "mirrorY": false,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "vision": false,
+    "dimSight": 0,
+    "brightSight": 0,
+    "dimLight": 0,
+    "brightLight": 0,
+    "sightAngle": 0,
+    "lightAngle": 0,
+    "lightAlpha": 0.25,
+    "lightAnimation": {
+      "speed": 5,
+      "intensity": 5
+    },
+    "disposition": 0,
+    "displayBars": 30,
+    "bar1": {
+      "attribute": "attributes.hp"
+    },
+    "bar2": {
+      "attribute": ""
+    },
+    "flags": {
+      "splatter": {
+        "bloodColor": ""
+      },
+      "token-hud-wildcard": {
+        "default": ""
+      },
+      "token-auras": {
+        "aura1": {
+          "permission": "all",
+          "colour": "#ffffff",
+          "opacity": 0.5,
+          "distance": null,
+          "square": false
+        },
+        "aura2": {
+          "permission": "all",
+          "colour": "#ffffff",
+          "opacity": 0.5,
+          "distance": null,
+          "square": false
+        }
+      }
+    },
+    "randomImg": false,
+    "tint": null,
+    "lightColor": null,
+    "lockCamera": false,
+    "x": null,
+    "y": null,
+    "elevation": null
+  },
+  "items": [
+    {
+      "_id": "NYVKWQqOKNFh6Cak",
+      "name": "Shared Spellcasting (Coven)",
+      "type": "feat",
+      "img": "Icons_JGB/Monster_Features/Coven.png",
+      "data": {
+        "description": {
+          "value": "<p>While all three members of a hag coven are within 30 feet of one another, they can each cast the following spells from the wizard's spell list but must share the spell slots among themselves:</p>\n<p>• 1st level (4 slots): @Item[NjA2M2MxZTQ0MTg2]{Identify}, @Item[MABGxC7YuwFpvdVI]{Ray of Sickness}</p>\n<p>• 2nd level (3 slots): @Item[LGjlKYO0AbpcexZ4]{Hold Person}, @Item[OGE2N2JkNWIyYmE4]{Locate Object}</p>\n<p>• 3rd level (3 slots): @Item[hG78w6ED8dNFXFkS]{Bestow Curse (DAE)}, @Item[gpcvMmXIACJT4tx7]{Counterspell}, @Item[NDhlNTZkODEyZTJm]{Lightning Bolt}</p>\n<p>• 4th level (3 slots): @Item[lTZwuUDnm7nKHdLm]{Phantasmal Killer}, @Item[OWFlYjA0ODRiOGRh]{Polymorph}</p>\n<p>• 5th level (2 slots): @Item[Negc5CI4iHLxQ3CX]{Contact Other Plane}, @Item[IbA55mF1mazCPIFb]{Scrying}</p>\n<p>• 6th level (1 slot): @Item[KoQQerWwIIb3ggVL]{Eyebite}</p>\n<p>For casting these spells, each hag is a 12th-level spellcaster that uses Intelligence as her spellcasting ability. The night hag's spell save DC is 15, and the spell attack bonus is +7 for these spells.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "",
+        "activation": {
+          "type": "",
+          "cost": 0,
+          "condition": ""
+        },
+        "duration": {
+          "value": 0,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": 0,
+          "max": 0,
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": null,
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "requirements": "",
+        "recharge": {
+          "value": 0,
+          "charged": false
+        }
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 30000,
+      "permission": {
+        "default": 0,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "magicitems": {
+          "enabled": false,
+          "equipped": false,
+          "attuned": false,
+          "charges": "0",
+          "chargeType": "c1",
+          "destroy": false,
+          "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+          "rechargeable": false,
+          "recharge": "0",
+          "rechargeType": "t1",
+          "rechargeUnit": "r1",
+          "sorting": "l"
+        },
+        "core": {
+          "sourceId": "Item.YTIxNjU0YzJmN2Iw"
+        }
+      }
+    },
+    {
+      "_id": "FXJYZMY6tOSATplo",
+      "name": "Identify",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/light-eerie-1.jpg",
+      "data": {
+        "description": {
+          "value": "<p>You choose one object that you must touch throughout the casting of the spell. If it is a magic item or some other magic-imbued object, you learn its properties and how to use them, whether it requires attunement to use, and how many charges it has, if any. You learn whether any spells are affecting the item and what they are. If the item was created by a spell, you learn which spell created it.</p><p>If you instead touch a creature throughout the casting, you learn what spells, if any, are currently affecting it.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 252",
+        "activation": {
+          "type": "minute",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "object"
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": "touch"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "util",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": "",
+          "value": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell",
+          "value": ""
+        },
+        "level": 1,
+        "school": "div",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": true,
+          "ritual": true,
+          "concentration": false
+        },
+        "materials": {
+          "value": "A pearl worth at least 100gp and an owl feather",
+          "consumed": false,
+          "cost": 100,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [],
+      "folder": "ZmNjZDA4MjI4NzU4",
+      "sort": 2290000,
+      "permission": {
+        "default": 0,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "midi-qol": {
+          "onUseMacroName": ""
+        },
+        "core": {
+          "sourceId": "Item.NjA2M2MxZTQ0MTg2"
+        }
+      }
+    },
+    {
+      "_id": "MG44X4n7XjxU7qct",
+      "name": "Ray of Sickness",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/beam-acid-1.jpg",
+      "data": {
+        "description": {
+          "value": "<p>A ray of sickening greenish energy lashes out toward a creature within range. Make a ranged spell attack against the target. On a hit, the target takes <strong>2d8 poison damage</strong> and must make a <strong>Constitution saving</strong> throw. On a failed save, it is also @JournalEntry[45AvudXYEJYpj1L8]{Poisoned} until the end of your next turn.</p>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.</p>",
+          "chat": "<p>A ray of sickening greenish energy lashes out toward a creature within range. Make a ranged spell attack against the target. On a hit, the target takes 2d8 poison damage and must make a Constitution saving throw. On a failed save, it is also poisoned until the end of your next turn.</p>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.</p>",
+          "unidentified": ""
+        },
+        "source": "Player's Handbook pg 271",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature"
+        },
+        "range": {
+          "value": 60,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "rsak",
+        "attackBonus": "0",
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [
+            [
+              "2d8",
+              "poison"
+            ]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 1,
+        "school": "nec",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": false,
+          "ritual": false,
+          "concentration": false
+        },
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "1d8"
+        }
+      },
+      "effects": [],
+      "folder": "hJINXKkVqA8r2wVw",
+      "sort": 1100000,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "ddbimporter": {
+          "id": 138636,
+          "definitionId": 2318,
+          "entityTypeId": 435869154,
+          "dndbeyond": {
+            "lookup": "generic",
+            "lookupName": "generic",
+            "level": null,
+            "castAtLevel": null
+          },
+          "sources": [
+            {
+              "sourceId": 2,
+              "pageNumber": 271,
+              "sourceType": 1
+            }
+          ],
+          "tags": [
+            "Damage",
+            "Debuff"
+          ]
+        },
+        "betterRolls5e": {
+          "quickVersatile": {
+            "altValue": true
+          },
+          "quickCharges": {
+            "value": {
+              "use": true,
+              "resource": true
+            },
+            "altValue": {
+              "use": true,
+              "resource": true
+            }
+          }
+        },
+        "enhanced-terrain-layer": {
+          "multiple": 1,
+          "min": 0,
+          "max": 0,
+          "environment": ""
+        },
+        "midi-qol": {
+          "criticalThreshold": "20",
+          "onUseMacroName": "ItemMacro",
+          "forceCEOn": false
+        },
+        "core": {
+          "sourceId": "Compendium.world.ddb-darklands-spells.7bGytzWQky7BVyfX"
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Ray of Sickness",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"Ray_of_Sickness\"\n/*****************************************************************************************\n * Built from Crymic's macro of the same name.  I added my structure, naming conventions,\n * and a VFX.\n * \n * 02/19/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\nconst POISONED_JRNL = `@JournalEntry[${game.journal.getName(\"Poisoned\").id}]{Poisoned}`\n\nif((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\nif (args[0]?.tag === \"DamageBonus\") doBonusDamage();    // DAE Damage Bonus\njez.log(`============== Finishing === ${MACRONAME} =================`);\njez.log(\"\")\nreturn;\n\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/\n\n/***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    // Check anything important...\n    jez.log('All looks good, to quote Jean-Luc, \"MAKE IT SO!\"')\n    return (true)\n}\n\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n * \n * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects\n ***************************************************************************************************/\n async function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(\"Something could have been here\")\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n  }\n  \n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set On\n ***************************************************************************************************/\nasync function doOn() {\n    const FUNCNAME = \"doOn()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(\"A place for things to be done\");\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n \n\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n\n    runVFX(aToken, tToken)\n\n    const GAME_RND = game.combat ? game.combat.round : 0;\n     const SPELL_DC = aToken.actor.data.data.attributes.spelldc;\n     const SAVE_TYPE = \"con\";\n     let save = await MidiQOL.socket().executeAsGM(\"rollAbility\", { request: \"save\", targetUuid: tToken.actor.uuid, ability: SAVE_TYPE, options: { chatMessage: false, fastForward: true } });\n     let success = \"saves\";\n     let chatMessage = await game.messages.get(LAST_ARG.itemCardId);\n     if (save.total < SPELL_DC) {\n         success = \"fails\";\n         let effectData = {\n             label: \"Poisoned\",\n             icon: \"modules/combat-utility-belt/icons/poisoned.svg\",\n             origin: LAST_ARG.uuid,\n             disabled: false,\n             duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },\n             flags: { dae: { itemData: aItem, specialDuration: ['turnEndSource'] } },\n             changes: [{ key: `flags.midi-qol.disadvantage.attack.all`, mode: 2, value: 1, priority: 20 },\n                 { key: `flags.midi-qol.disadvantage.skill.check.all`, mode: 2, value: 1, priority: 20 },\n                 { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: 2, value: 1, priority: 20 }]\n         };\n         let effect = tToken.actor.effects.find(ef => ef.data.label === game.i18n.localize(\"Poisoned\"));\n         if (!effect) await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.uuid, effects: [effectData] });\n         //----------------------------------------------------------------------------------------------\n         // Post a message to the chatcard with results\n         //\n         msg = `${tToken.name} is ${POISONED_JRNL} until the end of its next turn`\n         //let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n         jez.addMessage(chatMessage, { color: \"mediumseagreen\", fSize: 14, msg: msg, tag: \"saves\" })\n         await jez.wait(250)\n     }\n     let saveResult = `<div class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${tToken.id}\">${tToken.name} ${success} with a ${save.total}</div><img src=\"${tToken.data.img}\" width=\"30\" height=\"30\" style=\"border:0px\"></div>`;\n     let saveMessage = `<div class=\"midi-qol-nobox midi-qol-bigger-text\">${CONFIG.DND5E.abilities[SAVE_TYPE]} Saving Throw: DC ${SPELL_DC}</div><div class=\"midi-qol-nobox\">${saveResult}</div>`;\n     let content = await duplicate(chatMessage.data.content);\n     let searchString = /<div class=\"midi-qol-saves-display\">[\\s\\S]*<div class=\"end-midi-qol-saves-display\">/g;\n     let replaceString = `<div class=\"midi-qol-saves-display\"><div class=\"end-midi-qol-saves-display\">${saveMessage}`;\n     content = await content.replace(searchString, replaceString);\n     await chatMessage.update({ content: content });\n     await ui.chat.scrollBottom();\n\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        ui.notifications.warn(msg)\n        jez.log(msg)\n        return(false);\n    }\n    if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return\n        msg = `Target was missed.`\n        ui.notifications.info(msg)\n        return(false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * COOL-THING: Run the VFX -- Beam from originator to the target\n ***************************************************************************************************/\nasync function runVFX(token1, token2) {\nconst VFX_FILE = \"modules/jb2a_patreon/Library/Cantrip/Ray_Of_Frost/RayOfFrost_01_Regular_Green_30ft_1600x400.webm\"\nnew Sequence()\n    .effect()\n        .atLocation(token1)\n        .reachTowards(token2)\n        .file(VFX_FILE)\n    .play();\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        },
+        "exportSource": {
+          "world": "darklands",
+          "system": "dnd5e",
+          "coreVersion": "0.8.9",
+          "systemVersion": "1.5.3"
+        },
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "betterCurses": {
+          "isCurse": false,
+          "curseName": "",
+          "formula": "",
+          "mwak": false,
+          "rwak": false,
+          "msak": false,
+          "rsak": false
+        }
+      }
+    },
+    {
+      "_id": "wnJmmAY2LUvOyyEf",
+      "name": "Hold Person",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/shielding-eerie-2.jpg",
+      "data": {
+        "description": {
+          "value": "<p>Choose a humanoid that you can see within range. The target must succeed on a <strong>Wisdom saving throw or be @JournalEntry[AuUMNy1Ta8MErirO]{Paralyzed} </strong>for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.</p>\n<p><strong>FoundryVTT: </strong>Concentration effect must be removed manually when the <em>children</em> spell effects are ended.</p>",
+          "chat": "<p>Choose a humanoid that you can see within range. The target must succeed on a Wisdom saving throw or be paralyzed for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.</p>",
+          "unidentified": ""
+        },
+        "source": "Basic Rules, Player's Handbook pg 251",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": 1,
+          "units": "minute"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature"
+        },
+        "range": {
+          "value": 60,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "save",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "wis",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 2,
+        "school": "enc",
+        "components": {
+          "value": "a small, straight piece of iron",
+          "vocal": true,
+          "somatic": true,
+          "material": true,
+          "ritual": false,
+          "concentration": true
+        },
+        "materials": {
+          "value": "a small, straight piece of iron",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": true
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [
+        {
+          "_id": "kNqJhuAUwF0Lz31t",
+          "changes": [
+            {
+              "key": "macro.CUB",
+              "mode": 0,
+              "value": "Paralyzed",
+              "priority": "20"
+            },
+            {
+              "key": "flags.midi-qol.OverTime",
+              "mode": 5,
+              "value": "turn=end,saveAbility=wis,saveDC=@attributes.spelldc,saveMagic=true,label=Hold Person",
+              "priority": "20"
+            }
+          ],
+          "disabled": false,
+          "duration": {
+            "startTime": null
+          },
+          "icon": "systems/dnd5e/icons/spells/shielding-eerie-2.jpg",
+          "label": "Hold Person",
+          "transfer": false,
+          "flags": {
+            "dae": {
+              "stackable": "none",
+              "macroRepeat": "none",
+              "specialDuration": [],
+              "transfer": false
+            },
+            "ActiveAuras": {
+              "isAura": false,
+              "radius": null,
+              "aura": "None",
+              "alignment": "",
+              "type": "",
+              "ignoreSelf": false,
+              "height": false,
+              "hidden": false,
+              "hostile": false,
+              "onlyOnce": false
+            },
+            "dnd5e-helpers": {
+              "rest-effect": "Ignore"
+            }
+          },
+          "tint": null,
+          "selectedKey": [
+            "macro.CUB",
+            "flags.midi-qol.OverTime"
+          ]
+        }
+      ],
+      "folder": "zr9AfGYgUHzgtvDV",
+      "sort": -139843,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "ddbimporter": {
+          "id": 138145,
+          "definitionId": 2147,
+          "entityTypeId": 435869154,
+          "dndbeyond": {
+            "lookup": "classSpell",
+            "class": "Cleric",
+            "level": 3,
+            "characterClassId": 68659159,
+            "spellLevel": 2,
+            "ability": "wis",
+            "mod": 3,
+            "dc": 13,
+            "cantripBoost": false,
+            "overrideDC": false,
+            "id": 138145,
+            "entityTypeId": 435869154,
+            "healingBoost": 0
+          },
+          "sources": [
+            {
+              "sourceId": 1,
+              "pageNumber": null,
+              "sourceType": 2
+            },
+            {
+              "sourceId": 2,
+              "pageNumber": 251,
+              "sourceType": 1
+            }
+          ],
+          "tags": [
+            "Control"
+          ]
+        },
+        "betterRolls5e": {
+          "quickVersatile": {
+            "altValue": true
+          },
+          "quickCharges": {
+            "value": {
+              "use": true,
+              "resource": true
+            },
+            "altValue": {
+              "use": true,
+              "resource": true
+            }
+          }
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Hold Person (Overtime)",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        },
+        "midi-qol": {
+          "onUseMacroName": "",
+          "effectActivation": false
+        },
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "enhanced-terrain-layer": {
+          "multiple": 1,
+          "min": 0,
+          "max": 0,
+          "environment": ""
+        },
+        "core": {
+          "sourceId": "Item.mF2ASXAZxmeuwxDv"
+        },
+        "exportSource": {
+          "world": "darklands",
+          "system": "dnd5e",
+          "coreVersion": "0.8.9",
+          "systemVersion": "1.5.3"
+        }
+      }
+    },
+    {
+      "_id": "jlKm4rKtHDtwvFYP",
+      "name": "Locate Object",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/rock-royal-2.jpg",
+      "data": {
+        "description": {
+          "value": "<p>Describe or name an object that is familiar to you. You sense the direction to the object's location, as long as that <strong>object is within 1,000 feet</strong> of you. If the object is in motion, you know the direction of its movement.</p>\n<p>The spell can locate a specific object known to you, as long as you have seen it up close—within 30 feet—at least once. Alternatively, the spell can locate the nearest object of a particular kind, such as a certain kind of apparel, jewelry, furniture, tool, or weapon.</p>\n<p>This spell can't locate an object if any thickness of lead, even a thin sheet, blocks a direct path between you and the object.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 256",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": 10,
+          "units": "minute"
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": "self"
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": "self"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "util",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": "",
+          "value": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell",
+          "value": ""
+        },
+        "level": 2,
+        "school": "div",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": true,
+          "ritual": false,
+          "concentration": true
+        },
+        "materials": {
+          "value": "A forked twig",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [],
+      "folder": "zr9AfGYgUHzgtvDV",
+      "sort": 300000,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "midi-qol": {
+          "onUseMacroName": ""
+        },
+        "core": {
+          "sourceId": "Item.OGE2N2JkNWIyYmE4"
+        }
+      }
+    },
+    {
+      "_id": "AIp8bBDvH2gwrZ39",
+      "name": "Bestow Curse (DAE)",
+      "type": "spell",
+      "img": "/systems/dnd5e/icons/spells/haste-fire-2.jpg",
+      "data": {
+        "description": {
+          "value": "<p>You touch a creature, and that creature must succeed on a Wisdom saving throw or become cursed for the duration of the spell. When you cast this spell, choose the nature of the curse from the following options:</p>\n<ul>\n<li><strong>Ineptitude: </strong>Choose one ability score. While cursed, the target has disadvantage on ability checks and saving throws made with that ability score.</li>\n<li><strong>Aversion: </strong>While cursed, the target has disadvantage on attack rolls against you.</li>\n<li><strong>Lethergy:</strong> While cursed, the target must make a Wisdom saving throw at the start of each of its turns. If it fails, it wastes its action that turn doing nothing.</li>\n<li><strong>Vulnerability: </strong>While the target is cursed, your attacks and spells deal an extra 1d8 necrotic damage to the target. <strong>Foundry VTT: @Item[bfGp5MZ6r1wsQ3r9]{Bestow Curse Damage}</strong></li>\n</ul>\n<p>A remove curse spell ends this effect. At the DM's option, you may choose an alternative curse effect, but it should be no more powerful than those described above. The DM has final say on such a curse's effect.</p>\n<p><em><strong>At Higher Levels.</strong></em> If you cast this spell using a spell slot of 4th level or higher, the duration is concentration, up to 10 minutes. If you use a spell slot of 5th level or higher, the duration is 8 hours. If you use a spell slot of 7th level or higher, the duration is 24 hours. If you use a 9th level spell slot, the spell lasts until it is dispelled. Using a spell slot of 5th level or higher grants a duration that doesn't require concentration.</p>",
+          "chat": "<p>You touch a creature, and that creature must succeed on a Wisdom saving throw or become cursed for the duration of the spell. When you cast this spell, choose the nature of the curse from the following options:</p>\n<ul>\n<li>Choose one ability score. While cursed, the target has disadvantage on ability checks and saving throws made with that ability score.</li>\n<li>While cursed, the target has disadvantage on attack rolls against you.</li>\n<li>While cursed, the target must make a Wisdom saving throw at the start of each of its turns. If it fails, it wastes its action that turn doing nothing.</li>\n<li>While the target is cursed, your attacks and spells deal an extra 1d8 necrotic damage to the target.</li>\n</ul>\n<p>A remove curse spell ends this effect. At the DM's option, you may choose an alternative curse effect, but it should be no more powerful than those described above. The DM has final say on such a curse's effect.</p>\n<p><em><strong>At Higher Levels.</strong></em> If you cast this spell using a spell slot of 4th level or higher, the duration is concentration, up to 10 minutes. If you use a spell slot of 5th level or higher, the duration is 8 hours. If you use a spell slot of 7th level or higher, the duration is 24 hours. If you use a 9th level spell slot, the spell lasts until it is dispelled. Using a spell slot of 5th level or higher grants a duration that doesn't require concentration.</p>",
+          "unidentified": ""
+        },
+        "source": "Basic Rules, Player's Handbook pg 218",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": "Concentration"
+        },
+        "duration": {
+          "value": 1,
+          "units": "minute"
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "touch",
+          "type": ""
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": "touch"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "save",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "wis",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 3,
+        "school": "nec",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": false,
+          "ritual": false,
+          "concentration": true
+        },
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": true
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [
+        {
+          "_id": "vADZd5uo4Zi3puAy",
+          "changes": [
+            {
+              "key": "macro.itemMacro",
+              "mode": 0,
+              "value": "0",
+              "priority": "20"
+            }
+          ],
+          "disabled": false,
+          "duration": {
+            "startTime": null
+          },
+          "icon": "Icons_JGB/Misc/curse.png",
+          "label": "Cursed",
+          "transfer": false,
+          "flags": {
+            "dae": {
+              "stackable": "none",
+              "macroRepeat": "startEveryTurn",
+              "specialDuration": [],
+              "transfer": false
+            },
+            "dnd5e-helpers": {
+              "rest-effect": "Ignore"
+            },
+            "ActiveAuras": {
+              "isAura": false,
+              "aura": "None",
+              "radius": null,
+              "alignment": "",
+              "type": "",
+              "ignoreSelf": false,
+              "height": false,
+              "hidden": false,
+              "hostile": false,
+              "onlyOnce": false
+            }
+          },
+          "tint": null,
+          "selectedKey": "macro.itemMacro"
+        }
+      ],
+      "folder": "SrDFUGUS53efhAtN",
+      "sort": -300000,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "ddbimporter": {
+          "id": 136112,
+          "definitionId": 2013,
+          "entityTypeId": 435869154,
+          "dndbeyond": {
+            "lookup": "generic",
+            "lookupName": "generic",
+            "level": null,
+            "castAtLevel": null
+          },
+          "sources": [
+            {
+              "sourceId": 1,
+              "pageNumber": null,
+              "sourceType": 2
+            },
+            {
+              "sourceId": 2,
+              "pageNumber": 218,
+              "sourceType": 1
+            }
+          ],
+          "tags": [
+            "Debuff"
+          ]
+        },
+        "betterRolls5e": {
+          "quickVersatile": {
+            "altValue": true
+          },
+          "quickCharges": {
+            "value": {
+              "use": true,
+              "resource": true
+            },
+            "altValue": {
+              "use": true,
+              "resource": true
+            }
+          }
+        },
+        "cf": {
+          "id": "temp_edz3xuutj1n"
+        },
+        "core": {
+          "sourceId": "Compendium.My-Shared-DDB.spells.lw5YXzdErYC2Y7t4"
+        },
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "midi-qol": {
+          "onUseMacroName": "ItemMacro"
+        },
+        "betterCurses": {
+          "isCurse": true,
+          "curseName": "BestowCurse",
+          "formula": "1d8",
+          "mwak": true,
+          "rwak": true,
+          "msak": true,
+          "rsak": true
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Bestow Curse (DAE)",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"Bestow_Curse_DAE.1.2\";\n/*****************************************************************************************\n * Implemention of Bestow Curse.\n * \n * Description: long....go read it elsewhere.  The suggested afllictions, and importantly \n * the name I am giving each are:\n * \n * Ineptitude    - The afflicted has disadvantage on ability checks and saving throws made \n *                 with a caster selected ability score.\n * Aversion      - The afflicted has disadvantage on attack rolls against caster.\n * Lethergy      - The afflicted must make a Wisdom saving throw at the start of each of its \n *                 turns. If it fails, it wastes its action that turn, doing nothing.\n * Vulnerability - Caster's attacks deal an extra 1d8 necrotic damage to the target.\n * Other         - Some other effect agreed on by player and GM\n * \n * This is my attempt to implement this with a DAE itemm macro.\n * \n * 12/16/21 0.1 Creation and basic application of curse\n * 12/16/21 0.2 Addition of curse selection menu to the doOn function and Ineptitude \n *              automation\n * 12/16/21 0.3 Work with AE Flag setting to manage removal of bonus buff\n * 12/16/21 0.4 Add doEach to implment the saving through at the start of each round.\n * 12/17/21 0.6 Jon Replaced if statements with ternary statements and created the log() function.\n * 12/17/21 0.7 Jon Adding Vulnerability logic.\n * 12/18/21 0.8 JGB Replaced all the if(DEBUG) console.log calls with log function \n * 12/18/21 0.9 JGB Work on a damageonlyworkflow for curse of vulnerability\n * 12/19/21 1.0 JGB Cleanups\n * 12/21/21 1.1 JGB Reshuffling looking for itemD not defined error\n * 12/21/21 1.2 JGB Combine nearly redundent selection functions\n ******************************************************************************************/\nconst DEBUG = false;\nconst CURSENAME = \"BestowCurse\";\nconst CONDITION = \"Cursed\";\nconst ICON = \"Icons_JGB/Misc/curse.png\";\nconst NOACTIONSICON = \"Icons_JGB/Misc/Stop_Sign.png\";\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nconst lastArg = args[args.length - 1]; \nconst CurseofLethergy = \"Curse of Lethergy\";\nlet msg = \"\";\n\nlet tactor = (lastArg.tokenId) \n\t? canvas.tokens.get(lastArg.tokenId).actor \n\t: game.actors.get(lastArg.actorId);\n\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\n\nlog(\"---------------------------------------------------------------------------\",\n    \"Starting\", MACRONAME,\n    \"Macro\", MACRO,\n    \"Curse\", CURSENAME,\n    \"tactor\", tactor);\nfor (let i = 0; i < args.length; i++) log(`    args[${i}]`, args[i]);\n\nif (args[0]?.tag === \"OnUse\") doOnUse();   \t\t\t    // Midi ItemMacro On Use\n if (args[0] === \"on\") doOn();          \t\t\t    // DAE Application\nif (args[0] === \"off\") doOff();        \t\t\t        // DAE removal\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\nif (args[0]?.tag === \"DamageBonus\") doBonusDamage();    // DAE Damage Bonus\n\nlog(\"---------------------------------------------------------------------------\",\n    \"Finishing\", MACRONAME);\nreturn;\n\n /***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n/****************************************************************************************\n * Execute code for a ItemMacro onUse\n ***************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    log(\"---------------------------------------------------------------------------\",\n        \"Starting\", `${MACRONAME} ${FUNCNAME}`,\n        \"Curse\", CURSENAME);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    let itemD = args[0]?.item;\n    let targetD = canvas.tokens.get(args[0]?.targets[0]?.id);\n    log(\"Obtained values\", \"itemD\", itemD, \"targetD\", targetD);\n\n    //---------------------------------------------------------------------------------------\n    // Make sure exactly one token was targeted\n    //\n    if (oneTarget()) {\n        log(` one target is targeted (a good thing)`);\n    } else {\n        log(` exception on number of targets selected: ${msg}`);\n        await postResults(msg);\n        log(`Ending ${MACRONAME} ${FUNCNAME}`);\n        return;\n    }\n\n    //---------------------------------------------------------------------------------------\n    // Make sure target failed its saving throw\n    //\n    if (failedCount() === 1) {\n        log(`Target failed save, continue`);\n    } else {\n        log(`Target passed save, exit`);\n        await postResults(\"Target made its saving thow, no effects added\");\n        log(`Ending ${MACRONAME} ${FUNCNAME}`);\n        return;\n    }\n\n    //---------------------------------------------------------------------------------------\n    // Select the curse to apply\n    //\n    const queryTitle = \"Select Specific Curse to be Applied\"\n    const queryText = \"Pick one from drop down list\"\n    //pickCurse(queryTitle, queryText, pickCurseCallBack,\n    pickFromList(queryTitle, queryText, pickCurseCallBack,\n        \"Ineptitude - Disadvantage on one stat's ability checks and saves\",\n        \"Aversion - Disadvantage on attack rolls against caster.\",\n        \"Lethergy - Wisdom save or waste each turn.\",\n        \"Vulnerability - Caster's attacks deal an extra damage\",\n        \"Other - Other effect agreed on by player and GM\");\n\n    //------------------------------------------------------------------------------------\n    // Set a flag with the saveDC for later use\n    //\n    log(\"itemD\", itemD);\n    const saveDC = itemD.data.save.dc\n    log(\"saveDC\", saveDC);\n\n    await DAE.setFlag(targetD.actor, `${MACRO}.saveDC`, saveDC);\n    await DAE.setFlag(targetD.actor, `${MACRO}.curseItemD`, itemD);\n    log(`Set DAE flags on ${targetD.actor.name}`,\n        `${MACRO}.saveDC`, saveDC,\n        `${MACRO}.curseItemD`, itemD);\n\n    log(\"---------------------------------------------------------------------------\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Execute code for a DAE Macro application (on) - nothing other than place holding\n ***************************************************************************************/\n async function doOn() {\n    const FUNCNAME = \"doOn()\";\n    log(\"---------------------------------------------------------------------------\",\n        \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    log(\"---------------------------------------------------------------------------\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Execute code for a DAE Macro removal (off)\n ***************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOnOff()\";\n    let afflictedToken = canvas.tokens.get(args[1]);\n\n    log(\"---------------------------------------------------------------------------\",\n        \"Starting\", `${MACRONAME} ${FUNCNAME}`, \n        \"afflictedToken\", afflictedToken, \n        \"tactor\", tactor);  \n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    //----------------------------------------------------------------------------------\n    // Check for existance of flags, log the values, and delete them.\n    //\n    let secondDebuff = DAE.getFlag(tactor, `${MACRO}.SecondDebuff`);\n    let saveDC = DAE.getFlag(tactor, `${MACRO}.SecondDebuff`);\n    let curseItemD = DAE.getFlag(tactor, `${MACRO}.SecondDebuff`);\n    log(\"#### Flags Set and Values ####\",\n        \"secondDebuff\", secondDebuff,\n        \"saveDC\", saveDC,\n        \"curseItemD\", curseItemD);\n    await DAE.unsetFlag(tactor, `${MACRO}.SecondDebuff`);\n    await DAE.unsetFlag(tactor, `${MACRO}.saveDC`);\n    await DAE.unsetFlag(tactor, `${MACRO}.curseItemD`); \n\n    //----------------------------------------------------------------------------------\n    // Check for debuff matching the flag.  If it exists, remove it.\n    //\n    let secondDebuffEffect = tactor.effects\n        .find(ef => ef.data.label === secondDebuff) ?? null; // Added a null case.\n    if (secondDebuffEffect) {\n        let message = `${tactor.name} has ${secondDebuff} effect: `;\n        log(message, secondDebuffEffect);\n        await secondDebuffEffect.delete();\n    } else {\n        let message = `${tactor.name} lacks ${secondDebuff} effect.`;\n        log(message);\n    }\n\n    log(\"---------------------------------------------------------------------------\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Execute code for a DAE Macro each time on the target's turn per DAE setting\n ***************************************************************************************/\nasync function doEach() {\n    const FUNCNAME = \"doEach()\";\n    log(\"===========================================================================\",\n        `Starting`, `${MACRONAME} ${FUNCNAME}`, \n        \"tactor\", tactor);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    let secondDebuff = DAE.getFlag(tactor, `${MACRO}.SecondDebuff`);\n    log(`### secondDebuff: `, secondDebuff);\n\n    if (secondDebuff === CurseofLethergy) {\n        let abilitySave = \"wis\";     // Set appropriate stat for save\n        let saveDC = DAE.getFlag(tactor, `${MACRO}.saveDC`);\n        log(`### saveDC = ${saveDC}`);\n\n        let save = await tactor.rollAbilitySave(abilitySave, {\n            // Does not return item card. TODO: Look into Crymic Macros for Midi Save.\n            chatMessage: true,\n            fastForward: true,\n            flavor: `Wisdom save vs <b>DC${saveDC}</b>.<br>\n            On failure, ${tactor.name} takes no actions this round.`\n        });\n        log('Result of save', save);\n\n    save.flavor = \"new message\"    \n        if (save.total >= saveDC) { // TODO Update flavor text, based on result of save\n            msg = `${tactor.name} made its save.  Rolling ${save.total} vs ${saveDC} DC.`;\n        }\n        else {\n            msg = `${tactor.name} failed its save.  Rolling ${save.total} vs ${saveDC} DC.`;\n            //-------------------------------------------------------------------------------\n            // Slap a 1 turn duration \"No Actions\" condition on the token -- \n            // TODO: Does not stick, flashes and vanishes\n            //\n            let gameRound = game.combat ? game.combat.round : 0;\n            let effectData = {\n                label: \"No_Actions\",\n                icon: NOACTIONSICON,\n                origin: tactor.uuid,\n                disabled: false,\n                duration: { rounds: 2, turns: 2, startRound: gameRound, seconds: 12, startTime: game.time.worldTime },\n                flags: { dae: { macroRepeat: \"none\", specialDuration: [\"turnStart\"] } },\n                changes: [\n                    { key: `flags.gm-notes.notes`, mode: CUSTOM, value: \"No Actons\", priority: 20 },\n                ]\n            };\n\n            await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tactor.uuid, effects: [effectData] });\n            log(`applied \"No Actions\" Debuff: `, effectData);\n            await wait(10);\n        }\n\n        log(msg, \"save roll\", save);\n    }\n    \n    log(\"===========================================================================\",\n        `Ending`, `${MACRONAME} ${FUNCNAME}`);\n\n    return;\n}\n\n/****************************************************************************************\n * Create and process selection dialog, passing it onto specified callback function\n ***************************************************************************************/\n function pickFromList(queryTitle, queryText, pickCallBack, ...queryOptions) {\n    const FUNCNAME = \"pickFromList(queryTitle, queryText, ...queryOptions)\";\n    log(\"---------------------------------------------------------------------------\",\n        `Starting`, `${MACRONAME} ${FUNCNAME}`,\n        `queryTitle`, queryTitle,\n        `queryText`, queryText,\n        `pickCallBack`, pickCallBack,\n        `queryOptions`, queryOptions);\n\n    if (typeof(pickCallBack)!=\"function\" ) {\n        let msg = `pickFromList given invalid pickCallBack, it is a ${typeof(pickCallBack)}`\n        ui.notifications.error(msg);\n        log(msg);\n        return\n    }   \n\n    if (!queryTitle || !queryText || !queryOptions) {\n        let msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, ...queryOptions),\n                   but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;\n        ui.notifications.error(msg);\n        log(msg);\n        return\n    }\n\n    let template = `\n    <div>\n    <div class=\"form-group\">\n        <label>${queryText}</label>\n        <select id=\"selectedOption\">`\n    for (let option of queryOptions) {\n        template += `<option value=\"${option}\">${option}</option>`\n    }\n    template += `</select>\n    </div></div>`\n\n    new Dialog({\n        title: queryTitle,\n        content: template,\n        buttons: {\n            ok: {\n                icon: '<i class=\"fas fa-check\"></i>',\n                label: 'OK',\n                callback: async (html) => {\n                    const selectedOption = html.find('#selectedOption')[0].value\n                    log('selected option', selectedOption)\n                    pickCallBack(selectedOption)\n                },\n            },\n            cancel: {\n                icon: '<i class=\"fas fa-times\"></i>',\n                label: 'Cancel',\n                callback: async (html) => {\n                    log('canceled')\n                    pickCallBack(null)\n                },\n            },\n        },\n        default: 'cancel',\n    }).render(true)\n\n    log(\"---------------------------------------------------------------------------\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n        return;\n}\n\n/****************************************************************************************\n * Receive selected Curse and continue main steps\n ***************************************************************************************/\nasync function pickCurseCallBack(selection) {\n    const FUNCNAME = \"pickCurseCallBack(selection)\";\n    let itemD = args[0]?.item;\n    let curseName = selection?.split(\" \")[0]     // Grab first word of the selection\n\n    log(\"---------------------------------------------------------------------------\",\n        `Starting`, `${MACRONAME} ${FUNCNAME}`,   \n        `selection`, selection,\n        `itemD`, itemD, \n        `curseName`, curseName);\n\n    let curseDiscription = \"\";\n    let level = args[0].spellLevel;\n\n    let gameRound = game.combat ? game.combat.round : 0;\n    const rounds = level === 3 ? 10 : level === 4 ? 100 : level === 5 ? 800 : level === 6 ? 800 : 9999999;\n    const seconds = rounds * 6;\n\n    switch (curseName) {\n        case \"Ineptitude\":\n            curseDiscription = `<b>Curse of ${curseName}</b>: The afflicted has disadvantage on \n                ability checks and saving throws made with a caster selected ability score.`;\n            postResults(curseDiscription);\n            const queryTitle = \"Select Stat to be Afflicted\"\n            const queryText = \"Pick one from drop down list\"\n            //pickStat(queryTitle, queryText, \n            pickFromList(queryTitle, queryText, pickStatCallBack, \n                \"Strength\", \"Dexterity\", \"Constitution\", \"Intelligence\", \"Wisdom\", \"Charisma\");\n            break;\n        case \"Aversion\":\n            curseDiscription = `<b>Curse of ${curseName}</b>: The afflicted has disadvantage on \n            attack rolls against caster.\n            <br><br><b>FoundryVTT</b>: This should be handled manually.`\n            postResults(curseDiscription);\n            applyCurseStub(curseName);\n            break;\n        case \"Lethergy\":\n            curseDiscription = `<b>Curse of ${curseName}</b>: The afflicted must make a \n                <b>Wisdom save</b> against <b>DC${itemD.data.save.dc}</b> at the start of each \n                of its turns. If it fails, it wastes its action that turn, doing nothing.`\n            postResults(curseDiscription);\n            applyCurseStub(curseName);\n            break;\n        case \"Vulnerability\":\n            curseDiscription = `<b>Curse of ${curseName}</b>: Caster's attacks deal an extra \n                1d8 necrotic damage to the target.`\n            postResults(curseDiscription);\n            applyCurseStub(curseName);\n            bonusDamage(canvas.tokens.get(args[0].targets[0].id), itemD, args[0].uuid, \n                canvas.tokens.get(args[0].tokenId), game.actors.get(args[0].actor._id), \n                rounds, seconds, gameRound)\n            break;\n        case \"Other\":\n            curseDiscription = `<b>Curse of ${curseName}</b>: Some other effect agreed on \n            by player and GM. <br><br><b>FoundryVTT</b>: This should be handled manually.`\n            postResults(curseDiscription);\n            applyCurseStub(curseName);\n            break;\n        default:\n            curseDiscription = `Unfortunately, this is an undefined condition.`\n            postResults(curseDiscription);\n            break;\n    }\n    log(`${curseName} description: ${curseDiscription}`);\n\n    log(\"---------------------------------------------------------------------------\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Receive selected stat and continue main steps.  This is only used by Curse of Lethergy\n ***************************************************************************************/\nasync function pickStatCallBack(selection) {\n    const FUNCNAME = \"pickStatCallBack(selection)\";\n\n    let player = canvas.tokens.get(args[0]?.tokenId);\n    let targetD = canvas.tokens.get(args[0]?.targets[0]?.id);\n    let stat = \"\";\n    log(\"---------------------------------------------------------------------------\",\n        `Starting`, `${MACRONAME} ${FUNCNAME}`, \n        `selection`, selection,\n        `player`, player, \n        `targetD`, targetD);\n\n    // ---------------------------------------------------------------------------------------\n    // Add cursed condition to target\n    //\n    switch(selection) {\n        case \"Strength\"     : stat = \"str\"; break;\n        case \"Dexterity\"    : stat = \"dex\"; break;\n        case \"Constitution\" : stat = \"con\"; break;\n        case \"Intelligence\" : stat = \"int\"; break;\n        case \"Wisdom\"       : stat = \"wis\"; break;\n        case \"Charisma\"     : stat = \"cha\"; break;\n        default             : stat = \"XYZ\"; break;\n    }                   \n    log(`Short Stat Name`, stat);\n    \n    const secondDebuff = `${CurseofLethergy} (${selection})`\n    let gameRound = game.combat ? game.combat.round : 0;\n    let effectData = {\n        label: secondDebuff,\n        icon: ICON,\n        origin: player.actor.uuid,\n        disabled: false,\n        duration: { rounds: 99, startRound: gameRound },\n        changes: [\n            { key: `flags.midi-qol.disadvantage.ability.check.${stat}`, mode: ADD, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.ability.save.${stat}`,  mode: ADD, value: 1, priority: 20 },\n        ]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: targetD.uuid, effects: [effectData] });\n    await DAE.setFlag(targetD.actor, `${MACRO}.SecondDebuff`, secondDebuff);\n\n    log(\"---------------------------------------------------------------------------\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Apply a stub effect with just the name of the effect for curse that are not automated\n ***************************************************************************************/\nasync function applyCurseStub(curseName) {\n    const FUNCNAME = \"applyCurseStub(curseName)\";\n    let player = canvas.tokens.get(args[0]?.tokenId);\n    let targetD = canvas.tokens.get(args[0]?.targets[0]?.id);\n    log(\"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ---\",\n        `Starting`, `${MACRONAME} ${FUNCNAME}`, \n        \"curseName\", curseName, \n        \"player\", player, \n        \"targetD\", targetD);\n\n    // --------------------------------------------------------------------------------\n    // Add cursed condition to target\n    //\n    const secondDebuff = `Curse of ${curseName}`\n    let gameRound = game.combat ? game.combat.round : 0;\n    let effectData = {\n        label: secondDebuff,\n        icon: ICON,\n        origin: player.actor.uuid,\n        disabled: false,\n        duration: { rounds: 999999, startRound: gameRound },\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: targetD.uuid, effects: [effectData] });\n    await DAE.setFlag(targetD.actor, `${MACRO}.SecondDebuff`, secondDebuff);\n\n    log(`Finishing`, FUNCNAME);\n    log(\"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ---\");\n}\n\n/***************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\nasync function postResults(resultsString) {\n    const FUNCNAME = \"postResults(resultsString)\";\n    log(\"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\");\n    log(`Starting ${MACRONAME} ${FUNCNAME}`,\n        `resultsString`, resultsString);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    // let chatmsg = await game.messages.get(itemCard.id)\n    let chatmsg = game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatmsg.data.content);\n    log(`chatmsg: `, chatmsg);\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatmsg.update({ content: content });\n    await ui.chat.scrollBottom();\n\n    log(\"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * BonusDamage: When a target gets the curse of vulnerability, create this effect. \n ***************************************************************************************/\nasync function bonusDamage(target, itemD, uuid, tokenD, actorD, rounds, seconds, gameRound) {\n    const FUNCNAME = \"bonusDamage(target, itemD, uuid, tokenD, actorD, rounds, seconds, gameRound)\";\n    log(\"+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +\");\n    log(`Starting ${MACRONAME} ${FUNCNAME}`, \n        \"target\", target, \n        \"itemD\", itemD, \n        \"uuid\", uuid, \n        \"tokenD\", tokenD, \n        \"actorD\", actorD, \n        \"rounds\", rounds, \n        \"seconds\", seconds,\n        \"gameRound\", gameRound);\n\n    // --------------------------------------------------------------------------------\n    // Define and add the curse effect to caster\n    //        \n    let effectData = {\n        label: itemD.name,\n        icon: ICON,\n        origin: uuid,\n        disabled: false,\n        duration: { rounds: rounds, seconds: seconds, startRound: gameRound, startTime: game.time.worldTime },\n        flags: { dae: { itemData: itemD } },\n        changes: [\n            { key: \"flags.midi-qol.hexMark\", mode: OVERRIDE, value: target.id, priority: 20 },\n            { key: \"flags.dnd5e.DamageBonusMacro\", mode: CUSTOM, value: `ItemMacro.${itemD.name}`, priority: 20 },\n            { key: \"flags.midi-qol.concentration-data.targets\", mode: ADD, value: { \"actorId\": actorD.id, \"tokenId\": tokenD.id }, priority: 20 }\n        ]\n    };\n    await actorD.createEmbeddedEntity(\"ActiveEffect\", effectData);\n\n     // --------------------------------------------------------------------------------\n    // When you move the hex onto a new target.   This is a vestige from Hex, retaining \n    // for future reference.\n    //\n    /*let getConc = actorD.effects\n        .find(i => i.data.label === \"Concentrating\");\n\n    await actorD.updateEmbeddedEntity(\"ActiveEffect\", {\n        \"_id\": getConc.id,\n        origin: uuid,\n        \"duration\": {\n            rounds: rounds,\n            seconds: seconds,\n            startRound: gameRound,\n            startTime: game.time.worldTime\n        }\n    }); */\n\n    log(\"+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n}\n\n/****************************************************************************************\n * Apply the Bonus Damage for Curse of Vulnerability\n ***************************************************************************************/\nfunction doBonusDamage() {\n    const FUNCNAME = \"doBonusDamage()\";\n    const DAMAGETYPE = \"necrotic\";\n\n    log(\"+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +\",\n        `Starting`, `${MACRONAME} ${FUNCNAME}`,\n        \"DAMAGETYPE\", DAMAGETYPE);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    // --------------------------------------------------------------------------------\n    // Obtain and optionally log a bunch of information for application of daamge\n    //  \n    const target = canvas.tokens.get(args[0].targets[0].id);\n    const actorD = game.actors.get(args[0].actor._id);\n    const tokenD = canvas.tokens.get(args[0].tokenId);\n    const itemD  = args[0].item; // Needed to determine if invoking effect is am attack\n    let curseItemD = DAE.getFlag(target.actor, `${MACRO}.curseItemD`); \n\n    log(`Obtained values for function`,\n        \"target\", target, \"target.name\", target.name,\n        // \"actorD\", actorD, \"actorD.name\", actorD.name, \n        \"tokenD\", tokenD, \"tokenD.name\", tokenD.name,\n        \"itemD\", itemD, \"itemD.name\", itemD.name,\n        \"curseItemD\", curseItemD);\n  \n    // --------------------------------------------------------------------------------\n    // Replace the image for the curse with ICON\n    //      \n    curseItemD.img = ICON;\n\n    // --------------------------------------------------------------------------------\n    // Make sure the actor has midi-qol.hexmark which is being hijacked for this macro\n    //   \n    if (target.id !== getProperty(tokenD.actor.data.flags, \"midi-qol.hexMark\")) {\n        log(\"Should not get here?\", 'target.id', target.id,\n            \"tokenD.actor.data.flags\", tokenD.actor.data.flags,\n            'getProperty(tokenD.actor.data.flags, \"midi-qol.hexMark\")', \n            getProperty(tokenD.actor.data.flags, \"midi-qol.hexMark\"));\n        return {};\n    }\n\n    // --------------------------------------------------------------------------------\n    // Was the action that invoked this an attack (mwak, msak, rwak, rsak)?  If it \n    // wasn't just return without extra damage.\n    //  \n    let action = itemD.data.actionType;\n    if ((action === \"mwak\") || (action === \"msak\") ||\n        (action === \"rwak\") || (action === \"rsak\")) {\n            log(\"Action type is an attack!  Damage to be done.\", action);\n    } else {\n        log(\"+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +\",\n            \"Action type is not an attack. :(  No damage.\", action,\n            `Early Exit`, `${MACRONAME} ${FUNCNAME}`);\n        return {};\n    }\n\n    // mwak, msak, rwak, rsak -- Following is voodoo code that was used previously\n    /* if (![\"ak\"].some(actionType => (itemD.data.actionType || \"\").includes(actionType))) {\n        log(\"Didn't find an ak\");\n        return {};\n    } */\n\n    // --------------------------------------------------------------------------------\n    // Time to actually do some damage!\n    //  \n    //return { damageRoll: `1d8[${damageType}]`, flavor: `(Hex (${CONFIG.DND5E.damageTypes[damageType]}))`, \n    //         damageList: args[0].damageList, itemCardId: args[0].itemCardId };\n    let damageRoll = new Roll(`1d8`).evaluate({ async: false });\n    log(\" damageRoll\", damageRoll, \" Damage Total\", damageRoll.total);\n    game.dice3d?.showForRoll(damageRoll);\n\n    new MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, DAMAGETYPE, \n        [target], damageRoll, {\n        flavor: `<b>${target.name}</b> suffers further from <b>${actorD.name}</b>'s \n                    Curse of <b>Vulnerability</b>`,\n        itemData: curseItemD,\n        itemCardId: \"new\"\n    });\n\n    log(\"+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n}\n\n/************************************************************************\n * Verify exactly one target selected, boolean return\n*************************************************************************/\nfunction oneTarget() {\n    if (!game.user.targets) {\n        msg = `Targeted nothing, must target single token to be acted upon`;\n        // ui.notifications.warn(msg);\n        log(msg);\n        return (false);\n    }\n    if (game.user.targets.ids.length != 1) {\n        msg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n        // ui.notifications.warn(msg);\n        log(msg);\n        return (false);\n    }\n    log(` targeting one target`);\n    return (true);\n}\n\n/****************************************************************************************\n * Return the number of tokens that failed their saving throw\n ***************************************************************************************/\nfunction failedCount() {\n    let failCount = args[0].failedSaves.length\n    log(`${failCount} args[0].failedSaves: `, args[0].failedSaves)\n    return (failCount);\n}\n\n/****************************************************************************************\n * DEBUG Logging\n * \n * If passed an odd number of arguments, put the first on a line by itself in the log,\n * otherwise print them to the log seperated by a colon.  \n * \n * If more than two arguments, add numbered continuation lines. \n ***************************************************************************************/\n function log(...parms) {\n    if (!DEBUG) return;             // If DEBUG is false or null, then simply return\n    let numParms = parms.length;    // Number of parameters received\n    let i = 0;                      // Loop counter\n    let lines = 1;                  // Line counter \n\n    if (numParms % 2) {  // Odd number of arguments\n        console.log(parms[i++])\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    } else {            // Even number of arguments\n        console.log(parms[i],\":\",parms[i+1]);\n        i = 2;\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    }\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        }
+      }
+    },
+    {
+      "_id": "TIiIjkIyCQuP2UmT",
+      "name": "Counterspell",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/slice-orange-3.jpg",
+      "data": {
+        "description": {
+          "value": "<p>You attempt to interrupt a creature in the process of casting a spell. If the creature is casting a spell of 3rd level or lower, its spell fails and has no effect. If it is casting a spell of 4th level or higher, make an ability check using your spellcasting ability.</p>\n<p><strong>The DC equals 10 + the spell’s level. </strong></p>\n<p>On a success, the creature’s spell fails and has no effect.</p>\n<p><strong>Higher Levels. </strong>When you cast this spell using a spell slot of 4th level or higher, the interrupted spell has no effect if its level is less than or equal to the level of the spell slot you used.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 228",
+        "activation": {
+          "type": "reaction",
+          "cost": 1,
+          "condition": "which you take when you see a creature within 60 feet of you casting a spell"
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature"
+        },
+        "range": {
+          "value": 60,
+          "long": 0,
+          "units": "ft"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "util",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": "",
+          "value": ""
+        },
+        "formula": "1d20 + @mod",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell",
+          "value": ""
+        },
+        "level": 3,
+        "school": "abj",
+        "components": {
+          "value": "",
+          "vocal": false,
+          "somatic": true,
+          "material": false,
+          "ritual": false,
+          "concentration": false
+        },
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": ""
+        }
+      },
+      "effects": [],
+      "folder": "SrDFUGUS53efhAtN",
+      "sort": 300000,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "midi-qol": {
+          "onUseMacroName": ""
+        },
+        "core": {
+          "sourceId": "Item.M2U1MjczZGYyMzlh"
+        }
+      }
+    },
+    {
+      "_id": "VtNdKBZX00OLd59J",
+      "name": "Lightning Bolt",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/lightning-blue-2.jpg",
+      "data": {
+        "description": {
+          "value": "<p>A stroke of lightning forming a line 100 feet long and 5 feet wide blasts out from you in a direction you choose. Each creature in the line must make a Dexterity saving throw. A creature takes 8d6 lightning damage on a failed save, or half as much damage on a successful one.</p><p>The lightning ignites flammable objects in the area that aren't being worn or carried.</p><p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d6 for each slot level above 3rd.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 255",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 100,
+          "width": null,
+          "units": "ft",
+          "type": "line"
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": "self"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "save",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [
+            [
+              "8d6",
+              "lightning"
+            ]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "dex",
+          "dc": 0,
+          "scaling": "spell"
+        },
+        "level": 3,
+        "school": "evo",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": true,
+          "ritual": false,
+          "concentration": false
+        },
+        "materials": {
+          "value": "A bit of fur and a rod of amber, crystal, or glass",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "1d6"
+        }
+      },
+      "effects": [],
+      "folder": "SrDFUGUS53efhAtN",
+      "sort": 400000,
+      "permission": {
+        "default": 3,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "midi-qol": {
+          "onUseMacroName": ""
+        },
+        "betterCurses": {
+          "isCurse": false,
+          "curseName": "",
+          "formula": "",
+          "mwak": false,
+          "rwak": false,
+          "msak": false,
+          "rsak": false
+        },
+        "core": {
+          "sourceId": "Item.NDhlNTZkODEyZTJm"
+        }
+      }
+    },
+    {
+      "_id": "zTyeNO8b43l8YpRs",
+      "name": "Phantasmal Killer",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/horror-eerie-3.jpg",
+      "data": {
+        "description": {
+          "value": "<p>You tap into the nightmares of a creature you can see within range and create an illusory manifestation of its deepest fears, visible only to that creature. The target must make a <strong>Wisdom saving </strong>throw. On a failed save, the target becomes @JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} for the Duration.</p>\n<p>At the <strong>end of each of the target’s turns </strong>before the spell ends, the target must succeed on a Wisdo⁠m saving throw or take <strong>4d10 psychic damage</strong>. On a successful save, the spell ends.</p>\n<p><strong>At Higher Levels</strong>. When you cast this spell using a spell slot of 5th level or higher, the damage increases by 1d10 for each slot level above 4th.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 265",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": 1,
+          "units": "minute"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature"
+        },
+        "range": {
+          "value": 120,
+          "long": 0,
+          "units": "ft"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "save",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": null,
+        "damage": {
+          "parts": [
+            [
+              "4d10",
+              "psychic"
+            ]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "wis",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 4,
+        "school": "ill",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": false,
+          "ritual": false,
+          "concentration": true
+        },
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": true
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "1d10"
+        }
+      },
+      "effects": [],
+      "folder": "HmCU8BobPHr4IW7b",
+      "sort": 100000,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "dynamiceffects": {
+          "equipActive": true,
+          "alwaysActive": false,
+          "effects": [
+            {
+              "modSpecKey": "flags.dnd5e.conditions",
+              "value": "Frightened",
+              "mode": "+",
+              "targetSpecific": false,
+              "id": 1,
+              "itemId": "UWXxnmoLDNjm4DTU",
+              "active": true,
+              "_targets": []
+            }
+          ]
+        },
+        "dae": {
+          "activeEquipped": false,
+          "alwaysActive": false
+        },
+        "core": {
+          "sourceId": "Compendium.Dynamic-Effects-SRD.DAE SRD Spells.qHWBKyQxm3CTm2yS"
+        },
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "midi-qol": {
+          "onUseMacroName": "ItemMacro"
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Phantasmal Killer",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"Phantasmal Killer\"\n/*****************************************************************************************\n * Phantasmal Killer leveraging Midi-qol for overtime damage and saves\n * \n * 02/19/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst lastArg = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\nconst GAME_RND = game.combat ? game.combat.round : 0;\nlet chatMessage = game.messages.get(args[args.length - 1].itemCardId);\nconst CONDITION=\"Phantasmal Killer\"\nconst SPELL_DC = aToken.actor.data.data.attributes.spelldc;\nconst SAVE_TYPE = \"wis\"\nconst NUM_DICE = args[0].spellLevel;\nconst FRIGHTENED_JRNL = `@JournalEntry[${game.journal.getName(\"Frightened\").id}]{Frightened}`\nconst FRIGHTENED_ICON = \"Icons_JGB/Monster_Features/Frightened.png\"\n\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\nif (args[0] === \"off\") await doOff();                   // DAE removal\n\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n    //----------------------------------------------------------------------------------\n    // Run the preCheck function to make sure things are setup as best I can check them\n    // but only for OnUse invocation.\n    if ((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n    //-------------------------------------------------------------------------------------------------------------\n    // If the target saved, exit this macro\n    // \n    if (!args[0].failedSaves.length) {\n        msg = `${tToken.name} saved, ${MACRO} is complete.`\n        ui.notifications.info(msg)\n        jez.log(msg)\n        return\n    }\n    //-------------------------------------------------------------------------------------------------------------\n    // Apply Phantasmal Killer condition\n    // https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects\n    //\n    let overTimeVal=`turn=end,\n        label=${CONDITION},\n        saveDC=${SPELL_DC},\n        saveAbility=${SAVE_TYPE},\n        saveRemove=true,\n        damageRoll=${NUM_DICE}d10,\n        saveMagic=true,\n        damageType=psychic`\n    let effectData = [{\n        label: CONDITION,\n        icon: aItem.img,\n        origin: aToken.uuid,\n        disabled: false,\n        // flags: { dae: { stackable: false, macroRepeat: \"none\" } },\n        //flags: { dae: { itemData: aItem.data, macroRepeat: \"startEveryTurn\", token: aToken.uuid } },\n        flags: { dae: { itemData: aItem, macroRepeat: \"startEveryTurn\", token: tToken.uuid, stackable: false } },\n        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },\n        changes: [\n            // COOL-THING: Midi-QoL OverTime dot & save effect\n            { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value:overTimeVal , priority: 20 },\n            { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.skill.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.attack.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `macro.itemMacro`, mode: CUSTOM, value: aToken.name, priority: 20 }\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: effectData });\n    //-------------------------------------------------------------------------------------------------------------\n    // Post Completion message\n    //\n    msg = `${tToken.name} is ${FRIGHTENED_JRNL}.  May not willing move closer to ${aToken.name}`\n    jez.log(`msg`,msg)\n    await jez.addMessage(chatMessage, {color:\"purple\", fSize:15, msg:msg, tag:\"saves\" })\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set On\n ***************************************************************************************************/\n async function doEach() {\n    const FUNCNAME = \"doEach()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(\"lastArg.origin\", lastArg.origin) // Scene.MzEyYTVkOTQ4NmZk.Token.xQZ547rzaxSalnmz\n    let originArray = lastArg.origin.split(\".\")    // Trim of the version number and extension\n    let originId    = originArray[originArray.length-1]\n    let oToken      = canvas.tokens.placeables.find(ef => ef.id === originId)\n    msg = `${aToken.name} is still ${FRIGHTENED_JRNL}.  May not willing move closer to ${oToken.name}.`\n    await jez.postMessage({color:\"purple\", fSize:15, msg:msg, title:`${aToken.name} Frightened`, \n        token:aToken, icon:FRIGHTENED_ICON})\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\n async function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let originArray = lastArg.origin.split(\".\")    // Trim of the version number and extension\n    let originId    = originArray[originArray.length-1]\n    let oToken      = canvas.tokens.placeables.find(ef => ef.id === originId)\n    msg = `${aToken.name} is no longer ${FRIGHTENED_JRNL} of ${oToken.name}.`\n    await jez.postMessage({color:\"darkgreen\", fSize:15, msg:msg, title:`${aToken.name} Recovered`, \n        token:aToken, icon:aToken.data.img})\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n  }\n/***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        await jez.addMessage(chatMessage, {color:\"purple\", fSize:15, msg:msg, tag:\"saves\" })\n        ui.notifications.warn(msg)\n        jez.log(msg)\n        return(false);\n    }\n    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return\n        msg = `Target was missed.`\n        // ui.notifications.info(msg)\n        return(false);\n    }*/\n    return (true)\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        }
+      }
+    },
+    {
+      "_id": "KSt9O3Id09gytnN9",
+      "name": "Polymorph",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/link-eerie-2.jpg",
+      "data": {
+        "description": {
+          "value": "<p>This spell transforms a creature that you can see within range into a new form. An unwilling creature must make a <strong>Wisdom saving throw </strong>to avoid the effect. The spell has no effect on a Shapechanger or a creature with 0 Hit Points.</p>\n<p>The transformation lasts for the Duration, or until the target drops to 0 Hit Points or dies. The new form can be any beast whose <strong>Challenge rating is equal to or less than the target’s</strong> (or the target’s level, if it doesn’t have a c⁠hallenge rating). The target’s game s⁠tatistics, including mental Ability Scores, are replaced by the Statistics of the chosen beast. It retains its Alignment and personality.</p>\n<p>The target assumes the Hit Points of its new form. When it reverts to its normal form, the creature returns to the number of hit po⁠ints it had before it transformed. If it reverts as a result of dropping to 0 h⁠it points, any excess damage carries over to its normal form. As long as the excess damage doesn’t reduce the creature’s normal form to 0 hit poin⁠ts, it isn’t knocked Unconscious.</p>\n<p>The creature is <strong>limited in the Actions</strong> it can perform by the Nature of its new form, and it <strong>can’t speak</strong>, <strong>cast Spells</strong>, or take any other <strong>action that requires hands or s⁠peech</strong>.</p>\n<p><span style=\"text-decoration:underline\">The target’s gear melds into the new form</span>. The creature can’t activate, use, wield, or otherwise benefit from any of its Equipment.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 266",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": 1,
+          "units": "hour"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature"
+        },
+        "range": {
+          "value": 60,
+          "long": 0,
+          "units": "ft"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "save",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": "",
+          "value": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "wis",
+          "dc": 0,
+          "scaling": "spell"
+        },
+        "level": 4,
+        "school": "trs",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": true,
+          "ritual": false,
+          "concentration": true
+        },
+        "materials": {
+          "value": "A caterpillar cocoon",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [
+        {
+          "_id": "8fNdqg3sryqHfgwQ",
+          "changes": [
+            {
+              "key": "flags.gm-notes.notes",
+              "mode": 0,
+              "value": "See Spell Description",
+              "priority": "20"
+            }
+          ],
+          "disabled": false,
+          "duration": {
+            "startTime": null,
+            "seconds": 3600
+          },
+          "icon": "systems/dnd5e/icons/spells/link-eerie-2.jpg",
+          "label": "Polymorph",
+          "transfer": false,
+          "flags": {
+            "dae": {
+              "stackable": "none",
+              "macroRepeat": "none",
+              "specialDuration": [],
+              "transfer": false
+            },
+            "dnd5e-helpers": {
+              "rest-effect": "Ignore"
+            },
+            "ActiveAuras": {
+              "isAura": false,
+              "aura": "None",
+              "radius": null,
+              "alignment": "",
+              "type": "",
+              "ignoreSelf": false,
+              "height": false,
+              "hidden": false,
+              "hostile": false,
+              "onlyOnce": false
+            }
+          },
+          "tint": null,
+          "selectedKey": "flags.gm-notes.notes"
+        }
+      ],
+      "folder": "HmCU8BobPHr4IW7b",
+      "sort": 200000,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "midi-qol": {
+          "onUseMacroName": ""
+        },
+        "core": {
+          "sourceId": "Item.OWFlYjA0ODRiOGRh"
+        }
+      }
+    },
+    {
+      "_id": "vXmeJ4WKhmiNPI9V",
+      "name": "Contact Other Plane",
+      "type": "spell",
+      "img": "/systems/dnd5e/icons/spells/wind-grasp-eerie-3.jpg",
+      "data": {
+        "description": {
+          "value": "<p>You mentally contact a demigod, the spirit of a long- dead sage, or some other mysterious entity from another plane. Contacting this extraplanar intelligence can strain or even break your mind. When you cast this spell, make a <strong>DC 15 Intelligence saving</strong> throw. On a failure, you take <strong>6d6 psychic damage</strong> (no damage on save) and are insane until you finish a long rest. While insane, you can't take actions, can't understand what other creatures say, can't read, and speak only in gibberish. A greater restoration spell cast on you ends this effect.</p>\n<p> </p>\n<p><em>On a successful save</em>, you can ask the entity up to five questions. You must ask your questions before the spell ends. The GM answers each question with one word, such as:</p>\n<ul>\n<li>yes,</li>\n<li>no,</li>\n<li>maybe,</li>\n<li>never,</li>\n<li>irrelevant, or</li>\n<li>unclear (if the entity doesn't know the answer to the question).</li>\n</ul>\n<p>If a one-word answer would be misleading, the GM might instead offer a short phrase as an answer.</p>",
+          "chat": "<p>You mentally contact a demigod, the spirit of a long- dead sage, or some other mysterious entity from another plane. Contacting this extraplanar intelligence can strain or even break your mind. When you cast this spell, make a DC 15 Intelligence saving throw. On a failure, you take 6d6 psychic damage and are insane until you finish a long rest. While insane, you can't take actions, can't understand what other creatures say, can't read, and speak only in gibberish. A greater restoration spell cast on you ends this effect.</p>\n<p>On a successful save, you can ask the entity up to five questions. You must ask your questions before the spell ends. The GM answers each question with one word, such as \"yes,\" \"no,\" \"maybe,\" \"never,\" \"irrelevant,\" or \"unclear\" (if the entity doesn't know the answer to the question). If a one-word answer would be misleading, the GM might instead offer a short phrase as an answer.</p>",
+          "unidentified": ""
+        },
+        "source": "Basic Rules, Player's Handbook pg 226",
+        "activation": {
+          "type": "minute",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": "self"
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": "self"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "other",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": null,
+        "damage": {
+          "parts": [
+            [
+              "6d6",
+              "psychic"
+            ]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "int",
+          "dc": 15,
+          "scaling": "flat"
+        },
+        "level": 5,
+        "school": "div",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": false,
+          "material": false,
+          "ritual": true,
+          "concentration": false
+        },
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": true
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [
+        {
+          "_id": "R9ye4SIfHyM7i2LH",
+          "changes": [
+            {
+              "key": "macro.CUB",
+              "mode": 0,
+              "value": "Insane",
+              "priority": "20"
+            }
+          ],
+          "disabled": false,
+          "duration": {
+            "startTime": null
+          },
+          "icon": "/systems/dnd5e/icons/spells/wind-grasp-eerie-3.jpg",
+          "label": "Contact Other Plane",
+          "transfer": false,
+          "flags": {
+            "dae": {
+              "stackable": "none",
+              "macroRepeat": "none",
+              "specialDuration": [],
+              "transfer": false
+            },
+            "dnd5e-helpers": {
+              "rest-effect": "Long Rest"
+            },
+            "ActiveAuras": {
+              "isAura": false,
+              "aura": "None",
+              "radius": null,
+              "alignment": "",
+              "type": "",
+              "ignoreSelf": false,
+              "height": false,
+              "hidden": false,
+              "hostile": false,
+              "onlyOnce": false
+            }
+          },
+          "tint": null,
+          "selectedKey": "macro.CUB"
+        }
+      ],
+      "folder": "5aJgp9JoqtkUEDm3",
+      "sort": 100000,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "ddbimporter": {
+          "id": 136289,
+          "definitionId": 2045,
+          "entityTypeId": 435869154,
+          "dndbeyond": {
+            "lookup": "generic",
+            "lookupName": "generic",
+            "level": null,
+            "castAtLevel": null
+          },
+          "sources": [
+            {
+              "sourceId": 1,
+              "pageNumber": null,
+              "sourceType": 2
+            },
+            {
+              "sourceId": 2,
+              "pageNumber": 226,
+              "sourceType": 1
+            }
+          ],
+          "tags": [
+            "Communication",
+            "Foreknowledge"
+          ]
+        },
+        "betterRolls5e": {
+          "quickVersatile": {
+            "altValue": true
+          },
+          "quickCharges": {
+            "value": {
+              "use": true,
+              "resource": true
+            },
+            "altValue": {
+              "use": true,
+              "resource": true
+            }
+          }
+        },
+        "cf": {
+          "id": "temp_gn79wuzqjq6"
+        },
+        "core": {
+          "sourceId": "Compendium.My-Shared-DDB.spells.9bmfETOO2wlSnOlM"
+        },
+        "midi-qol": {
+          "onUseMacroName": ""
+        }
+      }
+    },
+    {
+      "_id": "o8te19pJl20ESwvY",
+      "name": "Scrying",
+      "type": "spell",
+      "img": "systems/dnd5e/icons/spells/evil-eye-eerie-3.jpg",
+      "data": {
+        "description": {
+          "value": "<p>You can see and hear a particular creature you choose that is on the same plane of existence as you. The target must make a Wisdom saving throw, which is modified by how well you know the target and the sort of physical connection you have to it. If a target knows you’re casting this spell, it can fail the saving throw voluntarily if it wants to be observed.</p>\n<table border=\"1\">\n<tbody>\n<tr>\n<td><strong>Knowledge</strong></td>\n<td><strong>Save Modifier</strong></td>\n</tr>\n<tr>\n<td>Secondhand (you have heard of the target)</td>\n<td>+5</td>\n</tr>\n<tr>\n<td>Firsthand (you have met the target)</td>\n<td>+0</td>\n</tr>\n<tr>\n<td>Familiar (you know the target well)</td>\n<td>-5</td>\n</tr>\n</tbody>\n</table>\n\n<table border=\"1\">\n<tbody>\n<tr>\n<td><strong>Connection</strong></td>\n<td><strong>Save Modifier</strong></td>\n</tr>\n<tr>\n<td>Likeness or picture</td>\n<td>-2</td>\n</tr>\n<tr>\n<td>Possession or garment</td>\n<td>-4</td>\n</tr>\n<tr>\n<td>Body part, lock of hair, bit of nail, or the like</td>\n<td>-10</td>\n</tr>\n</tbody>\n</table>\n<p>On a successful save, the target isn’t affected, and you can’t use this spell against it again for 24 hours.</p><p>On a failed save, the spell creates an Invisible sensor within 10 feet of the target. You can see and hear through the sensor as if you were there. The sensor moves with the target, remaining within 10 feet of it for the Duration. A creature that can see Invisile Objects sees the sensor as a luminous orb about the size of your fist.</p><p>Instead of targeting a creature, you can choose a location you have seen before as the target of this spell. When you do, the sensor appears at that location and doesn’t move.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 273",
+        "activation": {
+          "type": "minute",
+          "cost": 10,
+          "condition": ""
+        },
+        "duration": {
+          "value": 10,
+          "units": "minute"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature"
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": "self"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "other",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": null
+        },
+        "damage": {
+          "parts": [],
+          "versatile": "",
+          "value": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 5,
+        "school": "div",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": true,
+          "ritual": false,
+          "concentration": true
+        },
+        "materials": {
+          "value": "A focus worth at least 1,000 gp, such as a crystal ball, a silver mirror, or a font filled with holy water.",
+          "consumed": false,
+          "cost": 1000,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": true
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [],
+      "folder": "5aJgp9JoqtkUEDm3",
+      "sort": 0,
+      "permission": {
+        "default": 2,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "midi-qol": {
+          "onUseMacroName": "ItemMacro"
+        },
+        "core": {
+          "sourceId": "Item.YjlkNzgyODUzNGY1"
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Scrying",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"Scrying\"\n/*****************************************************************************************\n * Scrying spell front end that sets modifier for saving throw and then performs save.\n * Requires that the target (token) to be scryed upon is targeted.\n * \n * 02/21/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst lastArg = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif ((args[0]?.tag === \"OnUse\") && !preCheck()) return\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\n//if (args[0] === \"off\") await doOff();                   // DAE removal\n//if (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n//if (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\n//if (args[0]?.tag === \"DamageBonus\") doBonusDamage();    // DAE Damage Bonus\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        ui.notifications.warn(msg)\n        console.log(`${MACRONAME} | ${msg}`)\n        console.log(`${MACRONAME} | ${msg}`)\n        let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n        jez.addMessage(chatMessage,{color:\"darkblue\",fSize:14,msg:msg,tag:\"saves\"})\n        return(false);\n    }\n    const SPELL_FOCUS = \"Scrying Focus\";\n    if (!hasItem(SPELL_FOCUS)) {\n        msg = `Must have a ${SPELL_FOCUS} in inventory to cast ${aItem.name}.`\n        ui.notifications.warn(msg)\n        console.log(`${MACRONAME} | ${msg}`)\n        let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n        jez.addMessage(chatMessage,{color:\"darkblue\",fSize:14,msg:msg,tag:\"saves\"})\n        return(false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n    popDialog(aToken, tToken);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function popDialog(token1, token2) {\n    const qTitle = \"Select Item in Question\"\n    const QUERY1 = `${token1.name}'s Knowledge of ${token2.name}`\n    const LIST1 = [\n        'Secondhand (you have heard of the target) [+5]',\n        'Firsthand (you have met the target) [+0]',\n        'Familiar (you know the target well) [-5]'\n    ]\n    const QUERY2 = `${token1.name}'s Connection to ${token2.name}`\n    const LIST2 = [\n        'Accurate Verbal Description [+5]',\n        'Detailed Verbal Description [+0]',\n        'Likeness or picture [-2]',\n        'Possession or garment [-4]',\n        'Body part, lock of hair, bit of nail, or the like [-10]'\n    ]\n    const QUERY3 = \"Additional modifier.  Must be a number prefixed with '+' or '-'\"\n    pickRadioListDouble(qTitle, QUERY1, QUERY2, QUERY3, pickRadioDoubleCallBack, LIST1, LIST2, token1, token2);\n    return\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function pickRadioDoubleCallBack(selection1, selection2, input1, token1, token2) {\n    jez.log(\"pickRadioDoubleCallBack\", \"selection1\", selection1, \"selection2\", selection2)\n    //----------------------------------------------------------------------------------\n    // Grab the modifiers out of the selections\n    //\n    let mod1 = extractMod(selection1)\n    if (!mod1) return(false)\n    let mod2 = extractMod(selection2)\n    if (!mod1) return(false)\n    //----------------------------------------------------------------------------------\n    // Deal with the additional input line\n    //\n    jez.log(\"input1\",input1)\n    let mod3 = 0\n    if (input1) {\n        mod3 = extractMod(input1)\n        if (!mod3) return(false)\n    }\n    jez.log(\"modifier 3\", mod3)\n    //----------------------------------------------------------------------------------\n    // Perform Save\n    //\n    let totalMod = parseInt(mod1) + parseInt(mod2) + parseInt(mod3)\n    let saved = await doSave(token1, token2, totalMod)\n     //----------------------------------------------------------------------------------\n    // Post a dialog\n    //  \n    jez.log(\"Saved?\", saved)\n    if (saved) msg = `<b>${token2.name}</b> resisted ${aItem.name} from <b>${token1.name}</b> and is unaffected. \n    They are you immune to this spell from this caster for 24 hours.`\n    else msg = `<b>${token2.name}</b> succumbed to ${aItem.name} from <b>${token1.name}</b>. ${token1.name} may \n    scry on the subject per spell description.`\n    let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMessage,{color:\"darkblue\",fSize:14,msg:msg,tag:\"saves\"})\n    //----------------------------------------------------------------------------------\n    // Check Selection Function.  Return value or null (if none)\n    //\n    function extractMod(selection) {\n        let selArray = selection.match(/[+-]\\d+/)\n        jez.log('selArray',selArray)\n        if (!selArray) {\n            msg = `No numeric value found in the selection: '${selection}'`\n            ui.notifications.warn(msg);\n            console.log(`${MACRO} |`, msg)\n            return(false)\n        }\n        let mod = selArray[0] // \"+3\"\n        jez.log(\"Modifier extracted\", mod)\n        return(mod)\n    }\n}\n/***************************************************************************************************\n * Check the saving throw\n ***************************************************************************************************/\n async function doSave(token1, token2, modifier) {\n    const FUNCNAME = \"doSave(token1, token2, modifier)\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,\n        `Caster ${token1.name}`, token1,\n        `Target ${token2.name}`, token2,\n        \"Total modifier\", modifier);\n    const SAVE_TYPE = \"wis\"\n    const SAVE_DC = aToken.actor.data.data.attributes.spelldc - modifier;\n    const FLAVOR = `${token2.name} ${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to resist ${aItem.name} from ${token1.name}`;\n    let save = (await aActor.rollAbilitySave(SAVE_TYPE, { flavor:FLAVOR, chatMessage:true, fastforward:true })).total;\n    jez.log(`save`, save)\n    if (save >= SAVE_DC) {\n        jez.log(`save was made with a ${save}`);\n        return(true)\n      } else jez.log(`save failed with a ${save}`);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (false);\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function pickRadioListDouble(qTitle, qText1, qText2, qText3, pickCallBack, options1, options2, token1, token2) {\n    const FUNCNAME = \"jez.pickFromList(qTitle, qText1, [options1]\";\n    jez.log(\"---------Starting ---${FUNCNAME}-------------------------------------------\",\n        `qTitle`, qTitle,\n        `qText1`, qText1,\n        `qText2`, qText2,\n        `pickCallBack`, pickCallBack,\n        `options1`, options1,\n        `options2`, options2);\n    let msg = \"\"\n    if (typeof (pickCallBack) != \"function\") {\n        msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`\n        ui.notifications.error(msg);\n        console.log(msg);\n        return\n    }\n    if (!qTitle || !qText1 || !qText2 || !options1) {\n        msg = `pickFromList arguments should be (qTitle, qText1, qText2, pickCallBack, [options1]),\n        but yours are: ${qTitle}, ${qText1}, ${qText2}, ${pickCallBack}, ${options1}`;\n        ui.notifications.error(msg);\n        console.log(msg);\n        return\n    }\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, first radio box\n    //\n    let template = `\n<div>\n<label>${qText1}</label>\n<div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n`   // Back tick on its on line to make the console output better formatted\n    for (let option of options1) {\n        template += `<input type=\"radio\" id=\"${option}\" name=\"selectedLine1\" value=\"${option}\"> <label for=\"${option}\">${option}</label><br>\n`   // Back tick on its on line to make the console output better formatted\n    }\n    template += `</div></div>`\n    jez.log(\"template 1\", template)\n    jez.log(\"\")\n    jez.log(\"\")\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, second radio box\n    //\n    template += `\n    <div>\n    <label>${qText2}</label>\n    <div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n`   // Back tick on its on line to make the console output better formatted\n    for (let option2 of options2) {\n        template += `<input type=\"radio\" id=\"${option2}\" name=\"selectedLine2\" value=\"${option2}\"> <label for=\"${option2}\">${option2}</label><br>\n`   // Back tick on its on line to make the console output better formatted\n    }\n    template += `</div></div>`\n    jez.log(\"template 2\", template)\n    jez.log(\"\")\n    jez.log(\"\")\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, third input box\n    //\n    template += `\n    <div>\n    <label>${qText3}</label>\n    <div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n    <div><input name=\"additionalInput\" style=\"width:350px\"/></div>\n`   // Back tick on its on line to make the console output better formatted\n    template += `</div></div>`\n    jez.log(\"template 3\", template)\n    jez.log(\"\")\n    jez.log(\"\")\n    //----------------------------------------------------------------------------------------------------\n    // Build Dialog \n    //\n    new Dialog({\n        title: qTitle,\n        content: template,\n        buttons: {\n            ok: {\n                icon: '<i class=\"fas fa-check\"></i>',\n                label: 'OK',\n                callback: async (html) => {\n                    jez.log(\"html contents\", html)\n                    const SELECTED_OPTION1 = html.find(\"[name=selectedLine1]:checked\").val();\n                    jez.log(\"Radio Button Selection\", SELECTED_OPTION1)\n                    jez.log('selected option', SELECTED_OPTION1)\n                    const SELECTED_OPTION2 = html.find(\"[name=selectedLine2]:checked\").val();\n                    jez.log(\"Radio Button Selection\", SELECTED_OPTION2)\n                    jez.log('selected option', SELECTED_OPTION2)\n                    const ADDITIONAL_INPUT = html.find(\"[name=additionalInput]\").val();\n                    jez.log(\"Additional Input\", ADDITIONAL_INPUT)\n                    pickCallBack(SELECTED_OPTION1, SELECTED_OPTION2, ADDITIONAL_INPUT, token1, token2)\n                },\n            },\n            cancel: {\n                icon: '<i class=\"fas fa-times\"></i>',\n                label: 'Cancel',\n                callback: async (html) => {\n                    jez.log('canceled')\n                    pickCallBack(null)\n                },\n            },\n        },\n        default: 'cancel',\n    }).render(true)\n    jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)\n    return;\n}\n/***************************************************************************************\n* Function to determine if passed actor has a specific item, returning a boolean result\n*\n* Parameters\n*  - itemName: A string naming the item to be found in actor's inventory\n*  - actor: Optional actor to be searched, defaults to actor launching this macro\n***************************************************************************************/\nfunction hasItem(itemName, actor) {\n    const FUNCNAME = \"hasItem\";\n    actor = actor ? actor : canvas.tokens.get(args[0].tokenId).actor;\n    jez.log(\"-------hasItem(itemName, actor)------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`,\n    \"itemName\", itemName, `actor ${actor.name}`, actor);\n    // If actor was not passed, pick up the actor invoking this macro\n    let item = actor.items.find(item => item.data.name == itemName)\n    if (item == null || item == undefined) {\n        jez.log(`${actor.name} does not have ${itemName}, ${FUNCNAME} returning false`);\n         return(false);\n    }\n    jez.log(`${actor.name} has ${itemName}, ${FUNCNAME} returning true`);\n    return(true);\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        }
+      }
+    },
+    {
+      "_id": "xn4ELVP6Go9PU4yt",
+      "name": "Eyebite",
+      "type": "spell",
+      "img": "Icons_JGB/Conditions/evil-eye-red-3.png",
+      "data": {
+        "description": {
+          "value": "<p>For the spell’s Duration, your eyes become an inky void imbued with dread power. One creature of your choice within 60 feet of you that you can see must succeed on a Wisdom saving throw or be affected by one of the following Effects of your choice for the Duration. On each of your turns until the spell ends, you can use your action to target another creature but can’t target a creature again if it has succeeded on a saving throw against this casting of eyebite.</p>\n<ul>\n<li><strong>Asleep</strong>. The target falls Unconscious. It wakes up if it takes any damage or if another creature uses its action to shake the sleeper awake.</li>\n<li><strong>Panicked</strong>. The target is Frightened of you. On each of its turns, the frigh⁠tened creature must take the Dash action and move away from you by the safest and shortest available route, unless there is nowhere to move. If the target moves to a place at least 60 feet away from you where it can no longer see you, this effect ends.</li>\n<li><strong>Sickened</strong>. The target has disadvantage on Attack rolls and Ability Checks. At the end of each of its turns, it can make another Wisdom saving throw. If it succeeds, the effect ends</li>\n</ul>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "PHB pg. 238",
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": 1,
+          "units": "minute"
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": "self"
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": null,
+        "damage": {
+          "parts": [],
+          "versatile": "",
+          "value": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "flat"
+        },
+        "level": 6,
+        "school": "nec",
+        "components": {
+          "value": "",
+          "vocal": true,
+          "somatic": true,
+          "material": false,
+          "ritual": false,
+          "concentration": true
+        },
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": true
+        },
+        "scaling": {
+          "mode": "none",
+          "formula": ""
+        }
+      },
+      "effects": [
+        {
+          "_id": "z1vYz44IiLnxCyKe",
+          "flags": {
+            "dae": {
+              "transfer": false,
+              "stackable": "none",
+              "specialDuration": [],
+              "macroRepeat": "startEveryTurn"
+            },
+            "ActiveAuras": {
+              "isAura": false,
+              "ignoreSelf": false,
+              "hidden": false,
+              "height": false,
+              "aura": "None",
+              "radius": null,
+              "alignment": "",
+              "type": "",
+              "hostile": false,
+              "onlyOnce": false
+            },
+            "dnd5e-helpers": {
+              "rest-effect": "Short Rest"
+            }
+          },
+          "changes": [
+            {
+              "key": "macro.itemMacro",
+              "mode": 0,
+              "value": "@attributes.spelldc",
+              "priority": "0"
+            }
+          ],
+          "disabled": false,
+          "duration": {
+            "startTime": null,
+            "rounds": 10
+          },
+          "icon": "systems/dnd5e/icons/spells/evil-eye-red-3.jpg",
+          "label": "Eyebite",
+          "tint": null,
+          "transfer": false,
+          "selectedKey": "macro.itemMacro"
+        }
+      ],
+      "folder": "3j5JxKR5nzCaI7hB",
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "gSvPH9u5wzkE1oU1": 3,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "dynamiceffects": {
+          "equipActive": false,
+          "alwaysActive": false,
+          "effects": [
+            {
+              "modSpecKey": "macro.execute",
+              "value": "Eyebite @target @attributes.spelldc ",
+              "mode": "+",
+              "targetSpecific": false,
+              "id": 1,
+              "itemId": "XcK0JcIi8L5qpnzF",
+              "active": true,
+              "_targets": [],
+              "label": "Macro Execute"
+            }
+          ]
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Eyebite",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"eyebite\"\n/*****************************************************************************************\n * For the spell’s Duration, your eyes become an inky void imbued with dread power. One \n * creature of your choice within 60 feet of you that you can see must succeed on a Wisdom \n * saving throw or be affected by one of the following Effects of your choice for the \n * Duration. On each of your turns until the spell ends, you can use your action to target \n * another creature but can’t target a creature again if it has succeeded on a saving \n * throw against this casting of eyebite.\n * \n * -- Asleep. The target falls Unconscious. It wakes up if it takes any damage or if  \n *    another creature uses its action to shake the sleeper awake. \n *    EXP_COND: takes any damage\n * \n * -- Panicked. The target is Frightened of you. On each of its turns, the frigh⁠tened \n *    creature must take the Dash action and move away from you by the safest and shortest \n *    available route, unless there is nowhere to move. If the target moves to a place at \n *    least 60 feet away from you where it can no longer see you, this effect ends.\n *    EXP_COND: 60+ feet away and can no longer see the caster\n * \n * -- Sickened. The target has disadvantage on Attack rolls and Ability Checks. At the end \n *    of each of its turns, it can make another Wisdom saving throw. If it succeeds, the\n *    effect ends\n *    EXP_COND:End of each turn a WIS Save\n * \n * Implementaion idea: Place a effect on the caster that runs ever turn and asks what to \n * do with this spell, offering the three effects and nothing as options.  It will need \n * to put an effect with appropriate settings on the target to handle effect expirations. \n * \n * 02/21/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\njez.log(\"moving on\")\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet spellDC = aActor.data.data.attributes.spelldc;\njez.log(\"spellDC\", spellDC)\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nconst IMMUNE_COND = `Eyebite Immune ${LAST_ARG.actorUuid}`\njez.log('IMMUNE_COND', IMMUNE_COND)\nconst EYEBITE_ICON = \"Icons_JGB/Conditions/evil-eye-red-3.png\"\nconst IMMUNE_ICON = \"Icons_JGB/Conditions/evil-eye-red-3-immune.png\"\nconst GAME_RND = game.combat ? game.combat.round : 0;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif ((args[0]?.tag === \"OnUse\") && !preCheck())return;\n//----------------------------------------------------------------------------------\n// Alternative method for finding CUB Condition macro -JGB for Kandashi's macro\n//\nconst CUBControl = game.macros?.getName(\"CUB Condition\");\nif (!CUBControl) return ui.notifications.error(`Cannot locate CUB Condition Macro`);\njez.log(\"CUBControl\",CUBControl)\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if(!game.modules.get(\"advanced-macros\")?.active) {ui.notifications.error(\"Please enable the Advanced Macros module\") ;return;}\n    if(!game.modules.get(\"combat-utility-belt\")?.active) {ui.notifications.error(\"Please enable the CUB module\"); return;}\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        ui.notifications.warn(msg)\n        jez.log(msg)\n        return(false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set On\n ***************************************************************************************************/\nasync function doOn() {\n    const FUNCNAME = \"doOn()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    firstEyebiteDialog()\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked each round by DAE\n ***************************************************************************************************/\n async function doEach() {\n    const FUNCNAME = \"doEach()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    eachEyebiteDialog()\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Eyebite Dialog from eyebite_midi-srd_1.02.js (Perhaps by Kandashi)\n ***************************************************************************************************/\nfunction firstEyebiteDialog() {\n    const FUNCNAME = \"EyebiteDialog()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    spellDC = args[1]\n    //----------------------------------------------------------------------------------\n    //\n    new Dialog({\n        title: \"Eyebite options\",\n        content: \"<p>Target a token and select the effect to attempt.</p>\",\n        buttons: {\n            one: {\n                label: \"Asleep\",\n                callback: async () => { await checkTokenSave(\"Unconscious\") },\n            },\n            two: {\n                label: \"Panicked\",\n                callback: async () => { await checkTokenSave(\"Frightened\") },\n            },\n            three: {\n                label: \"Sickened\",\n                callback: async () => { await checkTokenSave(\"Poisoned\") },\n            },\n        }\n    }).render(true);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n}\n/***************************************************************************************************\n * Eyebite Dialog from eyebite_midi-srd_1.02.js (Perhaps by Kandashi)\n ***************************************************************************************************/\n function eachEyebiteDialog() {\n    const FUNCNAME = \"EyebiteDialog()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    spellDC = args[1]\n    //----------------------------------------------------------------------------------\n    //\n    const qTitle = \"Use Action to Inflict Eyebite?\"\n    const qText = `If you want to use your action this turn to inflict an eyebite, target\n        your victim, select the effect, and click <b>ok</b>; otherwise, click the \n        <b>Cancel</b> button.`\n    const qChoices = [\n        \"Sleep\",\n        \"Panic\",\n        \"Sicken\"\n    ]\n    jez.pickRadioListArray(qTitle, qText, pickRadioCallBack, qChoices);\n    //----------------------------------------------------------------------------------\n    //\n    async function pickRadioCallBack(selection) {\n        jez.log(\"pickRadioCallBack(selection)\", selection)\n        let effect = \"\"\n        jez.log(\"pickRadioCallBack\", selection)\n        if (!selection) return;\n        switch (selection) {\n            case \"Sleep\"  : effect = \"Unconscious\"; break;\n            case \"Panic\"  : effect = \"Frightened\";  break;\n            case \"Sicken\" : effect = \"Poisoned\";    break;\n        }\n        checkTokenSave(effect)\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n}\n/***************************************************************************************************\n * check the save \n ***************************************************************************************************/\nasync function checkTokenSave(selectedEffect) {\n    const DAEItem = LAST_ARG.efData.flags.dae.itemData\n    let tToken = null\n    let tactor;\n    if (LAST_ARG.tokenId) tactor = canvas.tokens.get(LAST_ARG.tokenId).actor;\n    else tactor = game.actors.get(LAST_ARG.actorId);\n    jez.log(\"canvas.tokens.get(LAST_ARG.tokenId)\", canvas.tokens.get(LAST_ARG.tokenId))\n    jez.log(\"game.actors.get(LAST_ARG.actorId)\", game.actors.get(LAST_ARG.actorId))\n    //------------------------------------------------------------------------------------------\n    // Check the target count, should be only one.\n    //\n    let count = 0;\n    for (tToken of game.user.targets) jez.log(`${++count} ${tToken.name}`)\n    if (count !== 1) {\n        msg = `Need to target exactly one target, ${count} were selected.`\n        ui.notifications.warn(msg)\n        jez.log(msg)\n        eachEyebiteDialog() // Call dialog function again until user gets it right.\n        return (false);  \n    }\n    //------------------------------------------------------------------------------------------\n    // If the target is immune, post message and quit\n    //\n    if (await isImmune(tToken)) {\n        msg = `<b>${tToken.name}</b> has recently resisted <b>${aToken.name}'s</b> eyebite and \n            has short term immunity to its effects.`\n        jez.postMessage({color:\"dodgerblue\", fSize:14, icon:IMMUNE_ICON, \n            msg:msg, title:`${tToken.name} has immunity`, token:tToken})\n        return;\n    }\n    //------------------------------------------------------------------------------------------\n    // Perform save, apply condition on failure\n    //\n    jez.log(`Targeted ${tToken}.name`, tToken)\n    const flavor = `${CONFIG.DND5E.abilities[\"wis\"]} DC${spellDC} ${DAEItem?.name || \"\"}`;\n    let saveRoll = (await tToken.actor.rollAbilitySave(\"wis\", { flavor })).total;\n    if (saveRoll < spellDC) {\n        //ChatMessage.create({ content: `${tToken.name} failed the save with a ${saveRoll}` });\n        await CUBControl.execute(\"apply\", selectedEffect, tToken);\n        msg = `<b>${tToken.name}</b> failed save (with a ${saveRoll}) and is subject to \n            <b>${aToken.name}</b>'s eyebite effect.`\n        jez.postMessage({color:\"dodgerblue\", fSize:14, icon:EYEBITE_ICON, \n            msg:msg, title:`${tToken.name} fails save`, token:tToken})\n    }\n    else {\n        //ChatMessage.create({ content: `${tToken.name} passed the save with a ${saveRoll}` });\n        applyImmunity(tToken)\n        msg = `<b>${tToken.name}</b> made save (with a ${saveRoll}) and has temporary immunity to  \n            <b>${aToken.name}</b>'s eyebite effects.`\n        jez.postMessage({color:\"dodgerblue\", fSize:14, icon:IMMUNE_ICON, \n            msg:msg, title:`${tToken.name} makes save`, token:tToken})\n        return;\n    }\n    //------------------------------------------------------------------------------------------\n    // If we're dealing with \"Sickened\" (poison), modify the effect to include a Midi-qol \n    // overtime element that will perform a wisdom save at the end of the target's turn.\n    //\n    jez.log(\"Set specific settings for selectedEffect\", selectedEffect)\n    if (selectedEffect === \"Poisoned\") {\n        jez.log(\"Need to update the effect to include a save overtime\")\n        //----------------------------------------------------------------------------------\n        // Seach the token to find the just added effect\n        //\n        await jez.wait(100)\n        let effect = await tToken.actor.effects.find(i => i.data.label === \"selectedEffect\");\n        //----------------------------------------------------------------------------------\n        // Define the desired modification to existing effect.\n        //\n        //    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects\n        //\n        let overTimeVal = `turn=end,label=${selectedEffect},saveDC=${spellDC},saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save`\n        effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: overTimeVal, priority: 20 })\n        jez.log(`effect.data.changes 2`, effect.data.changes)\n        //----------------------------------------------------------------------------------\n        // Apply the modification to existing effect\n        //\n        const result = await effect.update({ 'changes': effect.data.changes });\n        if (result) jez.log(`Active Effect ${selectedEffect} updated!`, result);\n        return (true)\n    }\n    //------------------------------------------------------------------------------------------\n    // If we're dealing with \"Panicked\" (Frightened), modify the effect to include a Midi-qol \n    // overtime that will run a world macro that can check distance and LoS for possible removal.\n    //\n    if (selectedEffect = \"Frightened\") {\n        //----------------------------------------------------------------------------------\n        // Seach the token to find the just added effect\n        //\n        await jez.wait(100)\n        let effect = await tToken.actor.effects.find(i => i.data.label === selectedEffect);\n        //----------------------------------------------------------------------------------\n        // Define the desired modification to existing effect.\n        //\n        //    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects\n        //\n        let overTimeVal = `turn=end,label=${selectedEffect},macro=eyebite_frightened_helper`\n        effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: overTimeVal, priority: 20 })\n        //----------------------------------------------------------------------------------\n        // Apply the modification to existing effect\n        //\n        const result = await effect.update({ 'changes': effect.data.changes });\n        if (result) jez.log(`Active Effect 1 ${selectedEffect} updated!`, result);\n        await jez.wait(1000)\n        const result2 = await effect.data.update({ 'origin': aToken.id });\n        if (result2) jez.log(`Active Effect 2 ${selectedEffect} updated!`, result2);\n        return (true)\n    }\n}\n/***************************************************************************************************\n * Apply Immunity to a token that made its saving throw.\n * \n * Rather than making the immunity specific to this instance of eyebite, I will make the immunity \n * specific to the caster and last for 10 rounds, 1 minute.\n ***************************************************************************************************/\n async function applyImmunity(token1) {\n    const FUNCNAME = \"applyImmunity(token1)\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let immuneEffect = [{\n        label: IMMUNE_COND,\n        icon: IMMUNE_ICON,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        flags: { dae: { itemData: aItem, specialDuration: [\"newDay\", \"longRest\", \"shortRest\"] } },\n        duration: { rounds: 10, startRound: GAME_RND, seconds: 60, startTime: game.time.worldTime }, \n        changes: [\n            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: \"Immune to Eyebite from this source\", priority: 20 },\n        ]\n    }]\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: token1.uuid, effects: immuneEffect });\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Check for immunity effect on passed token. Return boolean (true = immune)\n ***************************************************************************************************/\n async function isImmune(token1) {\n    const FUNCNAME = \"isImmune(token1)\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let rtn = false\n    jez.log(\"token1.actor.effects\", token1.actor.effects)\n    let immuneEffect = await token1.actor.effects.find(i => i.data.label === IMMUNE_COND);\n    jez.log(\"immuneEffect\",immuneEffect)\n    if (immuneEffect) rtn = true\n    jez.log(\"Immune Effect Found?\", rtn)\n    jez.log(`-------------- Finishing --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return(rtn)\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        },
+        "core": {
+          "sourceId": "Compendium.Dynamic-Effects-SRD.DAE SRD Spells.kBzkcCyByTZsnYPD"
+        },
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false
+        },
+        "autoanimations": {
+          "killAnim": false,
+          "options": {
+            "ammo": false,
+            "overrideAuto": false
+          },
+          "override": true,
+          "allSounds": {
+            "item": {
+              "enableAudio": false
+            }
+          },
+          "sourceToken": {
+            "enable": false
+          },
+          "targetToken": {
+            "enable": false
+          }
+        }
+      }
+    }
+  ],
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Actor.YFGHal2pQ3wFN9vO",
+      "sheetClass": ""
+    },
+    "midi-qol": {
+      "concentration-damage": 0
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

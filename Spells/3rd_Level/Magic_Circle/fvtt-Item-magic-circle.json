@@ -1,0 +1,120 @@
+{
+  "name": "Magic Circle",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/runes-blue-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You create a 10-foot-radius, 20-foot-tall cylinder of magical energy centered on a point on the ground that you can see within range. Glowing runes appear wherever the cylinder intersects with the floor or other surface.</p>\n<p>Choose one or more of the following types of creatures: </p>\n<ul>\n<li>celestials,</li>\n<li>elementals,</li>\n<li>fey,</li>\n<li>fiends, or</li>\n<li>undead.</li>\n</ul>\n<p>The circle affects a creature of the chosen type in the following ways.</p>\n<ol>\n<li>The creature can't willingly enter the cylinder by nonmagical means. If the creature tries to use teleportation or interplanar travel to do so, it must first succeed on a Charisma saving throw.</li>\n<li>The creature has disadvantage on attack rolls against targets within the cylinder.</li>\n<li>Targets within the cylinder can't be charmed, frightened, or possessed by the creature.</li>\n</ol>\n<p>When you cast this spell, you can elect to cause its magic to operate in the reverse direction, preventing a creature of the specified type from leaving the cylinder and protecting targets outside it.</p>\n<p><strong>Higher Level.</strong>When you cast this spell using a spell slot of 4th level or higher, the duration increases by 1 hour for each slot level above 3rd.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "minute",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": 10,
+      "width": null,
+      "units": "ft",
+      "type": "cylinder"
+    },
+    "range": {
+      "value": 10,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "abj",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "Holy water or powdered silver and iron worth at least 100 gp, which the spell consumes",
+      "consumed": true,
+      "cost": 100,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.N2E2ZDU2N2UxNTgw"
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Magic Circle",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Magic_Circle.js\"\n/*****************************************************************************************\n * Manage a VFX indicating the area of effect of this spell\n * \n * 02/25/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst SPELL_JRNL = `@JournalEntry[${game.journal.getName(\"Magic Circle\").id}]{Magic Circle spell}`\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Fire off the dialog that does everything else\n//\npopDialog()\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n// COOL-THING: Effect will appear at template, center\nasync function runVFX(color, name) {\n    const FUNCNAME = \"runVFX(color)\";\n    const VFX_INTRO = `modules/jb2a_patreon/Library/Generic/Magic_Signs/AbjurationCircleIntro_02_Regular_${color}_800x800.webm`\n    const VFX_LOOP = `modules/jb2a_patreon/Library/Generic/Magic_Signs/AbjurationCircleLoop_02_Regular_${color}_800x800.webm`\n    const VFX_OUTRO = `modules/jb2a_patreon/Library/Generic/Magic_Signs/AbjurationCircleOutro_02_Regular_${color}_800x800.webm`\n    const VFX_OPACITY = 1.0;\n    const VFX_SCALE = 0.55;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    const templateID = args[0].templateId\n    jez.log('templateID', templateID)\n    jez.log(\"canvas.templates.objects.children\", canvas.templates.objects.children)\n    //------------------------------------------------------------------------------------------\n    // COOL-THING: Fetch the X,Y coordinates from a targeting template. Delet template after.\n    //\n    let fetchedTemplate = canvas.templates.objects.children.find(i => i.data._id === templateID);\n    let x = fetchedTemplate.center.x\n    let y = fetchedTemplate.center.y\n    jez.log(`fetchedTemplate x,y ${x},${y}`,fetchedTemplate)\n    canvas.templates.get(templateID).document.delete()\n    //------------------------------------------------------------------------------------------\n    // COOL-THING: Define a three phase VFX sequence\n    //\n    new Sequence()\n        .effect()\n            .file(VFX_INTRO)\n            .atLocation({ x:x, y:y }) \n            .scale(VFX_SCALE)\n            .opacity(VFX_OPACITY)\n            .waitUntilFinished(-500) \n        .effect()\n            .file(VFX_LOOP)\n            .atLocation({ x:x, y:y })\n            .scale(VFX_SCALE)\n            .opacity(VFX_OPACITY)\n            .persist()\n            //.duration(4000)\n            .name(name) \n            .waitUntilFinished(-500) \n        .effect()\n            .file(VFX_OUTRO)\n            .scale(VFX_SCALE)\n            .opacity(VFX_OPACITY)\n            .atLocation({ x:x, y:y })\n        .play();\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Pop a Dialog to ask for mode this spell is being case.\n ***************************************************************************************************/\nasync function popDialog() {\n    const TITLE  = \"What variety of Magic Circle is being cast?\"\n    const QUERY1 = \"Select the type of creature that will be warded by this spell\"\n    const LIST1  = [\"Celestial\",\"Elemental\",\"Fey\",\"Fiend\",\"Undead\" ]\n    const QUERY2 = \"Prevent warded creature type entrance or exit from circle?\"\n    const LIST2  = ['Entrance','Exit']\n    pickDoubleDialog(TITLE, QUERY1, QUERY2, pickDoubleCallBack, LIST1, LIST2)\n}\n/***************************************************************************************\n * Create and process double radio button dialog, passing it onto specified callback \n * \n * const queryTitle = \"Select Item in Question\"\n * const queryText1 = \"Pick one from following list\"\n * pickCallBack = call back function\n * options1 array of strings to be offered as choices, perhaps pre-sorted\n * \n * Sample Call:\n *   const queryTitle = \"Select Item in Question\"\n *   const queryText1 = \"Pick one from the list\" \n *   pickRadioListArray(queryTitle, queryText1, pickRadioCallBack, actorItems.sort());\n ***************************************************************************************/\nasync function pickDoubleDialog(queryTitle, queryText1, queryText2, pickCallBack, options1, options2) {\n    const FUNCNAME = \"pickDoubleDialog(queryTitle, queryText1, queryText2, pickCallBack, options1, options2)\";\n    jez.log(\"---------Starting ---${FUNCNAME}-----\",\n        `queryTitle`, queryTitle,\n        `queryText1`, queryText1,\n        `queryText2`, queryText2,\n        `pickCallBack`, pickCallBack,\n        `options1`, options1,\n        `options2`, options2);\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, first radio box\n    //\n    let template = `\n<div>\n<label>${queryText1}</label>\n<div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n`   // Back tick on its on line to make the console output better formatted\n    for (let option of options1) {\n        template += `<input type=\"checkbox\" id=\"${option}\" name=\"selectedLine1\" value=\"${option}\"> <label for=\"${option}\">${option}</label><br>\n`   // Back tick on its on line to make the console output better formatted\n    }\n    template += `</div></div>`\n    //----------------------------------------------------------------------------------------------------\n    // Build HTML Template, second radio box\n    //\n    template += `\n    <div>\n    <label>${queryText2}</label>\n    <div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n`   // Back tick on its on line to make the console output better formatted\n    for (let option2 of options2) {\n        template += `<input type=\"radio\" id=\"${option2}\" name=\"selectedLine2\" value=\"${option2}\"> <label for=\"${option2}\">${option2}</label><br>\n`   // Back tick on its on line to make the console output better formatted\n    }\n    template += `</div></div>`\n    //----------------------------------------------------------------------------------------------------\n    // Build Dialog \n    //\n    let selections = []\n    new Dialog({\n        title: queryTitle,\n        content: template,\n        buttons: {\n            ok: {\n                icon: '<i class=\"fas fa-check\"></i>',\n                label: 'OK',\n                callback: async (html) => {\n                    html.find(\"[name=selectedLine1]:checked\").each(function () {\n                        jez.log('*** selection',$(this).val());\n                        selections.push($(this).val())\n                    })\n                    jez.log('selection', selections)\n                    const SELECTED_OPTION2 = html.find(\"[name=selectedLine2]:checked\").val();\n                    jez.log(\"Radio Button Selection\", SELECTED_OPTION2)\n                    jez.log('selected option', SELECTED_OPTION2)\n                    pickCallBack(selections, SELECTED_OPTION2)\n                },\n            },\n            cancel: {\n                icon: '<i class=\"fas fa-times\"></i>',\n                label: 'Cancel',\n                callback: async (html) => {\n                    jez.log('canceled')\n                    pickCallBack(null)\n                },\n            },\n        },\n        default: 'cancel',\n    }).render(true)\n    jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)\n    return;\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\nfunction pickDoubleCallBack(sel1array, sel2) {\n    jez.log(\"pickDoubleCallBack\", \"sel1array\", sel1array, \"sel2\", sel2)\n    //----------------------------------------------------------------------------------------------\n    // Build a single string with the selected creature types, placing commas and an \"and\" without\n    // use of an Oxford comma for use in the chat message.\n    let sel1 = `<b>${sel1array[0]}</b>`\n    if (sel1array.length > 2) {\n        for (let i = 1; i < sel1array.length - 1; i++) {\n            sel1 += `, <b>${sel1array[i]}</b>`\n        }  \n    }\n    if (sel1array.length > 1) sel1 += ` and <b>${sel1array[sel1array.length - 1]}</b>`\n    jez.log(`Selected creature types: ${sel1}`)\n    //----------------------------------------------------------------------------------------------\n    // Build a single string with the types seperated by dashes, to name the VFX\n    //\n    let name = `-${sel2}:${sel1array[0]}`\n    //if (sel1array.length > 1) {\n        for (let i = 1; i < sel1array.length; i++) name += `-${sel1array[i]}`\n    //}\n    jez.log(`Selected creature types: ${name}`)\n    //----------------------------------------------------------------------------------------------\n    // Pick a color based upon random selection of one of the warded creature types\n    //\n    let color = \"\"\n    let index = Math.floor(Math.random() * sel1array.length);\n    switch (sel1array[index]) {\n        case \"Celestial\":   color=\"Yellow\"; break\n        case \"Elemental\":   color=\"Blue\";   break\n        case \"Fey\":         color=\"Green\";  break\n        case \"Fiend\":       color=\"Red\";    break\n        case \"Undead\":      color=\"Purple\"; break\n    }\n    jez.log(`Index ${index} Types ${sel1array[index]} color ${color}`)\n    //----------------------------------------------------------------------------------------------\n    // Launch the VFX for the spell\n    // \n    runVFX(color, `${MACRO}${name}`)\n    //----------------------------------------------------------------------------------------------\n    // Second selection should be simply a string: \"Entrance\" or \"Exit\"\n    //\n    jez.log(`Warding to prevent ${sel2} of ${sel1} creatures and effects`)\n    let direction = \"<b>Entrance</b> to\"\n    if (sel2 === \"Exit\") direction = \"<b>Exit</b> from\"\n    //----------------------------------------------------------------------------------------------\n    // Create and display appropriate message to chat card\n    //\n    msg=`<b>${aToken.name}</b> has created a magic circle against ${sel1} creatures.  Blocking \n        ${direction} to the circle and hindering their effects. (see ${SPELL_JRNL})`\n    let CHAT_MSG = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(CHAT_MSG, {\n        color: jez.randomDarkColor(),\n        fSize: 14,\n        msg: msg,\n        tag: \"saves\"\n    })\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

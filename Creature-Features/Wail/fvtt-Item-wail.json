@@ -1,0 +1,130 @@
+{
+  "name": "Wail",
+  "type": "feat",
+  "img": "Icons_JGB/Monsters/Banshee.png",
+  "data": {
+    "description": {
+      "value": "<p>As an action, release a mournful wail, provided the actor isn’t in sunlight.</p>\n<p>This wail has no effect on constructs and undead.</p>\n<p>All other creatures within <strong>30 feet</strong> that can hear her must make a  Constitution saving throw. On a failure, a creature <span style=\"text-decoration:underline\"><strong>drops to 0 hit</strong></span> points. On a success, a creature takes <strong>10 (3d6) psychic</strong> damage.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": 13,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro",
+      "criticalThreshold": "20"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Wail",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Wail.0.1\"\nconsole.log(MACRONAME)\n/*****************************************************************************************\n * Implment Banshee Wail\n * \n *   As an action, release a mournful wail, provided the actor isn’t in sunlight.\n *   This wail has no effect on constructs and undead.\n *   All other creatures within 30 feet that can hear her must make a Constitution saving \n *   throw. On a failure, a creature drops to 0 hit points. On a success, a creature takes \n *   10 (3d6) psychic damage\n * \n * The \"can hear\" portion is not implemented as I have no consistency or interest in \n * placing walls that block sound or tracking deafness.\n * \n * 01/01/21 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim off the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nconst ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst DAMAGE_TYPE = \"psychic\"\nconst DAMAGE_DICE = \"3d6\"\nconst VFX_NAME = `${MACRO}-${aToken.id}`\nconst VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Template/Circle/Vortex_01_Regular_Blue_600x600.webm\"\nconst VFX_INTRO = \"modules/jb2a_patreon/Library/Generic/Template/Circle/VortexIntro_01_Regular_Blue_600x600.webm\"\nconst VFX_OUTRO = \"modules/jb2a_patreon/Library/Generic/Template/Circle/VortexOutro_01_Regular_Blue_600x600.webm\"\nconst VFX_OPACITY = 0.8;\nconst VFX_SCALE = 2.25;\n\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n\njez.log(`============== Finishing === ${MACRONAME} =================`);\njez.log(\"\")\nreturn;\n\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/\n\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    let isNPC = false;\n    let targetType = null;\n    let tokensToSave = []\n    const SAVE_TYPE = \"con\"\n    const SAVE_DC = aActor.data.data.attributes.spelldc;\n    const FLAVOR = `${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to resisit <b>${aItem.name}</b>`;\n    let failSaves = []  // Array to contain the tokens that failed their saving throws\n    let madeSaves = []  // Array to contain the tokens that made their saving throws\n    let madeNames = \"\"\n    let failNames = \"\"\n    let immuneNames = \"\"\n    let damTaken = \"\"\n    let damDone = 0\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //---------------------------------------------------------------------------------------------\n    // Fetch the spell effect range\n    //\n    let RANGE = aItem.data.range?.value ? aItem.data.range?.value : 60\n    let UNITS = aItem.data.range.units;\n    jez.log(`range ${RANGE}, units ${UNITS}`);\n    if (ALLOWED_UNITS.includes(UNITS)) {\n        jez.log(\"Units are ok\");\n    } else {\n        jez.log(`Unit ${UNITS} not in`, ALLOWED_UNITS);\n        ui.notifications.error(`Unit ${UNITS} not in allowed units`);\n        return (false);\n    }\n    //---------------------------------------------------------------------------------------------\n    // Startup ye'ole VFX\n    //\n    runVFX();\n    //---------------------------------------------------------------------------------------------\n    // Proceed to doing actual things\n    //\n    let tTokens = await jez.tokensInRange(aToken, RANGE)\n    let tTokenCnt = tTokens?.length\n    jez.log(\"\")\n    jez.log(`${tTokenCnt} Token(s) found within ${RANGE} feet`, tTokens)\n    for (let i = 0; i < tTokenCnt; i++) {\n        //-----------------------------------------------------------------------------------------\n        // Check to see if target is a construct and thus immune\n        //\n        if (tTokens[i].document._actor.data.type === \"npc\") isNPC = true; else isNPC = false;\n        if (isNPC) targetType = tTokens[i].document._actor.data.data.details.type.value \n              else targetType = tTokens[i].document._actor.data.data.details.race.toLowerCase()\n        if (targetType.includes(\"construct\")) {\n            jez.log(`${tTokens[i].name} is construct`)\n            immuneNames += `<b>${tTokens[i].name}</b> (construct)<br>`\n            continue\n        }\n        //-----------------------------------------------------------------------------------------\n        // Check to see if target is undead and thus immune\n        //\n        if (tTokens[i].document._actor.data.type === \"npc\") isNPC = true; else isNPC = false;\n        if (isNPC) targetType = tTokens[i].document._actor.data.data.details.type.value \n              else targetType = tTokens[i].document._actor.data.data.details.race.toLowerCase()\n        if (targetType.includes(\"undead\")) {\n            jez.log(`${tTokens[i].name} is undead`)\n            immuneNames += `<b>${tTokens[i].name}</b> (Undead)<br>`\n            continue\n        }\n        //---------------------------------------------------------------------------------------------\n        // Proceed with the tokens that might be affected (need to roll saves)\n        //\n        tokensToSave.push(tTokens[i])\n        let save = (await tTokens[i].actor.rollAbilitySave(SAVE_TYPE, { FLAVOR, chatMessage: false, fastforward: true }));\n        if (save.total < SAVE_DC) {\n            jez.log(`${tTokens[i].name} failed: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            failSaves.push(tTokens[i])\n            failNames += `<b>${tTokens[i].name}</b>: ${save.total} (${save._formula})<br>`\n        } else {\n            jez.log(`${tTokens[i].name} saved: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            madeSaves.push(tTokens[i])\n            madeNames += `<b>${tTokens[i].name}</b>: ${save.total} (${save._formula})<br>`\n        }\n    }\n    //---------------------------------------------------------------------------------------------\n    // If no tokens need to roll saves, we're done, get on out of here.\n    //\n    if (tokensToSave.length < 1) {\n        msg = `There are no targets that need to save against ${aToken.name}'s ${aItem.name}`\n        jez.log(`msg`)\n        let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n        await jez.addMessage(chatMessage, { color: \"purple\", fSize: 15, msg: msg, tag: \"saves\" })\n        return;\n    }\n    //---------------------------------------------------------------------------------------------\n    // Process Tokens that Failed Saves. Apply the prescribed damage, killz them.\n    //\n    jez.log(`${failSaves.length} Tokens failed saves, need health dropped to zero`)\n    for (let i = 0; i < failSaves.length; i++) {\n        jez.log(` ${i + 1}) ${failSaves[i].name}`, failSaves[i])\n        damDone = await applyDamage(failSaves[i], 99999)\n        jez.log(`  ${damDone} Damage Done <==================================`)\n        damTaken += `<b>${failSaves[i].name}</b> took ${damDone} damage<br>`\n    }\n    //---------------------------------------------------------------------------------------------\n    // Process Tokens that made Saves. Apply the prescribed damage.\n    //\n    jez.log(`${madeSaves.length} Tokens passed saves, need damage applied`)\n    let damageRoll = new Roll(`${DAMAGE_DICE}`).evaluate({ async: false });\n    game.dice3d?.showForRoll(damageRoll);\n    for (let i = 0; i < madeSaves.length; i++) {\n        jez.log(` ${i + 1}) ${madeSaves[i].name}`, madeSaves[i])\n        damDone = await applyDamage(madeSaves[i],damageRoll.total)\n        jez.log(`  ${damDone} Damage Done <==================================`)\n        damTaken += `<b>${madeSaves[i].name}</b> took ${damDone}<br>`\n    }\n    async function applyDamage(token1, amount) {\n        let hpVal = token1.actor.data.data.attributes.hp.value;\n        let damageDone = Math.min(hpVal, amount)\n        let damageRollObj = new Roll(`${damageDone}`).evaluate({ async: false });\n        jez.log(`damageRollObj`, damageRollObj);\n        await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageDone, \n            DAMAGE_TYPE,[token1], damageRollObj,\n            {\n                flavor: `(${CONFIG.DND5E.healingTypes[DAMAGE_TYPE]})`,\n                itemCardId: null,\n                useOther: false\n            }\n        );\n        return(damageDone)\n    }\n    //---------------------------------------------------------------------------------------------\n    // Craft results message and post it.\n    //\n    let chatMessage = await game.messages.get(args[args.length - 1].itemCardId);\n    await jez.wait(100)\n    if (immuneNames) {\n        msg = `<b><u>Immune</u></b><br>${immuneNames}`\n        await jez.wait(100)\n        // https://www.w3schools.com/tags/ref_colornames.asp\n        jez.addMessage(chatMessage, { color: \"purple\", fSize: 14, msg: msg, tag: \"damage\" })\n    }\n    if (madeNames) {\n        msg = `<b><u>Successful ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${madeNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkgreen\", fSize: 14, msg: msg, tag: \"damage\" })\n    }\n    if (failNames) {\n         msg = `<b><u>Failed ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${failNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkred\", fSize: 14, msg: msg, tag: \"damage\" })\n    }\n    await jez.wait(100)\n    msg = `Total of ${tTokenCnt} target(s) within ${RANGE}ft of ${aToken.name}<br>`\n    jez.addMessage(chatMessage, { color: \"darkblue\", fSize: 14, msg: msg, tag: \"damage\" })\n    if (damTaken) {\n        await jez.wait(100)\n        msg = \"<b><u>Damage taken by individual</b></u><br>\" + damTaken\n        jez.addMessage(chatMessage, { color: \"darkbrown\", fSize: 14, msg: msg, tag: \"saves\" })\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Launch the VFX effects\n ***************************************************************************************************/\nasync function runVFX() {\n    new Sequence()\n        .effect()\n        .file(VFX_INTRO)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .waitUntilFinished(-500) // Negative wait time (ms) clips the effect to avoid fadeout\n        .effect()\n        .file(VFX_LOOP)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        //.persist()\n        .duration(3000)\n        .name(VFX_NAME) // Give the effect a uniqueish name\n        .fadeIn(10) // Fade in for specified time in milliseconds\n        .fadeOut(1000) // Fade out for specified time in milliseconds\n        .extraEndDuration(1200) // Time padding on exit to connect to Outro effect\n        .effect()\n        .file(VFX_OUTRO)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .attachTo(aToken)\n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.xSIhtjbCHSVGldQQ"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

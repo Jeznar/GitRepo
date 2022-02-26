@@ -1,0 +1,147 @@
+{
+  "name": "Phantasmal Killer",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/horror-eerie-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You tap into the nightmares of a creature you can see within range and create an illusory manifestation of its deepest fears, visible only to that creature. The target must make a <strong>Wisdom saving </strong>throw. On a failed save, the target becomes @JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} for the Duration.</p>\n<p>At the <strong>end of each of the target’s turns </strong>before the spell ends, the target must succeed on a Wisdo⁠m saving throw or take <strong>4d10 psychic damage</strong>. On a successful save, the spell ends.</p>\n<p><strong>At Higher Levels</strong>. When you cast this spell using a spell slot of 5th level or higher, the damage increases by 1d10 for each slot level above 4th.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 265",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 120,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [
+        [
+          "4d10",
+          "psychic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 4,
+    "school": "ill",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "1d10"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "dynamiceffects": {
+      "equipActive": true,
+      "alwaysActive": false,
+      "effects": [
+        {
+          "modSpecKey": "flags.dnd5e.conditions",
+          "value": "Frightened",
+          "mode": "+",
+          "targetSpecific": false,
+          "id": 1,
+          "itemId": "UWXxnmoLDNjm4DTU",
+          "active": true,
+          "_targets": []
+        }
+      ]
+    },
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "core": {
+      "sourceId": "Compendium.Dynamic-Effects-SRD.DAE SRD Spells.qHWBKyQxm3CTm2yS"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Phantasmal Killer",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Phantasmal Killer\"\n/*****************************************************************************************\n * Phantasmal Killer leveraging Midi-qol for overtime damage and saves\n * \n * 02/19/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst lastArg = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\nconst GAME_RND = game.combat ? game.combat.round : 0;\nlet chatMessage = game.messages.get(args[args.length - 1].itemCardId);\nconst CONDITION=\"Phantasmal Killer\"\nconst SPELL_DC = aToken.actor.data.data.attributes.spelldc;\nconst SAVE_TYPE = \"wis\"\nconst NUM_DICE = args[0].spellLevel;\nconst FRIGHTENED_JRNL = `@JournalEntry[${game.journal.getName(\"Frightened\").id}]{Frightened}`\nconst FRIGHTENED_ICON = \"Icons_JGB/Monster_Features/Frightened.png\"\n\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\nif (args[0] === \"off\") await doOff();                   // DAE removal\n\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n    //----------------------------------------------------------------------------------\n    // Run the preCheck function to make sure things are setup as best I can check them\n    // but only for OnUse invocation.\n    if ((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n    //-------------------------------------------------------------------------------------------------------------\n    // If the target saved, exit this macro\n    // \n    if (!args[0].failedSaves.length) {\n        msg = `${tToken.name} saved, ${MACRO} is complete.`\n        ui.notifications.info(msg)\n        jez.log(msg)\n        return\n    }\n    //-------------------------------------------------------------------------------------------------------------\n    // Apply Phantasmal Killer condition\n    // https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects\n    //\n    let overTimeVal=`turn=end,\n        label=${CONDITION},\n        saveDC=${SPELL_DC},\n        saveAbility=${SAVE_TYPE},\n        saveRemove=true,\n        damageRoll=${NUM_DICE}d10,\n        saveMagic=true,\n        damageType=psychic`\n    let effectData = [{\n        label: CONDITION,\n        icon: aItem.img,\n        origin: aToken.uuid,\n        disabled: false,\n        // flags: { dae: { stackable: false, macroRepeat: \"none\" } },\n        //flags: { dae: { itemData: aItem.data, macroRepeat: \"startEveryTurn\", token: aToken.uuid } },\n        flags: { dae: { itemData: aItem, macroRepeat: \"startEveryTurn\", token: tToken.uuid, stackable: false } },\n        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },\n        changes: [\n            // COOL-THING: Midi-QoL OverTime dot & save effect\n            { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value:overTimeVal , priority: 20 },\n            { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.skill.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.attack.all`, mode: ADD, value: 1, priority: 20 },\n            { key: `macro.itemMacro`, mode: CUSTOM, value: aToken.name, priority: 20 }\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: effectData });\n    //-------------------------------------------------------------------------------------------------------------\n    // Post Completion message\n    //\n    msg = `${tToken.name} is ${FRIGHTENED_JRNL}.  May not willing move closer to ${aToken.name}`\n    jez.log(`msg`,msg)\n    await jez.addMessage(chatMessage, {color:\"purple\", fSize:15, msg:msg, tag:\"saves\" })\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set On\n ***************************************************************************************************/\n async function doEach() {\n    const FUNCNAME = \"doEach()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(\"lastArg.origin\", lastArg.origin) // Scene.MzEyYTVkOTQ4NmZk.Token.xQZ547rzaxSalnmz\n    let originArray = lastArg.origin.split(\".\")    // Trim of the version number and extension\n    let originId    = originArray[originArray.length-1]\n    let oToken      = canvas.tokens.placeables.find(ef => ef.id === originId)\n    msg = `${aToken.name} is still ${FRIGHTENED_JRNL}.  May not willing move closer to ${oToken.name}.`\n    await jez.postMessage({color:\"purple\", fSize:15, msg:msg, title:`${aToken.name} Frightened`, \n        token:aToken, icon:FRIGHTENED_ICON})\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\n async function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let originArray = lastArg.origin.split(\".\")    // Trim of the version number and extension\n    let originId    = originArray[originArray.length-1]\n    let oToken      = canvas.tokens.placeables.find(ef => ef.id === originId)\n    msg = `${aToken.name} is no longer ${FRIGHTENED_JRNL} of ${oToken.name}.`\n    await jez.postMessage({color:\"darkgreen\", fSize:15, msg:msg, title:`${aToken.name} Recovered`, \n        token:aToken, icon:aToken.data.img})\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n  }\n/***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        await jez.addMessage(chatMessage, {color:\"purple\", fSize:15, msg:msg, tag:\"saves\" })\n        ui.notifications.warn(msg)\n        jez.log(msg)\n        return(false);\n    }\n    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return\n        msg = `Target was missed.`\n        // ui.notifications.info(msg)\n        return(false);\n    }*/\n    return (true)\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
