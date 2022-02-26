@@ -57,6 +57,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Clairvoyance](3rd_Level#clairvoyance)
 * [Counterspell](3rd_Level#counterspell)
 * [Lightning Bolt](3rd_Level#lightning-bolt)
+* [Magic Circle](3rd_Level#magic-circle)
 
 [*Back to Spell Level List*](#spells)
 
