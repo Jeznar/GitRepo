@@ -1,0 +1,242 @@
+{
+  "name": "Treebane",
+  "type": "weapon",
+  "img": "worlds/travels-in-barovia/journal/013_-_Magic_Items/048_-_Treebane/token.jpg",
+  "data": {
+    "description": {
+      "value": "<h1>Treebane</h1>\n<p>This axe's handle is carved with leaves and vines, and the weapon weighs half as much as a normal battleaxe.</p>\n<section class=\"secret\"></section>\n<p>&nbsp;</p>",
+      "chat": "<p>You have a +1 bonus to attack and damage rolls made with this magic weapon.</p>",
+      "unidentified": "Battleaxe"
+    },
+    "source": "Basic Rules, Player's Handbook",
+    "quantity": 1,
+    "weight": 4,
+    "price": 0,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "uncommon",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attackBonus": "1",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d8[slashing] + @mod + 1",
+          "slashing"
+        ]
+      ],
+      "versatile": "1d10[slashing] + 1 + @mod"
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "martialM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "fir": false,
+      "fin": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": true,
+      "ret": false,
+      "foc": false,
+      "ada": false,
+      "mgc": true,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": true
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {
+        "type": "Battleaxe",
+        "damage": {
+          "parts": []
+        },
+        "classFeatures": [],
+        "filterType": "Weapon",
+        "tags": [
+          "Damage",
+          "Combat"
+        ],
+        "sources": [
+          {
+            "sourceId": 1,
+            "pageNumber": null,
+            "sourceType": 2
+          },
+          {
+            "sourceId": 2,
+            "pageNumber": null,
+            "sourceType": 1
+          }
+        ]
+      },
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 112130694,
+      "definitionId": 4801,
+      "originalName": "Battleaxe, +1"
+    },
+    "betterRolls5e": {
+      "quickDamage": {
+        "context": {
+          "0": "Magical"
+        },
+        "value": {
+          "0": true
+        },
+        "altValue": {
+          "0": true
+        }
+      },
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": false,
+          "resource": true
+        },
+        "altValue": {
+          "use": false,
+          "resource": true
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": true,
+      "charges": "0",
+      "chargeType": "c1",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t2",
+      "rechargeUnit": "r1",
+      "destroy": false,
+      "destroyCheck": "d1",
+      "spells": {},
+      "feats": {},
+      "tables": {},
+      "equipped": true,
+      "attuned": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "sorting": "l"
+    },
+    "cf": {
+      "id": "temp_god5dulh2zn"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "ItemMacro"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.items.3re4Y0z85VWn4Qb9"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Treebane",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const macroName = \"Treebane.0.4.js\"\n/************************************************************\n * On hit, againts creatures of type \"plant\" add an extra 1d8 \n * slashing damage.\n * \n *  - Setup Variables\n *  - Exit on a miss in calling item\n *  - Determine type of target\n *  - If target is of type plant, roll extra 1d8 slashing dam\n *  - Apply results\n * \n * 11/14/21 0.1 JGB created from Knock_Down_0.3\"\n * 11/14/21 0.2 JGB turn down debug level\n * 11/14/21 0.3 JGB Bug: Wither Affects Non-Plants\n * 02/24/22 0.4 JGB Standardisizing and go after that bug\n ***********************************************************/\njez.log(`Starting: ${macroName} arguments passed: ${args.length}`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n\nlet gameRound = game.combat ? game.combat.round : 0;\nconst DAMAGETYPE = \"slashing\";\n/************************************************************************\n* Set Variables for player and target\n*************************************************************************/\n// let target = canvas.tokens.get(args[0].failedSaves[0]._id);\nlet actorD = game.actors.get(args[0].actor._id);\nlet tokenD = canvas.tokens.get(args[0].tokenId).actor;\nlet player = canvas.tokens.get(args[0].tokenId);\njez.log(` Player: `, player);\n\nif (game.user.targets.ids.length != 1) {\n    let message = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n    ui.notifications.warn(message);\n    jez.log(message);\n    return // Abort execution if a single token wasn't targeted\n}\nlet target = canvas.tokens.get(args[0].targets[0].id);\njez.log(` Player: ${player.name}, Target: ${target.name}`);\n\nrunVFX(target)\n/************************************************************************\n* End if target was missed in calling action.\n*************************************************************************/\nif (args[0].hitTargets.length === 0) {\n    let message = ` Missed ${target.name}, end ${macroName}`;\n    jez.log(message);\n    return;\n}\n/**************************************************************************\n * If target is not of type plant end macro\n **************************************************************************/\nlet isNPC = false\nlet targetType = null\nif (target.document._actor.data.type === \"npc\") isNPC = true; //else isNPC = false;\nif (isNPC) targetType = target.document._actor.data.data.details.type.value\nelse targetType = target.document._actor.data.data.details.race.toLowerCase()\nif (targetType.includes(\"plant\")) {\n    jez.log(`${target.name} is a plant`)\n} else {\n    jez.log(` ${target.name} type is not plant, ending ${macroName}`);\n    return;\n}\n/************************************************************************\n * Roll extra 1d8 slashing damage & apply\n **************************************************************************/\nlet damageType = \"slashing\";\nlet numDice = 1;\nargs[0].isCritical ? numDice = numDice * 2 : numDice;\nlet itemD = player.actor.items.getName(\"Treebane\");\nlet secondDamage = `${numDice}d8`;\njez.log(` Dice to roll: ${secondDamage}`);\n\nlet damageRoll = new Roll(`${secondDamage}`).evaluate({ async: false });\njez.log(` Damage Total: ${damageRoll.total} Type: ${DAMAGETYPE}`);\n\nnew MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, \"slashing\", [target], damageRoll,\n    { flavor: `${target.name} withers on hit from ${itemD.name}`, itemCardId: args[0].itemCardId });\n\nreturn;\n\n/**************************************************************************\n * Fire off the visual effects\n **************************************************************************/\nasync function runVFX(token5e) {\n//let VFX_ATTACK = \"modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Melee/GreatAxe01_Fire_Regular_Green_800x600.webm\"\nlet VFX_ATTACK = \"modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Melee/GreatAxe01_Fire_*_800x600.webm\"\n\n\nnew Sequence()\n    .effect()\n        .file(VFX_ATTACK)\n        .atLocation(token5e)\n        .scale(0.5)\n        .missed(args[0].hitTargets.length === 0)\n    .play()\n\n\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "gm-notes": {
+      "notes": "<section class=\"secret\">\n<p>When the axe hits a plant, whether an ordinary plant or a plant creature, the target takes an extra 1d8 slashing damage.&nbsp;</p>\n<p>You have a +1 bonus to attack and damage rolls made with this magic weapon.</p>\n</section>\n<hr />\n<section class=\"secret\">\n<p>GM Notes :</p>\n<p>When a creature of non-good alignment wields the axe, it sprouts thorns whenever its wielder makes an attack with it. These thorns prick the wielder for 1 piercing damage after the attack is made, and this damage is considered magical.</p>\n<h4>Treebane (Chapter 14, Y4. Gulthias Tree)</h4>\n</section>\n<p>&nbsp;</p>"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
