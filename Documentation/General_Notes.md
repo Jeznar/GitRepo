@@ -24,7 +24,7 @@ Sending the output through a pipe allows for additional filtering.  Something li
 
 This will find just the lines that contain center and COOL-THING (or cool-thing, or any other mixed case variation)
 
-[Additional grep info](https://www.cyberciti.biz/faq/howto-use-grep-command-in-linux-unix/#Syntax)
+[Additional grep info](https://www.cyberciti.biz/faq/howto-use-grep-command-in-linux-unix)
 
 ---
 
@@ -34,7 +34,7 @@ I just (2/25/22) ran across this module and I am blown away.  It does some aweso
 
 [Module Wiki (including dependencies)](https://github.com/Vauryx/AdvancedSpellEffects/wiki)
 
-[Current Spells](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#mirror-image)
+[Current Spells](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells)
 
 ---
 
