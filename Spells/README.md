@@ -42,7 +42,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 [*Back to Spell Level List*](#spells)
 
-## [2nd Level Spells](2nd_Level/README)
+## [2nd Level Spells](2nd_Level)
 
 * Hold Person (Midi-QoL Overtime)
 * Knock
@@ -51,7 +51,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 [*Back to Spell Level List*](#spells)
 
-## [3rd Level Spells](3rd_Level/README)
+## [3rd Level Spells](3rd_Level)
 
 * Clairvoyance
 * Counterspell
@@ -59,38 +59,38 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 [*Back to Spell Level List*](#spells)
 
-## [4th Level Spells](4th_Level/README)
+## [4th Level Spells](4th_Level)
 
 * Phantasmal Killer
 
 [*Back to Spell Level List*](#spells)
 
-## [5th Level Spells](5th_Level/README)
+## [5th Level Spells](5th_Level)
 
 * Contact Other Plane
 * Scrying
 
 [*Back to Spell Level List*](#spells)
 
-## [6th Level Spells](6th_Level/README)
+## [6th Level Spells](6th_Level)
 
 * Eyebite
 
 [*Back to Spell Level List*](#spells)
 
-## [7th Level Spells](7th_Level/README)
+## [7th Level Spells](7th_Level)
 
 * Plane Shift (Self Only)
 
 [*Back to Spell Level List*](#spells)
 
-## [8th Level Spells](8th_Level/README)
+## [8th Level Spells](8th_Level)
 
 None at this time.
 
 [*Back to Spell Level List*](#spells)
 
-## [9th Level Spells](9th_Level/README)
+## [9th Level Spells](9th_Level)
 
 None at this time.
 
