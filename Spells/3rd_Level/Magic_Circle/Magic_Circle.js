@@ -14,6 +14,7 @@ let aItem;          // Active Item information, item invoking this macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+const SPELL_JRNL = `@JournalEntry[${game.journal.getName("Magic Circle").id}]{Magic Circle spell}`
 let msg = "";
 //----------------------------------------------------------------------------------
 // Fire off the dialog that does everything else
@@ -29,9 +30,8 @@ return;
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 // COOL-THING: Effect will appear at template, center
-async function runVFX(color) {
+async function runVFX(color, name) {
     const FUNCNAME = "runVFX(color)";
-    const VFX_NAME = `${MACRO}-${aToken.name}`
     const VFX_INTRO = `modules/jb2a_patreon/Library/Generic/Magic_Signs/AbjurationCircleIntro_02_Regular_${color}_800x800.webm`
     const VFX_LOOP = `modules/jb2a_patreon/Library/Generic/Magic_Signs/AbjurationCircleLoop_02_Regular_${color}_800x800.webm`
     const VFX_OUTRO = `modules/jb2a_patreon/Library/Generic/Magic_Signs/AbjurationCircleOutro_02_Regular_${color}_800x800.webm`
@@ -66,7 +66,7 @@ async function runVFX(color) {
             .opacity(VFX_OPACITY)
             .persist()
             //.duration(4000)
-            .name(VFX_NAME) 
+            .name(name) 
             .waitUntilFinished(-500) 
         .effect()
             .file(VFX_OUTRO)
@@ -83,18 +83,9 @@ async function runVFX(color) {
 async function popDialog() {
     const TITLE  = "What variety of Magic Circle is being cast?"
     const QUERY1 = "Select the type of creature that will be warded by this spell"
-    const LIST1  = [
-        "Celestial (Yellow)",
-        "Elemental (Blue)",
-        "Fey (Green)",
-        "Fiend (Red)",
-        "Undead (Purple)",
-    ]
+    const LIST1  = ["Celestial","Elemental","Fey","Fiend","Undead" ]
     const QUERY2 = "Prevent warded creature type entrance or exit from circle?"
-    const LIST2 = [
-        'Entrance',
-        'Exit'
-    ]
+    const LIST2  = ['Entrance','Exit']
     pickDoubleDialog(TITLE, QUERY1, QUERY2, pickDoubleCallBack, LIST1, LIST2)
 }
 /***************************************************************************************
@@ -128,7 +119,7 @@ async function pickDoubleDialog(queryTitle, queryText1, queryText2, pickCallBack
 <div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">
 `   // Back tick on its on line to make the console output better formatted
     for (let option of options1) {
-        template += `<input type="radio" id="${option}" name="selectedLine1" value="${option}"> <label for="${option}">${option}</label><br>
+        template += `<input type="checkbox" id="${option}" name="selectedLine1" value="${option}"> <label for="${option}">${option}</label><br>
 `   // Back tick on its on line to make the console output better formatted
     }
     template += `</div></div>`
@@ -148,6 +139,7 @@ async function pickDoubleDialog(queryTitle, queryText1, queryText2, pickCallBack
     //----------------------------------------------------------------------------------------------------
     // Build Dialog 
     //
+    let selections = []
     new Dialog({
         title: queryTitle,
         content: template,
@@ -156,14 +148,15 @@ async function pickDoubleDialog(queryTitle, queryText1, queryText2, pickCallBack
                 icon: '<i class="fas fa-check"></i>',
                 label: 'OK',
                 callback: async (html) => {
-                    jez.log("html contents", html)
-                    const SELECTED_OPTION1 = html.find("[name=selectedLine1]:checked").val();
-                    jez.log("Radio Button Selection", SELECTED_OPTION1)
-                    jez.log('selected option', SELECTED_OPTION1)
+                    html.find("[name=selectedLine1]:checked").each(function () {
+                        jez.log('*** selection',$(this).val());
+                        selections.push($(this).val())
+                    })
+                    jez.log('selection', selections)
                     const SELECTED_OPTION2 = html.find("[name=selectedLine2]:checked").val();
                     jez.log("Radio Button Selection", SELECTED_OPTION2)
                     jez.log('selected option', SELECTED_OPTION2)
-                    pickCallBack(SELECTED_OPTION1, SELECTED_OPTION2)
+                    pickCallBack(selections, SELECTED_OPTION2)
                 },
             },
             cancel: {
@@ -183,32 +176,55 @@ async function pickDoubleDialog(queryTitle, queryText1, queryText2, pickCallBack
 /***************************************************************************************************
  * 
  ***************************************************************************************************/
-function pickDoubleCallBack(sel1, sel2) {
-    jez.log("pickDoubleCallBack", "sel1", sel1, "sel2", sel2)
+function pickDoubleCallBack(sel1array, sel2) {
+    jez.log("pickDoubleCallBack", "sel1array", sel1array, "sel2", sel2)
     //----------------------------------------------------------------------------------------------
-    // Parse sel1 into type of creature and color of the VFX
-    // Selction to be of form: "Type (Color)"
+    // Build a single string with the selected creature types, placing commas and an "and" without
+    // use of an Oxford comma for use in the chat message.
+    let sel1 = `<b>${sel1array[0]}</b>`
+    if (sel1array.length > 2) {
+        for (let i = 1; i < sel1array.length - 1; i++) {
+            sel1 += `, <b>${sel1array[i]}</b>`
+        }  
+    }
+    if (sel1array.length > 1) sel1 += ` and <b>${sel1array[sel1array.length - 1]}</b>`
+    jez.log(`Selected creature types: ${sel1}`)
+    //----------------------------------------------------------------------------------------------
+    // Build a single string with the types seperated by dashes, to name the VFX
     //
-    const SEL_ARRAY = sel1.split(" ")
-    const TYPE = SEL_ARRAY[0]
-    let color = SEL_ARRAY[1].substring(1)   // Chop first character from the string
-    color = color.slice(0, -1)              // Chop last character from the string
-    jez.log(`Type of creature: ${TYPE}, Color of circle: ${color}`)
+    let name = `-${sel2}:${sel1array[0]}`
+    //if (sel1array.length > 1) {
+        for (let i = 1; i < sel1array.length; i++) name += `-${sel1array[i]}`
+    //}
+    jez.log(`Selected creature types: ${name}`)
+    //----------------------------------------------------------------------------------------------
+    // Pick a color based upon random selection of one of the warded creature types
+    //
+    let color = ""
+    let index = Math.floor(Math.random() * sel1array.length);
+    switch (sel1array[index]) {
+        case "Celestial":   color="Yellow"; break
+        case "Elemental":   color="Blue";   break
+        case "Fey":         color="Green";  break
+        case "Fiend":       color="Red";    break
+        case "Undead":      color="Purple"; break
+    }
+    jez.log(`Index ${index} Types ${sel1array[index]} color ${color}`)
     //----------------------------------------------------------------------------------------------
     // Launch the VFX for the spell
-    //
-    runVFX(color)
+    // 
+    runVFX(color, `${MACRO}${name}`)
     //----------------------------------------------------------------------------------------------
     // Second selection should be simply a string: "Entrance" or "Exit"
     //
-    jez.log(`Warding to prevent ${sel2} of ${TYPE} creatures and effects`)
+    jez.log(`Warding to prevent ${sel2} of ${sel1} creatures and effects`)
     let direction = "<b>Entrance</b> to"
     if (sel2 === "Exit") direction = "<b>Exit</b> from"
     //----------------------------------------------------------------------------------------------
     // Create and display appropriate message to chat card
     //
-    msg=`<b>${aToken.name}</b> has created a magic circle against <b>${TYPE}</b> creatures and 
-        their effects, warding against ${direction} the circle.`
+    msg=`<b>${aToken.name}</b> has created a magic circle against ${sel1} creatures.  Blocking 
+        ${direction} to the circle and hindering their effects. (see ${SPELL_JRNL})`
     let CHAT_MSG = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(CHAT_MSG, {
         color: jez.randomDarkColor(),
