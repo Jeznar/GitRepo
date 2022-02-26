@@ -271,7 +271,7 @@ isSkill.sur: "Expires if the character rolls:  skill check Survival"
 
 I put a little macro together that applies a set of effects to the user with various expiration settings to exercise my understanding of this bit of FoundryVTT.  The code is posted on one of my other repositories:
 
-[Demonstrate DAE Durations.js](https://github.com/Jeznar/Utility_Macros/tree/main/Demo_DAE_Durations)
+[Demonstrate DAE Durations.js](https://github.com/Jeznar/GitRepo/tree/main/Utility_Macros/Demo_DAE_Durations)
 
 ---
 
