@@ -13,6 +13,6 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 A non-existant spell, its only purpose is holding a place in my documentaton.
 
-[*Back to 1st Level Spell List*](#1st-level-spells)
+[*Back to 9th Level Spell List*](#9th-level-spells)
 
 ---

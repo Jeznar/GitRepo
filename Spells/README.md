@@ -18,7 +18,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [8th Level Spells](#8th-level-spells)
 * [9th Level Spells](#9th-level-spells)
 
-## [Cantrips](Cantrips/README_0.md)
+## [Cantrips](Cantrips)
 
 * Agonizing Blast
 * Druid Craft
@@ -29,7 +29,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 [*Back to Spell Level List*](#spells)
 
-## [1st Level Spells](1st_Level/README_1.md)
+## [1st Level Spells](1st_Level)
 
 * Detect Magic
 * Entangle
@@ -42,7 +42,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 [*Back to Spell Level List*](#spells)
 
-## [2nd Level Spells](2nd_Level/README_2.md)
+## [2nd Level Spells](2nd_Level/README)
 
 * Hold Person (Midi-QoL Overtime)
 * Knock
@@ -51,7 +51,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 [*Back to Spell Level List*](#spells)
 
-## [3rd Level Spells](3rd_Level/README_3.md)
+## [3rd Level Spells](3rd_Level/README)
 
 * Clairvoyance
 * Counterspell
@@ -59,38 +59,38 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 [*Back to Spell Level List*](#spells)
 
-## [4th Level Spells](4th_Level/README_4.md)
+## [4th Level Spells](4th_Level/README)
 
 * Phantasmal Killer
 
 [*Back to Spell Level List*](#spells)
 
-## [5th Level Spells](5th_Level/README_5.md)
+## [5th Level Spells](5th_Level/README)
 
 * Contact Other Plane
 * Scrying
 
 [*Back to Spell Level List*](#spells)
 
-## [6th Level Spells](6th_Level/README_6.md)
+## [6th Level Spells](6th_Level/README)
 
 * Eyebite
 
 [*Back to Spell Level List*](#spells)
 
-## [7th Level Spells](7th_Level/README_7.md)
+## [7th Level Spells](7th_Level/README)
 
 * Plane Shift (Self Only)
 
 [*Back to Spell Level List*](#spells)
 
-## [8th Level Spells](8th_Level/README_8.md)
+## [8th Level Spells](8th_Level/README)
 
 None at this time.
 
 [*Back to Spell Level List*](#spells)
 
-## [9th Level Spells](9th_Level/README_9.md)
+## [9th Level Spells](9th_Level/README)
 
 None at this time.
 
