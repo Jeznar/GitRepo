@@ -31,56 +31,56 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [1st Level Spells](1st_Level)
 
-* Detect Magic
-* Entangle
-* Magic Missle
-* Protection from Evil and Good
-* Ray of Sickness
-* Sleep
-* Shield
-* Tasha's Caustic Brew
+* [Detect Magic](1st_Level#detect-magic)
+* [Entangle](1st_Level#entangle)
+* [Magic Missle](1st_Level#magic-missle)
+* [Protection from Evil and Good](1st_Level#protection-from-evil-and-good)
+* [Ray of Sickness](1st_Level#ray-of-sickness)
+* [Sleep](1st_Level#sleep)
+* [Shield](1st_Level#shield)
+* [Tasha's Caustic Brew](1st_Level#tasha-caustic-brew)
 
 [*Back to Spell Level List*](#spells)
 
 ## [2nd Level Spells](2nd_Level)
 
-* Hold Person (Midi-QoL Overtime)
-* Knock
-* Locate Object (D&D5e SRD)
-* Ray of Enfeeblement
+* [Hold Person](2nd_Level#hold-person)
+* [Knock](2nd_Level#knock)
+* [Locate Object](2nd_Level#locate-object)
+* [Ray of Enfeeblement](2nd_Level#ray-of-enfeeblement)
 
 [*Back to Spell Level List*](#spells)
 
 ## [3rd Level Spells](3rd_Level)
 
-* Clairvoyance
-* Counterspell
-* Lightning Bolt
+* [Clairvoyance](3rd_Level#clairvoyance)
+* [Counterspell](3rd_Level#counterspell)
+* [Lightning Bolt](3rd_Level#lightning-bolt)
 
 [*Back to Spell Level List*](#spells)
 
 ## [4th Level Spells](4th_Level)
 
-* Phantasmal Killer
+* [Phantasmal Killer](4th_Level#phantasmal-killer)
 
 [*Back to Spell Level List*](#spells)
 
 ## [5th Level Spells](5th_Level)
 
-* Contact Other Plane
-* Scrying
+* [Contact Other Plane](5th_Level#contact-other-plane)
+* [Scrying](5th_Level#scrying)
 
 [*Back to Spell Level List*](#spells)
 
 ## [6th Level Spells](6th_Level)
 
-* Eyebite
+* [Eyebite](6th_Level#eyebite)
 
 [*Back to Spell Level List*](#spells)
 
 ## [7th Level Spells](7th_Level)
 
-* Plane Shift (Self Only)
+* [Plane Shift (Self Only)](7th_Level#plane-shift-self-only)
 
 [*Back to Spell Level List*](#spells)
 
