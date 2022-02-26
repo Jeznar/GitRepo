@@ -2,7 +2,7 @@
 
 This repo holds macros that I have found to be of general utility **and** have foud the time to push to GitHub so that others might make of them what they will.
 
-[Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md)
+[Link back to my Repo Listing](https://github.com/Jeznar/GitRepo)
 
 ---
 

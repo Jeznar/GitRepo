@@ -5,7 +5,7 @@ Creature Abilities that aren't exactly spells, but they may be close.
 
 I'll try to document functions as I add them to the repository. 
 
-[Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md)
+[Link back to my Repo Listing](https://github.com/Jeznar/GitRepo)
 
 ## Abilities in this Repo
 

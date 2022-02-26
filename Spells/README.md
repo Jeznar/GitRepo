@@ -1,7 +1,7 @@
 # Spells
 This repository will contain my automated spells as I create new one or update those (there are many) that currently reside only in my game data (which is regularly backed up).
 
-[Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md)
+[Link back to my Repo Listing](https://github.com/Jeznar/GitRepo)
 
 ---
 

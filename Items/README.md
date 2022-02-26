@@ -1,7 +1,7 @@
 # Items
 This repo holds item macros and such.  Mostly, but perhaps, not entirely magic items.
 
-[Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md)
+[Link back to my Repo Listing](https://github.com/Jeznar/GitRepo)
 
 ---
 
