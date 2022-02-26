@@ -153,18 +153,18 @@ There are a ton of special duration conditions.  Below is my list of them, after
 <summary><b>Actor Attacks, Hits, Reacts, Casts Spell, Does Damage</b></summary>
 
 ~~~javascript
-1Action: 	  "1 Action: Expires on the next action (item roll) of the character"
-1Attack: 	  "1 Attack: Expires on the next Spell/Weapon Attack by the character"
+1Action:      "1 Action: Expires on the next action (item roll) of the character"
+1Attack:      "1 Attack: Expires on the next Spell/Weapon Attack by the character"
 1Attack:msak: "Melee Spell Attack: 1 Attack: Expires on the next Melee Spell Attack by the character"
 1Attack:mwak: "Melee Weapon Attack: 1 Attack: Expires on the next Melee Weapon Attack by the character"
 1Attack:rsak: "Ranged Spell Attack: 1 Attack: Expires on the next Ranged Spell Attack by the character"
 1Attack:rwak: "Ranged Weapon Attack: 1 Attack: Expires on the next Ranged Weapon Attack by the character"
-1Hit: 		  "1 Hit: Expires on the next Spell/Weapon hit by the character"
-1Hit:msak: 	  "Melee Spell Attack: 1 Hit: Expires on the next Melee Spell Attack hit by the character"
-1Hit:mwak: 	  "Melee Weapon Attack: 1 Hit: Expires on the next Melee Weapon Attack hit by the character"
-1Hit:rsak: 	  "Ranged Spell Attack: 1 Hit: Expires on the next Ranged Spell Attack hit by the character"
-1Hit:rwak: 	  "Ranged Weapon Attack: 1 Hit: Expires on the next Ranged Weapon Attack hit by the character"
-1Reaction: 	  "1 Reaction: Expires after the attack that triggered the reaction is complete"
+1Hit:         "1 Hit: Expires on the next Spell/Weapon hit by the character"
+1Hit:msak:    "Melee Spell Attack: 1 Hit: Expires on the next Melee Spell Attack hit by the character"
+1Hit:mwak:    "Melee Weapon Attack: 1 Hit: Expires on the next Melee Weapon Attack hit by the character"
+1Hit:rsak:    "Ranged Spell Attack: 1 Hit: Expires on the next Ranged Spell Attack hit by the character"
+1Hit:rwak:    "Ranged Weapon Attack: 1 Hit: Expires on the next Ranged Weapon Attack hit by the character"
+1Reaction:    "1 Reaction: Expires after the attack that triggered the reaction is complete"
 1Spell:       "1 Spell: Expires on the next spell cast (ANY spell) by the character"
 DamageDealt:  "DamageDealt: Expires when the character deals damage"
 None:         ""
@@ -176,7 +176,7 @@ isAttacked:   "Is Attacked: Expires if the character is attacked"
 <summary><b>Actor Rolls an Ability Check</b></summary>
 
 ~~~javascript
-isCheck: 	 "Expires if the character rolls:  ability check"
+isCheck:     "Expires if the character rolls:  ability check"
 isCheck.cha: "Expires if the character rolls:  Charisma ability check"
 isCheck.con: "Expires if the character rolls:  Constitution ability check"
 isCheck.dex: "Expires if the character rolls:  Dexterity ability check"
@@ -190,7 +190,7 @@ isCheck.wis: "Expires if the character rolls:  Wisdom ability check"
 <summary><b>Actor is damaged, hit or moved</b></summary>
 
 ~~~javascript
-isDamaged: 	          "is Damaged: Expires if the character is damaged"
+isDamaged:            "is Damaged: Expires if the character is damaged"
 isDamaged.acid:       "is Damaged: Expires if the character is damaged: Acid"
 isDamaged.bludgeoning:"is Damaged: Expires if the character is damaged: Bludgeoning"
 isDamaged.cold:       "is Damaged: Expires if the character is damaged: Cold"
@@ -200,11 +200,11 @@ isDamaged.lightning:  "is Damaged: Expires if the character is damaged: Lightnin
 isDamaged.midi-none:  "is Damaged: Expires if the character is damaged: No Damage"
 isDamaged.necrotic:   "is Damaged: Expires if the character is damaged: Necrotic"
 isDamaged.piercing:   "is Damaged: Expires if the character is damaged: Piercing"
-isDamaged.poison: 	  "is Damaged: Expires if the character is damaged: Poison"
-isDamaged.psychic: 	  "is Damaged: Expires if the character is damaged: Psychic"
-isDamaged.radiant: 	  "is Damaged: Expires if the character is damaged: Radiant"
+isDamaged.poison:     "is Damaged: Expires if the character is damaged: Poison"
+isDamaged.psychic:    "is Damaged: Expires if the character is damaged: Psychic"
+isDamaged.radiant:    "is Damaged: Expires if the character is damaged: Radiant"
 isDamaged.slashing:   "is Damaged: Expires if the character is damaged: Slashing"
-isDamaged.thunder: 	  "is Damaged: Expires if the character is damaged: Thunder"
+isDamaged.thunder:    "is Damaged: Expires if the character is damaged: Thunder"
 isHit:                "is Hit: Expires if the character is hit by any weapon/spell attack even if the weapon/spell does not deal damage"
 isMoved:              "Moved: expires when the token is moved"
 ~~~
