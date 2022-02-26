@@ -38,6 +38,14 @@ I just (2/25/22) ran across this module and I am blown away.  It does some aweso
 
 ---
 
+## Creating GIF files
+
+There are many ways to make a GIF file (appropriate for use here). I've found this site to be easy to use to convert my screen recordings (Cmd-Opt-5) to GIF with optional compression added:
+
+[MOV To GIF Converter](https://image.online-convert.com/convert/mov-to-gif)
+
+---
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
