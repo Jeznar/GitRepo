@@ -1,0 +1,134 @@
+{
+  "name": "Sacrificial Summon",
+  "type": "feat",
+  "img": "Icons_JGB/Spells/Familiar_Cockatrice_Goofy.png",
+  "data": {
+    "description": {
+      "value": "<p>@Item[4wpls2MBWPMpJETd]{Find Familiar} as an action without expending a spell slot or using any material components.</p>\n<p>Your familiar appears<strong> within 10 feet</strong> of you and you take</p>\n<ul>\n<li><strong>1d4 + half of your occultist level necrotic damage</strong> and,</li>\n<li>your max hit points<strong> are reduced by the same</strong> amount until you complete a long rest.</li>\n</ul>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": 10,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d4+floor(@classes.occultist.levels/2)",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Sacrificial Summon",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Sacrificial_Summon_0.4\"\n/*****************************************************************************************\n * Implemention of sacrifical summon HomeBrewed forOlivia in the TiB Campaign.\n * \n * Spell Description: Cast Find Familiar as an action without expending a spell slot or \n * using any material components. When you cast Find Familiar in this way, you take \n * 1d4 + half of your occultist level necrotic damage and your max hit points are reduced \n * by the same amount until you complete a long rest.\n * \n * 02/16/22 0.4 Convert to new(ish) styles\n *****************************************************************************************/\nconst MINION = \"Flopsy\"\nconst lastArg = args[args.length - 1];\nconst itemD = lastArg.item;\nconst gameRound = game.combat ? game.combat.round : 0;\nlet damageDetail = await lastArg.damageDetail.find(i => i.type === \"necrotic\");\nlet damageTotal = (damageDetail.damage - (damageDetail.DR ?? 0)) * (damageDetail.damageMultiplier ?? 1);\njez.log(`Executing: ${MACRONAME}`,\n    ` Minion: `, MINION, ` actor: ${actor.name}`, actor, ` actor.uuid: `, actor.uuid,\n    ` ItemD: ${itemD.name}`, itemD, ` damageDetail: `, damageDetail, ` damageTotal: `, damageTotal);\n//----------------------------------------------------------------------------------------\n// Apply the debuff effect\n//\nlet effectData = {\n    label: itemD.name,\n    icon: itemD.img,\n    flags: { dae: { itemData: itemD, stackable: true, macroRepeat: \"none\", specialDuration: [\"longRest\"] } },\n    origin: actor.uuid,\n    disabled: false,\n    duration: { rounds: 99999, startRound: gameRound },\n    changes: [{ key: \"data.attributes.hp.max\", mode: 2, value: -damageTotal, priority: 20 }]\n};\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effectData] });\n//----------------------------------------------------------------------------------------\n// Create and post summary message\n//\nlet msg = `<b>${actor.name}</b> drains her life force by <b>${damageTotal}</b> to summon <b>${MINION}</b>.`;\nlet chatMessage = await game.messages.get(lastArg.itemCardId);\njez.addMessage(chatMessage, {color:\"purple\", fSize:15, msg:msg, tag:\"saves\" })\n// COOL-THING: USes Warp Gate to spawn a minion with out a pop up dialog\nawait warpgate.spawn(MINION);",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.AhMZTk9DI8VmIbJu"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
