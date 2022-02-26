@@ -8,15 +8,15 @@ This repository will contain my automated spells as I create new one or update t
 Since there should eventually be a enourmous number of spells in this repo, this document will list the spells and provide a link to the README for each spell level which contain additional notes.
 
 * [Cantrips](#cantrips)
-* [1st Level Spells](1st-level-spells)
-* [2nd Level Spells](2nd-level-spells)
-* [3rd Level Spells](3rd-level-spells)
-* [4th Level Spells](4th-level-spells)
-* [5th Level Spells](5th-level-spells)
-* [6th Level Spells](6th-level-spells)
-* [7th Level Spells](7th-level-spells)
-* [8th Level Spells](8th-level-spells)
-* [9th Level Spells](9th-level-spells)
+* [1st Level Spells](#1st-level-spells)
+* [2nd Level Spells](#2nd-level-spells)
+* [3rd Level Spells](#3rd-level-spells)
+* [4th Level Spells](#4th-level-spells)
+* [5th Level Spells](#5th-level-spells)
+* [6th Level Spells](#6th-level-spells)
+* [7th Level Spells](#7th-level-spells)
+* [8th Level Spells](#8th-level-spells)
+* [9th Level Spells](#9th-level-spells)
 
 ## [Cantrips](Cantrips/README_0.md)
 
