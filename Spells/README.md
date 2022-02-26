@@ -21,11 +21,11 @@ Since there should eventually be a enourmous number of spells in this repo, this
 ## [Cantrips](Cantrips)
 
 * [Agonizing Blast](Cantrips#agonizing-blast)
-* Druid Craft
-* Eldritch Blast
-* Light
-* Mage Hand
-* Prestidigitation
+* [Druid Craft](Cantrips#druid-craft)
+* [Eldritch Blast](Cantrips#eldritch-blast)
+* [Light](Cantrips#light)
+* [Mage Hand](Cantrips#mage-hand)
+* [Prestidigitation](Cantrips#prestidigitation)
 
 [*Back to Spell Level List*](#spells)
 
