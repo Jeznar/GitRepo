@@ -279,8 +279,6 @@ Since I may need to do some manual fixing after the spell, I setup the chat log 
 
 Home brewed ability for Arabelle that applies one or two debuffing affects for one round whne she hits. 
 
-![Wail_Chat_Card.png](Wail/Wail_Chat_Card.png)
-
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
 ---
