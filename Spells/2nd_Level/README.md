@@ -5,7 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Darkvision](#darkvision)
 * [Hold Person](#hold-person)
-* [Invisibility](#invisibiity)
+* [Invisibility](#invisibility)
 * [Knock](#knock)
 * [Locate Object](#locate-object)
 * [Mirror Image](#mirror-image)
