@@ -1,7 +1,7 @@
 # Class Features
 Abilities that are (at least mostly) Specific to a Given Class
 
-[Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md)
+[Link back to my Repo Listing](https://github.com/Jeznar/GitRepo)
 
 I anticipate a large number of features here, I will try to drop them into specific classes with a table of contents for classes and each class having its own list of features.
 
