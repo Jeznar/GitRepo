@@ -17,4 +17,4 @@ The repositories included under this umbrella are:
 * [**Items**](https://github.com/Jeznar/GitRepo/tree/main/Items) - Items that I felt a need to automate
 * [**jez-lib**](https://github.com/Jeznar/GitRepo/tree/main/jez-lib) - Jez's library of shared functions for use by macros
 * [**Spells**](https://github.com/Jeznar/GitRepo/tree/main/Spells) - Spells that I have automated and pushed to GitHub
-* [**Utility Macros**](https://github.com/Jeznar/GitRepo/tree/main/Utility-Macros) - Macros that handle random things to make my life easier
+* [**Utility Macros**](https://github.com/Jeznar/GitRepo/tree/main/Utility_Macros) - Macros that handle random things to make my life easier
