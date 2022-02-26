@@ -20,7 +20,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [Cantrips](Cantrips)
 
-* Agonizing Blast
+* [Agonizing Blast](Cantrips#agonizing-blast)
 * Druid Craft
 * Eldritch Blast
 * Light
