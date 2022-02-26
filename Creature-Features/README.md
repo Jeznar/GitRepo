@@ -11,7 +11,7 @@ I'll try to document functions as I add them to the repository.
 
 * **[Angelic Weapons](#angelic_weapons)** -- Bonus damage on all weapon hits.
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
-* **[Change Shape, Deva](#change-shape-deva) -- **The Abbot's** shape change ability.
+* **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
@@ -257,7 +257,7 @@ This is a homebrew freature I cooked up for Galahad (others might know him as La
 
 The macro manages immunities cause by saves, checks size differences, performs the appropriate save. Finally, it places the appropriate effect on the target.
 
-*[Back to the Table of Contents](#contents-of-this-repo)*
+*[Back to the Table of Contents](#abilities-in-this-repo)*
 
 ---
 
@@ -268,6 +268,16 @@ This ability (typically on a Banshee) hits like, well, harder than a Mac Truck. 
 Creatures that can't hear the **Wail** are supposed to be unaffected.  That's something I find unacceptably difficult to automate, so I'll fix those issues as they occur.  
 
 Since I may need to do some manual fixing after the spell, I setup the chat log to show the amount of damage done to each target, making such fixes fairly easy.  
+
+![Wail_Chat_Card.png](Wail/Wail_Chat_Card.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Wooden Sword**
+
+Home brewed ability for Arabelle that applies one or two debuffing affects for one round whne she hits. 
 
 ![Wail_Chat_Card.png](Wail/Wail_Chat_Card.png)
 
