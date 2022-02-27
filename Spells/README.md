@@ -52,6 +52,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Locate Object](2nd_Level#locate-object)
 * [Mirror Image](2nd_Level#mirror-image) (ASE)
 * [Ray of Enfeeblement](2nd_Level#ray-of-enfeeblement)
+* [Scorching Ray](2nd_Level#scorching-ray) (ASE)
 
 [*Back to Spell Level List*](#spells)
 

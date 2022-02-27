@@ -5,12 +5,13 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Darkness](#darkness) (ASE)
 * [Darkvision](#darkvision)
-* [Hold Person](#hold-person) (ASE)
+* [Hold Person](#hold-person)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
 * [Locate Object](#locate-object)
 * [Mirror Image](#mirror-image)
 * [Ray of Enfeeblement](#ray-of-enfeeblement)
+* [Scorching Ray](#scorching-ray) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -105,6 +106,24 @@ great effect against particularly strong and threating opponents.
 This implementation manages an effect marker, handles the per round save, and supplies a VFX.  It does not automate the damage reduction portion.  That will take quite a bit more effort and seems an unwise time investment at this point since the spell is rarely used.
 
 ![Ray_of_Enfeeblement/Ray_of_Enfeeblement.gif](Ray_of_Enfeeblement/Ray_of_Enfeeblement.gif)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Scorching Ray
+
+This spell is awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#scorching-ray).
+
+![scorching-ray](https://user-images.githubusercontent.com/32877348/139939004-1d55e877-89a7-486b-bdd8-c0660a3cfe15.gif)
+
+Notes from the author's wiki:
+
+* The caster will enter a special 'Targeting' mode as long as the target selection dialog is open.
+* In Targeting mode, left-click on a token to assign a ray to it.
+* alt+left-click to add ray with advantage, ctrl+left-click to add it with disadvantage
+* Right-click on a token, or click the '-' button next to it in the dialog to remove a ray
+* Click 'Done' to launch all rays at the assigned targets
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
