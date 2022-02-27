@@ -48,6 +48,8 @@ Note: concentration does not drop when one (or more of the invisible tokens lose
 
 ![Invisibility.gif](Invisibility/Invisibility.gif)
 
+Basically the same macro is used by [Greater Invisibility](../4th_Level#greater-invisibility)
+
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
 ---
