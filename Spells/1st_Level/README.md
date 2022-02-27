@@ -6,7 +6,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Detect Magic](#detect-magic)
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
-* [Magic Missle](#magic-missile)
+* [Magic Missle](#magic-missile) (ASE)
 * [Protection from Evil and Good](#protection-from-evil-and-good)
 * [Ray of Sickness](#ray-of-sickness)
 * [Sleep](#sleep)
@@ -67,13 +67,11 @@ I have kept my originial implementation in the repository in a subdirectory of t
 
 ### Magic Missle
 
-The macro implementing this one does nothing much more than figure out how many darts were cast and generates a VFX for each dart.  
+I just tossed my original implementaton in favor of the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#magic-missile)
 
-This spell is sometimes misunderstood. It allows darts to be split across targets but specifies that all impacts are simultaneous.  THat simultaneous bit implies only one concentration check per dart per target. The standard Foundry implementation scales incorrectly (the extra +1 ignores the dart count) and doesn't allow for splitting darts across targets. 
+This implmentation requires that all darts be targeted and then fires them all off in parallel.  This is correct per RAW and just a bit awesome.  
 
-I have implemented this spell by creating a "base" spell that dumps all darts into a single target and another that has a hard coded dart count ( a serious user of this spell may want multiple hard coded versions).  Either can be upcast.  If darts are being split, the hard coded version should be used once versus each target with only one of them deducting a spell slot. 
-
-![Magic Missile](Magic Missile/Magic_Missile.gif)
+![Magic Missile](Magic Missile/Magic_Missle.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 
