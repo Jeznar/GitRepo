@@ -84,6 +84,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 * [Chain Lightning](6th_Level#chain-lightning) (ASE)
 * [Eyebite](6th_Level#eyebite)
+* [Steelwind Strike](6th_Level#steelwind-strike) (ASE)
 
 [*Back to Spell Level List*](#spells)
 
