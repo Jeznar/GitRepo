@@ -13,7 +13,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ### Greater Invisibility
 
-This is just a minor reskinning of [Invisibility](#invisibility).  It has a 10 round duration and does not drop when the invisible token attacks or casts a spell.
+This is just a minor reskinning of [Invisibility](../2nd_Level#invisibility).  It has a 10 round duration and does not drop when the invisible token attacks or casts a spell.
 
 Curiously, it quietly supports upcasting, in the same manner as the Invisibility spell.  It being easier than havimg people target correctly than removing the option. 
 
