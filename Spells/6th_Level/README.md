@@ -4,6 +4,7 @@ This repository will contain my automated 6th level spells as I create new or up
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Eyebite](#eyebite)
+* [Chain Lightning](#chain-lightning) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -22,6 +23,18 @@ Each of the debuffs has a unique exit condition which is automated by this macro
 ![Eyebite_Dialogs.png](eyebite/Eyebite_Dialogs.png)
 
 The debuffs are managed with the Combat Utility Belt (CUB) module, so they can be seen in the debuff status windows.
+
+[*Back to 6th Level Spell List*](#6th-level-spells)
+
+---
+
+### Chain Lightning
+
+This spell is awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki).
+
+![chain-lightning](https://user-images.githubusercontent.com/32877348/141662352-4d909331-5cd0-43e7-ab6f-4cd5624f97ab.gif)
+
+The only change I made was a slight tweak to the random delay range.
 
 [*Back to 6th Level Spell List*](#6th-level-spells)
 
