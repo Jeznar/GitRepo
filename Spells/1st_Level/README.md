@@ -71,7 +71,7 @@ I just tossed my original implementaton in favor of the [Advanced Spell Effects 
 
 This implmentation requires that all darts be targeted and then fires them all off in parallel.  This is correct per RAW and just a bit awesome.  
 
-![Magic Missile](Magic\ Missile/Magic_Missle.gif)
+![Magic Missile](Magic_Missile/Magic_Missle.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 
