@@ -3,6 +3,7 @@ This repository will contain my automated 3rd level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Animate Dead](#animate-dead)
 * [Clairvoyance](#clairvoyance)
 * [Counterspell](#counterspell)
 * [Lightning Bolt](#lightning-bolt)
@@ -12,6 +13,21 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ## Spell Notes
 
+### Animate Dead
+
+This spell is offered in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#animate-dead), when I tried to use it I ran into conflicts with [Auomated Evocations](https://github.com/theripper93/automated-evocations) module which I have been using for a while now.  I ended up opting to keep the AE implementation which works just fine and doesn't require (or check for) nearby corpses. That seems like a better choice as I don't want to force the GM to litter dead tokens everywhere they should be.  
+
+![animate-dead](Animate_Dead/Animate_Undead.gif)
+
+It does seem like the summoned tokens need a few moments to *settle* into the scene.  If they are moved too soon, Token Attacher will get all grumpy and the following command may need to run to fix it:
+
+~~~javascript
+tokenAttacher.deleteMissingLinks()
+~~~
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
 ### Clairvoyance
 
 Nothing more than a tested SRD implmentation. It will be handled between players and GM.  Nothing special.

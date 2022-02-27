@@ -6,7 +6,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Contact Other Plane](#contact-other-plane)
 * [Scrying](#scrying)
 * [Steelwind Strike](#steelwind-strike) (ASE)
-* [Wall of Force](#wall-of-force) (ASE)
+# * [Wall of Force](#wall-of-force) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
