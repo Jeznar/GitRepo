@@ -5,7 +5,6 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Eyebite](#eyebite)
 * [Chain Lightning](#chain-lightning) (ASE)
-* [Steelwind Strike](#steelwind-strike) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -36,18 +35,6 @@ This spell is awesome as built in the [Advanced Spell Effects Module](https://gi
 ![chain-lightning](https://user-images.githubusercontent.com/32877348/141662352-4d909331-5cd0-43e7-ab6f-4cd5624f97ab.gif)
 
 The only change I made was a slight tweak to the random delay range.
-
-[*Back to 6th Level Spell List*](#6th-level-spells)
-
----
-
-### Steelwind Strike
-
-This spell looks awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#steel-wind-strike).
-
-![steelwind-strike](https://user-images.githubusercontent.com/32877348/137191296-88113589-a903-46bb-bb72-03b781f8a4b2.gif)
-
-As it seems unlikely to be used in my current game, I have simply loaded what the module offers and gave it a super quick spin...although, perhaps a certain Vampire may prep this spell after seeing this spell in action. 
 
 [*Back to 6th Level Spell List*](#6th-level-spells)
 

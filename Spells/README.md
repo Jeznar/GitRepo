@@ -77,6 +77,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 * [Contact Other Plane](5th_Level#contact-other-plane)
 * [Scrying](5th_Level#scrying)
+* [Steelwind Strike](5th_Level#steelwind-strike) (ASE)
 
 [*Back to Spell Level List*](#spells)
 
@@ -84,7 +85,6 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 * [Chain Lightning](6th_Level#chain-lightning) (ASE)
 * [Eyebite](6th_Level#eyebite)
-* [Steelwind Strike](6th_Level#steelwind-strike) (ASE)
 
 [*Back to Spell Level List*](#spells)
 
