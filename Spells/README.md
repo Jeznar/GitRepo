@@ -45,6 +45,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [2nd Level Spells](2nd_Level)
 
+* [Darkness](2nd_Level#darkness)
 * [Hold Person](2nd_Level#hold-person)
 * [Invisibility](2nd_Level#invisibility)
 * [Knock](2nd_Level#knock)

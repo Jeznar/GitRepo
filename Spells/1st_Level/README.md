@@ -55,7 +55,7 @@ It uses a fof graphic and places walls to clock vision.
 
 ![fog-cloud](https://user-images.githubusercontent.com/32877348/137189518-fbc8a6c7-a766-49cf-83cd-702562b3a8bd.gif)
 
-As this spell is not normally attachable to an object it is a bit simpilier than its close cousin, [Darkness]([Darkness](../2nd_Level/#darkness)). 
+As this spell is not normally attachable to an object it is a bit simpilier than its close cousin, [Darkness](../2nd_Level/#darkness)). 
 
 I have kept my originial implementation in the repository in a subdirectory of this spell.
 
