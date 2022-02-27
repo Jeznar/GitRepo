@@ -4,6 +4,7 @@ This repository will contain my automated 3rd level spells as I create new or up
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Animate Dead](#animate-dead)
+* [Call Lightning](#call-lightning) (ASE)
 * [Clairvoyance](#clairvoyance)
 * [Counterspell](#counterspell)
 * [Lightning Bolt](#lightning-bolt)
@@ -28,6 +29,23 @@ tokenAttacher.deleteMissingLinks()
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
 ---
+
+### Call Lightning
+
+This spell is nifty as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#call-lightning).
+
+It first places a large storm cloud and then provides the token with a temporary at-will ability to call down a lightning strike.
+
+![call-lightning](https://user-images.githubusercontent.com/32877348/137196373-48868d28-e341-4c9d-83e0-71b786c7b58a.gif)
+
+When the spell completes, the GM will need to remove the summoned storm cloud as appropriate.
+
+I have left my original implementation in the repo as insurance against the module version going sideways in the future.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
 ### Clairvoyance
 
 Nothing more than a tested SRD implmentation. It will be handled between players and GM.  Nothing special.

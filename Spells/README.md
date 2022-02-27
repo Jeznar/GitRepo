@@ -60,6 +60,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 ## [3rd Level Spells](3rd_Level)
 
 * [Animate Dead](3rd_Level#animate-dead)
+* [Call Lightning](3rd_Level#call-lightning) (ASE)
 * [Clairvoyance](3rd_Level#clairvoyance)
 * [Counterspell](3rd_Level#counterspell)
 * [Lightning Bolt](3rd_Level#lightning-bolt)
