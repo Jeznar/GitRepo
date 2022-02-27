@@ -6,6 +6,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Contact Other Plane](#contact-other-plane)
 * [Scrying](#scrying)
 * [Steelwind Strike](#steelwind-strike) (ASE)
+* [Wall of Force](#wall-of-force) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -53,6 +54,24 @@ This spell looks awesome as built in the [Advanced Spell Effects Module](https:/
 
 As it seems unlikely to be used in my current game, I have simply loaded what the module offers and gave it a super quick spin...although, perhaps a certain Vampire may prep this spell after seeing this spell in action. 
 
-[*Back to 6th Level Spell List*](#6th-level-spells)
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Wall of Force
+
+This spell looks interseting as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#wall-of-force).
+
+![steelwind-strike](https://user-images.githubusercontent.com/32877348/151714360-7656a4bc-fcbf-4c81-8d8b-b98b2f532a03.gif)
+
+In my testing, some manual cleanup was needed when the spell completes, but on balance, it seems like a very useful implementation.
+
+Here are the author's points from his wiki:
+
+* There are options for premade shapes, as well as manual placement.
+* When placing the panels manually, move the mouse around to see the eligible spots you can place the next panel at.
+* There are template override settings in the module settings that apply to the templates set by this spell
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
 
 ---
