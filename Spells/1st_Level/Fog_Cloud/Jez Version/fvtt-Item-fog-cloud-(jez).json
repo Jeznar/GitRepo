@@ -1,0 +1,179 @@
+{
+  "name": "Fog Cloud (Jez)",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/fog-water-air-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You create a 20-foot-radius sphere of fog centered on a point within range. The sphere spreads around corners, and its area is @JournalEntry[XfpVN7dTzsmDOXUT]{Heavily Obscured}. It lasts for the duration or until a wind of moderate or greater speed (at least 10 miles per hour) disperses it.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the radius of the fog increases by 20 feet for each slot level above 1st.</p>\n<p><strong>FoundryVTT: </strong>The cloud is placed as a tile.  It must be manually removed from the foreground layer.</p>",
+      "chat": "<p>You create a 20-foot-radius sphere of fog centered on a point within range. The sphere spreads around corners, and its area is heavily obscured. It lasts for the duration or until a wind of moderate or greater speed (at least 10 miles per hour) disperses it.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the radius of the fog increases by 20 feet for each slot level above 1st.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 243",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": 20,
+      "width": null,
+      "units": "ft",
+      "type": "sphere"
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 137872,
+      "definitionId": 2112,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 243,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Control",
+        "Environment"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_y8e7215chl"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.tT1rbjwSezD6YcG3"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Fog Cloud",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Fog_Cloud_0.1\"\n/*****************************************************************************************\n * Slap a text message on the item card indicating effects of fog cloud.\n * \n * Spell Description: You create a 20-foot-radius sphere of fog centered on a point within \n *   range. The sphere spreads around corners, and its area is heavily obscured. It lasts \n *   for the duration or until a wind of moderate or greater speed (at least 10 miles per \n *   hour) disperses it.\n * \n *   At Higher Levels. When you cast this spell using a spell slot of 2nd level or higher, \n *   the radius of the fog increases by 20 feet for each slot level above 1st.\n * \n * 12/11/21 0.1 Creation of Macro\n *****************************************************************************************/\nconst DEBUG = false;\nlet msg = \"\";\nif(DEBUG) {\n    console.log(`************ Executing ${MACRONAME} ****************`)\n    console.log(`args[0]: `,args[0]);\n}\n\nmsg = `A <b>sphere of thick billowing fog</b> @JournalEntry[XfpVN7dTzsmDOXUT]{heavily obscures} \nan area, creatures within it, or trying to look through it are effectively\n@JournalEntry[lIPpTxLdMS9z2G94]{blinded}.`\n\nconsole.log(`************ Terminating ${MACRONAME} ****************`)\npostResults(msg);\nreturn;\n\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\n async function postResults(resultsString) {\n    const lastArg = args[args.length - 1];\n\n    /***************************************** \n     * Some Special div's per Posney's docs\n     *  - midi-qol-attack-roll\n     *  - midi-qol-damage-roll\n     *  - midi-qol-hits-display\n     *  - midi-qol-saves-display\n     * \n     * One other that I have been using\n     *  - midi-qol-other-roll\n    ******************************************/\n\n    const DIV = \"midi-qol-damage-roll\"; \n\n    let chatMessage = game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    if (DEBUG) console.log(`chatMessage: `,chatMessage);\n    //const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n    //const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${resultsString}`;\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

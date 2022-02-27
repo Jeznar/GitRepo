@@ -5,6 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Detect Magic](#detect-magic)
 * [Entangle](#entangle)
+* [Fog Cloud](#fog-cloud) (ASE)
 * [Magic Missle](#magic-missile)
 * [Protection from Evil and Good](#protection-from-evil-and-good)
 * [Ray of Sickness](#ray-of-sickness)
@@ -41,6 +42,22 @@ For a first level spell, this one was a doozy.  When invoked, this macro will cr
 This macro uses three files, the main entangle.js that is used as a DAE OnUse ItemMacro and two helper macros that are called as *World Macros* by the modified effects.  The helper files (entangle_helper.js and entagle_helper2.js both need to be accessible in the macros repository as script macros.  The main macro (entangle.js) should be setup as am ItemMacro.
 
 ![Entangle/Entangle.gif](Entangle/Entangle.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Fog Cloud
+
+This spell is interesting as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#fog-cloud).  I have kept it as provided.
+
+It uses a fof graphic and places walls to clock vision. 
+
+![fog-cloud](https://user-images.githubusercontent.com/32877348/137189518-fbc8a6c7-a766-49cf-83cd-702562b3a8bd.gif)
+
+As this spell is not normally attachable to an object it is a bit simpilier than its close cousin, [Darkness]([Darkness](../2nd_Level/#darkness)). 
+
+I have kept my originial implementation in the repository in a subdirectory of this spell.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

@@ -18,7 +18,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ### Darkness
 
-This spell is intersting as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki).
+This spell is interesting as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki).
 
 ![chain-lightning](https://user-images.githubusercontent.com/32877348/137188001-c6e00842-38d4-4f99-af21-38a5744c24e9.gif)
 
@@ -26,7 +26,9 @@ If the darkness is cast on a token, the Token Attacher UI must be used manually 
 
 ![Darkness_ScreenGrab.png](Darkness/Darkness_ScreenGrab.png)
 
-[*Back to 6th Level Spell List*](#6th-level-spells)
+Operationally, this spell is similar to [Fog Cloud](../1st_Level/#fog-cloud)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
 
 ---
 
