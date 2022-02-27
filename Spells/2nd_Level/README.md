@@ -4,7 +4,7 @@ This repository will contain my automated 2nd level spells as I create new or up
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Darkvision](#darkvision)
-* [Hold Person](#hold-person)
+* [Hold Person](#hold-person) (ASE)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
 * [Locate Object](#locate-object)
