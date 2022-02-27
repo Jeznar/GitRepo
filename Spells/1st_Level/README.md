@@ -12,6 +12,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Sleep](#sleep)
 * [Shield](#shield)
 * [Tasha's Caustic Brew](#tasha-caustic-brew)
+* [Witch Bolt](#witch-bolt) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -51,11 +52,12 @@ This macro uses three files, the main entangle.js that is used as a DAE OnUse It
 
 This spell is interesting as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#fog-cloud).  I have kept it as provided.
 
-It uses a fof graphic and places walls to clock vision. 
+It uses a fog graphic and places walls to clock vision. 
 
 ![fog-cloud](https://user-images.githubusercontent.com/32877348/137189518-fbc8a6c7-a766-49cf-83cd-702562b3a8bd.gif)
 
-As this spell is not normally attachable to an object it is a bit simpilier than its close cousin, [Darkness](../2nd_Level/#darkness)). 
+As this spell is not normally attachable to an object it is a bit simpilier than its close cousin, [Darkness]
+(../2nd_Level/#darkness)). 
 
 I have kept my originial implementation in the repository in a subdirectory of this spell.
 
@@ -126,6 +128,21 @@ This implementation ignores the ability to remove the debuff from nearby friendl
 The macro underlying this was written by Crymic.  I've only added a bit of documention. 
 
 ![Caustic Brew](Tasha's Caustic Brew/Caustic_Brew_Vid.mov)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Witch Bolt
+
+This spell is amazing as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#witch-bolt).  I have kept it as provided.
+
+![witch-bolt](https://user-images.githubusercontent.com/32877348/138227063-f86d210f-89c4-4fd1-8e9e-80470326529d.gif)
+
+Here are notes from the author's Wiki:
+
+* The continuous stream will break and the spell will end if the caster and target are more than 30ft away.
+* Each turn, only the owner of the caster will get a prompt to activate the witch bolt. This will be the GM for NPC tokens, and only players for player owned tokens.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 
