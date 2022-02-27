@@ -48,7 +48,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Invisibility](2nd_Level#invisibility)
 * [Knock](2nd_Level#knock)
 * [Locate Object](2nd_Level#locate-object)
-* [Mirror Image](2nd_Level#mirror-image)
+* [Mirror Image](2nd_Level#mirror-image) (ASE)
 * [Ray of Enfeeblement](2nd_Level#ray-of-enfeeblement)
 
 [*Back to Spell Level List*](#spells)
