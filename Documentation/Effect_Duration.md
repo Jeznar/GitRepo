@@ -4,8 +4,8 @@ I've spent more time than I'd like to admit puzzling over the multiple ways to s
 In my setup I see four different ways to specify the duration of an effect:
 
 1. [Seconds (6 per combat round in D&D 5E)](#effect-duration---seconds)
-1. [Rounds (combat rounds)](effect-duration---rounds)
-1. [Turns (combat turns?)](effect-duration---turns)
+1. [Rounds (combat rounds)](#effect-duration---rounds)
+1. [Turns (combat turns?)](#effect-duration---turns)
 1. [Special](#special-duration)
 
 The following image shows where the four settings appear on the DAE Duration screen. Each of the settings can terminante an effect, with the first one to terminate a given effect having effect.  Knowing what each means should be really helpful in picking the correct settings.
