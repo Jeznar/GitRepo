@@ -6,7 +6,7 @@ In my setup I see four different ways to specify the duration of an effect:
 1. [Seconds (6 per combat round in D&D 5E)](#effect-duration---seconds)
 1. [Rounds (combat rounds)](#effect-duration---rounds)
 1. [Turns (combat turns?)](#effect-duration---turns)
-1. [Special](#special-duration)
+1. [Special Duration](#special-duration)
 
 The following image shows where the four settings appear on the DAE Duration screen. Each of the settings can terminante an effect, with the first one to terminate a given effect having effect.  Knowing what each means should be really helpful in picking the correct settings.
 
@@ -100,6 +100,8 @@ async function durationRounds(rnds, iconNum) {
 ## Effect Duration - Turns
 
 This seems to be a curious setting in my environment.  It is triggered by the number of *turns* that pass after it is defined, that is, turns of all participants in combat; or, the start of the next round of combat.  If an effect should only last through the next few actor's turns, I suppose it might be useful, but since it automatically clears at the start of the next round, it comes across as essentially useless to me, a trap for my mind that I will endeavor to avoid.
+
+[*Back to the top*](#effect-duration)
 
 ## Special Duration
 
