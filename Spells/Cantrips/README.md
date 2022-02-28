@@ -3,6 +3,7 @@ This repository will contain my automated Cantrips as I create new or update exi
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Acid Splash](#acid-splash)
 * [Agonizing Blast](#agonizing-blast)
 * [Druid Craft](#druid-craft)
 * [Eldritch Blast](#eldritch-blast)
@@ -13,6 +14,14 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 [*Back to List of All Spells*](../README.md)
 
 ## Spell Notes
+
+### Acid Splash
+
+This spell is configured using Automated Animations to add a green explosion on the target(s).  No error checking or macro is provided.
+
+**Reminder**: For NPC's cantrips need to be scaled manually as they have no level for automated scaling.
+
+![acid-splash](Acid_Splash/Acid_Splash.gif)
 
 ### Agonizing Blast
  

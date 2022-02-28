@@ -20,6 +20,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [Cantrips](Cantrips)
 
+* [Acid Splash](Cantrips#acid-splash)
 * [Agonizing Blast](Cantrips#agonizing-blast)
 * [Druid Craft](Cantrips#druid-craft)
 * [Eldritch Blast](Cantrips#eldritch-blast)
