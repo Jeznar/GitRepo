@@ -9,6 +9,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Counterspell](#counterspell)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
+* [Thunder Step](#thunder-step)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -85,6 +86,24 @@ It will then render the graphic where the targeting template had been placed.  W
 Here's what the spell looks like on the random battle map.
 
 ![Magic_Circle.gif](Magic_Circle/Magic_Circle.gif)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Thunder Step
+
+This one operates as two, sometimes three part exectution. 
+
+1. The caster needs to use the **Thunder Step (Teleportation)** spell.  It will show the allowed area (which is huge -- 300 foot radius) for teleportaion.  The user then clicks the destimation and will go poof to the new spot.
+2. Optionally, one freindly creature who was next to the caster can be moved with the caster.  This will need to be done by the token owner of the GM, manually.
+3. Finally, the caster should use the **Thunder Step (Damage)** spell, making sure not to use a spell slot.  They targeting marker needs to be clicked into the space vacated by the caster. It will then cause the appropriate damage.
+
+All of the above is done without a macro, just **Automated Animations** and standard FoundryVTT settings.
+
+![Thunder_Step.gif](Thunder_Step/Thunder_Step.gif)
+
+I have looked at the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#thunder-step) implmenation of this spell.  It is a smoother approach with niftier graphics but depennds on correct marking of tokens friendly status and caused multiple *ghost* moves of the casting token after spell completion.  I don't know what it was doing actually, but I don't see further investigation as worthwhile -- sticking with my three step implementation that I can debug as required. 
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
