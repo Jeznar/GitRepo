@@ -15,10 +15,12 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 ## Spell Notes
 
 ### Agonizing Blast
-
+ 
 This spell is *very* similar to [eldritch blast](#eldritch-blast).  The differences are adding the casters spell modifier to the damage roll and a different, darker, set of animations.
 
 ![Agonizing Blast](Agonizing_Blast/Agonizing_Blast.gif)
+
+This spell is available through [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#eldritch-blast) and a configuartion check box to make [Eldritch Blast](#eldritch-blast) into Agonizing blast.  As discussed in my Eldritch Blast notes below, I am sticking with mu implementation.
 
 [*Back to Cantrips List*](#cantrips)
 
@@ -42,6 +44,7 @@ It has an OnUse ItemMacro that implmenets a visual effect (VFX) by picking from 
 
 At higher caster levels (5+) this spell is supposed to have seperate beams that each have a to-hit roll, and I presume chance to break concentration.  I've chosen to implment this by making the spell itself not scale, the player simply needs to repeat the attack an appropriate number of times.
 
+This spell is included in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#eldritch-blast) and works very similarly to the Magic Missle implementation with a targeting mode and then simultanous firing of bolts.  I'm less happy with that for this spell as I allow it to hit the same target multiple times possibly triggering multiple concentartion checks etc.  [RAW](https://www.dndbeyond.com/spells/eldritch-blast) states that the player should *Make a separate attack roll for each beam* which isn't what ASE is doing (I think). So I am sticking with my implmentation.
 
 [*Back to Cantrips List*](#cantrips)
 
