@@ -5,6 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Darkness](#darkness) (ASE)
 * [Darkvision](#darkvision)
+* [Enlarge/Reduce](#enlarge-reduce)
 * [Hold Person](#hold-person)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
@@ -38,6 +39,16 @@ Operationally, this spell is similar to [Fog Cloud](../1st_Level/#fog-cloud)
 ### Darkvision
 
 Places a DAE effect on the beneficiary that provides dim light vision out to 60 feet.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Enlarge/Reduce
+
+
+
+![enlarge-reduce](Enlarge_Reduce/Enlarge-Reduce.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
