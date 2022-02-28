@@ -5,7 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Darkness](#darkness) (ASE)
 * [Darkvision](#darkvision)
-* [Enlarge/Reduce](#enlarge-reduce)
+* [Enlarge/Reduce](#enlargereduce)
 * [Hold Person](#hold-person)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
@@ -46,7 +46,7 @@ Places a DAE effect on the beneficiary that provides dim light vision out to 60 
 
 ### Enlarge/Reduce
 
-
+This spell uses an OnUse ItemMacro to pop a dialog and ask if the target wants to make a save.  An acceptance of the effect or a failed save the effect is applied and the token size is adjusted in the scene.  WHen the spell expires, the size returns to normal -- or at least it should. ;-)
 
 ![enlarge-reduce](Enlarge_Reduce/Enlarge-Reduce.gif)
 
