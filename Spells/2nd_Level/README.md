@@ -13,6 +13,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Moonbeam](#moonbeam) (ASE)
 * [Ray of Enfeeblement](#ray-of-enfeeblement)
 * [Scorching Ray](#scorching-ray) (ASE)
+* [Spiritual Weapon](#spiritual-weapon)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -143,6 +144,22 @@ Notes from the author's wiki:
 * alt+left-click to add ray with advantage, ctrl+left-click to add it with disadvantage
 * Right-click on a token, or click the '-' button next to it in the dialog to remove a ray
 * Click 'Done' to launch all rays at the assigned targets
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Spiritual Weapon
+
+This spell is implmented using [Automated Evocations](https://github.com/theripper93/automated-evocations), while not ideal it gets the job done.
+
+AE's implementation requires an acror named **Spiritual Weapon** to exist which will be summoned by a world macro named **AE_Companion_Macro(Spiritual Weapon)**.  I have modified the macro to rename the summoned token, prefixing the standard name with the name of the owner.  The summoned weapon can then be used to *attack* having had its modifiers adjusted to the summoner. 
+
+The part I don;t like is the appearance of a selection dialog with exactly one choice.  I expect I can fix that to not appear, but I haven't invested the time. 
+
+![spiritual-weapon](Spiritual_Weapon/Spiritual_Weapon.gif)
+
+There is an [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#spiritual-weapon) implmentation, but I'm happy enough with what I have to just let it stand. 
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
