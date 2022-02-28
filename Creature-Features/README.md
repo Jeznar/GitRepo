@@ -10,6 +10,7 @@ I'll try to document functions as I add them to the repository.
 ## Abilities in this Repo
 
 * **[Angelic Weapons](#angelic_weapons)** -- Bonus damage on all weapon hits.
+* **[Blessing of the Mother Night](#blessing-of-the-mother-night)** -- Baba Lysaga ability
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
 * **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
@@ -37,6 +38,14 @@ I'll try to document functions as I add them to the repository.
 This ability requires only a bit of DAE configuration to add 4d8 Radiant damage to all MWAK and RWAK actions for an actor.  It does not add the magical characteristic, I don't know how to do that easily, so I am leaving it for manual twiddling in the (presumably) rare situations where it would matter.  
 
 ![Angelic_Weapons/Angelic_Weapons_DAE.png](Angelic_Weapons/Angelic_Weapons_DAE.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Blessing of the Mother Night**
+
+Simple ability, only needs a description set.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
