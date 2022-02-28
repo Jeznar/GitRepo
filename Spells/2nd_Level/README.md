@@ -103,7 +103,7 @@ I am implmenting this one by using [Advanced Spell Effects Module](https://githu
 
 This spell appears to be great as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#moonbeam). Other than leaving what seem like persistent ghost images of the beam -- they can be cleared by a reload.
 
-![moonbeam](Moonbeam (ASE)/Moonbeam.gif)
+![moonbeam](Moonbeam(ASE)/Moonbeam.gif)
 
 Notes from the author's wiki:
 
