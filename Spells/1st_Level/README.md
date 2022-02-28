@@ -28,6 +28,8 @@ Simple macro that places a persistent VFX attached to the caster that indicates 
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 
+This spell is included in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#detect-magic) and it is rather awesome.  Unfortunately, it assumes all detectable things will be tagged which is too much effort for me, so I am sticking with my simplier visual only build.
+
 ---
 
 ### Entangle
