@@ -103,6 +103,7 @@ This one operates as two, sometimes three part exectution.
 All of the above is done without a macro, just **Automated Animations** and standard FoundryVTT settings.
 
 ![Thunder_Step.gif](Thunder_Step/Thunder_Step.gif)
+https://github.com/Jeznar/GitRepo/blob/main/Spells/3rd_Level/Thunder_Step/Thunder_Step.gif
 
 I have looked at the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#thunder-step) implmenation of this spell.  It is a smoother approach with niftier graphics but depennds on correct marking of tokens friendly status and caused multiple *ghost* moves of the casting token after spell completion.  I don't know what it was doing actually, but I don't see further investigation as worthwhile -- sticking with my three step implementation that I can debug as required. 
 
