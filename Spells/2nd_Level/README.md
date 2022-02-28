@@ -155,7 +155,7 @@ This spell is implmented using [Automated Evocations](https://github.com/theripp
 
 AE's implementation requires an acror named **Spiritual Weapon** to exist which will be summoned by a world macro named **AE_Companion_Macro(Spiritual Weapon)**.  I have modified the macro to rename the summoned token, prefixing the standard name with the name of the owner.  The summoned weapon can then be used to *attack* having had its modifiers adjusted to the summoner. 
 
-The part I don;t like is the appearance of a selection dialog with exactly one choice.  I expect I can fix that to not appear, but I haven't invested the time. 
+The part I don't like is the appearance of a selection dialog with exactly one choice.  I expect I can fix that to not appear, but I haven't invested the time. 
 
 ![spiritual-weapon](Spiritual_Weapon/Spiritual_Weapon.gif)
 

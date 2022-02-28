@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
 * [Thunder Step](#thunder-step)
+* [Vampiric Touch](#vampiric-touch)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -43,7 +44,7 @@ When the spell completes, the GM will need to remove the summoned storm cloud as
 
 I have left my original implementation in the repo as insurance against the module version going sideways in the future.
 
-[*Back to 2nd Level Spell List*](#2nd-level-spells)
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
 
 ---
 
@@ -104,6 +105,18 @@ All of the above is done without a macro, just **Automated Animations** and stan
 ![Thunder_Step.gif](Thunder_Step/Thunder_Step.gif)
 
 I have looked at the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#thunder-step) implmenation of this spell.  It is a smoother approach with niftier graphics but depennds on correct marking of tokens friendly status and caused multiple *ghost* moves of the casting token after spell completion.  I don't know what it was doing actually, but I don't see further investigation as worthwhile -- sticking with my three step implementation that I can debug as required. 
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Vampiric Touch
+
+This spell is nifty as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#vampiric-touch).
+
+It heals the using token and creats an at-will ability on that token for subsequent rounds.  Exactly what I'd like to see it do.  
+
+![vampiric-touch](https://user-images.githubusercontent.com/32877348/138579473-f5dcefd9-4a90-4108-ab53-f8dfa0a2a940.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
