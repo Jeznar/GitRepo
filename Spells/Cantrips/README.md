@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Agonizing Blast](#agonizing-blast)
 * [Druid Craft](#druid-craft)
 * [Eldritch Blast](#eldritch-blast)
+* [Fire Bolt](#fire-bolt)
 * [Light](#light)
 * [Mage Hand](#mage-hand)
 * [Prestidigitation](#prestidigitation)
@@ -56,6 +57,16 @@ At higher caster levels (5+) this spell is supposed to have seperate beams that 
 This spell is included in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#eldritch-blast) and works very similarly to the Magic Missle implementation with a targeting mode and then simultanous firing of bolts.  I'm less happy with that for this spell as I allow it to hit the same target multiple times possibly triggering multiple concentartion checks etc.  [RAW](https://www.dndbeyond.com/spells/eldritch-blast) states that the player should *Make a separate attack roll for each beam* which isn't what ASE is doing (I think). So I am sticking with my implmentation.
 
 [*Back to Cantrips List*](#cantrips)
+
+---
+
+### Fire Bolt
+
+Standard Fire Bolt setup plus a simple onuse ItemMacro to provide a bit of visual effects.
+
+**Reminder**: For NPC's cantrips need to be scaled manually as they have no level for automated scaling.
+
+![fire-bolt](Fire_Bolt/Fire_Bolt.gif)
 
 ---
 

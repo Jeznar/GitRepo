@@ -1,0 +1,203 @@
+{
+  "name": "Fire Bolt",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/fireball-red-1.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You hurl a mote of fire at a creature or object within range. Make a ranged spell attack against the target. On a hit, the target takes <strong>1d10 fire damage.</strong> A flammable object hit by this spell ignites if it isn't being worn or carried.</p>\n<p>This spell's damage<strong> increases by 1d10 </strong>when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).</p>",
+      "chat": "<p>You hurl a mote of fire at a creature or object within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 fire damage. A flammable object hit by this spell ignites if it isn't being worn or carried.</p>\n<p>This spell's damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 242",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d10[fire]",
+          "fire"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "cantrip",
+      "formula": "1d10"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 136818,
+      "definitionId": 2103,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 242,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_68b6mer7s0n"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "ItemMacro"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.1eANhQ4Bn1rABIPo"
+    },
+    "autoanimations": {
+      "killAnim": false,
+      "options": {
+        "ammo": false,
+        "overrideAuto": false
+      },
+      "override": true,
+      "allSounds": {
+        "item": {
+          "enableAudio": false
+        }
+      },
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      }
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Fire Bolt",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "// https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/MidiQOL-&-JB2A-Fire-Bolt\n\nlet tokenD = canvas.tokens.get(args[0].tokenId);\n\nnew Sequence()\n    .effect()\n        .file(\"jb2a.fire_bolt.orange\")\n        .scale(1.75)\n        .atLocation(tokenD)\n        .reachTowards(args[0].targets[0])\n        .missed(args[0].hitTargets.length === 0)\n    .play()",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

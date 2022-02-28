@@ -24,6 +24,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Agonizing Blast](Cantrips#agonizing-blast)
 * [Druid Craft](Cantrips#druid-craft)
 * [Eldritch Blast](Cantrips#eldritch-blast)
+* [Fire Bolt](Cantrips#fire-bolt)
 * [Light](Cantrips#light)
 * [Mage Hand](Cantrips#mage-hand)
 * [Prestidigitation](Cantrips#prestidigitation)
