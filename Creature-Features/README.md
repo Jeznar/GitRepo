@@ -23,6 +23,7 @@ I'll try to document functions as I add them to the repository.
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
+* **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
 * **[Threat Display](#threat-display)** -- Potential Frightened Application  
@@ -223,6 +224,14 @@ Here's the decription of the ability:
 
 This ability has the user place a targeting, makes con checks for those in the area of effect (not necessarily DC13, it is calculated, so different stats and CR can change it). It also uses DAE's on each to make saving throws at appropriate times for those poisoned. 
 
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Shapechange, Baba Lysaga**
+
+Simple configuration of the ability with reminder to use the drop to shift feature of FoundryVTT.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
