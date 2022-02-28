@@ -68,7 +68,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Lightning Bolt](3rd_Level#lightning-bolt)
 * [Magic Circle](3rd_Level#magic-circle)
 * [Thunder Step](3rd_Level#thunder-step)
-* [Vampiric Touch](3rd_Level#vampiric-touch)
+* [Vampiric Touch](3rd_Level#vampiric-touch) (ASE)
 
 [*Back to Spell Level List*](#spells)
 

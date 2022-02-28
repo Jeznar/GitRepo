@@ -10,7 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
 * [Thunder Step](#thunder-step)
-* [Vampiric Touch](#vampiric-touch)
+* [Vampiric Touch](#vampiric-touch) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
