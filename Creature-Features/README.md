@@ -23,6 +23,7 @@ I'll try to document functions as I add them to the repository.
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
+* **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
 * **[Threat Display](#threat-display)** -- Potential Frightened Application  
 * **[Wail](#wail)** -- Banshee's wail that can drop things in their tracks.
@@ -222,6 +223,19 @@ Here's the decription of the ability:
 
 This ability has the user place a targeting, makes con checks for those in the area of effect (not necessarily DC13, it is calculated, so different stats and CR can change it). It also uses DAE's on each to make saving throws at appropriate times for those poisoned. 
 
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Summon Swarm of Insects**
+
+This implments **Baba Lysaga**'s ability to call forth 1d4 swarms of insects.  This is implemented with warpgate and does a couple of interesting things:
+
+1. It adds a suffix number on the end of each summoned swarm
+2. It plays a pre and post VFX for each summon. 
+
+![Summon_Swarms.gif](Summon_Swarms_of_Insects/Summon_Swarms.gif)
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

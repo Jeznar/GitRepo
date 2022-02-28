@@ -98,7 +98,7 @@ return;
     const ICON = LAST_ARG.efData.icon
     const target = canvas.tokens.get(LAST_ARG.tokenId)
     msg = `${target.name} re-appears, no longer invisible.`;
-    await jez.postMessage({color:"purple", fSize:14, msg:msg, title:"Invisibility Ends", icon:ICON })
+    await jez.postMessage({color:"purple", fSize:14, msg:msg, title:"Greater Invisibility Ends", icon:ICON })
     await target.update({ "hidden": false });
     await jez.wait(1000)
     target.refresh()
