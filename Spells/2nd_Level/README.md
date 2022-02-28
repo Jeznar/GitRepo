@@ -9,7 +9,8 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Invisibility](#invisibility)
 * [Knock](#knock)
 * [Locate Object](#locate-object)
-* [Mirror Image](#mirror-image)
+* [Mirror Image](#mirror-image) (ASE)
+* [Moonbeam](#moonbeam) (ASE)
 * [Ray of Enfeeblement](#ray-of-enfeeblement)
 * [Scorching Ray](#scorching-ray) (ASE)
 
@@ -92,7 +93,25 @@ Nothing more than a tested SRD implmentation. It works.  Nothing special.
 
 I am implmenting this one by using [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki). I have added no value here beyond following the instructions provided by *Vauryx*.
 
-![](https://user-images.githubusercontent.com/32877348/142118145-9c3edf81-fa9d-4d42-b5e1-cf54f73d486d.gif)
+![mirror-image](https://user-images.githubusercontent.com/32877348/142118145-9c3edf81-fa9d-4d42-b5e1-cf54f73d486d.gif)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Moonbeam
+
+This spell appears to be great as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#moonbeam). Other than leaving what seem like persistent ghost images of the beam -- they can be cleared by a reload.
+
+![moonbeam](Moonbeam (ASE)/Moonbeam.gif)
+
+Notes from the author's wiki:
+
+* Adds an 'At-Will' spell to the caster's spellbook called "Move Moonbeam" that can be used to move the beam.
+* If a 'Loop' Sound is set in the settings, the sound will follow the beam
+* The beam will automatically roll saving throws and damage when a token enters its space for the first time until it has a turn again, or if it starts its turn in its space
+
+I have kept my original implementation of moonbeam in a subdirectory for possible future reference as it does a pretty extensive job of summoning and managing actors and effects.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

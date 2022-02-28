@@ -52,6 +52,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Knock](2nd_Level#knock)
 * [Locate Object](2nd_Level#locate-object)
 * [Mirror Image](2nd_Level#mirror-image) (ASE)
+* [Moonbeam](2nd_Level#moonbeam) (ASE)
 * [Ray of Enfeeblement](2nd_Level#ray-of-enfeeblement)
 * [Scorching Ray](2nd_Level#scorching-ray) (ASE)
 
