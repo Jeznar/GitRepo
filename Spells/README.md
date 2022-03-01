@@ -48,6 +48,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [2nd Level Spells](2nd_Level)
 
+* [Crown of Madness](2nd_Level#crown-of-madness)
 * [Darkness](2nd_Level#darkness)
 * [Darkvision](2nd_Level#darkvision)
 * [Enlarge/Reduce](2nd_Level#enlargereduce)

@@ -4,6 +4,7 @@ This repository will contain my automated 2nd level spells as I create new or up
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Darkness](#darkness) (ASE)
+* [Crown of Madness](#crown-of-madness)
 * [Darkvision](#darkvision)
 * [Enlarge/Reduce](#enlargereduce)
 * [Hold Person](#hold-person)
@@ -19,6 +20,22 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 [*Back to List of All Spells*](../README.md)
 
 ## Spell Notes
+
+### Crown of Madness
+
+~~~ **In Develoment** ~~~
+
+[Crown of Madness](https://www.dndbeyond.com/spells/crown-of-madness) appears to be quite the complex spell to automate.  The intended flow is currently:
+
+1. Configure the base spell to force a wisdom saving throw of the target,
+2. If the save succeeds, don't do anything further, if not, continue,
+3. Put a DAE effect on the target that includes 
+ 	* ItemMacro that runs at start of every turn reminding of effect on target (doEach)
+ 	* ItemMacro terminates the VFX when it is removed (doOff)
+ 	* Midi Overtime effect that performs a save at end of each turn 
+4. Attach a VFX stars effect to the token marking it as *mad*
+5. Modify the concentration effect on the casting token to run a helper world macro at the start of each caster's turn popping a dialog that asks if action is to be spent maintaining the effect.  If caster declines to spend their action on this spell, remove concentration.
+
 
 ### Darkness
 
