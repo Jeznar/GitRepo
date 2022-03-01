@@ -153,7 +153,7 @@ This spell is implemented via global settings in [Automated Animations](https://
 
 When used, it shows a maximum range and allows the user to click the desired destination.  It then moves the token with some nice visual effects.
 
-![misty-st](Misty_Step/Misty_Step.gif)
+![misty-step](Misty_Step/Misty_Step.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

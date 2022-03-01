@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Call Lightning](#call-lightning) (ASE)
 * [Clairvoyance](#clairvoyance)
 * [Counterspell](#counterspell)
+* [Dispell Magic](#dispell-magic)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
 * [Thunder Step](#thunder-step)
@@ -59,6 +60,18 @@ Nothing more than a tested SRD implmentation. It will be handled between players
 ### Counterspell
 
 Slighty updated spell description from the standard SRD.  Actual use of this spell will be manual for the GM.
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Dispell Magic
+
+This spell is not automated.  It simply has a VFX implemented with [Automated Animations](https://github.com/otigon/automated-jb2a-animations).  
+
+When used, it simply plays a visual on the target.  Any saves or removal of effects is left for manual attention. 
+
+![dispell-magic](Dispell_Magic/Dispell_Magic.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
