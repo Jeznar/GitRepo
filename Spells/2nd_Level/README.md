@@ -23,7 +23,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ### Crown of Madness
 
-~~~ **In Develoment** ~~~
+**In Develoment**
 
 [Crown of Madness](https://www.dndbeyond.com/spells/crown-of-madness) appears to be quite the complex spell to automate.  The intended flow is currently:
 
