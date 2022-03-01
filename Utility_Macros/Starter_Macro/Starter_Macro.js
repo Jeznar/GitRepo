@@ -43,18 +43,29 @@ return;
 function preCheck() {
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-        ui.notifications.warn(msg)
-        jez.log(msg)
-        return(false);
+        postResults();
+        return (false);
     }
     /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
         msg = `Target was missed.`
-        // ui.notifications.info(msg)
+        postResults();
         return(false);
     }*/
-    return (true)
-}
+    /*if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return
+        msg = `Saving throw succeeded.  ${aItem.name} has no effect.`
+        postResults();
 
+        return(false);
+    }*/
+}
+/***************************************************************************************************
+ * Post results to the chat card
+ ***************************************************************************************************/
+ function postResults() {
+    jez.log(msg);
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+}
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
  * 
@@ -91,9 +102,9 @@ async function doOn() {
 
 
     // https://www.w3schools.com/tags/ref_colornames.asp
-    msg = `<p style="color:blue;font-size:14px;">
-    Maybe say something useful...</p>`
-    postResults(msg);
+    msg = `Maybe say something useful...`
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg,{color:jez.randomDarkColor(),fSize:14,msg:msg,tag:"saves"})
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
@@ -103,7 +114,7 @@ async function doOn() {
  async function doEach() {
     const FUNCNAME = "doEach()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do On Use code")
+    jez.log("The do Each code")
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }

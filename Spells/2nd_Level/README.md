@@ -23,19 +23,37 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ### Crown of Madness
 
-**In Develoment**
+[Crown of Madness](https://www.dndbeyond.com/spells/crown-of-madness) this one was very interesting. Here's what it basically does:
 
-[Crown of Madness](https://www.dndbeyond.com/spells/crown-of-madness) appears to be quite the complex spell to automate.  The intended flow is currently:
-
-1. Configure the base spell to force a wisdom saving throw of the target,
+1. Performs a save for the tarted token, with standard spell setup,
 2. If the save succeeds, don't do anything further, if not, continue,
 3. Put a DAE effect on the target that includes 
  	* ItemMacro that runs at start of every turn reminding of effect on target (doEach)
  	* ItemMacro terminates the VFX when it is removed (doOff)
  	* Midi Overtime effect that performs a save at end of each turn 
 4. Attach a VFX stars effect to the token marking it as *mad*
-5. Modify the concentration effect on the casting token to run a helper world macro at the start of each caster's turn popping a dialog that asks if action is to be spent maintaining the effect.  If caster declines to spend their action on this spell, remove concentration.
+5. Add an effect that uses macro.execute to lauch a world macro that asks if the spell should be maintained.
 
+Unfortunately, the dialogs are all pointed at the GM.  I considered having the code whisper the user with a message including a link to a macro to make things flow but it seems mre work than it is worth to me for this spell -- also a whispered macro doesn't have. the impact of a modal dialog which is what I wanted. A kernal of how to do this is included below in a code snippet.
+
+~~~javascript
+ChatMessage.create({
+     speaker: ChatMessage.getSpeaker({actor: "Lizzie McWizard"}),
+     content: 'test @Macro[SCnWv1sSIKkwp1xZ]{Shove}',
+     whisper: ChatMessage.getWhisperRecipients("Cai'Lee")
+});
+~~~
+
+The magic to this macro are the values passed to the DAE effect calls.
+
+~~~javascript
+macro.itemMacro Custom WIS DC16
+flags.midi-qol.OverTime Override turn=end,saveDC=16,label=Save vs Crown of Madness,saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save
+~~~
+
+Its quite the complex critter for a spell that is rarely if ever used.
+
+![Crown_of_madness.gif](Crown_of_Madness/Crown_of_madness.gif)
 
 ### Darkness
 
