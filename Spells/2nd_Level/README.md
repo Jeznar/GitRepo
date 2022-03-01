@@ -12,6 +12,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Knock](#knock)
 * [Locate Object](#locate-object)
 * [Mirror Image](#mirror-image) (ASE)
+* [Misty Step](#misty-step)
 * [Moonbeam](#moonbeam) (ASE)
 * [Ray of Enfeeblement](#ray-of-enfeeblement)
 * [Scorching Ray](#scorching-ray) (ASE)
@@ -141,6 +142,18 @@ Nothing more than a tested SRD implmentation. It works.  Nothing special.
 I am implmenting this one by using [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki). I have added no value here beyond following the instructions provided by *Vauryx*.
 
 ![mirror-image](https://user-images.githubusercontent.com/32877348/142118145-9c3edf81-fa9d-4d42-b5e1-cf54f73d486d.gif)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Misty Step
+
+This spell is implemented via global settings in [Automated Animations](https://github.com/otigon/automated-jb2a-animations).  
+
+When used, it shows a maximum range and allows the user to click the desired destination.  It then moves the token with some nice visual effects.
+
+![misty-st](Misty_Step/Misty_Step.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
