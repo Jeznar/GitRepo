@@ -71,6 +71,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Call Lightning](3rd_Level#call-lightning) (ASE)
 * [Clairvoyance](3rd_Level#clairvoyance)
 * [Counterspell](3rd_Level#counterspell)
+* [Fireball](3rd_Level#fireball)
 * [Lightning Bolt](3rd_Level#lightning-bolt)
 * [Magic Circle](3rd_Level#magic-circle)
 * [Thunder Step](3rd_Level#thunder-step)

@@ -8,6 +8,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Clairvoyance](#clairvoyance)
 * [Counterspell](#counterspell)
 * [Dispell Magic](#dispell-magic)
+* [Fireball](#fireball)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
 * [Thunder Step](#thunder-step)
@@ -72,6 +73,29 @@ This spell is not automated.  It simply has a VFX implemented with [Automated An
 When used, it simply plays a visual on the target.  Any saves or removal of effects is left for manual attention. 
 
 ![dispell-magic](Dispell_Magic/Dispell_Magic.gif)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+### Fireball
+
+While this spell worked just fine straight out of [Automated Animations](https://github.com/otigon/automated-jb2a-animations), I couldn't resist adding a bit fore VFX sophistication.
+
+Themacro for this spell use a firebolt in flight followed by and explosion and then three waves of smoke for a bit more visual ooomph.
+
+Probably most interstingly, it reads the name of the icon that represents the spell and attempts to pick the *right* color fireball graphic.  The colors recogniozed in the iimage file name and what they map to are:
+
+    orange ==> orange
+    blue   ==> blue
+    purple ==> purple
+    red    ==> orange
+    eerie  ==> blue
+    sky    ==> blue
+    acid   ==> purple
+
+![Fireball.gif](Fireball/Fireball.gif)
+
+NOTE: I needed to diable Automated Animations global match to fireball to avoid that modules *help.*
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
