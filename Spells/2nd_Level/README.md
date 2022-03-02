@@ -54,7 +54,7 @@ flags.midi-qol.OverTime Override turn=end,saveDC=16,label=Save vs Crown of Madne
 
 Its quite the complex critter for a spell that is rarely if ever used.
 
-![Crown_of_madness.gif](Crown_of_Madness/Crown_of_madness.gif)
+![Crown_of_madness.gif](Crown_of_Madness/Crown_of_Mad.gif)
 
 ### Darkness
 
