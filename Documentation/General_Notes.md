@@ -52,6 +52,13 @@ A useful bit of info [lives here](https://foundryvtt.wiki/en/development/guides/
 
 ---
 
+## Introduction to PIXI
+
+A useful bit of info [lives here](https://foundryvtt.wiki/en/development/guides/pixi)
+
+---
+
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
