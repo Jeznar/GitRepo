@@ -62,7 +62,17 @@ This spell is included in the [Advanced Spell Effects Module](https://github.com
 
 ### Fire Bolt
 
-Standard Fire Bolt setup plus a simple onuse ItemMacro to provide a bit of visual effects.
+Standard Fire Bolt setup plus a simple onuse ItemMacro to provide a bit of visual effects. The macro reads the item image icon and looks for a *magic* color name.  If it finds one, it adjusts the color of the VFX to match.  The colors defined are:
+
+* blue
+* dark_green
+* dark_red
+* green02 (a bluish green)
+* green
+* orange
+* purple
+
+The repo has corresponding colored icons.
 
 **Reminder**: For NPC's cantrips need to be scaled manually as they have no level for automated scaling.
 
