@@ -46,7 +46,7 @@ There are many ways to make a GIF file (appropriate for use here). I've found th
 
 ---
 
-## Hamdling Data: Flags, Settings and Files
+## Handling Data: Flags, Settings and Files
 
 A useful bit of info [lives here](https://foundryvtt.wiki/en/development/guides/handling-data)
 
