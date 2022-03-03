@@ -21,9 +21,19 @@ This readme contains a summary of the functions and for at least some of them a 
 
 ### **Demo Template VFX** 
 
-Simple little macro that runs a VFX at the location of the template created by the invoking macro (ItemMacro OnUse). The macro deletes the template and uses a arandomized grpahic effect with a few other settings tossed in for fun.
+Simple little macro that runs a sleep VFX at the location of the template created by the invoking macro (ItemMacro OnUse). The macro deletes the template and uses a a sleep .webm with a few other settings tossed in for fun.
 
 ![Template_VFX.gif](Demo_Template_VFX/Template_VFX.gif)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### **Demo Tile VFX** 
+
+Simple little macro that pops a tile with a VFX at the location of the targeting template from the calling item (ItemMacro OnUse).  The macro deletes the template and uses a black tenticles video file.
+
+![Demo_Tile_VFX.gif](Demo_Tile_VXF/Demo_Tile_VFX.gif)
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

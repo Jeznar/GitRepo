@@ -53,6 +53,8 @@ let fetchedJournal  = game.journal.get(journalID)
 console.log(`JournalEntry     by ID`, fetchedJournal)
 // Following line fetches a template from its ID
 //let fetchedTemplate = canvas.templates.objects.children.find(i => i.data._id === templateID);
+// following line fetches a tile from its ID
+//  let fetchedTile = await canvas.scene.tiles.get(tileId)
 
 //----------------------------------------------------------------------------------------
 // Get token / actor / item / journal etc by Name
