@@ -10,6 +10,7 @@ This readme contains a summary of the functions and for at least some of them a 
 
 ## Functions in this Repo
 
+* **[Demo Copy Edit Item](#demo-copy-edit-item)** Copies/Edits Item
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
@@ -18,6 +19,16 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Swap Map](#swap-map)** swaps the current background image for the next or base. A naming convention must be followed.
 
 ## Notes on Functions
+
+### **Demo Copy Edit Item** 
+
+Macro that copies an existing macro (%%Black Tentacles Effect%%) to character sheet executing this onUse ItemMacro.  
+
+It then edits the name to something more specific, of the form *\<TOKEN_NAME>'s Black Tentacles Effect*.  
+
+It also looks for any strings wrapped in bold and %% symbols in the description.  Any **%%string%%** followed by any amount of white space is then deleted from the description -- as a demonstration of capability.
+
+I expect this will be useful for creating temporary items, being easier than the create them from scratch method in a macro.
 
 ### **Demo Template VFX** 
 

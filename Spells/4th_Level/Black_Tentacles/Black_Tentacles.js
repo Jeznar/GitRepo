@@ -1,4 +1,4 @@
-const MACRONAME = "Starter_Macro"
+const MACRONAME = "Black_Tentacles"
 /*****************************************************************************************
  * Basic Structure for a rather complete macro
  * 
@@ -20,7 +20,7 @@ let msg = "";
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
-if ((args[0]?.tag === "OnUse") && !preCheck())return;
+
 
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -38,30 +38,9 @@ return;
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
  ***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
- ***************************************************************************************************/
-function preCheck() {
-    if (args[0].targets.length !== 1) {     // If not exactly one target, return
-        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-        postResults();
-        return (false);
-    }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        postResults();
-        return(false);
-    }*/
-    /*if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return
-        msg = `Saving throw succeeded.  ${aItem.name} has no effect.`
-        postResults();
-
-        return(false);
-    }*/
-}
-/***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults() {
+ function postResults(msg) {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
@@ -97,14 +76,24 @@ async function doOn() {
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
-    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
-
-
-    // https://www.w3schools.com/tags/ref_colornames.asp
+    //jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
+    //jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
+    const TEMPLATE_ID = args[0].templateId
+    let template = canvas.templates.objects.children.find(i => i.data._id === TEMPLATE_ID);
+    jez.log("template", template)
+    let templateCenter = template.center
+    jez.log("templateCenter",templateCenter)
+    canvas.templates.get(TEMPLATE_ID).document.delete()
+    const GRID_SIZE = canvas.scene.data.grid; // Size of grid in pixels per square
+    jez.log(await Tile.create({
+        x: templateCenter.x,     // needs to be the location where you want it of course.
+        y: templateCenter.y,     // ditto
+        img: "modules/jb2a_patreon/Library/4th_Level/Black_Tentacles/BlackTentacles_01_Dark_Purple_600x600.webm", 
+        width: GRID_SIZE * 4,    // determines the size of the tile
+        height:GRID_SIZE * 4   // ditto
+    }))
     msg = `Maybe say something useful...`
-    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.addMessage(chatMsg,{color:jez.randomDarkColor(),fSize:14,msg:msg,tag:"saves"})
+    postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
