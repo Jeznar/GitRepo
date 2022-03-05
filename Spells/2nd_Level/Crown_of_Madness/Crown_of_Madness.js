@@ -181,7 +181,7 @@ async function doEach() {
     against a creature other than itself that <b>${sTokenName}</b> mentally chooses. ${aToken.name}
     can act normally if ${sTokenName} chooses no creature or if none are within its reach.`
     let titleMsg = "Madness! It's Madness!!!"
-    // COOL-THING: Simple Acknowledgement Dialog
+    // COOL-THING: Simple Acknowledgement Dialog.prompt
     Dialog.prompt({
         title: titleMsg,
         content: `<br>${msg}<br><br>`,

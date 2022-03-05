@@ -11,6 +11,7 @@ This readme contains a summary of the functions and for at least some of them a 
 ## Functions in this Repo
 
 * **[Demo Copy Edit Item](#demo-copy-edit-item)** Copies/Edits Item
+* **[Demo Flag Mgmt](#demo-flag-mgmt)** Exercise in use of DAE Flags
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
@@ -29,6 +30,30 @@ It then edits the name to something more specific, of the form *\<TOKEN_NAME>'s 
 It also looks for any strings wrapped in bold and %% symbols in the description.  Any **%%string%%** followed by any amount of white space is then deleted from the description -- as a demonstration of capability.
 
 I expect this will be useful for creating temporary items, being easier than the create them from scratch method in a macro.
+
+### **Demo Flag Mgmt**
+
+Accomplish nothing macro that populates a DAE Flag, reads that flag and processes the stashed & passed information.  The calls it exercises are:
+
+ *  DAE.unsetFlag(actor5e, flag) -- Clears "flag" from "actor5e" data object
+ *  DAE.getFlag(actor5e, flag) -- Returns the contents of "actor5e's" "flag"
+ *  DAE.setFlag(actor5e, flag, value) -- stores "value" to "flag" on "actor5e" 
+
+ Sample output of an execution with three tokens targeted follows.
+
+~~~ 
+Lizzie current DAE flag0bj content ▸{damageApplied: 31, familiar name: '", Cruel Puppetry: (.}}
+Value of flag after clear undefined
+Value of flag after originator ODlJtGYdKdSoCPDb
+Value of flag after target 1 0DlJtGYdKdSoCPDb 36plhIAopoCCiuCw
+Value of flag after target 2 0DlJtGYdKdSoCPDb 36plhIAopoCCiuCw mPmHx0KFozFjuKzu
+Value of flag after target 3 0DlJtGYdKdSoCPDb 36plhIAopoCCiuCw mPmHx0KFozFjukzu jkM3Fiq9HPoRrgad
+Lizzie started this fine mess and targeted 3 tokens
+ 1) Good-natured Meat Bag, Medium
+ 2) Virginal Meat Bag, Medium
+ 3) Chipper Meat Bag, Medium
+Lizzie current DAE flag0bj content ▸{damageApplied: 31, familiar_name: "", Cruel_Puppetry: (…}, Demo_Flag_Mgmt: "ODlJtGYdKdSoCPDb 36plhIAopoCCiuCw mPmHxOKFozFjuKzu jkM3Fiq9HPoRrgad"}
+~~~
 
 ### **Demo Template VFX** 
 
