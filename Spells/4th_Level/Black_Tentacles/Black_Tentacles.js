@@ -1,4 +1,4 @@
-const MACRONAME = "Black_Tentacles"
+const MACRONAME = "Black_Tentacles.js"
 /*****************************************************************************************
  * Basic Structure for a rather complete macro
  * 
@@ -56,21 +56,44 @@ return;
  ***************************************************************************************************/
  async function doOff() {
     const FUNCNAME = "doOff()";
+    const EFFECT = "Black Tentacles Effect" // Must match DAE effect applied by temp item
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    const TILE_ID = args[1];
-    jez.log(`Delete the VFX tile`, TILE_ID)
+    const TILE_ID = args[1];    // Must be a 12 character string:  chN3vMQvayMx6kWQ
+    jez.log(TILE_ID.length)
+    if (TILE_ID.length != 16) return
 
+    jez.log(`Delete the VFX tile`, TILE_ID)
+    await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
+    //----------------------------------------------------------------------------------------------
+    // Delete the temporary item
+    //
     let oldActorItem = aToken.actor.data.items.getName(NEW_ITEM_NAME)
     if (oldActorItem) await deleteItem(aToken.actor, oldActorItem)
-
-    //let getItem = aToken.actor.items.find(i => i.name === "Flame");
-    //if(getItem) await getItem.delete();
-
-    canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
+    msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been deleted from ${aToken.name}`
+    ui.notifications.info(msg);
+    //----------------------------------------------------------------------------------------------
+    // Grab the flag, clear the flag
+    //
+    let tokenIdArray = []
+    let flagValue = await DAE.getFlag(aToken.actor, MACRO);     // Get the flag value
+    if (flagValue) tokenIdArray = flagValue.split(" ")          // Populate array 
+    await DAE.unsetFlag(aToken.actor, MACRO);                   // await??
+    //----------------------------------------------------------------------------------------------
+    // Loop through the IDs in flagValue, clearing the effect if present on each token
+    //
+    for (let i = 0; i < tokenIdArray.length; i++) {
+        let tToken = canvas.tokens.placeables.find(ef => ef.id === tokenIdArray[i])
+        jez.log(`Processing ${i}: ${tToken.name}`)
+        let effect = await tToken.actor.effects.find(i => i.data.label === EFFECT);
+        jez.log(`  ${EFFECT} found?`, effect)
+        if (effect) {
+            jez.log(`  ${EFFECT} found on ${aToken.name}, removing...`)
+            effect.delete();  // await??
+        } else jez.log(`  ${EFFECT} not found on ${aToken.name}, continuing...`)
+    }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
   }
-  
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set On
  ***************************************************************************************************/
@@ -98,11 +121,13 @@ async function doOn() {
     modConcEffect(TILE_ID)
     // Add the atWill spell to spell book of aToken
     copyEditItem(aToken)
+    // Clear the flag that will be used to store token.id values of afflicted tokens
+    DAE.unsetFlag(aToken.actor, MACRO);                         // await??
     // Post message to a chat card
     msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name} for the duration of this spell`
     ui.notifications.info(msg);
     await postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    jez.log(`-------------- Finished --- ${MACRO} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************

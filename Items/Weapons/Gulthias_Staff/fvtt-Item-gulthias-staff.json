@@ -1,0 +1,207 @@
+{
+  "name": "Gulthias Staff",
+  "type": "weapon",
+  "img": "Icons_JGB/Items/Gulthias_Staff.jpg",
+  "data": {
+    "description": {
+      "value": "<h1>Gulthias Staff</h1>\n<p><em>Staff, rare (requires attunement)</em></p>\n<p>Made from the branch of a Gulthias tree, a Gulthias staff is a spongy, black length of wood from which ashen smoke wisps at a constant rate. It has a strangely spongy texture, and leaves behind a bloody residue on one's hand when touched. If squeezed, blood oozes from its pores.</p>\n<h3><strong>Blight Bane</strong></h3>\n<p>A character that has attuned to the staff has the ability to command blights around them of CR 2 or below using simple, one-word commands. While you are attuned to the staff, blights and other evil plant creatures don’t regard you as hostile unless you harm them.</p>\n<h3><strong>Sower of Corruption</strong></h3>\n<p>The Gulthias staff has 10 charges. As an action, its wielder can expend charges to create any of the following creatures:</p>\n<ul>\n<li>1 charge: 1x Twig Blight</li>\n<li>2 charges: 1x Needle Blight</li>\n<li>4 charges: 1x Vine Blight</li>\n</ul>\n<p>When all charges are expended, roll a d20. On a 1, the staff crumbles to dust without releasing its blight-killing shriek. Otherwise, it regains 1d4 charges each dawn.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 1,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6[bludgeoning] + @mod",
+          "bludgeoning"
+        ]
+      ],
+      "versatile": "1d8[bludgeoning] + @mod"
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "simpleM",
+    "baseItem": "",
+    "properties": {
+      "ada": false,
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "mgc": true,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "sil": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": true,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": true
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "magicitems": {
+      "enabled": true,
+      "equipped": false,
+      "attuned": true,
+      "charges": "10",
+      "chargeType": "c1",
+      "destroy": true,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": true,
+      "recharge": "1d8",
+      "rechargeType": "t2",
+      "rechargeUnit": "r2",
+      "sorting": "l",
+      "destroyCheck": "d2",
+      "destroyType": "dt1",
+      "spells": {},
+      "feats": {
+        "0": {
+          "id": "U1xBUNbNdKezrhct",
+          "name": "Sower of Corruption: Twig Blight",
+          "pack": "world",
+          "img": "Icons_JGB/Items/Gulthias_Staff_Square.png",
+          "effect": "e1",
+          "consumption": "1"
+        },
+        "1": {
+          "id": "xD47ez0IDjGeOgWL",
+          "name": "Sower of Corruption: Needle Blight",
+          "pack": "world",
+          "img": "Icons_JGB/Items/Gulthias_Staff_Square.png",
+          "effect": "e1",
+          "consumption": "2"
+        },
+        "2": {
+          "id": "gk2qLwmrQXK5sJpx",
+          "name": "Sower of Corruption: Vine Blight",
+          "pack": "world",
+          "img": "Icons_JGB/Items/Gulthias_Staff_Square.png",
+          "effect": "e1",
+          "consumption": "4"
+        }
+      }
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Item.yBHrFBoep1K9jsrT"
+    },
+    "gm-notes": {
+      "notes": "<p>If the staff is broken or burned to ashes, its wood releases a terrible, inhuman scream that can be heard out to a range of 300 feet. All blights that can hear the screams immediately wither and die.</p>\n<h3><strong>Vampiric Hunger</strong></h3>\n<p>The Gulthias staff draws its power from the blood of its wielder, extending tiny black roots into the veins beneath the owner's skin. For each day that a character is attuned to it, that character must succeed on a DC 14 Constitution saving throw, taking 2d6 necrotic damage on a failure. The target's hit point maximum is reduced by an amount equal to the necrotic damage taken. The reduction lasts until the target destroys or unattunes from the Gulthias staff and finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.</p>\n<p><strong>FoundryVTT:&nbsp;</strong>Implement with @Item[zSEdlUtyTqQOxd5H]{Vampiric Hunger (Gulthias Staff)}</p>"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Gulthias Staff",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const macroName = \"Vampiric_Hunger_1.0\"\n/********************************************************************************************************\n * Macro to implement Vampiric Hunger life drain effect.\n * \n * Description: The Gulthias staff draws its power from the blood of its wielder, extending tiny black \n *   roots into the veins beneath the owner's skin. For each day that a character is attuned to it, that \n *   character must succeed on a DC 14 Constitution saving throw, taking 2d6 necrotic damage on a \n *   failure. The target's hit point maximum is reduced by an amount equal to the necrotic damage taken. \n *   The reduction lasts until the target destroys or unattunes from the Gulthias staff and finishes a \n *   long rest. The target dies if this effect reduces its hit point maximum to 0.\n * \n * This macro just applies a debuff to implement the HP max reduction.\n * \n * 12/16/21 1.0 JGB Creation from \"Sacrificial_Summon_0.3\"\n ******************************************************************************************************/\nconst DEBUG = false;\nconst lastArg = args[args.length - 1];\nconst itemD = lastArg.item;\nconst gameRound = game.combat ? game.combat.round : 0;\nlet damageDetail = await lastArg.damageDetail.find(i=> i.type === \"necrotic\");\nlet damageTotal = (damageDetail.damage-(damageDetail.DR ?? 0))*(damageDetail.damageMultiplier ?? 1);\n\nif (DEBUG) {\n    console.log(`Executing: ${MACRONAME}`);\n    console.log(` actor: ${actor.name}`,actor);\n    console.log(` actor.uuid: `,actor.uuid);\n    console.log(` ItemD: ${itemD.name}`,itemD);\n    console.log(` damageDetail: `,damageDetail);\n    console.log(` damageTotal: `,damageTotal);\n}\n\n// Apply the debuff effect\nlet effectData = {\n    label: itemD.name,\n    icon: itemD.img,\n    flags: { dae: { itemData: itemD, stackable: true, macroRepeat: \"none\" } },\n    origin: actor.uuid,\n    disabled: false,\n    duration: { rounds: 99999, startRound: gameRound },\n    changes: [{ key: \"data.attributes.hp.max\", mode: 2, value: -damageTotal, priority: 20 }]\n};\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effectData] });\n\nlet message = `The <strong>Gulthias Staff's$</strong> tenticles writhe and grow beneath {actor.name}'s skin. Drinking\nin life force and reducing his/her maximum health (HP).`;\npostResults(message); \n\nreturn;\n\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n\n/****************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\n async function postResults(resultsString) {\n    const lastArg = args[args.length - 1];\n\n    let chatMessage = await game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n    const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
