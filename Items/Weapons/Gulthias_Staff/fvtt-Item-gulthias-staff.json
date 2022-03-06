@@ -13,7 +13,7 @@
     "weight": 0,
     "price": 0,
     "attunement": 1,
-    "equipped": true,
+    "equipped": false,
     "rarity": "",
     "identified": true,
     "activation": {
@@ -37,9 +37,9 @@
       "units": ""
     },
     "uses": {
-      "value": null,
-      "max": "",
-      "per": ""
+      "value": 7,
+      "max": "10",
+      "per": "lr"
     },
     "consume": {
       "type": "",
@@ -176,7 +176,7 @@
       "sourceId": "Item.yBHrFBoep1K9jsrT"
     },
     "gm-notes": {
-      "notes": "<p>If the staff is broken or burned to ashes, its wood releases a terrible, inhuman scream that can be heard out to a range of 300 feet. All blights that can hear the screams immediately wither and die.</p>\n<h3><strong>Vampiric Hunger</strong></h3>\n<p>The Gulthias staff draws its power from the blood of its wielder, extending tiny black roots into the veins beneath the owner's skin. For each day that a character is attuned to it, that character must succeed on a DC 14 Constitution saving throw, taking 2d6 necrotic damage on a failure. The target's hit point maximum is reduced by an amount equal to the necrotic damage taken. The reduction lasts until the target destroys or unattunes from the Gulthias staff and finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.</p>\n<p><strong>FoundryVTT:&nbsp;</strong>Implement with @Item[zSEdlUtyTqQOxd5H]{Vampiric Hunger (Gulthias Staff)}</p>"
+      "notes": "<p>If the staff is broken or burned to ashes, its wood releases a terrible, inhuman scream that can be heard out to a range of 300 feet. All blights that can hear the screams immediately wither and die.</p>\n<h3><strong>Vampiric Hunger</strong></h3>\n<p>The Gulthias staff draws its power from the blood of its wielder, extending tiny black roots into the veins beneath the owner's skin. For each day that a character is attuned to it, that character must succeed on a DC 14 Constitution saving throw,&nbsp;<span style=\"color: #191813;\">3d6+5 necrotic damage on a failure, half damage on success. </span>&nbsp;The target's hit point maximum is reduced by an amount equal to the necrotic damage taken. The reduction lasts until the target destroys or unattunes from the Gulthias staff and finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.</p>\n<p><strong>FoundryVTT:&nbsp;</strong>Implement with @Item[zSEdlUtyTqQOxd5H]{Vampiric Hunger (Gulthias Staff)}</p>"
     },
     "itemacro": {
       "macro": {
