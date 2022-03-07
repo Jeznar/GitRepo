@@ -1,0 +1,222 @@
+{
+  "name": "Cloak of Protection",
+  "type": "equipment",
+  "img": "/systems/dnd5e/icons/items/equipment/cloak-fur.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You gain a +1 bonus to AC and saving throws while you wear this cloak.</p>",
+      "chat": "<p>You gain a +1 bonus to AC and saving throws while you wear this cloak.</p>",
+      "unidentified": "Wondrous item"
+    },
+    "source": "Basic Rules, Player's Handbook pg 159",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 1,
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": true,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10,
+      "type": "trinket",
+      "dex": null
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "baseItem": "",
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": true,
+    "properties": {
+      "mgc": true
+    }
+  },
+  "effects": [
+    {
+      "_id": "dkMbb6jpuJPjpHFN",
+      "flags": {
+        "dae": {
+          "transfer": true,
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "changes": [
+        {
+          "key": "data.attributes.ac.bonus",
+          "mode": 2,
+          "value": "+1+",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.abilities.save",
+          "mode": 0,
+          "value": "+1+",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/items/equipment/cloak-fur.jpg",
+      "label": "Cloak of Protection",
+      "tint": "",
+      "transfer": true,
+      "selectedKey": [
+        "data.attributes.ac.bonus",
+        "data.bonuses.abilities.save"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {
+        "type": "Wondrous item",
+        "avatarUrl": "https://www.dndbeyond.com/avatars/19/215/636382363291130832.jpeg",
+        "largeAvatarUrl": "https://www.dndbeyond.com/avatars/7/168/636284723508326581.jpeg",
+        "filterType": "Wondrous item",
+        "tags": [
+          "Warding",
+          "Outerwear"
+        ],
+        "sources": [
+          {
+            "sourceId": 1,
+            "pageNumber": null,
+            "sourceType": 2
+          },
+          {
+            "sourceId": 2,
+            "pageNumber": 159,
+            "sourceType": 1
+          }
+        ],
+        "pictureUrl": "ddb-images/other/item-large-Cloak-of-Protection.jpeg"
+      },
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 112130694,
+      "definitionId": 4607,
+      "originalName": "Cloak of Protection"
+    },
+    "magicitems": {
+      "enabled": true,
+      "charges": "0",
+      "chargeType": "c1",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t2",
+      "rechargeUnit": "r1",
+      "destroy": false,
+      "destroyCheck": "d1",
+      "spells": {},
+      "feats": {},
+      "tables": {},
+      "equipped": true,
+      "attuned": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "sorting": "l"
+    },
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "cf": {
+      "id": "temp_o2g2oq8os6"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.items.PcLrp9rf3n0d2hsZ"
+    },
+    "enhancedcombathud": {
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
