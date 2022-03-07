@@ -5,6 +5,7 @@ const MACRONAME = "Black_Tentacles_Effect.js"
  * 02/11/22 0.1 Creation of Macro
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+const BASEMACRO = "Black_Tentacles"
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
@@ -20,19 +21,17 @@ let msg = "";
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
-//if ((args[0]?.tag === "OnUse") && !preCheck())return;
-
+if ((args[0]?.tag === "OnUse") && !(await preCheck())) return(false);
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
+//if (args[0] === "off") await doOff();                   // DAE removal
+//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE removal
-if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
+//if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -40,31 +39,22 @@ return;
  ***************************************************************************************************
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
-function preCheck() {
-    if (args[0].targets.length !== 1) {     // If not exactly one target, return
-        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-        postResults();
+async function preCheck() {
+    jez.log(`Running precheck ${args[0]?.tag}`)
+    if (args[0].targets.length === 0) {     
+        msg = `Must target at least one target.  ${args[0].targets.length} were targeted.`
+        await postResults();
         return (false);
     }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        postResults();
-        return(false);
-    }*/
-    /*if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return
-        msg = `Saving throw succeeded.  ${aItem.name} has no effect.`
-        postResults();
-
-        return(false);
-    }*/
+    return(true)
 }
 /***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults() {
+ async function postResults() {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    await jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
@@ -97,12 +87,32 @@ async function doOn() {
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
-    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
+    if (LAST_ARG.failedSaves.length === 0) return   // If no failed saves exit
+    //---------------------------------------------------------------------------------------------
+    // Stack all the failed IDs into a string delimited with spaces
+    //
+    let failedIds = ""
+    for (let i = 0; i < LAST_ARG.failedSaves.length; i++) {
+        jez.log(`${i+1} ${LAST_ARG.failedSaves[i].name} ${LAST_ARG.failedSaves[i].id}`)
+        if (failedIds) {
+            failedIds += " "   // Tack on a space if already has contents
+            failedIds += LAST_ARG.failedSaves[i].id
+        } else failedIds = LAST_ARG.failedSaves[i].id
+    }
+    jez.log(`${tToken.id}`,tToken.id)
+    //---------------------------------------------------------------------------------------------
+    // Append the failedIds to the flag
+    //
+    let currentValue = await DAE.getFlag(aToken.actor, BASEMACRO);
+    jez.log(`Current value of ${BASEMACRO} flag:`, currentValue)
+    if (currentValue) {
+        currentValue += " "   // Tack on a space if already has contents
+        currentValue += failedIds
+    } else currentValue = failedIds
+    jez.log(`Modified value of ${BASEMACRO} flag:`, currentValue)
+    await DAE.setFlag(aToken.actor, BASEMACRO, currentValue);
 
-
-    // https://www.w3schools.com/tags/ref_colornames.asp
-    msg = `Maybe say something useful...`
+    msg = `Maybe say something useful...${currentValue}`
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg,{color:jez.randomDarkColor(),fSize:14,msg:msg,tag:"saves"})
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
@@ -119,12 +129,36 @@ async function doOn() {
     return (true);
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
+ * Modify existing effect to include a midi-qol overtime saving throw element
  ***************************************************************************************************/
- async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do On Use code")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
+ async function modConcEffect(tokenId) {
+    const EFFECT = "Concentrating"
+    //----------------------------------------------------------------------------------------------
+    // Seach the token to find the just added effect
+    //
+    await jez.wait(100)
+    let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
+    jez.log(`**** ${EFFECT} found?`, effect)
+    if (!effect) {
+        msg = `${EFFECT} sadly not found on ${aToken.name}.`
+        ui.notifications.error(msg);
+        postResults(msg);
+        return (false);
+    }
+
+    jez.log(">>>>>>>> effect",effect)
+
+    return
+    //----------------------------------------------------------------------------------------------
+    // Define the desired modification to existing effect. In this case, a world macro that will be
+    // given arguments: VFX_Name and Token.id for all affected tokens
+    //    
+    //effect.data.changes.push({key: `macro.execute`, mode: CUSTOM, value:`entangle_helper ${VFX_NAME} ${label}`, priority: 20})
+    effect.data.changes.push({key: `macro.itemMacro`, mode: CUSTOM, value:`${tileId}`, priority: 20})
+    jez.log(`effect.data.changes`, effect.data.changes)
+    //----------------------------------------------------------------------------------------------
+    // Apply the modification to existing effect
+    //
+    const result = await effect.update({ 'changes': effect.data.changes });
+    if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
 }
