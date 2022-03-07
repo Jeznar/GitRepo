@@ -33,8 +33,9 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [1st Level Spells](1st_Level)
 
-* [Detect Magic](1st_Level1st_Level#detect-magic)
-* [Entangle](1st_Level1st_Level#entangle)
+* [Bless](1st_Level#bless)
+* [Detect Magic](1st_Level#detect-magic)
+* [Entangle](1st_Level#entangle)
 * [Fog Cloud](1st_Level#fog-cloud) (ASE)
 * [Magic Missle](1st_Level#magic-missle) (ASE)
 * [Protection from Evil and Good](1st_Level#protection-from-evil-and-good)

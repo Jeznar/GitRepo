@@ -3,6 +3,7 @@ This repository will contain my automated 1st level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Bless](#bless)
 * [Detect Magic](#detect-magic)
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
@@ -19,6 +20,28 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 ---
 
 ## Spell Notes
+
+### Bless
+
+This spell is implemented without a macro.  
+
+The VFX is done with [Automated Animations](https://github.com/otigon/automated-jb2a-animations), I think I just kept the default setting for this mod.
+
+The modifier, adding a d4 to many rolls is done with DAE.  It runs into an interesting *feature* where sometimes that 1d4 is string concatenated to other modifiers resulting in something like `11d4` instead of `1+1d4` or `+1d42` instead of `+1d4+2` being processed.  The *fix* for this appears to be wrapping the 1d4 with plus signs.  As shown in the PNG of DAE settings embedded below.
+
+![Bless/Bless_DAE_Effects.png](Bless/Bless_DAE_Effects.png)
+
+This does result in bit of ugly in the chat log, but at least it is correct mathematically.
+
+![Bless/Bless_Chat.png](Bless/Bless_Chat.png)
+
+This is a known issue with DAE, [Active effects concatenated with global bonus in special traits](https://gitlab.com/foundrynet/dnd5e/-/issues/1134).
+
+![Bless](Bless/Bless.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
 
 ### Detect Magic
 
