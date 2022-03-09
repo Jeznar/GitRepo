@@ -10,6 +10,7 @@ This readme contains a summary of the functions and for at least some of them a 
 
 ## Functions in this Repo
 
+* **[Demo Conc Mgmt](#demo-conc-mgmt)** Modifies concentration to remove and manage an existing effect
 * **[Demo Copy Edit Item](#demo-copy-edit-item)** Copies/Edits Item
 * **[Demo Flag Mgmt](#demo-flag-mgmt)** Exercise in use of DAE Flags
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
@@ -21,6 +22,16 @@ This readme contains a summary of the functions and for at least some of them a 
 
 ## Notes on Functions
 
+### **Demo Conc Mgmt** 
+
+A pair of onUse ItemMacros that together manage an effect, modifying the automatic concentration effect to have a *doOff* function that removes the cretaed effect and a seperate macro (Demo Conc Mgmt Apply Effect) that moves the effect from one token to another.  
+
+The *magic* of this function is using a DAE flag to keep track of the targeted token that has the effect in question. 
+
+CUB is used to manage the condition because I am lazy and this is a demonstration of managing concentration and existance of effect, not the creation of fancy ones.
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
 ### **Demo Copy Edit Item** 
 
 Macro that copies an existing macro (%%Black Tentacles Effect%%) to character sheet executing this onUse ItemMacro.  
@@ -30,6 +41,8 @@ It then edits the name to something more specific, of the form *\<TOKEN_NAME>'s 
 It also looks for any strings wrapped in bold and %% symbols in the description.  Any **%%string%%** followed by any amount of white space is then deleted from the description -- as a demonstration of capability.
 
 I expect this will be useful for creating temporary items, being easier than the create them from scratch method in a macro.
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
 
 ### **Demo Flag Mgmt**
 
