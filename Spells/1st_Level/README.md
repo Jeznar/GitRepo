@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Detect Magic](#detect-magic)
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
+* [Hex](#hex)
 * [Magic Missle](#magic-missile) (ASE)
 * [Protection from Evil and Good](#protection-from-evil-and-good)
 * [Ray of Sickness](#ray-of-sickness)
@@ -85,6 +86,23 @@ As this spell is not normally attachable to an object it is a bit simpilier than
 (../2nd_Level/#darkness)). 
 
 I have kept my originial implementation in the repository in a subdirectory of this spell.
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Hex
+
+This is based on Crymic's code.  I have added a new ability to move the hex from a *dead* token to a new target per RAW.  This will fail if the old token isn't available on the scene to copy it from.  
+
+This spell is built from two items:
+
+1. Hex -- The *normal* spell/item
+2. %%Hex - Move%% -- a *helper* item which is copied and edited by **Hex** into the actor's spellbook as an *at-will* spell. The funky name is intentional.
+
+Following are a few messages this macro can produce.
+
+![Hex/Hex_Chat.png](Hex/Hex_Chat.png)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

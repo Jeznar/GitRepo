@@ -1,0 +1,183 @@
+{
+  "name": "Hex",
+  "type": "spell",
+  "img": "icons/magic/perception/silhouette-stealth-shadow.webp",
+  "data": {
+    "description": {
+      "value": "<p>You place a curse on a creature that you can see within range. Until the spell ends, you deal an extra 1d6 necrotic damage to the target whenever you hit it with an attack. Also, choose one ability when you cast the spell. The target has disadvantage on ability checks made with the chosen ability.<br /><br />If the target drops to 0 hit points before this spell ends, you can use a bonus action on a subsequent turn of yours to curse a new creature.<br /><br />A remove curse cast on the target ends this spell early.</p>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 3rd or 4th level, you can maintain your concentration on the spell for up to 8 hours. When you use a spell slot of 5th level or higher, you can maintain your concentration on the spell for up to 24 hours.</p>",
+      "chat": "<p>You place a curse on a creature that you can see within range. Until the spell ends, you deal an extra 1d6 necrotic damage to the target whenever you hit it with an attack. Also, choose one ability when you cast the spell. The target has disadvantage on ability checks made with the chosen ability.<br /><br />If the target drops to 0 hit points before this spell ends, you can use a bonus action on a subsequent turn of yours to curse a new creature.<br /><br />A remove curse cast on the target ends this spell early.</p>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 3rd or 4th level, you can maintain your concentration on the spell for up to 8 hours. When you use a spell slot of 5th level or higher, you can maintain your concentration on the spell for up to 24 hours.</p>",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook pg 251",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 90,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "enc",
+    "components": {
+      "value": "the petrified eye of a newt",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "the petrified eye of a newt",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 138073,
+      "definitionId": 2317,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "classSpell",
+        "class": "Warlock",
+        "level": 3,
+        "characterClassId": 63323005,
+        "spellLevel": 1,
+        "ability": "cha",
+        "mod": 3,
+        "dc": 13,
+        "cantripBoost": false,
+        "overrideDC": false,
+        "id": 138073,
+        "entityTypeId": 435869154,
+        "healingBoost": 0
+      },
+      "sources": [
+        {
+          "sourceId": 2,
+          "pageNumber": 251,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Debuff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "favtab": {
+      "isFavorite": true
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Hex",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Hex.js\"\n/*****************************************************************************************\n * My rewrite of Hex, borrowing heavily from Crymic's code\n * \n * 0/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]   // Trim of the version number and extension\nconst FLAG = MACRO                      // Name of the DAE Flag       \njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\n\nconst ITEM_NAME = \"Hex - Move\"                          // Base name of the helper item\nconst SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory \nconst NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book\n//------------------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\n//if ((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n//------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\n//if (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n//if (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\nif (args[0]?.tag === \"DamageBonus\") return (doBonusDamage());    // DAE Damage Bonus\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        postResults();\n        return (false);\n    }\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults() {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //-----------------------------------------------------------------------------------------------\n    // Obtain the existing effect data\n    //\n    let hexedId = await DAE.getFlag(aToken?.actor, FLAG);\n    let hexedToken = await canvas.tokens.placeables.find(ef => ef.id === hexedId)\n    let existingHex = await hexedToken?.actor.effects.find(i => i.data.label === FLAG);\n    //-----------------------------------------------------------------------------------------------\n    // Delete the existing effect\n    //\n    if (existingHex) await existingHex.delete()\n    //-----------------------------------------------------------------------------------------------\n    // Delete the DAE flag\n    //\n    await DAE.unsetFlag(aToken.actor, FLAG)\n    //-----------------------------------------------------------------------------------------------\n    // Delete the temporary ability from the actor's spell book\n    //\n    let itemFound = aActor.items.find(item => item.data.name === NEW_ITEM_NAME && item.type === \"spell\")\n    jez.log(\"itemFound\", itemFound)\n    if (itemFound) {\n        await itemFound.delete();\n        msg = `An At-Will Spell \"${NEW_ITEM_NAME}\" has been deleted from ${aToken.name}'s spell book`\n        ui.notifications.info(msg);\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Say Good bye!\n    //\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n    //-----------------------------------------------------------------------------------------------\n    // Set the DAE Flag to point at the targeted token id\n    //\n    await DAE.setFlag(aToken.actor, FLAG, tToken.id)\n    //-----------------------------------------------------------------------------------------------\n    // Define the variables that will be passed out of the curse dialog\n    //\n    const LEVEL = args[0].spellLevel;\n    const UUID = args[0].uuid;\n    const RNDS = LEVEL === 3 ? 480 : LEVEL === 4 ? 480 : LEVEL >= 5 ? 1440 : 60;\n    const SECONDS = LEVEL === 3 ? 28800 : LEVEL === 4 ? 28800 : LEVEL >= 5 ? 86400 : 3600;\n    const ABILITY_FNAME = Object.values(CONFIG.DND5E.abilities);\n    const ABILITY_SNAME = Object.keys(CONFIG.DND5E.abilities);\n    const GAME_RND = game.combat ? game.combat.round : 0;\n    //-----------------------------------------------------------------------------------------------\n    // Build up ability list for following dialog\n    //\n    let ability_list = \"\";\n    for (let i = 0; i < ABILITY_FNAME.length; i++) {\n        let full_name = ABILITY_FNAME[i];\n        let short_name = ABILITY_SNAME[i];\n        ability_list += `<option value=\"${short_name}\">${full_name}</option>`;\n    }\n    //-----------------------------------------------------------------------------------------------\n    // My new dialog code\n    //\n    let template = `\n<div>\n<label>Pick stat to be hexed (disadvantage on ability checks)</label>\n<div class=\"form-group\" style=\"font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;\">\n`   // Back tick on its on line to make the console output better formatted\n    for (let i = 0; i < ABILITY_FNAME.length; i++) {\n        let fName = ABILITY_FNAME[i];\n        let sName = ABILITY_SNAME[i];\n        if (i === 0) template += `<input type=\"radio\" id=\"${sName}\" name=\"selectedLine\" value=\"${sName}\" checked=\"checked\"> <label for=\"${sName}\">${fName}</label><br>\n`\n        else template += `<input type=\"radio\" id=\"${sName}\" name=\"selectedLine\" value=\"${sName}\"> <label for=\"${sName}\">${fName}</label><br>\n`\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Build and display the dialog to pick stat being hexed\n    //\n    let ability = \"str\"\n    new Dialog({\n        title: aItem.name,\n        content: template,\n        buttons: {\n            hex: {\n                label: \"Hex\",\n                callback: async (html) => {\n                    ability = html.find(\"[name=selectedLine]:checked\").val();\n                    bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND);\n                    await jez.wait(500);\n                    applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECONDS, GAME_RND);\n                }\n            }\n        },\n        default: \"hex\"\n    }).render(true);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n    //-----------------------------------------------------------------------------------------------\n    // Define a function to use as a call back from the dialog.\n    //\n    async function bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND) {\n        jez.log(`bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND)`, \"tToken\", tToken,\n            \"aItem\", aItem, \"UUID\", UUID, \"aToken\", aToken, \"aActor\", aActor, \"RNDS\", RNDS, \"SECONDS\", SECONDS, \"GAME_RND\", GAME_RND)\n        let effectData = {\n            label: aItem.name,\n            icon: \"systems/dnd5e/icons/skills/violet_24.jpg\",\n            origin: UUID,\n            disabled: false,\n            duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime },\n            flags: { dae: { itemData: aItem } },\n            changes: [\n                { key: \"flags.midi-qol.hexMark\", mode: OVERRIDE, value: tToken.id, priority: 20 },\n                { key: \"flags.dnd5e.DamageBonusMacro\", mode: CUSTOM, value: `ItemMacro.${aItem.name}`, priority: 20 },\n                { key: \"flags.midi-qol.concentration-data.targets\", mode: ADD, value: { \"actorId\": aActor.id, \"tokenId\": aToken.id }, priority: 20 }\n            ]\n        };\n        await aActor.createEmbeddedEntity(\"ActiveEffect\", effectData);\n        let getConc = aActor.effects.find(i => i.data.label === \"Concentrating\");\n        await aActor.updateEmbeddedEntity(\"ActiveEffect\", {\n            \"_id\": getConc.id, origin: UUID,\n            \"duration\": { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime }\n        });\n    }\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro BonusDamage\n ***************************************************************************************************/\nasync function doBonusDamage() {\n    const FUNCNAME = \"doBonusDamage()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    const tToken = canvas.tokens.get(args[0].targets[0].id);\n    //const aToken = canvas.tokens.get(args[0].tokenId);\n    //const aItem = args[0].item;\n    const DMG_TYPE = \"necrotic\";\n    if (tToken.id !== getProperty(aToken.actor.data.flags, \"midi-qol.hexMark\")) return {};\n    if (![\"ak\"].some(actionType => (aItem.data.actionType || \"\").includes(actionType))) return {};\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return {\n        damageRoll: `1d6[${DMG_TYPE}]`,\n        flavor: `(Hex (${CONFIG.DND5E.damageTypes[DMG_TYPE]}))`,\n        damageList: args[0].damageList, itemCardId: args[0].itemCardId\n    };\n}\n/***************************************************************************************************\n * Apply the hex debuff to the target\n ***************************************************************************************************/\nasync function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECONDS, GAME_RND) {\n    // Crymic's code looked for \"hex\" I changed it to look for the name of the item instead.\n    const hexEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);\n    const concEffect = await aToken.actor.effects.find(i => i.data.label === \"Concentrating\");\n    jez.log(`aToken.id ${aToken?.id}`, aToken)\n    jez.log(`hexEffect.id ${hexEffect?.id}`, hexEffect)\n    jez.log(`concEffect.id ${concEffect?.id}`, concEffect.id)\n    let effectData = {\n        label: aItem.name,\n        icon: aItem.img,\n        origin: UUID,\n        disabled: false,\n        duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime },\n        flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect.id, concId: concEffect.id } },\n        changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20 }]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: [effectData] });\n    //-----------------------------------------------------------------------------------------------\n    // Modify the concentrating effect to make this macro an ItemMacro\n    //\n    modConcEffect(aToken)\n    //------------------------------------------------------------------------------------------\n    // Copy the item from the item directory to the spell book\n    //\n    msg = `An At-Will Spell \"${NEW_ITEM_NAME}\" has been added to ${aToken.name} for the duration of this spell`\n    ui.notifications.info(msg);\n    copyEditItem(aToken)\n    //-----------------------------------------------------------------------------------------------\n    // Post chat message\n    //\n    jez.log(\"ability\", ability)\n    msg = `${tToken.name}'s ${ability.toUpperCase()} is now hexed, and will make stat checks at disadvantage. \n    ${aToken.name} will do additional damage on each hit to ${tToken.name}`\n    postResults(msg)\n}\n/***************************************************************************************************\n * Copy the temporary item to actor's spell book and edit it as appropriate\n ***************************************************************************************************/\nasync function copyEditItem(token5e) {\n    const FUNCNAME = \"copyEditItem(token5e)\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //----------------------------------------------------------------------------------------------\n    let oldActorItem = token5e.actor.data.items.getName(NEW_ITEM_NAME)\n    if (oldActorItem) await deleteItem(token5e.actor, oldActorItem)\n    //----------------------------------------------------------------------------------------------\n    jez.log(\"Get the item from the Items directory and slap it onto the active actor\")\n    let itemObj = game.items.getName(SPEC_ITEM_NAME)\n    if (!itemObj) {\n        msg = `Failed to find ${SPEC_ITEM_NAME} in the Items Directory`\n        ui.notifications.error(msg);\n        postResults(msg)\n        return (false)\n    }\n    console.log('Item5E fetched by Name', itemObj)\n    await replaceItem(token5e.actor, itemObj)\n    //----------------------------------------------------------------------------------------------\n    jez.log(\"Edit the item on the actor\")\n    let aActorItem = token5e.actor.data.items.getName(SPEC_ITEM_NAME)\n    jez.log(\"aActorItem\", aActorItem)\n    if (!aActorItem) {\n        msg = `Failed to find ${SPEC_ITEM_NAME} on ${token5e.name}`\n        ui.notifications.error(msg);\n        postResults(msg)\n        return (false)\n    }\n    //-----------------------------------------------------------------------------------------------\n    jez.log(`Remove the don't change this message assumed to be embedded in the item description.  It \n             should be of the form: <p><strong>%%*%%</strong></p> followed by white space`)\n    const searchString = `<p><strong>%%.*%%</strong></p>[\\s\\n\\r]*`;\n    const regExp = new RegExp(searchString, \"g\");\n    const replaceString = ``;\n    let content = await duplicate(aActorItem.data.data.description.value);\n    content = await content.replace(regExp, replaceString);\n    let itemUpdate = {\n        'name': NEW_ITEM_NAME,\n        'data.description.value': content,\n    }\n    await aActorItem.update(itemUpdate)\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/*************************************************************************************\n * replaceItem\n * \n * Replace or Add targetItem to inventory of actor5e passed as parms\n *************************************************************************************/\nasync function replaceItem(actor5e, targetItem) {\n    await deleteItem(actor5e, targetItem)\n    return (actor5e.createEmbeddedDocuments(\"Item\", [targetItem.data]))\n}\n/*************************************************************************************\n * deleteItem\n * \n * Delete targetItem to inventory of actor5e passed as parms\n *************************************************************************************/\nasync function deleteItem(actor5e, targetItem) {\n    let itemFound = actor5e.items.find(item => item.data.name === targetItem.data.name && item.type === targetItem.type)\n    if (itemFound) await itemFound.delete();\n}\n/***************************************************************************************************\n * Modify existing concentration effect to call a this macro as an ItemMacro that can use doOff\n * function can be used to clean accumulated effects.  \n ***************************************************************************************************/\nasync function modConcEffect(token5e) {\n    const EFFECT = \"Concentrating\"\n    await jez.wait(100)\n    let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);\n    effect.data.changes.push({ key: `macro.itemMacro`, mode: CUSTOM, value: `arbitrary_arg`, priority: 20 })\n    const result = await effect.update({ 'changes': effect.data.changes });\n    if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.1S0dhGchD8UaxxYs"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    },
+    "enhancedcombathud": {
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    }
+  }
+}

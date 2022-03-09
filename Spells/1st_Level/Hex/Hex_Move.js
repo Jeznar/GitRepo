@@ -1,10 +1,11 @@
-const MACRONAME = "Hex-Move"
+const MACRONAME = "Hex-Move.js"
 /*****************************************************************************************
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
  *****************************************************************************************/
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
+const MAC = MACRONAME.split("-")[0]     // Extra short form of the MACRONAME
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
@@ -16,25 +17,17 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken 
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
-const EFFECT = "Hex (Jez)"
-
+const FLAG = MAC    // Name of the DAE Flag       
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
-//if ((args[0]?.tag === "OnUse") && !preCheck())return;
-
+if (!preCheck()) return;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
-// DamageBonus must return a function to the caller
-if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -48,17 +41,7 @@ function preCheck() {
         postResults();
         return (false);
     }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        postResults();
-        return(false);
-    }*/
-    /*if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return
-        msg = `Saving throw succeeded.  ${aItem.name} has no effect.`
-        postResults();
-
-        return(false);
-    }*/
+    return(true)
 }
 /***************************************************************************************************
  * Post results to the chat card
@@ -67,29 +50,6 @@ function preCheck() {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-}
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set Off
- * 
- * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects
- ***************************************************************************************************/
- async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("Something could have been here")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-  }
-  
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("A place for things to be done");
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
@@ -105,9 +65,34 @@ async function doOnUse() {
     // Obtain the existing hexMark
     //
     let oldHexMark = getProperty(aToken.actor.data.flags, "midi-qol.hexMark")
-    jez.log("..........hexMark target:", oldHexMark)
+    jez.log("hexMark target:", oldHexMark)
     //----------------------------------------------------------------------------------------------
-    // Update the hexMark to the   token ID in the effect data
+    // Get the token for the old hex target
+    //
+    let oToken = canvas.tokens.placeables.find(ef => ef.id === oldHexMark)
+    if (!oToken) {
+        msg = `The token that had the old hex was not found.  Sorry, can not automatically move hex.`
+        ui.notifications.warn(msg);
+        postResults(msg);
+        return (false);
+    }
+    jez.log(`${oToken.name} was the old hex target`,oToken)
+    //----------------------------------------------------------------------------------------------
+    // Verify the old hex mark is actually, you know, dead
+    //
+    jez.log("oToken.actor.data.data.attributes.hp.value", oToken.actor.data.data.attributes.hp.value)
+    if (oToken.actor.data.data.attributes.hp.value !== 0) {
+        msg = `Perhaps sadly, ${oToken.name} is alive!  The hex may not be moved.`
+        ui.notifications.warn(msg);
+        postResults(msg);
+        return (false);
+    } else jez.log(`Yea? ${oToken.name} is dead and can have hex moved`)
+    //----------------------------------------------------------------------------------------------
+    // Stash the token ID of the new target into the DAE Flag
+    //
+    await DAE.setFlag(aToken.actor, FLAG, tToken.id)
+    //----------------------------------------------------------------------------------------------
+    // Update the hexMark to the token ID in the effect data
     //
     let newHexMark = tToken.id
     /** setProperty(object, key, value)
@@ -119,113 +104,103 @@ async function doOnUse() {
      * @return {boolean}        Whether the value was changed from its previous value
      */
     setProperty(aToken.actor.data.flags, "midi-qol.hexMark", newHexMark)
-    //----------------------------------------------------------------------------------------------
-    // Get the token for the old hex target
-    //
-    let oToken = canvas.tokens.placeables.find(ef => ef.id === oldHexMark)
-    jez.log(`${oToken.name} was the old hex target`,oToken)
+ 
     //----------------------------------------------------------------------------------------------
     // Get the data of the original hex on the target, then delete it.
     //
-    let effect = await oToken.actor.effects.find(i => i.data.label === EFFECT);
-    jez.log(`**** ${EFFECT} found?`, effect)
-    if (!effect) {
-        msg = `${EFFECT} sadly not found on ${oToken.name}.`
+    let oldEffect = await oToken.actor.effects.find(i => i.data.label === FLAG);
+    jez.log(`**** ${FLAG} found?`, oldEffect)
+    if (!oldEffect) {
+        msg = `${FLAG} sadly not found on ${oToken.name}.`
         ui.notifications.error(msg);
         postResults(msg);
         return (false);
     }
-
-    //let target = args[0].hitTargets[0].actor;
-    //let effect = target.effects.find((i) => i.data.origin === args[0].itemUuid);
-    //
-    //effect.data.changes[0].key = `flags.midi-qol.disadvantage.ability.check.wis`;
-
-    let effectCopy = duplicate(effect)
-    //jez.log(await tToken.actor.updateEmbeddedDocuments("ActiveEffect", [effectCopy]));
-    //jez.log("Copied effect?")
-
-    let label = effect.data.label
-    //jez.log("effect.data.label", label)
-    let icon = effect.data.icon
-    //jez.log("effect.data.icon", icon)
-    let origin = effect.data.origin
-    //jez.log("effect.data.origin", origin)
-    let rounds = effect.data.duration.rounds
-    //jez.log("effect.data.duration.rounds", rounds)
+    //let icon = aItem.img
+    let origin = oldEffect.data.origin ? oldEffect.data.origin : args[0].uuid;
+    const LEVEL = args[0].spellLevel;
+    const RNDS = LEVEL === 3 ? 480 : LEVEL === 4 ? 480 : LEVEL >= 5 ? 1440 : 60;
+    let rounds = oldEffect.data.duration.rounds ? oldEffect.data.duration.rounds : RNDS
     let seconds = 6 * rounds
-    let startRound = effect.data.duration.startRound
-    //jez.log("effect.data.duration.startRound", startRound)
-    let startTime = effect.data.duration.startTime
-    //jez.log("effect.data.duration.startTime", startTime)
-    let itemData = effect.data.flags.dae.itemData
-    //jez.log("aItem effect.data.flags.dae.itemData", itemData)
-    let spellLevel = effect.data.flags.dae.spellLevel
-    //jez.log("effect.data.flags.dae.spellLevel", spellLevel)
-    //jez.log("aToken.id", aToken.id)
-    let hexID = effect.data.flags.dae.hexId
-    jez.log("effect.data.flags.dae.hexId", hexID)
-    const hexEffect = await aToken.actor.effects.find(i => i.data.label === "Hex (Jez)");
-    jez.log("hexEffect",hexEffect.id)
-
-    let concId = effect.data.flags.dae.concId
-    jez.log("effect.data.flags.dae.concId", concId)
+    const GAME_RND = game.combat ? game.combat.round : 0;
+    let startRound = oldEffect.data.duration.startRound ? oldEffect.data.duration.startRound : GAME_RND
+    let startTime = oldEffect.data.duration.startTime ? oldEffect.data.duration.startTime : game.time.worldTime
+    let itemData = oldEffect.data.flags.dae.itemData ? oldEffect.data.flags.dae.itemData : aItem
+    let spellLevel = oldEffect.data.flags.dae.spellLevel ? oldEffect.data.flags.dae.spellLevel : args[0].spellLevel
+    const hexEffect = await aToken.actor.effects.find(i => i.data.label === "Hex");
     const concEffect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
-    jez.log("concEffect",concEffect.id)
-
-
-    let effectData = {
-        label: label,
-        icon: icon,
-        origin: origin,
-        disabled: false,
-        duration: { rounds:rounds, SECONDS:seconds, startRound:startRound, startTime:startTime },
-        flags: { dae: { itemData:itemData, spellLevel:spellLevel, tokenId: aToken.id, hexId:hexID, concId:concId } },
-        changes: [{key: `flags.midi-qol.disadvantage.ability.check.str`, mode: ADD, value: 1, priority: 20}]
-    };
-    await MidiQOL.socket().executeAsGM("createEffects", {actorUuid: tToken.actor.uuid, effects: [effectData]});    
-    /*
-    let effectData = {
-        label: aItem.name,
-        icon: aItem.img,
-        origin: UUID,
-        disabled: false,
-        duration: { rounds: HOURS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect.id, concId: concEffect.id } },
-        changes: [{key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20}]
-    };
-    await MidiQOL.socket().executeAsGM("createEffects", {actorUuid: tToken.actor.uuid, effects: [effectData]});    
-    */
-
-
-
-
-
+    let concId = oldEffect.data.flags.dae.concId ? oldEffect.data.flags.dae.concId : concEffect.id
+    let ability = ""
+    //-----------------------------------------------------------------------------------------------
+    // Build up ability list for following dialog
+    //
+    let ability_list = "";
+    const ABILITY_FNAME = Object.values(CONFIG.DND5E.abilities);
+    const ABILITY_SNAME = Object.keys(CONFIG.DND5E.abilities);
+    for (let i = 0; i < ABILITY_FNAME.length; i++) {
+        let full_name = ABILITY_FNAME[i];
+        let short_name = ABILITY_SNAME[i];
+        ability_list += `<option value="${short_name}">${full_name}</option>`;
+    }
+    //-----------------------------------------------------------------------------------------------
+    // My new dialog code
+    //
+    let template = `
+<div>
+<label>Pick stat to be hexed (disadvantage on ability checks)</label>
+<div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">
+`   // Back tick on its on line to make the console output better formatted
+    for (let i = 0; i < ABILITY_FNAME.length; i++) {
+        let fName = ABILITY_FNAME[i];
+        let sName = ABILITY_SNAME[i];
+        if (i === 0) template += `<input type="radio" id="${sName}" name="selectedLine" value="${sName}" checked="checked"> <label for="${sName}">${fName}</label><br>
+`
+        else template += `<input type="radio" id="${sName}" name="selectedLine" value="${sName}"> <label for="${sName}">${fName}</label><br>
+`
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Build and display the dialog to pick stat being hexed
+    //
+    new Dialog({
+        title: aItem.name,
+        content: template,
+        buttons: {
+            hex: {
+                label: "Hex",
+                callback: async (html) => {
+                    ability = html.find("[name=selectedLine]:checked").val();
+                    //bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND);
+                    await jez.wait(500);
+                    applyDis(tToken, ability, itemData, origin, spellLevel, aToken, rounds, seconds, GAME_RND);
+                }
+            }
+        },
+        default: "hex"
+    }).render(true);
+    //----------------------------------------------------------------------------------------------
+    // Delete the old effect
+    //
+    oldEffect.delete();
     //----------------------------------------------------------------------------------------------
     // Post the results message
     //
-    msg = `Old hexMark: ${oldHexMark}<br>New hexMark: ${newHexMark}`
+    msg = `Hex removed from corpse of ${oToken.name}. ${tToken.name}'s ${ability.toUpperCase} is now hexed.`
     postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
-}
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked each round by DAE
- ***************************************************************************************************/
- async function doEach() {
-    const FUNCNAME = "doEach()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do Each code")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-}
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- ***************************************************************************************************/
- async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do On Use code")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
+    /***************************************************************************************************
+     * Apply the hex debuff to the target
+    ***************************************************************************************************/
+    async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECONDS, GAME_RND) {
+        let effectData = {
+            label: aItem.name,
+            icon: aItem.img,
+            origin: UUID,
+            disabled: false,
+            duration: { rounds: RNDS, SECONDS: SECONDS, startRound: startRound, startTime: startTime },
+            flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect, concId: concId } },
+            changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20 }]
+        };
+        await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
+    }
 }

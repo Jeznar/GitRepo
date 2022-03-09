@@ -22,7 +22,7 @@ class jez {
 
     static contents() {
         let functions = `
-  addMessage(chatMsg, msgParm) -- add text message to specified chat message.
+  addMessage(chatMessage, msgParm) -- add text message to specified chat message.
   log(...parms) -- depending on developer mode debug flag writes messages to console.    
   postMessage(msgParm) -- post a new message to the game chat, optioanlly with parms.
   wait(ms) -- async call to waith for ms milliseconds`
@@ -121,13 +121,13 @@ class jez {
     }
 
     /***************************************************************************************************
-     * addMessage to specified chatMsg.  This presumes it is a Midi-QoL style HTML chat card.
-     * chatMsg frequently obtained like so:
-     *  let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+     * addMessage to specified chatMessage.  This presumes it is a Midi-QoL style HTML chat card.
+     * chatMessage frequently obtained like so:
+     *  let chatMessage = game.messages.get(args[args.length - 1].itemCardId);
      *  
      * Example Calls:
-     *  jez.addMessage(chatMsg, "Hi there!")
-     *  jez.addMessage(chatMsg,{color:"purple",fSize:14,msg:"Bazinga, Sheldon Wins!",tag:"saves"})
+     *  jez.addMessage(chatMessage, "Hi there!")
+     *  jez.addMessage(chatMessage,{color:"purple",fSize:14,msg:"Bazinga, Sheldon Wins!",tag:"saves"})
      * 
      * If msgParm is provided as an object
      * @typedef  {Object} msgParm
@@ -136,15 +136,15 @@ class jez {
      * @property {string} msg     - Actual text to be posted into chat
      * @property {string} tag     - Tag mapping into HTML from: saves, attack, damage, hits, other   
      ***************************************************************************************************/
-    static async addMessage(chatMsg, msgParm) {
-        const FUNCNAME = "postChatMessage(chatMsg, msgParm)";
+    static async addMessage(chatMessage, msgParm) {
+        const FUNCNAME = "postChatMessage(chatMessage, msgParm)";
         jez.log(`-------------- Starting ${FUNCNAME} -----------`);
         const allowedTags = ["saves", "attack", "damage", "hits", "other"]
         //-----------------------------------------------------------------------------------------------
-        // chatMsg must be a ChatMessage object
+        // chatMessage must be a ChatMessage object
         //
-        if (chatMsg?.constructor.name !== "ChatMessage") {
-            let errMsg = `Coding error. Chat message passed (${chatMsg}) is a ${chatMsg?.constructor.name}, must be ChatMessage.`
+        if (chatMessage?.constructor.name !== "ChatMessage") {
+            let errMsg = `Coding error. Chat message passed (${chatMessage}) is a ${chatMessage?.constructor.name}, must be ChatMessage.`
             jez.log("--- ERROR ---", errMsg)
             ui.notifications.error(errMsg)
             return (false)
@@ -186,9 +186,9 @@ class jez {
         const searchString = `<div class="end-midi-qol-${chatTag}">`;
         const regExp = new RegExp(searchString, "g");
         const replaceString = `<div class="end-midi-qol-${chatTag}">${chatMsg}`;
-        let content = await duplicate(chatMsg.data.content);
+        let content = await duplicate(chatMessage.data.content);
         content = await content.replace(regExp, replaceString);
-        await chatMsg.update({ content: content });
+        await chatMessage.update({ content: content });
 
         await jez.wait(100);
         await ui.chat.scrollBottom();

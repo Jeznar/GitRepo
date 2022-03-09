@@ -28,7 +28,7 @@ return;
     const FUNCNAME = "doOnUse()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     modConcentratingEffect(aToken)
-    DAE.unsetFlag(aToken.actor, FLAG)            // Stash the flag value
+    DAE.unsetFlag(aToken.actor, FLAG)            // Clear the flag
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
