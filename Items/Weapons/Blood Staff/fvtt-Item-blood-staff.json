@@ -1,0 +1,273 @@
+{
+  "name": "Blood Staff",
+  "type": "weapon",
+  "img": "Icons_JGB/Weapons/Blood_Staff.jpg",
+  "data": {
+    "description": {
+      "value": "<p><em>Weapon (quarterstaff, rare (requires attunement)</em></p>\n<p>@JournalEntry[EbH5AWDG3wGfaict]{Blood Staff of Kavan}</p>",
+      "chat": "<p>Proficiency with a quarterstaff allows you to add your proficiency bonus to the attack roll for any attack you make with it.</p>",
+      "unidentified": "Quarterstaff"
+    },
+    "source": "Kavan's Grave at Yester Hill",
+    "quantity": 1,
+    "weight": 4,
+    "price": 0.2,
+    "attunement": 1,
+    "equipped": false,
+    "rarity": "veryRare",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6[bludgeoning] + @mod",
+          "bludgeoning"
+        ]
+      ],
+      "versatile": "1d8[bludgeoning] + @mod"
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "simpleM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "fir": false,
+      "fin": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": true,
+      "ret": false,
+      "foc": false,
+      "ada": false,
+      "mgc": true,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "KP5AmRGlTj5LTTLT",
+      "changes": [
+        {
+          "key": "data.bonuses.spell.attack",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.spell.dc",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        },
+        {
+          "key": "data.skills.nat.bonuses.check",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        },
+        {
+          "key": "data.skills.sur.bonuses.check",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/svg/blood2.svg",
+      "label": "Blood Staff",
+      "origin": "Item.yDhlhDgUYiNrllkh",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": [
+        "data.bonuses.spell.attack",
+        "data.bonuses.spell.dc",
+        "data.skills.nat.bonuses.check",
+        "data.skills.sur.bonuses.check"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {
+        "type": "Quarterstaff",
+        "damage": {
+          "parts": []
+        },
+        "classFeatures": [],
+        "filterType": "Weapon",
+        "tags": [
+          "Damage",
+          "Combat"
+        ],
+        "sources": []
+      },
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 1782728300,
+      "definitionId": 12,
+      "originalName": "Quarterstaff"
+    },
+    "betterRolls5e": {
+      "quickDamage": {
+        "context": {
+          "0": ""
+        },
+        "value": {
+          "0": true
+        },
+        "altValue": {
+          "0": true
+        }
+      },
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": false,
+          "resource": true
+        },
+        "altValue": {
+          "use": false,
+          "resource": true
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": true,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "cf": {
+      "id": "temp_ggyqw28y4rt"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": ""
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.items.Ma8GWyqgPtanEWPv"
+    },
+    "betterCurses": {
+      "isCurse": true,
+      "curseName": "Scent of the Wild",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

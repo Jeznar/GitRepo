@@ -181,13 +181,7 @@ async function doOnUse() {
     // Delete the old effect
     //
     oldEffect.delete();
-    //----------------------------------------------------------------------------------------------
-    // Post the results message
-    //
-    msg = `Hex removed from corpse of ${oToken.name}. ${tToken.name}'s ${ability.toUpperCase} is now hexed.`
-    postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
+
     /***************************************************************************************************
      * Apply the hex debuff to the target
     ***************************************************************************************************/
@@ -202,5 +196,14 @@ async function doOnUse() {
             changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20 }]
         };
         await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
+        //----------------------------------------------------------------------------------------------
+        // Post the results message
+        //
+        msg = `Hex removed from corpse of ${oToken.name}. ${tToken.name}'s ${ability.toUpperCase()} is now hexed,
+    and will make stat checks at disadvantage. ${aToken.name} will do additional damage on each hit to 
+    ${tToken.name}`
+        postResults(msg)
+        jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+        return (true);
     }
 }

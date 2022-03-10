@@ -57,8 +57,40 @@ ___
 
 Weapon Items crafted for the game get listed here
 
+* [Blood Staff](blood-staff)
 * [Gulthias Staff](gulthias-staff)
 * [Treebane](#treebane)
+
+---
+
+### **Blood Staff**
+
+This is the implementation of a very campaign specific item (with a mild curse).
+
+**Blood Staff of Kavan** -- 
+*Weapon (quarterstaff, rare (requires attunement)*
+
+Kavan was a ruthless chieftain whose tribe lived in the Balinok Mountains centuries before the arrival of Strahd von Zarovich. Although he was very much alive, Kavan had some traits in common with vampires: he slept during the day and hunted at night, he drank the blood of his prey, and he lived underground. In battle, he wielded a staff stained with blood. His was the first blood staff, a weapon that drains life from those it kills and transfers that life to its wielder, imbuing that individual with the stamina to keep fighting.
+
+When Attuned and equipped, provdes a number of passive bonses:
+
+* +1 to Spell Hit Rolls *(DAE Effect)*
+* +1 to Spell Saving Throw DCs *(DAE Effect)*
+* +1 to Knowledge Nature Checks *(DAE Effect)*
+* +1 to Survival Skill Checks *(DAE Effect)*
+* Add proficency bonus to innate heal such as Healing Light, Second Wind, etc. *(embedded in my Healing Light macro)*
+* When you hit with a spell attack using this magic staff as a focus and reduce the target to 0 hit points, you gain 2d6 temporary hit points. *(seperate ability*
+
+The item also carries a curse once attuned, the creature:
+
+* always looks a bit dirty and dishelved, rather like they had slept in the woods and hadn't bathed in days,
+* they carry a subtle scent of fresh blood.
+
+The main staff abilities are implmented using DAE effects.  The healing boost I have already baked into healing light (since that is what I need for my campaign). The temp HP effect is implmented by a seperate item, **Blood Staff Soul Drain**, which is powered by an onUse ItemMacro.
+
+**Blood Staff Soul Drain** requires the user to target a zero health token and fire the ability.  It does not check to see what caused the death, that is left up to the players.  It does run a decent looking VFX.
+
+![Blood_Staff_Soul_Drain.gif](Weapons/Blood Staff/Blood_Staff_Soul_Drain.gif)
 
 ---
 

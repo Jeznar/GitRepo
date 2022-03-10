@@ -12,12 +12,12 @@ const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
 let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-    else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-    else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; 
-    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
+else aActor = game.actors.get(LAST_ARG.actorId);
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
+if (args[0]?.item) aItem = args[0]?.item;
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 
@@ -35,7 +35,7 @@ if (args[0] === "off") await doOff();                   // DAE removal
 //if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 //if (args[0] === "each") doEach();					    // DAE removal
-if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    // DAE Damage Bonus
+if (args[0]?.tag === "DamageBonus") return (doBonusDamage());    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
 /***************************************************************************************************
@@ -55,7 +55,7 @@ function preCheck() {
 /***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults() {
+function postResults() {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
@@ -63,23 +63,39 @@ function preCheck() {
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
  ***************************************************************************************************/
- async function doOff() {
+async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    let hexedId = await DAE.getFlag(aToken.actor, FLAG);
-    jez.log("existingHexId",hexedId)
+    //-----------------------------------------------------------------------------------------------
+    // Obtain the existing effect data
+    //
+    let hexedId = await DAE.getFlag(aToken?.actor, FLAG);
     let hexedToken = await canvas.tokens.placeables.find(ef => ef.id === hexedId)
-    jez.log("Hexed Token:",hexedToken)
-    let existingHex = await hexedToken.actor.effects.find(i => i.data.label === FLAG);
-    jez.log("existingEffect",existingHex)
-    await existingHex.delete()
-    await DAE.unsetFlag(aToken.actor, FLAG)     // Clear the flag as a cleanup step
-
-    jez.log("TODO: Remove the atWill spell from spell book")
-
+    let existingHex = await hexedToken?.actor.effects.find(i => i.data.label === FLAG);
+    //-----------------------------------------------------------------------------------------------
+    // Delete the existing effect
+    //
+    if (existingHex) await existingHex.delete()
+    //-----------------------------------------------------------------------------------------------
+    // Delete the DAE flag
+    //
+    await DAE.unsetFlag(aToken.actor, FLAG)
+    //-----------------------------------------------------------------------------------------------
+    // Delete the temporary ability from the actor's spell book
+    //
+    let itemFound = aActor.items.find(item => item.data.name === NEW_ITEM_NAME && item.type === "spell")
+    jez.log("itemFound", itemFound)
+    if (itemFound) {
+        await itemFound.delete();
+        msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been deleted from ${aToken.name}'s spell book`
+        ui.notifications.info(msg);
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Say Good bye!
+    //
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
-  }
+}
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
@@ -104,42 +120,51 @@ async function doOnUse() {
     const ABILITY_FNAME = Object.values(CONFIG.DND5E.abilities);
     const ABILITY_SNAME = Object.keys(CONFIG.DND5E.abilities);
     const GAME_RND = game.combat ? game.combat.round : 0;
+    //-----------------------------------------------------------------------------------------------
+    // Build up ability list for following dialog
+    //
     let ability_list = "";
     for (let i = 0; i < ABILITY_FNAME.length; i++) {
         let full_name = ABILITY_FNAME[i];
         let short_name = ABILITY_SNAME[i];
         ability_list += `<option value="${short_name}">${full_name}</option>`;
     }
-    let the_content = `<form><div class="form-group"><label for="ability">Ability:</label>
-            <select id="ability">${ability_list}</select></div></form>`;
+    //-----------------------------------------------------------------------------------------------
+    // My new dialog code
+    //
+    let template = `
+<div>
+<label>Pick stat to be hexed (disadvantage on ability checks)</label>
+<div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">
+`   // Back tick on its on line to make the console output better formatted
+    for (let i = 0; i < ABILITY_FNAME.length; i++) {
+        let fName = ABILITY_FNAME[i];
+        let sName = ABILITY_SNAME[i];
+        if (i === 0) template += `<input type="radio" id="${sName}" name="selectedLine" value="${sName}" checked="checked"> <label for="${sName}">${fName}</label><br>
+`
+        else template += `<input type="radio" id="${sName}" name="selectedLine" value="${sName}"> <label for="${sName}">${fName}</label><br>
+`
+    }
     //-----------------------------------------------------------------------------------------------
     // Build and display the dialog to pick stat being hexed
     //
+    let ability = "str"
     new Dialog({
         title: aItem.name,
-        content: the_content,
+        content: template,
         buttons: {
             hex: {
                 label: "Hex",
                 callback: async (html) => {
-                    let ability = html.find('#ability')[0].value;
+                    ability = html.find("[name=selectedLine]:checked").val();
                     bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND);
                     await jez.wait(500);
                     applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECONDS, GAME_RND);
                 }
             }
         },
-        default: "Hex"
+        default: "hex"
     }).render(true);
-    //-----------------------------------------------------------------------------------------------
-    // Modify the concentrating effect to make this macro an ItemMacro
-    //
-    modConcEffect(aToken)
-    //-----------------------------------------------------------------------------------------------
-    // Post completion message
-    //
-    msg = `Maybe say something useful...`
-    postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
     //-----------------------------------------------------------------------------------------------
@@ -183,14 +208,15 @@ async function doBonusDamage() {
     if (!["ak"].some(actionType => (aItem.data.actionType || "").includes(actionType))) return {};
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return {
-        damageRoll: `1d6[${DMG_TYPE}]`, 
+        damageRoll: `1d6[${DMG_TYPE}]`,
         flavor: `(Hex (${CONFIG.DND5E.damageTypes[DMG_TYPE]}))`,
-        damageList: args[0].damageList, itemCardId: args[0].itemCardId};
+        damageList: args[0].damageList, itemCardId: args[0].itemCardId
+    };
 }
 /***************************************************************************************************
  * Apply the hex debuff to the target
  ***************************************************************************************************/
- async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECONDS, GAME_RND) {
+async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECONDS, GAME_RND) {
     // Crymic's code looked for "hex" I changed it to look for the name of the item instead.
     const hexEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);
     const concEffect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
@@ -204,20 +230,31 @@ async function doBonusDamage() {
         disabled: false,
         duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime },
         flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect.id, concId: concEffect.id } },
-        changes: [{key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20}]
+        changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20 }]
     };
-    await MidiQOL.socket().executeAsGM("createEffects", {actorUuid: tToken.actor.uuid, effects: [effectData]});    
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
+    //-----------------------------------------------------------------------------------------------
+    // Modify the concentrating effect to make this macro an ItemMacro
+    //
+    modConcEffect(aToken)
     //------------------------------------------------------------------------------------------
-    // Post completion message
+    // Copy the item from the item directory to the spell book
     //
     msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name} for the duration of this spell`
     ui.notifications.info(msg);
     copyEditItem(aToken)
+    //-----------------------------------------------------------------------------------------------
+    // Post chat message
+    //
+    jez.log("ability", ability)
+    msg = `${tToken.name}'s ${ability.toUpperCase()} is now hexed, and will make stat checks at disadvantage. 
+    ${aToken.name} will do additional damage on each hit to ${tToken.name}`
+    postResults(msg)
 }
 /***************************************************************************************************
  * Copy the temporary item to actor's spell book and edit it as appropriate
  ***************************************************************************************************/
- async function copyEditItem(token5e) {
+async function copyEditItem(token5e) {
     const FUNCNAME = "copyEditItem(token5e)";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
@@ -265,7 +302,7 @@ async function doBonusDamage() {
  * 
  * Replace or Add targetItem to inventory of actor5e passed as parms
  *************************************************************************************/
- async function replaceItem(actor5e, targetItem) {
+async function replaceItem(actor5e, targetItem) {
     await deleteItem(actor5e, targetItem)
     return (actor5e.createEmbeddedDocuments("Item", [targetItem.data]))
 }
@@ -274,7 +311,7 @@ async function doBonusDamage() {
  * 
  * Delete targetItem to inventory of actor5e passed as parms
  *************************************************************************************/
- async function deleteItem(actor5e, targetItem) {
+async function deleteItem(actor5e, targetItem) {
     let itemFound = actor5e.items.find(item => item.data.name === targetItem.data.name && item.type === targetItem.type)
     if (itemFound) await itemFound.delete();
 }
@@ -286,7 +323,7 @@ async function modConcEffect(token5e) {
     const EFFECT = "Concentrating"
     await jez.wait(100)
     let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);
-    effect.data.changes.push({key: `macro.itemMacro`, mode: CUSTOM, value:`arbitrary_arg`, priority: 20})
+    effect.data.changes.push({ key: `macro.itemMacro`, mode: CUSTOM, value: `arbitrary_arg`, priority: 20 })
     const result = await effect.update({ 'changes': effect.data.changes });
     if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
 }
