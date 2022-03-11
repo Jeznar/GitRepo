@@ -90,7 +90,7 @@ The main staff abilities are implmented using DAE effects.  The healing boost I 
 
 **Blood Staff Soul Drain** requires the user to target a zero health token and fire the ability.  It does not check to see what caused the death, that is left up to the players.  It does run a decent looking VFX.
 
-![Blood_Staff_Soul_Drain.gif](Weapons/Blood Staff/Blood_Staff_Soul_Drain.gif)
+![Blood_Staff_Soul_Drain.gif](Weapons/Blood_Staff/Blood_Staff_Soul_Drain.gif)
 
 ---
 
