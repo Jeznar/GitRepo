@@ -11,6 +11,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Light](#light)
 * [Mage Hand](#mage-hand)
 * [Prestidigitation](#prestidigitation)
+* [Shocking Grasp](#shocking-grasp)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -108,6 +109,16 @@ The summoner of the hand may move the token.  No effort is made to remove the ha
 This macro simply plays a VFX of a D12 over the casting token and spits out some text very briefly describing the spell.
 
 ![Prestidigitation_Video.gif](Prestidigitation/Prestidigitation_Video.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Shocking Grasp
+
+Implements the Cantrip using a VFX from Automated Animations and an effect from DAE.  The no reactions effect was added to CUB's condition lab.
+
+![Shocking_Grasp.gif](Shocking_Grasp/Shocking_Grasp.gif)
 
 [*Back to Cantrips List*](#cantrips)
 

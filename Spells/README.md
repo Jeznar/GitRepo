@@ -28,6 +28,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Light](Cantrips#light)
 * [Mage Hand](Cantrips#mage-hand)
 * [Prestidigitation](Cantrips#prestidigitation)
+* [Shocking Grasp](Cantrips#shocking-grasp)
 
 [*Back to Spell Level List*](#spells)
 
