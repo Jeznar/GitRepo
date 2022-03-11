@@ -74,7 +74,7 @@ new Dialog({
                     let resUpdate = {};
                     resUpdate[resType] = total;
                     await aToken.actor.update(resUpdate);
-                    replaceHitsWithHeals();
+                    await replaceHitsWithHeals();
                     if (healAttuned) postResults(`Healing augmented by ${HEAL_ITEM}.`);
                 }
             }
