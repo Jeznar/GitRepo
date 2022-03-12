@@ -77,6 +77,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Fireball](3rd_Level#fireball)
 * [Lightning Bolt](3rd_Level#lightning-bolt)
 * [Magic Circle](3rd_Level#magic-circle)
+* [Revivify](3rd_Level#revivify)
 * [Thunder Step](3rd_Level#thunder-step)
 * [Vampiric Touch](3rd_Level#vampiric-touch) (ASE)
 

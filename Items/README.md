@@ -9,9 +9,18 @@ This repo holds item macros and such.  Mostly, but perhaps, not entirely magic i
 
 Since there should eventually be a enourmous number of things in this repo, I have broken it up into subdirectories.  I'll keep all the README information in this file until and if there gets to be enough to warrent breaking them up like I have for spells.
 
+* [Components](#components)
 * [Items](#items)
 * [Potions](#potions)
 * [Weapons](#weapons)
+
+---
+
+## Components
+
+Components for spells that can be used as required items.
+
+* **[Diamond](Components/Diamond)** 300gp worth of diamonds for use of [Revivify](../Spells/3rd_Level#revivify). 
 
 ---
 

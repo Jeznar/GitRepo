@@ -1,9 +1,10 @@
 const MACRONAME = "Healing_Light.js"
 /*****************************************************************************************
  * Adding some headers and such to the macro that I inherited.  This macro does check for
- * possession and attunement of HEAL_ITEM, if it finds that, it adds @mod to the heal.
+ * possession and attunement of HEAL_ITEM, if it finds that, it adds proficency modifier
+ * to the heal.
  * 
- * 03/10/22 Update to Macro
+ * 03/12/22 Update to Macro
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -19,15 +20,15 @@ const HEAL_ITEM = "Blood Staff"
 if (args[0].targets.length !== 1) return ui.notifications.warn(`Please select a target.`);
 let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
 //----------------------------------------------------------------------------------------
-// Check to see if actor has the HEAL_ITEM, attunment and set the castMod to be used
+// Check to see if actor has the HEAL_ITEM, attunment and set the profMod to be used
 //
 let healItem = hasItem(HEAL_ITEM)
 let healAttuned = false
 if (healItem && healItem.data.data.attunement === 2) healAttuned = true
 let castStat = aToken.actor.data.data.attributes.spellcasting
-let castMod = 0
-if (healAttuned) castMod = Math.max(aToken.actor.data.data.abilities[castStat].mod, 0)
-jez.log(`Healing modifier (${castStat.toUpperCase()}) is ${castMod}`)
+let profMod = 0
+if (healAttuned) profMod = Math.max(jez.getProfMod(aToken), 0)
+jez.log(`Healing modifier (${castStat.toUpperCase()}) is ${profMod}`)
 //---------------------------------------------------------------------------------------------
 // Remove healing from the item and resource costs. Right now this uses Primary Resources, 
 // adjust to fit your needs.
@@ -62,7 +63,7 @@ new Dialog({
                         `Invalid number of charges entered = ${number}. Aborting action.`);
                 } else {
                     runVFX(tToken, aToken)
-                    let healDamage = new Roll(`${number}d6 + ${castMod}`).evaluate({ async: false });
+                    let healDamage = new Roll(`${number}d6 + ${profMod}`).evaluate({ async: false });
                     game.dice3d?.showForRoll(healDamage);   // Show 3D die on screen
                     await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, healDamage.total, DAM_TYPE, [tToken],
                         healDamage, { flavor: `(${CONFIG.DND5E.healingTypes[DAM_TYPE]})`, 

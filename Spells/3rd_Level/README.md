@@ -11,6 +11,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Fireball](#fireball)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
+* [Revivify](#revivify)
 * [Thunder Step](#thunder-step)
 * [Vampiric Touch](#vampiric-touch) (ASE)
 
@@ -124,6 +125,16 @@ It will then render the graphic where the targeting template had been placed.  W
 Here's what the spell looks like on the random battle map.
 
 ![Magic_Circle.gif](Magic_Circle/Magic_Circle.gif)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Revivify
+
+Fairly generic spell implementation.  A minor Automated Animations effect applied and a new spell component, [Diamond](../Items#Components), added to the spell components inventory.  This requires that the spell be adjusted after it is added to the character sheet to use the Diamond component.
+
+![Revivify_Description.png](Revivify/Revivify_Description.png)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
