@@ -132,7 +132,7 @@ Here's what the spell looks like on the random battle map.
 
 ### Revivify
 
-Fairly generic spell implementation.  A minor Automated Animations effect applied and a new spell component, [Diamond](../Items#components), added to the spell components inventory.  This requires that the spell be adjusted after it is added to the character sheet to use the Diamond component.
+Fairly generic spell implementation.  A minor Automated Animations effect applied and a new spell component, [Diamond](../../Items#components), added to the spell components inventory.  This requires that the spell be adjusted after it is added to the character sheet to use the Diamond component.
 
 ![Revivify_Description.png](Revivify/Revivify_Description.png)
 
