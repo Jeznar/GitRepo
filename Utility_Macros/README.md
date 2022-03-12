@@ -13,6 +13,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Demo Conc Mgmt](#demo-conc-mgmt)** Modifies concentration to remove and manage an existing effect
 * **[Demo Copy Edit Item](#demo-copy-edit-item)** Copies/Edits Item
 * **[Demo Flag Mgmt](#demo-flag-mgmt)** Exercise in use of DAE Flags
+* **[Demo Get Functions](#demo-get-functions)** Exercise a collection of Get functions
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
@@ -67,6 +68,26 @@ Lizzie started this fine mess and targeted 3 tokens
  3) Chipper Meat Bag, Medium
 Lizzie current DAE flag0bj content ▸{damageApplied: 31, familiar_name: "", Cruel_Puppetry: (…}, Demo_Flag_Mgmt: "ODlJtGYdKdSoCPDb 36plhIAopoCCiuCw mPmHxOKFozFjuKzu jkM3Fiq9HPoRrgad"}
 ~~~
+
+### **Demo Get Functions** 
+
+A series of functions that return simple integer values or false on errors with a fair 
+amount of error checking.
+
+- jez.getCastMod(subject) -- Returns the subject's casting stat modifier
+- jez.getCastStat(subject) -- Returns the subject's casting stat string (e.g. "int")
+- jez.getStatMod(subject,stat) -- Returns the subject's modifier for passed stat string
+- jez.getProfMod(subject) -- Returns the subject's proficiency modifer
+- jez.getTokenById(subjectId) -- Returns the Token5e acssociated with the passed ID
+
+Parameters
+Subject: Token5e or Actor5e object or 16 character id of a token
+Stat: A string from: "str", "dex", "con", "int", "wis", "chr"
+SubjectId: 16 character identifier for a token in the current scene
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
 
 ### **Demo Template VFX** 
 

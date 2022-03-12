@@ -6,7 +6,6 @@ jez.log(MACRONAME)
  * 03/11/22 Creation of Macro
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log("")
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
@@ -51,7 +50,6 @@ if (args[0]?.tag === "DamageBonus") {
     return(returnFunc)
 }
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-jez.log("")
 return;
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -131,11 +129,9 @@ async function doBonusDamage() {
         //------------------------------------------------------------------------------------------
         // Only applies to melee weapon and spell attacks
         // Action Types: mwak, msak, rwak, rsak
-        jez.log("")
         jez.log("-------------------")
         jez.log("LAST_ARG.item.data.actionType",LAST_ARG.item.data.actionType)
         jez.log("-------------------")
-        jez.log("")
         let actionType = LAST_ARG.item.data.actionType
         if (!(actionType === "mwak" || actionType === "msak")) {
             msg = `<b>${actionType.toUpperCase()}</b> action does not trigger ${aItem.name} damage.`;
@@ -174,7 +170,11 @@ async function doBonusDamage() {
         let saveRoll = (await tToken.actor.rollAbilitySave("con", { flavor:FLAVOR }))
         jez.log("saveRoll", saveRoll)
         if (saveRoll.total < SAVE_DC) game.cub.addCondition("Stunned", tToken);
-        modStunnedEffect(tToken)
+        //-------------------------------------------------------------------------------------------------------------
+        // Modify the effects to have a proper termination time
+        //
+        modEffect(tToken, "Stunned")
+        modEffect(tToken, "Incapacitated")
         //-------------------------------------------------------------------------------------------------------------
         // Dig through the chat history, to find the message that should have new message added...but don't use it?
         //
@@ -196,15 +196,21 @@ async function doBonusDamage() {
 /***************************************************************************************************
  * Modify existing effect to include a special duration of turnStart  
  ***************************************************************************************************/
-async function modStunnedEffect(token5e) {
-    const EFFECT = "Stunned"
-    await jez.wait(100)
+async function modEffect(token5e, EFFECT) {
+    jez.log("------- modEffect(token5e, EFFECT) --------","token5e",token5e,"EFFECT",EFFECT)
+    await jez.wait(500)
     let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);
+    jez.log(`${EFFECT} >>> effect`, effect)
+    jez.log("effect.data.flags.dae",effect.data.flags.dae)
+    if (effect.data.flags.dae === undefined) {
+        jez.log("Adding DAE to our critter")
+        effect.data.flags.dae = {}
+    } else jez.log("flags.dae already existed, party time?")
     effect.data.flags.dae.specialDuration = ["turnStart"]
-    effect.data.changes.push({key: `macro.CUB`, mode: CUSTOM, value:`Reactions - None`, priority: 20})
-    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration,
-                                         'effect.data.changes': effect.data.changes});
-    if (result) jez.log(`>>> Active Effect ${EFFECT} updated!`, result);
+    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration});
+    jez.log(`${EFFECT} >>> result`,result)
+    if (result) jez.log(`${EFFECT} >>> Active Effect ${EFFECT} updated!`, result);
+    else jez.log(`${EFFECT} >>> Active Effect not updated! =(`, result);
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off

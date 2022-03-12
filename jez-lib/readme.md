@@ -25,10 +25,15 @@ The small bundle of files that make up this module need to be paced on the serve
 The functions currently included in this module are:
 
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
+* **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
+* **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
 * **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
 * **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
+* **[jez.getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
+* **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifer
+* **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e acssociated with the passed ID
 * **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
 * **[jez.pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a drop down list.  User's selection is passed to the specified callback function. 
 * **[jez.pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
@@ -144,6 +149,27 @@ jez-lib |  (2) Selected Token Name : Meat Bag, Medium
 
 ---
 
+### Get Functions
+
+A series of functions that return simple integer values or false on errors with a fair 
+amount of error checking.
+
+#### Functions
+- jez.getCastMod(subject) -- Returns the subject's casting stat modifier
+- jez.getCastStat(subject) -- Returns the subject's casting stat string (e.g. "int")
+- jez.getStatMod(subject,stat) -- Returns the subject's modifier for passed stat string
+- jez.getProfMod(subject) -- Returns the subject's proficiency modifer
+- jez.getTokenById(subjectId) -- Returns the Token5e acssociated with the passed ID
+
+#### Parameters
+* Subject: Token5e or Actor5e object or 16 character id of a token
+* Stat: A string from: "str", "dex", "con", "int", "wis", "chr"
+* SubjectId: 16 character identifier for a token in the current scene
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
 ### getRange(aItem, allowedUnits)
 
 This function returns the maximum range defined on the names item and verifies that the units set on that item are in the allowed set.  The set of allowedUnits is an array of strings. 
@@ -165,6 +191,8 @@ if (!maxRange) {
 Below is a sample output from the test harness function (included in the library repo) that ran this function and then displayed the results.
 
 ![Test_GetSize](images/Test_GetSize.png)
+
+[*Back to Functions list*](#functions-in-this-module)
 
 ---
 
