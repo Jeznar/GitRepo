@@ -91,6 +91,7 @@ That is a whopper of events to automate, including:
 2. Copy **Shocking Grasp** from the Item directory, renaming it to avoid collision with a potentially existing copy.
 3. Apply 1d10 (2d10 on a critical) lightning damage when a melee weapon attack (MWAK) or melee spell attack (MSAK) hits a target.
 4. On melee hit apply **Stunned** and **Incapacitated** conditions with an expiration condition set for the beginning of the target's next turn.
+5. Delete the temp copy of **Shocking Grasp**.
 
 This spell drove the implementation of **Shocking Grasp** which includes a **No Reaction** condition that applies on hit.
 
