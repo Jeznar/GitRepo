@@ -5,6 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Bless](#bless)
 * [Detect Magic](#detect-magic)
+* [Electrify](#electrify)
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
 * [Hex](#hex)
@@ -56,19 +57,44 @@ This spell is included in the [Advanced Spell Effects Module](https://github.com
 
 ---
 
-### Entangle
+### Detect Magic
 
-Key Highlights:
+Simple macro that places a persistent VFX attached to the caster that indicates the existance and range of the detect magic effect.  It doesn't do any type of automated highlighting.
 
-1. Applied CUB effect pops a dialog that allows a skill check,
-1. Modified Concentration effect that cleans up when it is removed,
-2. Manages a VFX in place of targeting template.
+![Caustic Brew](Detect Magic/Detect_Magic.gif)
 
-For a first level spell, this one was a doozy.  When invoked, this macro will create a VFX in place of the targeting template.  All tokens in the area of effect will roll saves and those that fail will have the **Restrained** condition added via CUB.  The Restrained condition is then modified to add a every turn dialog that allows for a skill check to be rolled for possible escape.  The concentrating effect is also modified to add code that will release restrained tokens and remove the VFX when concentration drops.
+[*Back to 1st Level Spell List*](#1st-level-spells)
 
-This macro uses three files, the main entangle.js that is used as a DAE OnUse ItemMacro and two helper macros that are called as *World Macros* by the modified effects.  The helper files (entangle_helper.js and entagle_helper2.js both need to be accessible in the macros repository as script macros.  The main macro (entangle.js) should be setup as am ItemMacro.
+This spell is included in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#detect-magic) and it is rather awesome.  Unfortunately, it assumes all detectable things will be tagged which is too much effort for me, so I am sticking with my simplier visual only build.
 
-![Entangle/Entangle.gif](Entangle/Entangle.gif)
+---
+
+### Electrify
+
+This is another of those tasty **[Kibble's bits: Occultist](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw)**.  His spell description:
+
+**Electrify** *1st-level evocation*
+
+* **Classes**: Occultist, Sorcerer, Wizard
+* **Casting Time**: 1 bonus action
+* **Range**: Self
+* **Components**: V, S, M (a pair of singed gloves)
+* **Duration**: 1 Round.
+
+*You channel lightning into your hands. After casting this spell, if you make a successful melee spell attack, unarmed strike or a melee weapon attack with a weapon made of a conductive material (such as metal), the target takes 1d10 lightning damage and must make a Constitution saving throw. On a failed save, the target becomes* **stunned** *until the start of their next turn. The spell ends after dealing damage, or at the start of your next turn, whichever occurs first.*
+
+*For the duration of the spell, you can cast the spell* **shocking grasp**.
+
+That is a whopper of events to automate, including:
+
+1. Apply buff effect to user that stores the remaining features similar to a Paladin's smite.
+2. Copy **Shocking Grasp** from the Item directory, renaming it to avoid collision with a potentially existing copy.
+3. Apply 1d10 (2d10 on a critical) lightning damage when a melee weapon attack (MWAK) or melee spell attack (MSAK) hits a target.
+4. On melee hit apply **Stunned** and **Incapacitated** conditions with an expiration condition set for the beginning of the target's next turn.
+
+This spell drove the implementation of **Shocking Grasp** which includes a **No Reaction** condition that applies on hit.
+
+![Electrify.gif](Electrify/Electrify.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

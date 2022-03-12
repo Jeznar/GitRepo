@@ -30,13 +30,13 @@ const COND_APPLIED = "Stunned"
 const COND_ICON = aItem.img
 const DAM_TYPE = "lightning";
 const SPELL_LVL = LAST_ARG?.spellLevel ? LAST_ARG.spellLevel : 2
+const TEMP_SPELL = "Shocking Grasp"               // Name as expected in Items Directory 
+const NEW_SPELL = `${MACRO}'s ${TEMP_SPELL}`       // Name of item in actor's spell book
 jez.log("CONSTANTS Set", "GAME_RND", GAME_RND, "SAVE_DC", SAVE_DC, "SAVE_TYPE", SAVE_TYPE,
     "COND_ICON", COND_ICON, "DAM_TYPE", DAM_TYPE, "SPELL_LVL", SPELL_LVL)
 // VFX Settings -------------------------------------------------------------------
 const VFX_NAME = `${MACRO}-${aToken.id}`
-//const VFX_TARGET = "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_YellowWhite_Target_400x400.webm"
 const VFX_BEAM = "jb2a.electric_arc.01"
-//const VFX_CASTER = "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_YellowWhite_Caster_400x400.webm"
 const VFX_CASTER = "jb2a.static_electricity.01.blue"
 const VFX_OPACITY = 1.0;
 const VFX_SCALE = 0.35;
@@ -71,7 +71,6 @@ async function doOnUse() {
         msg = `<b>${aToken.name}</b> already has ${aItem.name}. Terminating.`;
         ui.notifications.warn(msg)
         postResults(msg);
-        // await existingEffect.delete();
         return
     }
     //------------------------------------------------------------------------------------------------
@@ -102,11 +101,20 @@ async function doOnUse() {
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, specialDuration: ["DamageDealt"] } },
+        flags: { dae: { itemData: aItem, specialDuration: ["1Hit:msak", "1Hit:mwak"] } },
         icon: aItem.img,
         label: aItem.name
     }];
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: effectData });
+    //-------------------------------------------------------------------------------------------------
+    // Add the shocking grasp spell to spell book
+    // 
+    msg = `An At-Will Spell "${NEW_SPELL}" has been added to ${aToken.name} for the duration of this spell`
+    ui.notifications.info(msg);
+    copyEditItem(aToken)
+    //-------------------------------------------------------------------------------------------------
+    // Post completion message
+    // 
     msg = `${aToken.name} channels lightning into his/her hands.`
     await jez.addMessage(game.messages.get(args[args.length - 1].itemCardId),
                    {color:"darkblue",fSize:14,msg:msg,tag:"saves"})
@@ -120,18 +128,29 @@ async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     if (args[0].tag === "DamageBonus") {
-        if (!["mwak"].includes(LAST_ARG.item.data.actionType)) return {};
-        let conc = aToken.actor.effects.find(i => i.data.label === "Concentrating");
-        jez.log("conc", conc);
+        //------------------------------------------------------------------------------------------
+        // Only applies to melee weapon and spell attacks
+        // Action Types: mwak, msak, rwak, rsak
+        jez.log("")
+        jez.log("-------------------")
+        jez.log("LAST_ARG.item.data.actionType",LAST_ARG.item.data.actionType)
+        jez.log("-------------------")
+        jez.log("")
+        let actionType = LAST_ARG.item.data.actionType
+        if (!(actionType === "mwak" || actionType === "msak")) {
+            msg = `<b>${actionType.toUpperCase()}</b> action does not trigger ${aItem.name} damage.`;
+            ui.notifications.info(msg)
+            jez.log(msg)
+            return
+        }
         let tToken = canvas.tokens.get(LAST_ARG.hitTargets[0].id);
         jez.log("tToken", tToken)
         let itemUuid = getProperty(LAST_ARG.actor.flags, "midi-qol.itemDetails");
         let itemN = await fromUuid(itemUuid);
         jez.log("itemN =====>", itemN)
         let numDice = LAST_ARG.isCritical ? 2 : 1;
-        //await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [conc.id] });
         await jez.wait(500);
-        //-------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------
         // Launch VFX on target
         // 
         new Sequence()
@@ -182,7 +201,9 @@ async function modStunnedEffect(token5e) {
     await jez.wait(100)
     let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);
     effect.data.flags.dae.specialDuration = ["turnStart"]
-    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration });
+    effect.data.changes.push({key: `macro.CUB`, mode: CUSTOM, value:`Reactions - None`, priority: 20})
+    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration,
+                                         'effect.data.changes': effect.data.changes});
     if (result) jez.log(`>>> Active Effect ${EFFECT} updated!`, result);
 }
 /***************************************************************************************************
@@ -191,11 +212,20 @@ async function modStunnedEffect(token5e) {
 async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("Something could have been here")
     //-------------------------------------------------------------------------------------------------------------
     // End the effect on the active token
     //  
     Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken });
+    //-----------------------------------------------------------------------------------------------
+    // Delete the temporary ability from the actor's spell book
+    //
+    let itemFound = aActor.items.find(item => item.data.name === NEW_SPELL && item.type === "spell")
+    jez.log("itemFound", itemFound)
+    if (itemFound) {
+        await itemFound.delete();
+        msg = `An At-Will Spell "${NEW_SPELL}" has been deleted from ${aToken.name}'s spell book`
+        ui.notifications.info(msg);
+    }
 
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
@@ -207,4 +237,68 @@ async function doOff() {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+}
+/***************************************************************************************************
+ * Copy the temporary item to actor's spell book and edit it as appropriate
+ ***************************************************************************************************/
+ async function copyEditItem(token5e) {
+    const FUNCNAME = "copyEditItem(token5e)";
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    //----------------------------------------------------------------------------------------------
+    let oldActorItem = token5e.actor.data.items.getName(NEW_SPELL)
+    if (oldActorItem) await deleteItem(token5e.actor, oldActorItem)
+    //----------------------------------------------------------------------------------------------
+    jez.log("Get the item from the Items directory and slap it onto the active actor")
+    let itemObj = game.items.getName(TEMP_SPELL)
+    if (!itemObj) {
+        msg = `Failed to find ${TEMP_SPELL} in the Items Directory`
+        ui.notifications.error(msg);
+        postResults(msg)
+        return (false)
+    }
+    console.log('Item5E fetched by Name', itemObj)
+    await replaceItem(token5e.actor, itemObj)
+    //----------------------------------------------------------------------------------------------
+    jez.log("Edit the item on the actor")
+    let aActorItem = token5e.actor.data.items.getName(TEMP_SPELL)
+    jez.log("aActorItem", aActorItem)
+    if (!aActorItem) {
+        msg = `Failed to find ${TEMP_SPELL} on ${token5e.name}`
+        ui.notifications.error(msg);
+        postResults(msg)
+        return (false)
+    }
+    //-----------------------------------------------------------------------------------------------
+    jez.log(`Remove the don't change this message assumed to be embedded in the item description.  It 
+             should be of the form: <p><strong>%%*%%</strong></p> followed by white space`)
+    const searchString = `<p><strong>%%.*%%</strong></p>[\s\n\r]*`;
+    const regExp = new RegExp(searchString, "g");
+    const replaceString = ``;
+    let content = await duplicate(aActorItem.data.data.description.value);
+    content = await content.replace(regExp, replaceString);
+    let itemUpdate = {
+        'name': NEW_SPELL,
+        'data.description.value': content,
+    }
+    await aActorItem.update(itemUpdate)
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return (true);
+}
+/*************************************************************************************
+ * replaceItem
+ * 
+ * Replace or Add targetItem to inventory of actor5e passed as parms
+ *************************************************************************************/
+async function replaceItem(actor5e, targetItem) {
+    await deleteItem(actor5e, targetItem)
+    return (actor5e.createEmbeddedDocuments("Item", [targetItem.data]))
+}
+/*************************************************************************************
+ * deleteItem
+ * 
+ * Delete targetItem to inventory of actor5e passed as parms
+ *************************************************************************************/
+async function deleteItem(actor5e, targetItem) {
+    let itemFound = actor5e.items.find(item => item.data.name === targetItem.data.name && item.type === targetItem.type)
+    if (itemFound) await itemFound.delete();
 }
