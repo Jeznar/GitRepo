@@ -1,0 +1,162 @@
+{
+  "name": "Dissonant Whispers",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/1st%20Level/dissonant_whispers.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You whisper a discordant melody that only one creature of your choice within range can hear, wracking it with terrible pain. The target must make a <strong>Wisdom saving throw</strong>.</p>\n<p>On a failed save, it takes <strong>3d6 psychic damage </strong>and <span style=\"text-decoration:underline\">must immediately use its reaction</span>, if available, <strong>to move as far as its speed allows</strong> away from you. The creature doesn’t move into obviously dangerous ground, such as a fire or a pit. On a successful save, the target takes <span style=\"text-decoration:underline\">half as much damage</span> and doesn’t have to move away. A deafened creature automatically succeeds on the save.</p>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d6 for each slot level above 1st.</p>",
+      "chat": "<p>You whisper a discordant melody that only one creature of your choice within range can hear, wracking it with terrible pain. The target must make a Wisdom saving throw. On a failed save, it takes 3d6 psychic damage and must immediately use its reaction, if available, to move as far as its speed allows away from you. The creature doesn’t move into obviously dangerous ground, such as a fire or a pit. On a successful save, the target takes half as much damage and doesn’t have to move away. A deafened creature automatically succeeds on the save.</p>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d6 for each slot level above 1st.</p>",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook pg 234",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [
+        [
+          "3d6",
+          "psychic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "enc",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "1d6"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 136624,
+      "definitionId": 2314,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 2,
+          "pageNumber": 234,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Control"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_y8e7215chl"
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.B2mAm6U8Sg53vDHK"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Dissonant Whispers",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Dissonant_Whispers.js\"\n/*****************************************************************************************\n * Play a VFX and display appropriate message describing effect.\n * \n *  On a failed save, it takes 3d6 psychic damage and must immediately use its reaction, \n *  if available, to move as far as its speed allows away from you. The creature doesn’t \n *  move into obviously dangerous ground, such as a fire or a pit. On a successful save, \n *  the target takes half as much damage and doesn’t have to move away. A deafened \n *  creature automatically succeeds on the save.\n * \n * 03/12/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif ((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        jez.log(msg)\n        postResults(msg);\n        return (false);\n    }\n    if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return\n        msg = `Saving throw succeeded.  ${aItem.name} has no additional effect.`\n        jez.log(msg)\n        postResults(msg);\n        return(false);\n    }\n    return(true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n    runVFX(aToken, tToken)\n\n    msg = `<b>${tToken.name}</b> must immediately use its reaction, if available, to move as far as its speed\n    allows away from <b>${aToken.name}</b>. ${tToken.name} doesn’t move into obviously danger. A deafened \n    creature is exempt from this effect.`\n    postResults(msg)\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Launch the VFX effects\n ***************************************************************************************************/\n async function runVFX(token1, token2) {\n    new Sequence()\n        .effect()\n            .file(\"jb2a.scorching_ray.01.orange\")\n            .reachTowards(token2)\n            .atLocation(token1)\n            .scale(1)\n            .opacity(1)\n            .waitUntilFinished(-1500) \n        .effect()\n            .file(\"jb2a.icon.fear.orange\")\n            .attachTo(token2)\n            .scale(0.7)\n            .opacity(1)\n            .scaleIn(0.1, 1000)\n            .duration(5000)\n            .fadeIn(100) \n            .fadeOut(1000) \n            .waitUntilFinished(-1500) \n        .effect()\n            .file(\"jb2a.markers.fear.dark_orange.01\")\n            .scale(0.7)\n            .opacity(1)\n            .duration(5000)\n            .fadeIn(1000)\n            .scaleIn(0.4, 1000)\n            .fadeOut(1000) \n            .attachTo(token2)\n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

@@ -5,6 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Bless](#bless)
 * [Detect Magic](#detect-magic)
+* [Dissonant Whispers](#dissonant-whispers)
 * [Electrify](#electrify)
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
@@ -45,15 +46,15 @@ This is a known issue with DAE, [Active effects concatenated with global bonus i
 
 ---
 
-### Detect Magic
+### Dissonant Whispers
 
-Simple macro that places a persistent VFX attached to the caster that indicates the existance and range of the detect magic effect.  It doesn't do any type of automated highlighting.
+Simple macro that posts a text chat message describing the effect of the spell, success or failure on the saving throw and runs a VFX on the target when it fails its save.  Otherwise, just a standard spell. 
 
-![Caustic Brew](Detect Magic/Detect_Magic.gif)
+![Dissonant_Whispers.gif](Dissonant_Whispers/Dissonant_Whispers.gif)
+
+![Dissonant_Whispers_Chat.png](Dissonant_Whispers/Dissonant_Whispers_Chat.png)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
-
-This spell is included in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#detect-magic) and it is rather awesome.  Unfortunately, it assumes all detectable things will be tagged which is too much effort for me, so I am sticking with my simplier visual only build.
 
 ---
 

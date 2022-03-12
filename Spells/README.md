@@ -36,6 +36,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 * [Bless](1st_Level#bless)
 * [Detect Magic](1st_Level#detect-magic)
+* [Dissonant Whispers](1st_Level#dissonant-whispers)
 * [Electrify](1st_Level#electrify)
 * [Entangle](1st_Level#entangle)
 * [Fog Cloud](1st_Level#fog-cloud) (ASE)
