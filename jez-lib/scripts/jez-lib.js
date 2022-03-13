@@ -661,7 +661,7 @@ class jez {
     static getCastMod(subject) {
         let stat = jez.getCastStat(subject)
         if (!stat) return (false)
-        return (jez.getCastStat(subject, stat))
+        return (jez.getStatMod(subject, stat))
     }
     /***************************************************************************************************
     * Return proficency modifier

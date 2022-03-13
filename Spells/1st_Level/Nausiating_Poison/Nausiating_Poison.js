@@ -40,7 +40,7 @@ const DAM_TYPE = "poison";
 const SPELL_LVL = LAST_ARG?.spellLevel ? LAST_ARG.spellLevel : 2
 const TEMP_SPELL = "Shocking Grasp"               // Name as expected in Items Directory 
 const NEW_SPELL = `${MACRO}'s ${TEMP_SPELL}`       // Name of item in actor's spell book
-DICE_TYPE = "d8"
+const DICE_TYPE = "d8"
 jez.log("CONSTANTS Set", "GAME_RND", GAME_RND, "SAVE_DC", SAVE_DC, "SAVE_TYPE", SAVE_TYPE,
     "COND_ICON", COND_ICON, "DAM_TYPE", DAM_TYPE, "SPELL_LVL", SPELL_LVL)
 // VFX Settings -------------------------------------------------------------------
@@ -48,7 +48,7 @@ const VFX_NAME = `${MACRO}-${aToken.id}`
 const VFX_BEAM = "jb2a.bolt.poison.green"
 const VFX_CASTER = "jb2a.icon.poison.dark_green"
 const VFX_OPACITY = 1.0;
-const VFX_SCALE = 0.35;
+const VFX_SCALE = 1.1;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -138,7 +138,9 @@ async function doOnUse() {
 async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    if (args[0].tag === "DamageBonus") {
+    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+    jez.log("")
+    //if (args[0].tag === "DamageBonus") {
         //------------------------------------------------------------------------------------------
         // Only applies to melee weapon and spell attacks
         // Action Types: mwak, msak, rwak, rsak
@@ -170,9 +172,13 @@ async function doBonusDamage() {
             .belowTokens(false)
         .effect()
             .atLocation(tToken)
+            .fadeIn(1000)
+            .scaleIn(0.1, 1000)
+            .fadeOut(2000)
+            .scaleIn(0.1, 2000)
             //.repeats(3,1500)
             .scale(VFX_SCALE)
-            .file("VFX_CASTER")
+            .file(VFX_CASTER)
         .play()
         //-------------------------------------------------------------------------------------------------------------
         // Apply COND_APPLIED condition if save is failed
@@ -199,7 +205,7 @@ async function doBonusDamage() {
         jez.log(`-------------- Finishing(Extra Damage))--- ${MACRONAME} ${FUNCNAME} -----------------`,
             "numDice", numDice, "DAM_TYPE", DAM_TYPE, "itemN.name", itemN.name);
         return { damageRoll: `${numDice}${DICE_TYPE}[${DAM_TYPE}]`, flavor: `(${itemN.name} (${CONFIG.DND5E.damageTypes[DAM_TYPE]}))` };
-    }
+    //}
     jez.log(`-------------- Finished(Bottom)--- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
@@ -207,10 +213,21 @@ async function doBonusDamage() {
  * Modify existing effect to include a special duration of turnStart  
  * 
  *         "On a failed save, the target becomes poisoned until the end of your next turn."
+ * 
+ * Need to set condition added by cub to the origin correctly, something like this:
+ *   effect.data.origin ==> Actor.aqNN90V6BjFcJpI5.Item.tMWjmgB2qKCTTVTR
+ * 
+ * The aItem.UUID appears to contain this type of info:
+ *           aItem.uuid ==> Actor.aqNN90V6BjFcJpI5.Item.tMWjmgB2qKCTTVTR
+ * 
+ * Because this is being called as part of a doBonusDamage invocation it is extra funky.  Need to 
+ * access LAST_ARG, where the following appears to have potential:
+ *     args[0].itemUuid ==> Actor.aqNN90V6BjFcJpI5.Item.pz9HMZ3rgkq2jme1
  ***************************************************************************************************/
 async function modEffect(token5e, EFFECT) {
+    const LAST_ARG = args[args.length - 1];
     jez.log("------- modEffect(token5e, EFFECT) --------","token5e",token5e,"EFFECT",EFFECT)
-    await jez.wait(500)
+    await jez.wait(500)     
     let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);
     jez.log(`${EFFECT} >>> effect`, effect)
     jez.log("effect.data.flags.dae",effect.data.flags.dae)
@@ -219,7 +236,8 @@ async function modEffect(token5e, EFFECT) {
         effect.data.flags.dae = {}
     } else jez.log("flags.dae already existed, party time?")
     effect.data.flags.dae.specialDuration = ["turnEndSource"]
-    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration});
+    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration,
+                                         'origin': LAST_ARG.itemUuid });
     jez.log(`${EFFECT} >>> result`,result)
     if (result) jez.log(`${EFFECT} >>> Active Effect ${EFFECT} updated!`, result);
     else jez.log(`${EFFECT} >>> Active Effect not updated! =(`, result);

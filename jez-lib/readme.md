@@ -27,13 +27,13 @@ The functions currently included in this module are:
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
-* **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
-* **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
 * **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
 * **[jez.getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
 * **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifer
 * **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e acssociated with the passed ID
+* **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
+* **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
 * **[jez.pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a drop down list.  User's selection is passed to the specified callback function. 
 * **[jez.pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
