@@ -11,6 +11,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Fog Cloud](#fog-cloud) (ASE)
 * [Hex](#hex)
 * [Magic Missle](#magic-missile) (ASE)
+* [Nauseating Poison](#nauseating-poison)
 * [Protection from Evil and Good](#protection-from-evil-and-good)
 * [Ray of Sickness](#ray-of-sickness)
 * [Sleep](#sleep)
@@ -143,6 +144,36 @@ I just tossed my original implementaton in favor of the [Advanced Spell Effects 
 This implmentation requires that all darts be targeted and then fires them all off in parallel.  This is correct per RAW and just a bit awesome.  
 
 ![Magic Missile](Magic_Missile/Magic_Missle.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Nauseating Poison
+
+This is another of those tasty **[Kibble's bits: Occultist](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw)**.  His spell description:
+
+**Nauseating Poison** -- *1st-level necromancy*
+
+* **Classes**: Druid, Occultist, Warlock
+* **Casting Time**: 1 bonus action
+* **Range**: Self
+* **Components**: V, S, M (a piece of rotten meat)
+* **Duration**: 1 round.
+
+*You shroud your hand, a weapon you are holding, or a natural weapon in dark ichorous miasma. After casting this spell, if you make a successful melee spell attack, unarmed strike or a melee weapon attack, the target takes an additional 1d8 poison damage and must make a Constitution saving throw. On a failed save, the target becomes poisoned until the end of your next turn.*
+
+*The spell ends after dealing damage, or at the start of your next turn, whichever occurs first.*
+
+That is a rather similar to several of the Paladin Smites:
+
+1. Apply buff effect to user that stores the remaining features similar to a Paladin's smite.
+2. Apply 1d8 (2d8 on a critical) poison damage when a melee weapon attack (MWAK) hits a target.
+3. On melee hit, the target must attempt a CON saving throw, becoming poisoned until the end of the caster's next turn.
+
+![Nausiating_Poison.gif](Nausiating_Poison/Nausiating_Poison.gif)
+
+![Nausiating_Poison_Chat.png](Nausiating_Poison/Nausiating_Poison_Chat.png)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

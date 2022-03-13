@@ -41,6 +41,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Entangle](1st_Level#entangle)
 * [Fog Cloud](1st_Level#fog-cloud) (ASE)
 * [Magic Missle](1st_Level#magic-missle) (ASE)
+* [Nauseating Poison](1st_Level#nauseating-poison)
 * [Protection from Evil and Good](1st_Level#protection-from-evil-and-good)
 * [Ray of Sickness](1st_Level#ray-of-sickness)
 * [Sleep](1st_Level#sleep)
