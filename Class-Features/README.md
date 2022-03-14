@@ -8,6 +8,7 @@ I anticipate a large number of features here, I will try to drop them into speci
 ## Classes with Features
 
 * [Occultist](#occultist)
+* [Paladin](#paladin)
 * [Warlock](#warlock)
 
 ## [Occultist](Occultist/README.md)
@@ -16,6 +17,16 @@ This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shama
 
 * [Sacrificial Summon](Occultist#sacrificial-summon) (features a warpgate summoning of a minion)
 * [Witch's Touch](Occultist#witch-touch)
+
+[*Back to Classes with Features list*](#classes-with-features)
+
+---
+
+## [Paladin](#Paladin)
+
+This is the standard [Paladin class](https://www.dndbeyond.com/classes/paladin).  I will be concerned with Oath of the Ancients Paladin abilities, because that is what my game is featuring.
+
+* [Aura of Protection](Paladin#aura-of-protection)
 
 [*Back to Classes with Features list*](#classes-with-features)
 
