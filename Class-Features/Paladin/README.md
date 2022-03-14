@@ -12,7 +12,7 @@ Standard Paladin, specifically Oath of the Ancients Paladin abilities
 
 This item implements the RAW ability with VFX. It leverages [Active Auras](https://github.com/kandashi/Active-Auras) and [DAE](https://gitlab.com/tposney/dae).
 
-It uses a world macro (**Aura_of_Protection)** that applies a twinkling stars effect on protected tokens.  Two things to be aware of:
+It uses a world macro (**Aura_of_Protection)** that applies a twinkling stars effect on protected tokens.  Three things to be aware of:
 
 1. The aura only works when combat is active on the scene.  This is a (minor?) performance protection.  There is an option in the Active Auras settings to make it always apply.
 2. The VFX may play in the wrong location when a token is moved several spaces into the aura effect.  If this is the case, bouncing the token a space and back should correct the issue.
