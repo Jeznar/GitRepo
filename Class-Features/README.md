@@ -12,9 +12,10 @@ I anticipate a large number of features here, I will try to drop them into speci
 
 ## [Occultist](Occultist/README.md)
 
-Ths is a home brewclass found online: **[5e - Occultist - Witch, Oracle, Shaman (KibblesTasty)](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw)** by KibblesTasty.
+This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shaman (KibblesTasty)](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw)** by KibblesTasty.
 
 * [Sacrificial Summon](Occultist#sacrificial-summon) (features a warpgate summoning of a minion)
+* [Witch's Touch](Occultist#witch-touch)
 
 [*Back to Classes with Features list*](#classes-with-features)
 
@@ -22,7 +23,7 @@ Ths is a home brewclass found online: **[5e - Occultist - Witch, Oracle, Shaman 
 
 ## [Warlock](Warlock/README.md)
 
-Ths is the standard [Warlock class](https://www.dndbeyond.com/classes/warlock).  I will be concerned with Cellestial Warlock abilities, because that is what my game is featuring.
+This is the standard [Warlock class](https://www.dndbeyond.com/classes/warlock).  I will be concerned with Celestial Warlock abilities, because that is what my game is featuring.
 
 * [Healing Light](Warlock#healing-light)
 
