@@ -17,6 +17,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
+* **[Set Familiar Name](#set-familiar-name)** Manages stored familiar name for actor
 * **[Share Item Within Scene](#share-item-within-scene)** Adds/Updates/Deletes an item from a token to other tokens in the same scene.
 * **[Swap Hidden Tokens](#swap-hidden-tokens)** swaps the visibility state of all or selected npc tokens.
 * **[Swap Map](#swap-map)** swaps the current background image for the next or base. A naming convention must be followed.
@@ -202,6 +203,22 @@ It does the following:
 1. Opens the sheet of all the actors in the *Actors Directory*.
 
 ![Open_Actor_Sheets_With_Example.png](Images/Open_Actor_Sheets_With_Example.png)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Set Familiar Name
+
+This utility item displays the currently defined value of the DAE flag **Familiar_Name** for the invoking actor.  It will delete the flag if given an empty string as input.  It will store the string for other macros if it receives a non-zero input string and the **Store** button is selected.
+
+The dialog appears as follows:
+
+![Set_Familar_Name_Dialog.png](Set_Familiar_Name/Set_Familar_Name_Dialog.png)
+
+Some of the chat messages that can be generated are shown below:
+
+![Set_Familiar_Name_Chat.png](Set_Familiar_Name/Set_Familiar_Name_Chat.png)
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
