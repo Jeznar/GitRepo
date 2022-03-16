@@ -1,0 +1,134 @@
+{
+  "name": "Wildfire 2nd: Summon Wildfire Spirit",
+  "type": "feat",
+  "img": "worlds/travels-in-barovia/characters/531_-_Sparky/token.png",
+  "data": {
+    "description": {
+      "value": "<p><em>2nd-level Circle of Wildfire feature</em></p>\n<p>@JournalEntry[k6ZlchMF9GxPv0YG]{Summon Wildfire Spirit}</p>\n<hr />\n<p><strong>FoundryVTT:</strong>&nbsp;Place the center of the targetting templete in the middle of a square.&nbsp; Your familiar as defined by the @Item[MXF7BtFFaoNDB83Y]{Set Familiar Name} action from the&nbsp;<strong>Items Directory&nbsp;</strong>will be summoned from the&nbsp;<strong>Actors Directory</strong>&nbsp;to the center of the template.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Class",
+    "activation": {
+      "type": "action",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": 12.5,
+      "width": null,
+      "units": "ft",
+      "type": "radius"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "",
+      "amount": 1
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [
+        [
+          "2d6",
+          "fire"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "dex",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Wildfire Druid",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.PS2oobgbigYb26mP"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Wildfire 2nd: Summon Wildfire Spirit",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Summon_Wildfire_Spirit.js\"\n/*****************************************************************************************\n * Implemention of Summon Wildfire Spirit.  Based on macro Jon baked. \n * \n * args[0] contains a bunch of information for ItemMacro macros, including templateID of \n * the placed template (if any).  That ID can be accessed as: args[0].templateId\n * The list is documented at: https://gitlab.com/tposney/midi-qol#notes-for-macro-writers\n * \n * Module automated evocations apprently can eliminate the need for this macro.\n * \n * A Reddit guide on setting up automated resouce usage.\n * https://www.reddit.com/r/FoundryVTT/comments/j9q81f/guide_how_to_setup_skill_resource_consumption/\n * \n * 11/29/21 0.1 Add headers, debug and use of Summoner Module\n * 11/29/21 0.2 Try to make the macro actually, you know, work\n * 11/29/21 0.3 Cleanup the mostly working code\n * 11/29/21 0.4 Add use of a resource which is checked and decremented, on further study \n *              this was implemented by setting Resource Consumption of details page to\n *              resource.secondry.value (also primary and tertiary available)\n * 12/01/21 0.5 Fix maxHP added fixed 13 but should have been 5\n * 03/16/22 0.6 Update to use WARPGATE and add to GitRepo (also fix bug of graphic failing)\n *****************************************************************************************/\n const MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\n jez.log(`============== Starting === ${MACRONAME} =================`);\n for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n const LAST_ARG = args[args.length - 1];\n let aActor;         // Acting actor, creature that invoked the macro\n let aToken;         // Acting token, token for creature that invoked the macro\n let aItem;          // Active Item information, item invoking this macro\n if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \n    else aActor = game.actors.get(LAST_ARG.actorId);\n if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n    else aToken = game.actors.get(LAST_ARG.tokenId);\n if (args[0]?.item) aItem = args[0]?.item; \n    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n let msg = \"\";\n//-----------------------------------------------------------------------------------------\n// Get the template coords and delete it.\n//\nconst MINION = await jez.familiarNameGet(aToken.actor);\n// Extract coordinates from the template and then delete it\nconst templateID = args[0].templateId\n// Set the x,y coordinates of the targeting template that was placed.\nconst X = canvas.templates.get(templateID).data.x\nconst Y = canvas.templates.get(templateID).data.y\n// Delete the template that had been placed\ncanvas.templates.get(templateID).document.delete()\n//-----------------------------------------------------------------------------------------\n// Set the maximum hit points for the summoned familiar\n//\nconst MAX_HP = (token.actor.getRollData().classes.druid.levels * 5) + 5;\n//-----------------------------------------------------------------------------------------\n// Do the actual summon\n//\nawait summonCritter(X,Y,MINION,MAX_HP)\n//-----------------------------------------------------------------------------------------\n// Post a more or less useful message to chat log and exit\n//\nmsg = `<b>${aToken.name}</b> has summoned <b>${MINION}</b> (with ${MAX_HP}HP) to the field.  \nCreatures within 10 feet are hit with fire damage from explosion.`\npostResults(msg);\njez.log(`Ending ${MACRONAME}`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Summon the minion and update HP\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\n async function summonCritter(x,y,summons, MAX_HP) {\n    jez.log(\"function summonCritter(x,y,summons, number, updates)\",\"x\",x,\"y\",y,\"summons\",summons,\"MAX_HP\",MAX_HP);\n    let updates = { actor: { \"data.attributes.hp\": { value: MAX_HP, max: MAX_HP } } }\n    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet\n    const CALLBACKS = {\n      pre: async (template) => {\n        preEffects(template);\n        await warpgate.wait(500);\n      },\n      post: async (template, token) => {\n        postEffects(template);\n        await warpgate.wait(500);\n      }\n    };\n    await warpgate.spawnAt({x:x,y:y},summons, updates, CALLBACKS, OPTIONS);\n  }\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function preEffects(template) {\n    const VFX_FILE = \"jb2a.explosion.02.orange\"\n    new Sequence()\n      .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .scale(1.4)\n      .play()\n  }\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function postEffects(template) {\n    const VFX_OPACITY = 1.0\n    const VFX_SCALE = 1.0\n    const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_Grey_400x400.webm\"\n    new Sequence()\n      .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .waitUntilFinished(-1000) \n    .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*1.5)\n        .opacity(VFX_OPACITY*0.75)\n        .waitUntilFinished(-1000) \n    .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*2.0)\n        .opacity(VFX_OPACITY*0.5)\n        .waitUntilFinished(-1000) \n    .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*2.5)\n        .opacity(VFX_OPACITY*0.25)\n        .waitUntilFinished(-1000) \n    .play()\n  }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
