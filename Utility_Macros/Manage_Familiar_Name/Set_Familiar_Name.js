@@ -17,10 +17,18 @@ if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.d
 let msg = "";
 const FLAG_NAME = "Familiar_Name"
 //----------------------------------------------------------------------------------
+// Just for funz access some jez-lib constants
+//
+console.log(jez.ADD)
+console.log(jez.OVERRIDE)
+console.log(jez.DAEFLAG_FAMILIAR_NAME)
+console.log(`${jez.ADD} + ${jez.OVERRIDE} =`,jez.ADD + jez.OVERRIDE)
+//----------------------------------------------------------------------------------
 // Obtain the current name of familiar
 //
-let currentName = await DAE.getFlag(aToken.actor, FLAG_NAME);
-if (!currentName) currentName = ""
+//let currentName = await DAE.getFlag(aToken.actor, jez.DAEFLAG_FAMILIAR_NAME);
+//if (!currentName) currentName = ""
+let currentName = await jez.familiarNameGet(aToken.actor)
 jez.log("currentName",currentName)
 //----------------------------------------------------------------------------------
 // Pop a dialog to solicit new name input
@@ -58,16 +66,18 @@ return
 async function callBackFunc(html, mode) {
     const TEXT_SUPPLIED = html.find("[name=TEXT_SUPPLIED]")[0].value;
     if (TEXT_SUPPLIED === "") {
-        msg = `Name supplied is an empty string.<br>So, I'll delete the flag`;
+        msg = `Name supplied is an empty string.<br><br>So, I'll delete the flag`;
         postResults(msg);
-        await DAE.unsetFlag(aToken.actor, FLAG_NAME);
+        //await DAE.unsetFlag(aToken.actor, jez.DAEFLAG_FAMILIAR_NAME);
+        await jez.familiarNameUnset(aToken.actor)
         return;
     }
     if (mode === "chat") {
         msg = `Name for ${aToken.name}'s familiar shall now be <b>'${TEXT_SUPPLIED}</b>.'
                 <br><br>I hope you are happy now!`;
         postResults(msg);
-        await DAE.setFlag(aToken.actor, FLAG_NAME, TEXT_SUPPLIED);
+        //await DAE.setFlag(aToken.actor, jez.DAEFLAG_FAMILIAR_NAME, TEXT_SUPPLIED);
+        await jez.familiarNameSet(aToken.actor, TEXT_SUPPLIED)
         return;
     }
     msg = `Hopefully, you didn't really want to mess with the familiar's name.  
