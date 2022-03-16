@@ -686,4 +686,38 @@ class jez {
         }
         return (actor5e.data.data.attributes.prof)
     }
+    /***************************************************************************************************
+     * Define static constants for use by other functions.  They are accessed like..
+     * 
+     * console.log(jez.ADD + jez.OVERRIDE) // 7
+     ***************************************************************************************************/
+     static get CUSTOM()     { return 0 }
+     static get MULTIPLY()   { return 1 }
+     static get ADD()        { return 2 }
+     static get DOWNGRADE()  { return 3 }
+     static get UPGRADE()    { return 4 }
+     static get OVERRIDE()   { return 5 }
+     static get DAEFLAG_FAMILIAR_NAME() { return "familiar_name" }
+     /***************************************************************************************************
+      * Set the Familiar name into the DAE Flag
+      ***************************************************************************************************/
+     static async familiarNameSet(actor5e, name) {
+         return (await DAE.setFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME, name));
+     }
+     /***************************************************************************************************
+      * Get the Familiar name from the DAE Flag, return empty string if not found
+      ***************************************************************************************************/
+     static async familiarNameGet(actor5e) {
+         let currentName = await DAE.getFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME);
+         console.log("currentName", currentName)
+         if (!currentName) currentName = ""
+         return (currentName)
+     }
+     /***************************************************************************************************
+      * Get the Familiar name from the DAE Flag, return empty string if not found
+      ***************************************************************************************************/
+     static async familiarNameUnset(actor5e) {
+         return (await DAE.unsetFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME));
+     }
 } // END OF class jez
+Object.freeze(jez);
