@@ -60,7 +60,9 @@ async function doBonusDamage() {
     const DIE_TYPE = "d8"
     let dmgType = "";
     jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);
-    if (!familiarPresent()) {
+    //let rc = await familiarPresent()
+    //jez.log("Returned value from seach for familiar:", rc)
+    if (!await familiarPresent()) {
         jez.log("Familiar is not present, sorry, no special effects")
         return{};
     }
@@ -69,10 +71,6 @@ async function doBonusDamage() {
     //
     const tToken = canvas.tokens.get(args[0].targets[0].id);
     jez.log("tToken", tToken)
-    //const aToken = canvas.tokens.get(args[0].tokenId);
-    //const aItem = args[0].item;
-    
-    //if (tToken.id !== getProperty(aToken.actor.data.flags, "midi-qol.hexMark")) return {};
     jez.log("action type:", aItem.data.actionType)
     jez.log("aItem", aItem)
     //---------------------------------------------------------------------------------------------
@@ -113,15 +111,16 @@ async function doBonusDamage() {
 /***************************************************************************************************
  * Check to see is the familiar present?  return true if it is and has positive HP, otherwise false
  ***************************************************************************************************/
-function familiarPresent() {
+async function familiarPresent() {
     //return(true)
     //----------------------------------------------------------------------------------------------
     // Search for MINION in the current scene 
     //
     let i = 0;
-    const MINION = ""
+    const MINION = await jez.familiarNameGet(aToken.actor)
+    //jez.log('Familar name being searched for', MINION)
     for (let critter of game.scenes.viewed.data.tokens) {
-        jez.log(` Creature ${i++}`, critter.data.name);
+        //jez.log(` Creature ${i++}`, critter.data.name);
         if (critter.data.name === MINION) {
             if (critter._actor.data.data.attributes.hp.value > 0) return(true)
         }

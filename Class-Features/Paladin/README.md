@@ -28,6 +28,6 @@ The DAE and Active Aura settings are key to this item. The DAE Effects provide t
 
 ![Aura_of_Protection_DAE_Effects.png](Aura_of_Protection/Aura_of_Protection_DAE_Effects.png)
 
-[*Back to Warlock Feature List*](#feature-notes)
+[*Back to top of document*](#paladin)
 
 ---

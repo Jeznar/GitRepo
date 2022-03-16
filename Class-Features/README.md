@@ -7,9 +7,20 @@ I anticipate a large number of features here, I will try to drop them into speci
 
 ## Classes with Features
 
+* [Druid](#druid)
 * [Occultist](#occultist)
 * [Paladin](#paladin)
 * [Warlock](#warlock)
+
+## [Druid](#Druid)
+
+This is the standard [Druid class](https://www.dndbeyond.com/classes/druid).  I will be concerned with Wildfire Druid abilities, because that is what my game is featuring.
+
+* [Enhanced Bond](Druid#enhanced-bond)
+
+[*Back to Classes with Features list*](#classes-with-features)
+
+---
 
 ## [Occultist](Occultist/README.md)
 
