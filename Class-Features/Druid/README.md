@@ -3,6 +3,7 @@
 Standard Druid, specifically Wildfire Druid abilities
 
 * [Enhanced Bond](#enhanced-bond)
+* [Summon Wildfire Spirit](#summon-wildfire-spirit)
 
 [*Back to All Class Features*](../README.md)
 
@@ -26,11 +27,20 @@ The macro operates as a MIDI damageMacro.
 2. It then checks the nature of the invoking item.  If it is an item that does fire damage it adds a die of damage and a splash VFX.
 3. If the invoking item was a heal, it adds a die of healing and a splash VFX.
 
-![Aura_of_Protection.gif](Wild_Fire_6_Enhanced_Bond/Enhanced_Bond.gif)
+![Aura_of_Protection.gif](Wildfire_6_Enhanced_Bond/Enhanced_Bond.gif)
 
-![Enhanced_Bond_Chat.png](Wild_Fire_6_Enhanced_Bond/Enhanced_Bond_Chat.png)
-
+![Enhanced_Bond_Chat.png](Wildfire_6_Enhanced_Bond/Enhanced_Bond_Chat.png)
 
 [*Back to Druid top of document*](#druid)
 
 ---
+
+### Summon Wildfire Spirit
+
+This is a 2nd level wildfire Druid ability that uses one of the daily shape-shift charges to call forth the druid's wildfire spirit familiar.
+
+This implementation automates the splash of damage and summoning the familiar from the **Actors Directory** (where it must already exist).  It will adjust the creatures hit points per the RAW description. 
+
+This ability is implemented with Warpgate and Sequencer module calls.
+
+![Summon_Wildfire_Spirit.gif](Wildfire_2_Summon_Widlfire_Spirit/Summon_Wildfire_Spirit.gif)
