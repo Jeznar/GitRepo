@@ -83,7 +83,7 @@ Places a DAE effect on the beneficiary that provides dim light vision out to 60 
 
 ### Enlarge/Reduce
 
-This spell uses an OnUse ItemMacro to pop a dialog and ask if the target wants to make a save.  An acceptance of the effect or a failed save the effect is applied and the token size is adjusted in the scene.  WHen the spell expires, the size returns to normal -- or at least it should. ;-)
+This spell uses an OnUse ItemMacro to pop a dialog and ask if the target wants to make a save.  An acceptance of the effect or a failed save the effect is applied and the token size is adjusted in the scene.  When the spell expires, the size returns to normal -- or at least it should. ;-)
 
 ![enlarge-reduce](Enlarge_Reduce/Enlarge-Reduce.gif)
 
@@ -93,7 +93,15 @@ This spell uses an OnUse ItemMacro to pop a dialog and ask if the target wants t
 
 ### Flaming Sphere
 
-TODO....
+This item does a number of things:
+
+1. Summons a copy of the **\*Flaming_Sphere\*** actor (via *warpgate*) from the **Items Directory** and allows the caster to place it on the scene. 
+2. The token is renamed to indicate ownership and 
+3. May be moved by the summoning player.  
+4. It creates a temporary *Innate Spellcasting* ability that may be used to perform the damage portion of this spell.
+5. The token is set to emit a flicker orangish light reasonably appropriate for such a fire (this is not specified in RAW but made sense to me).
+5. It deletes the summoned token and temporary ability when the spell terminates.
+6. It also plays some pretty nice VFX.
 
 ![Flaming Sphere.gif](Flaming_Sphere/Flaming Sphere.gif)
 
