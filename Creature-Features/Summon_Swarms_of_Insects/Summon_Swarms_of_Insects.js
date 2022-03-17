@@ -53,7 +53,7 @@ async function doOnUse() {
  ***************************************************************************************************/
 async function summonCritter(summons, number) {
   let name = `${summons} ${number}`
-  // COL-THING: Updates the name of the summoned token via warpgate call
+  // COOL-THING: Updates the name of the summoned token via warpgate call
   let updates = { token : {name: name} }
   const OPTIONS = { controllingActor: aActor };
   // COOL-THING: Plays VFX before and after the warpgate summon.

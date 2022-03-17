@@ -67,12 +67,12 @@ async function doBonusDamage() {
         return{};
     }
     //---------------------------------------------------------------------------------------------
+    // Make sure something was targeted (return a null function if not) and then point at the first 
+    // token.
     //
-    //
-    const tToken = canvas.tokens.get(args[0].targets[0].id);
+    if (args[0].targets.length === 0) return {}
+    const tToken = canvas.tokens.get(args[0].targets[0].id); 
     jez.log("tToken", tToken)
-    jez.log("action type:", aItem.data.actionType)
-    jez.log("aItem", aItem)
     //---------------------------------------------------------------------------------------------
     // If action type was "heal" return a proper healing function
     //
@@ -118,14 +118,17 @@ async function familiarPresent() {
     //
     let i = 0;
     const MINION = await jez.familiarNameGet(aToken.actor)
+    jez.log("MINION", MINION)
     //jez.log('Familar name being searched for', MINION)
     for (let critter of game.scenes.viewed.data.tokens) {
         //jez.log(` Creature ${i++}`, critter.data.name);
+        jez.log(`critter ${critter.name}`,critter)
         if (critter.data.name === MINION) {
+            jez.log("heading on back from function familiarPresent() with TRUE")
             if (critter._actor.data.data.attributes.hp.value > 0) return(true)
         }
     }
-    jez.log(`Could not find active ${MINION} in the current scene`)
+    jez.log(`Could not find active ${MINION} in the current scene, returning FALSE`)
     return(false)
 }
 /***************************************************************************************************
