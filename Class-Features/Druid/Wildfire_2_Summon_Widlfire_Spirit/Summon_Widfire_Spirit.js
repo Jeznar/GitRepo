@@ -79,8 +79,29 @@ return;
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
  async function summonCritter(x,y,summons, MAX_HP) {
-    jez.log("function summonCritter(x,y,summons, number, updates)","x",x,"y",y,"summons",summons,"MAX_HP",MAX_HP);
-    let updates = { actor: { "data.attributes.hp": { value: MAX_HP, max: MAX_HP } } }
+    //jez.log("function summonCritter(x,y,summons, number, updates)","x",x,"y",y,"summons",summons,"MAX_HP",MAX_HP);
+    //let updates1 = { actor: { "data.attributes.hp": { value: MAX_HP, max: MAX_HP } } }
+
+    let castMod = jez.getCastMod(aToken)
+    let profMod = jez.getProfMod(aToken)
+    jez.log(":==> castMod", castMod)
+    jez.log(":==> profMod", profMod)
+
+   // Below based on: https://github.com/trioderegion/warpgate/wiki/Summon-Spiritual-Badger
+   let updates = {
+     actor: {
+       'data.attributes.hp': { value: MAX_HP, max: MAX_HP }
+     },
+     embedded: {
+       Item: {
+         "Flame Seed": {
+           'data.damage.parts': [[`1d6 + ${profMod}`, "fire"]],
+           'data.attackBonus': `${castMod}[mod] + ${profMod}[prof]`,    // 5[mod] + 3[prof]
+         },
+       }
+     }
+   }
+
     const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
     const CALLBACKS = {
       pre: async (template) => {

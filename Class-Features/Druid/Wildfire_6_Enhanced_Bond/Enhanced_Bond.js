@@ -122,7 +122,7 @@ async function familiarPresent() {
     //jez.log('Familar name being searched for', MINION)
     for (let critter of game.scenes.viewed.data.tokens) {
         //jez.log(` Creature ${i++}`, critter.data.name);
-        jez.log(`critter ${critter.name}`,critter)
+        //jez.log(`critter ${critter.name}`,critter)
         if (critter.data.name === MINION) {
             jez.log("heading on back from function familiarPresent() with TRUE")
             if (critter._actor.data.data.attributes.hp.value > 0) return(true)

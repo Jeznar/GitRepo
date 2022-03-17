@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Crown of Madness](#crown-of-madness)
 * [Darkvision](#darkvision)
 * [Enlarge/Reduce](#enlargereduce)
+* [Flaming Sphere](#flaming-sphere)
 * [Hold Person](#hold-person)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
@@ -85,6 +86,16 @@ Places a DAE effect on the beneficiary that provides dim light vision out to 60 
 This spell uses an OnUse ItemMacro to pop a dialog and ask if the target wants to make a save.  An acceptance of the effect or a failed save the effect is applied and the token size is adjusted in the scene.  WHen the spell expires, the size returns to normal -- or at least it should. ;-)
 
 ![enlarge-reduce](Enlarge_Reduce/Enlarge-Reduce.gif)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Flaming Sphere
+
+TODO....
+
+![Flaming Sphere.gif](Flaming_Sphere/Flaming Sphere.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

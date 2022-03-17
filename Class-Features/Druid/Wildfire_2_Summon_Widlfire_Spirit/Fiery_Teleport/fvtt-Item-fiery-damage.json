@@ -1,0 +1,174 @@
+{
+  "name": "Fiery Damage",
+  "type": "feat",
+  "img": "Icons_JGB/Spells/Fiery_Teleport.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Second stage of <strong><span style=\"text-decoration:underline\">Firey Teleportaion</span></strong> -- Resolve that first.</p>\n<p>Each creature within 5 feet of the space that the spirit left must succeed on a Dexterity saving throw against your spell save DC or take 1d6 + @prof fire damage.</p>\n<p><strong>Place the associated target template centered on space just vacated.</strong></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": 8,
+      "width": null,
+      "units": "ft",
+      "type": "sphere"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "A fireball bursts briefly in the space just vacated",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6 + @prof",
+          "fire"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "dex",
+      "dc": 16,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": ""
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.DheKppebbc9YhJ9V"
+    },
+    "autoanimations": {
+      "killAnim": false,
+      "below": false,
+      "override": true,
+      "targetToken": {
+        "enable": false
+      },
+      "sourceToken": {
+        "enable": false
+      },
+      "allSounds": {
+        "item": {
+          "enableAudio": false
+        }
+      },
+      "autoOverride": {
+        "enable": false
+      },
+      "version": 3,
+      "audio": {
+        "a01": {
+          "enable": false,
+          "file": "",
+          "delay": 0,
+          "volume": 0.25
+        },
+        "e01": {
+          "enable": false,
+          "file": "",
+          "delay": 0,
+          "volume": 0.25
+        }
+      },
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "tempType": "circle",
+        "variant": "",
+        "enableCustom": true,
+        "repeat": null,
+        "delay": null,
+        "scaleX": 1,
+        "scaleY": 1,
+        "opacity": null,
+        "removeTemplate": true,
+        "persistent": false,
+        "customPath": "modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Yellow_400x400.webm"
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "template",
+      "animation": "fireballexplode",
+      "color": "",
+      "preview": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
