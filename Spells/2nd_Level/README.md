@@ -103,7 +103,7 @@ This item does a number of things:
 5. It deletes the summoned token and temporary ability when the spell terminates.
 6. It also plays some pretty nice VFX.
 
-![Flaming Sphere.gif](Flaming_Sphere/Flaming Sphere.gif)
+![Flaming Sphere.gif](Flaming_Sphere/Flaming_Sphere2.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

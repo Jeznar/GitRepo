@@ -44,3 +44,33 @@ This implementation automates the splash of damage and summoning the familiar fr
 This ability is implemented with Warpgate and Sequencer module calls.
 
 ![Summon_Wildfire_Spirit.gif](Wildfire_2_Summon_Widlfire_Spirit/Summon_Wildfire_Spirit.gif)
+
+#### Fiery Teleport
+
+This is an ability backed into the wildfire spirit.  It's actually two abilities (Fiery Teleport and Fiery Damage, both located on the sphere's sheet in the Skills tab) a multi-step process to use. 
+
+1. Use this ability and poof the familiar to a new location,
+2. Manually move any passengers with the familiar by hand,
+3. Use the  Fiery Damage item, targeted on the space the familiar exited to inflict the damage.
+
+Having the friendly moved automatically would be nice, but it's challenging to implement and would need a dialog to confirm those being moved with the familiar.  Keeping this manual feels reasonable to me.
+
+No macro is used to implement this.
+
+![Fiery_Teleport.gif](Wildfire_2_Summon_Widlfire_Spirit/Fiery_Teleport/Fiery_Teleport.gif)
+
+#### Flame Seed
+
+This is the other unique ability backed into the wildfire spirit.  This one is in the *Inventory* tab as it is classed as a ranged melee ability (thrown weapon).  
+
+It is modified via *warpgate* when the token is summoned to set the attack and damage modifiers in accordance with the ability description. 
+
+![](Wildfire_2_Summon_Widlfire_Spirit/Flame_Seed/Flame_Seed.gif)
+
+No macro is used to implement this.s
+
+[*Back to Druid top of document*](#druid)
+
+---
+
+

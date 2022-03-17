@@ -1,0 +1,204 @@
+{
+  "name": "Flame Seed",
+  "type": "weapon",
+  "img": "worlds/travels-in-barovia/characters/531_-_Sparky/avatar.png",
+  "data": {
+    "description": {
+      "value": "<p><span style=\"color:#191813;font-size:13px\">The wildfire druid's fiery friend can throw a </span><strong style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">Flame Seed</strong><span style=\"color:#191813;font-size:13px\">, attacking with your the druid's spell attack modifier to hit, range 60 ft., one target you can see. Hit: 1d6 + proficency bonus fire damage</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 1,
+    "price": 0,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rwak",
+    "attackBonus": "5[mod] + 3[prof]",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6 + 3",
+          "fire"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "simpleM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "hvy": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "lgt": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ada": false,
+      "lod": false,
+      "mgc": false,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": false
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": ""
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "autoanimations": {
+      "version": 3,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "rangeType": "spell",
+        "variant": "01",
+        "enableCustom": false,
+        "repeat": null,
+        "delay": null
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "range",
+      "animation": "firebolt",
+      "color": "orange",
+      "audio": {
+        "a01": {
+          "enable": false
+        },
+        "e01": {
+          "enable": false
+        }
+      },
+      "preview": false,
+      "explosions": {
+        "enable": true,
+        "animation": "explosion",
+        "variant": "01",
+        "color": "orange",
+        "enableCustom": false,
+        "radius": 0.5,
+        "delay": 500,
+        "below": false
+      }
+    },
+    "core": {
+      "sourceId": "Item.ixjP0dFSUdJ4iN9t"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
