@@ -1,10 +1,10 @@
 {
   "name": "Flame Seed",
   "type": "weapon",
-  "img": "worlds/travels-in-barovia/characters/531_-_Sparky/avatar.png",
+  "img": "Icons_JGB/Spells/Creature_Abilities/Flame_Seed/FireBolt_01_Regular_Blue_Thumb.webp",
   "data": {
     "description": {
-      "value": "<p><span style=\"color:#191813;font-size:13px\">The wildfire druid's fiery friend can throw a </span><strong style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">Flame Seed</strong><span style=\"color:#191813;font-size:13px\">, attacking with your the druid's spell attack modifier to hit, range 60 ft., one target you can see. Hit: 1d6 + proficency bonus fire damage</span></p>",
+      "value": "<p><span style=\"color:#191813;font-size:13px\">The wildfire druid's fiery friend can throw a </span><strong style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">Flame Seed</strong><span style=\"color:#191813;font-size:13px\">, attacking with your the druid's spell attack modifier to hit, range 60 ft., one target you can see. Hit: 1d6 + proficency bonus fire damage</span></p>\n<hr />\n<p><strong>FoundryVTT:</strong> The VFX of this spell adjust in color based on a keyword found in the icon set for this item.  Recognized keywords:  blue, dark_green, green02, green, dark_red, orange, purple. The Icon is set to point to a folder that contains all supported options.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -118,7 +118,7 @@
     },
     "midi-qol": {
       "criticalThreshold": "20",
-      "onUseMacroName": ""
+      "onUseMacroName": "ItemMacro"
     },
     "magicitems": {
       "enabled": false,
@@ -149,13 +149,13 @@
       "animLevel": false,
       "options": {
         "ammo": false,
-        "rangeType": "spell",
-        "variant": "01",
+        "rangeType": "",
+        "variant": "",
         "enableCustom": false,
         "repeat": null,
         "delay": null
       },
-      "override": true,
+      "override": false,
       "sourceToken": {
         "enable": false
       },
@@ -169,8 +169,8 @@
         "enable": false
       },
       "animType": "range",
-      "animation": "firebolt",
-      "color": "orange",
+      "animation": "",
+      "color": "",
       "audio": {
         "a01": {
           "enable": false
@@ -181,7 +181,7 @@
       },
       "preview": false,
       "explosions": {
-        "enable": true,
+        "enable": false,
         "animation": "explosion",
         "variant": "01",
         "color": "orange",
@@ -193,6 +193,25 @@
     },
     "core": {
       "sourceId": "Item.ixjP0dFSUdJ4iN9t"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "F Seed (Jez)",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Flame_Seed.js\"\n/*****************************************************************************************\n * Run a two seto VFX that changes based on target hit or miss\n * \n * 02/11/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n    else aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \n    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n\n// COOL-THING: Double VFX with color selected by item token\nlet color = \"\"\nlet expColor = \"\"\nconst IMAGE = aItem.img.toLowerCase()\nif(IMAGE.includes(\"blue\"))              {color = \"blue\";        expColor=\"blueyellow\" }\nelse if(IMAGE.includes(\"dark_green\"))   {color=\"dark_green\";    expColor=\"green\" }\nelse if(IMAGE.includes(\"green02\"))      {color=\"green02\";       expColor=\"green\" }\nelse if(IMAGE.includes(\"green\"))        {color=\"green\";         expColor=\"greenorange\" }\nelse if(IMAGE.includes(\"dark_red\"))     {color=\"dark_red\";      expColor=\"dark_red\" }\nelse if(IMAGE.includes(\"orange\"))       {color=\"orange\";        expColor=\"orange\" }\nelse if(IMAGE.includes(\"purple\"))       {color=\"purple\";        expColor=\"purple\" }\nif (!color)                             {color=\"orange\";        expColor=\"orange\" }\n\nif (args[0].hitTargets[0]) { // Target was hit\n    new Sequence()\n        .effect()\n            .file(`jb2a.fire_bolt.${color}`)\n            .atLocation(aToken)\n            .stretchTo(args[0].targets[0])\n            //.missed(args[0].hitTargets.length === 0) // Keeping this for reference\n            .waitUntilFinished(-750) \n        .effect()\n            .file(`jb2a.explosion.${expColor}.0`)\n            .scale(0.5)\n            .atLocation(args[0].hitTargets[0])\n        .play()\n} else {    // Target was missed\n    new Sequence()\n        .effect()\n            .file(`jb2a.fire_bolt.${color}`)\n            .atLocation(aToken)\n            .stretchTo(args[0].targets[0])\n            .missed(args[0].hitTargets.length === 0)\n        .play()\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
     },
     "exportSource": {
       "world": "travels-in-barovia",

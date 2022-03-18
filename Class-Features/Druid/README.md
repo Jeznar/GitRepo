@@ -65,6 +65,8 @@ This is the other unique ability backed into the wildfire spirit.  This one is i
 
 It is modified via *warpgate* when the token is summoned to set the attack and damage modifiers in accordance with the ability description. 
 
+THE VFX recognizes a hit and plays an explosion in addition the basic firebolt graphic.  On a miss, the firebolt is redirected to an area near the intended target. The color of the bolt and explosion is adjusted based on a color keyword found in the icon image file name.
+
 ![](Wildfire_2_Summon_Widlfire_Spirit/Flame_Seed/Flame_Seed.gif)
 
 No macro is used to implement this.s
