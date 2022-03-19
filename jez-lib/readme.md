@@ -27,8 +27,10 @@ The functions currently included in this module are:
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
+* **[jez.getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
 * **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
 * **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
+* **[jez.getSpellSchool(item)](#getspellschoolitem)** -- Returns a string naming the school of passed item
 * **[jez.getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
 * **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifer
 * **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e acssociated with the passed ID
@@ -39,6 +41,7 @@ The functions currently included in this module are:
 * **[jez.pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
 * **[jez.postMessage(msgParm)](#postmessagemsgparm)** -- Posts a new message to the **Chat Log**
 * **[jez.randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
+* **[jez.runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[jez.tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
 * **[jez.wait(ms)](#wait)** -- Waits for specified milliseconds.
 
@@ -81,6 +84,21 @@ jez.addMessage(chatMessage, {color:"crimson", fSize:15, msg:msg, tag:"other" })
 The above, will generate a message such as the following:
 
 ![addMessage_example](images/addMessage_example.png)
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getRandomRuneColor()
+
+This function returns a string naming a valid random JB2A rune color.  Possible returned values are:
+
+* blue, 
+* green,
+* pink,
+* purple,
+* red, and
+* yellow.
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -207,6 +225,24 @@ The returned object will be composed of:
 * @property {string}  str    - Short form for size generally used in FoundryVTT data 
 * @property {string}  string - Spelled out size all lower case
 * @property {string}  String - Spelled out size with the first letter capitalized  
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getSpellSchool(item)
+
+This function obtains the spell school from the passed parameter.  The school will be a string as used by JB2A module.  Possible returned values are:
+
+* abjuration
+* conjuration
+* divination
+* enchantment
+* evocation
+* illusion
+* necromancy
+* transmutation
+* and FALSE (if no valid school found)
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -364,6 +400,29 @@ jez.addMessage(chatMessage, {color:jez.randomDarkColor(), fSize:15, msg:msg, tag
 
 ---
 
+### runRuneVFX(...)
+
+This function will run a simple three stage VFX on a passed token. It supports a number of optional parameters.  The complete of parms allowed is as follows:
+
+```javascript
+runRuneVFX(token, school, color, scale, opacity)
+```
+* **token** -- required and typically a token5e, though anything sequencer accepts for atLocation() call is fine.
+* **school** -- a string naming a spell school as used in JB2A runes, defaults to "enchantment" often specified as `jez.getSpellSchool(aItem)`
+* **color** - string representing a valid JB2A rune color (see [jez.getRandomRuneColor()](#getrandomrunecolor) for color strings.  If not provided will be selected randomly.
+* **scale** - real number specifying size relative to token size.  Defaults to 1.2 which is generally fine.
+* **opacity** - real number specifying opacity, 0 to 1.  Defaults to 1.0 which is generally fine.
+
+This function might typically be called as follows:
+
+```javascript
+jez.runRuneVFX(tToken, jez.getSpellSchool(aItem)) 
+```
+
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
 ### tokensInRange(selToken, range) 
 
 This function returns an array of all the tokens withing *range* feet (plus a fudge factor, currently 4 feet, to make diagonals happier), excluding the passed token. If no tokens are in range, the returned array will be zero length. 

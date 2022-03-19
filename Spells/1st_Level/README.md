@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
 * [Hex](#hex)
+* [Longstrider](#longstrider)
 * [Magic Missle](#magic-missile) (ASE)
 * [Nauseating Poison](#nauseating-poison)
 * [Protection from Evil and Good](#protection-from-evil-and-good)
@@ -137,13 +138,23 @@ Following are a few messages this macro can produce.
 
 ---
 
-### Magic Missle
+### Longstrider
 
-I just tossed my original implementaton in favor of the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#magic-missile)
+This is a simple little spell that uses DAE to boost the speed of the target token by 10 and makes a call to jez-lib to run a simple VFX on the target token.
 
-This implmentation requires that all darts be targeted and then fires them all off in parallel.  This is correct per RAW and just a bit awesome.  
+![Longstrider.gif](Longstrider/Longstrider.gif)
 
-![Magic Missile](Magic_Missile/Magic_Missle.gif)
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Magic Missile
+
+I just tossed my original implementation in favor of the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#magic-missile)
+
+This implementation requires that all darts be targeted and then fires them all off in parallel.  This is correct per RAW and just a bit awesome.  
+
+![Magic Missile](Magic_Missile/Magic_Missile.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

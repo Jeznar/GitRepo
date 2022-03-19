@@ -1,8 +1,9 @@
-const MACRONAME = "Starter_Macro"
+const MACRONAME = "Longstrider"
 /*****************************************************************************************
- * Basic Structure for a rather complete macro
+ * Simply run a rather generic VFX on the target of this spell and post a completion 
+ * message.
  * 
- * 02/11/22 0.1 Creation of Macro
+ * 03/19/22 0.1 Creation of Macro
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -20,17 +21,12 @@ let msg = "";
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
-if ((args[0]?.tag === "OnUse") && !preCheck())  {await jez.wait(250); return;}
+if ((args[0]?.tag === "OnUse") && !preCheck())return;
 
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
-// DamageBonus must return a function to the caller
-if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
 
@@ -69,27 +65,6 @@ function preCheck() {
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set Off
- ***************************************************************************************************/
- async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("Something could have been here")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-}
-  
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("A place for things to be done");
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-}
-/***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
  async function doOnUse() {
@@ -100,6 +75,9 @@ async function doOn() {
     jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
     jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
 
+    let school = getSpellSchool(aItem)
+    let color = jez.log(getRandomRuneColor())
+    runRuneVFX(tToken, school, color, 0.4, 1) 
 
     msg = `Maybe say something useful...`
     postResults(msg)
@@ -107,22 +85,60 @@ async function doOn() {
     return (true);
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is invoked each round by DAE
+ * Retrieve and return the spell school string formatted for jb2a from the passed item or false if 
+ * none found.
  ***************************************************************************************************/
- async function doEach() {
-    const FUNCNAME = "doEach()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do Each code")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
+ function getSpellSchool(item) {
+    let school = item?.data?.school
+    if (!school) return (false)
+    switch (school) {
+        case "abj" : school = "abjuration"; break
+        case "con" : school = "conjuration"; break
+        case "div" : school = "divination"; break
+        case "enc" : school = "enchantment"; break
+        case "evo" : school = "evocation"; break
+        case "ill" : school = "illusion"; break
+        case "nec" : school = "necromancy"; break
+        case "trs" : school = "transmutation"; break
+        default: school = false
+    }
+    return (school)
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
+ * Return a random supported color for spell rune
  ***************************************************************************************************/
- async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do On Use code")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
+ function getRandomRuneColor() {
+    let allowedColorArray = ["blue", "green", "pink", "purple", "red", "yellow"];
+    // Returns a random integer from 0 to (allowedColorArray.length):
+    let index = Math.floor(Math.random() * (allowedColorArray.length));
+    return (allowedColorArray[index])
+ }
+/***************************************************************************************************
+ * Run a 3 part spell rune on indicated token with passed school and color
+ ***************************************************************************************************/
+ async function runRuneVFX(token, school, color, scale, opacity) {
+    const INTRO = `jb2a.magic_signs.rune.${school}.intro.${color}`
+    const BODY  = `jb2a.magic_signs.rune.${school}.loop.${color}`
+    const OUTRO = `jb2a.magic_signs.rune.${school}.outro.${color}`
+    new Sequence()
+    .effect()
+        .file(INTRO)
+        .atLocation(token) 
+        .scale(scale)
+        .opacity(opacity)
+        .waitUntilFinished(-500) 
+    .effect()
+        .file(BODY)
+        .atLocation(token)
+        .scale(scale)
+        .opacity(opacity)
+        //.persist()
+        .duration(4000)
+        .waitUntilFinished(-500) 
+    .effect()
+        .file(OUTRO)
+        .atLocation(token)
+        .scale(scale)
+        .opacity(opacity)
+    .play();
 }

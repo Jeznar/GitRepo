@@ -716,8 +716,78 @@ class jez {
      /***************************************************************************************************
       * Get the Familiar name from the DAE Flag, return empty string if not found
       ***************************************************************************************************/
-     static async familiarNameUnset(actor5e) {
-         return (await DAE.unsetFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME));
+    static async familiarNameUnset(actor5e) {
+        return (await DAE.unsetFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME));
+    }
+    /***************************************************************************************************
+     * Retrieve and return the spell school string formatted for jb2a from the passed item or false if 
+     * none found.
+     ***************************************************************************************************/
+    static getSpellSchool(item) {
+        let school = item?.data?.school
+        if (!school) return (false)
+        switch (school) {
+            case "abj": school = "abjuration"; break
+            case "con": school = "conjuration"; break
+            case "div": school = "divination"; break
+            case "enc": school = "enchantment"; break
+            case "evo": school = "evocation"; break
+            case "ill": school = "illusion"; break
+            case "nec": school = "necromancy"; break
+            case "trs": school = "transmutation"; break
+            default: school = false
+        }
+        return (school)
+    }
+    /***************************************************************************************************
+     * Return a random supported color for spell rune
+     ***************************************************************************************************/
+    static getRandomRuneColor() {
+        let allowedColorArray = ["blue", "green", "pink", "purple", "red", "yellow"];
+        // Returns a random integer from 0 to (allowedColorArray.length):
+        let index = Math.floor(Math.random() * (allowedColorArray.length));
+        return (allowedColorArray[index])
+    }
+    /***************************************************************************************************
+     * Run a 3 part spell rune VFX on indicated token  with indicated rune, Color, scale, and opacity
+     * may be optionally specified.
+     * 
+     * Typical call: jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
+     ***************************************************************************************************/
+     static async runRuneVFX(token, school, color, scale, opacity) {
+        school ? school = school : school = "enchantment"       // default school is enchantment \_(ツ)_/
+        color ? color = color : color =jez.getRandomRuneColor() // If color not provided get a random one
+        scale ? scale = scale : scale = 1.2                     // If scale not provided use 1,0
+        opacity ? opacity = opacity : opacity = 1.0             // If opacity not provided use 1,0
+        //-----------------------------------------------------------------------------------------------
+        // Build names of video files needed
+        // 
+        const INTRO = `jb2a.magic_signs.rune.${school}.intro.${color}`
+        const BODY = `jb2a.magic_signs.rune.${school}.loop.${color}`
+        const OUTRO = `jb2a.magic_signs.rune.${school}.outro.${color}`
+        //-----------------------------------------------------------------------------------------------
+        // Play the VFX
+        // 
+        new Sequence()
+        .effect()
+            .file(INTRO)
+            .atLocation(token) 
+            .scaleToObject(scale)
+            .opacity(opacity)
+            .waitUntilFinished(-500) 
+        .effect()
+            .file(BODY)
+            .atLocation(token)
+            .scaleToObject(scale)
+            .opacity(opacity)
+            .duration(4000)
+            .waitUntilFinished(-500) 
+        .effect()
+            .file(OUTRO)
+            .atLocation(token)
+            .scaleToObject(scale)
+            .opacity(opacity)
+        .play();
      }
 } // END OF class jez
 Object.freeze(jez);
