@@ -1,18 +1,19 @@
 # 3rd Level Spells
 This repository will contain my automated 3rd level spells as I create new or update existing (there are many) that currently reside only in my game data (which is regularly backed up) I'll add them here.
 
-Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
+Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Animate Dead](#animate-dead)
 * [Call Lightning](#call-lightning) (ASE)
 * [Clairvoyance](#clairvoyance)
 * [Counterspell](#counterspell)
-* [Dispell Magic](#dispell-magic)
+* [Dispel Magic](#dispel-magic)
 * [Fireball](#fireball)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
 * [Revivify](#revivify)
 * [Thunder Step](#thunder-step)
+* [Tidal Wave](#tidal-wave)
 * [Vampiric Touch](#vampiric-touch) (ASE)
 
 [*Back to List of All Spells*](../README.md)
@@ -21,7 +22,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ### Animate Dead
 
-This spell is offered in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#animate-dead), when I tried to use it I ran into conflicts with [Auomated Evocations](https://github.com/theripper93/automated-evocations) module which I have been using for a while now.  I ended up opting to keep the AE implementation which works just fine and doesn't require (or check for) nearby corpses. That seems like a better choice as I don't want to force the GM to litter dead tokens everywhere they should be.  
+This spell is offered in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#animate-dead), when I tried to use it I ran into conflicts with [Automated Evocations](https://github.com/theripper93/automated-evocations) module which I have been using for a while now.  I ended up opting to keep the AE implementation which works just fine and doesn't require (or check for) nearby corpses. That seems like a better choice as I don't want to force the GM to litter dead tokens everywhere they should be.  
 
 ![animate-dead](Animate_Dead/Animate_Undead.gif)
 
@@ -53,7 +54,7 @@ I have left my original implementation in the repo as insurance against the modu
 
 ### Clairvoyance
 
-Nothing more than a tested SRD implmentation. It will be handled between players and GM.  Nothing special.
+Nothing more than a tested SRD implementation. It will be handled between players and GM.  Nothing special.
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
@@ -61,19 +62,19 @@ Nothing more than a tested SRD implmentation. It will be handled between players
 
 ### Counterspell
 
-Slighty updated spell description from the standard SRD.  Actual use of this spell will be manual for the GM.
+Slightly updated spell description from the standard SRD.  Actual use of this spell will be manual for the GM.
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
 ---
 
-### Dispell Magic
+### Dispel Magic
 
 This spell is not automated.  It simply has a VFX implemented with [Automated Animations](https://github.com/otigon/automated-jb2a-animations).  
 
 When used, it simply plays a visual on the target.  Any saves or removal of effects is left for manual attention. 
 
-![dispell-magic](Dispell_Magic/Dispell_Magic.gif)
+![dispel-magic](Dispel_Magic/Dispel_Magic.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
@@ -82,9 +83,9 @@ When used, it simply plays a visual on the target.  Any saves or removal of effe
 
 While this spell worked just fine straight out of [Automated Animations](https://github.com/otigon/automated-jb2a-animations), I couldn't resist adding a bit fore VFX sophistication.
 
-Themacro for this spell use a firebolt in flight followed by and explosion and then three waves of smoke for a bit more visual ooomph.
+The-macro for this spell use a firebolt in flight followed by and explosion and then three waves of smoke for a bit more visual ooomph.
 
-Probably most interstingly, it reads the name of the icon that represents the spell and attempts to pick the *right* color fireball graphic.  The colors recogniozed in the iimage file name and what they map to are:
+Probably most interestingly, it reads the name of the icon that represents the spell and attempts to pick the *right* color fireball graphic.  The colors recognized in the image file name and what they map to are:
 
     orange ==> orange
     blue   ==> blue
@@ -96,7 +97,7 @@ Probably most interstingly, it reads the name of the icon that represents the sp
 
 ![Fireball.gif](Fireball/Fireball.gif)
 
-NOTE: I needed to diable Automated Animations global match to fireball to avoid that modules *help.*
+NOTE: I needed to disable Automated Animations global match to fireball to avoid that modules *help.*
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
@@ -142,10 +143,10 @@ Fairly generic spell implementation.  A minor Automated Animations effect applie
 
 ### Thunder Step
 
-This one operates as two, sometimes three part exectution. 
+This one operates as two, sometimes three part execution. 
 
-1. The caster needs to use the **Thunder Step (Teleportation)** spell.  It will show the allowed area (which is huge -- 300 foot radius) for teleportaion.  The user then clicks the destimation and will go poof to the new spot.
-2. Optionally, one freindly creature who was next to the caster can be moved with the caster.  This will need to be done by the token owner of the GM, manually.
+1. The caster needs to use the **Thunder Step (Teleportation)** spell.  It will show the allowed area (which is huge -- 300 foot radius) for teleportation.  The user then clicks the destination and will go poof to the new spot.
+2. Optionally, one friendly creature who was next to the caster can be moved with the caster.  This will need to be done by the token owner of the GM, manually.
 3. Finally, the caster should use the **Thunder Step (Damage)** spell, making sure not to use a spell slot.  They targeting marker needs to be clicked into the space vacated by the caster. It will then cause the appropriate damage.
 
 All of the above is done without a macro, just **Automated Animations** and standard FoundryVTT settings.
@@ -153,7 +154,23 @@ All of the above is done without a macro, just **Automated Animations** and stan
 ![Thunder_Step.gif](Thunder_Step/Thunder_Step.gif)
 https://github.com/Jeznar/GitRepo/blob/main/Spells/3rd_Level/Thunder_Step/Thunder_Step.gif
 
-I have looked at the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#thunder-step) implmenation of this spell.  It is a smoother approach with niftier graphics but depennds on correct marking of tokens friendly status and caused multiple *ghost* moves of the casting token after spell completion.  I don't know what it was doing actually, but I don't see further investigation as worthwhile -- sticking with my three step implementation that I can debug as required. 
+I have looked at the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#thunder-step) implementation of this spell.  It is a smoother approach with niftier graphics but depennds on correct marking of tokens friendly status and caused multiple *ghost* moves of the casting token after spell completion.  I don't know what it was doing actually, but I don't see further investigation as worthwhile -- sticking with my three step implementation that I can debug as required. 
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Tidal Wave
+
+This spell is implemented without a custom macro. It does make use of [DAE](https://gitlab.com/tposney/dae) to apply a CUB Prone effect and [Automated Animations](https://github.com/otigon/automated-jb2a-animations) to handle the somewhat inappropriate VFX.  Also, of course MIDI-QoL. Configuration information is included in the screen shots stored in the repository.
+
+This spell is unusual in that the area of effect is stated as *up to* in three dimensions.  Since my world is largely two dimensional (for effects anyway -- z-axis is handled with theater of mind) I'm only worried about height and width of the effect area.  I've opted to ask the caster to adjust these two dimensions on the details page as appropriate.  That's a bit kludgy, but it seems little worse than a pop up menu asking for those dimensions and it is easier to implement.  Below is a screen shot of the two numbers that can be set to desired dimensions (with the maximum values shown as initial values).
+
+![Tidal_wave_Details.png](Tidal_Wave/Tidal_wave_Details.png)
+
+Below is a screen grab video showing the spell.  The graphic is actually a blue acid splash, so a bit off but better than nothing, I suppose.  Notice tokens that failed their saves are marked as prone after the spell is cast. 
+
+![Tidal_wave.gif](Tidal_Wave/Tidal_wave.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
@@ -163,7 +180,7 @@ I have looked at the [Advanced Spell Effects Module](https://github.com/Vauryx/A
 
 This spell is nifty as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#vampiric-touch).
 
-It heals the using token and creats an at-will ability on that token for subsequent rounds.  Exactly what I'd like to see it do.  
+It heals the using token and creates an at-will ability on that token for subsequent rounds.  Exactly what I'd like to see it do.  
 
 ![vampiric-touch](https://user-images.githubusercontent.com/32877348/138579473-f5dcefd9-4a90-4108-ab53-f8dfa0a2a940.gif)
 

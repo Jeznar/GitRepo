@@ -77,11 +77,13 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Call Lightning](3rd_Level#call-lightning) (ASE)
 * [Clairvoyance](3rd_Level#clairvoyance)
 * [Counterspell](3rd_Level#counterspell)
+* [Dispel Magic](3rd_Level#dispel-magic)
 * [Fireball](3rd_Level#fireball)
 * [Lightning Bolt](3rd_Level#lightning-bolt)
 * [Magic Circle](3rd_Level#magic-circle)
 * [Revivify](3rd_Level#revivify)
 * [Thunder Step](3rd_Level#thunder-step)
+* [Tidal Wave](3rd_Level#tidal-wave)
 * [Vampiric Touch](3rd_Level#vampiric-touch) (ASE)
 
 [*Back to Spell Level List*](#spells)
