@@ -6,7 +6,7 @@ This module contains common functions that many of my macros use.  They are all 
 
 ## jez.log() as an Example
 
-The single most commonly used function in my macros is **jez.log()**.  This little work horse does nothing more than accept a number of arguments, perform formatting if it has more than one and dump them to the console with a *console.log()* call.  Oh, yes, it checks in with [Developer Mode](https://github.com/League-of-Foundry-Developers/foundryvtt-devMode) module to determine if the message will be supressed.  I'll get more into that later in this document. 
+The single most commonly used function in my macros is **jez.log()**.  This little work horse does nothing more than accept a number of arguments, perform formatting if it has more than one and dump them to the console with a *console.log()* call.  Oh, yes, it checks in with [Developer Mode](https://github.com/League-of-Foundry-Developers/foundryvtt-devMode) module to determine if the message will be suppressed.  I'll get more into that later in this document. 
 
 ## Actually Using this Module
 
@@ -18,7 +18,7 @@ I ran into a few challenges following the tutorial.  The most notable being:
 * My Functions need to be embedded in a relevant class (jez, in my case)
 * Function declarations are written a bit differently.  A *normal* declaration like, `async function pickFromListArray(...)`, becomes `static async pickFromListArray(...)`.
 
-The small bundle of files that make up this module need to be paced on the server in the `data/modules/jez-lib` subdirectory.  FoundryVTT ust be restarted after placing the files.  The module should then appear and be able to be activated in whatever world.  Of course, it doesn't do anything by itself, as it is just a set of functions that I like to leverage. 
+The small bundle of files that make up this module need to be paced on the server in the `data/modules/jez-lib` subdirectory.  FoundryVTT must be restarted after placing the files.  The module should then appear and be able to be activated in whatever world.  Of course, it doesn't do anything by itself, as it is just a set of functions that I like to leverage. 
 
 ## Functions in this Module
 
@@ -32,8 +32,8 @@ The functions currently included in this module are:
 * **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
 * **[jez.getSpellSchool(item)](#getspellschoolitem)** -- Returns a string naming the school of passed item
 * **[jez.getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
-* **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifer
-* **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e acssociated with the passed ID
+* **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifier
+* **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
@@ -55,10 +55,10 @@ This function is similar to [postMessage(msgParm)](#postmessagemsgparm) but it a
 
 The first parameter, **chatMessage**, must be of type *ChatMessage*.  If this is being used as an OnUse ItemMacro, the chat card for the current message can be obtained with: `game.messages.get(args[args.length - 1].itemCardId);` In other circumstances, it can be rather more complex to obtain and beyond the scope of this documentation. 
 
-The passd **msgParm** can be a string or an object as in teh cousin function, [postMessage(msgParm)](#postmessagemsgparm).  If the more complex object paramater is specified, it may contain the following fields (fields not specifified will default to more or less reasonable values):
+The passed **msgParm** can be a string or an object as in the cousin function, [postMessage(msgParm)](#postmessagemsgparm).  If the more complex object parameter is specified, it may contain the following fields (fields not specified will default to more or less reasonable values):
 
-* **fSize**: Number specifing the font size (in points),
-* **color**: String naming the forground color,
+* **fSize**: Number specifying the font size (in points),
+* **color**: String naming the foreground color,
 * **msg**: String containing the actual text to be displayed.
 * **tag**: String naming the anchor location from: saves, attack, damage, hits, other
 
@@ -126,9 +126,9 @@ if(!jez.inRange(aToken, tToken, maxRange)) {
 
 ### log(...parms)
 
-This function utilizes the [Developer Mode](https://github.com/League-of-Foundry-Developers/foundryvtt-devMode) module to determine if passed parameter(s) should be written to the console log.  All messages are prefixed with the module name (jez-lib) and a vertical bar symbol.  
+This function utilizes the [Developer Mode](https://github.com/League-of-Foundry-Developers/foundryvtt-devMode) module to determine if passed parameter(s) should be written to the console log.  All messages are prefaced with the module name (jez-lib) and a vertical bar symbol.  
 
-If only a single parameter is passed, the function simply echos that paremeter to the console.
+If only a single parameter is passed, the function simply echos that parameter to the console.
 
 ~~~javascript
 > jez.log("hello world")
@@ -137,21 +137,21 @@ jez-lib | hello world
 jez-lib | ▸ Token5e {_events: i, _eventsCount: 2, …}
 ~~~
 
-Objects, arrays, and other compond data elements display with a *clickable* arrow indicating. they can be expanded to show more content.
+Objects, arrays, and other compound data elements display with a *clickable* arrow indicating. they can be expanded to show more content.
 
-If two parameters are passed, they are written to a single line on the console seperated by a colon. 
+If two parameters are passed, they are written to a single line on the console separated by a colon. 
 
 ~~~javascript
 > jez.log("My token of interest", _token)
 jez-lib | ▸ My token of interest : Token5e {_events: i, _eventsCount: 2, …}
 ~~~
 	
-It also provides limited formatting of the output if more than one a parameter is passed. With more than two parameters, the first (for odd counts of pamameters) or first two (even counts) are written to the console followed by numbered pairs on additional lines. 
+It also provides limited formatting of the output if more than one a parameter is passed. With more than two parameters, the first (for odd counts of parameters) or first two (even counts) are written to the console followed by numbered pairs on additional lines. 
 
 ~~~javascript
-> jez.log("------------- BREAK ---------------","Seleted Token",_token,"Selected Token Name",_token.name)
+> jez.log("------------- BREAK ---------------","Selected Token",_token,"Selected Token Name",_token.name)
 jez-lib | ------------- BREAK ---------------
-jez-lib |  (1) Seleted Token : ▸ Token5e {_events: i, _eventsCount: 2, …}
+jez-lib |  (1) Selected Token : ▸ Token5e {_events: i, _eventsCount: 2, …}
 jez-lib |  (2) Selected Token Name : Meat Bag, Medium
 ~~~
 
@@ -176,8 +176,8 @@ amount of error checking.
 - jez.getCastMod(subject) -- Returns the subject's casting stat modifier
 - jez.getCastStat(subject) -- Returns the subject's casting stat string (e.g. "int")
 - jez.getStatMod(subject,stat) -- Returns the subject's modifier for passed stat string
-- jez.getProfMod(subject) -- Returns the subject's proficiency modifer
-- jez.getTokenById(subjectId) -- Returns the Token5e acssociated with the passed ID
+- jez.getProfMod(subject) -- Returns the subject's proficiency modifier
+- jez.getTokenById(subjectId) -- Returns the Token5e associated with the passed ID
 
 #### Parameters
 * Subject: Token5e or Actor5e object or 16 character id of a token
@@ -348,7 +348,7 @@ jez.pickRadioListArray(queryTitle, queryText, pickFlavorCallBack, actorItems.sor
 
 This function creates a new message at the current bottom of the *chat log* with a number of optional parameters to allow some simple formatting of the message.  
 
-The simpilest use of this function is to just pass a string which will be posted.  
+The simplest use of this function is to just pass a string which will be posted.  
 
 jez.postMessage("Here is an example message") 
 
@@ -359,9 +359,9 @@ The above, produces the following unadorned chat message.
 The passed parameter (msgParm), optionally may be an object with one or more of the following defined:
 
 * **title**: String specifying the title of the chat entry,
-* **fSize**: Number specifing the font size (in points),
-* **color**: String naming the forground color,
-* **icon**: String specifing the file name that contains the icon to be used,
+* **fSize**: Number specifying the font size (in points),
+* **color**: String naming the foreground color,
+* **icon**: String specifying the file name that contains the icon to be used,
 * **msg**: String containing the actual text to be displayed,
 * **token**: Token5e object that represents the *speaking* entity
 
@@ -407,16 +407,17 @@ This function will run a simple three stage VFX on a passed token. It supports a
 ```javascript
 runRuneVFX(token, school, color, scale, opacity)
 ```
-* **token** -- required and typically a token5e, though anything sequencer accepts for atLocation() call is fine.
+* **token** -- required and typically a token5e or TokenDocument5e, though anything sequencer accepts for atLocation() call is fine. This can also be an array of such items.
 * **school** -- a string naming a spell school as used in JB2A runes, defaults to "enchantment" often specified as `jez.getSpellSchool(aItem)`
 * **color** - string representing a valid JB2A rune color (see [jez.getRandomRuneColor()](#getrandomrunecolor) for color strings.  If not provided will be selected randomly.
 * **scale** - real number specifying size relative to token size.  Defaults to 1.2 which is generally fine.
 * **opacity** - real number specifying opacity, 0 to 1.  Defaults to 1.0 which is generally fine.
 
-This function might typically be called as follows:
+This function might typically be called as one of the following:
 
 ```javascript
-jez.runRuneVFX(tToken, jez.getSpellSchool(aItem)) 
+jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
+jez.runRuneVFX(args[0].targets, jez.getSpellSchool(aItem), jez.getRandomRuneColor())
 ```
 
 
@@ -425,7 +426,7 @@ jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
 ---
 ### tokensInRange(selToken, range) 
 
-This function returns an array of all the tokens withing *range* feet (plus a fudge factor, currently 4 feet, to make diagonals happier), excluding the passed token. If no tokens are in range, the returned array will be zero length. 
+This function returns an array of all the tokens within *range* feet (plus a fudge factor, currently 4 feet, to make diagonals happier), excluding the passed token. If no tokens are in range, the returned array will be zero length. 
 
 Here is a sample usage.
 
@@ -442,10 +443,10 @@ jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
 
 ### wait(ms) 
 
-Hey!   This one is easy.  It just does a wait for the specified milliseconds.  Perhaps the only trick to using it is to be sure to await the wait, or it is rather pointless.
+Hey!   This one is easy.  It just does a wait for the specified milliseconds.  Perhaps the only trick too using it is to be sure to await the wait, or it is rather pointless.
 
 ~~~javascript
-    await jez.wait(1000) // Will wait for 1 second, 1,000 miliseconds
+    await jez.wait(1000) // Will wait for 1 second, 1,000 milliseconds
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

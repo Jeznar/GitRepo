@@ -140,7 +140,7 @@ Following are a few messages this macro can produce.
 
 ### Longstrider
 
-This is a simple little spell that uses DAE to boost the speed of the target token by 10 and makes a call to jez-lib to run a simple VFX on the target token.
+This is a simple little spell that uses DAE to boost the speed of the target token by 10 and makes a call to jez-lib to run a simple VFX on the target token or an array of target tokens.
 
 ![Longstrider.gif](Longstrider/Longstrider.gif)
 

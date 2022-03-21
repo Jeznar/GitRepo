@@ -749,45 +749,54 @@ class jez {
         return (allowedColorArray[index])
     }
     /***************************************************************************************************
-     * Run a 3 part spell rune VFX on indicated token  with indicated rune, Color, scale, and opacity
-     * may be optionally specified.
-     * 
-     * Typical call: jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
-     ***************************************************************************************************/
-     static async runRuneVFX(token, school, color, scale, opacity) {
-        school ? school = school : school = "enchantment"       // default school is enchantment \_(ツ)_/
-        color ? color = color : color =jez.getRandomRuneColor() // If color not provided get a random one
-        scale ? scale = scale : scale = 1.2                     // If scale not provided use 1,0
-        opacity ? opacity = opacity : opacity = 1.0             // If opacity not provided use 1,0
+    * Run a 3 part spell rune VFX on indicated token  with indicated rune, Color, scale, and opacity
+    * may be optionally specified.
+    * 
+    * If called with an array of target tokens, it will recursively apply the VFX to each token 
+    * 
+    * Typical calls: 
+    *  jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
+    *  jez.runRuneVFX(args[0].targets, jez.getSpellSchool(aItem), jez.getRandomRuneColor())
+    ***************************************************************************************************/
+    static async runRuneVFX(target, school, color, scale, opacity) {
+        school = school || "enchantment"            // default school is enchantment \_(ツ)_/
+        color = color || jez.getRandomRuneColor()   // If color not provided get a random one
+        scale = scale || 1.2                        // If scale not provided use 1.0
+        opacity = opacity || 1.0                    // If opacity not provided use 1.0
+        //jez.log("runRuneVFX(target, school, color, scale, opacity)","target",target,"school",school,"scale",scale,"opacity",opacity)
+        if (Array.isArray(target)) {                // If function called with array, do recursive calls
+            for (let i=0; i<target.length; i++) jez.runRuneVFX(target[i],school,color,scale,opacity);
+            return (true)                           // Stop this invocation after recursive calls
+        }
         //-----------------------------------------------------------------------------------------------
         // Build names of video files needed
         // 
         const INTRO = `jb2a.magic_signs.rune.${school}.intro.${color}`
-        const BODY = `jb2a.magic_signs.rune.${school}.loop.${color}`
+        const BODY  = `jb2a.magic_signs.rune.${school}.loop.${color}`
         const OUTRO = `jb2a.magic_signs.rune.${school}.outro.${color}`
         //-----------------------------------------------------------------------------------------------
         // Play the VFX
         // 
-        new Sequence()
-        .effect()
-            .file(INTRO)
-            .atLocation(token) 
-            .scaleToObject(scale)
-            .opacity(opacity)
-            .waitUntilFinished(-500) 
-        .effect()
-            .file(BODY)
-            .atLocation(token)
-            .scaleToObject(scale)
-            .opacity(opacity)
-            .duration(4000)
-            .waitUntilFinished(-500) 
-        .effect()
-            .file(OUTRO)
-            .atLocation(token)
-            .scaleToObject(scale)
-            .opacity(opacity)
-        .play();
-     }
+            new Sequence()
+            .effect()
+                .file(INTRO)
+                .atLocation(target) 
+                .scaleToObject(scale)
+                .opacity(opacity)
+                .waitUntilFinished(-500) 
+            .effect()
+                .file(BODY)
+                .atLocation(target)
+                .scaleToObject(scale)
+                .opacity(opacity)
+                .duration(3000)
+                .waitUntilFinished(-500) 
+            .effect()
+                .file(OUTRO)
+                .atLocation(target)
+                .scaleToObject(scale)
+                .opacity(opacity)
+            .play();
+        }
 } // END OF class jez
 Object.freeze(jez);
