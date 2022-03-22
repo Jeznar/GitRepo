@@ -23,7 +23,7 @@ Abilities shared across multiple classes.
 
 ---
 
-## [Druid](#Druid)
+## [Druid](Druid#druid)
 
 This is the standard [Druid class](https://www.dndbeyond.com/classes/druid).  I will be concerned with Wildfire Druid abilities, because that is what my game is featuring.
 
@@ -35,7 +35,7 @@ This is the standard [Druid class](https://www.dndbeyond.com/classes/druid).  I 
 
 ---
 
-## [Occultist](Occultist/README.md)
+## [Occultist](Occultist#druid)
 
 This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shaman (KibblesTasty)](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw)** by KibblesTasty.
 
@@ -46,7 +46,7 @@ This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shama
 
 ---
 
-## [Paladin](#Paladin)
+## [Paladin](Paladin#paladin)
 
 This is the standard [Paladin class](https://www.dndbeyond.com/classes/paladin).  I will be concerned with Oath of the Ancients Paladin abilities, because that is what my game is featuring.
 
@@ -56,7 +56,7 @@ This is the standard [Paladin class](https://www.dndbeyond.com/classes/paladin).
 
 ---
 
-## [Warlock](Warlock/README.md)
+## [Warlock](Warlock#warlock)
 
 This is the standard [Warlock class](https://www.dndbeyond.com/classes/warlock).  I will be concerned with Celestial Warlock abilities, because that is what my game is featuring.
 
