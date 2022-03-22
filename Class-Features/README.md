@@ -7,10 +7,21 @@ I anticipate a large number of features here, I will try to drop them into speci
 
 ## Classes with Features
 
+* [Shared](#shared)
 * [Druid](#druid)
 * [Occultist](#occultist)
 * [Paladin](#paladin)
 * [Warlock](#warlock)
+
+## [Shared](#Shared)
+
+Abilities shared across multiple classes.
+
+* [Fighting Style - Interception](Shared#fighting-style-interception)
+
+[*Back to Classes with Features list*](#classes-with-features)
+
+---
 
 ## [Druid](#Druid)
 
