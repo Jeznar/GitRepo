@@ -13,7 +13,7 @@ I anticipate a large number of features here, I will try to drop them into speci
 * [Paladin](#paladin)
 * [Warlock](#warlock)
 
-## [Shared](#Shared)
+## [Shared](Shared#shared)
 
 Abilities shared across multiple classes.
 
