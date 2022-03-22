@@ -1,0 +1,153 @@
+{
+  "name": "Wildfire 6th: Enhanced Bond",
+  "type": "feat",
+  "img": "worlds/travels-in-barovia/characters/531_-_Sparky/token.png",
+  "data": {
+    "description": {
+      "value": "<div>\n<div>\n<div aria-level=\"1\"><em>6th-level Circle of Wildfire feature</em></div>\n</div>\n</div>\n<div>\n<div>\n<div>\n<div>\n<p>The bond with your wildfire spirit enhances your destructive and restorative spells. Whenever you cast a spell that deals <strong>fire damage</strong> or <strong>restores hit points</strong> <span style=\"text-decoration:underline\">while your wildfire spirit is summoned:</span> roll a d8, and you gain a bonus equal to the number rolled to one damage or healing roll of the spell.</p>\n<p>In addition, when you cast a spell with a range other than self, the spell can originate from you or your wildfire spirit.</p>\n</div>\n</div>\n</div>\n</div>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "WkrstBuIV5g99Hnj",
+      "changes": [
+        {
+          "key": "flags.dnd5e.DamageBonusMacro",
+          "mode": 0,
+          "value": "ItemMacro.Wildfire 6th: Enhanced Bond",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "worlds/travels-in-barovia/characters/510_-_Charlie_Adaline_Murphy/avatar.png",
+      "label": "Wildfire 6th - Enhanced Bond",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "#ffffff",
+      "selectedKey": "flags.dnd5e.DamageBonusMacro"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Wildfire 6th: Enhanced Bond",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Wildfire-6th:Enhanced_Bond.js\"\n/*****************************************************************************************\n * Wildfire Druid 6th Level Ability,  based very much on my rewrite of Hex, which \n * borrowed heavily from Crymic's code\n * \n * 03/15/22 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]   // Trim of the version number and extension\nconst FLAG = MACRO                      // Name of the DAE Flag       \njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\n\nconst ITEM_NAME = \"Hex - Move\"                          // Base name of the helper item\nconst SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory \nconst NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book\n//------------------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\n//if ((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n//------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\n//if (args[0] === \"off\") await doOff();                   // DAE removal\n//if (args[0] === \"on\") await doOn();                     // DAE Application\n//if (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n//if (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\nif (args[0]?.tag === \"DamageBonus\") return (doBonusDamage());    // DAE Damage Bonus\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults() {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro BonusDamage\n ***************************************************************************************************/\nasync function doBonusDamage() {\n    const FUNCNAME = \"doBonusDamage()\";\n    const NUM_DICE = 1\n    const DIE_TYPE = \"d8\"\n    let dmgType = \"\";\n    jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);\n    //let rc = await familiarPresent()\n    //jez.log(\"Returned value from seach for familiar:\", rc)\n    if (!await familiarPresent()) {\n        jez.log(\"Familiar is not present, sorry, no special effects\")\n        return{};\n    }\n    //---------------------------------------------------------------------------------------------\n    // Make sure something was targeted (return a null function if not) and then point at the first \n    // token.\n    //\n    if (args[0].targets.length === 0) return {}\n    const tToken = canvas.tokens.get(args[0].targets[0].id); // AHA!  This fails if nothing is targeted TODO\n    jez.log(\"tToken\", tToken)\n    jez.log(\"action type:\", aItem.data.actionType)\n    jez.log(\"aItem\", aItem)\n    //---------------------------------------------------------------------------------------------\n    // If action type was \"heal\" return a proper healing function\n    //\n    if (aItem.data.actionType === \"heal\") {\n        runVFX(\"heal\", tToken) \n        jez.log(\"Healing detected\", aItem.data.actionType)\n        dmgType = \"healing\"\n        return {\n            damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,\n            flavor: `(Enhanced Bond - heal)`,\n            damageList: args[0].damageList, itemCardId: args[0].itemCardId\n        };\n    }\n    //---------------------------------------------------------------------------------------------\n    // If action type wasn't an attack then return a null function\n    //\n    if (![\"ak\"].some(actionType => (aItem.data.actionType || \"\").includes(actionType))) return {};\n    //---------------------------------------------------------------------------------------------\n    // If the attack didn't have a type of \"fire\" then return a null function, otherwise send back \n    // a valid extra damage function.\n    //\n    for(const damageLine of aItem.data.damage.parts) {\n        if (damageLine[1] === \"fire\") {\n            dmgType = \"fire\"\n            break;\n        }\n    }\n    if (dmgType !== \"fire\") return {}\n    runVFX(\"fire\", tToken) \n    return {\n        damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,\n        flavor: `(Enhanced Bond - ${CONFIG.DND5E.damageTypes[dmgType]})`,\n        damageList: args[0].damageList, itemCardId: args[0].itemCardId\n    };\n}\n/***************************************************************************************************\n * Check to see is the familiar present?  return true if it is and has positive HP, otherwise false\n ***************************************************************************************************/\nasync function familiarPresent() {\n    //return(true)\n    //----------------------------------------------------------------------------------------------\n    // Search for MINION in the current scene \n    //\n    let i = 0;\n    const MINION = await jez.familiarNameGet(aToken.actor)\n    jez.log(\"MINION\", MINION)\n    //jez.log('Familar name being searched for', MINION)\n    for (let critter of game.scenes.viewed.data.tokens) {\n        //jez.log(` Creature ${i++}`, critter.data.name);\n        jez.log(`critter ${critter.name}`,critter)\n        if (critter.data.name === MINION) {\n            jez.log(\"heading on back from function familiarPresent() with TRUE\")\n            if (critter._actor.data.data.attributes.hp.value > 0) return(true)\n        }\n    }\n    jez.log(`Could not find active ${MINION} in the current scene, returning FALSE`)\n    return(false)\n}\n/***************************************************************************************************\n * Play the VFX for the fire effect, type is \"heal\" or \"fire\" and nothing else\n ***************************************************************************************************/\n async function runVFX(type, token5e) {\n    let vfxEffect = \"\"\n    switch (type) {\n        case \"heal\": vfxEffect = \"jb2a.shield_themed.above.fire.03.orange\"; break\n        case \"fire\": vfxEffect = \"jb2a.explosion.01.orange\"; break\n        default: return\n    }\n    await jez.wait(2000)\n    new Sequence()\n    .effect()\n        .file(vfxEffect)\n        .atLocation(token5e) \n        .scale(0.3)\n        .opacity(1)\n    .play();\n }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

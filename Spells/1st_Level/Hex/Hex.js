@@ -3,6 +3,7 @@ const MACRONAME = "Hex.js"
  * My rewrite of Hex, borrowing heavily from Crymic's code
  * 
  * 0/22 0.1 Creation of Macro
+ * 03/22/22 HOMEBREW: If Celestial then Radiant damage
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const FLAG = MACRO                      // Name of the DAE Flag       
@@ -25,16 +26,10 @@ const ITEM_NAME = "Hex - Move"                          // Base name of the help
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
 const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book
 //------------------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-//if ((args[0]?.tag === "OnUse") && !preCheck()) return;
-//------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
 if (args[0]?.tag === "DamageBonus") return (doBonusDamage());    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
@@ -201,15 +196,16 @@ async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const tToken = canvas.tokens.get(args[0].targets[0].id);
-    //const aToken = canvas.tokens.get(args[0].tokenId);
-    //const aItem = args[0].item;
-    const DMG_TYPE = "necrotic";
+    let dmgType = "necrotic";
+    // HOMEBREW: If actor is a Celestial, damage from hex is radiant 
+    if (aToken.actor.data.data.classes?.warlock?.subclass === "Celestial") dmgType = "radiant";
+
     if (tToken.id !== getProperty(aToken.actor.data.flags, "midi-qol.hexMark")) return {};
     if (!["ak"].some(actionType => (aItem.data.actionType || "").includes(actionType))) return {};
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return {
-        damageRoll: `1d6[${DMG_TYPE}]`,
-        flavor: `(Hex (${CONFIG.DND5E.damageTypes[DMG_TYPE]}))`,
+        damageRoll: `1d6[${dmgType}]`,
+        flavor: `(Hex (${CONFIG.DND5E.damageTypes[dmgType]}))`,
         damageList: args[0].damageList, itemCardId: args[0].itemCardId
     };
 }

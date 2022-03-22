@@ -614,7 +614,7 @@ class jez {
     static getStatMod(subject, statParm) {
         let actor5e = null
         let stat = ""
-        const STAT_ARRAY = ["str", "dex", "con", "int", "wis", "chr"]   // Allowed stat strings
+        const STAT_ARRAY = ["str", "dex", "con", "int", "wis", "cha"]   // Allowed stat strings
         //----------------------------------------------------------------------------------------------
         // Validate the subject parameter, stashing it into "actor5e"
         //

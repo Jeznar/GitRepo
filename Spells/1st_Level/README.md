@@ -130,6 +130,8 @@ This spell is built from two items:
 1. Hex -- The *normal* spell/item
 2. %%Hex - Move%% -- a *helper* item which is copied and edited by **Hex** into the actor's spellbook as an *at-will* spell. The funky name is intentional.
 
+HOMEBREW: If the user of this spell is a subclass *celestial* (typically a warlock), the damage type is *radiant* instead of *necrotic*.
+
 Following are a few messages this macro can produce.
 
 ![Hex/Hex_Chat.png](Hex/Hex_Chat.png)
