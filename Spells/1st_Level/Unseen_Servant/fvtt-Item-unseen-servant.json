@@ -1,0 +1,161 @@
+{
+  "name": "Unseen Servant",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/wind-grasp-sky-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>This spell creates an invisible, mindless, shapeless, Medium force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has:</p>\n<ul>\n<li>AC 10,</li>\n<li>1 hit point, and a</li>\n<li>Strength of 2, and</li>\n<li>it can't attack.</li>\n</ul>\n<p>If it drops to 0 hit points, the spell ends.</p>\n<p>Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command.</p>\n<p>If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends.</p>",
+      "chat": "<p>This spell creates an invisible, mindless, shapeless, Medium force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has AC 10, 1 hit point, and a Strength of 2, and it can't attack. If it drops to 0 hit points, the spell ends.</p>\n<p>Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command.</p>\n<p>If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 284",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "con",
+    "components": {
+      "value": "a bit of string and of wood",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": true,
+      "concentration": false
+    },
+    "materials": {
+      "value": "a bit of string and of wood",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 138901,
+      "definitionId": 2288,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 284,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Control"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_y8e7215chl"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.yvxE3vXZh0bZ9rrz"
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Unseen Servant",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Unseen_Servant.js\"\n/*****************************************************************************************\n * This macro implements Unseen Servant...Summoning a mostly transparent actor to the \n * field\n * \n * 1. Parse the aItem.name to find the name of the creature to be summoned.  Presumably \n *    this will be \"Unseen Servant\" but it could be something else\n * 2. Verify the Actor named in the aItem.name exists \n * 3. Define warpgate updates, options and callbacks \n * 4. Fire off warpgate\n * 5. Post a completion message\n * \n * 03/23/22 0.1 Creation from Find_Steed_Specific.js\n ******************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nlet msg = \"\";\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \n   else aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n   else aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\njez.log(`Beginning ${MACRONAME}`);\ndoIt()\n/******************************************************************************************/\nasync function doIt() {\n    //-------------------------------------------------------------------------------------\n    // 1. Parse the aItem.name to find the name of the creature to be summoned. \n    //\n    let summonedAct = aItem.name\n    // If name includes white space, get just the last token to use as the name\n    if ((aItem.name.match(/ /g) || []).length >= 1) {\n        let nameTokenArray = aItem.name.split(\" \");\n        summonedAct = nameTokenArray[nameTokenArray.length - 1];\n    }\n    jez.log(`summonedAct: \"${summonedAct}\"`)\n    let specificActorName = `${aToken.name}'s ${summonedAct}`\n    jez.log(`specificActorName: \"${specificActorName}\"`,)\n    //--------------------------------------------------------------------------------------\n    // 2. Verify the Actor named in the aItem.name exists\n    //\n    if (!game.actors.getName(aItem.name)) {   // If critter not found, that's all folks\n        msg = `Could not find \"<b>${aItem.name}</b>\" in the <b>Actors Directory</b>. \n        <br><br>Can not complete the ${aItem.name} action.`;\n        postResults(msg);\n        return (false);\n    }\n    //--------------------------------------------------------------------------------------\n    // 3. Define warpgate updates, options and callbacks \n    //\n    let updates = { token: { name: specificActorName } }\n    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet\n    const CALLBACKS = {\n        pre: async (template) => {\n            preEffects(template);\n            await warpgate.wait(3000);\n        },\n        post: async (template, token) => {\n            postEffects(template);\n            await warpgate.wait(500);\n        }\n    };\n    //--------------------------------------------------------------------------------------\n    // 4. Fire off warpgate \n    //\n    let returned = await warpgate.spawn(aItem.name, updates, CALLBACKS, OPTIONS);\n    jez.log(\"returned\", returned)\n    //--------------------------------------------------------------------------------------\n    // 5. Post a completion message\n    //\n    msg = `<b>${aToken.name}</b> has summoned <b>${specificActorName}</b>`\n    postResults(msg);\n    return;\n}\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n   * \n   ***************************************************************************************************/\n async function preEffects(template) {\n    const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Portals/Masked/Portal_Vortex_*_H_NoBG_400x400.webm\"\n    new Sequence()\n      .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .opacity(1.0)\n      .scaleIn(0.3, 2000)\n      //.scale(0.5)\n      .scaleToObject(2.0)\n      .fadeOut(2000)\n      .waitUntilFinished(-3000) \n      .play()\n  }\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function postEffects(template) {\n    const VFX_OPACITY = 1.0\n    const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Fireworks/Firework03_02_Regular_*_600x600.webm\"\n    new Sequence()\n      .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scaleToObject(2.0)\n        //.scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n    .play()\n  }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

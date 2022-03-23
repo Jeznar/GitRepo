@@ -18,6 +18,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Sleep](#sleep)
 * [Shield](#shield)
 * [Tasha's Caustic Brew](#tasha-caustic-brew)
+* [Unseen Servant](#unseen-servant)
 * [Witch Bolt](#witch-bolt) (ASE)
 
 [*Back to List of All Spells*](../README.md)
@@ -238,9 +239,19 @@ Creates an AOE effect that can apply a DoT effect to the targets.  Targets have 
 
 This implementation ignores the ability to remove the debuff from nearby friendlies, that will need to be handled manually.
 
-The macro underlying this was written by Crymic.  I've only added a bit of documention. 
+The macro underlying this was written by Crymic.  I've only added a bit of documentation. 
 
-![Caustic Brew](Tasha's Caustic Brew/Caustic_Brew_Vid.mov)
+![Caustic Brew](Tasha's_Caustic_Brew/Caustic_Brew_Vid.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Unseen Servant
+
+Summons an Unseen Servant from the **Actors Directory**, renaming it to indicate ownership and runs a little VFX.
+
+![Unseen_Servant.gif](Unseen_Servant/Unseen_Servant.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

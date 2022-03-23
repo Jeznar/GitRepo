@@ -3,7 +3,7 @@ const MACRONAME = "Find_Steed_Specific.js"
  * This macro implmenets Find Steed in a manor rquested by our friendly Paladin.  It does
  * the following.
  * 
- * 1. Parse the aItem.name to find teh name of the creature to be summoned.  The name needs
+ * 1. Parse the aItem.name to find the name of the creature to be summoned.  The name needs
  *    to be of the form: Find Steed: <Actor Name> - <Steed Name>.  It must contain one and 
  *    only one colon (:) and dash (-)
  * 2. Verify the Actor named in the aItem.name exists 
@@ -26,10 +26,6 @@ let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 jez.log(`Beginning ${MACRONAME}`);
-const MINION = "Magehand"
-const GAME_RND = game.combat ? game.combat.round : 0;
-const MINION_NAME = `${aToken.name}'s Magehand ${GAME_RND}`
-const VFX_LOOP = "modules/jb2a_patreon/Library/Generic/Portals/Portal_Bright_*_H_400x400.webm"
 doIt()
 async function doIt() {
     //-------------------------------------------------------------------------------------
@@ -94,6 +90,8 @@ async function doIt() {
     //--------------------------------------------------------------------------------------
     // 5. Post a completion message
     //
+    msg = `<b>${aToken.name}</b> has summoned <b>${specificSteedName}</b>`
+    postResults(msg);
     return;
 }
 /***************************************************************************************************
