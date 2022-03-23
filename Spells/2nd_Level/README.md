@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Crown of Madness](#crown-of-madness)
 * [Darkvision](#darkvision)
 * [Enlarge/Reduce](#enlargereduce)
+* [Find Steed](#find-steed)
 * [Flaming Sphere](#flaming-sphere)
 * [Hold Person](#hold-person)
 * [Invisibility](#invisibility)
@@ -86,6 +87,24 @@ Places a DAE effect on the beneficiary that provides dim light vision out to 60 
 This spell uses an OnUse ItemMacro to pop a dialog and ask if the target wants to make a save.  An acceptance of the effect or a failed save the effect is applied and the token size is adjusted in the scene.  When the spell expires, the size returns to normal -- or at least it should. ;-)
 
 ![enlarge-reduce](Enlarge_Reduce/Enlarge-Reduce.gif)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Find Steed
+
+This spell is actually set up to-find a specific steed constantly, the macro is named thus: **find_steed_specific.**. It does the following:
+
+1. Parse the aItem.name to find the name of the creature to be summoned.  The name needs to be of the form: Find Steed: <Actor Name> - <Steed Name>.  It must contain one and only one colon (:) and dash (-)
+2. Verify the Actor named in the aItem.name exists 
+3. Define warpgate updates (change token name), options (hide character sheet) and callbacks (VFX) 
+4. Fire off warpgate to place steed and run the VFX
+5. Post a completion message
+
+As implemented for my *Travelers in Barovia* game, this spell is named: **Find Steed: Warhorse - Rogue** and an actor named **Warhorse - Rogue** is configured in my **Actors Directory**.
+
+![Find_Steed.gif](Find_Steed_Specific/Find_Steed.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

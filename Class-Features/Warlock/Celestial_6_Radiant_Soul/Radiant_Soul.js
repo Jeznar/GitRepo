@@ -8,7 +8,7 @@ const MACRONAME = "Celestial_6th:Radiant_Soul.js"
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const ABILITY_NAME = "Radiant Soul"
 const FLAG = MACRO                      // Name of the DAE Flag  
-const MIN_LVL     
+const MIN_LVL = 6    
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
@@ -55,19 +55,18 @@ async function doBonusDamage() {
     let dmgType = "";
     jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);
     //---------------------------------------------------------------------------------------------
-    // Make sure the user is at least a level 6 warlock of subclass celestial
+    // Make sure the user is at least a level ${MIN_LVL} warlock of subclass celestial
     //
-    jez.log("aToken.actor.data.data.classes?.warlock?.levels",aToken.actor.data.data.classes?.warlock?.levels)
-    if (aToken.actor.data.data.classes?.warlock?.levels < 7) {
-        msg = `${aToken.name} is a level "${aToken.actor.data.data.classes?.warlock?.levels}" warlock, 
-        must be at least level 6 for ${ABILITY_NAME} to be used.`
+    if (aToken.actor.data.data.classes?.warlock?.levels < MIN_LVL) {
+        msg = `<b>${aToken.name}</b> is a level "${aToken.actor.data.data.classes?.warlock?.levels}" 
+        warlock, must be at least level ${MIN_LVL} for <b>${ABILITY_NAME}</b> to be used.`
         jez.postMessage({color: "dodgerblue", fSize: 14, icon: aToken.data.img, msg: msg, 
-                title: `${aToken.name} is not a Lvl 6+ Warlock`, token: aToken})
+                title: `${aToken.name} is not a Lvl ${MIN_LVL}+ Warlock`, token: aToken})
         return {}
     }
-    if (aToken.actor.data.data.classes?.warlock?.subclass !== "Celestial") {
-        msg = `${aToken.name} is subclass "${aToken.actor.data.data.classes?.warlock?.subclass}", 
-        must be "Celestial" for ${ABILITY_NAME} to be used.`
+    if (aToken.actor.data.data.classes?.warlock?.subclass.toLowerCase() !== "celestial") {
+        msg = `<b>${aToken.name}</b> is subclass "${aToken.actor.data.data.classes?.warlock?.subclass}", 
+        must be "Celestial" for <b>${ABILITY_NAME}</b> to be used.`
         jez.postMessage({color: "dodgerblue", fSize: 14, icon: aToken.data.img, msg: msg, 
                 title: `${aToken.name} is not a Celestial`, token: aToken})
         return {}
