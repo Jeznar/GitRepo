@@ -1,4 +1,4 @@
-const MACRONAME = "Wildfire-6th:Enhanced_Bond.js"
+const MACRONAME = "Celestial_6th:Radiant_Soul.js"
 /*****************************************************************************************
  * Wildfire Druid 6th Level Ability,  based very much on my rewrite of Hex, which 
  * borrowed heavily from Crymic's code
@@ -6,7 +6,9 @@ const MACRONAME = "Wildfire-6th:Enhanced_Bond.js"
  * 03/15/22 Creation of Macro
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
-const FLAG = MACRO                      // Name of the DAE Flag       
+const ABILITY_NAME = "Radiant Soul"
+const FLAG = MACRO                      // Name of the DAE Flag  
+const MIN_LVL     
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
@@ -14,17 +16,13 @@ let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
 let aItem;          // Active Item information, item invoking this macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
-else aActor = game.actors.get(LAST_ARG.actorId);
+    else aActor = game.actors.get(LAST_ARG.actorId);
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
-else aToken = game.actors.get(LAST_ARG.tokenId);
+    else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item;
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 
-const ITEM_NAME = "Hex - Move"                          // Base name of the helper item
-const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
-const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book
 //------------------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
@@ -32,10 +30,6 @@ const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor
 //------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-//if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
-//if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
 if (args[0]?.tag === "DamageBonus") return (doBonusDamage());    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
@@ -60,11 +54,23 @@ async function doBonusDamage() {
     const DIE_TYPE = "d8"
     let dmgType = "";
     jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);
-    //let rc = await familiarPresent()
-    //jez.log("Returned value from seach for familiar:", rc)
-    if (!await familiarPresent()) {
-        jez.log("Familiar is not present, sorry, no special effects")
-        return{};
+    //---------------------------------------------------------------------------------------------
+    // Make sure the user is at least a level 6 warlock of subclass celestial
+    //
+    jez.log("aToken.actor.data.data.classes?.warlock?.levels",aToken.actor.data.data.classes?.warlock?.levels)
+    if (aToken.actor.data.data.classes?.warlock?.levels < 7) {
+        msg = `${aToken.name} is a level "${aToken.actor.data.data.classes?.warlock?.levels}" warlock, 
+        must be at least level 6 for ${ABILITY_NAME} to be used.`
+        jez.postMessage({color: "dodgerblue", fSize: 14, icon: aToken.data.img, msg: msg, 
+                title: `${aToken.name} is not a Lvl 6+ Warlock`, token: aToken})
+        return {}
+    }
+    if (aToken.actor.data.data.classes?.warlock?.subclass !== "Celestial") {
+        msg = `${aToken.name} is subclass "${aToken.actor.data.data.classes?.warlock?.subclass}", 
+        must be "Celestial" for ${ABILITY_NAME} to be used.`
+        jez.postMessage({color: "dodgerblue", fSize: 14, icon: aToken.data.img, msg: msg, 
+                title: `${aToken.name} is not a Celestial`, token: aToken})
+        return {}
     }
     //---------------------------------------------------------------------------------------------
     // Make sure something was targeted (return a null function if not) and then point at the first 
@@ -74,62 +80,38 @@ async function doBonusDamage() {
     const tToken = canvas.tokens.get(args[0].targets[0].id); 
     jez.log("tToken", tToken)
     //---------------------------------------------------------------------------------------------
-    // If action type was "heal" return a proper healing function
+    // If action type wasn't a spell attack (msak or rsak) then return a null function
     //
-    if (aItem.data.actionType === "heal") {
-        runVFX("heal", tToken) 
-        jez.log("Healing detected", aItem.data.actionType)
-        dmgType = "healing"
-        return {
-            damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,
-            flavor: `(Enhanced Bond - heal)`,
-            damageList: args[0].damageList, itemCardId: args[0].itemCardId
-        };
-    }
+    let actionType = aItem.data.actionType
+    jez.log("actionType", actionType)
+    if (actionType==="rsak" || actionType==="msak" || actionType==="save" ) jez.log("continuing...")
+    else return {};
+    //if (!["sak"].some(actionType => (aItem.data.actionType || "").includes(actionType))) return {};
     //---------------------------------------------------------------------------------------------
-    // If action type wasn't an attack then return a null function
+    // If the attack didn't have a type of "fire" or "radiant" then return a null function, 
+    // otherwise send back a valid extra damage function.
     //
-    if (!["ak"].some(actionType => (aItem.data.actionType || "").includes(actionType))) return {};
-    //---------------------------------------------------------------------------------------------
-    // If the attack didn't have a type of "fire" then return a null function, otherwise send back 
-    // a valid extra damage function.
-    //
+    jez.log("Checking for fire or radiant danage")
     for(const damageLine of aItem.data.damage.parts) {
+        jez.log("Damage Line", damageLine )
         if (damageLine[1] === "fire") {
             dmgType = "fire"
             break;
         }
-    }
-    if (dmgType !== "fire") return {}
-    runVFX("fire", tToken) 
-    return {
-        damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,
-        flavor: `(Enhanced Bond - ${CONFIG.DND5E.damageTypes[dmgType]})`,
-        damageList: args[0].damageList, itemCardId: args[0].itemCardId
-    };
-}
-/***************************************************************************************************
- * Check to see is the familiar present?  return true if it is and has positive HP, otherwise false
- ***************************************************************************************************/
-async function familiarPresent() {
-    //return(true)
-    //----------------------------------------------------------------------------------------------
-    // Search for MINION in the current scene 
-    //
-    let i = 0;
-    const MINION = await jez.familiarNameGet(aToken.actor)
-    jez.log("MINION", MINION)
-    //jez.log('Familar name being searched for', MINION)
-    for (let critter of game.scenes.viewed.data.tokens) {
-        //jez.log(` Creature ${i++}`, critter.data.name);
-        //jez.log(`critter ${critter.name}`,critter)
-        if (critter.data.name === MINION) {
-            jez.log("heading on back from function familiarPresent() with TRUE")
-            if (critter._actor.data.data.attributes.hp.value > 0) return(true)
+        if (damageLine[1] === "radiant") {
+            dmgType = "radiant"
+            break;
         }
     }
-    jez.log(`Could not find active ${MINION} in the current scene, returning FALSE`)
-    return(false)
+    if (dmgType !== "fire" && dmgType !== "radiant") return {}
+    let chrMod = jez.getStatMod(aToken,"cha")
+    runVFX(dmgType, tToken) 
+    return {
+        //damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,
+        damageRoll: `${chrMod}[${dmgType}]`,
+        flavor: `(Radiant Soul - ${CONFIG.DND5E.damageTypes[dmgType]})`,
+        damageList: args[0].damageList, itemCardId: args[0].itemCardId
+    };
 }
 /***************************************************************************************************
  * Play the VFX for the fire effect, type is "heal" or "fire" and nothing else
@@ -137,10 +119,11 @@ async function familiarPresent() {
  async function runVFX(type, token5e) {
     let vfxEffect = ""
     switch (type) {
-        case "heal": vfxEffect = "jb2a.shield_themed.above.fire.03.orange"; break
+        case "radiant": vfxEffect = "jb2a.template_circle.out_pulse.02.burst.tealyellow"; break
         case "fire": vfxEffect = "jb2a.explosion.01.orange"; break
         default: return
     }
+    jez.log("vfxEffect",vfxEffect)
     await jez.wait(2000)
     new Sequence()
     .effect()

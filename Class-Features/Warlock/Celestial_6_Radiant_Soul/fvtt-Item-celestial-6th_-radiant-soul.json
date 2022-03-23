@@ -1,0 +1,165 @@
+{
+  "name": "Celestial 6th: Radiant Soul",
+  "type": "feat",
+  "img": "Icons_JGB/Classes/Warlock/Radiant_Soul.jpg",
+  "data": {
+    "description": {
+      "value": "<div>\n<div>\n<div aria-level=\"1\"><em>6th-level Celestial feature</em></div>\n</div>\n</div>\n<div>\n<p>Starting at 6th level, your link to the Celestial allows you to serve as a conduit for radiant energy. You have:</p>\n<ol>\n<li><strong>Resistance to radiant damage</strong>, and</li>\n<li>When you cast a spell that<strong> deals radiant or fire damage</strong>, you can <strong>add your Charisma modifier</strong> to one radiant or fire damage roll of that spell against one of its targets.</li>\n</ol>\n<hr />\n<p><strong>FoundryVTT:</strong> This feature will automagically add a die of damage to all Fire and Radiant damage spell attacks -- msak, rsak, and save actions that cause Fire or Radiant damage for a Warlock of level 6 or higher with a subclass name of Celestial (case insensitive).  </p>\n<p>It adds the extra die of damage to each damage set, which is wrong per RAW.  I think allowing this ability to work on AOE spells feels reasonable and it was easier for me to implement, so there it is.  The GM can fix the damage (or not) as they choose. It only runs its VFX on the first target, yea, I am being inconsistent.</p>\n</div>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "WkrstBuIV5g99Hnj",
+      "changes": [
+        {
+          "key": "flags.dnd5e.DamageBonusMacro",
+          "mode": 0,
+          "value": "ItemMacro.Celestial 6th: Radiant Soul",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.DR.radiant",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Classes/Warlock/Radiant_Soul.jpg",
+      "label": "Celestial 6th - Radiant Soul",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "#ffffff",
+      "selectedKey": [
+        "flags.dnd5e.DamageBonusMacro",
+        "flags.midi-qol.DR.radiant"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Celestial 6th: Radiant Soul",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Celestial_6th:Radiant_Soul.js\"\n/*****************************************************************************************\n * Wildfire Druid 6th Level Ability,  based very much on my rewrite of Hex, which \n * borrowed heavily from Crymic's code\n * \n * 03/15/22 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]   // Trim of the version number and extension\nconst ABILITY_NAME = \"Radiant Soul\"\nconst FLAG = MACRO                      // Name of the DAE Flag  \nconst MIN_LVL = 6    \njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\n    else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\n    else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item;\n    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n\n//------------------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\n//if ((args[0]?.tag === \"OnUse\") && !preCheck()) return;\n//------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"DamageBonus\") return (doBonusDamage());    // DAE Damage Bonus\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults() {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro BonusDamage\n ***************************************************************************************************/\nasync function doBonusDamage() {\n    const FUNCNAME = \"doBonusDamage()\";\n    const NUM_DICE = 1\n    const DIE_TYPE = \"d8\"\n    let dmgType = \"\";\n    jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);\n    //---------------------------------------------------------------------------------------------\n    // Make sure the user is at least a level ${MIN_LVL} warlock of subclass celestial\n    //\n    if (aToken.actor.data.data.classes?.warlock?.levels < MIN_LVL) {\n        msg = `<b>${aToken.name}</b> is a level \"${aToken.actor.data.data.classes?.warlock?.levels}\" \n        warlock, must be at least level ${MIN_LVL} for <b>${ABILITY_NAME}</b> to be used.`\n        jez.postMessage({color: \"dodgerblue\", fSize: 14, icon: aToken.data.img, msg: msg, \n                title: `${aToken.name} is not a Lvl ${MIN_LVL}+ Warlock`, token: aToken})\n        return {}\n    }\n    if (aToken.actor.data.data.classes?.warlock?.subclass.toLowerCase() !== \"celestial\") {\n        msg = `<b>${aToken.name}</b> is subclass \"${aToken.actor.data.data.classes?.warlock?.subclass}\", \n        must be \"Celestial\" for <b>${ABILITY_NAME}</b> to be used.`\n        jez.postMessage({color: \"dodgerblue\", fSize: 14, icon: aToken.data.img, msg: msg, \n                title: `${aToken.name} is not a Celestial`, token: aToken})\n        return {}\n    }\n    //---------------------------------------------------------------------------------------------\n    // Make sure something was targeted (return a null function if not) and then point at the first \n    // token.\n    //\n    if (args[0].targets.length === 0) return {}\n    const tToken = canvas.tokens.get(args[0].targets[0].id); \n    jez.log(\"tToken\", tToken)\n    //---------------------------------------------------------------------------------------------\n    // If action type wasn't a spell attack (msak or rsak) then return a null function\n    //\n    let actionType = aItem.data.actionType\n    jez.log(\"actionType\", actionType)\n    if (actionType===\"rsak\" || actionType===\"msak\" || actionType===\"save\" ) jez.log(\"continuing...\")\n    else return {};\n    //if (![\"sak\"].some(actionType => (aItem.data.actionType || \"\").includes(actionType))) return {};\n    //---------------------------------------------------------------------------------------------\n    // If the attack didn't have a type of \"fire\" or \"radiant\" then return a null function, \n    // otherwise send back a valid extra damage function.\n    //\n    jez.log(\"Checking for fire or radiant danage\")\n    for(const damageLine of aItem.data.damage.parts) {\n        jez.log(\"Damage Line\", damageLine )\n        if (damageLine[1] === \"fire\") {\n            dmgType = \"fire\"\n            break;\n        }\n        if (damageLine[1] === \"radiant\") {\n            dmgType = \"radiant\"\n            break;\n        }\n    }\n    if (dmgType !== \"fire\" && dmgType !== \"radiant\") return {}\n    let chrMod = jez.getStatMod(aToken,\"cha\")\n    runVFX(dmgType, tToken) \n    return {\n        //damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,\n        damageRoll: `${chrMod}[${dmgType}]`,\n        flavor: `(Radiant Soul - ${CONFIG.DND5E.damageTypes[dmgType]})`,\n        damageList: args[0].damageList, itemCardId: args[0].itemCardId\n    };\n}\n/***************************************************************************************************\n * Play the VFX for the fire effect, type is \"heal\" or \"fire\" and nothing else\n ***************************************************************************************************/\n async function runVFX(type, token5e) {\n    let vfxEffect = \"\"\n    switch (type) {\n        case \"radiant\": vfxEffect = \"jb2a.template_circle.out_pulse.02.burst.tealyellow\"; break\n        case \"fire\": vfxEffect = \"jb2a.explosion.01.orange\"; break\n        default: return\n    }\n    jez.log(\"vfxEffect\",vfxEffect)\n    await jez.wait(2000)\n    new Sequence()\n    .effect()\n        .file(vfxEffect)\n        .atLocation(token5e) \n        .scale(0.3)\n        .opacity(1)\n    .play();\n }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.LCJll3wjV7AAesoA"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

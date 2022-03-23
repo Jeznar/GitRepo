@@ -61,6 +61,7 @@ This is the standard [Paladin class](https://www.dndbeyond.com/classes/paladin).
 This is the standard [Warlock class](https://www.dndbeyond.com/classes/warlock).  I will be concerned with Celestial Warlock abilities, because that is what my game is featuring.
 
 * [Healing Light](Warlock#healing-light)
+* [Radiant Soul](Warlock#radiant-soul)
 
 [*Back to Classes with Features list*](#classes-with-features)
 
