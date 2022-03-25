@@ -229,6 +229,22 @@ class jez {
         return (true);
     }
     /***************************************************************************************************
+     * getDistance in the wierd D&D 5e alternate world where diagonals are 5-10-5 distances
+     * 
+     * Logic taken from Vance Cole's macro: https://github.com/VanceCole/macros/blob/master/distance.js
+     *
+     * Return distance between two placeables
+     ***************************************************************************************************/
+    static getDistance5e(one, two) {
+        let gs = canvas.grid.size;
+        let d1 = Math.abs((one.x - two.x) / gs);
+        let d2 = Math.abs((one.y - two.y) / gs);
+        let maxDim = Math.max(d1, d2);
+        let minDim = Math.min(d1, d2);
+        let dist = (maxDim + Math.floor(minDim / 2)) * canvas.scene.data.gridDistance;
+        return dist;
+    }
+    /***************************************************************************************************
      * tokensInRange
      * 
      * Function that returns an array of the tokens that are within a specified range -or- null if no

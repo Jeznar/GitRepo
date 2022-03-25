@@ -27,6 +27,7 @@ The functions currently included in this module are:
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
+* **[jez.getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[jez.getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
 * **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
 * **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
@@ -84,6 +85,16 @@ jez.addMessage(chatMessage, {color:"crimson", fSize:15, msg:msg, tag:"other" })
 The above, will generate a message such as the following:
 
 ![addMessage_example](images/addMessage_example.png)
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getDistance5e(one, two)
+
+This function returns the distance between two placeable entities (e.g. tokens) in the D&D 5E alternate rule set where diagonal movement is charged as 5-10-5-10-5 feet of movement.  The returned value will be evenly divisible by 5.
+
+I snarfed the logic from Vance Cole's lovely Distance macro, which can be found at: [macros/distance.js](https://github.com/VanceCole/macros/blob/master/distance.js) 
 
 [*Back to Functions list*](#functions-in-this-module)
 
