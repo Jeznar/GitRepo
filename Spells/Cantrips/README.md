@@ -12,6 +12,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Mage Hand](#mage-hand)
 * [Prestidigitation](#prestidigitation)
 * [Shocking Grasp](#shocking-grasp)
+* [Thorn Whip](#thorn-whip)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -119,6 +120,16 @@ This macro simply plays a VFX of a D12 over the casting token and spits out some
 Implements the Cantrip using a VFX from Automated Animations and an effect from DAE.  The no reactions effect was added to CUB's condition lab.
 
 ![Shocking_Grasp.gif](Shocking_Grasp/Shocking_Grasp.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Thorn Whip
+
+Implements the Cantrip including a VFX from Automated Animations and an automated *pull* of target token using a *jez.moveToken(aToken, tToken, -2, 2500)* library call. 
+
+![Thorn_Whip.gif](Thorn_Whip/Thorn_Whip.gif)
 
 [*Back to Cantrips List*](#cantrips)
 

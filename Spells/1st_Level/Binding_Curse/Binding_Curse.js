@@ -100,17 +100,10 @@ return;
     // https://www.w3schools.com/tags/ref_colornames.asp
     if (args[0].saves.length !== 0) {   // Target must have saved (This should never occur)
         jez.log(`${tToken.name} saved (This should never occur)`)
-        msg =  `<p style="color:Indigo;font-size:14px;">
-                ${tToken.name} made its save and is unaffected by ${aItem.name}.
-                </p>`
+        msg =  `<b>${tToken.name}</b> made its save.`
     } else {                            // Target failed save
         jez.log(`${tToken.name} failed`)
-        msg = `<b>${tToken.name}</b> failed its save and is now affected by ${aItem.name}.</p>
-        If <b>${tToken.name}</b> attempts to move from its anchor, it must succeed on a <b>DC${SAVE_DC} 
-        WIS</b> saving throw, on <u>failure it may move no more than 5 feet this turn</u>.</p>
-        If <b>${tToken.name}</b> starts its turn more than 10 feet from the anchor, it must make 
-        <b>DC${SAVE_DC} STR</b> saving throw or be dragged 5 feet toward the binding point and unable
-        to move further.</p>`
+        msg = `<b>${tToken.name}</b> failed its save.`
     }
     postResults(msg);
     jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);

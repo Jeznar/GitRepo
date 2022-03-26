@@ -1,0 +1,238 @@
+{
+  "name": "Thorn Whip",
+  "type": "spell",
+  "img": "icons/magic/nature/root-vine-thorned-coil-green.webp",
+  "data": {
+    "description": {
+      "value": "<p>You create a long, vine-like whip covered in thorns that lashes out at your command toward a creature in range. Make a melee spell attack against the target. If the attack hits, the creature takes 1d6 piercing damage, and if the creature is Large or smaller, you pull the creature up to 10 feet closer to you.</p>\n<p>The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).</p>",
+      "chat": "<p>You create a long, vine-like whip covered in thorns that lashes out at your command toward a creature in range. Make a melee spell attack against the target. If the attack hits, the creature takes 1d6 piercing damage, and if the creature is Large or smaller, you pull the creature up to 10 feet closer to you.</p>\n<p>The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).</p>",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook pg 282",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6[piercing]",
+          "piercing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "trs",
+    "components": {
+      "value": "the stem of a plant with thorns",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "the stem of a plant with thorns",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "cantrip",
+      "formula": "1d6"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 138847,
+      "definitionId": 2309,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 2,
+          "pageNumber": 282,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Control"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_68b6mer7s0n"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.UbjThS8UoS9ET6Ft"
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "ItemMacro"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Thorn Whip",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Thorn_Whip.0.3\"\n/*****************************************************************************************\n * Perform the Thorn_whip action including automated movement of the target token.\n * \n * Spell Description: You create a long, vine-like whip covered in thorns that lashes out \n *   at your command toward a creature in range. Make a melee spell attack against the \n *   target. If the attack hits, the creature takes 1d6 piercing damage, and if the  \n *   creature is Large or smaller, you pull the creature up to 10 feet closer to you.\n * \n *   The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6),\n *    and 17th level (4d6).\n * \n * 12/11/21 0.1 Creation of Macro\n * 01/10/22 0.2 Working on automating the \"pull\" action if this spell\n * 03/26/22 0.3 Moving into GitRepo and doing some polishing\n *****************************************************************************************/\n const MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\n const LAST_ARG = args[args.length - 1];\n let aToken;         // Acting token, token for creature that invoked the macro\n if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n    else aToken = game.actors.get(LAST_ARG.tokenId);\n let msg = \"\";\n let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n jez.log(`************ Executing ${MACRONAME} ****************`)\n for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n // ---------------------------------------------------------------------------------------\n // Make sure exactly one target.\n //\n if (args[0].targets.length !== 1) {\n     msg = `Funny business going on, one and only one target is allowed.  \n            Tried to hit ${args[0].targets.length} targets.`;\n     await postResults(msg);\n     jez.log(` ${msg}`, args[0].saves);\n     jez.log(`************ Ending ${MACRONAME} ****************`)\n     return;\n }\n // ---------------------------------------------------------------------------------------\n // If no target was hit, post result and terminate \n //\n if (args[0].hitTargets.length === 0) {\n     msg = `The attack missed, no additional effects.`;\n     await postResults(msg);\n         jez.log(` ${msg}`, args[0].saves); \n         jez.log(`************ Ending ${MACRONAME} ****************`)\n     return;\n }\n // ---------------------------------------------------------------------------------------\n // Create object to convert size string to values\n //\n class CreatureSizes {\n     constructor(size) {\n         this.SizeString = size;\n         switch (size) {\n             case \"tiny\": this.SizeInt = 1; break;\n             case \"sm\": this.SizeInt = 2; break;\n             case \"med\": this.SizeInt = 3; break;\n             case \"lg\": this.SizeInt = 4; break;\n             case \"huge\": this.SizeInt = 5; break;\n             case \"grg\": this.SizeInt = 6; break;\n             default: this.SizeInt = 0;  // Error Condition\n         }\n     }\n }\n // ---------------------------------------------------------------------------------------\n // Obtain target size.  Must be Large or smaller\n //\n let target = args[0].targets[0]\n let targetSizeObject = new CreatureSizes(target._actor.data.data.traits.size);\n let targetSize = targetSizeObject.SizeInt;  // Returns 0 on failure to match size string\n if (!targetSize) {\n     let message = `Size of ${target.data.name} failed to parse. End ${macroName}`;\n     jez.log(message);\n     ui.notifications.error(message);\n     await postResults(msg);\n     return;\n }\n // ---------------------------------------------------------------------------------------\n // Check target size.  Must be Large or smaller\n //\n if (targetSize > 4) {\n     msg = `<b>${target.data.name}</b> is too big (${targetSizeString}) to be pulled by this spell.`\n     await postResults(msg);\n     return;\n }\n jez.moveToken(aToken, tToken, -2, 2500)\n // ---------------------------------------------------------------------------------------\n // Post message with success\n //\n msg = `<b>${token.name}</b> pulls <b>${target.data.name}</b> up to 10 feet closer.`\n await postResults(msg);\n  jez.log(`************ Terminating ${MACRONAME} ****************`)\n return;\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\nasync function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "autoanimations": {
+      "killAnim": false,
+      "below": true,
+      "override": true,
+      "targetToken": {
+        "enable": false
+      },
+      "sourceToken": {
+        "enable": false
+      },
+      "allSounds": {
+        "item": {
+          "enableAudio": false
+        }
+      },
+      "autoOverride": {
+        "enable": false
+      },
+      "version": 3,
+      "animType": "range",
+      "animation": "witchbolt",
+      "color": "blue",
+      "explosions": {
+        "enable": false
+      },
+      "options": {
+        "rangeType": "spell",
+        "variant": "01",
+        "repeat": 1,
+        "delay": 250,
+        "ammo": false,
+        "enableCustom": true,
+        "customPath": "jb2a.witch_bolt.green",
+        "onlyX": false
+      },
+      "audio": {
+        "a01": {
+          "enable": false,
+          "file": "",
+          "delay": 0,
+          "volume": 0.25
+        },
+        "e01": {
+          "enable": false,
+          "file": "",
+          "delay": 0,
+          "volume": 0.25
+        }
+      },
+      "macro": {
+        "enable": false
+      },
+      "animLevel": false,
+      "preview": false,
+      "levels3d": {
+        "type": ""
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
