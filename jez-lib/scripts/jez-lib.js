@@ -625,6 +625,29 @@ class jez {
         return (actor5e.data.data.attributes.spellcasting)
     }
     /***************************************************************************************************
+     * Return spell save DC string based on input: Token5e, TokenID, Actor5e
+     ***************************************************************************************************/
+         static getSpellDC(subject) {
+            let actor5e = null
+            if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
+                if (subject.constructor.name === "Token5e") actor5e = subject.actor
+                else if (subject.constructor.name === "Actor5e") actor5e = subject
+                else {
+                    let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
+                    ui.notifications.error(msg)
+                    console.log(msg)
+                    return (false)
+                }
+            } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
+            else {
+                let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
+                ui.notifications.error(msg)
+                console.log(msg)
+                return (false)
+            }
+            return (actor5e.data.data.attributes.spelldc)
+        }
+    /***************************************************************************************************
     * Return casting stat mod integer based on input: Token5e, TokenID, Actor5e and stat string
     ***************************************************************************************************/
     static getStatMod(subject, statParm) {
@@ -781,38 +804,196 @@ class jez {
         opacity = opacity || 1.0                    // If opacity not provided use 1.0
         //jez.log("runRuneVFX(target, school, color, scale, opacity)","target",target,"school",school,"scale",scale,"opacity",opacity)
         if (Array.isArray(target)) {                // If function called with array, do recursive calls
-            for (let i=0; i<target.length; i++) jez.runRuneVFX(target[i],school,color,scale,opacity);
+            for (let i = 0; i < target.length; i++) jez.runRuneVFX(target[i], school, color, scale, opacity);
             return (true)                           // Stop this invocation after recursive calls
         }
         //-----------------------------------------------------------------------------------------------
         // Build names of video files needed
         // 
         const INTRO = `jb2a.magic_signs.rune.${school}.intro.${color}`
-        const BODY  = `jb2a.magic_signs.rune.${school}.loop.${color}`
+        const BODY = `jb2a.magic_signs.rune.${school}.loop.${color}`
         const OUTRO = `jb2a.magic_signs.rune.${school}.outro.${color}`
         //-----------------------------------------------------------------------------------------------
         // Play the VFX
         // 
-            new Sequence()
+        new Sequence()
             .effect()
-                .file(INTRO)
-                .atLocation(target) 
-                .scaleToObject(scale)
-                .opacity(opacity)
-                .waitUntilFinished(-500) 
+            .file(INTRO)
+            .atLocation(target)
+            .scaleToObject(scale)
+            .opacity(opacity)
+            .waitUntilFinished(-500)
             .effect()
-                .file(BODY)
-                .atLocation(target)
-                .scaleToObject(scale)
-                .opacity(opacity)
-                .duration(3000)
-                .waitUntilFinished(-500) 
+            .file(BODY)
+            .atLocation(target)
+            .scaleToObject(scale)
+            .opacity(opacity)
+            .duration(3000)
+            .waitUntilFinished(-500)
             .effect()
-                .file(OUTRO)
-                .atLocation(target)
-                .scaleToObject(scale)
-                .opacity(opacity)
+            .file(OUTRO)
+            .atLocation(target)
+            .scaleToObject(scale)
+            .opacity(opacity)
             .play();
+    }
+
+    /***************************************************************************************************
+     * Move the movingToken up to the number of spaces specified as move away from the amchorToken if 
+     * move is a positive value, toward if negative, after a delay in milliseconds
+     ***************************************************************************************************/
+    static async moveToken(anchorToken, movingToken, move, delay) {
+        const FUNCNAME = "moveToken(anchorToken, movingToken, move)";
+        let moveArray = [-3, -2, -1, 0, 1, 2, 3]
+        const GRID_UNIT = canvas.scene.data.grid;
+        let distBetweenTokens = jez.getDistance5e(anchorToken, movingToken);
+        delay = delay || 10
+        //----------------------------------------------------------------------------------------------
+        // Store the X & Y coordinates of the two tokens
+        // 
+        const X = movingToken.center.x;                                 // Nab the X coord for target token
+        const Y = movingToken.center.y;                                 // Nab the Y coord for target token
+        //----------------------------------------------------------------------------------------------
+        // Adjust move distance if necessary because tokens are already too close.
+        // 
+        if (distBetweenTokens <= 5) return (true)                   // Don't do anything if adjacent
+        if (move === -3 && distBetweenTokens < 20) move = -2        // 4 spaces apart, can move 3
+        if (move === -2 && distBetweenTokens < 15) move = -1        // 3 spaces apart, can move 2
+        if (move === -1 && distBetweenTokens < 10) move = 0        // 2 spaces apart, can move 1
+        if (move === 0) return (true)                               // Move = 0 is the trivial case
+        //----------------------------------------------------------------------------------------------
+        // Validity check on move
+        // 
+        if (!moveArray.includes(move)) {
+            msg = `Move distance requested, ${move} not supported by ${FUNCNAME}`;
+            ui.notifications.error(msg);
+            return (false);
         }
+        let squareCorner = moveSpaces(move)
+        await jez.wait(delay)
+        await movingToken.document.update(squareCorner)
+        return (true)
+        //----------------------------------------------------------------------------------------------
+        // Count of spaces to move 1, 2 or 3
+        //----------------------------------------------------------------------------------------------
+        function moveSpaces(count) {
+            let dist = [];
+            let minDist = 99999999999;
+            let maxDist = 0;
+            let minIdx = 0;
+            let maxIdx = 0;
+            let destSqrArray = buildSquareArray(Math.abs(count));
+
+            for (let i = 1; i < destSqrArray.length; i++) {
+                dist[i] = canvas.grid.measureDistance(destSqrArray[i], anchorToken.center);
+                if (dist[i] < minDist) { minDist = dist[i]; minIdx = i; }
+                if (dist[i] > maxDist) { maxDist = dist[i]; maxIdx = i; }
+            }
+            let index = minIdx                 // Assume pull, pick closest space
+            if (count > 0) index = maxIdx       // Change to furthest if pushing
+            let fudge = GRID_UNIT / 2;
+            if (movingToken.data.width > 1)
+                fudge = GRID_UNIT / 2 * movingToken.data.width;
+            let squareCorner = {};
+            squareCorner.x = destSqrArray[index].x - fudge;
+            squareCorner.y = destSqrArray[index].y - fudge;
+            return squareCorner;
+        }
+        function buildSquareArray(size) {
+            let destSqrArray = [];     // destination Square array
+            if (size === 0) return destSqrArray;
+            //----------------------------------------------------------------------------------------------
+            // Size = 1 is a one space move where 8 surrounding spaces will be considered.
+            // The spaces considered are as shown in this "nifty" character graphics "drawing." 
+            // 
+            //       +---+---+---+
+            //       | 1 | 2 | 3 |
+            //       +---+---+---+
+            //       | 4 | 5 | 6 |
+            //       +---+---+---+
+            //       | 7 | 8 | 9 |
+            //       +---+---+---+
+            //----------------------------------------------------------------------------------------------
+            if (size === 1) {
+                for (let i = 1; i < 10; i++) destSqrArray[i] = {};
+                destSqrArray[1].y = destSqrArray[2].y = destSqrArray[3].y = Y - GRID_UNIT;
+                destSqrArray[4].y = destSqrArray[5].y = destSqrArray[6].y = Y;
+                destSqrArray[7].y = destSqrArray[8].y = destSqrArray[9].y = Y + GRID_UNIT;
+                destSqrArray[1].x = destSqrArray[4].x = destSqrArray[7].x = X - GRID_UNIT;
+                destSqrArray[2].x = destSqrArray[5].x = destSqrArray[8].x = X;
+                destSqrArray[3].x = destSqrArray[6].x = destSqrArray[9].x = X + GRID_UNIT;
+                return destSqrArray;
+            }
+            //----------------------------------------------------------------------------------------------
+            // Sie = 2 is a two space move where 12 spaces may be solution.
+            // The spaces considered are as shown in this "nifty" character graphics "drawing."
+            //
+            //            +----+----+----+
+            //            |  1 |  2 |  3 |    
+            //       +----+----+----+----+----+
+            //       | 12 |    |    |    |  4 | 
+            //       +----+----+----+----+----+
+            //       | 11 |    | xx |    |  5 |
+            //       +----+----+----+----+----+
+            //       | 10 |    |    |    |  6 |
+            //       +----+----+----+----+----+
+            //            |  9 |  8 |  7 |  
+            //            +----+----+----+
+            //----------------------------------------------------------------------------------------------
+            if (size === 2) {
+                for (let i = 1; i <= 12; i++) destSqrArray[i] = {};
+                destSqrArray[1].y = destSqrArray[2].y = destSqrArray[3].y = Y - 2 * GRID_UNIT;
+                destSqrArray[4].y = destSqrArray[12].y = Y - GRID_UNIT;
+                destSqrArray[5].y = destSqrArray[11].y = Y;
+                destSqrArray[6].y = destSqrArray[10].y = Y + GRID_UNIT;
+                destSqrArray[7].y = destSqrArray[8].y = destSqrArray[9].y = Y + 2 * GRID_UNIT;
+                destSqrArray[10].x = destSqrArray[11].x = destSqrArray[12].x = X - 2 * GRID_UNIT;
+                destSqrArray[1].x = destSqrArray[9].x = X - GRID_UNIT;
+                destSqrArray[2].x = destSqrArray[8].x = X;
+                destSqrArray[3].x = destSqrArray[7].x = X + GRID_UNIT;
+                destSqrArray[4].x = destSqrArray[5].x = destSqrArray[6].x = X + 2 * GRID_UNIT;
+                return destSqrArray;
+            }
+            //----------------------------------------------------------------------------------------------
+            // Sie = 3 is a three space move where 16 spaces may be the solution.
+            // The spaces considered are as shown in this "nifty" character graphics "drawing."
+            // 
+            //                 +----+----+----+
+            //                 |  1 |  2 |  3 | 
+            //            +----+----+----+----+----+
+            //            |  4 |    |    |    |  5 | 
+            //       +----+----+----+----+----+----+----+
+            //       |  6 |    |    |    |    |    |  7 | 
+            //       +----+----+----+----+----+----+----+
+            //       |  8 |    |    | XX |    |    |  9 | 
+            //       +----+----+----+----+----+----+----+
+            //       | 10 |    |    |    |    |    | 11 | 
+            //       +----+----+----+----+----+----+----+
+            //            | 12 |    |    |    | 13 |    
+            //            +----+----+----+----+----+
+            //                 | 14 | 15 | 16 |   
+            //                 +----+----+----+
+            //----------------------------------------------------------------------------------------------
+            if (size === 3) {
+                for (let i = 1; i <= 16; i++) destSqrArray[i] = {};
+                destSqrArray[1].y = destSqrArray[2].y = destSqrArray[3].y = Y - 3 * GRID_UNIT;
+                destSqrArray[4].y = destSqrArray[5].y = Y - 2 * GRID_UNIT;
+                destSqrArray[6].y = destSqrArray[7].y = Y - 1 * GRID_UNIT;
+                destSqrArray[8].y = destSqrArray[9].y = Y - 0 * GRID_UNIT;
+                destSqrArray[10].y = destSqrArray[11].y = Y + 1 * GRID_UNIT;
+                destSqrArray[12].y = destSqrArray[13].y = Y + 2 * GRID_UNIT;
+                destSqrArray[14].y = destSqrArray[15].y = destSqrArray[16].y = Y + 3 * GRID_UNIT;
+
+                destSqrArray[6].x = destSqrArray[8].x = destSqrArray[10].x = X - 3 * GRID_UNIT;
+                destSqrArray[4].x = destSqrArray[12].x = X - 2 * GRID_UNIT;
+                destSqrArray[1].x = destSqrArray[14].x = X - 1 * GRID_UNIT;
+                destSqrArray[2].x = destSqrArray[15].x = X - 0 * GRID_UNIT;
+                destSqrArray[3].x = destSqrArray[16].x = X + 1 * GRID_UNIT;
+                destSqrArray[5].x = destSqrArray[13].x = X + 2 * GRID_UNIT;
+                destSqrArray[7].x = destSqrArray[9].x = destSqrArray[11].x = X + 3 * GRID_UNIT;
+                return destSqrArray;
+            }
+        }
+    }
 } // END OF class jez
 Object.freeze(jez);

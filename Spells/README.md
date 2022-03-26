@@ -34,6 +34,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [1st Level Spells](1st_Level)
 
+* [Binding Curse](1st_Level#binding-curse)
 * [Bless](1st_Level#bless)
 * [Detect Magic](1st_Level#detect-magic)
 * [Dissonant Whispers](1st_Level#dissonant-whispers)

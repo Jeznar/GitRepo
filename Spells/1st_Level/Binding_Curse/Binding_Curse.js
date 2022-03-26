@@ -1,232 +1,350 @@
 const MACRONAME = "Binding_Curse.0.1"
-console.log(MACRONAME)
+jez.log(MACRONAME)
 /*****************************************************************************************
  * Binding Curse.  Post a simple message to the chat card describing the effect
  * 
- * Description: You bind a creature to a point within 5 feet of it, causing a glowing 
+ * Description: You bind a creature to a point within 5 feet of it (1), causing a glowing 
  *   chains of light to connect it to that point.
  * 
- *   For the duration of the spell, if the creature attempts to move away from that point, 
- *   the must make a Wisdom saving throw, or be unable to move more than 5 feet away from 
- *   from that point until the start of their next turn.
+ *   For the duration of the spell, if the creature attempts to move away from the anchor, 
+ *   it must make a Wisdom saving throw, or be unable to move more than 5 feet away from 
+ *   from the anchor until the start of their next turn.
  * 
  *   If a creature starts its turn more than 10 feet from the binding point, they must make 
- *   a Strength saving throw are dragged 5 feet toward the binding point.
+ *   a Strength saving throw or are dragged 5 feet toward the binding point.
  * 
  * 01/11/22 0.1 Creation of Macro
+ * 03/24/22 0.2 Update to include these features:
+ *              1. Place Anchor Icon on scene, remove at spell completion
+ *              2. Connect Anchor Icon to afflicted token at beginning of afflicted token's turns
+ *              3. Auto-Perform Save if too far away
+ *              4. Pull token back one square on failed STR save, if more than 10 feet 
+ *                 from anchor.
+ *              5. Auto-Perform save on afflicted token move
  *****************************************************************************************/
-const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-log("---------------------------------------------------------------------------",
-    "Starting", `${MACRONAME}`);
-for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+jez.log(`-------------------Starting ${MACRONAME}----------------------------------`)
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const lastArg = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
 let aItem;          // Active Item information, item invoking this macro
-if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
-if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
+if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; 
+    else aActor = game.actors.get(lastArg.actorId);
+if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); 
+    else aToken = game.actors.get(lastArg.tokenId);
+if (args[0]?.item) aItem = args[0]?.item; 
+    else aItem = lastArg.efData?.flags?.dae?.itemData;
 let SAVE_DC = aItem.data.save.dc;
-let SAVE_ABILITY = aItem.data.save.ability
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
-log("------- Global Values Set -------",
-    `Active Token (aToken) ${aToken?.name}`, aToken,
-    `Active Actor (aActor) ${aActor?.name}`, aActor,
-    `Active Item (aItem) ${aItem?.name}`, aItem)
 let msg = "";
-let errorMsg = "";
-const VFX_NAME = `${MACRO}-${aToken.id}`
-const VFX_INTRO = "modules/jb2a_patreon/Library/Generic/Magic_Signs/EnchantmentCircleIntro_02_Regular_Blue_800x800.webm"
-const VFX_LOOP = "modules/jb2a_patreon/Library/Generic/Magic_Signs/EnchantmentCircleLoop_02_Regular_Blue_800x800.webm";
-const VFX_OUTRO = "modules/jb2a_patreon/Library/Generic/Magic_Signs/EnchantmentCircleOutro_02_Regular_Blue_800x800.webm";
-const VFX_OPACITY = 0.9;
-const VFX_SCALE = 0.25;
-
-//----------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-if (!preCheck()) {
-    console.log(errorMsg)
-    ui.notifications.error(errorMsg)
-    return;
-}
-
+const ANCHOR_ORIG_NAME = "%Anchor%"
+const EFFECT = "Binding Curse"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
-
-log("---------------------------------------------------------------------------",
-    "Finishing", MACRONAME);
+if (args[0]?.tag === "OnUse") doOnUse();          // Midi ItemMacro On Use
+if (args[0] === "off") await doOff();             // DAE removal
+if (args[0] === "each") doEach();			      // DAE removal
+jez.log(`-------------------Finishing ${MACRONAME}----------------------------------`);
 return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
- ***************************************************************************************************/
-function preCheck() {
-    // Check anything important...
-    if (!oneTarget()) return(false)
-    log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
-    return (true)
-}
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    let tActor = tToken?.actor;
-    log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`,
-    `First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken,
-    `First Targeted Actor (tActor) ${tActor?.name}`, tActor);
-
-    log(`save ${args[0].saves.length}`, args[0].saves) 
-    log(`failed save ${args[0].failedSaves.length}`, args[0].failedSaves)
+    jez.log(`---------Starting ${MACRONAME} ${FUNCNAME}----------------------`)
+    //--------------------------------------------------------------------------------------
+    // Spawn in the anchor, catch its token.id, exit on failureto spawn
+    //
+    const ANCHOR_ID = await spawnAnchor(tToken, `${tToken.name}'s Anchor`)
+    if (!ANCHOR_ID) {
+        msg = `Anchor could not be spawned.   ${ANCHOR_ORIG_NAME} must be available in <b>Actors 
+        Directory</b>.<br><br>
+        Can not complete the ${aItem.name} action.`;
+        postResults(msg);
+        return (false);
+    }
+    //--------------------------------------------------------------------------------------
+    // Create the Binding_Curse effect on the target Token.
+    //
+    const GAME_RND = game.combat ? game.combat.round : 0;
+    const SPELL_DC = jez.getSpellDC(aToken)
+    jez.log("SPELL_DC",SPELL_DC)
+    let effectData = [{
+        label: EFFECT,
+        icon: aItem.img,
+        origin: aToken.uuid,
+        disabled: false,
+        flags: { dae: { itemData: aItem, macroRepeat: "startEveryTurn", token: tToken.uuid, stackable: false } },
+        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
+        changes: [
+            { key: `macro.itemMacro`, mode: jez.CUSTOM, 
+              value: `${aToken.id} ${ANCHOR_ID} ${SPELL_DC}`, priority: 20 }
+        ]
+    }];
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: effectData });
+    //--------------------------------------------------------------------------------------
+    // Modify the concentrating effect to remove the newly created effect on termination
+    //
+    modConcentratingEffect(aToken, tToken)
+    //--------------------------------------------------------------------------------------
+    // 
+    //
+    jez.log(`save ${args[0].saves.length}`, args[0].saves) 
+    jez.log(`failed save ${args[0].failedSaves.length}`, args[0].failedSaves)
     // https://www.w3schools.com/tags/ref_colornames.asp
     if (args[0].saves.length !== 0) {   // Target must have saved (This should never occur)
-        log(`${tToken.name} saved (This should never occur)`)
+        jez.log(`${tToken.name} saved (This should never occur)`)
         msg =  `<p style="color:Indigo;font-size:14px;">
                 ${tToken.name} made its save and is unaffected by ${aItem.name}.
                 </p>`
     } else {                            // Target failed save
-        log(`${tToken.name} failed`)
-        msg = `<p style="color:DarkViolet;font-size:14px;">
-        <b>${tToken.name}</b> failed its save and is now affected by ${aItem.name}.</p>
-        <p style="color:DarkViolet;font-size:14px;">
+        jez.log(`${tToken.name} failed`)
+        msg = `<b>${tToken.name}</b> failed its save and is now affected by ${aItem.name}.</p>
         If <b>${tToken.name}</b> attempts to move from its anchor, it must succeed on a <b>DC${SAVE_DC} 
         WIS</b> saving throw, on <u>failure it may move no more than 5 feet this turn</u>.</p>
-        <p style="color:DarkViolet;font-size:14px;">
         If <b>${tToken.name}</b> starts its turn more than 10 feet from the anchor, it must make 
         <b>DC${SAVE_DC} STR</b> saving throw or be dragged 5 feet toward the binding point and unable
         to move further.</p>`
     }
     postResults(msg);
-    log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
-
-/************************************************************************
- * Verify exactly one target selected, boolean return
-*************************************************************************/
-function oneTarget() {
-    if (!game.user.targets) {
-        errorMsg = `Targeted nothing, must target single token to be acted upon`;
-        log(errorMsg);
-        return (false);
-    }
-    if (game.user.targets.ids.length != 1) {
-        errorMsg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;
-        log(errorMsg);
-        return (false);
-    }
-    log(`Targeting one target, a good thing`);
-    return (true);
-}
-
 /***************************************************************************************
- * Perform the steps that runs when this macro is executed by DAE to add to target
- ***************************************************************************************/
- async function doOn() {
-     const FUNCNAME = "doOn()";
-     log("--------------On---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-     for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-
-
-    new Sequence()
-    .effect()
-        .file(VFX_INTRO)
-        .attachTo(aToken)
-        .scale(VFX_SCALE)
-        .opacity(VFX_OPACITY)           
-        .waitUntilFinished(-500) // Negative wait time (ms) clips the effect to avoid fadeout
-    .effect()
-        .file(VFX_LOOP)
-        .attachTo(aToken)
-        .scale(VFX_SCALE)
-        .opacity(VFX_OPACITY/2)  
-        .persist()
-        .name(VFX_NAME)         // Give the effect a uniqueish name
-        .fadeIn(1000)            // Fade in for specified time in milliseconds
-        .fadeOut(1000)           // Fade out for specified time in milliseconds
-        .extraEndDuration(800)  // Time padding on exit to connect to Outro effect
-    .play()
-
-    log("--------------On---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return;
-}
-
- /***************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
  ***************************************************************************************/
   async function doOff() {
     const FUNCNAME = "doOff()";
-    log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-
-    log("aToken", aToken)
-    log("aToken._object", aToken._object)
-    await Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken._object });
-
-    new Sequence()
-    .effect()
-        .file(VFX_OUTRO)
-        .scale(VFX_SCALE)
-        .opacity(VFX_OPACITY)  
-        .attachTo(aToken)
-    .play()
-
-    log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
+    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+    //--------------------------------------------------------------------------------------
+    // Delete the existing anchor
+    //
+    let sceneId = game.scenes.viewed.id
+    let casterId = args[1]
+    let anchorId = args[2]
+    warpgate.dismiss(anchorId, sceneId)
+    jez.log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
+/***************************************************************************************************
+ * Perform the code that runs when this macro is invoked each round by DAE
+ * 
+ *   If a creature starts its turn more than 10 feet from the binding point, they must make 
+ *   a Strength saving throw, on faiure dragged 5 feet toward the binding point.
+ ***************************************************************************************************/
+async function doEach() {
+    const FUNCNAME = "doEach()";
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+    //--------------------------------------------------------------------------------------
+    // Need distance between current token and associated anchor token
+    //
+    const CASTER_ID = args[1]
+    const ANCHOR_ID = args[2]
+    const SAVE_DC = args[3]
+    let anchorToken = canvas.tokens.placeables.find(ef => ef.id === ANCHOR_ID)
+    if (!anchorToken) {
+        msg = `Could not find anchor token with id "${ANCHOR_ID}"`
+        ui.notifications.warn(msg);
+        jez.log(msg)
+        return (false)
+    }
+    let distance = jez.getDistance5e(aToken, anchorToken);
+    jez.log(`Distance between ${aToken.name} and ${anchorToken.name} is ${distance} feet.`)
+    if (distance > 10) {
+        //--------------------------------------------------------------------------------------
+        // Roll saving throw to see if aToken needs to be moved 5 feet toward anchor
+        //
+        const SAVE_TYPE = "str"
+        const flavor = `${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} <b>DC${SAVE_DC}</b>
+        to avoid <b>${aItem.name}</b> pull`;
+        let save = (await aActor.rollAbilitySave(SAVE_TYPE.toLowerCase(),
+            { flavor:flavor, chatMessage: true, fastforward: true })).total;
+        jez.log("save", save);
+        if (save >= SAVE_DC) {
+            msg = `<b>${aToken.name}</b> resisted the pull of <b>${anchorToken.name}</b>. 
+            Rolling a <b>${save}</b> on the ${SAVE_DC} DC 
+            ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save.`
+            jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                msg: msg, title: `Pull resisted`, token: aToken })
+        } else {
+            jez.moveToken(anchorToken, aToken, -1, 1500)
+            msg = `<b>${aToken.name}</b> is pulled five feet toward <b>${anchorToken.name}</b>. 
+            Having failed the ${SAVE_DC} DC ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} 
+            save with a <b>${save}</b> roll.`
+            jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                msg: msg, title: `Pull succeeded`, token: aToken })
+        }
+    }
+    if (distance > 0) chainEffect(aToken, anchorToken)
+    //----------------------------------------------------------------------------------------------
+    // Pop Dialog asking GM if the afflicted wants to attempt a save to move.
+    //
+    const SAVE_TYPE = "wis"
+    let template = `<div><label></label>
+     <div class="form-group" style="font-size: 14px; padding: 5px; 
+     border: 2px solid silver; margin: 5px;"><b>${aToken.name}</b> must succeed on a ${SAVE_DC} DC 
+     ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save to move more than 5 feet from
+     <b>${anchorToken.name}</b>.  Does ${aToken.name} wish to attempt the save?</div>`
+    let d = new Dialog({
+        title: `Does ${aToken.name} want to move away from Anchor?`,
+        content: template,
+        buttons: {
+            attempt: {
+                label: "Attempt Save",
+                callback: (html) => {
+                    callBackFunc(html);
+                }
+            },
+            decline: {
+                label: "Decline Save",
+                callback: (html) => {
+                    msg = `<b>${aToken.name}</b> has declined to attempt a save, it may not move further 
+                    from <b>${anchorToken.name}</b> than five feet.`
+                    jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                        msg: msg, title: `Declined Save Attempt`, token: aToken })
+                    return (false)
+                }
+            }
+        },
+        default: "attempt"
+    })
+    d.render(true)
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return (true);
+    //----------------------------------------------------------------------------------------------
+    // Dialog call back function to attempt saving throw
+    //
+    async function callBackFunc(html) {
+        const SAVE_TYPE = "wis"
+        const flavor = `${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to move away`;
+        let save = (await aActor.rollAbilitySave(SAVE_TYPE,
+            { flavor:flavor, chatMessage:true, fastforward:true })).total;
+        jez.log("save", save);
+        if (save >= SAVE_DC) {
+            msg = `<b>${aToken.name}</b> resisted restraint of <b>${anchorToken.name}</b>. Rolling a 
+            <b>${save}</b> on the ${SAVE_DC} DC ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save 
+            and may move freely.`
+            jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                msg:msg, title: `Restraint failed`, token:aToken })
+        } else {
+            msg = `<b>${aToken.name}</b> succumbed to restraint of <b>${anchorToken.name}</b>. Having 
+            failed the ${SAVE_DC} DC ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save with a 
+            <b>${save}</b>. ${aToken.name} may move no further than 5 feet from the anchor.`
+            jez.postMessage({ color:jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                msg: msg, title: `Restraint succeeded`, token: aToken })
+        }
 
+    }
+}
 /***************************************************************************************************
  * Post the results to chat card
  ***************************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
-
-    let chatMessage = game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    log(`chatMessage: `,chatMessage);
-    const searchString = /<div class="end-midi-qol-saves-display">/g;
-    const replaceString = `<div class="end-midi-qol-saves-display">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
-    return;
+ function postResults(msg) {
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, {color:jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
-
 /***************************************************************************************************
- * DEBUG Logging
- * 
- * If passed an odd number of arguments, put the first on a line by itself in the log,
- * otherwise print them to the log seperated by a colon.  
- * 
- * If more than two arguments, add numbered continuation lines. 
+ * Spawn the Anchor into existance returning the UUID or null on failure
  ***************************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    } else {            // Even number of arguments
-        console.log(parms[i],":",parms[i+1]);
-        i = 2;
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
+async function spawnAnchor(token, newName) {
+    //--------------------------------------------------------------------------------------
+    // Verify the Actor named ANCHOR_ORIG_NAME exists in Anctor Directory
+    //
+    if (!game.actors.getName(ANCHOR_ORIG_NAME)) {   // If anchor not found, that's all folks
+        msg = `Could not find "<b>${ANCHOR_ORIG_NAME}</b>" in the <b>Actors Directory</b>. 
+        <br><br>Can not complete the ${aItem.name} action.`;
+        postResults(msg);
+        return (null);
     }
+    //--------------------------------------------------------------------------------------
+    // Nab the X,Y coordinates from the passed token 
+    //
+    let center = token.center
+    jez.log("center", center)
+    //--------------------------------------------------------------------------------------
+    // Define warpgate updates, options and callbacks 
+    //
+    let updates = { token: { name: newName } }
+    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
+    const CALLBACKS = {
+        pre: async (template) => {
+            preEffects(template);
+            await jez.wait(2000)
+        },
+        post: async (template) => {
+            postEffects(template);
+        }
+    };
+    //--------------------------------------------------------------------------------------
+    // Fire off warpgate 
+    //
+    let anchorId = await warpgate.spawnAt(center, ANCHOR_ORIG_NAME, updates, CALLBACKS, OPTIONS);
+    jez.log("anchorId", anchorId)
+    return(anchorId)
 }
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
+/***************************************************************************************************
+ * Pre-Spawn VFX
+ ***************************************************************************************************/
+async function preEffects(template) {
+    jez.runRuneVFX(template, jez.getSpellSchool(aItem)) 
+    return
+}
+/***************************************************************************************************
+ * Post-Spawn VFX
+ ***************************************************************************************************/
+async function postEffects(template) { return }
+/***************************************************************************************************
+ * Line connecting token to anchor VFX
+ ***************************************************************************************************/
+ async function chainEffect(token1, token2) {
+    new Sequence()
+        .effect()
+        .file("jb2a.energy_beam.normal.blue.01")
+        .atLocation(token1)
+        .stretchTo(token2)
+        .fadeIn(500)
+        .fadeOut(500)
+        .duration(2000)
+        .scale(1.0)
+        .opacity(1.0)
+    .play()
+}
+/***************************************************************************************************
+ * Modify existing concentration effect to call Remove_Effect_doOff on removal
+ ***************************************************************************************************/
+async function modConcentratingEffect(aToken, tToken) {
+    // COOL-THING: Modify concentrating to remove an effect on target token
+    //----------------------------------------------------------------------------------------------
+    // Make sure the world macro that is used to remove effect exists
+    //
+    const REMOVE_MACRO = "Remove_Effect_doOff"
+    const removeFunc = game.macros.getName(REMOVE_MACRO);
+    if (!removeFunc) {
+        ui.notifications.error(`Cannot locate ${RUNASGMMACRO} run as World Macro`);
+        return;
+    }
+    //----------------------------------------------------------------------------------------------
+    // Seach the token to find the just added effect
+    //
+    await jez.wait(100)
+    let effect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
+    //----------------------------------------------------------------------------------------------
+    // Define the desired modification to existing effect. In this case, a world macro that will be
+    // given arguments: tToken.id and  for all affected tokens
+    //    
+    effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`${REMOVE_MACRO} ${tToken.id} '${EFFECT}'`, priority: 20})
+    jez.log(`effect.data.changes`, effect.data.changes)
+    //----------------------------------------------------------------------------------------------
+    // Apply the modification to existing effect
+    //
+    const result = await effect.update({ 'changes': effect.data.changes });
+    if (result) jez.log(`Active Effect "Concentrating" updated!`, result);
+}

@@ -3,6 +3,7 @@ This repository will contain my automated 1st level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Binding Curse](#binding-curse)
 * [Bless](#bless)
 * [Detect Magic](#detect-magic)
 * [Dissonant Whispers](#dissonant-whispers)
@@ -26,6 +27,34 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 ---
 
 ## Spell Notes
+
+### Binding Curse
+
+This spell is from [Kibbles Occultist 1.2](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw).  I have modified the spell slightly to address a couple of poorly defined elements.  Following is the description I worked to:
+
+> You anchor a creature to its current location, causing glowing chains of light to connect it to that point.
+> 
+> For the duration of the spell, if the creature attempts to move away from the anchor,  it must make a **Wisdom saving** throw, or be **unable to move more than 5 feet** away from the anchor until the start of their next turn.
+> 
+> If a creature starts its turn **more than 10 feet** from the binding point, they must make a Strength saving throw or are **dragged 5 feet** toward the binding point.
+
+If the afflicted starts away from the anchor and fails its wisdom save, I assume it may only move toward the anchor, ending up within 5 feet of the anchor.
+
+Implementing this spell was interesting.  It includes the following elements:
+
+1. Warpgate summons of an Anchor (%Anchor% needs to be in the Actors Directory)
+2. Saving through on initial cast to resist the whole effect
+3. STR save to resist an automatic pull of 5 feet toward anchor if more than 10 feet from anchor
+4. Dialog asking if a WIS save should be attempted to allow movement
+5. Cleanup the anchor and effect on the target when concentration drops
+
+![Binding_Curse.gif](Binding_Curse/Binding_Curse.gif)
+
+![Binding_Curse_Chat.png](Binding_Curse/Binding_Curse_Chat.png)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
 
 ### Bless
 

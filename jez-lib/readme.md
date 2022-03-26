@@ -31,12 +31,14 @@ The functions currently included in this module are:
 * **[jez.getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
 * **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
 * **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
+* **[jez.getSpellDC(subject)](#get-functions)** -- Returns a string containing the subjects spell DC
 * **[jez.getSpellSchool(item)](#getspellschoolitem)** -- Returns a string naming the school of passed item
 * **[jez.getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
 * **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifier
 * **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
+* **[jez.moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay) -- Push or pull token 1, 2 or 3 spaces
 * **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
 * **[jez.pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a drop down list.  User's selection is passed to the specified callback function. 
 * **[jez.pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
@@ -187,6 +189,7 @@ amount of error checking.
 - jez.getCastMod(subject) -- Returns the subject's casting stat modifier
 - jez.getCastStat(subject) -- Returns the subject's casting stat string (e.g. "int")
 - jez.getStatMod(subject,stat) -- Returns the subject's modifier for passed stat string
+- jez.getSpellDC(subject) -- Returns the subject's spell save DC
 - jez.getProfMod(subject) -- Returns the subject's proficiency modifier
 - jez.getTokenById(subjectId) -- Returns the Token5e associated with the passed ID
 
@@ -254,6 +257,25 @@ This function obtains the spell school from the passed parameter.  The school wi
 * necromancy
 * transmutation
 * and FALSE (if no valid school found)
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### moveToken(anchorToken, movingToken, move, delay)
+
+This function moves the **movingToken** 1, 2, or 3 spaces (specified by value of **move**) away (positive values of move) or toward (negative values) the **anchorToken** adding a **delay** in milliseconds before the actual move (intended to allow VFX or other timing steps).  
+
+The alternate 5e m=diagonal movement rules are assumed (5-10-5) and the closest or furthest space reachable in the specified **move** is selected for the movingToken to arrive in.  There is no consideration of walls, other terrain, or creatures on the map -- I am assuming the GM will fine tune the automated movement by hand when necessary.  
+
+Following is a typical call to this function:
+
+```
+jez.moveToken(anchorToken, aToken, -1, 1500)
+```
+The above would move *aToken* (active token) one space toward the *anchorToken* after a wait of 1.5 seconds.
+
+The function returns a boolean value with false indicating a problem encountered and true representing normal completion. 
 
 [*Back to Functions list*](#functions-in-this-module)
 
