@@ -103,6 +103,21 @@ The main staff abilities are implmented using DAE effects.  The healing boost I 
 
 ---
 
+### **Dawn Star**
+
+This is a magical morning star created for *Leo Dilisnya* as defined in the *Interactive Tome of Strahd* available on [DMs Guild](https://www.dmsguild.com/product/301867/The-Interactive-Tome-of-Strahd?term=tome+of+strahd).
+
+The weapon is magical (the magic box is ticked) does an extra burst of radiant damage on a failed save and applies a DAE effect that causes the target to emit light and grant advantage until the start of the next turn.  This is all done with configuration of the modules I have chosen:
+
+* **DAE** ([Dynamic Active Effects](https://gitlab.com/tposney/dae)) applies and manages the effect that grants advantage and uses ATL to handle the light,
+* **ATL** ([Active Token Lighting](https://github.com/kandashi/Active-Token-Lighting)) controls the bright and dim light effect,
+* **AA** ([Automated JB2A Animations](https://github.com/otigon/automated-jb2a-animations)) runs the VFX of a swinging mace,
+* **JB2A** ([Jules-Bens-Aa DnD5e](https://github.com/Jules-Bens-Aa/JB2A_DnD5e) provides the VFX: modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Melee/Mace01_Fire_Regular_Yellow_800x600.webm.
+
+![Dawn_Star.gif](Weapons/Dawn_Star/Dawn_Star.gif)
+
+---
+
 ### **Gulthias Staff**
 
 This is the implementation of a very campaign specific item (with a nasty curse).

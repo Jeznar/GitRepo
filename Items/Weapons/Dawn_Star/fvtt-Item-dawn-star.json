@@ -1,0 +1,269 @@
+{
+  "name": "Dawn Star",
+  "type": "weapon",
+  "img": "Icons_JGB/Weapons/Mace_of_Dawnstar.png",
+  "data": {
+    "description": {
+      "value": "<p><em>Melee Weapon Attack </em>+7, Reach 5 ft, One. <em>Hit : </em>7 (1d8 + 3) piercing damage plus 7 (2d6) radiant damage.</p>\n<p>If the target is a creature, it must succeed on a <strong>DC 10 CHA</strong> saving throw or begin s<strong>hedding bright light in a 10 foot radius</strong> and <strong>dim light for 10 feet beyond that</strong>. The glowing light <strong>grants advantage on attack rolls against</strong> the target, and it lasts <strong>until the start of the target's next turn</strong>.</p>\n<p>This is a magic morning star.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 1,
+    "price": 0,
+    "attunement": 1,
+    "equipped": true,
+    "rarity": "veryRare",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d8 + @mod",
+          "piercing"
+        ],
+        [
+          "2d6",
+          "radiant"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "cha",
+      "dc": 10,
+      "scaling": "flat"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "simpleM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "hvy": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "lgt": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ada": false,
+      "lod": false,
+      "mgc": true,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": true
+  },
+  "effects": [
+    {
+      "_id": "6iy3R7661yKslQWj",
+      "changes": [
+        {
+          "key": "ATL.brightLight",
+          "mode": 4,
+          "value": "10",
+          "priority": "20"
+        },
+        {
+          "key": "ATL.dimLight",
+          "mode": 4,
+          "value": "20",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.all",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Weapons/Mace_of_Dawnstar.png",
+      "label": "Dawn Star",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnStart"
+          ],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "ATL.brightLight",
+        "ATL.dimLight",
+        "flags.midi-qol.grants.advantage.attack.all"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": ""
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "autoanimations": {
+      "version": 3,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "meleeType": "a1",
+        "variant": "",
+        "enableCustom": true,
+        "repeat": null,
+        "delay": null,
+        "scale": null,
+        "customPath": "modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Melee/Mace01_Fire_Regular_Yellow_800x600.webm"
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "melee",
+      "animation": "",
+      "color": "",
+      "audio": {
+        "a01": {
+          "enable": false
+        },
+        "a02": {
+          "enable": false
+        }
+      },
+      "preview": false,
+      "meleeSwitch": {
+        "switchType": "off",
+        "returning": false
+      },
+      "explosions": {
+        "enable": false
+      }
+    },
+    "core": {
+      "sourceId": "Item.k380HWKA1zDzYaEM"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

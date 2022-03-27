@@ -133,14 +133,6 @@ function preCheck() {
  ***************************************************************************************************/
 function pickEffectCallBack(selection) {
     jez.log("pickRadioCallBack", selection)
-    /*jez.postMessage({
-        color: "green",
-        fSize: 14,
-        icon: aToken.data.img,
-        msg: `${aToken.name} selected <b>"${selection}"</b> in the dialog`,
-        title: `${aToken.name} made a pick`,
-        token: aToken
-    })*/
     if (!selection) return(false)
     const action = selection.split(" ")[0]     // Grab the first word from the selection
 
