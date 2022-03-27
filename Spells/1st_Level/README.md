@@ -1,7 +1,7 @@
 # 1st Level Spells
 This repository will contain my automated 1st level spells as I create new or update existing (there are many) that currently reside only in my game data (which is regularly backed up) I'll add them here.
 
-Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
+Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Binding Curse](#binding-curse)
 * [Bless](#bless)
@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Electrify](#electrify)
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
+* [Guiding Bolt](#guiding-bolt)
 * [Hex](#hex)
 * [Longstrider](#longstrider)
 * [Magic Missle](#magic-missile) (ASE)
@@ -62,7 +63,7 @@ This spell is implemented without a macro.
 
 The VFX is done with [Automated Animations](https://github.com/otigon/automated-jb2a-animations), I think I just kept the default setting for this mod.
 
-The modifier, adding a d4 to many rolls is done with DAE.  It runs into an interesting *feature* where sometimes that 1d4 is string concatenated to other modifiers resulting in something like `11d4` instead of `1+1d4` or `+1d42` instead of `+1d4+2` being processed.  The *fix* for this appears to be wrapping the 1d4 with plus signs.  As shown in the PNG of DAE settings embedded below.
+The modifier, adding a d4 too many rolls is done with DAE.  It runs into an interesting *feature* where sometimes that 1d4 is string concatenated to other modifiers resulting in something like `11d4` instead of `1+1d4` or `+1d42` instead of `+1d4+2` being processed.  The *fix* for this appears to be wrapping the 1d4 with plus signs.  As shown in the PNG of DAE settings embedded below.
 
 ![Bless/Bless_DAE_Effects.png](Bless/Bless_DAE_Effects.png)
 
@@ -92,13 +93,13 @@ Simple macro that posts a text chat message describing the effect of the spell, 
 
 ### Detect Magic
 
-Simple macro that places a persistent VFX attached to the caster that indicates the existance and range of the detect magic effect.  It doesn't do any type of automated highlighting.
+Simple macro that places a persistent VFX attached to the caster that indicates the existence and range of the detect magic effect.  It doesn't do any type of automated highlighting.
 
 ![Caustic Brew](Detect Magic/Detect_Magic.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 
-This spell is included in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#detect-magic) and it is rather awesome.  Unfortunately, it assumes all detectable things will be tagged which is too much effort for me, so I am sticking with my simplier visual only build.
+This spell is included in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#detect-magic) and it is rather awesome.  Unfortunately, it assumes all detectable things will be tagged which is too much effort for me, so I am sticking with my simpler visual only build.
 
 ---
 
@@ -151,6 +152,20 @@ I have kept my originial implementation in the repository in a subdirectory of t
 
 ---
 
+### Guiding Bolt
+
+This is spell is implemented by configuration of modules and a little macro that adds an additional expiration term (next attack) to the effect created by DAE.
+
+* DAE ([Dynamic Active Effects](https://gitlab.com/tposney/dae)) -- Applies the effect that forces the target to grant advantage.  This is configured on the item's DAE sheet **and** on the details page where duration controls expiration of the effect.  That is at the start of the caster's next turn.
+* A-A ([Automated jb2a Animations](https://github.com/otigon/automated-jb2a-animations)) -- Runs the nifty VFX.  This is actually the default set up from the module.  A snap of the relevant setting page is in the Repo.
+* Custom Macro -- Modifies the created effect.
+
+![Guiding_Bolt.gif](Guiding_Bolt/Guiding_Bolt.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
 ### Hex
 
 This is based on Crymic's code.  I have added a new ability to move the hex from a *dead* token to a new target per RAW.  This will fail if the old token isn't available on the scene to copy it from.  
@@ -162,7 +177,7 @@ This spell is built from two items:
 
 HOMEBREW: If the user of this spell is a subclass *celestial* (typically a warlock), the damage type is *radiant* instead of *necrotic*.
 
-Following are a few messages this macro can produce.
+Following are a few messages that this macro can produce.
 
 ![Hex/Hex_Chat.png](Hex/Hex_Chat.png)
 

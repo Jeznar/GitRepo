@@ -42,6 +42,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Electrify](1st_Level#electrify)
 * [Entangle](1st_Level#entangle)
 * [Fog Cloud](1st_Level#fog-cloud) (ASE)
+* [Guiding Bolt](1st_Level#guiding-bolt)
 * [Longstrider](1st_Level#longstrider)
 * [Magic Missle](1st_Level#magic-missle) (ASE)
 * [Nauseating Poison](1st_Level#nauseating-poison)

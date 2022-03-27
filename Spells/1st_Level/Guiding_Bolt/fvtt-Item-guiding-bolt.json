@@ -1,0 +1,189 @@
+{
+  "name": "Guiding Bolt",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/1st%20Level/Guiding_Bolt.png",
+  "data": {
+    "description": {
+      "value": "<p>A flash of light streaks toward a creature of your choice within range. Make a ranged spell attack against the target. On a hit, the target takes <strong>4d6 radiant damage,</strong> and the <strong>next attack roll made</strong> against this target before the <strong>end of your next turn</strong> has advantage, thanks to the mystical dim light glittering on the target until then.</p>\n<p><strong>Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d6 for each slot level above 1st.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 248",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "round"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 120,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "4d6",
+          "radiant"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "level": 1,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "1d6"
+    }
+  },
+  "effects": [
+    {
+      "_id": "VrcwRw5coeFnTjAp",
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "macroRepeat": "none"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "changes": [
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.all",
+          "mode": 5,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Spells/1st%20Level/Guiding_Bolt.png",
+      "label": "Guiding Bolt",
+      "tint": null,
+      "transfer": false,
+      "selectedKey": "flags.midi-qol.grants.advantage.attack.all"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "core": {
+      "sourceId": "Compendium.Dynamic-Effects-SRD.DAE SRD Midi-collection.QP2aMr0hangVZX5f"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "ItemMacro"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Guiding Bolt",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Guiding_Bolt.js\"\n/*****************************************************************************************\n * Modify DAE placed effect to include a special exipire clause on next incoming attack.\n * \n * 03/27/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif ((args[0]?.tag === \"OnUse\") && preCheck()) await doOnUse(); \njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        postResults(msg);\n        return (false);\n    }\n    if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return\n        msg = `Target was missed.`\n        postResults(msg);\n        return(false);\n    }\n    jez.log(\"Pre-Check was successful\")\n    return(true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    //-------------------------------------------------------------------------------------------------------------\n    // Modify the effects to have a proper termination time\n    //\n    modEffect(tToken, aItem.name)\n    msg = `<b>${tToken.name}</b> is granting advantage to the next attack against it, until end of \n    ${aToken.name}'s next turn`\n    postResults(msg)\n    return (true);\n}\n/***************************************************************************************************\n * Modify existing effect to terminate the next time the token is attacked\n ***************************************************************************************************/\nasync function modEffect(token5e, EFFECT) {\n    await jez.wait(500)     \n    let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);\n    jez.log(`${EFFECT} >>> effect`, effect,\"effect.data.flags.dae\",effect.data.flags.dae)\n    if (effect.data.flags.dae === undefined) {\n        jez.log(\"Adding DAE to our critter\")\n        effect.data.flags.dae = {}\n    } else jez.log(\"flags.dae already existed, party time?\")\n    effect.data.flags.dae.specialDuration = [\"turnEndSource\", \"isAttacked\"]\n    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration});\n    jez.log(`${EFFECT} >>> result`,result)\n    if (result) jez.log(`${EFFECT} >>> Active Effect ${EFFECT} updated!`, result);\n    else jez.log(`${EFFECT} >>> Active Effect not updated! =(`, result);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
