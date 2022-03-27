@@ -79,7 +79,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     let chatmsg = game.messages.get(args[0].itemCardId);
     let content = await duplicate(chatmsg.data.content);
     const searchString = / hits/g;
-    const replaceString = `<p style="color:Green;"> Heals</p>`;
+    const replaceString = `<p style="color:Green;"> Restores</p>`;
     content = await content.replace(searchString, replaceString);
     await chatmsg.update({ content: content });
     await ui.chat.scrollBottom();
