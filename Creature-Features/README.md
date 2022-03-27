@@ -10,6 +10,7 @@ I'll try to document functions as I add them to the repository.
 ## Abilities in this Repo
 
 * **[Angelic Weapons](#angelic_weapons)** -- Bonus damage on all weapon hits.
+* **[Beyond Death](#beyond-death)** -- Ability to restore 1HP when dropped to zero
 * **[Blessing of the Mother Night](#blessing-of-the-mother-night)** -- Baba Lysaga ability
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
 * **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
@@ -38,6 +39,26 @@ I'll try to document functions as I add them to the repository.
 This ability requires only a bit of DAE configuration to add 4d8 Radiant damage to all MWAK and RWAK actions for an actor.  It does not add the magical characteristic, I don't know how to do that easily, so I am leaving it for manual twiddling in the (presumably) rare situations where it would matter.  
 
 ![Angelic_Weapons/Angelic_Weapons_DAE.png](Angelic_Weapons/Angelic_Weapons_DAE.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Beyond Death**
+
+This macro does a couple of things:
+
+* Set current health to one if it was zero, 
+* Run a simple VFX via [Automated Animations](https://github.com/otigon/automated-jb2a-animations),
+* Decrement a usage count (allowed to be used twice).
+
+Limitations:
+
+* It does not check to see if the hit that reduced to zero was a critical 
+* It does not automatically fire (manually invoked)
+* It decrements the usage count even if it has no effect.
+
+I've let the limitations stand as this is a *corner case* ability, only on one minor actor in my game.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
