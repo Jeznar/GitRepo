@@ -9,12 +9,14 @@ jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
+if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
+else aActor = game.actors.get(LAST_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+else aToken = game.actors.get(LAST_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+if (args[0]?.item) aItem = args[0]?.item; 
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 
 const ITEM_NAME = "Black Tentacles Effect"
@@ -187,8 +189,8 @@ async function modConcEffect(tileId) {
     // Define the desired modification to existing effect. In this case, a world macro that will be
     // given arguments: VFX_Name and Token.id for all affected tokens
     //    
-    //effect.data.changes.push({key: `macro.execute`, mode: CUSTOM, value:`entangle_helper ${VFX_NAME} ${label}`, priority: 20})
-    effect.data.changes.push({key: `macro.itemMacro`, mode: CUSTOM, value:`${tileId}`, priority: 20})
+    //effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`entangle_helper ${VFX_NAME} ${label}`, priority: 20})
+    effect.data.changes.push({key: `macro.itemMacro`, mode: jez.CUSTOM, value:`${tileId}`, priority: 20})
     jez.log(`effect.data.changes`, effect.data.changes)
     //----------------------------------------------------------------------------------------------
     // Apply the modification to existing effect

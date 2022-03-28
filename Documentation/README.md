@@ -8,3 +8,5 @@ Documents that I have Found and/or created that I like to refer to.
 [DAE Effect Durations - Seconds, Rounds, Turns, Special](Effect_Duration.md)
 
 [General Notes and Such](General_Notes.md)
+
+[@values Fields](foundry_dnd5e_properties.md)
