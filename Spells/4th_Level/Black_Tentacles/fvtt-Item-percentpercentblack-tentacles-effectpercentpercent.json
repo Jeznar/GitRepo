@@ -1,0 +1,184 @@
+{
+  "name": "%%Black Tentacles Effect%%",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/vines-eerie-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p><strong>%%This item is used by the Jez's Black Tentacles Macro don't casually mess with it, please%%</strong></p>\n<p>This ability is to be used on each token, that doesn't already have the&nbsp;<strong>Black Tentacle Effect,</strong> if it starts its turn in the black tentacle area and when each token enters the area for the first time on each turn.</p>\n<p>On failure the target will take 3d6 Bludgeoning damage,<span style=\"color: #191813; font-size: 13px;\">&nbsp;no damage on save,</span><span style=\"color: #191813; font-size: 13px;\">&nbsp;and become @JournalEntry[CZWEqV2uG9aDWJnD]{Restrained}.</span></p>\n<p><strong>%%MORE STUFF TO DELETE%%</strong></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "3d6",
+          "bludgeoning"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "dex",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 4,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": false,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "atwill",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "hpV1AV1ny4X0B4fS",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "@attributes.spelldc @token",
+          "priority": "20"
+        },
+        {
+          "key": "macro.CUB",
+          "mode": 0,
+          "value": "Restrained",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 5,
+          "value": "turn=start,damageRoll=3d6,damageType=bludgeoning",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60,
+        "rounds": 10
+      },
+      "icon": "systems/dnd5e/icons/spells/vines-eerie-3.jpg",
+      "label": "Black Tentacles Effect",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "startEveryTurn",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": [
+        "macro.itemMacro",
+        "macro.CUB",
+        "flags.midi-qol.OverTime"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "%%Black Tentacles Effect%%",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Black_Tentacles_Effect.js\"\n/*****************************************************************************************\n * Basic Structure for a rather complete macro\n * \n * 02/11/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nconst BASEMACRO = \"Black_Tentacles\"\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName(\"Restrained\").id}]{Restrained}`\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n async function postResults() {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    await jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    if (args[0].targets.length === 0) {     \n        msg = `Must target at least one target.  ${args[0].targets.length} were targeted.`\n        await postResults();\n        return (false);\n    }\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    if (LAST_ARG.failedSaves.length === 0) return   // If no failed saves exit\n    //---------------------------------------------------------------------------------------------\n    // Stack all the failed IDs into a string delimited with spaces\n    //\n    let failedIds = \"\"\n    for (let i = 0; i < LAST_ARG.failedSaves.length; i++) {\n        jez.log(`${i+1} ${LAST_ARG.failedSaves[i].name} ${LAST_ARG.failedSaves[i].id}`)\n        if (failedIds) {\n            failedIds += \" \"   // Tack on a space if already has contents\n            failedIds += LAST_ARG.failedSaves[i].id\n        } else failedIds = LAST_ARG.failedSaves[i].id\n    }\n    jez.log(`${tToken.id}`,tToken.id)\n    //---------------------------------------------------------------------------------------------\n    // Append the failedIds to the flag\n    //\n    let currentValue = await DAE.getFlag(aToken.actor, BASEMACRO);\n    jez.log(`Current value of ${BASEMACRO} flag:`, currentValue)\n    if (currentValue) {\n        currentValue += \" \"   // Tack on a space if already has contents\n        currentValue += failedIds\n    } else currentValue = failedIds\n    jez.log(`Modified value of ${BASEMACRO} flag:`, currentValue)\n    await DAE.setFlag(aToken.actor, BASEMACRO, currentValue);\n    //---------------------------------------------------------------------------------------------\n    // Add results to chat card\n    //\n    msg = `<b>${tToken.name}</b> ${RESTRAINED_JRNL} by Black Tentacles, taking damage each turn.`,\n    postResults(msg)\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Each turn pop a dialog asking if an escape should be attempted.  If requested perform the save.\n ***************************************************************************************************/\nasync function doEach() {\n    const FUNCNAME = \"doEach()\";\n    const CHECK_DC = args[1];\n    const ORIGIN_TOKEN_ID = args[2]\n    jez.log(`Check DC: ${CHECK_DC}, Origin Token ID: ${ORIGIN_TOKEN_ID}`)\n    let strMod = await jez.getStatMod(aToken, \"str\");\n    let dexMod = await jez.getStatMod(aToken, \"dex\");\n    let chkStat = \"Strength\"; let chkSta = \"str\"; let chkMod = strMod\n    let oToken = canvas.tokens.placeables.find(ef => ef.id === ORIGIN_TOKEN_ID)\n    if (dexMod > strMod) { chkStat = \"Dexterity\"; chkSta = \"dex\"; chkMod = dexMod }\n    jez.log(`------${FUNCNAME} Stats for escape check ------`, \"chkStat\", chkStat, \"chkSta\", chkSta, \"chkMod\", chkMod)\n    const DIALOG_TITLE = `Does ${aToken.name} attempt to break restraint?`\n    const DIALOG_TEXT = `The twisty tentacles are keeping <b>${aToken.name}</b> restrained, \n        damaging it each round. Does <b>${aToken.name}</b> want to use its\n        action to attempt a ${chkStat} check against ${oToken.name}'s  Black Tentacles spell, \n        check <b>DC${CHECK_DC}?<br><br>`\n    new Dialog({\n        title: DIALOG_TITLE,\n        content: DIALOG_TEXT,\n        buttons: {\n            yes: {\n                label: \"Attempt Escape\", callback: async () => {\n                    let flavor = `${aToken.name} uses this turn's <b>action</b> to attempt a \n                    ${CONFIG.DND5E.abilities[chkSta]} check vs <b>DC${CHECK_DC}</b> to end the \n                    effect from ${aItem.name}.`;\n                    let check = (await aToken.actor.rollAbilityTest(chkSta,\n                        { flavor: flavor, chatMessage: true, fastforward: true })).total;\n                    jez.log(\"Result of check roll\", check);\n                    if (CHECK_DC < check) {\n                        await aToken.actor.deleteEmbeddedDocuments(\"ActiveEffect\", [LAST_ARG.effectId]);\n                        jez.postMessage({\n                            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n                            msg: `<b>${aToken.name}</b> succesfully broke free.<br>No longer ${RESTRAINED_JRNL}.`,\n                            title: `Succesful Skill Check`, token: aToken\n                        })\n                    } else {\n                        jez.postMessage({\n                            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n                            msg: `<b>${aToken.name}</b> failed to break free.<br>Remains ${RESTRAINED_JRNL}.`,\n                            title: `Failed Skill Check`, token: aToken,\n                        })\n                    }\n                }\n            },\n            no: {\n                label: \"Ignore Tentacles\", callback: async () => {\n                    jez.postMessage({\n                        color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n                        msg: `<b>${aToken.name}</b> opted to ignore the Tentacles and remains ${RESTRAINED_JRNL}.`,\n                        title: `Declined Skill Check`, token: aToken\n                    })\n                }\n            },\n        },\n        default: \"yes\",\n    }).render(true);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Modify existing effect to include a midi-qol overtime saving throw element\n ***************************************************************************************************/\n async function modConcEffect(tokenId) {\n    const EFFECT = \"Concentrating\"\n    //----------------------------------------------------------------------------------------------\n    // Seach the token to find the just added effect\n    //\n    await jez.wait(100)\n    let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);\n    //jez.log(`**** ${EFFECT} found?`, effect)\n    if (!effect) {\n        msg = `${EFFECT} sadly not found on ${aToken.name}.`\n        ui.notifications.error(msg);\n        postResults(msg);\n        return (false);\n    }\n    //jez.log(\">>>>>>>> effect\",effect)\n    return\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

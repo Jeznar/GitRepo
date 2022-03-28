@@ -1,8 +1,23 @@
 const MACRONAME = "Black_Tentacles.js"
 /*****************************************************************************************
- * Basic Structure for a rather complete macro
+ * Black Tentacles!
  * 
- * 02/11/22 0.1 Creation of Macro
+ *   Squirming, ebony tentacles fill a 20-foot square on ground that you can see within 
+ *   range. For the duration, these tentacles turn the ground in the area into difficult 
+ *   terrain.
+ * 
+ *   When a creature enters the affected area for the first time on a turn or starts its 
+ *   turn there, the creature must succeed on a Dexterity saving throw or take 3d6 
+ *   bludgeoning damage and be restrained by the tentacles until the spell ends.
+ * 
+ *   A creature that starts its turn in the area and is already restrained by the 
+ *   tentacles takes 3d6 bludgeoning damage.
+ * 
+ *   A creature restrained by the tentacles can use its action to make a Strength or 
+ *   Dexterity check (its choice) against your spell save DC. On a success, it frees 
+ *   itself.
+ * 
+ * 03/28/22 0.1 Creation of Macro
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -18,27 +33,16 @@ let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
-
 const ITEM_NAME = "Black Tentacles Effect"
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`  // Name as expected in Items Directory 
 const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}` // Name of item in actor's spell book
-
-//----------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE removal
-if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -71,7 +75,7 @@ return;
     //
     let oldActorItem = aToken.actor.data.items.getName(NEW_ITEM_NAME)
     if (oldActorItem) await deleteItem(aToken.actor, oldActorItem)
-    msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been deleted from ${aToken.name}`
+    msg = `${NEW_ITEM_NAME} has been deleted from ${aToken.name}`
     ui.notifications.info(msg);
     //----------------------------------------------------------------------------------------------
     // Grab the flag, clear the flag
@@ -97,37 +101,26 @@ return;
     return;
   }
 /***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("A place for things to be done");
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-}
-/***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const TEMPLATE_ID = args[0].templateId
     const TEMPLATE = canvas.templates.objects.children.find(i => i.data._id === TEMPLATE_ID);
-    // Place the VFX Tile
+    jez.log("Place the VFX Tile")
     const TILE_ID = await placeTile(TEMPLATE_ID, TEMPLATE.center);
     jez.log("TILE_ID", TILE_ID)
+    copyEditItem(aToken)
+    jez.log("Post message to a chat card")
+    msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name}'s spell book`
+    ui.notifications.info(msg);
+    jez.log("Clear the flag that will be used to store token.id values of afflicted tokens")
+    DAE.unsetFlag(aToken.actor, MACRO);                         // await??
     // Call function to modify concentration effect to delete the VFX tile on concetration removal
     modConcEffect(TILE_ID)
-    // Add the atWill spell to spell book of aToken
-    copyEditItem(aToken)
-    // Clear the flag that will be used to store token.id values of afflicted tokens
-    DAE.unsetFlag(aToken.actor, MACRO);                         // await??
-    // Post message to a chat card
-    msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name} for the duration of this spell`
-    ui.notifications.info(msg);
+    msg = `<b>${NEW_ITEM_NAME}</b> has been added to ${aToken.name}'s spell book, as an At-Will spell.`
     await postResults(msg)
     jez.log(`-------------- Finished --- ${MACRO} ${FUNCNAME} -----------------`);
     return (true);
@@ -149,22 +142,65 @@ async function placeTile(TEMPLATE_ID, templateCenter) {
     return(newTile[0].data._id);
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is invoked each round by DAE
+ * Each round, ask the GM if the afflicted actor wants to use its action to attemot to break out 
+ * of the grapple from the tentacles.
  ***************************************************************************************************/
- async function doEach() {
+async function doEach() {
     const FUNCNAME = "doEach()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do Each code")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-}
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- ***************************************************************************************************/
- async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do On Use code")
+    const CHECK_DC = args[1];
+    const ORIGIN_TOKEN_ID = args[2]
+    jez.log(`Check DC: ${CHECK_DC}, Origin Token ID: ${ORIGIN_TOKEN_ID}`)
+    let strMod = await jez.getStatMod(aToken, "str");
+    let dexMod = await jez.getStatMod(aToken, "dex");
+    let chkStat = "Strength"; let chkSta = "str"; let chkMod = strMod
+    let oToken = canvas.tokens.placeables.find(ef => ef.id === ORIGIN_TOKEN_ID)
+    if (dexMod > strMod) { chkStat = "Dexterity"; chkSta = "dex"; chkMod = dexMod }
+    jez.log(`------${FUNCNAME} Stats for escape check ------`, "chkStat", chkStat, "chkSta", chkSta, "chkMod", chkMod)
+    const DIALOG_TITLE = `Does ${aToken.name} attempt to break restraint?`
+    const DIALOG_TEXT = `The twisty tentacles are keeping <b>${aToken.name}</b> restrained, 
+        damaging it each round. Does <b>${aToken.name}</b> want to use its
+        action to attempt a ${chkStat} check against ${oToken.name}'s  Black Tentacles spell, 
+        check <b>DC${CHECK_DC}?<br><br>`
+    new Dialog({
+        title: DIALOG_TITLE,
+        content: DIALOG_TEXT,
+        buttons: {
+            yes: {
+                label: "Attempt Escape", callback: async () => {
+                    let flavor = `${aToken.name} uses this turn's <b>action</b> to attempt a 
+                    ${CONFIG.DND5E.abilities[chkSta]} check vs <b>DC${CHECK_DC}</b> to end the 
+                    effect from ${aItem.name}.`;
+                    let check = (await aToken.actor.rollAbilityTest(chkSta,
+                        { flavor: flavor, chatMessage: true, fastforward: true })).total;
+                    jez.log("Result of check roll", check);
+                    if (CHECK_DC < check) {
+                        await aToken.actor.deleteEmbeddedDocuments("ActiveEffect", [LAST_ARG.effectId]);
+                        jez.postMessage({
+                            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                            msg: `<b>${aToken.name}</b> succesfully broke free.<br>No longer ${RESTRAINED_JRNL}.`,
+                            title: `Succesful Skill Check`, token: aToken
+                        })
+                    } else {
+                        jez.postMessage({
+                            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                            msg: `<b>${aToken.name}</b> failed to break free.<br>Remains ${RESTRAINED_JRNL}.`,
+                            title: `Failed Skill Check`, token: aToken,
+                        })
+                    }
+                }
+            },
+            no: {
+                label: "Ignore Tentacles", callback: async () => {
+                    jez.postMessage({
+                        color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                        msg: `<b>${aToken.name}</b> opted to ignore the Tentacles and remains ${RESTRAINED_JRNL}.`,
+                        title: `Declined Skill Check`, token: aToken
+                    })
+                }
+            },
+        },
+        default: "yes",
+    }).render(true);
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
@@ -176,7 +212,7 @@ async function modConcEffect(tileId) {
     //----------------------------------------------------------------------------------------------
     // Seach the token to find the just added effect
     //
-    await jez.wait(400)
+    await jez.wait(1000)
     let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
     jez.log(`**** ${EFFECT} found?`, effect)
     if (!effect) {
@@ -242,30 +278,6 @@ async function copyEditItem(token5e) {
         //'effects[0].value.data.label': NEW_ITEM_NAME
     }
     await aActorItem.update(itemUpdate)
-    //-----------------------------------------------------------------------------------------------
-    /*jez.log(`Change the label of ${SPEC_ITEM_NAME} to the desired ${NEW_ITEM_NAME}`)
-    await jez.wait(1000)
-    jez.log(" ")
-    jez.log(`}}}} ${SPEC_ITEM_NAME} found on aActorItem?`, aActorItem)
-    let effect = await aActorItem.data.effects.find(i => i.data.label === SPEC_ITEM_NAME);
-    jez.log(" ")
-    jez.log(`%%%% ${SPEC_ITEM_NAME} found?`, effect)
-    if (!effect) {
-        msg = `${SPEC_ITEM_NAME} sadly not found on ${aActorItem.name}`
-        ui.notifications.error(msg);
-        jez.log(" ")
-        jez.log(`itemObj`,itemObj)
-        postResults(msg);
-        return (false);
-    }
-    let effectUpdate = {
-        'label': NEW_ITEM_NAME
-    }
-    jez.log("effectUpdate",effectUpdate)
-    effect.data.label = NEW_ITEM_NAME
-    //await effect.update(effectUpdate)
-    jez.log(" ")
-    jez.log(`&&&& ${SPEC_ITEM_NAME} found?`, effect)*/
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }

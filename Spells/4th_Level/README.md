@@ -3,6 +3,7 @@ This repository will contain my automated 4th level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Black Tentacles](#black-tentacles)
 * [Greater Invisibility](#greater-invisibility)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
@@ -11,11 +12,50 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ## Spell Notes
 
+### Black Tentacles
+
+This one is a whopper!
+
+This spell creates a 20x20 foot area that has a chance to restrain and damage any creature in the area.  My implementation manages creation and removal of all the elements but it does not automatically apply the effects to creatures, rather it provides an at-will spell item that can be triggered to perform that part.  
+
+Summary of the things this one does:
+
+#### On Use
+1. Place a 20x20 square template forcing savings throws and apply a DAE effect that includes adding a CUB condition.  All of this through standard item configuration settings.
+2. Delete the template after extracting its coordinates 
+3. Place a tile with VFX embedded where the template had been located.  Use VFX file: `modules/jb2a_patreon/Library/4th_Level/Black_Tentacles/BlackTentacles_01_Dark_Purple_600x600.webm`
+4. Copy the item named *%%Black Tentacles Effect%%* from the *Items Directory* changing the name and deleting meta elements from the description delimited by **<strong>%%*%%</strong>**, that is bold text bookended by pairs of % symbols into the current actor's spell book as an at-will item.
+5. Clear the DAE Flag: *Black_Tentacles* for future use.
+6. Modify the *concentrating* effect on the current actor to fire ItemMacro with the ID of the tile that was placed for later deletion.
+
+#### At Will
+**Black Tentacles Effect** is used as an at-will item on each token that starts its turn in the area of effect and when they first enter.
+
+1. Perform a saving throw, doing damage and adding effects as appropriate.
+2. Store ID into the DAE Flag: *Black_Tentacles*
+
+#### Each Turn
+Afflicted tokens take damage and present a dialog that allows a skill check to remove the effect.  
+
+#### Concentration Break
+
+1. Delete the created tile
+2. Delete the effects listed in the DAE Flag: *Black_Tentacles*
+3. Delete the at-will spell item.
+
+I am sure I have left a fair bit out.  It is quite the spell.
+
+![Black_Tentacles.gif](Black_Tentacles/Black_Tentacles.gif)
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
 ### Greater Invisibility
 
 This is just a minor reskinning of [Invisibility](../2nd_Level#invisibility).  It has a 10 round duration and does not drop when the invisible token attacks or casts a spell.
 
-Curiously, it quietly supports upcasting, in the same manner as the Invisibility spell.  It being easier than havimg people target correctly than removing the option. 
+Curiously, it quietly supports upcasting, in the same manner as the Invisibility spell.  It being easier than having people target correctly than removing the option. 
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

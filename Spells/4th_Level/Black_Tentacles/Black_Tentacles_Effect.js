@@ -9,46 +9,25 @@ const BASEMACRO = "Black_Tentacles"
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+else aToken = game.actors.get(LAST_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+if (args[0]?.item) aItem = args[0]?.item; 
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
-
-//----------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-if ((args[0]?.tag === "OnUse") && !(await preCheck())) return(false);
+const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName("Restrained").id}]{Restrained}`
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-//if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE removal
-//if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-return;
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
  ***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
- ***************************************************************************************************/
-async function preCheck() {
-    jez.log(`Running precheck ${args[0]?.tag}`)
-    if (args[0].targets.length === 0) {     
-        msg = `Must target at least one target.  ${args[0].targets.length} were targeted.`
-        await postResults();
-        return (false);
-    }
-    return(true)
-}
-/***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
  async function postResults() {
@@ -57,33 +36,15 @@ async function preCheck() {
     await jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set Off
- * 
- * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects
- ***************************************************************************************************/
- async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("Something could have been here")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-  }
-  
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("A place for things to be done");
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-}
-/***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
+    if (args[0].targets.length === 0) {     
+        msg = `Must target at least one target.  ${args[0].targets.length} were targeted.`
+        await postResults();
+        return (false);
+    }
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
@@ -111,20 +72,73 @@ async function doOn() {
     } else currentValue = failedIds
     jez.log(`Modified value of ${BASEMACRO} flag:`, currentValue)
     await DAE.setFlag(aToken.actor, BASEMACRO, currentValue);
-
-    msg = `Maybe say something useful...${currentValue}`
-    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.addMessage(chatMsg,{color:jez.randomDarkColor(),fSize:14,msg:msg,tag:"saves"})
+    //---------------------------------------------------------------------------------------------
+    // Add results to chat card
+    //
+    msg = `<b>${tToken.name}</b> ${RESTRAINED_JRNL} by Black Tentacles, taking damage each turn.`,
+    postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is invoked each round by DAE
+ * Each turn pop a dialog asking if an escape should be attempted.  If requested perform the save.
  ***************************************************************************************************/
- async function doEach() {
+async function doEach() {
     const FUNCNAME = "doEach()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do Each code")
+    const CHECK_DC = args[1];
+    const ORIGIN_TOKEN_ID = args[2]
+    jez.log(`Check DC: ${CHECK_DC}, Origin Token ID: ${ORIGIN_TOKEN_ID}`)
+    let strMod = await jez.getStatMod(aToken, "str");
+    let dexMod = await jez.getStatMod(aToken, "dex");
+    let chkStat = "Strength"; let chkSta = "str"; let chkMod = strMod
+    let oToken = canvas.tokens.placeables.find(ef => ef.id === ORIGIN_TOKEN_ID)
+    if (dexMod > strMod) { chkStat = "Dexterity"; chkSta = "dex"; chkMod = dexMod }
+    jez.log(`------${FUNCNAME} Stats for escape check ------`, "chkStat", chkStat, "chkSta", chkSta, "chkMod", chkMod)
+    const DIALOG_TITLE = `Does ${aToken.name} attempt to break restraint?`
+    const DIALOG_TEXT = `The twisty tentacles are keeping <b>${aToken.name}</b> restrained, 
+        damaging it each round. Does <b>${aToken.name}</b> want to use its
+        action to attempt a ${chkStat} check against ${oToken.name}'s  Black Tentacles spell, 
+        check <b>DC${CHECK_DC}?<br><br>`
+    new Dialog({
+        title: DIALOG_TITLE,
+        content: DIALOG_TEXT,
+        buttons: {
+            yes: {
+                label: "Attempt Escape", callback: async () => {
+                    let flavor = `${aToken.name} uses this turn's <b>action</b> to attempt a 
+                    ${CONFIG.DND5E.abilities[chkSta]} check vs <b>DC${CHECK_DC}</b> to end the 
+                    effect from ${aItem.name}.`;
+                    let check = (await aToken.actor.rollAbilityTest(chkSta,
+                        { flavor: flavor, chatMessage: true, fastforward: true })).total;
+                    jez.log("Result of check roll", check);
+                    if (CHECK_DC < check) {
+                        await aToken.actor.deleteEmbeddedDocuments("ActiveEffect", [LAST_ARG.effectId]);
+                        jez.postMessage({
+                            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                            msg: `<b>${aToken.name}</b> succesfully broke free.<br>No longer ${RESTRAINED_JRNL}.`,
+                            title: `Succesful Skill Check`, token: aToken
+                        })
+                    } else {
+                        jez.postMessage({
+                            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                            msg: `<b>${aToken.name}</b> failed to break free.<br>Remains ${RESTRAINED_JRNL}.`,
+                            title: `Failed Skill Check`, token: aToken,
+                        })
+                    }
+                }
+            },
+            no: {
+                label: "Ignore Tentacles", callback: async () => {
+                    jez.postMessage({
+                        color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
+                        msg: `<b>${aToken.name}</b> opted to ignore the Tentacles and remains ${RESTRAINED_JRNL}.`,
+                        title: `Declined Skill Check`, token: aToken
+                    })
+                }
+            },
+        },
+        default: "yes",
+    }).render(true);
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
@@ -138,27 +152,13 @@ async function doOn() {
     //
     await jez.wait(100)
     let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
-    jez.log(`**** ${EFFECT} found?`, effect)
+    //jez.log(`**** ${EFFECT} found?`, effect)
     if (!effect) {
         msg = `${EFFECT} sadly not found on ${aToken.name}.`
         ui.notifications.error(msg);
         postResults(msg);
         return (false);
     }
-
-    jez.log(">>>>>>>> effect",effect)
-
+    //jez.log(">>>>>>>> effect",effect)
     return
-    //----------------------------------------------------------------------------------------------
-    // Define the desired modification to existing effect. In this case, a world macro that will be
-    // given arguments: VFX_Name and Token.id for all affected tokens
-    //    
-    //effect.data.changes.push({key: `macro.execute`, mode: CUSTOM, value:`entangle_helper ${VFX_NAME} ${label}`, priority: 20})
-    effect.data.changes.push({key: `macro.itemMacro`, mode: CUSTOM, value:`${tileId}`, priority: 20})
-    jez.log(`effect.data.changes`, effect.data.changes)
-    //----------------------------------------------------------------------------------------------
-    // Apply the modification to existing effect
-    //
-    const result = await effect.update({ 'changes': effect.data.changes });
-    if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
 }
