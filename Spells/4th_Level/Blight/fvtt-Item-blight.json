@@ -1,0 +1,120 @@
+{
+  "name": "Blight",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/rip-acid-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Necromantic energy washes over a creature of your choice that you can see within range, draining moisture and vitality from it.</p>\n<p>The target must make a <strong>Constitution saving</strong> throw. The target takes <strong>8d8 necrotic damage</strong> on a failed save, or half as much damage on a successful one. This spell has <span style=\"text-decoration: underline;\">no effect on undead or constructs</span>.</p>\n<p>If you target a <span style=\"text-decoration: underline;\">plant creature or a magical plant</span>, it makes the saving throw with <span style=\"text-decoration: underline;\">disadvantage</span>, and the spell deals <span style=\"text-decoration: underline;\">maximum damage to it.</span></p>\n<p>If you target a <strong>nonmagical plant that isn't a creature</strong>, such as a tree or shrub, it doesn't make a saving throw, it simply <strong>withers and dies</strong>.</p>\n<p><strong>Higher Level. </strong>When you cast this spell using a spell slot of 5th level or higher, the damage increases by 1d8 for each slot level above 4th.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Nonmagical plants that are not creatures need to be handled manually.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": 17,
+      "scaling": "spell"
+    },
+    "level": 4,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Item.NDhlYjg0ZTYwN2M3"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Blight",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Blight.js\"\n/*****************************************************************************************\n * This one is a simple damage macro, but the amount of damage varies with the type of the \n * target.\n * \n *   Necromantic energy washes over a creature of your choice that you can see within \n *   range, draining moisture and vitality from it. \n * \n *   This spell has no effect on undead or constructs.\n * \n *   The target must make a Constitution saving throw. The target takes 8d8 necrotic damage \n *   on a failed save, or half as much damage on a successful one. \n * \n *   If you target a plant creature or a magical plant, it makes the saving throw with \n *   disadvantage, and the spell deals maximum damage to it.\n * \n *   If you target a nonmagical plant that isn't a creature, such as a tree or shrub, it \n *   doesn't make a saving throw, it simply withers and dies.\n * \n *   Higher Level .When you cast this spell using a spell slot of 5th level or higher, the \n *   damage increases by 1d8 for each slot level above 4th.\n * \n * 02/11/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst DICE_NUM = 4 + LAST_ARG.spellLevel\nconst DICE_TYPE = \"d8\"\nconst DICE_MAX = 8\n//--------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        postResults(msg);\n        return (false);\n    }\n    return(true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let immuneRaces = [\"undead\", \"construct\"];  // Set strings that define immune races\n    let vulnerableRaces = [\"plant\"]             // Strings that define vulnerable races\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //----------------------------------------------------------------------------------\n    // Run the preCheck function to make sure things are setup as best I can check them\n    //\n    if (!preCheck()) return;\n    //-----------------------------------------------------------------------------------------------\n    // If target is immune type, post appropriate message and exit\n    //\n    if (checkType(tToken, immuneRaces)) {\n        msg = `${tToken.name} appears to be unaffected by ${aItem.name}.`\n        postResults(msg);\n        return (false);\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Launch our VFX\n    //\n    jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))\n    //-----------------------------------------------------------------------------------------------\n    // If target is vulnerable type, store that for later use\n    //\n    let vulnerableType = checkType(tToken, vulnerableRaces)\n    //-----------------------------------------------------------------------------------------------\n    // Roll saving throw, disadvantage if vulnerable\n    //\n    const SAVE_TYPE = \"con\"\n    const SAVE_DC = aToken.actor.data.data.attributes.spelldc;\n    let flavor = `<b>${tToken.name}</b> attempts ${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> \n    save to reduce damage from <b>${aItem.name}</b>`;\n    let optionsObj = { flavor: flavor, chatMessage: true, fastforward: true }\n    if (vulnerableType) {\n        optionsObj = { disadvantage: true, flavor: flavor, chatMessage: true, fastforward: true }\n        flavor += \" at disadvantage\"\n    }\n    let save = (await tToken.actor.rollAbilitySave(SAVE_TYPE, optionsObj));\n    //-----------------------------------------------------------------------------------------------\n    // Roll damage \n    //\n    const DAMAGE_TYPE = \"necrotic\"\n    let damageRollObj = {}\n    if (vulnerableType) damageRollObj = new Roll(`${DICE_NUM}*${DICE_MAX}`).evaluate({ async: false });\n    else damageRollObj = new Roll(`${DICE_NUM}${DICE_TYPE}`).evaluate({ async: false });\n    game.dice3d?.showForRoll(damageRollObj);\n    jez.log(` Damage Total: ${damageRollObj.total} Type: ${DAMAGE_TYPE}`);\n    //-----------------------------------------------------------------------------------------------\n    // Create a fake roll, fudged to come up with half the damage for when target saves\n    //\n    let damageRollSaveObj = new Roll(`floor(${damageRollObj.total}/2)`).evaluate({ async: false });\n    let damObj = damageRollObj\n    if (save.total >= SAVE_DC) damObj = damageRollSaveObj\n    jez.log(\"damage roll\", damageRollObj)\n    //damageRollObj.result = 12\n    new MidiQOL.DamageOnlyWorkflow(aToken.actor, aToken, damageRollObj.total, DAMAGE_TYPE, [tToken],\n        damObj, {\n            flavor: `${tToken.name} withers on hit from ${aItem.name}`,\n        itemCardId: args[0].itemCardId\n    });\n    msg = `Vulnerable Race: ${vulnerableType} `\n    postResults(msg)\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n }\n/***************************************************************************************************\n * Determine if passed token is of one of the types to check against, returning True if found\n ***************************************************************************************************/\nfunction checkType(token5e, typeArray) {\n    // COOL-THING: Checks race against an array of races or types, for PC and NPC\n    let tokenRace = token5e.actor.data.data.details.race;   // Shorten subsequent lines for Target Details Race\n    let tokenType = token5e.actor.data.data.details.type;   // Shorten subsequent lines for Target Details Type\n    //-----------------------------------------------------------------------------------------------\n    // Check to see if we have an immune or vulnerable creature type to deal with\n    //\n    let foundType = false;\n    if (token5e.actor.data.type === \"character\") {\n        jez.log(`${token5e.name} is a PC`, token5e);\n        if (tokenRace) {\n            //jez.log(\"PC Race\", tokenRace)\n            for (let entity of typeArray) {\n                if (tokenRace.toLowerCase().includes(entity.toLowerCase())) {\n                    // jez.log(`${token5e.name}'s race is ${entity}`);\n                    foundType = true;\n                }\n            }\n        } // else jez.log(`${token5e.name} has no race`, token5e);\n    } else {\n        // jez.log(`${token5e.name} is an NPC`, token5e);\n        //--------------------------------------------------------------------------------------\n        // Loop through each creature type found in the typeArray array.\n        //\n        for (let entity of typeArray) {\n            // jez.log(`Checking against ${entity}`);\n            // If the creature type is custom...\n            if (tokenType.value.toLowerCase() === \"custom\") {\n                // jez.log(` Beginning custom type Checker`);\n                // Check custom creature type against our typeArray collection\n                if (tokenType.custom.toLowerCase().includes(entity.toLowerCase())) {\n                    // jez.log(` Found a dirty ${entity} spy.`, entity);\n                    foundType = true;\n                }\n            } //else jez.log(` ${token5e.name} does not have a custom race -- ${tokenType.value}`);\n            // If the creature has a subtype...\n            if (!tokenType.subtype == \"\") {\n                // if(tokenType.subtype) {\n                // If the creature's subtype is found in the typeArray collection...\n                if (tokenType.subtype.toLowerCase() === entity.toLowerCase()) {\n                    // jez.log(\" Beginning subtype Checker\");\n\n                    // Check creature Subtypes for the types in our typeArray collection.\n                    if (tokenType.custom.toLowerCase().includes(entity.toLowerCase())) {\n                        // jez.log(\" Found a sneaky subtype.\");\n                        foundType = true;\n                    }\n                }\n            } //else jez.log(` ${token5e.name} does not have a subtype`);\n            // Check creature type against our typeArray collection.\n            if (entity.toLowerCase() === tokenType.value.toLowerCase()) {\n                // jez.log(` target's npc type is ${entity}`);\n                foundType = true;\n            } //else jez.log(` ${token5e.name} vulnerable npc type is ${tokenType.value}`);\n        }\n    }\n    return (foundType)\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

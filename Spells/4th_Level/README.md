@@ -4,6 +4,7 @@ This repository will contain my automated 4th level spells as I create new or up
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Black Tentacles](#black-tentacles)
+* [Blight](#blight)
 * [Greater Invisibility](#greater-invisibility)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
@@ -46,6 +47,16 @@ Afflicted tokens take damage and present a dialog that allows a skill check to r
 I am sure I have left a fair bit out.  It is quite the spell.
 
 ![Black_Tentacles.gif](Black_Tentacles/Black_Tentacles.gif)
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Blight
+
+Fairly simple macro that checks the target type giving immunity to undead and constructs; vulnerability to plants, and otherwise just rolling damage.  
+
+The macro also plays a simple rune VFX on the target.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
