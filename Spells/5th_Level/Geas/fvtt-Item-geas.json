@@ -1,0 +1,145 @@
+{
+  "name": "Geas",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/air-burst-air-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You place a magical command on a creature that you can see within range, forcing it to carry out some service or refrain from some action or course of activity as you decide.  A creature that can't understand you is unaffected by the spell.</p>\n<p>If the creature can understand you, it must succeed on a <strong>Wisdom saving throw or become charmed </strong>by you for the duration. While the creature is charmed by you, it takes <strong>5d10 psychic damage</strong> each time it acts in a manner directly counter to your instructions, but <strong>no more than once each day.</strong> </p>\n<p>You can issue any command you choose, short of an activity that would result in certain death. Should you issue a suicidal command, the spell ends.</p>\n<p>You can end the spell early by using an action to dismiss it. A remove curse, greater restoration, or wish spell also ends it.</p>\n<p><strong>Higher Level. </strong>When you cast this spell using a spell slot of 7th or 8th level, the duration is 1 year. When you cast this spell using a spell slot of 9th level, the spell lasts until it is ended by one of the spells mentioned above.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>This item will place a <em>charmed</em> condition on the target on failure, but it does not handle the damage element or eventual removal.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "minute",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 30,
+      "units": "day"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 17,
+      "scaling": "spell"
+    },
+    "level": 5,
+    "school": "enc",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "bJ2NqAKPYaFYihpD",
+      "changes": [
+        {
+          "key": "macro.CUB",
+          "mode": 0,
+          "value": "Charmed",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/spells/air-burst-air-3.jpg",
+      "label": "Geas",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.CUB"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": ""
+    },
+    "core": {
+      "sourceId": "Item.YWNmNmM2OGVlMTY3"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

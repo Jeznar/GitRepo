@@ -5,6 +5,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Cloudkill](#cloudkill)
 * [Contact Other Plane](#contact-other-plane)
+* [Geas](#geas)
 * [Scrying](#scrying)
 * [Steelwind Strike](#steelwind-strike) (ASE)
 * [Wall of Force](#wall-of-force) (ASE)
@@ -38,6 +39,14 @@ A few key elements:
 The spell description must contain the *magic* phrase ***no damage on save*** to cause a save to do zero damage to the caster.
 
 ![Contact_Other_Plane_Condition_Lab.png](Contact_Other_Plane/Contact_Other_Plane_Condition_Lab.png)
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Geas
+
+This spell simply places a DAE effect that places a CUB condition of charmed on the target, if it fails its save.  It does not handle the damage element or ultimate removal of the effect as that is very much up to GM judgement.
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 

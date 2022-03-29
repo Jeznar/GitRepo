@@ -35,9 +35,11 @@ if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 const ITEM_NAME = "Cloudkill Effect"
-const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`  // Name as expected in Items Directory 
-const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}` // Name of item in actor's spell book
-//----------------------------------------------------------------------------------
+const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
+const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book
+const GRID_SIZE = canvas.scene.data.grid;               // Size of grid in pixels/square (e.g. 70)
+const FEET_PER_GRID = 5                                 // Feet per on canvas grid
+//--------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
@@ -91,9 +93,25 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const TEMPLATE_ID = args[0].templateId
     const TEMPLATE = canvas.templates.objects.children.find(i => i.data._id === TEMPLATE_ID);
+    //-----------------------------------------------------------------------------------------------
+    // If template is a circle, figure out the HARD_OFFSET value to move from center to top left 
+    //
+    const GRID_SIZE = canvas.scene.data.grid;               // Size of grid in pixels/square (e.g. 70)
+    const FEET_PER_GRID = 5                                 // Feet per on canvas grid
+    let topLeft = {}
+    if (TEMPLATE.data.t = "circle") {
+        let radius = TEMPLATE.data.distance               // e.g. Cloudkill 20 
+        let centerX = TEMPLATE.data.x
+        let centerY = TEMPLATE.data.y
+        topLeft.x = centerX - GRID_SIZE * radius / FEET_PER_GRID
+        topLeft.y = centerY - GRID_SIZE * radius / FEET_PER_GRID
+    } else {
+        topLeft.x = TEMPLATE.center.x;
+        topLeft.y = TEMPLATE.center.y;
+    }
+    //----------------------------------------------------------------------------------------------
     jez.log("Place the VFX Tile")
-    const TILE_ID = await placeTile(TEMPLATE_ID, TEMPLATE.center);
-    jez.log("TILE_ID", TILE_ID)
+    const TILE_ID = await placeTile(TEMPLATE_ID, topLeft);
     //----------------------------------------------------------------------------------------------
     copyEditItem(aToken)
     jez.log("Post message to a chat card")
@@ -113,13 +131,12 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
 async function placeTile(TEMPLATE_ID, templateCenter) {
     canvas.templates.get(TEMPLATE_ID).document.delete();
-    const GRID_SIZE = canvas.scene.data.grid; // Size of grid in pixels per square
     let newTile = await Tile.create({
         x: templateCenter.x,
         y: templateCenter.y,
         img: "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_03_Regular_Green02_800x800.webm",
-        width: GRID_SIZE * 4,
-        height: GRID_SIZE * 4 // ditto
+        width: GRID_SIZE * 8,   // 20 foot across
+        height: GRID_SIZE * 8   // 20 foot tall 
     });
     jez.log("newTile", newTile);
     return(newTile[0].data._id);
@@ -193,11 +210,12 @@ async function copyEditItem(token5e) {
     let content = await duplicate(aActorItem.data.data.description.value);
     content = await content.replace(regExp, replaceString);
     let itemUpdate = {
-        'name': NEW_ITEM_NAME,
-        'data.description.value': content,
-        //'data.level': ???  //TODO: Set Level of Spell
-        //'effects[0].value.data.label': NEW_ITEM_NAME
+        'name': NEW_ITEM_NAME,              // Change to actor specific name for temp item
+        'data.description.value': content,  // Drop in altered description
+        'data.level': LAST_ARG.spellLevel,  // Change spell level of temp item 
+        'data.damage.parts' : [[`${LAST_ARG.spellLevel}d6`, "poison"]]
     }
+    jez.log("itemUpdate",itemUpdate)
     await aActorItem.update(itemUpdate)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
