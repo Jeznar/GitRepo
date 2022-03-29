@@ -125,6 +125,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 ## [7th Level Spells](7th_Level)
 
 * [Finger of Death](7th_Level#finger_of_death)
+* [Mirage Arcane](#mirage_arcane)
 * [Plane Shift (Self Only)](7th_Level#plane-shift-self-only)
 
 [*Back to Spell Level List*](#spells)
