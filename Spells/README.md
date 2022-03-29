@@ -106,6 +106,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [5th Level Spells](5th_Level)
 
+* [Cloudkill](5th_Level#cloudkill)
 * [Contact Other Plane](5th_Level#contact-other-plane)
 * [Scrying](5th_Level#scrying)
 * [Steelwind Strike](5th_Level#steelwind-strike) (ASE)

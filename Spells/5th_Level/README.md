@@ -3,18 +3,31 @@ This repository will contain my automated 5th level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Cloudkill](#cloudkill)
 * [Contact Other Plane](#contact-other-plane)
 * [Scrying](#scrying)
 * [Steelwind Strike](#steelwind-strike) (ASE)
-# * [Wall of Force](#wall-of-force) (ASE)
+* [Wall of Force](#wall-of-force) (ASE)
 
 [*Back to List of All Spells*](../README.md)
 
 ## Spell Notes
 
+### Cloudkill
+
+This spell creates a Tile with a VFX of an angry yellow-green cloud that represents the area of effect.  That tile can be moved **manually** by the GM as appropriate to represent the 10 feet of movement per turn.  The caster of the spell is given a temporary at-will spell in its spellbook that is to be used to inflict the poison damage effects on targets that begin their turn in the cloud or enter it.
+
+I had trouble with the Active Auras implementation for this spell, so I fell back to my familiar approach of creating a temporary item that can be **manually** used to inflict the effect of the spell.
+
+![Cloudkill.gif](Cloudkill/Cloudkill.gif)
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
 ### Contact Other Plane
 
-Implmented via DAE and a CUB condition without a macro.
+Implemented via DAE and a CUB condition without a macro.
 
 A few key elements:
 
