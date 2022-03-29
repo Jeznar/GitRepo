@@ -1,0 +1,147 @@
+{
+  "name": "Finger of Death",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/rip-magenta-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You send negative energy coursing through a creature that you can see within range, causing it searing pain. The target must make a <strong>Constitution saving</strong> throw. It takes <strong>7d8+30 necrotic damage</strong> on a failed save, or half as much damage on a successful one.</p>\n<p>A humanoid killed by this spell rises at the start of your next turn as a zombie that is permanently under your command, following your verbal orders to the best of its ability.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: The zombie portion of this spell is to be handled manually by GM and players.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [
+        [
+          "7d8 + 30",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "con",
+      "dc": 17,
+      "scaling": "spell"
+    },
+    "level": 7,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Item.ZDA4ZmM5YTBjZGZl"
+    },
+    "autoanimations": {
+      "version": 3,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": true
+      },
+      "animType": "t1"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Finger of Death",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Run_RuneVFX_onTargets.js\"\n/*****************************************************************************************\n * This macro simply runs the Rune VFX on the targeted token(s) for the aItem school.\n * \n * 03/29/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//--------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    //-----------------------------------------------------------------------------------------------\n    // Launch VFX\n    //\n    let school = jez.getSpellSchool(aItem)\n    let color = jez.getRandomRuneColor()\n    for (const element of args[0].targets) {\n        jez.runRuneVFX(element, school, color)\n      }\n }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
