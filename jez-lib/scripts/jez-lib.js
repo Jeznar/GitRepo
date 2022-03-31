@@ -214,16 +214,30 @@ class jez {
     }
     /***************************************************************************************************
      * inRange
-     * 
+     *
      * Check to see if two entities are in range with 4 foot added
      * to allow for diagonal measurement to "corner" adjacancies
      ***************************************************************************************************/
     static inRange(token1, token2, maxRange) {
-        let distance = canvas.grid.measureDistance(token1, token2).toFixed(1);
-        if (distance > (maxRange + 4)) {
+        //----------------------------------------------------------------------------------------------
+        // Tokens need to be Token5e not TokenDocument5e, so check and convert if needed.
+        //
+        let t1 = {}
+        if (token1.constructor.name === "TokenDocument5e") t1 = token1._object
+        else t1 = token1
+        let t2 = {}
+        if (token2.constructor.name === "TokenDocument5e") t2 = token2._object
+        else t2 = token2
+        //----------------------------------------------------------------------------------------------
+        // Determine the 5e distance between tokens
+        //
+        let distance = jez.getDistance5e(t1, t2)
+        //----------------------------------------------------------------------------------------------
+        // Return result 
+        //
+        if (distance > maxRange) {
             let msg = `jez.inRange: Distance between ${token1.name} and ${token2.name} is ${distance}`
             jez.log(msg);
-            //ui.notifications.warn(msg);
             return (false);
         }
         return (true);
