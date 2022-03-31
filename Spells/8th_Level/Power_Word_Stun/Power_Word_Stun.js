@@ -13,9 +13,6 @@ const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and exte
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
-else aActor = game.actors.get(LAST_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
 else aToken = game.actors.get(LAST_ARG.tokenId);
@@ -23,21 +20,14 @@ let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
-//----------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-
-
+const COND = "Stunned"
+const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
+const SAVE_TYPE = "con"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
-// DamageBonus must return a function to the caller
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -65,20 +55,13 @@ function postResults(msg) {
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function doOnUse() {
-    const FUNCNAME = "doOnUse()";
     if (!preCheck()) return (false)
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
-    const COND = "Stunned"
-    const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
-    const SAVE_TYPE = "con"
     jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
     let curHP = tToken.actor.data.data.attributes.hp.value
     if (curHP <= 150) {
-        jez.log(`${tToken.name} has ${curHP} HP so it is affected by the stun`)
         //----------------------------------------------------------------------------------------------
-        // Define the effect that will be applied
+        // ${tToken.name} has ${curHP} HP so it is affected by the stun`)
         //
         let overTimeVal=`turn=end,
             label=${COND},
@@ -86,28 +69,20 @@ async function doOnUse() {
             saveAbility=${SAVE_TYPE},
             saveRemove=true,
             saveMagic=true`
-        let effectData = [
-            {
-                label: COND,
-                icon: aItem.img,
-                origin: args[0].uuid,
-                disabled: false,
-                //duration: { rounds: 9999, startRound: GAME_RND, startTime: game.time.worldTime },
-                //flags: { dae: { specialDuration: ["isDamaged"] } },
-                changes: [
-                    { key: `macro.CUB`, mode: jez.CUSTOM, value: COND, priority: 20 },
-                    { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value:overTimeVal , priority: 20 },
-                ]
-            }];
-        jez.log("effectData", effectData)
+        let effectData = [ {
+            label: COND,
+            icon: aItem.img,
+            origin: args[0].uuid,
+            disabled: false,
+            changes: [  { key: `macro.CUB`, mode: jez.CUSTOM, value: COND, priority: 20 },
+                        { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value:overTimeVal , priority: 20 } ]
+        } ];
         MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: effectData });
+        msg = `${tToken.name} is stunned until a successful ${SPELL_DC}DC ${SAVE_TYPE.toUpperCase()} saving throw 
+        at the end of its turn.`
     } else {
-        jez.log(`${tToken.name} has ${curHP} HP so it is not affected by the stun`)
-
+        msg = `${tToken.name} shakes off the effects of ${aItem.name}.`
     }
-
-    msg = `Maybe say something useful...`
     postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }

@@ -3,8 +3,9 @@ This repository will contain my automated 2nd level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
-* [Darkness](#darkness) (ASE)
+* [Augury](#augury)
 * [Crown of Madness](#crown-of-madness)
+* [Darkness](#darkness) (ASE)
 * [Darkvision](#darkvision)
 * [Enlarge/Reduce](#enlargereduce)
 * [Find Steed](#find-steed)
@@ -23,6 +24,14 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 [*Back to List of All Spells*](../README.md)
 
 ## Spell Notes
+
+### Augury
+
+This spell simply plays a Rune based VFX on the caster using the world macro: [Run_RuneVFX_onSelf](../../Utility_Macros#run-runevfx-onself) whixh is simply added to the OnUse Macro field of the item.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
 
 ### Crown of Madness
 
@@ -57,6 +66,10 @@ flags.midi-qol.OverTime Override turn=end,saveDC=16,label=Save vs Crown of Madne
 Its quite the complex critter for a spell that is rarely if ever used.
 
 ![Crown_of_madness.gif](Crown_of_Madness/Crown_of_Mad.gif)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
 
 ### Darkness
 
