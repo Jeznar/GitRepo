@@ -5,6 +5,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 
 * [Binding Curse](#binding-curse)
 * [Bless](#bless)
+* [Cure Wounds](#cure-wounds)
 * [Detect Magic](#detect-magic)
 * [Dissonant Whispers](#dissonant-whispers)
 * [Electrify](#electrify)
@@ -74,6 +75,16 @@ This does result in bit of ugly in the chat log, but at least it is correct math
 This is a known issue with DAE, [Active effects concatenated with global bonus in special traits](https://gitlab.com/foundrynet/dnd5e/-/issues/1134).
 
 ![Bless](Bless/Bless.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Cure Wounds
+
+Implements the basic cure spell.  It runs a macro that checks to make sure exactly one target is targeted and issues an error message if needed. It also runs a simple rune based VFX on the token that is healed. 
+
+![Cure_Wounds.gif](Cure_Wounds/Cure_Wounds.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 
