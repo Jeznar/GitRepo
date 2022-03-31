@@ -27,7 +27,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ### Augury
 
-This spell simply plays a Rune based VFX on the caster using the world macro: [Run_RuneVFX_onSelf](../../Utility_Macros#run-runevfx-onself) whixh is simply added to the OnUse Macro field of the item.
+This spell simply plays a Rune based VFX on the caster using the world macro: [Run_RuneVFX_onSelf](../../Utility_Macros#run-runevfx-onself) which is simply added to the OnUse Macro field of the item.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
