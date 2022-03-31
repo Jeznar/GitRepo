@@ -1,4 +1,4 @@
-const MACRONAME = "Protection_from_Evil_and_Good.0.1"
+const MACRONAME = "Protection_from_Evil_and_Good.0.3.js"
 /*****************************************************************************************
  * This spell macro built from a Sequencer example found at:
  * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Dynamic-Active-Effects-&-JB2A-Shield
@@ -7,12 +7,12 @@ const MACRONAME = "Protection_from_Evil_and_Good.0.1"
  * 
  * 12/31/21 0.1 Creation of Macro
  * 12/31/21 0.2 Additions
+ * 03/31/21 0.3 Adjustments to VFX
  *****************************************************************************************/
-const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     "Starting", `${MACRONAME} or ${MACRO}`);
-for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 
 //---------------------------------------------------------------------------------------
 // Set some global variables and constants
@@ -31,10 +31,10 @@ const VFX_NAME  = `${MACRO}-${aToken.id}`
 const VFX_INTRO = "modules/jb2a_patreon/Library/1st_Level/Shield/Shield_01_Regular_Green_Intro_400x400.webm"
 const VFX_LOOP  = "modules/jb2a_patreon/Library/1st_Level/Shield/Shield_03_Regular_Green_Loop_400x400.webm";
 const VFX_OUTRO = "modules/jb2a_patreon/Library/1st_Level/Shield/Shield_03_Regular_Green_OutroExplode_400x400.webm";
-const VFX_OPACITY = 0.6;
-const VFX_SCALE = 0.6;
+const VFX_OPACITY = 0.7;
+const VFX_SCALE = 1.9;
 
-log("------- Obtained Global Values -------",
+jez.log("------- Obtained Global Values -------",
     `Active Token (aToken) ${aToken.name}`, aToken,
     `Active Item (aItem) ${aItem.name}`, aItem,
     "EFFECT_ICON", EFFECT_ICON);
@@ -48,44 +48,40 @@ if (args[0] === "off") doOff();        			    // DAE removal
 //---------------------------------------------------------------------------------------
 // That's all folks
 //
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     "Finishing", MACRONAME);
 return;
-
 /***************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************/
-
-/***************************************************************************************
+ ***************************************************************************************
  * Perform the steps that runs when this macro is executed by DAE to add to target
  ***************************************************************************************/
  async function doOn() {
     const FUNCNAME = "doOn()";
-    log("--------------On---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-
+    jez.log("--------------On---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
+    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+    jez.runRuneVFX(aToken, jez.getSpellSchool(aItem), "green")
     new Sequence()
     .effect()
         .file(VFX_INTRO)
         .attachTo(aToken)
-        .scale(VFX_SCALE)
+        .scaleToObject(VFX_SCALE)
         .opacity(VFX_OPACITY)           
         .waitUntilFinished(-500) // Negative wait time (ms) clips the effect to avoid fadeout
     .effect()
         .file(VFX_LOOP)
         .attachTo(aToken)
-        .scale(VFX_SCALE)
-        .opacity(VFX_OPACITY)  
+        .scaleToObject(VFX_SCALE)
+        .opacity(VFX_OPACITY)
+        .belowTokens(true)  
         .persist()
-        .name(VFX_NAME)      // Give the effect a uniqueish name
-        .fadeIn(300)            // Fade in for specified time in milliseconds
-        .fadeOut(300)           // Fade out for specified time in milliseconds
+        .name(VFX_NAME)         // Give the effect a uniqueish name
         .extraEndDuration(800)  // Time padding on exit to connect to Outro effect
     .play()
 
-    log("--------------On---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------On---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
 
@@ -94,43 +90,19 @@ return;
  ***************************************************************************************/
   async function doOff() {
     const FUNCNAME = "doOff()";
-    log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+    jez.log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
+    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 
     Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken });
 
     new Sequence()
     .effect()
         .file(VFX_OUTRO)
-        .scale(VFX_SCALE)
+        .scaleToObject(VFX_SCALE)
         .opacity(VFX_OPACITY)  
         .attachTo(aToken)
     .play()
 
-    log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
-}
-
-/****************************************************************************************
-* DEBUG Logging
-* 
-* If passed an odd number of arguments, put the first on a line by itself in the log,
-* otherwise print them to the log seperated by a colon.  
-* 
-* If more than two arguments, add numbered continuation lines. 
-***************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    } else {            // Even number of arguments
-        console.log(parms[i],":",parms[i+1]);
-        i = 2;
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    }
 }
