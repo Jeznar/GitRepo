@@ -26,18 +26,12 @@ let aItem;          // Active Item information, item invoking this macro
 const lastArg = args[args.length - 1];
 if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
-const EFFECT_ICON = "Icons_JGB/Spells/1st%20Level/Shield_Yellow.png";
 const VFX_NAME  = `${MACRO}-${aToken.id}`
 const VFX_INTRO = "modules/jb2a_patreon/Library/1st_Level/Shield/Shield_01_Regular_Green_Intro_400x400.webm"
 const VFX_LOOP  = "modules/jb2a_patreon/Library/1st_Level/Shield/Shield_03_Regular_Green_Loop_400x400.webm";
 const VFX_OUTRO = "modules/jb2a_patreon/Library/1st_Level/Shield/Shield_03_Regular_Green_OutroExplode_400x400.webm";
 const VFX_OPACITY = 0.7;
 const VFX_SCALE = 1.9;
-
-jez.log("------- Obtained Global Values -------",
-    `Active Token (aToken) ${aToken.name}`, aToken,
-    `Active Item (aItem) ${aItem.name}`, aItem,
-    "EFFECT_ICON", EFFECT_ICON);
 
 //---------------------------------------------------------------------------------------
 // Do something Useful

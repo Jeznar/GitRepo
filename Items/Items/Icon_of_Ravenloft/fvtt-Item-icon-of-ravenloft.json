@@ -1,0 +1,193 @@
+{
+  "name": "Icon of Ravenloft",
+  "type": "equipment",
+  "img": "Icons_JGB/Items/Icon_of_Ravenloft.png",
+  "data": {
+    "description": {
+      "value": "<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\"><em style=\"box-sizing:border-box;user-select:text\">Wondrous item, legendary (requires attunement by a creature of good alignment)</em></p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">The Icon of Ravenloft is a 12-inch-tall statuette made of the purest silver, weighing 10 pounds. It depicts a cleric kneeling in supplication.</p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">The icon was given to Strahd by the archpriest <strong style=\"box-sizing:border-box;user-select:text\">Ciril Romulich</strong>, an old family friend, to consecrate the castle and its chapel.</p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">While within 30 feet of the icon, a creature is under the effect of a <a class=\"entity-link\" style=\"box-sizing:border-box;user-select:text;background:var(--faint-color);padding-right:2px;padding-bottom:0px;padding-left:2px;border-radius:5px;color:var(--primary-font)\" draggable=\"true\" data-entity=\"Item\" data-id=\"M2Y5NzMwYWRhZjU2\"> Protection from Evil and Good</a> spell against fiends and undead. Only a creature attuned to the icon can use its other properties.4</p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\"><strong style=\"box-sizing:border-box;user-select:text\"><em style=\"box-sizing:border-box;user-select:text\">Augury.</em></strong> You can use an action to cast an <a class=\"entity-link\" style=\"box-sizing:border-box;user-select:text;background:var(--faint-color);padding-right:2px;padding-bottom:0px;padding-left:2px;border-radius:5px;color:var(--primary-font)\" draggable=\"true\" data-entity=\"Item\" data-id=\"ZDk4YzQ5N2RkM2Mw\"> Augury</a> spell from the icon, with no material components required. Once used, this property can’t be used again until the next dawn.</p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\"><strong style=\"box-sizing:border-box;user-select:text\"><em style=\"box-sizing:border-box;user-select:text\">Bane of the Undead.</em></strong> You can use the icon as a holy symbol while using the Turn Undead or Turn the Unholy feature. If you do so, increase the save DC by 2.</p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\"><strong style=\"box-sizing:border-box;user-select:text\"><em style=\"box-sizing:border-box;user-select:text\">Cure Wounds.</em></strong> While holding the icon, you can take an action to heal one creature that you can see within 30 feet of you. The target regains 3d8 + 3 hit points (@Item[2AbOWkBeQezeGT1J]{Cure Wounds}@3rd level, unless it is an undead, a construct, or a fiend. Once used, this property can’t be used again until the next dawn.</p>\n<hr />\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\"><strong>FoundryVTT: </strong></p>\n<ul>\n<li style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">VFX indicates aura but does not automated the effects. </li>\n<li style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">Augury is added as a once a day spell.</li>\n<li style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">Bane of Undead is not automated (at all)</li>\n<li style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">Cure wounds is added as a once per day ability.</li>\n</ul>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Curse of Strahd",
+    "quantity": 1,
+    "weight": 10,
+    "price": 0,
+    "attunement": 2,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": null,
+      "type": "trinket",
+      "dex": null
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "baseItem": "",
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "VtxJZD29uB8tZPJp",
+      "changes": [
+        {
+          "key": "macro.execute",
+          "mode": 0,
+          "value": "Aura_Icon_of_Ravenloft",
+          "priority": "20"
+        },
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 0,
+          "value": "Protection from undead and fiends",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Items/Icon_of_Ravenloft.png",
+      "label": "Icon of Ravenloft",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": true,
+          "aura": "Allies",
+          "radius": 30,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "macro.execute",
+        "flags.gm-notes.notes"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": true,
+      "equipped": false,
+      "attuned": true,
+      "charges": "1",
+      "chargeType": "c2",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": true,
+      "recharge": "0",
+      "rechargeType": "t3",
+      "rechargeUnit": "r2",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "2AbOWkBeQezeGT1J",
+          "name": "Cure Wounds",
+          "pack": "world",
+          "img": "/systems/dnd5e/icons/spells/heal-jade-1.jpg",
+          "baseLevel": "1",
+          "level": "1",
+          "consumption": "1",
+          "upcast": "1",
+          "upcastCost": "1",
+          "flatDc": false
+        },
+        "1": {
+          "id": "jQW6qWwInx5wiURQ",
+          "name": "Augury",
+          "pack": "world",
+          "img": "systems/dnd5e/icons/spells/evil-eye-eerie-2.jpg",
+          "baseLevel": "2",
+          "level": "3",
+          "consumption": "1",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.qXSQLzxgEuXGAzbv"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

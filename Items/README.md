@@ -29,14 +29,48 @@ Components for spells that can be used as required items.
 This is a generic catch all for things that don't fit into other categories.
 
 * [Cloak of Protection](#cloak-of-protection)
+* [Icon of Ravenloft](#icon-of-ravenloft)
 
 ---
+
+### **Icon of Ravenloft**
+
+This item is a Curse of Strahd it is described as follows:
+
+> *Wondrous item, legendary (requires attunement by a creature of good alignment)*
+> 
+> The Icon of Ravenloft is a 12-inch-tall statuette made of the purest silver, weighing 10 pounds. It depicts a cleric kneeling in supplication.
+> 
+> The icon was given too Strahd by the archpriest Ciril Romulich, an old family friend, to consecrate the castle and its chapel.
+> 
+> While within 30 feet of the icon, a creature is under the effect of a  **Protection from Evil and Good** spell against fiends and undead. Only a creature attuned to the icon can use its other properties.4
+> 
+> **Augury.** You can use an action to cast an  Augury spell from the icon, with no material components required. Once used, this property can’t be used again until the next dawn.
+> 
+> **Bane of the Undead.** You can use the icon as a holy symbol while using the Turn Undead or Turn the Unholy feature. If you do so, increase the save DC by 2.
+> 
+> **Cure Wounds.** While holding the icon, you can take an action to heal one creature that you can see within 30 feet of you. The target regains 3d8 + 3 hit points ( Cure Wounds@3rd level, unless it is an undead, a construct, or a fiend. Once used, this property can’t be used again until the next dawn.
+
+My implementation does the following for those features:
+
+1. VFX indicates aura but does not automated the effects. 
+1. Augury is added as a once a day spell.
+1. Bane of Undead is not automated (at all)
+1. Cure wounds is added as a once per day ability.
+
+DAE and Active Auras are essential to this one. 
+
+![Icon_of_Ravenloft.gif](Items/Icon_of_Ravenloft/Icon_of_Ravenloft.gif)
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+___
 
 ### **Cloak of Protection**
 
 This item simply adds a DAE passive, permanent effect to an actor who has it equipped boosting AC and saves by one.
 
-It is implmented with a rather ugly `+1+` on the DAE effects sheet.  This seems to avoid the possibility of string concatenation which could result in something like `11d4` or `1d41` being added when a user of this item is blessed.
+It is implemented with a rather ugly `+1+` on the DAE effects sheet.  This seems to avoid the possibility of string concatenation which could result in something like `11d4` or `1d41` being added when a user of this item is blessed.
 
 ![Cloak_of_Protection_DAE_Effect.png](Items/Cloak_of_Protection/Cloak_of_Protection_DAE_Effect.png)
 
