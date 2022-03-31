@@ -211,7 +211,7 @@ It does the following:
 
 ### Run RuneVFX onSelf
 
-Macro to be used as an OnUse macro from an item sheet.  It simply plays a simple [../jez-lib/jez.runRuneVFX(...)](#runRuneVFX)** on the using token.
+Macro to be used as an OnUse macro from an item sheet.  It simply plays a simple [jez.runRuneVFX(...)](../jez-lib/#runRuneVFX)** on the using token.
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
