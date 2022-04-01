@@ -67,6 +67,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Hold Person](2nd_Level#hold-person)
 * [Invisibility](2nd_Level#invisibility)
 * [Knock](2nd_Level#knock)
+* [Levitate](2nd_Level#levitate)
 * [Locate Object](2nd_Level#locate-object)
 * [Mirror Image](2nd_Level#mirror-image) (ASE)
 * [Misty Step](2nd_Level#misty-step)

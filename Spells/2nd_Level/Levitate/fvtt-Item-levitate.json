@@ -1,0 +1,148 @@
+{
+  "name": "Levitate",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/wind-grasp-magenta-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>One creature or object of your choice that you can see within range rises vertically, <strong>up to 20 feet,</strong> and remains suspended there for the duration. The spell can levitate a target that weighs <strong>up to 500 pounds</strong>. An unwilling creature that succeeds on a Constitution saving throw is unaffected.</p>\n<p>The target can move only by pushing or pulling against a fixed object or surface within reach (such as a wall or a ceiling), which allows it to move as if it were climbing. You can change the target’s altitude by up to 20 feet in either direction on your turn. If you are the target, you can move up or down as part of your move. Otherwise, you can use your action to move the target, which must remain within the spell’s range.</p>\n<p>When the spell ends, the target floats gently to the ground if it is still aloft.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>Saving Throw Handled Manually if target is unwilling</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 255",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 10,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 60,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "con",
+      "dc": 0,
+      "scaling": "spell"
+    },
+    "level": 2,
+    "school": "trs",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "Either a small leather loop or a piece of golden wire bent into a cup shape with a long shank on one end",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "tPo3gJwHNNclTmad",
+      "changes": [
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 2,
+          "value": "See spell description",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 600,
+        "rounds": 60
+      },
+      "icon": "systems/dnd5e/icons/spells/wind-grasp-magenta-2.jpg",
+      "label": "Levitate",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "flags.gm-notes.notes"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.MTIyMGM5ODA5ZGE5"
+    },
+    "midi-qol": {
+      "onUseMacroName": "Run_RuneVFX_onTargets"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

@@ -13,6 +13,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Hold Person](#hold-person)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
+* [Levitate](#levitate)
 * [Locate Object](#locate-object)
 * [Mirror Image](#mirror-image) (ASE)
 * [Misty Step](#misty-step)
@@ -175,6 +176,14 @@ Basically the same macro is used by [Greater Invisibility](../4th_Level#greater-
 ### Knock
 
 Nothing more than a tested SRD implmentation. It works.  Nothing special.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Levitate
+
+Applies a DAE effect to indicate levitate's presence and runs a VFX on the target.  This implementation does not perform the saving throw for an unwilling target or check to make sure only one token was targeted.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
