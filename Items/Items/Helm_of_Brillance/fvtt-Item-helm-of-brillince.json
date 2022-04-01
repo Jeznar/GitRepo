@@ -1,0 +1,158 @@
+{
+  "name": "Helm of Brillince",
+  "type": "equipment",
+  "img": "Icons_JGB/Items/Helm_of_Brilliance.png",
+  "data": {
+    "description": {
+      "value": "<p><em>Wondrous item, very rare (requires attunement)</em></p>\n<p>This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.</p>\n<p>You gain the following benefits while wearing it:</p>\n<p>You can use an action to cast one of the following spells (save DC 18), using one of the helm&rsquo;s gems of the specified type as a component:</p>\n<ul>\n<li>@Item[zRMlWOFY36wZYPNF]{Daylight} (opal),&nbsp;</li>\n<li>@Item[mUFcGkxVtE0FtP8z]{Fireball} (fire opal),</li>\n<li>@Item[NTI0YmE5ODAxNTY2]{Prismatic Spray} (diamond), or</li>\n<li>@Item[ZTg5MzI4NmM1Zjc4]{Wall of Fire} (ruby).</li>\n</ul>\n<p>The gem is destroyed when the spell is cast and disappears from the helm.</p>\n<ul>\n<li>As long as it has at least one<strong> diamond</strong>, the helm emits dim light in a 30-foot radius when at least one undead is within that area. Any undead that starts its turn in that area takes 1d6 radiant damage.</li>\n<li>As long as the helm has at least one <strong>ruby</strong>, you have resistance to fire damage.</li>\n<li>As long as the helm has at least one <strong>fire opal</strong>, you can use an action and speak a command word to cause one weapon you are holding to burst into flames. The flames emit bright light in a 10-foot radius and dim light for an additional 10 feet. The flames are harmless to you and the weapon. When you hit with an attack using the blazing weapon, the target takes an extra 1d6 fire damage. The flames last until you use a bonus action to speak the command word again or until you drop or stow the weapon.</li>\n</ul>\n<p>Roll a d20 if you are wearing the helm and take fire damage as a result of failing a saving throw against a spell. On a roll of 1, the helm emits beams of light from its remaining gems. Each creature within 60 feet of the helm other than you must succeed on a DC 17 Dexterity saving throw or be struck by a beam, taking radiant damage equal to the number of gems in the helm. The helm and its gems are then destroyed.</p>\n<h2>Gem Count</h2>\n<ul>\n<li>Opals:&nbsp;</li>\n<li>Fire OpalsL</li>\n<li>Diamonds:</li>\n<li>Ruby:</li>\n</ul>\n<p>&nbsp;</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Gem counts to be tracked manually.&nbsp; Diamond and Fire Opal Effects handled manually as well.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 1,
+    "equipped": false,
+    "rarity": "veryRare",
+    "identified": true,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": null,
+      "type": "clothing",
+      "dex": null
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "baseItem": "",
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": true
+  },
+  "effects": [
+    {
+      "_id": "Toa4pwTGZ0TsHGMM",
+      "changes": [
+        {
+          "key": "flags.midi-qol.DR.fire",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Items/Helm_of_Brilliance.png",
+      "label": "Helm of Brillince: Ruby",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "flags.midi-qol.DR.fire"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.FnXs2ehVxiF3KxAw"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

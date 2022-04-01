@@ -32,6 +32,8 @@ This is a generic catch all for things that don't fit into other categories.
 * [Daern's Instant Fortress](#daerns-instant-fortress)
 * [Doss Lute](#doss-lute)
 * [Icon of Ravenloft](#icon-of-ravenloft)
+* [Helm of Brilliance](#helm-of-brillance)
+* [Rod of the Pact Keeper](#rod-of-the-pact-keeper)
 
 ---
 
@@ -97,6 +99,29 @@ Instrument of the Bards!   Just configured to provide spells to the attuned user
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
 ___
+
+### Helm of Brilliance
+
+This is a not baked implementation. Most everything needs manual effort.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+
+### Rod of the Pact Keeper
+
+This item is partially automated.  It handles the +1 to attack and save DC, though, it applies the bonus to all spells not just warlock abilities.  It does not check for the user being a warlock.
+
+It can be *used* to drain the charge bußt the spell slot needs to be manually recovered.
+
+Also, I bumped into the old string addition problem and had to add a trailing plus after the bonus value as shown below.
+
+![Rod_of_the_Pact_Keeper_DAE_Effects.png](Items/Rod_of_the_Pact_Keeper/Rod_of_the_Pact_Keeper_DAE_Effects.png)
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+
 
 ## Potions
 
