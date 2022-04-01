@@ -29,6 +29,7 @@ Components for spells that can be used as required items.
 This is a generic catch all for things that don't fit into other categories.
 
 * [Cloak of Protection](#cloak-of-protection)
+* [Doss Lute](#doss-lute)
 * [Icon of Ravenloft](#icon-of-ravenloft)
 
 ---
@@ -73,6 +74,16 @@ This item simply adds a DAE passive, permanent effect to an actor who has it equ
 It is implemented with a rather ugly `+1+` on the DAE effects sheet.  This seems to avoid the possibility of string concatenation which could result in something like `11d4` or `1d41` being added when a user of this item is blessed.
 
 ![Cloak_of_Protection_DAE_Effect.png](Items/Cloak_of_Protection/Cloak_of_Protection_DAE_Effect.png)
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+___
+
+### **Doss Lute**
+
+Instrument of the Bards!   Just configured to provide spells to the attuned user.  The Magic item configuration page is important on this one.
+
+![Cloak_of_Protection_DAE_Effect.png](Items/Doss_Lute/Doss_Lute_Magic.png)
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
