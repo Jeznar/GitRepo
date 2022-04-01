@@ -1,0 +1,170 @@
+{
+  "name": "Rod of the Pact Keeper +1",
+  "type": "equipment",
+  "img": "Icons_JGB/Items/Rod_of_the_Pact_Keeper.png",
+  "data": {
+    "description": {
+      "value": "<p><em>Rod, uncommon (+1), rare (+2), or very rare (+3) (requires attunement by a warlock)</em></p>\n<p>While holding this rod, you gain a bonus to spell attack rolls and to the saving throw DCs of your warlock spells. The bonus is determined by the rod’s rarity.</p>\n<p>In addition, you can regain one warlock spell slot as an action while holding the rod. You can’t use this property again until you finish a long rest.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>The rod can be used to consume its daily charge, but the warlock's player needs to manually return the spell slot.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 2,
+    "equipped": true,
+    "rarity": "rare",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": "Attuned by a warlock"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "lr"
+    },
+    "consume": {
+      "type": "charges",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": null,
+      "type": "trinket",
+      "dex": null
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "baseItem": "",
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "W1wwfVsjaCGRtrix",
+      "changes": [
+        {
+          "key": "data.bonuses.spell.attack",
+          "mode": 2,
+          "value": "+1",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.spell.dc",
+          "mode": 2,
+          "value": "+1+",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Items/Rod_of_the_Pact_Keeper.png",
+      "label": "Rod of the Pact Keeper +1",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "data.bonuses.spell.attack",
+        "data.bonuses.spell.dc"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "onUseMacroName": "Run_RuneVFX_onSelf"
+    },
+    "core": {
+      "sourceId": "Item.Fwe12YnnppxgyiIa"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

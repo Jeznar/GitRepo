@@ -128,11 +128,18 @@ Also, I bumped into the old string addition problem and had to add a trailing pl
 Potion Items as they are created and added should be tagged into this listing.
 
 * [Alchemy Jug](#alchemy-jug)
+* [Greater Healing](#greater-healing)
 * [Poison](#poison)
 
 ### **Alchemy Jug**
 
 No automation, just a note on FoundryVTT usage.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+### **Greater Healing**
+
+Potion performs healing and will consume a usage (assuming check box remains checked(.  Also runs a simple VFX on the imbiber. 
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
