@@ -3,6 +3,7 @@ This repository will contain my automated 1st level spells as I create new or up
 
 Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Animal Friendship](#animal-friendship)
 * [Binding Curse](#binding-curse)
 * [Bless](#bless)
 * [Cure Wounds](#cure-wounds)
@@ -29,6 +30,14 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 ---
 
 ## Spell Notes
+
+### Animal Friendship
+
+This implementation applies a DAE effect to the target(s) and runs a Rune VFX as a world macro.  It does not do any error checking or perform the saving throw or intelligence check, those are left to be handled manually.
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
 
 ### Binding Curse
 

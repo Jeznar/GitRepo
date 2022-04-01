@@ -35,6 +35,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [1st Level Spells](1st_Level)
 
+* [Animal Friendship](1st_Level#animal-friendship)
 * [Binding Curse](1st_Level#binding-curse)
 * [Bless](1st_Level#bless)
 * [Detect Magic](1st_Level#detect-magic)
