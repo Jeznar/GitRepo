@@ -18,6 +18,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Mirror Image](#mirror-image) (ASE)
 * [Misty Step](#misty-step)
 * [Moonbeam](#moonbeam) (ASE)
+* [Protection from Poison](#protection-from-poison)
 * [Ray of Enfeeblement](#ray-of-enfeeblement)
 * [Scorching Ray](#scorching-ray) (ASE)
 * [Spiritual Weapon](#spiritual-weapon)
@@ -232,6 +233,14 @@ Notes from the author's wiki:
 * The beam will automatically roll saving throws and damage when a token enters its space for the first time until it has a turn again, or if it starts its turn in its space
 
 I have kept my original implementation of moonbeam in a subdirectory for possible future reference as it does a pretty extensive job of summoning and managing actors and effects.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Protection from Poison
+
+Attempts to remove one effect named *Poison* from the target (there could be multiple or name variations), and places a DAE effect on the target to grant resistance to poison.  Advantage on saves versus poison are to be adjudicated manually. 
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
