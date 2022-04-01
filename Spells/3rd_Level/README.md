@@ -9,6 +9,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Counterspell](#counterspell)
 * [Dispel Magic](#dispel-magic)
 * [Fireball](#fireball)
+* [Fly](#fly)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
 * [Revivify](#revivify)
@@ -98,6 +99,16 @@ Probably most interestingly, it reads the name of the icon that represents the s
 ![Fireball.gif](Fireball/Fireball.gif)
 
 NOTE: I needed to disable Automated Animations global match to fireball to avoid that modules *help.*
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Fly
+
+This spell applies a DAE effect that upgrades flight speed to 60.  It also makes a call to the world macro, **[Run RuneVFX onTargets](../../Utility_Macros#run-runevfx-ontargets)**, to play a VFX on the target(s), which are assumed to be willing.
+
+![Fly_DAE_Effects.png](Fly/Fly_DAE_Effects.png)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

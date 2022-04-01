@@ -85,6 +85,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Counterspell](3rd_Level#counterspell)
 * [Dispel Magic](3rd_Level#dispel-magic)
 * [Fireball](3rd_Level#fireball)
+* [Fly](3rd_Level#fly)
 * [Lightning Bolt](3rd_Level#lightning-bolt)
 * [Magic Circle](3rd_Level#magic-circle)
 * [Revivify](3rd_Level#revivify)
