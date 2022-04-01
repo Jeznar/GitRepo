@@ -214,6 +214,12 @@ It does the following:
 
 Macro to be used as an OnUse macro from an item sheet.  It simply runs [jez.runRuneVFX(...)](../jez-lib/#runRuneVFX) on the targeted token(s), making sure the color is the same random selection on each.
 
+Used by adding the following to the OnUse Macro field at the bottom of the **Item Details** page:
+
+~~~javasctipt
+Run_RuneVFX_onTargets
+~~~
+
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
 ---
@@ -221,6 +227,12 @@ Macro to be used as an OnUse macro from an item sheet.  It simply runs [jez.runR
 ### Run RuneVFX onSelf
 
 Macro to be used as an OnUse macro from an item sheet.  It simply runs [jez.runRuneVFX(...)](../jez-lib/#runRuneVFX) on the using token.
+
+Used by adding the following to the OnUse Macro field at the bottom of the **Item Details** page:
+
+~~~javasctipt
+Run_RuneVFX_onSelf
+~~~
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
