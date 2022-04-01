@@ -29,6 +29,7 @@ Components for spells that can be used as required items.
 This is a generic catch all for things that don't fit into other categories.
 
 * [Cloak of Protection](#cloak-of-protection)
+* [Daern's Instant Fortress](#daerns-instant-fortress)
 * [Doss Lute](#doss-lute)
 * [Icon of Ravenloft](#icon-of-ravenloft)
 
@@ -79,6 +80,14 @@ It is implemented with a rather ugly `+1+` on the DAE effects sheet.  This seems
 
 ___
 
+### Daern's Instant Fortress
+
+This is just an item description.  Nothing is automated.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+___
+
 ### **Doss Lute**
 
 Instrument of the Bards!   Just configured to provide spells to the attuned user.  The Magic item configuration page is important on this one.
@@ -88,7 +97,6 @@ Instrument of the Bards!   Just configured to provide spells to the attuned user
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
 ___
-
 
 ## Potions
 
