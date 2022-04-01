@@ -102,13 +102,20 @@ ___
 
 Potion Items as they are created and added should be tagged into this listing.
 
+* [Alchemy Jug](#alchemy-jug)
 * [Poison](#poison)
+
+### **Alchemy Jug**
+
+No automation, just a note on FoundryVTT usage.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
 
 ### **Poison**
 
-This macro inflicts 3d6 of posion damage and applies a posion effect that does damage on each turn of the target (on failures).  Each round teh save may be repeated at the end of the trn. It does 3d6 the first round, then 2d6, then 1d6, then the effect terminates if still active. 
+This macro inflicts 3d6 of poison damage and applies a poison effect that does damage on each turn of the target (on failures).  Each round the save may be repeated at the end of the turn. It does 3d6 the first round, then 2d6, then 1d6, then the effect terminates if still active. 
 
-The setup of the DAE effect on the item is essential to this macro.  Of particular note, the save DC myst be the first token in te Effect Value field (see the included screen shot).
+The setup of the DAE effect on the item is essential to this macro.  Of particular note, the save DC myst be the first token in the Effect Value field (see the included screen shot).
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 

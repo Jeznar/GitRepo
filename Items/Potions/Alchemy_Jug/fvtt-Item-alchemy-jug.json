@@ -1,0 +1,37 @@
+{
+  "name": "Alchemy Jug",
+  "type": "loot",
+  "img": "systems/dnd5e/icons/items/potions/unique-9.jpg",
+  "data": {
+    "description": {
+      "value": "<p><em>Wondrous item, uncommon</em></p>\n<p>This ceramic jug appears to be able to hold a gallon of liquid and weighs 12 pounds whether full or empty. Sloshing sounds can be heard from within the jug when it is shaken, even if the jug is empty.<br /><br />You can use an action and name one liquid from the table below to cause the jug to produce the chosen liquid. Afterward, you can uncork the jug as an action and pour that liquid out, up to 2 gallons per minute. The maximum amount of liquid the jug can produce depends on the liquid you named.</p>\n<p>Once the jug starts producing a liquid, it can&rsquo;t produce a different one, or more of one that has reached its maximum, until the next dawn.</p>\n<table cellspacing=\"0\" cellpadding=\"0\">\n<tbody>\n<tr>\n<td valign=\"top\"><strong>Liquid</strong></td>\n<td valign=\"top\"><strong>Max Amount</strong></td>\n</tr>\n<tr>\n<td valign=\"top\">Acid</td>\n<td valign=\"top\">8 ounces</td>\n</tr>\n<tr>\n<td valign=\"top\">Basic poison</td>\n<td valign=\"top\">1/2 ounce</td>\n</tr>\n<tr>\n<td valign=\"top\">Beer</td>\n<td valign=\"top\">4 gallons</td>\n</tr>\n<tr>\n<td valign=\"top\">Honey</td>\n<td valign=\"top\">1 gallon</td>\n</tr>\n<tr>\n<td valign=\"top\">Mayonnaise</td>\n<td valign=\"top\">2 gallons</td>\n</tr>\n<tr>\n<td valign=\"top\">Oil</td>\n<td valign=\"top\">1 quart</td>\n</tr>\n<tr>\n<td valign=\"top\">Vinegar</td>\n<td valign=\"top\">2 gallons</td>\n</tr>\n<tr>\n<td valign=\"top\">Water, fresh</td>\n<td valign=\"top\">8 gallons</td>\n</tr>\n<tr>\n<td valign=\"top\">Water, salt</td>\n<td valign=\"top\">12 gallons</td>\n</tr>\n<tr>\n<td valign=\"top\">Wine</td>\n<td valign=\"top\">1 gallon</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Magic Items",
+    "quantity": 1,
+    "weight": 12,
+    "price": 0,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.ZWMxOTkyNGZiZjg4"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
