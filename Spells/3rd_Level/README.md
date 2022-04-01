@@ -11,6 +11,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Fireball](#fireball)
 * [Fly](#fly)
 * [Lightning Bolt](#lightning-bolt)
+* [Protection from Energy](#protection-from-energy)
 * [Magic Circle](#magic-circle)
 * [Revivify](#revivify)
 * [Thunder Step](#thunder-step)
@@ -117,6 +118,24 @@ This spell applies a DAE effect that upgrades flight speed to 60.  It also makes
 ### Lightning Bolt
 
 This worked great out of the box.  Just a testing of the SRD version.
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Protection from Energy
+
+This spell uses a macro to apply a damage resistance to specified damage type and play a VFX.  The damage type can be specified by including one of the allowed types in the item name or picked from a dialog.  The VFX scales with the size of the protected token.
+
+Types allowed:
+
+* acid,
+* cold,
+* fire,
+* lightning, or
+* thunder.
+
+![Protection_from_Energy.gif](Protection_from_Energy/Protection_from_Energy.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
