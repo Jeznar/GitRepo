@@ -828,6 +828,12 @@ class jez {
         const BODY = `jb2a.magic_signs.rune.${school}.loop.${color}`
         const OUTRO = `jb2a.magic_signs.rune.${school}.outro.${color}`
         //-----------------------------------------------------------------------------------------------
+        // Change TokenDocument5e to Token5e
+        // 
+        //let t1 = {}
+        //if (token1.constructor.name === "TokenDocument5e") t1 = token1._object
+        //else t1 = token1
+        //-----------------------------------------------------------------------------------------------
         // Play the VFX
         // 
         new Sequence()

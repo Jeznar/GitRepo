@@ -18,6 +18,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
+* **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
 * **[Set Familiar Name](#set-familiar-name)** Manages stored familiar name for actor
 * **[Share Item Within Scene](#share-item-within-scene)** Adds/Updates/Deletes an item from a token to other tokens in the same scene.
 * **[Swap Hidden Tokens](#swap-hidden-tokens)** swaps the visibility state of all or selected npc tokens.
@@ -204,6 +205,14 @@ It does the following:
 1. Opens the sheet of all the actors in the *Actors Directory*.
 
 ![Open_Actor_Sheets_With_Example.png](Images/Open_Actor_Sheets_With_Example.png)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Run RuneVFX onTargets
+
+Macro to be used as an OnUse macro from an item sheet.  It simply runs [jez.runRuneVFX(...)](../jez-lib/#runRuneVFX) on the targeted token(s), making sure the color is the same random selection on each.
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

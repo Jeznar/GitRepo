@@ -74,16 +74,45 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     let maxRange = jez.getRange(aItem, "ft")
     jez.log("maxRange", maxRange)
     //---------------------------------------------------------------------------------------------
-    // Step through the failed save tokens, discarding those ot of range, apply effect to in range
+    // Step through the failed save tokens, discarding those out of range, apply effect to in range
     //
+    let outOfRangeNames = ""
+    let inRangeNames = ""
+    let color = "purple" // jez.getRandomRuneColor()
     for (const element of args[0].failedSaves) {
+        //-----------------------------------------------------------------------------------------
+        // element is likely a TokenDocument5e and I am used to dealing with Token5e, so convert
+        //
+        let cToken = {}
+        if (element.constructor.name === "TokenDocument5e") cToken = element._object
+        else cToken = element
+        //-----------------------------------------------------------------------------------------
+        // check the range and do the job
+        //
         if (jez.inRange(aToken, element, maxRange)) {
-            jez.log(`>>>>> ${element.name} is in range.`)
+            if (inRangeNames) inRangeNames += `, ${cToken.name}`
+            else inRangeNames = cToken.name
+            jez.runRuneVFX(cToken, jez.getSpellSchool(aItem), color)
+            new Sequence()
+            .effect()
+                .file("modules/jb2a_patreon/Library/Generic/Marker/MarkerFear_02_Dark_Purple_400x400.webm")
+                .attachTo(cToken)
+                .scale(0.6)
+                .opacity(1)
+                .scaleIn(0.1, 1000)
+                .fadeIn(1000) 
+                .fadeOut(2000) 
+                .scaleOut(0.1, 2000)
+            .play();
+            applyEffect(cToken)
         } else {
-            jez.log(`<<<<< ${element.name} is out of range.`)
+            if (outOfRangeNames) outOfRangeNames += `, ${cToken.name}`
+            else outOfRangeNames = cToken.name
         }
+        jez.log("inRangeNames",inRangeNames)
+        jez.log("outOfRangeNames",outOfRangeNames)
     }
-    msg = `Maybe say something useful...`
+    msg = `Saving throws In/Out of Range<br>In: ${inRangeNames}<br>Out: ${outOfRangeNames}`
     postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
@@ -122,7 +151,51 @@ async function doOn() {
  async function doEach() {
     const FUNCNAME = "doEach()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do Each code")
+    new Sequence()
+    .effect()
+        .file("modules/jb2a_patreon/Library/Generic/UI/IconFear_01_Dark_Purple_200x200.webm")
+        .attachTo(aToken)
+        .scale(0.8)
+        .opacity(0.7)
+        .scaleIn(0.1, 1000)
+        .fadeIn(1000) 
+        .fadeOut(2000) 
+        .scaleOut(0.1, 2000)
+    .play();
+    msg = `Must move as far away from <b>${args[1]}</b> as it can and can not take reactions.
+    For its action, it can use only the Dash action or try to escape from an effect that prevents 
+    it from moving. If it has nowhere it can move, ${aToken.name} can use the Dodge action.`
+    jez.postMessage({color: "purple", fSize: 14, icon: aToken.data.img, msg: msg, 
+                title: `${aToken.name} is Terrified`, token: aToken})
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return (true);
+}
+/***************************************************************************************************
+ * Perform the code that runs when this macro is invoked each round by DAE
+ ***************************************************************************************************/
+ async function applyEffect(token5e) {
+    const FUNCNAME = "applyEffect(token5e)";
+    const TERRIFIED_COND = "Terrified"
+    const TERRIFIED_ICON = "Icons_JGB/Items/Mace-of-Terror.png"
+    const GAME_RND = game.combat ? game.combat.round : 0;
+
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    const SAVE_DC = LAST_ARG.item.data.save.dc
+    const SAVE_TYPE = LAST_ARG.item.data.save.ability
+    let overTimeValue = `turn=end,label=Terrified,saveDC=${SAVE_DC},saveAbility=${SAVE_TYPE},saveRemove=true`
+    let effectData = [{
+        label: TERRIFIED_COND,
+        icon: TERRIFIED_ICON,
+        origin: LAST_ARG.uuid,
+        disabled: false,
+        flags: { dae: { stackable: false, macroRepeat: "startEveryTurn" } },
+        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
+        changes: [
+            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `'${aToken.name}'`, priority: 20 },
+            { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeValue, priority: 20 }
+        ]
+    }];
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token5e.actor.uuid, effects: effectData });
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
