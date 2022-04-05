@@ -52,6 +52,49 @@ A useful bit of info [lives here](https://foundryvtt.wiki/en/development/guides/
 
 ---
 
+## Adding Rolls into Journal Articles
+
+`[[1d6]]` will automatically roll every time you open the journal, `[[/roll 1d6]]` will give you a button to roll when you need it. `[[/r 1d20 + @abilities.wis.mod]]{Wisdom Check}` will display as "Wisdom Check" and roll a d20 and add the selected character's wisdom modifier
+
+More info: [Reddit](https://www.reddit.com/r/FoundryVTT/comments/rgpt78/can_i_create_a_roll_command_directly_in_a_journal/)
+
+### Skill Checks
+
+`[[/r 1d20 + @skills.acr.total]]{Acrobatics Check}` yields an Acrobatics check.  The three letter abbreviations are:
+
+* acr - Acrobatics (Dex)
+* ani - Animal Handling (Wis)
+* arc - Arcana (Int)
+* ath - Athletics (Str)
+* dec - Deception (Cha)
+* his - History (Int)
+* ins - Insight (Wis)
+* inv - Investigation (Int)
+* itm - Intimidation (Cha)
+* med - Medicine (Wis)
+* nat - Nature (Int)
+* per - Perception (Wis)
+* prc - Persuasion (Cha)
+* prf - Performance (Cha)
+* rel - Religion (Int)
+* slt - Sleight of Hand (Dex)
+* ste - Stealth (Dex)
+* sur - Survival (Wis)
+
+### Saving Throws
+
+Six stat based saving throws as follows:
+
+~~~
+[[/r 1d20 + @abilities.str.save]]{Strength Save}
+[[/r 1d20 + @abilities.dex.save]]{Dexterity Save}
+[[/r 1d20 + @abilities.con.save]]{Constitution Save}
+[[/r 1d20 + @abilities.int.save]]{Intelligence Save}
+[[/r 1d20 + @abilities.wis.save]]{Wisdom Save}
+[[/r 1d20 + @abilities.cha.save]]{Charisma Save}
+~~~
+
+
 ## Introduction to PIXI
 
 A useful bit of info [lives here](https://foundryvtt.wiki/en/development/guides/pixi)
