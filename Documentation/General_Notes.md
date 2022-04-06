@@ -65,6 +65,7 @@ Several popular skill checks as follows:
 ~~~javascript
 [[/r 1d20 + @skills.acr.total]]{Acrobatics Check} 
 [[/r 1d20 + @skills.per.total]]{Perception Check} 
+[[/r 1d20 + @skills.inv.total]]{Investigation Check} 
 [[/r 1d20 + @skills.ste.total]]{Stealth Check}
 ~~~
 
