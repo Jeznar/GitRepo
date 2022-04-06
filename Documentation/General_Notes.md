@@ -67,6 +67,7 @@ Several popular skill checks as follows:
 ~~~javascript
 [[/r 1d20 + @skills.acr.total]]{Acrobatics Check} 
 [[/r 1d20 + @skills.per.total]]{Perception Check} 
+[[/r 1d20 + @skills.ins.total]]{Insight Check} 
 [[/r 1d20 + @skills.inv.total]]{Investigation Check} 
 [[/r 1d20 + @skills.ste.total]]{Stealth Check}
 ~~~
@@ -105,6 +106,18 @@ Six stat based saving throws as follows:
 [[/r 1d20 + @abilities.cha.save]]{Charisma Save}
 ~~~
 
+### Stat Checks
+
+Six stat based checks as follows:
+
+~~~
+[[/r 1d20 + @abilities.str.mod]]{Strength Check}
+[[/r 1d20 + @abilities.dex.mod]]{Dexterity Check}
+[[/r 1d20 + @abilities.con.mod]]{Constitution Check}
+[[/r 1d20 + @abilities.int.mod]]{Intelligence Check}
+[[/r 1d20 + @abilities.wis.mod]]{Wisdom Check}
+[[/r 1d20 + @abilities.cha.mod]]{Charisma Check}
+~~~
 
 ## Introduction to PIXI
 
