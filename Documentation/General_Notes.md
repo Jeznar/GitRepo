@@ -60,7 +60,15 @@ More info: [Reddit](https://www.reddit.com/r/FoundryVTT/comments/rgpt78/can_i_cr
 
 ### Skill Checks
 
-`[[/r 1d20 + @skills.acr.total]]{Acrobatics Check}` yields an Acrobatics check.  The three letter abbreviations are:
+Several popular skill checks as follows:
+
+~~~javascript
+[[/r 1d20 + @skills.acr.total]]{Acrobatics Check} 
+[[/r 1d20 + @skills.per.total]]{Perception Check} 
+[[/r 1d20 + @skills.ste.total]]{Stealth Check}
+~~~
+
+The three letter abbreviations are:
 
 * acr - Acrobatics (Dex)
 * ani - Animal Handling (Wis)
