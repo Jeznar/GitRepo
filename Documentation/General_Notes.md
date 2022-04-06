@@ -58,6 +58,8 @@ A useful bit of info [lives here](https://foundryvtt.wiki/en/development/guides/
 
 More info: [Reddit](https://www.reddit.com/r/FoundryVTT/comments/rgpt78/can_i_create_a_roll_command_directly_in_a_journal/)
 
+Example bludgeoning roll:  `[[/roll 8d10]]{Bludgeoning Damage} `
+
 ### Skill Checks
 
 Several popular skill checks as follows:
