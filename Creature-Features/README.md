@@ -26,6 +26,7 @@ I'll try to document functions as I add them to the repository.
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
+* **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
 * **[Threat Display](#threat-display)** -- Potential Frightened Application  
@@ -262,6 +263,28 @@ This ability has the user place a targeting, makes con checks for those in the a
 ### **Shapechange, Baba Lysaga**
 
 Simple configuration of the ability with reminder to use the drop to shift feature of FoundryVTT.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Spore Cloud**
+
+An ability for the Yellow Mold *dungeon haard* that:
+
+> Cloud of spores that fills a 10-foot cube originating from the mold. Any creature in the area must succeed on a DC 15  Constitution Save or take 11 (2d10)  Poison Damage and become  Poisoned for 1 minute. No damage on save.
+> 
+> While poisoned in this way, the creature takes 5 (1d10)   Poison Damage  at the start of each of its turns. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a successful save.
+
+This is implemented with three DAE effects and an automated animation line (shown in repo files).  The DAE effects are:
+
+~~~
+flags.midi-qol.OverTime OVERIDE turn=start,label=Poison DoT,damageRoll=1d10,damageType=poison
+macro.CUB CUSTOM Poisoned
+flags.midi-qol.OverTime OVERIDE turn=end,label=Poison Save,saveDC=15,saveAbility=con
+~~~
+
+No macro required.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

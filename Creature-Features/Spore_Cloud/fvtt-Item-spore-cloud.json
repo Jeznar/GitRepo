@@ -1,0 +1,162 @@
+{
+  "name": "Spore Cloud",
+  "type": "feat",
+  "img": "Icons_JGB/Monsters/Yellow_Mold.png",
+  "data": {
+    "description": {
+      "value": "<p style=\"box-sizing:border-box;user-select:text;color:#191813\">Cloud of spores that fills a 10-foot cube originating from the mold. Any creature in the area must succeed on a <strong style=\"box-sizing:border-box;user-select:text\">DC 15 </strong><strong style=\"box-sizing:border-box;user-select:text\"><a class=\"inline-roll roll\" style=\"box-sizing:border-box;user-select:text\" title=\"Constitution Save\" data-mode=\"roll\" data-flavor=\"Constitution Save\" data-formula=\"1d20 + @abilities.con.save\"> Constitution Save</a></strong> or take <strong style=\"box-sizing:border-box;user-select:text\">11 (2d10) </strong><strong style=\"box-sizing:border-box;user-select:text\"><a class=\"inline-roll roll\" style=\"box-sizing:border-box;user-select:text\" title=\"Poison Damage\" data-mode=\"roll\" data-flavor=\"Poison Damage\" data-formula=\"8d10\"> Poison Damage</a></strong><strong style=\"box-sizing:border-box;user-select:text\"> </strong>and become <strong style=\"box-sizing:border-box;user-select:text\"><a class=\"entity-link\" style=\"box-sizing:border-box;user-select:text\" draggable=\"true\" data-entity=\"JournalEntry\" data-id=\"45AvudXYEJYpj1L8\"> Poisoned</a></strong> for 1 minute. No damage on save.</p>\n<p style=\"box-sizing:border-box;user-select:text;color:#191813\">While poisoned in this way, the creature takes <strong>5 (1d10) </strong><strong style=\"box-sizing:border-box;user-select:text\"> </strong><strong style=\"box-sizing:border-box;user-select:text\"><a class=\"inline-roll roll\" style=\"box-sizing:border-box;user-select:text\" title=\"Poison Damage\" data-mode=\"roll\" data-flavor=\"Poison Damage\" data-formula=\"1d10\"> Poison Damage</a></strong><strong style=\"box-sizing:border-box;user-select:text\"> </strong> at the start of each of its turns. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a successful save.</p>\n<p style=\"box-sizing:border-box;user-select:text;color:#191813\"> </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": 10,
+      "width": null,
+      "units": "ft",
+      "type": "cube"
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "2d10",
+          "poison"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "con",
+      "dc": 15,
+      "scaling": "flat"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "8nYYRwTqGhLho8ur",
+      "changes": [
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 5,
+          "value": "turn=start,label=Poison DoT,damageRoll=1d10,damageType=poison",
+          "priority": "20"
+        },
+        {
+          "key": "macro.CUB",
+          "mode": 0,
+          "value": "Poisoned",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 5,
+          "value": "turn=end,label=Poison Save,saveDC=15,saveAbility=con",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Monsters/Yellow_Mold.png",
+      "label": "Spore Cloud",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "flags.midi-qol.OverTime",
+        "macro.CUB",
+        "flags.midi-qol.OverTime"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": ""
+    },
+    "core": {
+      "sourceId": "Item.d14xgQWfMr14PPMW"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
