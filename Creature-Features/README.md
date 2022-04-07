@@ -29,7 +29,8 @@ I'll try to document functions as I add them to the repository.
 * **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
-* **[Threat Display](#threat-display)** -- Potential Frightened Application  
+* **[Threat Display](#threat-display)** -- Potential Frightened Application
+* **[Undead Fortitude](#undead-fortitude)** -- Certain undead's (e.g. Zombie) ability to deny death  
 * **[Wail](#wail)** -- Banshee's wail that can drop things in their tracks.
 * **[Wooden Sword](#wooden-sword)** -- Arabelle's wooden sword debuffing machine.
 
@@ -307,7 +308,8 @@ This implments **Baba Lysaga**'s ability to call forth 1d4 swarms of insects.  T
 
 This one is intended to be run from the hot bar or more likely from a journal article outlining the standing stones at Yester Hill.
 
-It (maybe) zaps the one and only selected token for a bunch of lightning damage.  The chance of zapping is set in a constant in the macro that can be easily adjusted.   
+It (maybe) zaps the one and only selected token for a bunch of lightning damage.  The cha
+nce of zapping is set in a constant in the macro that can be easily adjusted.   
 
 I wanted to use  MidiQOL.applyTokenDamage() for this, but I couldn't get it to actually apply damage to the token.  Discussions on discord suggested a possible bug in Midi, so I implemented the damage more directly.  This macro does consider damage immunity/resistance/vulnerability to lightning.  Not quite up to Midi's usual checking, but seemingly more than good enough for a one off ability. 
 
@@ -332,6 +334,38 @@ This is a homebrew freature I cooked up for Galahad (others might know him as La
 > Creatures affected by the unwavering loyalty trait automatically succed on this saving throw. Once a creature has saved against this effect it is immune for the combat.
 
 The macro manages immunities cause by saves, checks size differences, performs the appropriate save. Finally, it places the appropriate effect on the target.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Undead Fortitude**
+
+This ability is implemented through one of the ***annoying magic item names***, that is having a feature named **Undead Fortitude** causes the automation of this ability to trigger. 
+
+The RAW ability for zombie describes this feature like this:
+
+> If damage reduces the zombie to 0 hit points, it must make a Constitution saving throw with a DC of 5 + the damage taken, unless the damage is radiant or from a critical hit. On a success, the zombie drops to 1 hit point instead.
+
+The [D&D 5E Helpers](https://foundryvtt.com/packages/dnd5e-helpers) module provides support for this ability and is discussed on [Reddit HERE](https://www.reddit.com/r/FoundryVTT/comments/nnd3pc/dd_5e_automating_zombies_undead_fortitude/). Here are the salient points from that thread:
+
+#### D&D 5E Helpers Effects & Settings
+
+* Automatically checks actors with the **Undead Fortitude** feature
+* When they are reduced to 0hp it will prompt the GM to choose the type of damage that was applied
+* Then prompts the GM for a Con save for that actor, and will auto heal the NPC if the roll beats the save needed
+
+There are two settings for levels of checks:
+
+* Quick saves will just measure the change in hp and will not measure "overkill"
+* Advanced saves will query the GM for the amount of damage taken as a more complex system (I use this version)
+
+![D_5E_Helper_Settings.png](Undead_Fortitude/D&D_5E_Helper_Settings.png)
+
+![Undead-Fortitude.gif](Undead_Fortitude/Undead-Fortitude.gif)
+
+![Undead_Fortitude_Chat.png](Undead_Fortitude/Undead_Fortitude_Chat.png)
+
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
