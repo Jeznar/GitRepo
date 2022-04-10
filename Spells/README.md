@@ -63,6 +63,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Crown of Madness](2nd_Level#crown-of-madness)
 * [Darkness](2nd_Level#darkness)
 * [Darkvision](2nd_Level#darkvision)
+* [Detect Thoughts](2nd_Level#detect-thoughts)
 * [Enlarge/Reduce](2nd_Level#enlargereduce)
 * [Find Steed](2nd_Level#find-steed)
 * [Flaming Sphere](2nd_Level#flaming-sphere)

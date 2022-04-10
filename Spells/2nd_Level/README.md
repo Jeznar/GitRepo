@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Crown of Madness](#crown-of-madness)
 * [Darkness](#darkness) (ASE)
 * [Darkvision](#darkvision)
+* [Detect Thoughts](#detect-thoughts)
 * [Enlarge/Reduce](#enlargereduce)
 * [Find Steed](#find-steed)
 * [Flaming Sphere](#flaming-sphere)
@@ -92,6 +93,14 @@ Operationally, this spell is similar to [Fog Cloud](../1st_Level/#fog-cloud)
 ### Darkvision
 
 Places a DAE effect on the beneficiary that provides dim light vision out to 60 feet.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Detect Thoughts
+
+Places a DAE effect and concentration on the caster.  The automation does nothing to implement the actual effects which are left to the players.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 
