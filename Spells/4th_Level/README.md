@@ -3,6 +3,7 @@ This repository will contain my automated 4th level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Banishment](#banishment)
 * [Black Tentacles](#black-tentacles)
 * [Blight](#blight)
 * [Greater Invisibility](#greater-invisibility)
@@ -12,6 +13,25 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 [*Back to List of All Spells*](../README.md)
 
 ## Spell Notes
+
+### Banishment
+
+This is built on a MidiQOL Sample Item which handled "banishing" one target with a very simple set of messages to the GM in chat. 
+ 
+The sample spell already "handles" upcasting by allowing multiple tokens to be targeted, but it doesn't:
+
+1. Provide a VFX
+2. Give meaningful messages
+
+Well, it does those things now.  It calls *jez.runRuneVFX(element, school, color)* to run a rune VFX on each target and *jez.postMessage(...)* to handle the messages.  
+
+On interesting element of the sample macro is its use of on/off executions and passing the targeted token to the macro as a parameter driven by the DAE effect configuration.
+
+![Banishment_DAE_Effects.png](Banishment/Banishment_DAE_Effects.png)
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
 
 ### Black Tentacles
 

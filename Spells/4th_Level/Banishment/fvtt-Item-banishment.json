@@ -1,0 +1,257 @@
+{
+  "name": "Banishment",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/link-eerie-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You attempt to send one creature that you can see within range to another plane of existence. The target must succeed on a Charisma saving throw or be banished.</p>\n<p>If the target is native to the plane of existence you're on, you banish the target to a harmless demiplane. While there, the target is incapacitated. The target remains there until the spell ends, at which point the target reappears in the space it left or in the nearest unoccupied space if that space is occupied.</p>\n<p>If the target is native to a different plane of existence than the one you're on, the target is banished with a faint popping noise, returning to its home plane. If the spell ends before 1 minute has passed, the target reappears in the space it left or in the nearest unoccupied space if that space is occupied. Otherwise, the target doesn't return.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 5th level or higher, you can target one additional creature for each slot level above 4th.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>This is from MidiQOL Sample Item, handling the potential permanent banishment is up to the GM.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 217",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 60,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "cha",
+      "dc": 16,
+      "scaling": "spell",
+      "value": ""
+    },
+    "level": 4,
+    "school": "abj",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "An item distasteful to the target",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "iufZU12yslQQSskX",
+      "flags": {
+        "dae": {
+          "transfer": false,
+          "stackable": false,
+          "specialDuration": [],
+          "macroRepeat": "none"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "ignoreSelf": false,
+          "hidden": false,
+          "height": false,
+          "alignment": "",
+          "type": "",
+          "aura": "None",
+          "radius": null,
+          "save": "",
+          "savedc": null
+        }
+      },
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "value": "@target",
+          "mode": 0,
+          "priority": 0
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/spells/link-eerie-3.jpg",
+      "label": "Banishment",
+      "origin": "Actor.DMTSWfQs8whM5FtE.OwnedItem.cPJGG9KDdaYy3RTU",
+      "tint": null,
+      "transfer": false
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "dynamiceffects": {
+      "equipActive": true,
+      "alwaysActive": false,
+      "effects": [
+        {
+          "modSpecKey": "macro.execute",
+          "value": "Banishment @target",
+          "mode": "+",
+          "targetSpecific": false,
+          "id": 1,
+          "itemId": "pz0vjFCdPtQkdKKQ",
+          "active": true,
+          "_targets": [],
+          "label": "Macro Execute"
+        }
+      ]
+    },
+    "betterRolls5e": {
+      "critRange": {
+        "type": "String",
+        "value": null
+      },
+      "critDamage": {
+        "type": "String",
+        "value": ""
+      },
+      "quickDesc": {
+        "type": "Boolean",
+        "value": true,
+        "altValue": true
+      },
+      "quickAttack": {
+        "type": "Boolean",
+        "value": true,
+        "altValue": true
+      },
+      "quickSave": {
+        "type": "Boolean",
+        "value": true,
+        "altValue": true
+      },
+      "quickDamage": {
+        "type": "Array",
+        "value": [],
+        "altValue": [],
+        "context": []
+      },
+      "quickVersatile": {
+        "type": "Boolean",
+        "value": false,
+        "altValue": false
+      },
+      "quickProperties": {
+        "type": "Boolean",
+        "value": true,
+        "altValue": true
+      },
+      "quickCharges": {
+        "type": "Boolean",
+        "value": {
+          "use": false,
+          "resource": false
+        },
+        "altValue": {
+          "use": false,
+          "resource": false
+        }
+      },
+      "quickTemplate": {
+        "type": "Boolean",
+        "value": true,
+        "altValue": true
+      },
+      "quickOther": {
+        "type": "Boolean",
+        "value": true,
+        "altValue": true,
+        "context": ""
+      },
+      "quickFlavor": {
+        "type": "Boolean",
+        "value": true,
+        "altValue": true
+      },
+      "quickPrompt": {
+        "type": "Boolean",
+        "value": false,
+        "altValue": false
+      }
+    },
+    "dae": {
+      "alwaysActive": false,
+      "activeEquipped": true
+    },
+    "core": {
+      "sourceId": "Item.BcZKJ53HIIPkOPeD"
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Banishment",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Banishment.js\"\n/*****************************************************************************************\n * This is based on a MidiQOL Sample Item which handled \"banishing\" one target with a very\n * simple set of messages to the GM in chat. \n * \n * The spell already \"handles\" upcasting by allowing multiple tokens to be targeted, but\n * it doesn't:\n *   1. Provide a VFX\n *   2. Give meaningful messages\n * Well, it does those things now\n * \n * 04/10/22 0.1 Creation of Macro from MidiQOL Sample Item\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\n//----------------------------------------------------------------------------------------\n//\nif (args[0]?.tag === \"OnUse\") {          // Midi ItemMacro On Use\n    let color = jez.getRandomRuneColor()\n    let school = jez.getSpellSchool(args[0].item)\n    for (const element of args[0].targets) {\n        jez.runRuneVFX(element, school, color)\n    }\n}\n//----------------------------------------------------------------------------------------\n//\nif (args[0] === \"on\") {\n    let target = canvas.tokens.get(args[1]);\n    jez.wait(1000)\n    jez.postMessage({\n        color: jez.randomDarkColor(),\n        fSize: 14,\n        icon: aToken.data.img,\n        msg: \"Creature will return or be permanently banished if the spell lasts its 1 minute duration.\",\n        title: `${aToken.name} Banished`,\n        token: aToken\n    })\n    await jez.wait(1000)\n    await target.update({ hidden: true });\n    await target.actor.setFlag('world', 'banishment', 1);\n    //ChatMessage.create({content: target.name + \"  was banished\"})\n}\n//----------------------------------------------------------------------------------------\n//\nif (args[0] === \"off\") {\n    let target = canvas.tokens.get(args[1]);\n\n    target.update({ hidden: false })\n    target.actor.unsetFlag('world', 'banishment');\n    await jez.wait(500)\n    jez.postMessage({\n        color: jez.randomDarkColor(),\n        fSize: 14,\n        icon: aToken.data.img,\n        msg: \"Has returned from banishment (or been permanently banished).\",\n        title: `${aToken.name} Banished`,\n        token: aToken\n    })\n    //ChatMessage.create({content: target.name + \"  returned\"})\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "favtab": {
+      "isFavorite": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
