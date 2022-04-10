@@ -119,7 +119,9 @@ This spell applies a DAE effect that upgrades flight speed to 60.  It also makes
 
 ### Lightning Bolt
 
-This worked great out of the box.  Just a testing of the SRD version.
+For some reason this worked great on my initial testing, but the Automated Animations config *broke* (specifically, it went to just empty fields for an unknown reason).  Setting Automated Animations configuration (globally) fixed this.
+
+![Lightning_Bolt_Animations.png](Lightningbolt/Lightning_Bolt_Animations.png)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
