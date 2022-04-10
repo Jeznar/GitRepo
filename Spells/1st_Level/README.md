@@ -15,6 +15,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Guiding Bolt](#guiding-bolt)
 * [Hex](#hex)
 * [Longstrider](#longstrider)
+* [Mage Armor](#mage-armor)
 * [Magic Missle](#magic-missile) (ASE)
 * [Nauseating Poison](#nauseating-poison)
 * [Protection from Evil and Good](#protection-from-evil-and-good)
@@ -210,6 +211,40 @@ Following are a few messages that this macro can produce.
 This is a simple little spell that uses DAE to boost the speed of the target token by 10 and makes a call to jez-lib to run a simple VFX on the target token or an array of target tokens.
 
 ![Longstrider.gif](Longstrider/Longstrider.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Mage Armor
+
+This spell is from midi examples with the addition of an ItemMacro call to my world macro: **Run_RuneVFX_onTargets**
+
+The key to this spell is a DAE effect line that reads as follows:
+`data.attributes.ac.calc OVERRIDE mage 50`
+
+The value being used *mage* is one of the defined values well hidden in *CONFIG.DND5E.armorClasses*.  Following is a quote from Tim Posney on Discord:
+
+> tposney — 03/27/2022
+> 
+> **data.attributes.ac.calc** takes on the values from CONFIG.DND5E.armorClasses ('**flat**', '**natural**', '**default**', '**mage**', '**draconic**', '**unarmoredMonk**', '**unarmoredBarb**', '**custom**') mode OVERRIDE will change the calculation. It really should be a dropdown, rather than free text field. If the value is custom then the dnd5e armor calculation will look at the formula.
+
+Here is a dump from the console of CONFIG.DND5E.armorClasses:
+
+~~~
+custom:        {label: "Custom Formula"}
+default:       {label: "Equipped Armor", formula: "@attributes.ac.base + @abilities.dex.mod"}
+draconic:      {label: "Draconic Resilience", formula: "13 + @abilities.dex.mod"}
+flat:          {label: "Flat", formula: "@attributes.ac.flat"}
+mage:          {label: "Mage Armor", formula: "13 + @abilities.dex.mod"}
+natural:       {label: "Natural Armor", formula: "@attributes.ac.flat"}
+unarmoredBarb: {label: "Unarmored Defense (Barbarian)", formula: "10 + @abilities.dex.mod + @abilities.con.mod"}
+unarmoredMonk: {label: "Unarmored Defense (Monk)", formula: "10 + @abilities.dex.mod + @abilities.wis.mod"}
+~~~
+
+Essentially all of those specials are nothing more than predefined custom strings. 
+
+This implementation reduces a token's AC if it already had an effective ac.base of more than 13.  This is left to the players to manage.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

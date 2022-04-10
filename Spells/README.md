@@ -45,6 +45,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Fog Cloud](1st_Level#fog-cloud) (ASE)
 * [Guiding Bolt](1st_Level#guiding-bolt)
 * [Longstrider](1st_Level#longstrider)
+* [Mage Armor](1st_Level#mage-armor)
 * [Magic Missle](1st_Level#magic-missle) (ASE)
 * [Nauseating Poison](1st_Level#nauseating-poison)
 * [Protection from Evil and Good](1st_Level#protection-from-evil-and-good)
