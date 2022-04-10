@@ -66,6 +66,8 @@ Nothing more than a tested SRD implementation. It will be handled between player
 
 Slightly updated spell description from the standard SRD.  Actual use of this spell will be manual for the GM.
 
+04/10/22 Update: Added a call to Run_RuneVFX_onTargets as a world ItemMacro for a bit of visual flair.
+
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
 ---
