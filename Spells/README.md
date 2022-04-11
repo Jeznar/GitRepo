@@ -110,6 +110,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Greater Invisibility](4th_Level#greater-invisibility)
 * [Phantasmal Killer](4th_Level#phantasmal-killer)
 * [Polymorph](4th_Level#polymorph)
+* [Stoneskin](4th_Level#stoneskin)
 
 [*Back to Spell Level List*](#spells)
 

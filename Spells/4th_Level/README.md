@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Greater Invisibility](#greater-invisibility)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
+* [Stoneskin](#stoneskin)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -141,3 +142,18 @@ Reversing the transform is done with a button that appears at the top of the tra
 
 ---
 
+### Stoneskin
+
+No macro required.  
+
+This implementation:
+
+* Places a DAE effect on the target giving damage resistance,
+* plays a rune VFX via an ItemMacro call to the world macro: **Run_RuneVFX_onTargets**,
+* Consumes 4 stacks of diamond dust valued at 25 gp each (assuming it is configured after adding it to a character's sheet. 
+
+![Stoneskin_Details.png](Stoneskin/Stoneskin_Details.png)
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
