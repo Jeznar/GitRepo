@@ -6,6 +6,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Banishment](#banishment)
 * [Black Tentacles](#black-tentacles)
 * [Blight](#blight)
+* [Fire Shield](#fire-shield)
 * [Greater Invisibility](#greater-invisibility)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
@@ -77,6 +78,32 @@ I am sure I have left a fair bit out.  It is quite the spell.
 Fairly simple macro that checks the target type giving immunity to undead and constructs; vulnerability to plants, and otherwise just rolling damage.  
 
 The macro also plays a simple rune VFX on the target.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Fire Shield
+
+This is a complex macro that uses an ItemMacro run as DAE On and DAE Off. 
+
+When the macro is executed as an **DAE On** it does the following:
+
+1. Delete any existing related temporary inventory items (Fire Shield (Cold) and Fire Shield (Hot))
+2. Pops a dialog that asks if this is a hot or cold shield and then fires off a call back that:
+	1. Runs a VFX rune and a persistent fire circle around the protectee
+	2. Create the temporary inventory item
+	3. Set the appropriate resistance and adjust the effect icon
+
+When the macro is executed as an **DAE Off** it does the following:
+
+1. Terminates the persistent VFX
+2. Delete any existing related temporary inventory items (Fire Shield (Cold) and Fire Shield (Hot))
+3. Post a completion message
+
+The temporary inventory item is to be used manually to inflict the reflected damage.
+
+![Fire_Shield.gif](Fire_Shield/Fire_Shield.gif)
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
