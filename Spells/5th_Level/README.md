@@ -4,6 +4,7 @@ This repository will contain my automated 5th level spells as I create new or up
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Cloudkill](#cloudkill)
+* [Cone of Cold](#cone-of-cold)
 * [Contact Other Plane](#contact-other-plane)
 * [Geas](#geas)
 * [Scrying](#scrying)
@@ -21,6 +22,16 @@ This spell creates a Tile with a VFX of an angry yellow-green cloud that represe
 I had trouble with the Active Auras implementation for this spell, so I fell back to my familiar approach of creating a temporary item that can be **manually** used to inflict the effect of the spell.
 
 ![Cloudkill.gif](Cloudkill/Cloudkill.gif)
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Cone of Cold
+
+This spell is a standard setup with an Automated Animation added, which is I must say, pretty cool! (Get it!!!)
+
+![Cone_of_Cold.gif](Cone_of_Cold/Cone_of_Cold.gif)
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
