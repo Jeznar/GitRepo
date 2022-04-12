@@ -3,12 +3,27 @@ This repository will contain my automated 6th level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
-* [Eyebite](#eyebite)
 * [Chain Lightning](#chain-lightning) (ASE)
+* [Eyebite](#eyebite)
+* [Globe of Invulnerability](#globe-of-invulnerability)
+* [Steel Wind Strike](#steel-wind-strike)
 
 [*Back to List of All Spells*](../README.md)
 
-## Spell NotesSteel
+## Spell Notes
+
+
+### Chain Lightning
+
+This spell is awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki).
+
+![chain-lightning](https://user-images.githubusercontent.com/32877348/141662352-4d909331-5cd0-43e7-ab6f-4cd5624f97ab.gif)
+
+The only change I made was a slight tweak to the random delay range.
+
+[*Back to 6th Level Spell List*](#6th-level-spells)
+
+---
 
 ### Eyebite
 
@@ -28,14 +43,26 @@ The debuffs are managed with the Combat Utility Belt (CUB) module, so they can b
 
 ---
 
-### Chain Lightning
+### Globe of Invulnerability
 
-This spell is awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki).
+This implementation runs a VFX indicating the area containing the globe.  It does nothing to implement the effects in an automated way. 
 
-![chain-lightning](https://user-images.githubusercontent.com/32877348/141662352-4d909331-5cd0-43e7-ab6f-4cd5624f97ab.gif)
-
-The only change I made was a slight tweak to the random delay range.
+![chain-lightning](Globe_of_Invulnerability/Minor_Globe.gif)
 
 [*Back to 6th Level Spell List*](#6th-level-spells)
 
 ---
+
+### Steel Wind Strike
+
+This spell seems awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki).
+
+![chain-lightning](https://user-images.githubusercontent.com/32877348/137191296-88113589-a903-46bb-bb72-03b781f8a4b2.gif)
+
+[*Back to 6th Level Spell List*](#6th-level-spells)
+
+---
+
+
+
+
