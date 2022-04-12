@@ -47,7 +47,7 @@ The debuffs are managed with the Combat Utility Belt (CUB) module, so they can b
 
 This implementation runs a VFX indicating the area containing the globe.  It does nothing to implement the effects in an automated way. 
 
-![chain-lightning](Globe_of_Invulnerability/Minor_Globe.gif)
+![chain-lightning](Globe_of_Invulnerability/Globe.gif)
 
 [*Back to 6th Level Spell List*](#6th-level-spells)
 
