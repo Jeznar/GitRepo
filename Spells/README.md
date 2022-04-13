@@ -146,6 +146,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [8th Level Spells](8th_Level)
 
+* [Mind Blank](8th_Level#mind-blank)
 * [Power Word Stun](8th_Level#power-word-stun)
 
 [*Back to Spell Level List*](#spells)

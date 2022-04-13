@@ -1,0 +1,210 @@
+{
+  "name": "Mind Blank",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/air-burst-sky-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Until the spell ends, <strong>one willing creature</strong> you touch is immune to:</p>\n<ul>\n<li><strong>✓  </strong>psychic damage,</li>\n<li>any effect that would sense its emotions or read its thoughts,</li>\n<li>divination spells, and the</li>\n<li><strong>✓ </strong>charmed condition. </li>\n</ul>\n<p>The spell even foils wish spells and spells or effects of similar power used to affect the target's mind or to gain information about the target.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Check Mark (<strong>✓</strong>) indicates automated.</p>",
+      "chat": "<p>Until the spell ends, one willing creature you touch is immune to psychic damage, any effect that would sense its emotions or read its thoughts, divination spells, and the charmed condition. The spell even foils wish spells and spells or effects of similar power used to affect the target's mind or to gain information about the target.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 259",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 24,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "touch",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 8,
+    "school": "abj",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "TxMaSbcXpsH0Bq7k",
+      "changes": [
+        {
+          "key": "data.traits.ci.value",
+          "mode": 0,
+          "value": "charmed",
+          "priority": "20"
+        },
+        {
+          "key": "data.traits.di.value",
+          "mode": 2,
+          "value": "blinded",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 86400
+      },
+      "icon": "/systems/dnd5e/icons/spells/air-burst-sky-3.jpg",
+      "label": "Mind Blank",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "data.traits.ci.value",
+        "data.traits.di.value"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 138485,
+      "definitionId": 2190,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 259,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Buff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_y4tkol826vc"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.i1Jjqeu5DLm1Mml8"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "Run_RuneVFX_onTargets"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
