@@ -1,0 +1,120 @@
+{
+  "name": "Teleport",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/runes-magenta-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>This spell instantly transports you and up to eight willing creatures of your choice that you can see within range, or a single object that you can see within range, to a destination you select. If you target an object, it must be able to fit entirely inside a 10-foot cube, and it can't be held or carried by an unwilling creature. The destination you choose must be known to you, and it must be on the same plane of existence as you. Your familiarity with the destination determines whether you arrive there successfully. The DM rolls d100 and consults the table.</p>\n<table style=\"width:99.2665%;height:128px\" border=\"1\">\n<tbody>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\"><strong>Familiarity</strong></td>\n<td style=\"width:13.7931%;height:16px\"><strong>Mishap</strong></td>\n<td style=\"width:13.4236%;height:16px\"><strong>Smiliar</strong></td>\n<td style=\"width:18.7192%;height:16px\"><strong>Off-Target</strong></td>\n<td style=\"width:18.5961%;height:16px\"><strong>On-Target</strong></td>\n</tr>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\">Permanent Circle</td>\n<td style=\"width:13.7931%;height:16px\">x</td>\n<td style=\"width:13.4236%;height:16px\">x</td>\n<td style=\"width:18.7192%;height:16px\">x</td>\n<td style=\"width:18.5961%;height:16px\">01-100%</td>\n</tr>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\">Associated Object </td>\n<td style=\"width:13.7931%;height:16px\">x</td>\n<td style=\"width:13.4236%;height:16px\">x</td>\n<td style=\"width:18.7192%;height:16px\">x</td>\n<td style=\"width:18.5961%;height:16px\">01-100%</td>\n</tr>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\">Very Familiar</td>\n<td style=\"width:13.7931%;height:16px\">01-05</td>\n<td style=\"width:13.4236%;height:16px\">06-13</td>\n<td style=\"width:18.7192%;height:16px\">14-24</td>\n<td style=\"width:18.5961%;height:16px\">25-100%</td>\n</tr>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\">Seen Casually</td>\n<td style=\"width:13.7931%;height:16px\">01-33</td>\n<td style=\"width:13.4236%;height:16px\">34-43</td>\n<td style=\"width:18.7192%;height:16px\">44-53</td>\n<td style=\"width:18.5961%;height:16px\">54-100%</td>\n</tr>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\">Viewed Once</td>\n<td style=\"width:13.7931%;height:16px\">01-43</td>\n<td style=\"width:13.4236%;height:16px\">44-53</td>\n<td style=\"width:18.7192%;height:16px\">54-73</td>\n<td style=\"width:18.5961%;height:16px\">74-100%</td>\n</tr>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\">Description</td>\n<td style=\"width:13.7931%;height:16px\">01-43</td>\n<td style=\"width:13.4236%;height:16px\">44-53</td>\n<td style=\"width:18.7192%;height:16px\">54-73</td>\n<td style=\"width:18.5961%;height:16px\">74-100%</td>\n</tr>\n<tr style=\"height:16px\">\n<td style=\"width:34.4828%;height:16px\">False Destination</td>\n<td style=\"width:13.7931%;height:16px\">01-50</td>\n<td style=\"width:13.4236%;height:16px\">51-100%</td>\n<td style=\"width:18.7192%;height:16px\">x</td>\n<td style=\"width:18.5961%;height:16px\">x</td>\n</tr>\n</tbody>\n</table>\n<p>\"<strong>Permanent Circle</strong>\" means a permanent teleportation circle whose sigil sequence you know. \"Associated Object\" means that you possess an object taken from the desired destination within the last six months, such as a book from a wizard's library, bed linen from a royal suite, or a chunk of marble from a Lich's secret tomb.</p>\n<p>\"<strong>Very Familiar</strong>\" is a place you have been very often, a place you have carefully studied, or a place you can see when you cast the spell. \"Seen Casually\" is some place you have seen more than once but with which you aren't very familiar. \"Viewed Once\" is a place you have seen once, possibly using magic. \"Description\" is a place whose location and appearance you know through someone else's description, perhaps from a map.</p>\n<p>\"<strong>False Description</strong>\" is a place that doesn't exist. Perhaps you tried to scry an enemy's sanctum but instead viewed an illusion, or you are attempting to teleport to a familiar location that no longer exists.</p>\n<p><strong>On Target</strong>: You and your group (or the target object) appear where you want to go.</p>\n<p><strong>Off Target</strong>: You and your group (or the target object) appear a random distance away from the destination in a random direction. Distance off target is 1d10 x 1d10 percent of the distance that was to be travelled. For example, if you tried to travel 120 miles, landed off target, and rolled a 5 and 3 on the two d10s, then you would be off target by 15 percent, or 18 miles. The DM determines the direction off target randomly by rolling a d8 and designating 1 as north, 2 as north-east, 3 as east, and so on around the points of the compass. If you were teleporting to a coastal city and wound up 18 miles out at sea, you could be in trouble.</p>\n<p><strong>Similar Area</strong>: You and your group (or the target object) wind up in a different area that's visually or thematically similar to the target area. If you are heading for your home laboratory, for example, you might wind up in another wizard's laboratory or in an alchemical supply shop that has many of the same tools and implements as your laboratory. Generally, you appear in the closest similar place, but since the spell has no range limit, you could conceivably wind up anywhere on the plane.</p>\n<p><strong>Mishap</strong>: The spell's unpredictable magic results in a difficult journey. Each teleporting creature (or the target object) takes 3d10 force damage and the DM rerolls on the table to see where you wind up (multiple mishaps can occur, dealing damage each time).</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Target the intended transportees before casting this spell.  The table and damage are automated.  The GM will need to move tokens to new scene as appropriate.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 10,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 7,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.YzA1NDZjZWRjYTc0"
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Teleport",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Teleport.js\"\n/*****************************************************************************************\n * Teleport spell that presents dialog to obtain the conection to the destination and then\n * rlls a d100 to determine the result of the teleport.  It does not further automate the \n * spell.\n * \n * Below is the table being implmented\n * -----------------------------------\n * Familiarity\t        Mishap\tSimilar Off-Tar\tOn-Tar\n * Permanent Circle\t      x\t      x\t      x\t    01-100%\n * Associated Object \t  x\t      x\t      x\t    01-100%\n * Very Familiar\t    01-05\t06-13\t14-24\t25-100%\n * Seen Casually\t    01-33\t34-43\t44-53\t54-100%\n * Viewed Once\t        01-43\t44-53\t54-73\t74-100%\n * Description\t        01-43\t44-53\t54-73\t74-100%\n * False Destination\t01-50\t51-100%\t  x\t      x\n * \n * 04/13/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst lastArg = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\nconst DAMAGE_TYPE = \"force\"\nconst DAMAGE_DICE = \"3d10\"\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    if (args[0].targets.length === 0) {     // If not exactly one target, return\n        msg = `Must target at least one target.`\n        postResults(msg);\n        return (false);\n    }\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    runRuneVFXonTargets(args[0].targets)\n    popDialog(aToken);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function popDialog(token1) {\n    const Q_TITLE = \"Teleport to...\"\n    const QUERY = `${token1.name}'s Knowledge/Connection to Destination`\n    const LIST = [\n        'Permanent Circle',\n        'Associated Object',\n        'Very Familiar',\n        'Seen Casually',\n        'Viewed Once',\n        'Description',\n        'False Destination',\n        //'Force Mishap'\n    ]\n    jez.pickRadioListArray(Q_TITLE, QUERY, pickRadioCallBack, LIST);\n    return\n}\n/***************************************************************************************\n * \n ***************************************************************************************/\nasync function pickRadioCallBack(selection) {\n    jez.log(\"pickRadioCallBack\", \"selection\", selection)\n    //----------------------------------------------------------------------------------\n    // Roll the d100 for results determination\n    //\n    let d100Roll = new Roll(`d100`).evaluate({ async: false });\n    game.dice3d?.showForRoll(d100Roll);\n    let roll = d100Roll.total\n    jez.log(`d100Roll ${roll}`, d100Roll)\n    //----------------------------------------------------------------------------------\n    // Build array containg rolls to results\n    //\n    let resultsArray = null\n    switch (selection) {\n        case \"Permanent Circle\":\n            resultsArray = [0, 0, 0, 100]\n            break;\n        case \"Associated Object\":\n            resultsArray = [0, 0, 0, 100]\n            break;\n        case \"Very Familiar\":\n            resultsArray = [5, 13, 24, 100]\n            break;\n        case \"Seen Casually\":\n            resultsArray = [33, 43, 53, 100]\n            break;\n        case \"Viewed Once\":\n            resultsArray = [43, 53, 73, 100]\n            break;\n        case \"Description\":\n            resultsArray = [43, 53, 73, 100]\n            break; \n        case \"False Destination\":\n            resultsArray = [50, 100, 100, 100]\n        case \"Force Mishap\":\n            resultsArray = [100, 100, 100, 100]\n            break;\n        default:\n            msg = `Coding error?  Selection = ${selection}`\n            ui.notifications.error(msg);\n            return(false)\n        }\n    jez.log(\"resultsArray\",resultsArray)\n    //----------------------------------------------------------------------------------\n    // Determine variables needed by the results strings\n    //\n    let percentOffTarget = (getRandomInt(10)+1) * (getRandomInt(10)+1)\n    jez.log(\"percentOffTarget\", percentOffTarget)\n    let errorDirections = [\"North\", \"North-East\", \"East\", \"South-East\", \n                           \"South\", \"South-West\", \"West\", \"North-West\"]\n    let errorDirection = errorDirections[getRandomInt(8)]\n    jez.log(\"errorDirection\",errorDirection)\n    //----------------------------------------------------------------------------------\n    // Build array containg possible result strings\n    //\n    let resultsStrings = [\n    `<b>Mishap</b>: The spell's unpredictable magic results in a difficult journey. Each \n    teleporting creature (or the target object) takes ${DAMAGE_DICE} ${DAMAGE_TYPE} damage. \n    Execute the spell again, without using a spell slot or other resource`,\n\n    `<b>Similar Area</b>: Your targets wind up in a different \n    area that's visually or thematically similar to the target area. If you are heading for \n    your home laboratory, for example, you might wind up in another wizard's laboratory or \n    in an alchemical supply shop that has many of the same tools and implements as your \n    laboratory. Generally, you appear in the closest similar place, but since the spell has \n    no range limit, you could conceivably wind up anywhere on the plane.`,    \n\n    `<b>Off Target</b>: Your targets appear a random distance away \n    from the intended destination in a random direction. Distance off target is \n    <b>${percentOffTarget}%</b> of the distance that was to be travelled to the \n    <b>${errorDirection}</b>.`,    \n\n    `<b>On Target</b>: Your targets appear where you wanted them to go.`]\n    \n    jez.log(\"resultsStrings\",resultsStrings)\n    //----------------------------------------------------------------------------------\n    // Determine index for message based on die roll\n    // \n    let index = null\n    if (roll <= resultsArray[0]) index = 0;\n    if (roll > resultsArray[0] && roll <= resultsArray[1]) index = 1;\n    if (roll > resultsArray[1] && roll <= resultsArray[2]) index = 2;\n    if (roll > resultsArray[2] && roll <= resultsArray[3]) index = 3;\n    jez.log(\"index\", index)\n    //----------------------------------------------------------------------------------\n    // Post the results\n    //  \n    msg = resultsStrings[index]\n    postResults(msg)\n    //----------------------------------------------------------------------------------\n    // If a Mishap occured, determine and apply damage to targeted tokens\n    //  \n    if (index === 0) {          // Mishap occured\n        await jez.wait(2000)    // dramatic pause\n        //------------------------------------------------------------------------------\n        // Build an array of the targeted Token5s from TokenDocument5es\n        // \n        let tTokens = []\n        for (const element of args[0].targets) {\n            console.log(element);\n            tTokens.push(element._object)\n            jez.log(\"element._object\",element._object)\n          }\n        //----------------------------------------------------------------------------------\n        // Apply damage\n        // \n        let damageRollObj = new Roll(DAMAGE_DICE).evaluate({ async: false });\n        game.dice3d?.showForRoll(damageRollObj);\n        //game.dice3d?.showForRoll(damageRollObj);\n        new MidiQOL.DamageOnlyWorkflow(aToken.actor, aToken, \n            damageRollObj.total, DAMAGE_TYPE, \n            tTokens, damageRollObj, \n            {flavor:`Teleportees suffer a mishap`, itemCardId: args[0].itemCardId});\n        //----------------------------------------------------------------------------------\n        //  Run VFX on affected tokens\n        // \n        runOuchVFXonTargets(tTokens)\n    }\n}\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction getRandomInt(max) {\n    return Math.floor(Math.random() * max);\n}\n/***************************************************************************************************\n * Run Rune VFX on Targets\n ***************************************************************************************************/\n async function runRuneVFXonTargets(targets) {\n    let color = jez.getRandomRuneColor()\n    let school = jez.getSpellSchool(aItem)\n    for (const element of targets) {\n        jez.runRuneVFX(element, school, color)\n    }\n }\n/***************************************************************************************************\n * Run Ouch VFX on Targets\n ***************************************************************************************************/\n async function runOuchVFXonTargets(targets) {\n    const VFX_LOOP = \"jb2a.dizzy_stars.200px.blueorange\"\n    for (const element of targets) {\n        new Sequence()\n            .effect()\n            .file(VFX_LOOP)\n            .atLocation(element)\n            .scaleToObject(1)\n            .play();\n    }\n }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

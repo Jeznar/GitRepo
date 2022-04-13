@@ -107,7 +107,7 @@ NOTE: I needed to disable Automated Animations global match to fireball to avoid
 
 ---
 
-### Fly
+### Fly 
 
 This spell applies a DAE effect that upgrades flight speed to 60.  It also makes a call to the world macro, **[Run RuneVFX onTargets](../../Utility_Macros#run-runevfx-ontargets)**, to play a VFX on the target(s), which are assumed to be willing.
 
