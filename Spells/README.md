@@ -95,6 +95,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Magic Circle](3rd_Level#magic-circle)
 * [Protection from Energy](3rd_Level#protection-from-energy)
 * [Revivify](3rd_Level#revivify)
+* [Speak with Dead](3rd_Level#speak-with-dead)
 * [Thunder Step](3rd_Level#thunder-step)
 * [Tidal Wave](3rd_Level#tidal-wave)
 * [Vampiric Touch](3rd_Level#vampiric-touch) (ASE)

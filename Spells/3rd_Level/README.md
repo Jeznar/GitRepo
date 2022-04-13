@@ -14,6 +14,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Protection from Energy](#protection-from-energy)
 * [Magic Circle](#magic-circle)
 * [Revivify](#revivify)
+* [Speak with Dead](#speak-with-dead)
 * [Thunder Step](#thunder-step)
 * [Tidal Wave](#tidal-wave)
 * [Vampiric Touch](#vampiric-touch) (ASE)
@@ -127,24 +128,6 @@ For some reason this worked great on my initial testing, but the Automated Anima
 
 ---
 
-### Protection from Energy
-
-This spell uses a macro to apply a damage resistance to specified damage type and play a VFX.  The damage type can be specified by including one of the allowed types in the item name or picked from a dialog.  The VFX scales with the size of the protected token.
-
-Types allowed:
-
-* acid,
-* cold,
-* fire,
-* lightning, or
-* thunder.
-
-![Protection_from_Energy.gif](Protection_from_Energy/Protection_from_Energy.gif)
-
-[*Back to 3rd Level Spell List*](#3rd-level-spells)
-
----
-
 ### Magic Circle
 
 This spell places a graphic and names it to indicate the type of creature warded and the direction of warding.  It does nothing mechanically, leaving assignment of penalties and restriction of movement up to the GM and the players.
@@ -163,6 +146,24 @@ Here's what the spell looks like on the random battle map.
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
+--- 
+
+### Protection from Energy
+
+This spell uses a macro to apply a damage resistance to specified damage type and play a VFX.  The damage type can be specified by including one of the allowed types in the item name or picked from a dialog.  The VFX scales with the size of the protected token.
+
+Types allowed:
+
+* acid,
+* cold,
+* fire,
+* lightning, or
+* thunder.
+
+![Protection_from_Energy.gif](Protection_from_Energy/Protection_from_Energy.gif)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
 ---
 
 ### Revivify
@@ -170,6 +171,14 @@ Here's what the spell looks like on the random battle map.
 Fairly generic spell implementation.  A minor Automated Animations effect applied and a new spell component, [Diamond](../../Items#components), added to the spell components inventory.  This requires that the spell be adjusted after it is added to the character sheet to use the Diamond component.
 
 ![Revivify_Description.png](Revivify/Revivify_Description.png)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Speak with Dead
+
+Spell plays a RuneVFX on the target and places a DAE effect noting the presence of the spell.  It does no checking. 
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
