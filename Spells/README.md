@@ -153,6 +153,6 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [9th Level Spells](9th_Level)
 
-None at this time.
+* [Time Stop](9th_Level#time-stop)
 
 [*Back to Spell Level List*](#spells)

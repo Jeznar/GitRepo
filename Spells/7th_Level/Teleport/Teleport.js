@@ -209,7 +209,7 @@ async function pickRadioCallBack(selection) {
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
- * Post results to the chat card
+ * Return a random integer from 0 to max-1
  ***************************************************************************************************/
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
