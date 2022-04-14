@@ -160,6 +160,7 @@ Spell scrolls are rather kludgey.  They don't show up in the HUD that I use, so 
 
 **Scrolls that I have built**
 
+*
 * Magic Circle
 
 ![Magic_Circle_Magic.png](Spell_Scroll/Magic_Circle/Magic_Circle_Magic.png) 
