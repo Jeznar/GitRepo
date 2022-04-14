@@ -12,6 +12,7 @@ Since there should eventually be a enourmous number of things in this repo, I ha
 * [Components](#components)
 * [Items](#items)
 * [Potions](#potions)
+* [Spell Scrolls](#spell-scrolls)
 * [Weapons](#weapons)
 
 ---
@@ -150,6 +151,18 @@ This macro inflicts 3d6 of poison damage and applies a poison effect that does d
 The setup of the DAE effect on the item is essential to this macro.  Of particular note, the save DC myst be the first token in the Effect Value field (see the included screen shot).
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+___
+
+## Spell Scrolls
+
+Spell scrolls are rather kludgey.  They don't show up in the HUD that I use, so they have to be used from the character sheet.  Also, they need to have the *Magic Item* tab filled out so they will destroy themselves properly.
+
+**Scrolls that I have built**
+
+* Magic Circle
+
+![Magic_Circle_Magic.png](Spell_Scroll/Magic_Circle/Magic_Circle_Magic.png) 
 
 ___
 
