@@ -155,5 +155,6 @@ Since there should eventually be a enourmous number of spells in this repo, this
 ## [9th Level Spells](9th_Level)
 
 * [Time Stop](9th_Level#time-stop)
+* [Wish](9th_Level#wish)
 
 [*Back to Spell Level List*](#spells)

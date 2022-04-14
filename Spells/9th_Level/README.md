@@ -4,6 +4,7 @@ This repository will contain my automated 9th level spells as I create new or up
 Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Time Stop](#time-stop)
+* [Wish](#wish)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -13,6 +14,14 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 
 This spell manages the duration and monitors for the caster doing damage that results in an early termination.  It also places a **N Action** cub condition on all tokens in the scene other than the caster when started and removes them when completed.
 
+
+[*Back to 9th Level Spell List*](#9th-level-spells)
+
+---
+
+### Wish
+
+This spell runs a RuneVFX on the caster and has a spruced up description that includes a pair of precoded die rolls, but in general this is a manual spell for the GM to handle.
 
 [*Back to 9th Level Spell List*](#9th-level-spells)
 

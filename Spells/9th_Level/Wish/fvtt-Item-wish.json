@@ -1,0 +1,144 @@
+{
+  "name": "Wish",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/runes-royal-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p><strong>Wish</strong> is the mightiest spell a mortal creature can cast. By simply speaking aloud, you can alter the very foundations of reality in accord with your desires.</p>\n<p>The basic use of this spell is to <strong>duplicate any other spell of 8th level or lower</strong>. You don't need to meet any requirements in that spell, including costly components. The spell simply takes effect.</p>\n<p><strong>Alternatively</strong>, you can create one of the following effects of your choice:</p>\n<ul>\n<li>You create one object of up to 25,000 gp in value that isn't a magic item. The object can be no more than 300 feet in any dimension, and it appears in an unoccupied space you can see on the ground.</li>\n<li>You allow up to twenty creatures that you can see to regain all hit points, and you end all effects on them described in the greater restoration spell.</li>\n<li>You grant up to ten creatures that you can see resistance to a damage type you choose.</li>\n<li>You grant up to ten creatures you can see immunity to a single spell or other magical effect for 8 hours. For instance, you could make yourself and all your companions immune to a lich's life drain attack.</li>\n<li>You undo a single recent event by forcing a reroll of any roll made within the last round (including your last turn). Reality reshapes itself to accommodate the new result. For example, a <strong>wish</strong> spell could undo an opponent's successful save, a foe's critical hit, or a friend's failed save. You can force the reroll to be made with advantage or disadvantage, and you can choose whether to use the reroll or the original roll.</li>\n</ul>\n<p>You might be able to achieve <strong>something beyond the scope of the above examples</strong>. State your wish to the GM as precisely as possible. The GM has great latitude in ruling what occurs in such an instance; the greater the wish, the greater the likelihood that something goes wrong. This spell might simply fail, the effect you desire might only be partly achieved, or you might suffer some unforeseen consequence as a result of how you worded the wish. For example, wishing that a villain were dead might propel you forward in time to a period when that villain is no longer alive, effectively removing you from the game. Similarly, wishing for a legendary magic item or artifact might instantly transport you to the presence of the item's current owner.</p>\n<h2>Detrimental effects</h2>\n<p>The stress of casting this spell to produce any effect other than duplicating another spell weakens you. After enduring that stress, each time <strong>you cast a spell</strong> until you finish a long rest, you take <strong>1d10 [[/roll 1d10]]{Necrotic Damage}</strong> per level of that spell. This damage can't be reduced or prevented in any way.</p>\n<p>In addition, your<strong> Strength drops to 3,</strong> if it isn't 3 or lower already, for 2d4 days. For each of those days that you spend resting and doing nothing more than light activity, your remaining recovery time decreases by 2 days.</p>\n<p>Finally, there is a [[/roll 1d100]]{33% chance (1-33) that you are unable to cast wish ever again} if you suffer this stress.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Ah, yea, this is to be adjudicated by the GM manually.&nbsp; There are clickables to roll damage and chance to lose the spell permanently.</p>",
+      "chat": "<p><strong>Wish</strong> is the mightiest spell a mortal creature can cast. By simply speaking aloud, you can alter the very foundations of reality in accord with your desires.</p>\n<p>The basic use of this spell is to duplicate any other spell of 8th level or lower. You don't need to meet any requirements in that spell, including costly components. The spell simply takes effect.</p>\n<p>Alternatively, you can create one of the following effects of your choice:</p>\n<ul>\n<li>You create one object of up to 25,000 gp in value that isn't a magic item. The object can be no more than 300 feet in any dimension, and it appears in an unoccupied space you can see on the ground.</li>\n<li>You allow up to twenty creatures that you can see to regain all hit points, and you end all effects on them described in the greater restoration spell.</li>\n<li>You grant up to ten creatures that you can see resistance to a damage type you choose.</li>\n<li>You grant up to ten creatures you can see immunity to a single spell or other magical effect for 8 hours. For instance, you could make yourself and all your companions immune to a lich's life drain attack.</li>\n<li>You undo a single recent event by forcing a reroll of any roll made within the last round (including your last turn). Reality reshapes itself to accommodate the new result. For example, a <strong>wish</strong> spell could undo an opponent's successful save, a foe's critical hit, or a friend's failed save. You can force the reroll to be made with advantage or disadvantage, and you can choose whether to use the reroll or the original roll.</li>\n</ul>\n<p> <br />You might be able to achieve something beyond the scope of the above examples. State your wish to the GM as precisely as possible. The GM has great latitude in ruling what occurs in such an instance; the greater the wish, the greater the likelihood that something goes wrong. This spell might simply fail, the effect you desire might only be partly achieved, or you might suffer some unforeseen consequence as a result of how you worded the wish. For example, wishing that a villain were dead might propel you forward in time to a period when that villain is no longer alive, effectively removing you from the game. Similarly, wishing for a legendary magic item or artifact might instantly transport you to the presence of the item's current owner.</p>\n<p>The stress of casting this spell to produce any effect other than duplicating another spell weakens you. After enduring that stress, each time you cast a spell until you finish a long rest, you take 1d10 necrotic damage per level of that spell. This damage can't be reduced or prevented in any way. In addition, your Strength drops to 3, if it isn't 3 or lower already, for 2d4 days. For each of those days that you spend resting and doing nothing more than light activity, your remaining recovery time decreases by 2 days. Finally, there is a 33 percent chance that you are unable to cast <strong>wish</strong> ever again if you suffer this stress.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 288",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "heal",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 9,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 138951,
+      "definitionId": 2303,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 288,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Creation",
+        "Healing",
+        "Buff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_cj4y175xcmo"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.DIoPvkArYdA8XLy8"
+    },
+    "midi-qol": {
+      "onUseMacroName": "Run_RuneVFX_onSelf"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
