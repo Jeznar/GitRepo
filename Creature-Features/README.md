@@ -23,6 +23,7 @@ I'll try to document functions as I add them to the repository.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
 * **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
+* **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
 * **[Pit](#pit)** -- Abilities for use by the pit *monster*
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
@@ -221,6 +222,16 @@ I rather skipped documenting this as I wrote it, so, well...
 This ability requires nothing more than being a feature name "Magic Resistance." Midi-QoL apparently treats this as a magic cookie and will roll saves vs magic for a creature that has this feature with advantage.
 
 ![Magic_Resistance/Magic_Resistance_Desc.png](Magic_Resistance/Magic_Resistance_Desc.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Maddening Touch**
+
+Basic melee attack for the **Allip** undead critter.  Only *interesting* aspect is the use of Automated Animations to show an appropriate effect. 
+
+![Maddening_Touch.gif](Maddening_Touch/Maddening_Touch.gif)
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
