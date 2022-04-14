@@ -1,0 +1,207 @@
+{
+  "name": "Potion: Heroism",
+  "type": "consumable",
+  "img": "icons/consumables/potions/bottle-pear-corked-blue.webp",
+  "data": {
+    "description": {
+      "value": "<p>For 1 hour after drinking it, you gain 10 temporary hit points that last for 1 hour. For the same duration, you are under the effect of the <em>bless</em> spell (no concentration required). This blue potion bubbles and steams as if boiling.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 255",
+    "quantity": 1,
+    "weight": 0,
+    "price": 120,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "rare",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "touch",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": true,
+      "autoUse": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 5,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "consumableType": "potion",
+    "attributes": {
+      "spelldc": 10
+    }
+  },
+  "effects": [
+    {
+      "_id": "i6n9aYPLRIdhS0J3",
+      "changes": [
+        {
+          "key": "data.attributes.hp.temp",
+          "mode": 4,
+          "value": "10",
+          "priority": "20"
+        },
+        {
+          "key": "data.attributes.hp.tempmax",
+          "mode": 4,
+          "value": "10",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.abilities.save",
+          "mode": 2,
+          "value": "+1d4+",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.mwak.attack",
+          "mode": 2,
+          "value": "+1d4+",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.msak.attack",
+          "mode": 2,
+          "value": "+1d4+",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.rsak.attack",
+          "mode": 2,
+          "value": "+1d4+",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.rwak.attack",
+          "mode": 2,
+          "value": "+1d4+",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 3600
+      },
+      "icon": "icons/consumables/potions/bottle-pear-corked-blue.webp",
+      "label": "Potion: Heroism",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": [
+        "data.attributes.hp.temp",
+        "data.attributes.hp.tempmax",
+        "data.bonuses.abilities.save",
+        "data.bonuses.mwak.attack",
+        "data.bonuses.msak.attack",
+        "data.bonuses.rsak.attack",
+        "data.bonuses.rwak.attack"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "Run_RuneVFX_onTargets"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.claiX9B4Vdlik8y7"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

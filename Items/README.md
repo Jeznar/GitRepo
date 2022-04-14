@@ -130,6 +130,7 @@ Potion Items as they are created and added should be tagged into this listing.
 
 * [Alchemy Jug](#alchemy-jug)
 * [Greater Healing](#greater-healing)
+* [Heroism](#heroism)
 * [Poison](#poison)
 
 ### **Alchemy Jug**
@@ -138,9 +139,19 @@ No automation, just a note on FoundryVTT usage.
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
+---
+
 ### **Greater Healing**
 
 Potion performs healing and will consume a usage (assuming check box remains checked(.  Also runs a simple VFX on the imbiber. 
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+
+### **Heroism**
+
+Play **Run_RuneVFX_onTargets** as an on use Item Macro and applies DAE Effects that match the RAW description.
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
@@ -160,7 +171,9 @@ Spell scrolls are rather kludgey.  They don't show up in the HUD that I use, so 
 
 **Scrolls that I have built**
 
-*
+* Cone of Cold
+* Fireball
+* Lightning Bolt
 * Magic Circle
 
 ![Magic_Circle_Magic.png](Spell_Scroll/Magic_Circle/Magic_Circle_Magic.png) 
