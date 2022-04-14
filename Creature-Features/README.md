@@ -18,11 +18,13 @@ I'll try to document functions as I add them to the repository.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
 * **[Etherealness](#etherealness)** -- Transitions a token to etherl realm (sort of).
+* **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
 * **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
+* **[Pit](#pit)** -- Abilities for use by the pit *monster*
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
@@ -149,9 +151,19 @@ It checks for LoS blockage by walls, as well as blinded, but nothing ore sophist
 
 ### **Ethrealness**
 
-This macro runs a VFX on the targeted token and flips the hidden status to true when it is run.  When the effect it applies is removed it runs the VFX in reverese and flips the hidden status to false.  
+This macro runs a VFX on the targeted token and flips the hidden status to true when it is run.  When the effect it applies is removed it runs the VFX in reverse and flips the hidden status to false.  
 
 ![Etherealness/Etherealness_Desc.gif](Etherealness/Etherealness_Desc.gif)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Falling**
+
+This item applies a d6 of damage and the prone condition.  It should be adjusted to make the number of dice *correct* for different height falls.
+
+![Falling_Description.png](Falling/Falling_Description.png)
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
@@ -226,6 +238,14 @@ What it does do is run a VFX and add a persistent debuff that reduces the maximu
 
 ---
 
+### **Pit**
+
+Abilities to automate damage from a spiked pit and a poisoned spike pit.  Damage amounts may need to be adjusted for circumstances. 
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Ravenous Tenacity**
 
 This one implments one of Ilya Kreskov's ability as defined by MandyMod in her [Fleshing Out Curse of Strahd: Kresk](https://www.reddit.com/r/CurseofStrahd/comments/8w8488/fleshing_out_curse_of_strahd_kresk/) post on Reddit. 
@@ -240,6 +260,7 @@ I've added screen shots of the pages where I added config info for this ability.
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
 ---
+
 ### **Retched Spittle**
 
 This one implments one of Ilya Kreskov's ability as defined by MandyMod in her [Fleshing Out Curse of Strahd: Kresk](https://www.reddit.com/r/CurseofStrahd/comments/8w8488/fleshing_out_curse_of_strahd_kresk/) post on Reddit. 

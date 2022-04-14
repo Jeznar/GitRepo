@@ -1,0 +1,182 @@
+{
+  "name": "Falling....",
+  "type": "weapon",
+  "img": "Icons_JGB/Effects/Falling.png",
+  "data": {
+    "description": {
+      "value": "<p>A fall from a great height is one of the most common hazards facing an adventurer. At the end of a fall, a creature takes 1d6 bludgeoning damage for every 10 feet it fell, to a maximum of 20d6. The creature lands <a href=\"https://www.dndbeyond.com/compendium/rules/basic-rules/appendix-a-conditions#Prone\" data-tooltip-href=\"//www.dndbeyond.com/conditions/12-tooltip?disable-webm=1&amp;disable-webm=1\">prone</a>, unless it avoids taking damage from the fall.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Adjust the number of dice or use multiple times for each 10 feet fallen.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6",
+          "bludgeoning"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "natural",
+    "baseItem": "",
+    "properties": {
+      "ada": false,
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "mgc": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "sil": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": true
+  },
+  "effects": [
+    {
+      "_id": "GRvDlWrDlABUP02l",
+      "changes": [
+        {
+          "key": "macro.CUB",
+          "mode": 0,
+          "value": "Prone",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Effects/Falling.png",
+      "label": "Falling....",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "macro.CUB"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "onUseMacroName": ""
+    },
+    "core": {
+      "sourceId": "Item.YDyzdoEjhMmrYpfm"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
