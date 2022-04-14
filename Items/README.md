@@ -218,6 +218,14 @@ This is the implementation of a very campaign specific item (with a nasty curse)
 
 ---
 
+### **Luck Blade**
+
+Blade with the passive benefits automated.  It needs the number of wishes set when found.  The once-per-day reroll is not automated or tracked.
+
+![Luck_Blade_Description.png](Weapons/Luck_Blade/Luck_Blade_Description.png)
+
+---
+
 ### **Treebane**
 
 The Treebane axe macro does an extra 1d8 damage to targets that are of type *plant* on hits.  
