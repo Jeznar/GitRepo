@@ -420,7 +420,7 @@ Since I may need to do some manual fixing after the spell, I setup the chat log 
 
 ### **Whispers of Madness**
 
-Implements the Allip ability that forces saving throws from up to three targets.  Undead and Constructs are immune.  Failed saves result in some damage and being forced to attack a target of the Allip's choice.
+Implements the [Allip](https://www.dndbeyond.com/monsters/93770-allip) ability that forces saving throws from up to three targets.  Undead and Constructs are immune.  Failed saves result in some damage and being forced to attack a target of the Allip's choice.
 
 This item also runs a runeVFX on the affected tokens. 
 
