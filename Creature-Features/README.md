@@ -35,6 +35,7 @@ I'll try to document functions as I add them to the repository.
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
 * **[Undead Fortitude](#undead-fortitude)** -- Certain undead's (e.g. Zombie) ability to deny death  
 * **[Wail](#wail)** -- Banshee's wail that can drop things in their tracks.
+* **[Whispers of Madness]($whispersofmadness) -- Allip's ability
 * **[Wooden Sword](#wooden-sword)** -- Arabelle's wooden sword debuffing machine.
 
 ## Additional Notes on Functions
@@ -417,9 +418,21 @@ Since I may need to do some manual fixing after the spell, I setup the chat log 
 
 ---
 
+### **Whispers of Madness**
+
+Implements the Allip ability that forces saving throws from up to three targets.  Undead and Constructs are immune.  Failed saves result in some damage and being forced to attack a target of the Allip's choice.
+
+This item also runs a runeVFX on the affected tokens. 
+
+![Whispers_of_Madness_Chat.png](Whispers_of_Madness/Whispers_of_Madness_Chat.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Wooden Sword**
 
-Home brewed ability for Arabelle that applies one or two debuffing affects for one round whne she hits. 
+Home brewed ability for Arabelle that applies one or two debuffing affects for one round when she hits. 
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

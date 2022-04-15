@@ -60,26 +60,63 @@ function preCheck() {
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
+    let targetArray = []
+    let token5eArray = []
     if (!preCheck()) return(false);
-    //----------------------------------------------------------------------------------
-    // Build the target list, tossing out any that are type Undead or Construct
-    //
-    for (const element of args[0].targets) {
-        console.log(`Considering ${element.name}`, element);
-        
-      }
-    //----------------------------------------------------------------------------------
-    // 
-    //
-    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
-    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
-
-
-    msg = `Maybe say something useful...`
+    let color = jez.getRandomRuneColor()
+    jez.runRuneVFX(aToken, jez.getSpellSchool(aItem), color)
+    //--------------------------------------------------------------------------------------------
+    // Build the target list (targetArray) from those that failed saves, tossing out any that are 
+    // type Undead or Construct
+    //
+     for (const element of args[0].failedSaves) {
+         let race = jez.getRace(element)
+         if (race.includes("construct")) continue
+         if (race.includes("undead"))    continue
+         targetArray.push(element)
+        //----------------------------------------------------------------------------------------
+        // Build array of Token5e objects from the TokenDocument5e
+        //
+        let fetchedToken = canvas.tokens.placeables.find(ef => ef.id === element.id)
+        jez.log('Token5e fetched by ID', fetchedToken)
+        token5eArray.push(fetchedToken)
+    }
+    jez.log("targetArray", targetArray)
+    jez.log("token5eArray", token5eArray)
+    //--------------------------------------------------------------------------------------------
+    // If no targets remain, post message and exit
+    //
+    if (targetArray.length === 0) {
+        msg = `No effect, all targets saved or are immune`
+        postResults(msg)
+        return
+    }
+    //--------------------------------------------------------------------------------------------
+    // Determine damage to inflict: 1d8 + @mod psychic damage
+    //
+    let damageRoll = new Roll(`1d8 + ${jez.getCastMod(aToken)}`).evaluate({ async: false });
+    game.dice3d?.showForRoll(damageRoll);
+    //--------------------------------------------------------------------------------------------
+    // Apply damage 
+    //
+    await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total, "psychic", targetArray, 
+        damageRoll, { flavor: `Psychic Damage`, itemCardId: args[0].itemCardId })
+    jez.runRuneVFX(targetArray, jez.getSpellSchool(aItem), color)
+    //--------------------------------------------------------------------------------------------
+    // Post completion message
+    //
+    let failedStr = ""
+    for (const ELEMENT of targetArray) {
+        if (failedStr) failedStr += `, <b>${ELEMENT.name}</b>`
+        else failedStr = `<b>${ELEMENT.name}</b>`;
+    }
+    msg = `Creatures that failed their saving throws (${failedStr}) must use their reaction (if available) to 
+    make a melee weapon attack against one creature of ${aToken.name}'s choice that ${aToken.name}
+    can see.`
     postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
+
+
