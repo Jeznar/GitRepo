@@ -22,8 +22,9 @@ I'll try to document functions as I add them to the repository.
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
-* **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
+* **[Howling Babble](#howling-babble)** -- Allip's special attack.
 * **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
+* **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
 * **[Pit](#pit)** -- Abilities for use by the pit *monster*
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
@@ -228,9 +229,19 @@ This ability requires nothing more than being a feature name "Magic Resistance."
 
 ---
 
+### **Howling Babble**
+
+Special magic attack of the **[Allip](https://www.dndbeyond.com/monsters/93770-allip)** undead critter. It affects all creatures that can hear the cast within 30 feet.  The associated ItemMacro pops a dialog that allows for selection of all the tokens to be affected after eliminating any undead or constructs (they are immune). 
+
+![Howling_Babble.gif](Howling_Babble/Howling_Babble.gif)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Maddening Touch**
 
-Basic melee attack for the **Allip** undead critter.  Only *interesting* aspect is the use of Automated Animations to show an appropriate effect. 
+Basic melee attack for the **[Allip](https://www.dndbeyond.com/monsters/93770-allip)** undead critter.  Only *interesting* aspect is the use of Automated Animations to show an appropriate effect. 
 
 ![Maddening_Touch.gif](Maddening_Touch/Maddening_Touch.gif)
 

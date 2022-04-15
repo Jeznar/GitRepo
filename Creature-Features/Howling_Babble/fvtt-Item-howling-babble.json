@@ -1,0 +1,115 @@
+{
+  "name": "Howling Babble",
+  "type": "feat",
+  "img": "Tokens/Undead/Avatars/Allip-Avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>Each creature within 30 feet of the user of this ability that can hear it must make a <strong>DC 14 Wisdom saving throw</strong>. On a failed save, a target takes <strong>12 (2d8 + @mod) psychic damage</strong>, and it is <strong>@JournalEntry[Ch02WiipJvf69EDN]{Stunned}</strong> until the end of its next turn. On a successful save, it takes half as much damage and isn’t stunned.</p>\n<p>Constructs and undead are immune to this effect.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: No tokens need to be targeted to use this ability.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 6,
+      "charged": true
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Item.ZfA3aYP02Zwygs0S"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Howling Babble",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Howling_Babble.js\"\n/*****************************************************************************************\n * Implments the Allip's ability of same name.\n * \n *   Each creature within 30 feet of the user of this ability that can hear it must make a \n *   DC 14 Wisdom saving throw. On a failed save, a target takes 12 (2d8 + @mod) psychic \n *   damage, and it is  Stunned until the end of its next turn. On a successful save, it \n *   takes half as much damage and isn’t stunned.\n * \n *   Constructs and undead are immune to this effect.\n * \n * 04/14/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const SAVE_TYPE = \"wis\"\n    const SAVE_DC = jez.getSpellDC(aToken)\n    const DAM_DICE = \"2d8\"\n    const DAM_TYPE = \"psychic\"\n    let failSaves = []  // Array to contain the tokens that failed their saving throws\n    let madeSaves = []  // Array to contain the tokens that made their saving throws\n    //----------------------------------------------------------------------------------\n    // Build array of tokens in range\n    //\n    const ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n    let range = jez.getRange(aItem, ALLOWED_UNITS)\n    jez.log(\"range\", range)\n    let tokensArray = await jez.tokensInRange(aToken, range)\n    let susceptibleArray = []\n    //----------------------------------------------------------------------------------\n    // Exit if no tokens in range\n    // \n    if (!tokensArray || tokensArray.length === 0) {\n        postResults(\"No tokens in range\");\n        return (false)\n    }\n    //----------------------------------------------------------------------------------\n    // Build array of tokens that can be affected\n    //\n    for (const ELEMENT of tokensArray) {\n        let race = jez.getRace(ELEMENT)\n        if (race.includes(\"construct\")) continue    // Skip ahead if construct and immune\n        if (race.includes(\"undead\")) continue    // Skip ahead if undead and immune\n        susceptibleArray.push(ELEMENT)                // Add affecteable element to array\n    }\n    //----------------------------------------------------------------------------------\n    // Build an array of the affectable tokens and IDs, wrapped in parens\n    //\n    let dialogEntries = []\n    for (const ELEMENT of susceptibleArray) {\n        const LINE = `${ELEMENT.name}      ${ELEMENT.id}`\n        dialogEntries.push(LINE)\n    }\n    //----------------------------------------------------------------------------------\n    // Pop Dialog to allow selection of targets that can hear the effect.  Processing \n    // will continue in the call back function from that dialog.\n    //\n    popDialog();\n    function popDialog() {\n        const Q_TITLE = \"Select Tokens that can Hear the Effect\"\n        const Q_TEXT = `Check all the creatures that can hear ${aToken.name}'s \n        ${aItem.name} effect.  Not the ones that you want to be affected, but all\n        that can hear the effect.`\n        jez.pickCheckListArray(Q_TITLE, Q_TEXT, callBack, dialogEntries.sort());\n        jez.log(``)\n        return\n    }\n    //----------------------------------------------------------------------------------\n    // Following is the call back function\n    //\n    async function callBack(selection) {\n        let targetedArray = []\n        if (selection === null) return\n        if (selection.length === 0) { popDialog(); return }\n        jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))\n        //----------------------------------------------------------------------------------\n        // Build targetedArray of tokens from all those tasty token.ids selected\n        //\n        for (let i = 0; i < selection.length; i++) {\n            msg += `${i + 1}) ${selection[i]}<br>`\n            const ELEMENTS = selection[i].split(\" \")\n            jez.log('Last token', ELEMENTS[ELEMENTS.length - 1])\n            targetedArray.push(game.scenes.viewed.data.tokens.get(ELEMENTS[ELEMENTS.length - 1]))\n        }\n        //----------------------------------------------------------------------------------\n        // Determine how much damage is to be done\n        //\n        let damageRoll = new Roll(`${DAM_DICE}+${jez.getCastMod(aToken)}`).evaluate();\n        game.dice3d?.showForRoll(damageRoll);\n        jez.log(\"damageRoll\", damageRoll)\n        //----------------------------------------------------------------------------------\n        // Step through affectable tokens, making a list of those that saved and failed\n        //\n        jez.log(targetedArray)\n        \n        for (const ELEMENT of targetedArray) {\n            jez.log(`Affectable: ${ELEMENT.name}`)\n            let save = await ELEMENT.actor.rollAbilitySave(SAVE_TYPE, {FLAVOR:\"Something\", chatMessage:true, fastforward:true});\n            jez.log(\"save\", save)\n            if (save.total >= SAVE_DC) {\n                jez.log(`Saved:  ${ELEMENT.name} with a ${save.total}`)\n                madeSaves.push(ELEMENT)\n            } else {\n               jez.log(`Failed: ${ELEMENT.name} with a ${save.total}`)\n               failSaves.push(ELEMENT)\n            }\n        } \n        //---------------------------------------------------------------------------------------------\n        // Process Tokens that Made Saves. Apply the prescribed damage.\n        //\n        if (madeSaves.length > 0) {\n            //-----------------------------------------------------------------------------------------------\n            // Create a fake roll, fudged to come up with half the damage for when target saves\n            //\n            let damageRollSaved = new Roll(`${Math.floor(damageRoll.total / 2)}`).evaluate({ async: false });\n            //-----------------------------------------------------------------------------------------------\n            // Apply damage to those that saved\n            //\n            await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total,\n                DAM_TYPE, madeSaves, damageRollSaved,\n                {\n                    flavor: `(${CONFIG.DND5E.healingTypes[DAM_TYPE]})`,\n                    itemCardId: args[0].itemCardId,\n                    useOther: false\n                }\n            )\n        }\n        //---------------------------------------------------------------------------------------------\n        // Process Tokens that Failed Saves. Apply the prescribed damage.\n        //\n        if (failSaves.length > 0) {\n            runDizzyVFXonTargets(failSaves)\n            //-----------------------------------------------------------------------------------------------\n            // Apply damage to those that saved\n            //\n            await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total,\n                DAM_TYPE, failSaves, damageRoll,\n                {\n                    flavor: `(${CONFIG.DND5E.healingTypes[DAM_TYPE]})`,\n                    itemCardId: args[0].itemCardId,\n                    useOther: false\n                }\n            )\n            //-----------------------------------------------------------------------------------------------\n            // Apply Stunned condition to each failed token\n            //\n            for (const ELEMENT of failSaves) {\n                let effectData = [{\n                    label: `Stunned by Howling Babble`,\n                    icon: aItem.img,\n                    origin: LAST_ARG.uuid,\n                    disabled: false,\n                    duration: { seconds: 12, startTime: game.time.worldTime },\n                    flags: { dae: { itemData: aItem, specialDuration: [\"turnEnd\", \"newDay\", \"longRest\", \"shortRest\"] } },\n                    changes: [\n                        { key: `macro.CUB`, mode: jez.CUSTOM, value: `Stunned`, priority: 20 },\n                    ]\n                }];\n                await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: ELEMENT.uuid, effects: effectData });\n            }\n        }\n        return (true);\n    }\n}\n/***************************************************************************************************\n * Run Dizzy VFX on Targets\n ***************************************************************************************************/\n async function runDizzyVFXonTargets(targets) {\n    const VFX_LOOP = \"jb2a.dizzy_stars.400px.blueorange\"\n    for (const element of targets) {\n        new Sequence()\n            .effect()\n            .file(VFX_LOOP)\n            .atLocation(element)\n            .scaleToObject(1.5)\n            .duration(6000)\n            .play();\n    }\n }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
