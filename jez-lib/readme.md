@@ -35,6 +35,7 @@ The functions currently included in this module are:
 * **[jez.getSpellSchool(item)](#getspellschoolitem)** -- Returns a string naming the school of passed item
 * **[jez.getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
 * **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifier
+* **[jez.getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
 * **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
@@ -199,6 +200,21 @@ amount of error checking.
 * SubjectId: 16 character identifier for a token in the current scene
 
 [*Back to Functions list*](#functions-in-this-module)
+
+--- 
+
+### getRace(entity)
+
+Return the race of the passes **Actor5e**, **Token5e**, or **TokenDocument5e**.  The value will be a lowercase string, which may be empty.  It is taken from a user input field, so garbage may be present.  
+
+If passed a parameter not of a supported type, returns FALSE
+
+~~~javascript
+for ( let token of canvas.tokens.controlled ){
+  let race = jez.getRace(token.document))
+  if (race.includes("construct")) console.log(`${token.name} is construct`)
+}
+~~~
 
 ---
 

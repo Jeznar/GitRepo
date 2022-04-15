@@ -4,6 +4,7 @@ console.log(`
 ███▄─▄█▄─▄▄─█░▄▄░▄█▀▀▀▀▀██▄─▄███▄─▄█▄─▄─▀█
 █─▄█─███─▄█▀██▀▄█▀█████████─██▀██─███─▄─▀█
 ▀▄▄▄▀▀▀▄▄▄▄▄▀▄▄▄▄▄▀▀▀▀▀▀▀▀▄▄▄▄▄▀▄▄▄▀▄▄▄▄▀▀`)
+
 /*************************************************************************************
  * Register the module with Developer Mode
  *************************************************************************************/
@@ -1014,6 +1015,32 @@ class jez {
                 return destSqrArray;
             }
         }
+    }
+    /***************************************************************************************************
+     * getRace
+     *
+     * Return the race of the passed Actor5e, Token5e, or TokenDocument5e.  The value will be a lowercase
+     * string, which may be empty.  It is taken from a user input field, so garbage may be present.  
+     * 
+     * If passed a parm not of a supported type, return FALSE
+     ***************************************************************************************************/
+    static getRace(entity) {
+        let objType = entity.constructor.name
+        let subject = null
+        if (objType === "Actor5e")          // perhaps entity is actor5e?  
+            subject = entity                // point subject at the actor5e
+        if (objType === "Token5e")          // maybe it is a Token5e?
+            subject = entity.actor          // point subject at the actor5e
+        if (objType === "TokenDocument5e")   // Maybe it is a TokenDocument5e
+            subject = entity._actor         // point subject at the actor5e
+        if (subject === null) return (false) // garbage in, return false
+        //jez.log(`------ Get Race Call ------`, `Object '${objType}'`, entity, `Subject ${subject.name}`, 
+        //subject, `subject.data.type`, subject.data.type)
+        let isNPC, targetType;
+        if (subject.data.type === "npc") isNPC = true; else isNPC = false;
+        if (isNPC) targetType = subject.data.data.details.type.value.toLowerCase()
+        else targetType = subject.data.data.details.race.toLowerCase()
+        return (targetType)
     }
 } // END OF class jez
 Object.freeze(jez);
