@@ -292,18 +292,19 @@ class jez {
             let d = canvas.grid.measureDistance(sel, token);
             d = d.toFixed(1);
             if (sel === token) { // Skip the origin token
-                jez.log(` Skipping the origin token, ${sel.name}`, "sel", sel, "token", token)
+                // jez.log(` Skipping the origin token, ${sel.name}`, "sel", sel, "token", token)
             } else {
-                jez.log(` Considering ${token.name} at ${d} distance`);
+                // jez.log(` Considering ${token.name} at ${d} distance`);
                 if (d > range + fudge) {
-                    jez.log(`  ${token.name} is too far away`);
+                    // jez.log(`  ${token.name} is too far away`);
                     if (toFarCnt++) { toFar += ", " };
                     toFar += token.name;
-                    jez.log(`  To Far #${toFarCnt} ${token.name} is ${d} feet. To Fars: ${toFar}`);
+                    //jez.log(`  To Far #${toFarCnt} ${token.name} is ${d} feet. To Fars: ${toFar}`);
                 } else {
-                    jez.log(`  ${token.name} is in range`);
+                    // jez.log(`  ${token.name} is in range`);
                     inRangeTokens.push(token);
-                    jez.log(`  In Range #${++inRangeCnt} ${token.name} is ${d} feet. In Ranges:`, inRangeTokens);
+                    inRangeCnt++;
+                    //jez.log(`  In Range #${inRangeCnt} ${token.name} is ${d} feet. In Ranges:`, inRangeTokens);
                 }
             }
         });
