@@ -17,7 +17,8 @@ I'll try to document functions as I add them to the repository.
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
-* **[Etherealness](#etherealness)** -- Transitions a token to etherl realm (sort of).
+* **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
+* **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
@@ -157,6 +158,21 @@ It checks for LoS blockage by walls, as well as blinded, but nothing ore sophist
 This macro runs a VFX on the targeted token and flips the hidden status to true when it is run.  When the effect it applies is removed it runs the VFX in reverse and flips the hidden status to false.  
 
 ![Etherealness/Etherealness_Desc.gif](Etherealness/Etherealness_Desc.gif)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Fading Image**
+
+This feature applies a turn-end DoT via MidiQoL OverTime to a creature that has the ability, while they are in combat. I am using to represent a fading of *reality* for the mirror fight in MandyMod's Fidatov manor.  
+
+The key element of this spell is the overtime effect that is defined as follows:
+
+~~~javascript
+flags.midi-qol.OverTime CUSTOM turn=end,label=Fading Image,damageRoll=1d6,damageType=psychic
+~~~
+
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
