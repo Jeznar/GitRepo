@@ -14,6 +14,7 @@ I'll try to document functions as I add them to the repository.
 * **[Blessing of the Mother Night](#blessing-of-the-mother-night)** -- Baba Lysaga ability
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
 * **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
+* **[Clay Golem Slam](@clay-golem-slam)** -- Reduces targets hit points by amount of damage inflicted
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
@@ -134,6 +135,14 @@ The idea is add one (or more) of these to handle the special shared spell pool. 
 Its not an ideal solution, but this feels practical to me.
 
 ![Coven_Casting/Coven.png](Coven_Casting/Coven.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Clay Golem Slam**
+
+Simple macro that applies a DAE effect to reduce target's max hit points by same amount as damage inflicted.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
