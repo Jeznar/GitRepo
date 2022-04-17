@@ -1,0 +1,158 @@
+{
+  "name": "Clay Golem Haste",
+  "type": "feat",
+  "img": "Tokens/Monsters/Clay_Golem/Clay_Golem_Avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>Until the end of its next turn, the golem magically gains a +2 bonus to its AC, has advantage on Dexterity saving throws, and can use its slam attack as a bonus action.</p>\n<hr />\n<p><strong>Note: </strong>This uses an Action but granting slam as bonus actions for two consecutive turns, thus giving the same number of total slams in two turns.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 5,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "N8wDT0pyPavQpUAf",
+      "changes": [
+        {
+          "key": "data.attributes.ac.bonus",
+          "mode": 2,
+          "value": "+2",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.advantage.ability.save.dex",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        },
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 0,
+          "value": "Slam as Bonus Action",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Tokens/Monsters/Clay_Golem/Clay_Golem_Avatar.png",
+      "label": "Clay Golem Haste",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnEnd"
+          ],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": [
+        "data.attributes.ac.bonus",
+        "flags.midi-qol.advantage.ability.save.dex",
+        "flags.gm-notes.notes"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "onUseMacroName": "Run_RuneVFX_onSelf"
+    },
+    "core": {
+      "sourceId": "Item.hm2PIo4WN92caADY"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
