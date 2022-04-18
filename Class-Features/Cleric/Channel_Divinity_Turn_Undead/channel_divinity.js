@@ -7,9 +7,9 @@ const MACRONAME = "Channel_Divinity.22.04.12.js"
  * 
  * - Change console.warn() and console.error() commands to jez.log()
  * - Add my typical header block
- * - Add a few additional jez.log() tracing statemenets
+ * - Add a few additional jez.log() tracing statements
  * - Changed "Frightened" to "Turn" to differentiate from the RAW condition 
- * - Change calling item from target data from "30 feet enemy" to "30 feet creature"
+ * - Change calling item target data from "30 feet enemy" to "30 feet creature"
  * - Eliminate [postActiveEffects] prefix from item's ItemMacro line
  * 
  * 04/18/22 0.1 Modification of Crymic's 04/12/22 implementation
