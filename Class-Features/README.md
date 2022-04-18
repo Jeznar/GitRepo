@@ -8,6 +8,7 @@ I anticipate a large number of features here, I will try to drop them into speci
 ## Classes with Features
 
 * [Shared](#shared)
+* [Cleric](#cleric)
 * [Druid](#druid)
 * [Occultist](#occultist)
 * [Paladin](#paladin)
@@ -18,6 +19,16 @@ I anticipate a large number of features here, I will try to drop them into speci
 Abilities shared across multiple classes.
 
 * [Fighting Style - Interception](Shared#fighting-style-interception)
+
+[*Back to Classes with Features list*](#classes-with-features)
+
+---
+
+## [Cleric](Cleric#cleric)
+
+This is the standard [Cleric class](https://www.dndbeyond.com/classes/cleric).  I am only concerned with very basic abilities as I only have NPC clerics in my campaign.
+
+* [Channel Divinity: Turn Undead](#Cleric/channel-divinity-turn-undead)
 
 [*Back to Classes with Features list*](#classes-with-features)
 

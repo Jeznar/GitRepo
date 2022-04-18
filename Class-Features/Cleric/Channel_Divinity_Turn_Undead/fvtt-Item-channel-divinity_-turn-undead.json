@@ -1,0 +1,151 @@
+{
+  "name": "Channel Divinity: Turn Undead",
+  "type": "feat",
+  "img": "icons/magic/fire/flame-burning-creature-skeleton.webp",
+  "data": {
+    "description": {
+      "value": "<p class=\"Core-Styles_Core-Body\">As an action, you present your holy symbol and speak a prayer censuring the undead. Each undead that can see or hear you within 30 feet of you must make a Wisdom saving throw. If the creature fails its saving throw, it is turned for 1 minute or until it take<span class=\"No-Break\">s any damage.</span></p>\n<p class=\"Core-Styles_Core-Body\">A turned creature must spend its turns trying to move as far away from you as it can, and it can’t willingly move to a space within 30 feet of you. It also can’t take reactions. For its action, it can use only the <span class=\"No-Break\">Dodge action.</span></p>",
+      "chat": "As an action, you present your holy symbol and speak a prayer censuring the undead. Each undead that can see or hear you within 30 feet of you must make a WIS saving throw (DC +13). If the creature fails its saving throw, it is turned for 1 minute or until it takes any damage. A turned creature must spend its turns trying to move as far away from you as it can, and it can’t willingly move to a space within 30 feet of you. It also can’t take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If there’s nowhere to move, the creature can use the Dodge action.",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": 30,
+      "width": null,
+      "units": "ft",
+      "type": "creature"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 2,
+      "max": "@classes.cleric.levels > 17 ? 3 : @classes.cleric.levels > 5 ? 2 : 1",
+      "per": "sr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Cleric",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": "74143",
+      "entityTypeId": "222216831",
+      "componentId": 110,
+      "componentTypeId": 12168134,
+      "dndbeyond": {
+        "levelScale": null,
+        "levelScales": [],
+        "limitedUse": [
+          {
+            "level": null,
+            "uses": 1
+          },
+          {
+            "level": null,
+            "uses": 1
+          }
+        ]
+      }
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Channel Divinity: Turn Undead",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "/////////////////////////////////////////////////\n// Requires: Callback macros ActorUpdate\n////////////////////////////////////////////////\nconst MACRONAME = \"Channel_Divinity.22.04.12.js\"\n/*****************************************************************************************\n * Couple changes to Crymic;s code.  \n * \n * - Change console.warn() and console.error() commands to jez.log()\n * - Add my typical header block\n * - Add a few additional jez.log() tracing statements\n * - Changed \"Frightened\" to \"Turn\" to differentiate from the RAW condition \n * - Change calling item from target data from \"30 feet enemy\" to \"30 feet creature\"\n * - Eliminate [postActiveEffects] prefix from item's ItemMacro line\n * \n * 04/18/22 0.1 Modification of Crymic's 04/12/22 implementation\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nasync function cr_lookup(level) {\n    return level > 20 ? 5 : level >= 17 ? 4 : level >= 14 ? 3 : level >= 11 ? 2 : level >= 8 ? 1 : level >= 5 ? 0.5 : 0;\n}\nconst ActorUpdate = game.macros.find(i => i.name === \"ActorUpdate\");\nif (!ActorUpdate) return ui.notifications.error(`REQUIRED: Missing ActorUpdate GM Macro!`);\nlet AdvancedMacros = getProperty(ActorUpdate.data.flags, \"advanced-macros\");\nif (!AdvancedMacros) return ui.notifications.error(`REQUIRED: Macro requires AdvancedMacros Module!`);\nelse if (!AdvancedMacros.runAsGM) return ui.notifications.error(`REQUIRED: ActorUpdate \"Execute As GM\" must be checked.`);\n\nconst lastArg = args[args.length - 1];\nconst actorD = canvas.tokens.get(lastArg.tokenId).actor;\nconst rollData = actorD.getRollData();\nconst level = rollData.details.cr ?? rollData.classes.cleric.levels;\nconst DC = rollData.attributes.spelldc;\nconst saveType = rollData.attributes.spellcasting;\nconst itemD = lastArg.item;\nconst gameRound = game.combat ? game.combat.round : 0;\n\njez.log(`###### ${itemD.name} Workflow Started #####`);\njez.log(`lastArg.targets`,lastArg.targets)\n\nconst targetList = lastArg.targets.reduce((list, target) => {\n    let creatureTypes = [\"undead\"];\n    let undead = target.actor.type === \"character\"  ? creatureTypes.some(i => (target.actor.data.data.details.race).toLowerCase().includes(i)) : creatureTypes.some(i => (target.actor.data.data.details.type.value).toLowerCase().includes(i));    \n    if (!undead && target.actor.type === \"character\" && target.actor.data.data.details.race === (undefined || null)) {\n        jez.log(`=>`, `Invalid Target`, target.name, `| Skipped: Race mismatch`, `| Result:`,target.actor.data.data.details.race);\n        return list;\n    } else if (!undead && target.actor.type === \"npc\" && target.actor.data.data.details.type.value === (undefined || null)) {\n        jez.log(`=>`, `Invalid Target`, target.name, `| Skipped: Type mismatch`, `| Result:`,target.actor.data.data.details.type.value);\n        return list;\n    } else if (!undead && target.actor.type === \"npc\" && target.actor.data.data.details.type.value === \"custom\") {\n        undead = creatureTypes.some(i => (target.actor.data.data.details.type.subtype || target.actor.data.data.details.type.custom).toLowerCase().includes(i));\n        if(!undead){ jez.log(`=>`, `Invalid Target`, target.name, `| Skipped: Custom Type mismatch`, `| Result:`,target.actor.data.data.details.type.custom,`(${target.actor.data.data.details.type.subtype})`);\n        return list;\n       }\n    };\n    jez.log(`=>`, `Target Found:`, target.name, `| Creature Type:`, target.actor.type === \"character\" ? target.actor.data.data.details.race : target.actor.data.data.details.type.value);\n    if (undead) list.push(target);\n    return list;\n}, []);\n\nif (targetList.length === 0) {\n    ui.notifications.warn(`${itemD.name} was unable to find any valid targets`);\n    jez.log(`${itemD.name} was unable to find any valid targets`);\n    return jez.log(`##### ${itemD.name} Workflow Aborted #####`);\n}\n\nlet turnTargets = [];\n\nfor (let target of targetList) {\n    let mon_cr = target.actor.getRollData().details.cr;\n    let level_cr = await cr_lookup(level);\n    // add turn resist terms\n    let resist = [\"Turn Resistance\", \"Turn Defiance\"];\n    let getResistance = target.actor.items.find(i => resist.includes(i.name));\n    let immunity = [\"Turn Immunity\"];\n    let getImmunity = target.actor.items.find(i => immunity.includes(i.name));\n    let getAdvantage = getResistance ? { advantage: true, chatMessage: false, fastForward: true } : { chatMessage: false, fastForward: true };\n    let save = await MidiQOL.socket().executeAsGM(\"rollAbility\", { request: \"save\", targetUuid: target.actor.uuid, ability: saveType, options: getAdvantage });\n    if (getImmunity) {\n        jez.log(`=>`, `Target Processed:`, target.name, `| CR:`, mon_cr, `| Result: Immune`);\n        turnTargets.push(`<div class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${target.id}\">${target.name} is immune</div><div><img src=\"${target.data.img}\" width=\"30\" height=\"30\" style=\"border:0px\"></div></div>`);\n    } else {\n        if (save.total < DC) {\n            if (level_cr >= mon_cr) {\n                jez.log(`=>`, `Target Processed:`, target.name, `| CR:`, mon_cr, `| DC:`, DC, `| Save:`, save.total, `[Fail]`, `| Result: Destroyed`);\n                turnTargets.push(`<div class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${target.id}\">${target.name} fails with ${save.total} [D]</div><div><img src=\"${target.data.img}\" width=\"30\" height=\"30\" style=\"border:0px\"></div></div>`);\n                await ActorUpdate.execute(target.id, { \"data.attributes.hp.value\": 0 });\n                if (!(game.modules.get(\"jb2a_patreon\")?.active && game.modules.get(\"sequencer\")?.active)) return {};\n                new Sequence()\n                    .effect()\n                    .atLocation(target)\n                    .file(\"jb2a.impact.orange\")\n                    .scaleToObject(1.5)\n                    .play()\n            } else {\n                jez.log(`=>`, `Target Processed:`, target.name, `| CR:`, mon_cr, `| DC:`, DC, `| Save:`, save.total, `[Fail]`, `| Result: Turned`);\n                let effectData = {\n                    // label: \"Frightened\",\n                    label: \"Turned\",    // JGB: Changed name as it is not the RAW Frightened condition effect\n                    icon: \"icons/svg/terror.svg\",\n                    origin: lastArg.uuid,\n                    disabled: false,\n                    flags: { dae: { specialDuration: [\"isDamaged\"] } },\n                    duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },\n                    changes: [{ key: `flags.midi-qol.disadvantage.ability.check.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },\n                    { key: `flags.midi-qol.disadvantage.skill.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },\n                    { key: `flags.midi-qol.disadvantage.attack.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 }]\n                };\n                let effect = target.actor.effects.find(i => i.data.label === game.i18n.localize(\"Turned\"));\n                if (!effect) {\n                    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: target.actor.uuid, effects: [effectData] });\n                    jez.log(`>`, target.name, `Applyying: Turned Condition`, `Success`);\n                } else {\n                    jez.log(`>`, target.name, `Applyying: Turned Condition`, `Failure`);\n                }\n                turnTargets.push(`<div class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${target.id}\">${target.name} fails with ${save.total} [F]</div><div><img src=\"${target.data.img}\" width=\"30\" height=\"30\" style=\"border:0px\"></div></div>`);\n                if (!(game.modules.get(\"jb2a_patreon\")?.active && game.modules.get(\"sequencer\")?.active)) return {};\n                new Sequence()\n                    .effect()\n                    .atLocation(target)\n                    .file(\"jb2a.icon.fear.orange\")\n                    .scaleToObject(1.5)\n                    .play()\n            }\n        } else {\n            jez.log(`=>`, `Target Skipped:`, target.name, `| CR:`, mon_cr, `| DC:`, DC, `| Save:`, save.total, `[Skipped]`, `| Result: Save`);\n            turnTargets.push(`<div class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${target.id}\">${target.name} saves with ${save.total}</div><div><img src=\"${target.data.img}\" width=\"30\" height=\"30\" style=\"border:0px\"></div></div>`);\n        }\n    }\n}\njez.log(`##### ${itemD.name} Workflow Completed #####`);\nawait wait(600);\nlet turn_results = `<div class=\"midi-qol-nobox midi-qol-bigger-text\">${CONFIG.DND5E.abilities[saveType]} Saving Throw: DC ${DC}</div><div><div class=\"midi-qol-nobox\">${turnTargets.join('')}</div></div>`;\nlet chatMessage = await game.messages.get(lastArg.itemCardId);\nlet content = await duplicate(chatMessage.data.content);\nlet searchString = /<div class=\"midi-qol-hits-display\">[\\s\\S]*<div class=\"end-midi-qol-hits-display\">/g;\nlet replaceString = `<div class=\"midi-qol-hits-display\"><div class=\"end-midi-qol-hits-display\">${turn_results}`;\ncontent = await content.replace(searchString, replaceString);\nawait chatMessage.update({ content: content });\nawait ui.chat.scrollBottom();",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro",
+      "forceCEOn": false,
+      "effectActivation": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "favtab": {
+      "isFavorite": true
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    },
+    "core": {
+      "sourceId": "Item.767Xc7Wzq3FxtUVJ"
+    }
+  }
+}
