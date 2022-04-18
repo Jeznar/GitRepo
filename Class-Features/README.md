@@ -28,7 +28,7 @@ Abilities shared across multiple classes.
 
 This is the standard [Cleric class](https://www.dndbeyond.com/classes/cleric).  I am only concerned with very basic abilities as I only have NPC clerics in my campaign.
 
-* [Channel Divinity: Turn Undead](#Cleric/channel-divinity-turn-undead)
+* [Channel Divinity: Turn Undead](Cleric#channel-divinity-turn-undead)
 
 [*Back to Classes with Features list*](#classes-with-features)
 
@@ -38,8 +38,8 @@ This is the standard [Cleric class](https://www.dndbeyond.com/classes/cleric).  
 
 This is the standard [Druid class](https://www.dndbeyond.com/classes/druid).  I will be concerned with Wildfire Druid abilities, because that is what my game is featuring.
 
-* [Enhanced Bond](#Druid/enhanced-bond)
-* [Summon Wildfire Spirit](#Druid/summon-wildfire-spirit)
+* [Enhanced Bond](Druid#enhanced-bond)
+* [Summon Wildfire Spirit](Druid#summon-wildfire-spirit)
 
 
 [*Back to Classes with Features list*](#classes-with-features)
