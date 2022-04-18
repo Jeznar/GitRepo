@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Cone of Cold](#cone-of-cold)
 * [Contact Other Plane](#contact-other-plane)
 * [Geas](#geas)
+* [Raise Dead](#raise-dead)
 * [Scrying](#scrying)
 * [Steelwind Strike](#steelwind-strike) (ASE)
 * [Wall of Force](#wall-of-force) (ASE)
@@ -58,6 +59,14 @@ The spell description must contain the *magic* phrase ***no damage on save*** to
 ### Geas
 
 This spell simply places a DAE effect that places a CUB condition of charmed on the target, if it fails its save.  It does not handle the damage element or ultimate removal of the effect as that is very much up to GM judgement.
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Raise Dead
+
+This spell increases the targets HP by one.  It does not check for validity of the cast (e.g.,. is the target dead?).  It also adds four stacks of a debuff that impose the penalty.  One instance of the debuff should be removed at each subsequent long rest.
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 

@@ -121,6 +121,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Cone of Cold](5th_Level#cone-of-cold)
 * [Contact Other Plane](5th_Level#contact-other-plane)
 * [Geas](5th_Level#geas)
+* [Raise Dead](5th_Level#raise-dead)
 * [Scrying](5th_Level#scrying)
 * [Steelwind Strike](5th_Level#steelwind-strike) (ASE)
 * [Wall of Force](5th_Level#wall-of-force) (ASE)
