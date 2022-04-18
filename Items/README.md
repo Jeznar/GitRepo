@@ -34,6 +34,7 @@ This is a generic catch all for things that don't fit into other categories.
 * [Doss Lute](#doss-lute)
 * [Icon of Ravenloft](#icon-of-ravenloft)
 * [Helm of Brilliance](#helm-of-brillance)
+* [Ring of Mind Shielding](#ring-of-mind-shielding)
 * [Rod of the Pact Keeper](#rod-of-the-pact-keeper)
 
 ---
@@ -104,6 +105,14 @@ ___
 ### Helm of Brilliance
 
 This is a not baked implementation. Most everything needs manual effort.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+
+### Ring of Mind Shielding
+
+Item simply places a DAE effect on the attuned creature with a GM note saying effects are to be handled manually.
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
