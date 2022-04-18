@@ -1,0 +1,156 @@
+{
+  "name": "Undead Slayer",
+  "type": "feat",
+  "img": "Tokens/CoS_NPC/Tarokka_Allies/Van_Richten/Avatars/rudolph_van_richten-avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>When a weapon attack  hits an undead, the undead takes an extra 10 (3d6) damage of the weapon’s type.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "N0sUJaoh63rPtiVY",
+      "changes": [
+        {
+          "key": "flags.dnd5e.DamageBonusMacro",
+          "mode": 0,
+          "value": "ItemMacro.Undead Slayer",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Tokens/CoS_NPC/Tarokka_Allies/Van_Richten/Avatars/rudolph_van_richten-avatar.png",
+      "label": "Undead Slayer",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "#ffffff",
+      "selectedKey": "flags.dnd5e.DamageBonusMacro"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.wEQml977NhLXL2H6"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Undead Slayer",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Undead_Slayer.js\"\n/*****************************************************************************************\n * Rudolph Van Richten's special ability:\n * \n *   When a weapon attack hits an undead, the undead takes an extra 10 (3d6) damage of \n *   the weapon’s type.\n * \n * This will be implmented with a DamageBonus macro.\n * \n * 04/18/22 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]   // Trim of the version number and extension\nconst ABILITY_NAME = \"Undead Slayer\"\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\n    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nif (args[0]?.tag === \"DamageBonus\") return (doBonusDamage());    // DAE Damage Bonus\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro BonusDamage\n ***************************************************************************************************/\nasync function doBonusDamage() {\n    const FUNCNAME = \"doBonusDamage()\";\n    let numDice = 3\n    const DIE_TYPE = \"d6\"\n    let dmgType = \"\";\n    jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);\n    //---------------------------------------------------------------------------------------------\n    // Make sure something was targeted (return a null function if not) \n    //\n    if (args[0].targets.length !== 1) return {}\n    const tToken = canvas.tokens.get(args[0].targets[0].id); \n    jez.log(\"tToken\",tToken)\n    //---------------------------------------------------------------------------------------------\n    // Is the target an undead? (return a null function if not) \n    //\n    let race = jez.getRace(tToken.document)\n    if (race.includes(\"undead\")) jez.log(\"continuing...\"); else return {}; \n    //---------------------------------------------------------------------------------------------\n    // If action type wasn't a weapon attack (mwak or rwak) then return a null function\n    //\n    let actionType = aItem.data.actionType\n    if (actionType===\"rwak\" || actionType===\"mwak\") jez.log(\"continuing......\"); else return {};\n    //---------------------------------------------------------------------------------------------\n    // If triggering attack was a critical, double the number of damage dice.\n    //\n    if (args[0].isCritical) numDice =  numDice *2\n    //---------------------------------------------------------------------------------------------\n    // Obtain the type of damage inflicted for application of extra damage.\n    //\n    dmgType = aItem.data.damage.parts[0][1]\n    //---------------------------------------------------------------------------------------------\n    // run a VFX on the target for a bit of sizzle\n    //\n    runVFX(dmgType, tToken) \n    //---------------------------------------------------------------------------------------------\n    // Return yhe damage function for application\n    //\n    return {\n        damageRoll: `${numDice}${DIE_TYPE}[${dmgType}]`,\n        flavor: `(${ABILITY_NAME} - ${CONFIG.DND5E.damageTypes[dmgType]})`,\n        damageList: args[0].damageList, itemCardId: args[0].itemCardId\n    };\n}\n/***************************************************************************************************\n * Play the VFX for the fire effect, type is \"heal\" or \"fire\" and nothing else\n ***************************************************************************************************/\n async function runVFX(type, token5e) {\n    await jez.wait(500)\n    new Sequence()\n    .effect()\n        .file(\"jb2a.healing_generic.burst.bluewhite\")\n        .atLocation(token5e) \n        .scale(0.2)\n        .opacity(1)\n    .play();\n }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

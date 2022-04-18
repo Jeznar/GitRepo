@@ -38,6 +38,7 @@ I'll try to document functions as I add them to the repository.
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
 * **[Undead Fortitude](#undead-fortitude)** -- Certain undead's (e.g. Zombie) ability to deny death  
+* **[Undead Slayer](#undead-slayer)** -- Adds an extra 3d6 of damage to weapon attacks vs undead
 * **[Wail](#wail)** -- Banshee's wail that can drop things in their tracks.
 * **[Whispers of Madness]($whispersofmadness) -- Allip's ability
 * **[Wooden Sword](#wooden-sword)** -- Arabelle's wooden sword debuffing machine.
@@ -458,6 +459,16 @@ Creatures that can't hear the **Wail** are supposed to be unaffected.  That's so
 Since I may need to do some manual fixing after the spell, I setup the chat log to show the amount of damage done to each target, making such fixes fairly easy.  
 
 ![Wail_Chat_Card.png](Wail/Wail_Chat_Card.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Undead Slayer**
+
+Implements the [Rudolph van Richten/Rictavio's](https://www.dndbeyond.com/monsters/17371-rictavio) special ability to do 3d6 extra damage with weapons vs undead targets.  This ability uses a DAE DamageBonusMacro to work its magic (and triggers a macro).  The DAE effect config follows.  Note: no *ItemMacro* line is needed on the items sheet.
+
+![Undead_Slayer_DAE_Effect.png](Undead_Slayer/Undead_Slayer_DAE_Effect.png)
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
