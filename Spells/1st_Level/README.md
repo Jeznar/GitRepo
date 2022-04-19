@@ -20,6 +20,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Nauseating Poison](#nauseating-poison)
 * [Protection from Evil and Good](#protection-from-evil-and-good)
 * [Ray of Sickness](#ray-of-sickness)
+* [Sanctuary](#sanctuary)
 * [Sleep](#sleep)
 * [Shield](#shield)
 * [Tasha's Caustic Brew](#tasha-caustic-brew)
@@ -305,6 +306,16 @@ This spell places a VFX on the recipient, who must be targeted before the spell 
 ### Ray of Sickness
 
 This is closely based on Crymic's macro with the addition of a VFX and a message about the Poisoned effect including a link to the journal entry giving the details of the effect.
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Sanctuary
+
+One of my initial spells, so style wise the macro leaves a bit too be desired.  This implementation runs a VFX and posts a message about the effect of the spell.  The effect is left for manual implementation of a saving throw.
+
+![Sanctuary.gif](Sanctuary/Sanctuary.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

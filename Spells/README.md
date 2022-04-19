@@ -53,6 +53,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Nauseating Poison](1st_Level#nauseating-poison)
 * [Protection from Evil and Good](1st_Level#protection-from-evil-and-good)
 * [Ray of Sickness](1st_Level#ray-of-sickness)
+* [Sanctuary](1st_Level#sanctuary)
 * [Sleep](1st_Level#sleep)
 * [Shield](1st_Level#shield)
 * [Tasha's Caustic Brew](1st_Level#tasha-caustic-brew)
