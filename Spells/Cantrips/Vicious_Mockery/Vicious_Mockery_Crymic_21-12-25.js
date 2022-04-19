@@ -10,13 +10,8 @@ let target = canvas.tokens.get(lastArg.failedSaves[0].id);
 let getClass = Object.keys(actorD.classes);
 let level = actorD.classes[getClass].data.data.levels;
 let numDice = 1 + (Math.floor((level + 1) / 6));
-
-jez.runRuneVFX(tokenD, jez.getSpellSchool(itemD))
-
-// COOL-THING: Draw a text message from a roll table
-let tableName = "Mockeries-All";
+let tableName = "mockeries";
 let table = game.tables.getName(tableName);
-jez.log("table", table)
 let damageType = "psychic";
 let mockery = "";
 if (table) {
@@ -25,12 +20,6 @@ if (table) {
 } else {
     mockery = "Now go away or I shall taunt you a second time-a!";
 }
-// Call to my library function to generate a formatted chat card
-jez.postMessage({color: "purple", fSize: 16, icon: tokenD.data.img, 
-    msg: mockery, title: `${tokenD.name} speaks mockingly...`, token: tokenD})
-// COOL-THING: Generate a chat bubble on the scene, using a World script!  
-bubbleForAll(tokenD.id, mockery, true, true)
-
 let combatRound = game.combat ? game.combat.round : 0;
 let damageRoll = new Roll(`${numDice}d4`).evaluate({ async: false });
 await new MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, damageType, [target], damageRoll, { flavor: `<hr><div style="font-weight:bold;">${mockery}</div><hr><div>(${CONFIG.DND5E.damageTypes[damageType]})</div>`, itemCardId: lastArg.itemCardId });

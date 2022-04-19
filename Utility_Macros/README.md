@@ -23,6 +23,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Share Item Within Scene](#share-item-within-scene)** Adds/Updates/Deletes an item from a token to other tokens in the same scene.
 * **[Swap Hidden Tokens](#swap-hidden-tokens)** swaps the visibility state of all or selected npc tokens.
 * **[Swap Map](#swap-map)** swaps the current background image for the next or base. A naming convention must be followed.
+* **[World Macros](world-macros)** Special world macros like: BubblesForAll
 
 ## Notes on Functions
 
@@ -300,6 +301,17 @@ File_Name.<SeqNum>.<Extension>
 The file name can be whatever, though, it must be a constant across the set of files used by this macro.  It **must** be followed by a period (.) that delimits the next element. The **SeqNum** (sequence number) is an integer, quite likely single digit, but I know of no limit other than patience of the user.  After the SeqNum is another period (.) that marks the beginning of the file **Extension** (e.g. webp, jpeg, png).
 
 A base image is assumed to exist with SeqNum zero (0) or one (1).  If both exist we are clearly dealing with a programmer at the keyboard and zero will be the starting point.
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### World Macros
+
+Macros created to provide global functions including:
+
+**BubblesForAll** -- Displays a chat bubble above named speaker when called via its function: `bubbleForAll(tokenD.id, mockeryStr, true, true)`.  See [World_Macro_Install.md](../Documentation/World_Macro_Install.md) for how this was done.
+
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

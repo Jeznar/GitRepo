@@ -145,3 +145,5 @@ bubbleForAll(tokenD.id, mockery, true, true)
 # Victory
 
 At this point I have a macro that pops a bubble on all of may attached clients, exactly what I wanted.  Thank you to my three, perhaps unknowing co-conspirators: **Morthallion**, **Crymic** and,  **Freeze**, especially Freeze who walked my ignorant butt through this process to success.
+
+![Vicious_Mockery1.gif](../Spells/Cantrips/Vicious_Mockery/Vicious_Mockery.gif)

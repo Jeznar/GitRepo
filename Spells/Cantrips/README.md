@@ -13,6 +13,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Prestidigitation](#prestidigitation)
 * [Shocking Grasp](#shocking-grasp)
 * [Thorn Whip](#thorn-whip)
+* [Vicious Mockery](vicious-mockery)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -130,6 +131,28 @@ Implements the Cantrip using a VFX from Automated Animations and an effect from 
 Implements the Cantrip including a VFX from Automated Animations and an automated *pull* of target token using a *jez.moveToken(aToken, tToken, -2, 2500)* library call. 
 
 ![Thorn_Whip.gif](Thorn_Whip/Thorn_Whip.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Vicious Mockery
+
+I added to [Crymic's Vicious Mockery](https://www.patreon.com/posts/vicious-mockery-47900003), 12/21/22 version, to make what I wanted.
+
+My additions:
+
+1. Rune VFX on the caster: `jez.runRuneVFX(tokenD, jez.getSpellSchool(itemD))`
+2. Point to newly built table titled **Mockeries-All**
+3. Built a large (571 entry) table of mockeries, see: [Vicious Mockery's README](Vicious_Mockery/README.md)
+4. Added a new chat-card containing the mockery with [jez.postMessage(...)](../../jez-lib#postmessagemsgparm)
+5. Finally, added a chat bubble for all clients containing the mockery text, see [World_Macro_Install.md](../../Documentation/World_Macro_Install.md) for how this was done.
+
+I needed to modify Crymic's code just a bit to make it backward compatible with v8.9 of foundry.  The ItemMacro he used `[postActiveEffects]ItemMacro` was rewritten as `ItemMacro`  
+
+![Thorn_Whip.gif](Vicious_Mockery/Vicious_Mockery.gif)
+
+![Vicious_Mockery_chat.png](Vicious_Mockery/Vicious_Mockery_chat.png)
 
 [*Back to Cantrips List*](#cantrips)
 
