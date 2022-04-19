@@ -13,8 +13,9 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Mending](#mending)
 * [Prestidigitation](#prestidigitation)
 * [Shocking Grasp](#shocking-grasp)
+* [Thaumaturgy](#thaumaturgy)
 * [Thorn Whip](#thorn-whip)
-* [Vicious Mockery](vicious-mockery)
+* [Vicious Mockery](#vicious-mockery)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -130,6 +131,14 @@ This macro simply plays a VFX of a D12 over the casting token and spits out some
 Implements the Cantrip using a VFX from Automated Animations and an effect from DAE.  The no reactions effect was added to CUB's condition lab.
 
 ![Shocking_Grasp.gif](Shocking_Grasp/Shocking_Grasp.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Thaumaturgy
+
+This macro simply plays a Rune VFX on the caster. 
 
 [*Back to Cantrips List*](#cantrips)
 

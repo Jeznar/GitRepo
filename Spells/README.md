@@ -30,7 +30,9 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Mending](Cantrips#mending)
 * [Prestidigitation](Cantrips#prestidigitation)
 * [Shocking Grasp](Cantrips#shocking-grasp)
+* [Thaumaturgy](Cantrips#thaumaturgy)
 * [Thorn Whip](Cantrips#thorn-whip)
+* [Vicious Mockery](Cantrips#vicious-mockery)
 
 [*Back to Spell Level List*](#spells)
 
