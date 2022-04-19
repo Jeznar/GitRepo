@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Fire Bolt](#fire-bolt)
 * [Light](#light)
 * [Mage Hand](#mage-hand)
+* [Mending](#mending)
 * [Prestidigitation](#prestidigitation)
 * [Shocking Grasp](#shocking-grasp)
 * [Thorn Whip](#thorn-whip)
@@ -101,6 +102,14 @@ Where # is the combat round of the summoning.
 The summoner of the hand may move the token.  No effort is made to remove the hand at the end of spell duration as that is rarely an issue.
 
 ![Magehand.gif](Magehand/Magehand.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Mending
+
+This macro simply plays a Rune VFX on the target. 
 
 [*Back to Cantrips List*](#cantrips)
 

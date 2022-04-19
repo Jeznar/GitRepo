@@ -27,6 +27,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Fire Bolt](Cantrips#fire-bolt)
 * [Light](Cantrips#light)
 * [Mage Hand](Cantrips#mage-hand)
+* [Mending](Cantrips#mending)
 * [Prestidigitation](Cantrips#prestidigitation)
 * [Shocking Grasp](Cantrips#shocking-grasp)
 * [Thorn Whip](Cantrips#thorn-whip)
