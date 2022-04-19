@@ -15,6 +15,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Magic Circle](#magic-circle)
 * [Revivify](#revivify)
 * [Speak with Dead](#speak-with-dead)
+* [Spirit Guardians](#spirit-guardians)
 * [Thunder Step](#thunder-step)
 * [Tidal Wave](#tidal-wave)
 * [Vampiric Touch](#vampiric-touch) (ASE)
@@ -179,6 +180,21 @@ Fairly generic spell implementation.  A minor Automated Animations effect applie
 ### Speak with Dead
 
 Spell plays a RuneVFX on the target and places a DAE effect noting the presence of the spell.  It does no checking. 
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Spirit Guardians
+
+This spell does a couple of interesting things.
+
+1. It uses a helper item %%Spirit Guardians%% which it copies and edits to implement a temp item
+2. The temp item is used to manually inflict damage on appropriate tokens (MANUALLY!)
+3. A VFX is run showing the area affected by spirit guardians
+4. The damage type is set (radiant/necrotic) as appropriate for the caster.
+
+![Spirit_Guradians.gif](Spirit_Guardians/Spirit_Guradians.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

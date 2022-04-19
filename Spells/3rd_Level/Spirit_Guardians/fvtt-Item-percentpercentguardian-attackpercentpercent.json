@@ -1,0 +1,150 @@
+{
+  "name": "%%Guardian Attack%%",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/Spirit_Guardian.jpg",
+  "data": {
+    "description": {
+      "value": "<p><strong style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">%%This item is used by the Jez's Spirit Guardian Macro don't casually mess with it, please%%</strong></p>\n<p>You should use this Innate Spellcasting ability to attack each enemy who enters your aura and who begins its turn within it.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": 0,
+      "condition": "Target begins turn or enters effect for first time"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "3d8",
+          "radiant"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": false,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "atwill",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": ""
+    },
+    "autoanimations": {
+      "version": 3,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "meleeType": "weapon",
+        "variant": "01",
+        "enableCustom": false,
+        "repeat": null,
+        "delay": null,
+        "scale": null
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "melee",
+      "animation": "hammer",
+      "color": "random",
+      "audio": {
+        "a01": {
+          "enable": false
+        },
+        "a02": {
+          "enable": false
+        }
+      },
+      "preview": false,
+      "meleeSwitch": {
+        "switchType": "on",
+        "returning": false
+      },
+      "explosions": {
+        "enable": false
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}
