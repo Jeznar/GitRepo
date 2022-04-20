@@ -8,6 +8,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Blight](#blight)
 * [Death Ward](#death-ward)
 * [Fire Shield](#fire-shield)
+* [Freedom of Movement](#freedom-of-movement)
 * [Greater Invisibility](#greater-invisibility)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
@@ -114,6 +115,14 @@ When the macro is executed as an **DAE Off** it does the following:
 The temporary inventory item is to be used manually to inflict the reflected damage.
 
 ![Fire_Shield.gif](Fire_Shield/Fire_Shield.gif)
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Freedom of Movement
+
+There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_onTargets and places a DAE effect that simply marks the existence of the spell.  Effects to be handled manually.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
