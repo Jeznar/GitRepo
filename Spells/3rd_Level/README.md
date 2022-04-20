@@ -11,8 +11,9 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Fireball](#fireball)
 * [Fly](#fly)
 * [Lightning Bolt](#lightning-bolt)
-* [Protection from Energy](#protection-from-energy)
 * [Magic Circle](#magic-circle)
+* [Protection from Energy](#protection-from-energy)
+* [Remove Curse](#remove-curse)
 * [Revivify](#revivify)
 * [Speak with Dead](#speak-with-dead)
 * [Spirit Guardians](#spirit-guardians)
@@ -162,6 +163,14 @@ Types allowed:
 * thunder.
 
 ![Protection_from_Energy.gif](Protection_from_Energy/Protection_from_Energy.gif)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Remove Curse
+
+Spell plays a RuneVFX on the target effects (if any) are left to the GM.
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

@@ -98,6 +98,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Lightning Bolt](3rd_Level#lightning-bolt)
 * [Magic Circle](3rd_Level#magic-circle)
 * [Protection from Energy](3rd_Level#protection-from-energy)
+* [Remove Curse](3rd_Level#remove-curse)
 * [Revivify](3rd_Level#revivify)
 * [Speak with Dead](3rd_Level#speak-with-dead)
 * [Spirit Guardians](3rd_Level#spirit-guardians)
