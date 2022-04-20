@@ -6,6 +6,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Banishment](#banishment)
 * [Black Tentacles](#black-tentacles)
 * [Blight](#blight)
+* [Death Ward](#death-ward)
 * [Fire Shield](#fire-shield)
 * [Greater Invisibility](#greater-invisibility)
 * [Phantasmal Killer](#phantasmal-killer)
@@ -79,6 +80,14 @@ I am sure I have left a fair bit out.  It is quite the spell.
 Fairly simple macro that checks the target type giving immunity to undead and constructs; vulnerability to plants, and otherwise just rolling damage.  
 
 The macro also plays a simple rune VFX on the target.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Death Ward
+
+There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_onTargets and places a DAE effect that simply marks the existence of the spell.  Effects to be handled manually.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

@@ -113,6 +113,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Banishment](4th_Level#banishment)
 * [Black Tentacles](4th_Level#black-tentacles)
 * [Blight](4th_Level#blight)
+* [Death Ward](4th_Level#death-ward)
 * [Fire Shield](4th_Level#fire-shield)
 * [Greater Invisibility](4th_Level#greater-invisibility)
 * [Phantasmal Killer](4th_Level#phantasmal-killer)
