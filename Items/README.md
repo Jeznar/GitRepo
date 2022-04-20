@@ -138,6 +138,7 @@ Also, I bumped into the old string addition problem and had to add a trailing pl
 Potion Items as they are created and added should be tagged into this listing.
 
 * [Alchemy Jug](#alchemy-jug)
+* [Antitoxin](#antitoxin)
 * [Greater Healing](#greater-healing)
 * [Heroism](#heroism)
 * [Poison](#poison)
