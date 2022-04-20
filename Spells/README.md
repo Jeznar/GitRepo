@@ -128,6 +128,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Cloudkill](5th_Level#cloudkill)
 * [Cone of Cold](5th_Level#cone-of-cold)
 * [Contact Other Plane](5th_Level#contact-other-plane)
+* [Dispel Evil and Good](5th_Level#dispel-evil-and-good)
 * [Geas](5th_Level#geas)
 * [Raise Dead](5th_Level#raise-dead)
 * [Scrying](5th_Level#scrying)

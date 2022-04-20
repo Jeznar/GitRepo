@@ -1,0 +1,147 @@
+{
+  "name": "Dispel Evil and Good",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/spells/air-burst-sky-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Shimmering energy surrounds and protects you from:</p>\n<ul>\n<li><strong>fey</strong>,</li>\n<li><strong>undead</strong>, and</li>\n<li>creatures originating from<strong> beyond the Material Plane</strong> (e.g. <strong>celestials</strong>, <strong>elementals</strong>, <strong>fiends</strong>)</li>\n</ul>\n<p>For the duration, celestials, elementals, fey, fiends, and undead have <strong>disadvantage</strong> <strong>on attack rolls</strong> against you. You can end the spell early by using either of the following special functions.</p>\n<h2>Break Enchantment</h2>\n<p>As your action, you touch a creature you can reach that is <strong>charmed</strong>, <strong>frightened</strong>, or <strong>possessed</strong> by a celestial, an elemental, a fey, a fiend, or an undead. The creature you touch is no longer charmed, frightened, or possessed by such creatures.</p>\n<h2>Dismissal</h2>\n<p>As your action, make a <strong>melee spell attack</strong> against a <strong>celestial</strong>, an <strong>elemental</strong>, a <strong>fey</strong>, a <strong>fiend</strong>, or an <strong>undead</strong> you can reach. On a hit, you attempt to drive the creature back to its home plane. The creature must succeed on a Charisma saving throw or be sent back to its home plane (if it isn't there already). If they aren't on their home plane, undead are sent to the Shadowfell, and fey are sent to the Feywild.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Effects to be handled manually.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 5,
+    "school": "abj",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "Holy water or powdered silver and iron",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "06o0HwaGGnnHc86I",
+      "changes": [
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 0,
+          "value": "See Spell Description",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60
+      },
+      "icon": "systems/dnd5e/icons/spells/air-burst-sky-3.jpg",
+      "label": "Dispel Evil and Good",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "flags.gm-notes.notes"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "Run_RuneVFX_onSelf"
+    },
+    "core": {
+      "sourceId": "Item.fIXkcENQDF3pf31B"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

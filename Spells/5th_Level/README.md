@@ -6,6 +6,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Cloudkill](#cloudkill)
 * [Cone of Cold](#cone-of-cold)
 * [Contact Other Plane](#contact-other-plane)
+* [Dispel Evil and Good](#dispel-evil-and-good)
 * [Geas](#geas)
 * [Raise Dead](#raise-dead)
 * [Scrying](#scrying)
@@ -53,6 +54,14 @@ The spell description must contain the *magic* phrase ***no damage on save*** to
 ![Contact_Other_Plane_Condition_Lab.png](Contact_Other_Plane/Contact_Other_Plane_Condition_Lab.png)
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Dispel Evil and Good
+
+There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_onSelf and places a DAE effect that simply marks the existence of the spell.  Effects to be handled manually.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
 
 ---
 
