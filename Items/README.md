@@ -138,7 +138,8 @@ Also, I bumped into the old string addition problem and had to add a trailing pl
 Potion Items as they are created and added should be tagged into this listing.
 
 * [Alchemy Jug](#alchemy-jug)
-* [Antitoxin](#antitoxin)
+* [Alchemist Fire](#alchemist-fire)
+* Antitoxin
 * [Greater Healing](#greater-healing)
 * [Heroism](#heroism)
 * [Poison](#poison)
@@ -146,6 +147,15 @@ Potion Items as they are created and added should be tagged into this listing.
 ### **Alchemy Jug**
 
 No automation, just a note on FoundryVTT usage.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+### **Alchemist Fire**
+
+This item applies a DAE effect and manages a VFX on the targeted token (assuming a hit).  It offers a dialog at the start of each of tokens turns allowing a dex skill check and potential removal of the effect.   At the end of the target's turn it runs a DAE Overtime effect to implement the DoT. The overtime sets the following:
+
+`turn=end,label=Alchemist's Fire,damageRoll=1d4,damageType=fire`
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 

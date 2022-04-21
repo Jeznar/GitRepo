@@ -37,10 +37,10 @@ return;
  ***************************************************************************************************
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
-function preCheck() {
+async function preCheck() {
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-        postResults(msg);
+        await postResults(msg);
         return (false);
     }
     /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
@@ -90,7 +90,7 @@ async function doOn() {
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    if (!preCheck()) return(false);
+    if (!await preCheck()) return(false);
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
