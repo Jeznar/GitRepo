@@ -92,6 +92,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Call Lightning](3rd_Level#call-lightning) (ASE)
 * [Clairvoyance](3rd_Level#clairvoyance)
 * [Counterspell](3rd_Level#counterspell)
+* [Crusader Mantle](crusadermantle)
 * [Dispel Magic](3rd_Level#dispel-magic)
 * [Fireball](3rd_Level#fireball)
 * [Fly](3rd_Level#fly)
