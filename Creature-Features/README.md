@@ -23,6 +23,7 @@ I'll try to document functions as I add them to the repository.
 * **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
+* **[Gray Ooze](#gray-ooze)** -- Gray Ooze Abilities
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
 * **[Howling Babble](#howling-babble)** -- Allip's special attack.
@@ -231,6 +232,17 @@ If either the grappled or grappling effect is removed, the paired effect will be
 **Note:** The grapple does not automatically drop when the root dies.  It should be removed manually.
 
 ![Grasping_Roots_Summoned_Creature.png](Grasping_Root/Grasping_Roots_Summoned_Creature.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Gray Ooze**
+
+The Gray Ooze has a set of unique abilities.  Here is what is implemented:
+
+1. Gray Ooze Pseudopod -- A conventional melee attack that applies a penalty to AC if it hits metal armor.  That's a bit beyond my ability to implement, so it just used the [DisplayDescription](../Utility_Macros#displaydescription) macro to echo the item's description to the chat card for the players to handle manually.
+2. Gray Ooze Corrode Metal -- This ability needs to be handled manually as noted in the description.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
