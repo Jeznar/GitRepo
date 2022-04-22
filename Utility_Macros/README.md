@@ -15,6 +15,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Demo Flag Mgmt](#demo-flag-mgmt)** Exercise in use of DAE Flags
 * **[Demo Get Functions](#demo-get-functions)** Exercise a collection of Get functions
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
+* **[DisplayDescription](#displaydescription)** Prints the item description to the bottom of the chat card.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
@@ -98,6 +99,20 @@ SubjectId: 16 character identifier for a token in the current scene
 Simple little macro that runs a sleep VFX at the location of the template created by the invoking macro (ItemMacro OnUse). The macro deletes the template and uses a a sleep .webm with a few other settings tossed in for fun.
 
 ![Template_VFX.gif](Demo_Template_VFX/Template_VFX.gif)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### **DisplayDescription**
+
+Macro to be used as an OnUse macro from an item sheet.  It simply echos the item description to the bottom of the item card.  Useful for items that need manual attention from the players.
+
+Used by adding the following to the OnUse Macro field at the bottom of the **Item Details** page:
+
+~~~javasctipt
+DisplayDescription
+~~~
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
