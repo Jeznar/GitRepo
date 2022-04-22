@@ -1,0 +1,272 @@
+{
+  "name": "Shortsword, Crusading",
+  "type": "weapon",
+  "img": "systems/dnd5e/icons/skills/yellow_16.jpg",
+  "data": {
+    "description": {
+      "value": "<p>This is a sentient lawful good&nbsp;<em>+1 shortsword</em>&nbsp;(Intelligence 11, Wisdom 13, Charisma 13). It has hearing and normal vision out to a range of 120 feet. It communicates by transmitting emotion to the creature carrying or wielding it.</p>\n<p>The sword&rsquo;s purpose is to fight evil. The sword has the following additional properties:</p>\n<ul>\n<li>The sword continually sheds bright light in a 15-foot radius and dim light for an additional 15 feet. Only by destroying the sword can this light be extinguished.</li>\n<li>A lawful good creature can attune itself to the sword in 1 minute.</li>\n<li>While attuned to the weapon, the sword&rsquo;s wielder can use the sword to cast the @Item[sqKljy1gEB7T41Hi]{Crusader's Mantle} spell. Once used, this property of the sword can&rsquo;t be used again until the next dawn.</li>\n</ul>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>The daily spell is not automated.&nbsp; It might be added as a once daily spell ability to the base character and deleted if the sword is <em>lost.</em></p>",
+      "chat": "<p>Proficiency with a shortsword allows you to add your proficiency bonus to the attack roll for any attack you make with it.</p>",
+      "unidentified": "Shortsword"
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 2,
+    "price": 10,
+    "attunement": 1,
+    "equipped": false,
+    "rarity": "common",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "dex",
+    "actionType": "mwak",
+    "attackBonus": "1",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6[piercing]  + 1 + @mod",
+          "piercing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "martialM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "fir": false,
+      "fin": true,
+      "hvy": false,
+      "lgt": true,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ret": false,
+      "foc": false,
+      "ada": false,
+      "mgc": true,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "AMORyYzoBDITsnDY",
+      "changes": [
+        {
+          "key": "ATL.dimLight",
+          "mode": 4,
+          "value": "30",
+          "priority": "20"
+        },
+        {
+          "key": "ATL.brightLight",
+          "mode": 2,
+          "value": "15",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/skills/yellow_16.jpg",
+      "label": "Shortsword, Crusading",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "ATL.dimLight",
+        "ATL.brightLight"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {
+        "type": "Shortsword",
+        "damage": {
+          "parts": []
+        },
+        "classFeatures": [],
+        "filterType": "Weapon",
+        "tags": [
+          "Damage",
+          "Combat"
+        ],
+        "sources": []
+      },
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 1782728300,
+      "definitionId": 30,
+      "originalName": "Shortsword"
+    },
+    "betterRolls5e": {
+      "quickDamage": {
+        "context": {
+          "0": ""
+        },
+        "value": {
+          "0": true
+        },
+        "altValue": {
+          "0": true
+        }
+      },
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": false,
+          "resource": true
+        },
+        "altValue": {
+          "use": false,
+          "resource": true
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": true,
+      "equipped": false,
+      "attuned": true,
+      "charges": "1",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": true,
+      "recharge": "0",
+      "rechargeType": "t3",
+      "rechargeUnit": "r2",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "sqKljy1gEB7T41Hi",
+          "name": "Crusader's Mantle",
+          "pack": "world",
+          "img": "icons/skills/melee/strike-hammer-destructive-blue.webp",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "1",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_god5dulh2zn"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.items.vcu6E9FxXVLKehxl"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": ""
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

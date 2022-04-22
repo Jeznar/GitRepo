@@ -4,7 +4,7 @@
   "img": "icons/skills/melee/strike-hammer-destructive-blue.webp",
   "data": {
     "description": {
-      "value": "<p>Holy power radiates from you in an aura with a <strong>30-foot radius</strong>, awakening boldness in friendly creatures. Until the spell ends, the aura moves with you, centered on you. While in the aura, each nonhostile creature in the aura (including you) deals an <strong>extra 1d4 radiant damage</strong> when it hits with a weapon attack.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell effect depends on creatures having \"correct\" dispositions set.  If that is true, it automatically applies the extra d4 of damage.</p>",
+      "value": "<p>Holy power radiates from you in an aura with a <strong>30-foot radius</strong>, awakening boldness in friendly creatures. Until the spell ends, the aura moves with you, centered on you. While in the aura, each nonhostile creature in the aura (including you) deals an <strong>extra 1d4 radiant damage</strong> when it hits with a weapon attack.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell effect depends on creatures having \"correct\" dispositions set.&nbsp; If that is true, it automatically applies the extra d4 of damage. The spell <em>pulses</em> at the start of each character's turn.</p>",
       "chat": "<p>Holy power radiates from you in an aura with a 30-foot radius, awakening boldness in friendly creatures. Until the spell ends, the aura moves with you, centered on you. While in the aura, each nonhostile creature in the aura (including you) deals an extra 1d4 radiant damage when it hits with a weapon attack.</p>",
       "unidentified": ""
     },

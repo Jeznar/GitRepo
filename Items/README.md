@@ -19,7 +19,7 @@ Since there should eventually be a enourmous number of things in this repo, I ha
 
 ## Components
 
-Components for spells that can be used as required items.
+Components for spells that can be used as required items. (I rather gave up on keeping this list up to date)
 
 * **[Diamond](Components/Diamond)** 300gp worth of diamonds for use of [Revivify](../Spells/3rd_Level#revivify). 
 
@@ -206,8 +206,9 @@ ___
 
 Weapon Items crafted for the game get listed here
 
-* [Blood Staff](blood-staff)
-* [Gulthias Staff](gulthias-staff)
+* [Blood Staff](#blood-staff)
+* [Gulthias Staff](#gulthias-staff)
+* [Shortsword, Crusading](#shortsword-crusading)
 * [Treebane](#treebane)
 
 ---
@@ -271,6 +272,12 @@ This is the implementation of a very campaign specific item (with a nasty curse)
 Blade with the passive benefits automated.  It needs the number of wishes set when found.  The once-per-day reroll is not automated or tracked.
 
 ![Luck_Blade_Description.png](Weapons/Luck_Blade/Luck_Blade_Description.png)
+
+---
+
+### **Shortsword, Crusading**
+
+This applies a DAE effect for light and has the +1 bonus baked into its item card.  It has a once daily copy of Crusaders Mantle entered on its item magic tab.
 
 ---
 
