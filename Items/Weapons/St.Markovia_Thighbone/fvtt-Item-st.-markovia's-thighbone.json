@@ -1,0 +1,335 @@
+{
+  "name": "St. Markovia's Thighbone",
+  "type": "weapon",
+  "img": "Icons_JGB/Weapons/St.Markovia_Thighbone.jpg",
+  "data": {
+    "description": {
+      "value": "<p><em>Saint Markovia’s thighbone</em> has the properties of a @Item[54zvvO9SeRxzYq8F]{Mace of Disruption} and If it scores one or more hits against a vampire or a vampire spawn in the course of a single battle, the thighbone crumbles into dust once the battle concludes.</p>\n<p>When it hits a <strong>fiend</strong> or an <strong>undead</strong>, that creature takes an <strong>extra 2d6 radiant </strong>damage.</p>\n<p>If the target has 25 hit points or fewer after taking this damage, it must succeed on a <strong>DC 15 Wisdom</strong> saving throw or be <strong>destroyed</strong>. On a successful save, the creature becomes @JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} of you until the end of your next turn.</p>\n<p>While you hold this weapon, it sheds <strong>bright light in a 20-foot </strong>radius and <strong>dim light for an additional 20 feet</strong>.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Destruction after a vampire kill is not automated.</p>",
+      "chat": "<p>When you hit a fiend or an undead with this magic weapon, that creature takes an extra 2d6 radiant damage. If the target has 25 hit points or fewer after taking this damage, it must succeed on a DC 15 Wisdom saving throw or be destroyed. On a successful save, the creature becomes frightened of you until the end of your next turn.</p>\n<p>While you hold this weapon, it sheds bright light in a 20-foot radius and dim light for an additional 20 feet.</p>",
+      "unidentified": "Mace"
+    },
+    "source": "CoS",
+    "quantity": 1,
+    "weight": 4,
+    "price": 0,
+    "attunement": 1,
+    "equipped": false,
+    "rarity": "artifact",
+    "identified": false,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6[bludgeoning] + @mod",
+          "bludgeoning"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "simpleM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "fir": false,
+      "fin": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ret": false,
+      "foc": false,
+      "ada": false,
+      "mgc": true,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "HGeVi72ZMEMIkuIU",
+      "changes": [
+        {
+          "key": "ATL.dimLight",
+          "mode": 4,
+          "value": "40",
+          "priority": "20"
+        },
+        {
+          "key": "ATL.brightLight",
+          "mode": 4,
+          "value": "20",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Weapons/St.Markovia_Thighbone.jpg",
+      "label": "St. Markovia's Thighbone",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "ATL.dimLight",
+        "ATL.brightLight"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {
+        "type": "Mace",
+        "damage": {
+          "parts": []
+        },
+        "classFeatures": [],
+        "avatarUrl": "https://www.dndbeyond.com/avatars/19/182/636382352893974590.jpeg",
+        "largeAvatarUrl": "https://www.dndbeyond.com/avatars/7/285/636284749090385489.jpeg",
+        "filterType": "Weapon",
+        "tags": [
+          "Damage",
+          "Bane"
+        ],
+        "sources": [
+          {
+            "sourceId": 1,
+            "pageNumber": null,
+            "sourceType": 2
+          },
+          {
+            "sourceId": 2,
+            "pageNumber": 179,
+            "sourceType": 1
+          }
+        ],
+        "pictureUrl": "https://www.dndbeyond.com/avatars/7/285/636284749090385489.jpeg"
+      },
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 112130694,
+      "definitionId": 4670,
+      "originalName": "Mace of Disruption"
+    },
+    "betterRolls5e": {
+      "quickDamage": {
+        "context": {
+          "0": ""
+        },
+        "value": {
+          "0": true
+        },
+        "altValue": {
+          "0": true
+        }
+      },
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": false,
+          "resource": true
+        },
+        "altValue": {
+          "use": false,
+          "resource": true
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": true,
+      "charges": "0",
+      "chargeType": "c1",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t2",
+      "rechargeUnit": "r1",
+      "destroy": false,
+      "destroyCheck": "d1",
+      "spells": {},
+      "feats": {},
+      "tables": {},
+      "equipped": true,
+      "attuned": true,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "effectActivation": false,
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-items.uOjhR4VKR50sjSw6"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "St. Markovia's Thighbone",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Mace_of_Disruption.js\"\n/*****************************************************************************************\n * Crymic's code imported and rolled back for Foundry 8.9 compatibility\n * \n * 04/23/22 0.1 Import of macro and initial compatibility effort\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n// Crymic 21.12.25\n// Midi-qol On Use\n// Requires 1 callback macros ActorUpdate\nconst lastArg = args[args.length - 1];\nif (lastArg.hitTargets.length === 0) return {};\nlet ActorUpdate = game.macros.find(i=> i.name === \"ActorUpdate\");\njez.log(\"ActorUpdate\",ActorUpdate)\nif(!ActorUpdate) return ui.notifications.error(\"REQUIRED: ActorUpdate macro is missing.\");\nlet AdvancedMacros = getProperty(ActorUpdate.data.flags, \"advanced-macros\");\njez.log(\"AdvancedMacros\", AdvancedMacros)\nif(!AdvancedMacros) return ui.notifications.error(\"REQUIRED: Advanced macros is missing.\"); \njez.log(\"AdvancedMacros.runAsGM\",AdvancedMacros.runAsGM)\nif(!AdvancedMacros.runAsGM) return ui.notifications.error(\"REQUIRED: ActorUpdate must be set to RunAsGM\");\nconst actorD = game.actors.get(lastArg.actor._id);\njez.log(\"actorD\", actorD)\nconst tokenD = canvas.tokens.get(lastArg.tokenId);\njez.log(\"tokenD\", tokenD)\nconst target = canvas.tokens.get(lastArg.hitTargets[0].id);\njez.log(\"target\", target )\nconst type = target.actor.data.type === \"npc\" ? [\"undead\", \"fiend\"].some(value => (target.actor.data.data.details.type.value || \"\").toLowerCase().includes(value)) : [\"undead\", \"fiend\"].some(race => (target.actor.data.data.details.race || \"\").toLowerCase().includes(race));\njez.log(\"type\", type)\nif (type) {\n    runVFX(target)  // Added a VFX\n    let crit = lastArg.isCritical ? 4 : 2;\n    let damageType = \"radiant\";\n    let saveType = \"wis\";\n    let damageRoll = new Roll(`${crit}d6[radiant]`).evaluate({ async: false });\n    let npcCheck = target.actor.data.type === \"character\" ? { chatMessage: false, fastForward: false } : { chatMessage: false, fastForward: true };\n    await new MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, damageType, [target], damageRoll, { flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`, itemCardId: lastArg.itemCardId, damageList: lastArg.damageList });\n    let save = await MidiQOL.socket().executeAsGM(\"rollAbility\", { request: \"save\", targetUuid: target.actor.uuid, ability: saveType, options: npcCheck });\n    let dc = 15;\n    console.log(save.total);\n    // adjust for latency\n    let saved = \"\";\n    if (target.actor.data.data.attributes.hp.value <= 25) {\n        if (target.actor.data.data.attributes.hp.value === 0) return {};\n        if (save.total >= dc) {\n            saved = \"saves\";\n            let gameRound = game.combat ? game.combat.round : 0;\n            let effectData = {\n                label: \"Frightened\",\n                icon: \"icons/svg/terror.svg\",\n                origin: lastArg.uuid,\n                disabled: false,\n                duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },\n                changes: [{ key: `flags.midi-qol.disadvantage.ability.check.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },\n                { key: `flags.midi-qol.disadvantage.skill.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },\n                { key: `flags.midi-qol.disadvantage.attack.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 }]\n            };\n            let effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize(\"Frightened\"));\n            if (!effect) await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: target.uuid, effects: [effectData] });\n        } else {\n            saved = \"fails\";\n            ActorUpdate.execute(target.id, { \"data.attributes.hp.value\": 0 });\n        }\n        await jez.wait(500);\n        let the_message = `<div class=\"midi-qol-nobox midi-qol-bigger-text\">${CONFIG.DND5E.abilities[saveType]} Saving Throw: DC ${dc}</div><div><div class=\"midi-qol-nobox\"><div class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${target.id}\"> ${target.name} ${saved} with ${save.total}</div><div><img src=\"${target.data.img}\" width=\"30\" height=\"30\" style=\"border:0px\" /></div></div></div></div>`;\n        let chatMessage = await game.messages.get(lastArg.itemCardId);\n        let content = await duplicate(chatMessage.data.content);\n        let searchString = /<div class=\"midi-qol-saves-display\">[\\s\\S]*<div class=\"end-midi-qol-saves-display\">/g;\n        let replaceString = `<div class=\"midi-qol-saves-display\"><div class=\"end-midi-qol-saves-display\">${the_message}`;\n        content = await content.replace(searchString, replaceString);\n        await chatMessage.update({ content: content });\n        await ui.chat.scrollBottom();\n    }\n}\n/***************************************************************************************************\n * Perform the VFX code that runs when the mace hits a special target\n ***************************************************************************************************/\n async function runVFX(token1) {\n    const VFX_NAME = `${MACRO}`\n    const VFX_LOOP = \"jb2a.template_circle.out_pulse.02.burst.tealyellow\"\n    const VFX_OPACITY = 1.0;\n    const VFX_SCALE = 0.3;\n    new Sequence()\n    .effect()\n        .file(VFX_LOOP)\n        .atLocation(token1)     // Effect will appear at  template, center\n        .scale(VFX_SCALE)\n        //.scaleIn(0.25, 1000)    // Expand from 0.25 to 1 size over 1 second\n        //.rotateIn(180, 1000)    // 1/2 Rotation over 1 second \n        //.scaleOut(0.25, 1000)   // Contract from 1 to 0.25 size over 1 second\n        //.rotateOut(180, 1000)   // 1/2 Counter Rotation over 1 second\n        .opacity(VFX_OPACITY)\n        //.duration(6000)\n        .name(VFX_NAME)         // Give the effect a uniqueish name\n        //.fadeIn(10)             // Fade in for specified time in milliseconds\n        //.fadeOut(1000)          // Fade out for specified time in milliseconds\n        //.extraEndDuration(1200) // Time padding on exit to connect to Outro effect\n    .play();\n    await jez.wait(100)         // Don't delete till VFX established\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    },
+    "gm-notes": {
+      "notes": "<p>As a youth, Markovia followed her heart and became a priest of the Morninglord soon after her eighteenth birthday. She proved to be a charismatic proselytizer and, before the age of thirty, had gained a reputation for allowing no evil to stand before her.</p>\n<p>Markovia had long considered Strahd a mad tyrant, but only after his transformation into a vampire did she dare to challenge him. As she rallied her followers and prepared to march on Castle Ravenloft, Strahd sent a group of vampire spawn to her abbey. They confronted Markovia and were destroyed to a one.</p>\n<p>Suffused with confidence born of righteous victory, Markovia advanced on Castle Ravenloft. A great battle raged from the catacombs to the parapets. In the end, Markovia never returned to Barovia, and Strahd long afterward walked with a limp and a grimace of pain. It is said that he trapped Markovia in a crypt beneath his castle, and her remains linger there yet.</p>\n<p>The essence of Markovia&rsquo;s saintliness passed partly into her bones as the rest of her body decomposed. Her remaining thighbone is imbued with power that inflicts grievous injury on the undead.</p>"
+    },
+    "autoanimations": {
+      "version": 3,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "meleeType": "weapon",
+        "variant": "01",
+        "enableCustom": false,
+        "repeat": null,
+        "delay": null,
+        "scale": null
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "melee",
+      "animation": "mace",
+      "color": "yellow",
+      "audio": {
+        "a01": {
+          "enable": false
+        },
+        "a02": {
+          "enable": false
+        },
+        "e01": {
+          "enable": false
+        }
+      },
+      "preview": false,
+      "meleeSwitch": {
+        "switchType": "off",
+        "returning": false
+      },
+      "explosions": {
+        "enable": true,
+        "animation": "shatter",
+        "variant": "01",
+        "color": "orange",
+        "enableCustom": false,
+        "radius": null,
+        "delay": null,
+        "below": false
+      }
+    }
+  }
+}
