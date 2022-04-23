@@ -1,0 +1,185 @@
+{
+  "name": "Life Drain",
+  "type": "weapon",
+  "img": "icons/magic/death/hand-dirt-undead-zombie.webp",
+  "data": {
+    "description": {
+      "value": "<p>The target must succeed on a DC 14 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. This reduction lasts until the target finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> The life drain is automated with a DAE effect.  </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 1,
+    "price": 0,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "dex",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "4d8 + 3",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "con",
+      "dc": 14,
+      "scaling": "dex"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "natural",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "hvy": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "lgt": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ada": false,
+      "lod": false,
+      "mgc": false,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": true
+  },
+  "effects": [
+    {
+      "_id": "lh1u8yVZSy24wFMC",
+      "changes": [
+        {
+          "key": "data.attributes.hp.max",
+          "mode": 2,
+          "value": "-@data.flags.dae.damageApplied",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/magic/death/hand-dirt-undead-zombie.webp",
+      "label": "Life Drain",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "multi",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "longRest"
+          ],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Long Rest"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "data.attributes.hp.max"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": ""
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.Xn8lWvlRTpLuU2XA"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

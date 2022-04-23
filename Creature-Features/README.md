@@ -19,6 +19,7 @@ I'll try to document functions as I add them to the repository.
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
+* **[Create Specter](#create-specter)** -- Wraith's ability to convert corpse to a specter
 * **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
 * **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
@@ -27,6 +28,7 @@ I'll try to document functions as I add them to the repository.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
 * **[Howling Babble](#howling-babble)** -- Allip's special attack.
+* **[Life Drain](#life-drain)** -- Wraith's Life Drain Ability
 * **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
 * **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
@@ -173,9 +175,17 @@ It checks for LoS blockage by walls, as well as blinded, but nothing ore sophist
 
 ---
 
+### **Create Specter**
+
+Perform several checks before using WarpGate to bring in a Specter which will have a customized name marking as belong to summoning wrath (I'm assuming that wraiths have unique names).  No check is made to prevent multiple summonings from the same corpse.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Ethrealness**
 
-This macro runs a VFX on the targeted token and flips the hidden status to true when it is run.  When the effect it applies is removed it runs the VFX in reverse and flips the hidden status to false.  
+This macro runs a VFX on the targeted token and flips the hidden status too true when it is run.  When the effect it applies is removed it runs the VFX in reverse and flips the hidden status to false.  
 
 ![Etherealness/Etherealness_Desc.gif](Etherealness/Etherealness_Desc.gif)
 
@@ -285,6 +295,23 @@ Special magic attack of the **[Allip](https://www.dndbeyond.com/monsters/93770-a
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
 ---
+
+### **Life Drain**
+
+The Wraith's life drain has an additional effect reducing the targets max hp on a failed save.  This item applies a DAE effect that implements this including being cleared by a long rest.  
+
+The interesting element of this item is in the value of that DAE effect. The value is an "@parm" which is provided by DAE at time of execution.  In this case: `-@data.flags.dae.damageApplied` does the trick for me.
+
+It does generate a warning on the console: `@data.key is deprecated, use @key instead -@data.flags.dae.damageApplied`
+
+I tried using `-@flags.dae.damageApplied` but that ended up generating a zero which is wrong, so the warning remains for now.
+
+![Life_Drain_DAE_Effects.png](Life_Drain/Life_Drain_DAE_Effects.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 
 ### **Maddening Touch**
 
