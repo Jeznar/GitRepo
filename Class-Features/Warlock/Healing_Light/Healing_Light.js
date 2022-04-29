@@ -41,7 +41,7 @@ const MAX_RES = MAIN_RES.max;
 const CHR_BONUS = GET_DATA.abilities.cha.mod;
 const FIN_MAX = Math.min(CHR_BONUS, MAX_RES);    // Final maximum
 const DAM_TYPE = "healing";
-const TAR_HP_OBJ = "tToken.actor.data.data.attributes.hp"
+const TAR_HP_OBJ = tToken.actor.data.data.attributes.hp // Was quoted and should not have been
 const MIN_HEAL = Math.clamped(CUR_RES, 0, TAR_HP_OBJ.max - TAR_HP_OBJ.value);
 const CONTENT = `<div style="vertical-align:top;display:flex;"><img src="${tToken.data.img}" 
     style="border:none;" height="30" width="30"> <span style="margin-left:10px;line-height:2.1em;">
@@ -139,7 +139,7 @@ function hasItem(itemName, actor) {
     new Sequence()
         .effect()
             .atLocation(token2)
-            .reachTowards(token1)
+            .stretchTo(token1)      // Replacement for .reachTowards
             .scale(1)
             .repeats(3,1500)
             .file(VFX_BEAM)
