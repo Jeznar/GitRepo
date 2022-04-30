@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Fire Bolt](#fire-bolt)
 * [Light](#light)
 * [Mage Hand](#mage-hand)
+* [Melf's Acid Arrow](#melfs-acid-arrow)
 * [Mending](#mending)
 * [Prestidigitation](#prestidigitation)
 * [Shocking Grasp](#shocking-grasp)
@@ -103,6 +104,16 @@ Where # is the combat round of the summoning.
 The summoner of the hand may move the token.  No effort is made to remove the hand at the end of spell duration as that is rarely an issue.
 
 ![Magehand.gif](Magehand/Magehand.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Melf's Acid Arrow
+
+Transferred from older macro archive to GitRepo as part of migration to FoundryVTT 9.x.
+
+![Acid_Arrow.gif](Melf's_Acid_Arrow/Acid_Arrow.gif)
 
 [*Back to Cantrips List*](#cantrips)
 
