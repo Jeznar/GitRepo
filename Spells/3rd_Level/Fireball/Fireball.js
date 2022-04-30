@@ -80,7 +80,7 @@ async function runVFX(token1, color) {
     .effect()
         .file(VFX_BOLT)
         .atLocation(token1) 
-        .reachTowards(templateCenter)
+        .stretchTo(templateCenter)
         .scale(VFX_SCALE)
         .opacity(VFX_OPACITY)
         .waitUntilFinished(-500) 

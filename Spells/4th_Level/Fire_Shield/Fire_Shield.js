@@ -206,7 +206,7 @@ new Sequence()
     .effect()
         .file(\`jb2a.fire_bolt.\${color}\`)
         .atLocation(canvas.tokens.get(args[0].tokenId))
-        .reachTowards(args[0].targets[0])
+        .stretchTo(args[0].targets[0])
     .play()`
     //----------------------------------------------------------------------------------
     // Return the object that defines the temporary inventory item

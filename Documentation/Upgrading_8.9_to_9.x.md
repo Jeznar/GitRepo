@@ -27,6 +27,21 @@ I think the above needs to be updated to read as follows:
 tToken.document.update({ "hidden": true });
 ~~~
 
+#### Plane_Shift_Self_Only.js Contains two Instances of This
+
+This script contains the following two lines that look to have this issue:
+
+~~~javascript
+await aToken.update({ "hidden": false });
+aToken.update({ "hidden": true });
+~~~
+
+Running the script generates the following console warning:
+
+~~~
+You are calling PlaceableObject#update which has been deprecated in favor of Document#update or Scene#updateEmbeddedDocuments. Support will be removed in 0.9.0
+~~~
+
 ### actor.update
 I fiddled with what looks to be a similar call in *Healing_Light.js* that read as:
 
@@ -156,4 +171,13 @@ My GitRepo contains the following problem children for this case:
 
 ![reachTowards().png](Upgrading_8.9_to_9.x/reachTowards().png)
  
-The above all need fixed.  
+The above have been fixed.  
+
+## New Method to Roll Damage
+
+This is from [Crymic 4/28/22](https://discord.com/channels/562549978506199042/849048013468598272/969364807423782922)
+
+> If you're rolling damage, should switch to 
+> ```new game.dnd5e.dice.DamageRoll("1d4", {},  {critical: true}).evaluate({async:false});```
+> 
+> It'll automatically roll the correct number of dice.

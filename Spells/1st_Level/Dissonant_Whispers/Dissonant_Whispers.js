@@ -85,7 +85,7 @@ function preCheck() {
     new Sequence()
         .effect()
             .file("jb2a.scorching_ray.01.orange")
-            .reachTowards(token2)
+            .stretchTo(token2)
             .atLocation(token1)
             .scale(1)
             .opacity(1)

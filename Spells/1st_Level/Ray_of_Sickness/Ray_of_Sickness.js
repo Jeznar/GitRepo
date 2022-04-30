@@ -153,7 +153,7 @@ const VFX_FILE = "modules/jb2a_patreon/Library/Cantrip/Ray_Of_Frost/RayOfFrost_0
 new Sequence()
     .effect()
         .atLocation(token1)
-        .reachTowards(token2)
+        .stretchTo(token2)
         .file(VFX_FILE)
     .play();
 }

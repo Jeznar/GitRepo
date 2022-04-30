@@ -157,7 +157,7 @@ async function runVFX(token1, token2) {
     new Sequence()
     .effect()
         .atLocation(token1)
-        .reachTowards(token2)
+        .stretchTo(token2)
         .file(`modules/jb2a_patreon/Library/1st_Level/Witch_Bolt/WitchBolt_01_${color}_${distCategory}.webm`)
         .scale(VFX_SCALE)
         .opacity(VFX_OPACITY)

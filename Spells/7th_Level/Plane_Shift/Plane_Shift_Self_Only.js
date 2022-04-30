@@ -97,7 +97,11 @@ async function doOn() {
     runVFX(aToken)
     //---------------------------------------------------------------------------------------------
     // Hide the plane shifting token
-    aToken.update({ "hidden": true });
+    //aToken.update({ "hidden": true });
+    jez.log('Before: aToken.document.update({ "hidden": true });')
+    aToken.document.update({ "hidden": true });
+    jez.log('After: aToken.document.update({ "hidden": true });')
+
     await jez.wait(1000)
     aToken.refresh()
     //---------------------------------------------------------------------------------------------

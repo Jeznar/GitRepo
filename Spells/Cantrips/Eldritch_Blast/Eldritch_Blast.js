@@ -93,7 +93,7 @@ async function doOnUse() {
         .effect()
             .file(`modules/jb2a_patreon/Library/Cantrip/Eldritch_Blast/${fileName}`)
             .atLocation(aToken)
-            .reachTowards(args[0].targets[0])
+            .stretchTo(args[0].targets[0])
             .missed(args[0].hitTargets.length === 0)
         .play()
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);

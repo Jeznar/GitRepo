@@ -114,7 +114,7 @@ async function runVFX(token1, token2) {
     new Sequence()
         .effect()
             .atLocation(token2)
-            .reachTowards(token1)
+            .stretchTo(token1)
             .scale(1)
             .repeats(5,1200)
             .file(VFX_BEAM)

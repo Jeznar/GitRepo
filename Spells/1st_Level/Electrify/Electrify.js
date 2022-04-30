@@ -152,7 +152,7 @@ async function doBonusDamage() {
         new Sequence()
         .effect()
             .atLocation(aToken)
-            .reachTowards(tToken)
+            .stretchTo(tToken)
             .scale(1)
             .file(VFX_BEAM)
             .waitUntilFinished(-4000) 
