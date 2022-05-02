@@ -18,6 +18,7 @@ const MACRONAME = "Grasping_Root"
  *  - Post appropriate summary information
  * 
  * 02/16/22 0.1 Creation of Macro
+ * 05/02/22 0.2 Update for Foundry 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -29,6 +30,7 @@ let aItem;          // Active Item information, item invoking this macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+let msg = "";
 if (!aActor) {
     msg = `[${MACRONAME}] Principal actor not found on scene.`;
     console.log(msg);
@@ -37,7 +39,6 @@ if (!aActor) {
 }
 jez.log("Actor/Token/Item",`${aActor.name}`,aActor,`${aToken.name}`,aToken,`${aItem.name}`,aItem)
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
-let msg = "";
 const GAME_RND = game.combat ? game.combat.round : 0;
 const MINION = "Grasping Root"
 const MINION_NAME = `${aToken.name}'s ${MINION} - ${GAME_RND}`
@@ -173,7 +174,7 @@ async function doOnUse() {
 // COOL-THING: Renaming a token in the scene
     let mToken = await findTokenByName(MINION)  // minion token
     const updates = { _id: mToken.id, name: MINION_NAME };
-    await mToken.update(updates);
+    await mToken.document.update(updates);  // Added ".document." for FoundryVTT 9.x compatibility
     //----------------------------------------------------------------------------------------------
     // Apply Grappled & Grappling Conditions 
     //
@@ -215,6 +216,7 @@ async function doOnUse() {
  ***************************************************************************************************/
  async function findTokenByName(name) {
     const FUNCNAME = "findTokenByName(name)";
+    jez.log(`---- Starting ${FUNCNAME} -----`)
     let targetToken = null
     let counter = 0;
     //----------------------------------------------------------------------------------------------
@@ -258,7 +260,8 @@ async function applyGrappling(token1, token2) {
             { key: `macro.itemMacro`, mode: CUSTOM, value: `${token2.id} ${GRAPPLED_COND}`, priority: 20 },
         ]
     }]
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: constrictingEffect });
+    //await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: constrictingEffect });
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.document.uuid, effects: constrictingEffect });
 }
 /***************************************************************************************************
  * Apply the Grappled Condition to the target token
@@ -284,5 +287,6 @@ async function applyGrappling(token1, token2) {
             { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: `${overTimeValue}`, priority: 20 }
         ]
     }]
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: restrainedEffect });
+    //await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: restrainedEffect });
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.document.uuid, effects: restrainedEffect });
  }

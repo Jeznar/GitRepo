@@ -27,6 +27,17 @@ I think the above needs to be updated to read as follows:
 tToken.document.update({ "hidden": true });
 ~~~
 
+#### Similar issue with token.uuid reference 
+
+I found a similar warning for MidiQOL.socket calls as shown below.  The second line clears it up.
+
+~~~javascript
+// Following line seems busted in 9.x
+await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: restrainedEffect });
+// The following clears the warning
+await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.document.uuid, effects: restrainedEffect });
+~~~
+
 #### Plane_Shift_Self_Only.js Contains two Instances of This
 
 This script contains the following two lines that look to have this issue:
