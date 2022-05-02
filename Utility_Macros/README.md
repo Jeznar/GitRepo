@@ -10,6 +10,7 @@ This readme contains a summary of the functions and for at least some of them a 
 
 ## Functions in this Repo
 
+* **[Cleanse-Selected-Tokens](#cleanse-selected-tokens)** Removes temporary effects from selected tokens
 * **[Demo Conc Mgmt](#demo-conc-mgmt)** Modifies concentration to remove and manage an existing effect
 * **[Demo Copy Edit Item](#demo-copy-edit-item)** Copies/Edits Item
 * **[Demo Flag Mgmt](#demo-flag-mgmt)** Exercise in use of DAE Flags
@@ -27,6 +28,10 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[World Macros](world-macros)** Special world macros like: BubblesForAll
 
 ## Notes on Functions
+
+### **Cleanse Selected Tokens**
+
+Intended to be run by the GM as a macro from the quick bar to clean effects from selected tokens.
 
 ### **Demo Conc Mgmt** 
 

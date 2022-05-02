@@ -66,9 +66,10 @@ return;
  ***************************************************************************************************/
 // COOL-THING: Run the VFX -- Beam from originator to the target
 async function runVFX(token1, color) {
-    const FUNCNAME = "runVFX(color)";
-    const VFX_BOLT = `modules/jb2a_patreon/Library/3rd_Level/Fireball/FireballBeam_01_${color}_30ft_1600x400.webm`
-    const VFX_BURST = `modules/jb2a_patreon/Library/3rd_Level/Fireball/FireballExplosion_01_${color}_800x800.webm`
+    const COLOR = color.charAt(0).toUpperCase() + color.slice(1);
+    const FUNCNAME = "runVFX(COLOR)";
+    const VFX_BOLT = `modules/jb2a_patreon/Library/3rd_Level/Fireball/FireballBeam_01_${COLOR}_30ft_1600x400.webm`
+    const VFX_BURST = `modules/jb2a_patreon/Library/3rd_Level/Fireball/FireballExplosion_01_${COLOR}_800x800.webm`
     const VFX_SMOKE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_Grey_400x400.webm`
     const VFX_OPACITY = 1.0;
     const VFX_SCALE = 1.1;
