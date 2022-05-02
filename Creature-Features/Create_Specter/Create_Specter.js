@@ -9,6 +9,7 @@ const MACRONAME = "Create_Specter.js"
  *   control. The wraith can have no more than seven specters under its control at one time.
  * 
  * 04/23/22 0.1 Creation of Macro
+ * 05/02/22 0.2 Update for Foundry 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -119,7 +120,7 @@ async function doOnUse() {
                         // Summon Specter to the field
                         summonCritter(SOURCE_CRITTER, SPECTER_NAME, tToken)
                         // Hide the token that was used as the source of the summon
-                        tToken.update({ "hidden": true });
+                        tToken.document.update({ "hidden": true });
                         await jez.wait(1000)
                         tToken.refresh()
                         // Post exit message
