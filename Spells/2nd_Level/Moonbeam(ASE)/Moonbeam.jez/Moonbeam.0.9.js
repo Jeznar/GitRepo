@@ -1,4 +1,4 @@
-const MACRONAME = "Moonbeam.0.8"
+const MACRONAME = "Moonbeam.0.9.js"
 console.log(MACRONAME)
 /*****************************************************************************************
  * Implements Moonbeam, based on a sample code.
@@ -11,6 +11,7 @@ console.log(MACRONAME)
  * 12/29/21 0.6 Summon a MINION_NAME token in the template
  * 12/30/21 0.7 Add the VFX to token summoned
  * 12/31/21 0.8 Create preCheck function to put setup validation in one place 
+ * 05/02/22 0.9 Updated for FoundryVTT 9.x
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -260,7 +261,7 @@ async function doOn() {
     log(`OnUse ==> Change summoned ${MINION_NAME} to a more unique name, ${MINION_UNIQUE_NAME}`)
     let updates = { _id: tToken.id, name: MINION_UNIQUE_NAME };
     log(`OnUse ==> Target token information ${tToken.name}`, tToken, "updates to apply", updates);
-    await tToken.update(updates);
+    await tToken.document.update(updates);
     await wait(100);   // Wait a bit to allow the summoned token to be fully completed
 
     log(`OnUse ==> Start the VFX sequence on ${MINION_UNIQUE_NAME}`)
