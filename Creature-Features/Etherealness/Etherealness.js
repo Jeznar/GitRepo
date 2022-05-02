@@ -3,6 +3,7 @@ const MACRONAME = "Etherealness"
  * Basic VFX and vanish macro
  * 
  * 02/18/22 0.1 Creation of Macro
+ * 05/02/22 0.2 Update for Foundry 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -15,13 +16,6 @@ if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aAc
 if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
 let msg = "";
-//----------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-// but only for OnUse invocation.
-/*if ((args[0]?.tag === "OnUse") && !preCheck()) {
-    msg = `Please target `
-    return;
-}*/
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -49,11 +43,6 @@ function preCheck() {
         jez.log(msg)
         return(false);
     }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        // ui.notifications.info(msg)
-        return(false);
-    }*/
     return (true)
 }
 /***************************************************************************************************
@@ -68,7 +57,7 @@ function preCheck() {
     // Run the visual effects
     runVFX(aToken)
     await jez.wait(1000)
-    await aToken.update({ "hidden": false });
+    await aToken.document.update({ "hidden": false });
     await jez.wait(1000)
     aToken.refresh()
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
@@ -100,7 +89,7 @@ async function doOn() {
     runVFX(aToken)
     //---------------------------------------------------------------------------------------------
     // Hide the plane shifting token
-    aToken.update({ "hidden": true });
+    aToken.document.update({ "hidden": true });
     await jez.wait(1000)
     aToken.refresh()
     //---------------------------------------------------------------------------------------------
