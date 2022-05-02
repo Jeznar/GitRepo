@@ -18,6 +18,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
 * **[DisplayDescription](#displaydescription)** Prints the item description to the bottom of the chat card.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
+* **Light Picker**: sample macro that sets the type of light emitted by a token.
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
 * **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
