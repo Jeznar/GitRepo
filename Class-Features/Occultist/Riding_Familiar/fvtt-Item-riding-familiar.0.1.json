@@ -1,0 +1,227 @@
+{
+  "name": "Riding Familiar",
+  "type": "spell",
+  "img": "icons/creatures/mammals/deer-movement-leap-green.webp",
+  "data": {
+    "description": {
+      "value": "<p>If you have a familiar without a flying speed, as an action you can make them become a <strong>creature one size larger than you</strong> (up to<span style=\"text-decoration:underline\"> Large sized</span>) for <strong>8 hours</strong>. As an action, you can revert your familiar to it's normal size.</p>\n<p>At 12th level, you can use this ability on familiar with flying speed. Once you do this, you cannot do so again until you complete a short or long rest.</p>\n<h2>FoundryVTT</h2>\n<p>This ability requires the familar to be targeted and it's name to have been saved with @Item[1hTccxFNy0k8m1Wv]{Set Familiar Name}.</p>",
+      "chat": "<p>You cause a creature or an object you can see within range to grow larger or smaller for the duration. Choose either a creature or an object that is neither worn nor carried. If the target is unwilling, it can make a Constitution saving throw. On a success, the spell has no effect.</p>\n<p>If the target is a creature, everything it is wearing and carrying changes size with it. Any item dropped by an affected creature returns to normal size at once.</p>\n<p><strong>Enlarge.</strong> The target's size doubles in all dimensions, and its weight is multiplied by eight. This growth increases its size by one category-- from Medium to Large, for example. If there isn't enough room for the target to double its size, the creature or object attains the maximum possible size in the space available. Until the spell ends, the target also has advantage on Strength checks and Strength saving throws. The target's weapons also grow to match its new size. While these weapons are enlarged, the target's attacks with them deal 1d4 extra damage.</p>\n<p><strong>Reduce.</strong> The target's size is halved in all dimensions, and its weight is reduced to one-eighth of normal. This reduction decreases its size by one category--from Medium to Small, for example. Until the spell ends, the target also has disadvantage on Strength checks and Strength saving throws. The target's weapons also shrink to match its new size. While these weapons are reduced, the target's attacks with them deal 1d4 less damage (this can't reduce the damage below 1).</p>",
+      "unidentified": ""
+    },
+    "source": "Occultist Homebrew",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 8,
+      "units": "hour"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "",
+      "amount": 1
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 2,
+    "school": "trs",
+    "components": {
+      "value": "a pinch of powdered iron",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "a pinch of powdered iron",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "innate",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "a7fBAHk1NcIg80wi",
+      "flags": {
+        "dae": {
+          "transfer": false,
+          "stackable": "none",
+          "specialDuration": [],
+          "macroRepeat": "none"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "ignoreSelf": false,
+          "hidden": false,
+          "height": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "hostile": false,
+          "onlyOnce": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        }
+      },
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "",
+          "priority": "0"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 28800
+      },
+      "icon": "icons/creatures/mammals/deer-movement-leap-green.webp",
+      "label": "Riding Familiar",
+      "tint": null,
+      "transfer": false,
+      "selectedKey": "macro.itemMacro"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 136712,
+      "definitionId": 2084,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 237,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Buff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Riding Familiar",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Riding_Familiar.0.1\"\nconsole.log(MACRONAME)\n/*****************************************************************************************\n * Implement Occultist's Rining Familiar ability, based on Enlarge_Reduce.0.5.js \n * \n * Description: If you have a familiar without a flying speed, as an action you can make \n *   them become a creature one size larger than you (up to Large sized) for 8 hours. As \n *   an action, you can revert your familiar to it's normal size. \n * \n *   At 12th level, you can use this ability on familiar with flying speed. Once you do \n *   this, you cannot do so again until you complete a short or long rest.\n * \n * HTML Color Codes: https://www.w3schools.com/tags/ref_colornames.asp\n * \n * 01/10/22 0.1 Creation\n *****************************************************************************************/\nconst DEBUG = true;\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nlog(\"---------------------------------------------------------------------------\",\n    \"Starting\", `${MACRONAME}`);\nfor (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\nconst lastArg = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nconst SIZE_ARRAY = [\"error\", \"tiny\", \"sm\", \"med\", \"lg\", \"huge\", \"grg\"]\nlet msg = \"\";\nlet errorMsg = \"\";\nlet saveMsg = \"\";\nconst FLAG_NAME = \"familiar_name\"\nconst FAMILIAR_NAME = DAE.getFlag(aActor, FLAG_NAME)\nlog(\"------- Global Values Set -------\",\n    `Active Token (aToken) ${aToken?.constructor.name} ${aToken?.name}`, aToken,\n    `Active Actor (aActor) ${aActor?.constructor.name} ${aActor?.name}`, aActor,\n    `Active Item (aItem) ${aItem?.constructor.name} ${aItem?.name}`, aItem,\n    `Familiar name`, FAMILIAR_NAME);\nconst EFFECT_NAME = \"Riding Familiar\"\nconst GAME_RND = game.combat ? game.combat.round : 0;\n\nlet tToken = (args[0]?.targets) ? canvas.tokens.get(args[0]?.targets[0]?.id) : null\n// let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\nlog(\"tToken\", tToken)\nlet tActor = tToken?.actor;\nlog(\"tActor\", tActor)\n\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif (args[0]?.tag === \"OnUse\") {\n    if (!preCheck()) {\n        console.log(errorMsg)\n        ui.notifications.error(errorMsg)\n        return;\n    }\n}\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                       // DAE removal\n//if (args[0] === \"on\") await doOn();                       // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();              // Midi ItemMacro On Use\n\nlog(\"---------------------------------------------------------------------------\",\n    \"Finishing\", MACRONAME);\n\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/\n\n/***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    if (!FAMILIAR_NAME) {\n        msg = `<p style=\"color:DarkRed;\">No name was found for ${aToken.name}'s familiar.  \n            Please set it with the <b>Set Familiar Name</b> item.</p>`\n        errorMsg = `No name was found for ${aToken.name}'s familiar.  Please set it with the \n            Set Familiar Name item.`\n        postNewChatMessage(msg);\n        return (false)\n    }\n    if (!oneTarget()) return (false)\n    log(`tToken.name ${tToken.name}`)\n    if (tToken.name === FAMILIAR_NAME) {\n        log(`Targeting ${aToken.name}'s familiar (${FAMILIAR_NAME}), all good so far.`)\n    } else {\n        msg = `<p style=\"color:DarkRed;\">${aToken.name} is not targeting his/her/its familiar, \n            <b>${FAMILIAR_NAME}</b>, please target the correct token and try again.</p>`\n        errorMsg = `${aToken.name} is not targeting his/her/its familiar, \n            <b>${FAMILIAR_NAME}</b>, please target the correct token and try again.`\n        postNewChatMessage(msg);\n        return (false)\n    }\n\n    log('All looks good, to quote Jean-Luc, \"MAKE IT SO!\"')\n    return (true)\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    // let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    // let tActor = tToken?.actor;\n    log(\"--------------OnUse-----------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n\n    let aTokenSize = sizeOfToken(aToken); // Original Size of token, 1 = Tiny, ..., 6 = Gargantuan\n    log(\"aTokenSize\", aTokenSize)\n    let newFamiliarSize = Math.min(4, aTokenSize + 1)\n    log(\"newFamiliarSize\", newFamiliarSize)\n    let newWidth = (newFamiliarSize === 4) ? 2 : 1\n    log(\"newWidth\", newWidth)\n\n    // DialogSaveOrAccept();\n\n    let origWidth = tToken.data.width;\n    let mwak = tActor.data.data.bonuses.mwak.damage;\n    let ogSizeValue = sizeOfToken(tToken); // Original Size of token, 1 = Tiny, ..., 6 = Gargantuan\n    let ogSize = tActor.data.data.traits.size;\n    await DAE.setFlag(tActor, MACRO, {\n        \"width\": origWidth,\n        \"ogMwak\": mwak,\n        \"ogSize\": ogSize\n    });\n    let bonus = mwak + \"+1d4\";\n    if (ogSizeValue > 3) { \n        msg = `<p style=\"color:Brown;\"><b>${aToken.name}'s</b> attempt to <b>enlarge</b> ${tToken.name} \n               fizzles. <b>${tToken.name}</b> is too large to be further enlarged<p>`\n        postResults(msg);\n        return (false);\n    }\n    await tActor.update({ \"data.bonuses.mwak.damage\": bonus, \n                          \"data.traits.size\": SIZE_ARRAY[newFamiliarSize] });\n    await jezUpdateTokenHeightWidth(tToken, newWidth);\n    tToken.refresh();  // Causes the token to be redrawn *NOW*\n    log(`tToken ${tToken.name}`, tToken)\n    msg = `<p style=\"color:DarkGreen;\">\n           <b>${aToken.name}'s</b> attempt to <b>enlarge</b> ${tToken.name} is met with success!.</p>\n           ${saveMsg}\n           <p>${tToken.name} is now one size category larger.</p>`\n    postResults(msg);\n\n    log(\"--------------OnUse-----------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return (true);\n\n    \n     //----------------------------------------------------------------------------------\n     // Obtain size of the target\n     //\n     function sizeOfToken(token1) {\n         const FUNCNAME = \"sizeOfToken(token1)\";\n         log(`--------------${FUNCNAME}---------------------`, \"Starting\", `${MACRONAME} ${FUNCNAME}`, \"token1\", token1);\n         class CreatureSizes {\n             constructor(size) {\n                 this.SizeString = size;\n                 switch (size) {\n                     case \"tiny\": this.SizeInt = 1; break;\n                     case \"sm\": this.SizeInt = 2; break;\n                     case \"med\": this.SizeInt = 3; break;\n                     case \"lg\": this.SizeInt = 4; break;\n                     case \"huge\": this.SizeInt = 5; break;\n                     case \"grg\": this.SizeInt = 6; break;\n                     default: this.SizeInt = 0;  // Error Condition\n                 }\n             }\n         }\n         \n         let token1SizeString = token1.document._actor.data.data.traits.size;\n         let token1SizeObject = new CreatureSizes(token1SizeString);\n         let token1Size = token1SizeObject.SizeInt;  // Returns 0 on failure to match size string\n         if (!token1Size) {\n             errorMsg = `Size of ${token1.name}, ${token1SizeString} failed to parse. End ${macroName}<br>`;\n             log(errorMsg);\n             ui.notifications.error(errorMsg);\n             return (99);\n         }\n         log(`=====> Token1 ${token1.name}: ${token1SizeString} ${token1Size}`)\n         return (token1Size);\n     }\n}\n\n/************************************************************************\n * Verify exactly one target selected, boolean return\n ************************************************************************/\nasync function jezUpdateTokenHeightWidth(tok, newWidth) {\n    if (jezIsToken5e(tok)) {\n        log(`Update ${tok.name} updating width to ${newWidth}`)\n        let updates = [];\n        updates.push({\n            _id: tok.id,\n            height: newWidth,\n            width: newWidth\n        });\n        canvas.tokens.updateMany(updates);\n        return(true);\n    } else {\n        errorMsg = `Argument passed was not of object type Token5e`\n        log(errorMsg, tok)\n        ui.notifications.error(errorMsg)\n        return(false)\n    }\n}\n\n/************************************************************************\n * Verify exactly one target selected, boolean return\n ************************************************************************/\nfunction oneTarget() {\n    if (!game.user.targets) {\n        errorMsg = `Targeted nothing, must target single token to be acted upon`;\n        log(errorMsg);\n        return (false);\n    }\n    if (game.user.targets.ids.length != 1) {\n        errorMsg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n        log(errorMsg);\n        return (false);\n    }   \n    log(`Targeting one target, a good thing`);\n    return (true);\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n * \n * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    log(\"--------------Off---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    let flag = DAE.getFlag(aActor, MACRO);\n    log(\"flag\", flag)\n    if (flag) {\n        await aActor.update({\n            \"data.bonuses.mwak.damage\": flag.ogMwak,\n            \"data.traits.size\": flag.ogSize\n        });\n\n        await jezUpdateTokenHeightWidth(aToken, flag.width);\n        aToken.refresh();  // Causes the token to be redrawn *NOW*\n\n        // await aToken.document.data.update({\"width\": flag.width,\"height\": flag.width});\n        await DAE.unsetFlag(aActor, MACRO);\n        ChatMessage.create({ content: `<b>${aToken.name}</b> is returned to normal size` });\n    } else {\n        msg = `\"DAE.getFlag(aActor, ${MACRO}) did not find flag value.`\n        log(msg)\n    }\n    log(\"--------------Off---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/***************************************************************************************************\n * Post the results to chat card\n ***************************************************************************************************/\n async function postResults(resultsString) {\n    const lastArg = args[args.length - 1];\n\n    let chatMessage = game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    log(`chatMessage: `,chatMessage);\n    const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n    const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}\n/***************************************************************************************************\n * Post a new chat message\n ***************************************************************************************************/\n async function postNewChatMessage(msgString) {\n    const FUNCNAME = \"postChatMessage(msgString)\";\n    log(`--------------${FUNCNAME}-----------`, \"Starting\", `${MACRONAME} ${FUNCNAME}`,\n        \"msgString\",msgString);\n    await ChatMessage.create({ content: msgString });\n    await wait(1000);\n    await ui.chat.scrollBottom();\n    log(`--------------${FUNCNAME}-----------`, \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n/***************************************************************************************************\n * DEBUG Logging\n * \n * If passed an odd number of arguments, put the first on a line by itself in the log,\n * otherwise print them to the log seperated by a colon.  \n * \n * If more than two arguments, add numbered continuation lines. \n ***************************************************************************************************/\nfunction log(...parms) {\n    if (!DEBUG) return;             // If DEBUG is false or null, then simply return\n    let numParms = parms.length;    // Number of parameters received\n    let i = 0;                      // Loop counter\n    let lines = 1;                  // Line counter \n\n    if (numParms % 2) {  // Odd number of arguments\n        console.log(parms[i++])\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    } else {            // Even number of arguments\n        console.log(parms[i],\":\",parms[i+1]);\n        i = 2;\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    }\n}\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\n\n/***************************************************************************************************\n * Return true if passed argument is of object type \"Token5e\"\n ***************************************************************************************************/\nfunction jezIsToken5e(obj) {\n    if (obj?.constructor.name === \"Token5e\") return(true)\n    return(false)\n}\n\n/***************************************************************************************************\n * Return true if passed argument is of object type \"Token5e\"\n ***************************************************************************************************/\n function jezIsActor5e(obj) {\n    if (obj?.constructor.name === \"Actor5e\") return(true)\n    return(false)\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_kw1jjhsz8u"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.Kvb74CDrE78n10mK"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

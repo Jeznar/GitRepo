@@ -3,7 +3,10 @@
 Standard Druid, specifically Wildfire Druid abilities
 
 * [Enhanced Bond](#enhanced-bond)
+* [Fiery Teleport](#firey-teleport)
+* [Flame Seed](#flame-seed)
 * [Summon Wildfire Spirit](#summon-wildfire-spirit)
+* [Wildshape](#wildshape)
 
 [*Back to All Class Features*](../README.md)
 
@@ -35,16 +38,6 @@ The macro operates as a MIDI damageMacro.
 
 ---
 
-### Summon Wildfire Spirit
-
-This is a 2nd level wildfire Druid ability that uses one of the daily shape-shift charges to call forth the druid's wildfire spirit familiar.
-
-This implementation automates the splash of damage and summoning the familiar from the **Actors Directory** (where it must already exist).  It will adjust the creatures hit points per the RAW description. 
-
-This ability is implemented with Warpgate and Sequencer module calls.
-
-![Summon_Wildfire_Spirit.gif](Wildfire_2_Summon_Widlfire_Spirit/Summon_Wildfire_Spirit.gif)
-
 #### Fiery Teleport
 
 This is an ability backed into the wildfire spirit.  It's actually two abilities (Fiery Teleport and Fiery Damage, both located on the sphere's sheet in the Skills tab) a multi-step process to use. 
@@ -58,6 +51,8 @@ Having the friendly moved automatically would be nice, but it's challenging to i
 No macro is used to implement this.
 
 ![Fiery_Teleport.gif](Wildfire_2_Summon_Widlfire_Spirit/Fiery_Teleport/Fiery_Teleport.gif)
+
+---
 
 #### Flame Seed
 
@@ -75,4 +70,26 @@ No macro is used to implement this.s
 
 ---
 
+### Summon Wildfire Spirit
 
+This is a 2nd level wildfire Druid ability that uses one of the daily shape-shift charges to call forth the druid's wildfire spirit familiar.
+
+This implementation automates the splash of damage and summoning the familiar from the **Actors Directory** (where it must already exist).  It will adjust the creatures hit points per the RAW description. 
+
+This ability is implemented with Warpgate and Sequencer module calls.
+
+![Summon_Wildfire_Spirit.gif](Wildfire_2_Summon_Widlfire_Spirit/Summon_Wildfire_Spirit.gif)
+
+[*Back to Druid top of document*](#druid)
+
+---
+
+### Wildshape
+
+Imported from older work without further investigation or documentation.
+
+![Divine_Smite.gif](Divine_Smite/Divine_Smite.gif)
+
+[*Back to Druid top of document*](#druid)
+
+---

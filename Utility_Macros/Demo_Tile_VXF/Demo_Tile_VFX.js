@@ -59,13 +59,15 @@ async function placeTileVFX(TEMPLATE_ID) {
     // Delete the template to clean up the scene
     canvas.templates.get(TEMPLATE_ID).document.delete();
     // Place the tile with an embedded VFX
-    let newTile = await Tile.create({
+    let tileProps = {  
         x: template.center.x,   // X coordinate is center of the template
         y: template.center.y,   // Y coordinate is center of the template
         img: "modules/jb2a_patreon/Library/4th_Level/Black_Tentacles/BlackTentacles_01_Dark_Purple_600x600.webm",
         width: GRID_SIZE * 4,   // VFX should occupy 4 tiles across
         height: GRID_SIZE * 4   // ditto
-    });
+    };
+    // let newTile = await Tile.create(tileProps)   // Depricated 
+    let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
     jez.log("newTile", newTile);
     return(newTile[0].data._id);
 }

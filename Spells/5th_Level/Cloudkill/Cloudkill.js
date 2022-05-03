@@ -19,6 +19,7 @@ const MACRONAME = "Cloudkill.js"
  *   the damage increases by 1d8 for each slot level above 5th.
  * 
  * 03/28/22 0.1 Creation of Macro
+ * 05/03/22 0.2 Update for FoundryVTT 9.x (Tile.create)
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -131,13 +132,15 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
 async function placeTile(TEMPLATE_ID, templateCenter) {
     canvas.templates.get(TEMPLATE_ID).document.delete();
-    let newTile = await Tile.create({
+    let tileProps = {        
         x: templateCenter.x,
         y: templateCenter.y,
         img: "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_03_Regular_Green02_800x800.webm",
         width: GRID_SIZE * 8,   // 20 foot across
         height: GRID_SIZE * 8   // 20 foot tall 
-    });
+    }
+    // let newTile = await Tile.create(tileProps)   // Depricated 
+    let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
     jez.log("newTile", newTile);
     return(newTile[0].data._id);
 }

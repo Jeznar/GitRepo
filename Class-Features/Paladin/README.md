@@ -3,6 +3,11 @@
 Standard Paladin, specifically Oath of the Ancients Paladin abilities
 
 * [Aura of Protection](#aura-of-protection)
+* [Divine Smite](#divine-smite)
+* [Divine Sense](#divine-sense)
+* [Harness Divine Power](#harness=divine-power)
+* [Lay on Hands](#lay-on-hands)
+* [Nature's Wrath](#natures-wrath)
 * [Turn the Faithless](#turn-the-faithless)
 
 [*Back to All Class Features*](../README.md)
@@ -28,6 +33,48 @@ The DAE and Active Aura settings are key to this item. The DAE Effects provide t
 3. A macro.execute to my world macro that substitutes for Token Magic
 
 ![Aura_of_Protection_DAE_Effects.png](Aura_of_Protection/Aura_of_Protection_DAE_Effects.png)
+
+[*Back to top of document*](#paladin)
+
+---
+
+### Divine Smite
+
+Imported from older work without further investigation or documentation.
+
+![Divine_Smite.gif](Divine_Smite/Divine_Smite.gif)
+
+[*Back to top of document*](#paladin)
+
+---
+
+### Divine Sense
+
+Imported from older work without further investigation or documentation.
+
+[*Back to top of document*](#paladin)
+
+---
+
+### Harness Divine Power
+
+Imported from older work without further investigation or documentation.
+
+[*Back to top of document*](#paladin)
+
+---
+
+### Lay on Hands
+
+Imported from older work without further investigation or documentation.
+
+[*Back to top of document*](#paladin)
+
+---
+
+### Nature's Wrath
+
+Imported from older work without further investigation or documentation.
 
 [*Back to top of document*](#paladin)
 

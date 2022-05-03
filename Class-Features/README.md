@@ -40,7 +40,10 @@ This is the standard [Cleric class](https://www.dndbeyond.com/classes/cleric).  
 This is the standard [Druid class](https://www.dndbeyond.com/classes/druid).  I will be concerned with Wildfire Druid abilities, because that is what my game is featuring.
 
 * [Enhanced Bond](Druid#enhanced-bond)
+* [Fiery Teleport](Druid#firey-teleport)
+* [Flame Seed](Druid#flame-seed)
 * [Summon Wildfire Spirit](Druid#summon-wildfire-spirit)
+* [Wildshape](Druid#wildshape)
 
 
 [*Back to Classes with Features list*](#classes-with-features)
@@ -61,6 +64,7 @@ This is the standard [Fighter class](https://www.dndbeyond.com/classes/fighter).
 
 This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shaman (KibblesTasty)](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw)** by KibblesTasty.
 
+* [Riding Familiar](Occultist#riding-familiar)
 * [Sacrificial Summon](Occultist#sacrificial-summon) (features a warpgate summoning of a minion)
 * [Witch's Touch](Occultist#witch-touch)
 
@@ -73,8 +77,12 @@ This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shama
 This is the standard [Paladin class](https://www.dndbeyond.com/classes/paladin).  I will be concerned with Oath of the Ancients Paladin abilities, because that is what my game is featuring.
 
 * [Aura of Protection](Paladin#aura-of-protection)
-* [Turn the Faithless](#turn-the-faithless)
-
+* [Divine Smite](Paladin#divine-smite)
+* [Divine Sense](Paladin#divine-sense)
+* [Harness Divine Power](Paladin#harness=divine-power)
+* [Lay on Hands](Paladin#lay-on-hands)
+* [Nature's Wrath](Paladin#natures-wrath)
+* [Turn the Faithless](Paladin#turn-the-faithless)
 
 [*Back to Classes with Features list*](#classes-with-features)
 

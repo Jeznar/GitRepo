@@ -22,6 +22,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
 * **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
+* **[Samples](#samples)** Various sample macros that do itty bitty things
 * **[Set Familiar Name](#set-familiar-name)** Manages stored familiar name for actor
 * **[Share Item Within Scene](#share-item-within-scene)** Adds/Updates/Deletes an item from a token to other tokens in the same scene.
 * **[Swap Hidden Tokens](#swap-hidden-tokens)** swaps the visibility state of all or selected npc tokens.
@@ -255,6 +256,17 @@ Used by adding the following to the OnUse Macro field at the bottom of the **Ite
 ~~~javasctipt
 Run_RuneVFX_onSelf
 ~~~
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Samples 
+
+Some small macros that just handle small things.
+
+- **Shrink or Enlarge**: Flips selected tokens between 1 square and 2 square sizes.  Not great for tokens of other than 1x1 or 2x2 shapes.
+
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

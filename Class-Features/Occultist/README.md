@@ -4,12 +4,23 @@ This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shama
 
 Abilities have been slightly modified for balance and clarity.
 
+* [Riding Familiar](#riding-familiar)
 * [Sacrificial Summon](#sacrificial-summon)
 * [Witch's Touch](#witch-touch)
 
 [*Back to All Class Features*](../README.md)
 
 ## Feature Notes
+
+### Riding Familiar
+
+Older implementation imported and updated for FoundryVTT 9.x (updateMany).  No documentation added.
+
+![Riding_Familiar.gif](Riding_Familiar/Riding_Familiar.gif)
+
+[*Back to Occultist Feature List*](#feature-notes)
+
+---
 
 ### Sacrificial Summon
 

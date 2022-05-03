@@ -79,7 +79,7 @@ This type of call is not a token, but its similarity makes me wonder if it might
 await chatmsg.update({ content: content });
 ~~~
 
-I will need to test for issues related and perhaps initiate a wholesale update.
+From observation this is not an issue.
 
 ### effect.update
 
@@ -90,6 +90,8 @@ const result = await effect.update({ 'flags.dae.specialDuration': effect.data.fl
                                          'origin': LAST_ARG.itemUuid });                                    
 ~~~
 
+From observation this is not an issue.
+
 ### tokens.updateMany
 
 I have a few instances of using this call, which read similarly to the following:
@@ -97,6 +99,14 @@ I have a few instances of using this call, which read similarly to the following
 ~~~javascript
 canvas.tokens.updateMany(updates);
 ~~~
+
+The above generates the following warning (and dies in 9.x)
+
+~~~javascript
+You are calling PlaceablesLayer#updateMany which has been deprecated in favor Scene#updateEmbeddedDocuments. Support will be removed in 0.9.0
+~~~
+
+need to call game.scenes.current.updateEmbeddedDocuments
 
 That seems like another potential area needing its calls changed.
 
