@@ -158,10 +158,13 @@ Crymic pointed out, rolls needs to specify async:false or be awaited.
 new Roll("1d4").evaluate({async: true or false}); 
 ~~~
 
-Lines like the following from *cloudkill.js* are going to fail with damageRoll getting an unfulfilled promise. 
+Lines like the following from *Howling Babble* are going to fail with damageRoll getting an unfulfilled promise, or perhaps other error condition. 
 
 ~~~javascript
-let damageRoll = new Roll("5d8[poison]").roll();
+// The line below will fail
+let damageRoll = new Roll(`${DAM_DICE}+${jez.getCastMod(aToken)}`).evaluate();
+// Following line is a working version
+let damageRoll = new Roll(`${DAM_DICE}+${jez.getCastMod(aToken)}`).evaluate({async:false});
 ~~~
 
 ## Couple of changes to the canvas

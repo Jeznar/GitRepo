@@ -1,0 +1,179 @@
+{
+  "name": "Cruel Puppetry",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet.png",
+  "data": {
+    "description": {
+      "value": "<p>You attempt to bind a creatures soul to a doll, linking the creature to the doll in a sympathetic link. The target must make a <strong>Charisma saving throw</strong>. On failure, the creature becomes bound to the doll. No effect on a successful save.</p>\n<p>As part of casting the spell when the creature fails the save, and on subsequent turns using your action until the spell ends, you can perform one of the following actions:</p>\n<ul>\n<li><strong>Hold the doll still</strong>, causing the creature to be @JournalEntry[CZWEqV2uG9aDWJnD]{Restrained} until start of your next turn.</li>\n<li><strong>Force the doll to move</strong>, causing the creature to <span style=\"text-decoration:underline\">move up to 15 feet </span>in a direction of your choice that it can move. Creature may not move further than its current speed.</li>\n<li><strong>Smash the doll,</strong> causing it take<span style=\"text-decoration:underline\"> 3d6 bludgeoning</span> damage.</li>\n<li><strong>Rip the doll in half</strong>, ending the spell, destroying the doll,  and dealing 3<span style=\"text-decoration:underline\">d12 necrotic</span> damage.</li>\n</ul>\n<p>Each time after the first you use an action to manipulate the doll, after the effect takes place, the creature can <strong>repeat the Charisma with disadvantage</strong>, ending the effect on a successful save.</p>\n<p>Once a creature has been targeted by this spell, they cannot be targeted again for 24 hours.</p>\n<p><strong>At Higher Levels</strong>: When cast with a <strong>7th level spell slot </strong>or above, the range of the spell becomes unlimited, as long as the target is on the same plane as the caster. Forced movement increases by 5 feet per level.  The number of damage dice increase by one per level.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "cha",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": true,
+      "concentration": true
+    },
+    "materials": {
+      "value": "a small humanoid doll worth at least 5 gp and something from the target creature (such as blood, hair, or scales) both of which the spell consumes",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "c8a5sF2RvTUjMmJa",
+      "changes": [
+        {
+          "key": "macro.execute",
+          "mode": 0,
+          "value": "Cruel_Puppetry Parm1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "turns": 10
+      },
+      "icon": "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet.png",
+      "label": "Cruel Puppetry",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.execute"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "core": {
+      "sourceId": "Item.uFIvytbMJkxXUNXh"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Cruel Puppetry",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "Cruel_Puppetry"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

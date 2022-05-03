@@ -10,6 +10,9 @@ Abilities that are aimed at automating aactions and/or condition management.
 * [Cover, Three-Quarters](#cover-three-quarters)
 * [Dodging](#Dodging)
 * [Flanking](#flanking)
+* [Grapple](#grapple)
+* [Help](#help)
+* [Hinder](#hinder)
 
 ---
 
@@ -66,6 +69,36 @@ The underlying CUB Condition is configured to last only a round, so this will ne
 Similar to the cover actions, this one toggles the **Flanking** status granting +2 to MWAK rolls.
 
 The underlying CUB Condition is configured to last only a round, so this will need to be reaplied each round.
+
+[*Back to Listing of Items*](#listing-of-items)
+
+---
+
+## Grapple 
+
+A set of three macros to implement Grapple:
+
+Grapple Initiate
+Grapple Escape
+Grapple Release
+
+These are imported from earlier work and could definitely be cleaned up and documented.
+
+[*Back to Listing of Items*](#listing-of-items)
+
+---
+
+## Help 
+
+Imported from earlier work and could definitely be cleaned up and documented.
+
+[*Back to Listing of Items*](#listing-of-items)
+
+---
+
+## Hinder 
+
+Imported from earlier work and could definitely be cleaned up and documented.
 
 [*Back to Listing of Items*](#listing-of-items)
 

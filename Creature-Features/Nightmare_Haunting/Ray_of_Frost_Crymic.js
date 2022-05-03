@@ -22,7 +22,7 @@ let effectData = {
     { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: 2, value: 1, priority: 20 }]
 };
 let effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize("Poisoned"));
-if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.uuid, effects: [effectData] });
+if (!effect) await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:target.actor.uuid, effects: [effectData] });
 }
 let saveResult = `<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${target.id}">${target.name} ${success} with a ${save.total}</div><img src="${target.data.img}" width="30" height="30" style="border:0px"></div>`;
     let saveMessage = `<div class="midi-qol-nobox midi-qol-bigger-text">${CONFIG.DND5E.abilities[saveType]} Saving Throw: DC ${DC}</div><div class="midi-qol-nobox">${saveResult}</div>`;

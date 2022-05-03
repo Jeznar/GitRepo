@@ -20,6 +20,7 @@ I'll try to document functions as I add them to the repository.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
 * **[Create Specter](#create-specter)** -- Wraith's ability to convert corpse to a specter
+* **[Crocodile Bite](#crocodile-bite)** -- Crocodile bite and grapple possibility
 * **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
 * **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
@@ -28,6 +29,7 @@ I'll try to document functions as I add them to the repository.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
 * **[Howling Babble](#howling-babble)** -- Allip's special attack.
+* **Knock Down** -- Implements a dog/wolf's bite and knock down
 * **[Life Drain](#life-drain)** -- Wraith's Life Drain Ability
 * **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
 * **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
@@ -183,6 +185,13 @@ Perform several checks before using WarpGate to bring in a Specter which will ha
 
 ---
 
+### **Crocodile Bite**
+
+Import of older macro.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
 ### **Ethrealness**
 
 This macro runs a VFX on the targeted token and flips the hidden status too true when it is run.  When the effect it applies is removed it runs the VFX in reverse and flips the hidden status to false.  

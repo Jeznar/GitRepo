@@ -49,4 +49,4 @@ let effectData = {
     }]
 };
 let effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize(itemD.name));
-if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.uuid, effects: [effectData] });
+if (!effect) await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:target.actor.uuid, effects: [effectData] });

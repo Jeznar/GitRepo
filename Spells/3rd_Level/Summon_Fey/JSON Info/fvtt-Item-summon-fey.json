@@ -1,0 +1,218 @@
+{
+  "name": "Summon Fey",
+  "type": "spell",
+  "img": "icons/creatures/mammals/elk-moose-marked-green.webp",
+  "data": {
+    "description": {
+      "value": "<p>You call forth a fey spirit. It manifests in an unoccupied space that you can see within range. This corporeal form uses the Fey Spirit stat block. When you cast the spell, choose a mood:</p>\n<ul>\n<li><strong>Fuming</strong>,</li>\n<li><strong>Mirthful</strong>, or</li>\n<li><strong>Tricksy</strong>.</li>\n</ul>\n<p>The creature resembles a fey creature of your choice marked by the chosen mood, which determines one of the traits in its stat block. The creature disappears when it drops to 0 hit points or when the spell ends.</p>\n<p>The creature is an ally to you and your companions. In combat, the creature <strong>shares your initiative count</strong>, but it takes its turn <strong>immediately after yours</strong>. It obeys your verbal commands (no action required by you). If you don’t issue any, it takes the Dodge action and uses its move to avoid danger.</p>\n<p><em><strong>At Higher Levels.</strong></em> When you cast this spell using a spell slot of 4th level or higher, use the higher level wherever the spell’s level appears in the stat block.</p>",
+      "chat": "<p>You call forth a fey spirit. It manifests in an unoccupied space that you can see within range. This corporeal form uses the Fey Spirit stat block. When you cast the spell, choose a mood: Fuming, Mirthful, or Tricksy. The creature resembles a fey creature of your choice marked by the chosen mood, which determines one of the traits in its stat block. The creature disappears when it drops to 0 hit points or when the spell ends.</p>\n<p>The creature is an ally to you and your companions. In combat, the creature shares your initiative count, but it takes its turn immediately after yours. It obeys your verbal commands (no action required by you). If you don’t issue any, it takes the Dodge action and uses its move to avoid danger.</p>\n<p><em><strong>At Higher Levels.</strong></em> When you cast this spell using a spell slot of 4th level or higher, use the higher level wherever the spell’s level appears in the stat block.</p>\n<div class=\"Basic-Text-Frame stat-block-finder\">\n<p class=\"Stat-Block-Styles_Stat-Block-Title\">Fey Spirit</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Metadata\">Small fey</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Data\"><strong>Armor Class</strong> 12 + the level of the spell (natural armor)</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Data\"><strong>Hit Points</strong> 30 + 10 for each spell level above 3rd</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Data\"><strong>Speed</strong> 40 ft.</p>\n<div class=\"stat-block-ability-scores\">\n<div class=\"stat-block-ability-scores-stat\">\n<div class=\"stat-block-ability-scores-heading\">STR</div>\n<div class=\"stat-block-ability-scores-data\"><span class=\"stat-block-ability-scores-score\">13</span><span class=\"stat-block-ability-scores-modifier\">(+1)</span></div>\n</div>\n<div class=\"stat-block-ability-scores-stat\">\n<div class=\"stat-block-ability-scores-heading\">DEX</div>\n<div class=\"stat-block-ability-scores-data\"><span class=\"stat-block-ability-scores-score\">16</span><span class=\"stat-block-ability-scores-modifier\">(+3)</span></div>\n</div>\n<div class=\"stat-block-ability-scores-stat\">\n<div class=\"stat-block-ability-scores-heading\">CON</div>\n<div class=\"stat-block-ability-scores-data\"><span class=\"stat-block-ability-scores-score\">14</span><span class=\"stat-block-ability-scores-modifier\">(+2)</span></div>\n</div>\n<div class=\"stat-block-ability-scores-stat\">\n<div class=\"stat-block-ability-scores-heading\">INT</div>\n<div class=\"stat-block-ability-scores-data\"><span class=\"stat-block-ability-scores-score\">14</span><span class=\"stat-block-ability-scores-modifier\">(+2)</span></div>\n</div>\n<div class=\"stat-block-ability-scores-stat\">\n<div class=\"stat-block-ability-scores-heading\">WIS</div>\n<div class=\"stat-block-ability-scores-data\"><span class=\"stat-block-ability-scores-score\">11</span><span class=\"stat-block-ability-scores-modifier\">(+0)</span></div>\n</div>\n<div class=\"stat-block-ability-scores-stat\">\n<div class=\"stat-block-ability-scores-heading\">CHA</div>\n<div class=\"stat-block-ability-scores-data\"><span class=\"stat-block-ability-scores-score\">16</span><span class=\"stat-block-ability-scores-modifier\">(+3)</span></div>\n</div>\n</div>\n<p class=\"Stat-Block-Styles_Stat-Block-Data\"><strong>Condition Immunities</strong> charmed</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Data\"><strong>Senses</strong> darkvision 60 ft., passive Perception 10</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Data\"><strong>Languages</strong> Sylvan, understands the languages you speak</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Data-Last\"><strong>Challenge</strong> — <strong>Proficiency Bonus</strong> equals your bonus</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Heading\">Actions</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Body\"><em><strong>Multiattack.</strong></em> The fey makes a number of attacks equal to half this spell’s level (rounded down).</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Body\"><em><strong>Shortsword.</strong> Melee Weapon Attack:</em> your spell attack modifier to hit, reach 5 ft., one target. <em>Hit:</em> 1d6 + 3 + the spell’s level piercing damage + 1d6 force damage.</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Heading\">Bonus Actions</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Body\"><em><strong>Fey Step.</strong></em> The fey magically teleports up to 30 feet to an unoccupied space it can see. Then one of the following effects occurs, based on the fey’s chosen mood:</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Body\"><strong>Fuming.</strong> The fey has advantage on the next attack roll it makes before the end of this turn.</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Body\"><strong>Mirthful.</strong> The fey can force one creature it can see within 10 feet of it to make a Wisdom saving throw against your spell save DC. Unless the save succeeds, the target is charmed by you and the fey for 1 minute or until the target takes any damage.</p>\n<p class=\"Stat-Block-Styles_Stat-Block-Body\"><strong>Tricksy.</strong> The fey can fill a 5-foot cube within 5 feet of it with magical darkness, which lasts until the end of its next turn.</p>\n</div>",
+      "unidentified": ""
+    },
+    "source": "Tasha’s Cauldron of Everything pg 112",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": 90,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "con",
+    "components": {
+      "value": "a gilded flower worth at least 300 gp",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "a gilded flower worth at least 300 gp",
+      "consumed": false,
+      "cost": 300,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "always",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "BmMAs5tbX0Vkezbo",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 3600
+      },
+      "icon": "icons/creatures/mammals/elk-moose-marked-green.webp",
+      "label": "Summon Fey",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.itemMacro"
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 5855036,
+      "definitionId": 721204,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 67,
+          "pageNumber": 112,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Summoning"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_edz3xuutj1n"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.BFXiao4yXPLa6oAG"
+    },
+    "midi-qol": {
+      "onUseMacroName": ""
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Summon Fey",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Summon_Fey.0.1\"\nconsole.log(MACRONAME)\n/*****************************************************************************************\n * Clean up tokens that may or may not have been summened to the scene\n * \n * 01/14/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst DEBUG = true;\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nlog(\"\")\nlog(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\nconst lastArg = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlog(\"------- Global Values Set -------\",\n    `Active Token (aToken) ${aToken?.name}`, aToken,\n    `Active Actor (aActor) ${aActor?.name}`, aActor,\n    `Active Item (aItem) ${aItem?.name}`, aItem)\nlet msg = \"\";\nlet errorMsg = \"\";\nconst RUNASGMMACRO = \"DeleteTokenMacro\";\nconst viewedScene = game.scenes.viewed;\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\n\n\nlog(`============== Finishing === ${MACRONAME} =================`);\nlog(\"\")\nreturn;\n\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/\n\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n * \n * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n\n    //----------------------------------------------------------------------------------------------\n    // Make sure the RUNASGMMACRO exists and is configured correctly\n    //\n    const DeleteFunc = game.macros.getName(RUNASGMMACRO);\n    if (!DeleteFunc) {\n        ui.notifications.error(`Cannot locate ${RUNASGMMACRO} run as GM Macro`);\n        return;\n    }\n    if (!DeleteFunc.data.flags[\"advanced-macros\"].runAsGM) {\n        ui.notifications.error(`${RUNASGMMACRO} \"Execute as GM\" needs to be checked.`);\n        return;\n    }\n    log(` Found ${RUNASGMMACRO}, verified Execute as GM is checked`);\n\n    let trash = [`${aToken.name}'s Fuming Fey`, \n                 `${aToken.name}'s Mirthful Fey`, \n                 `${aToken.name}'s Tricksy Fey`, \n                 `${aToken.name}'s Tricksy Fey's Darkness`]\n    log(\"trash\", trash)\n    //----------------------------------------------------------------------------------------------\n    // Search for MINION in the current scene \n    //\n    for (let critter of viewedScene.data.tokens) {\n        // log(\"critter.data.name\", critter.data.name);\n        if (trash.includes(critter.data.name)) {\n            log(`Deleting ${critter.data.name}`)\n            DeleteFunc.execute(critter);\n        }\n    }\n    log(\"Hopefully good things happened.\")\n    log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n  }\n  \n\n/***************************************************************************************************\n * Post the results to chat card\n ***************************************************************************************************/\n async function postResults(resultsString) {\n    const lastArg = args[args.length - 1];\n\n    let chatMessage = game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    log(`chatMessage: `,chatMessage);\n    //const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n    //const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${resultsString}`;\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}\n\n/***************************************************************************************************\n * DEBUG Logging\n * \n * If passed an odd number of arguments, put the first on a line by itself in the log,\n * otherwise print them to the log seperated by a colon.  \n * \n * If more than two arguments, add numbered continuation lines. \n ***************************************************************************************************/\nfunction log(...parms) {\n    if (!DEBUG) return;             // If DEBUG is false or null, then simply return\n    let numParms = parms.length;    // Number of parameters received\n    let i = 0;                      // Loop counter\n    let lines = 1;                  // Line counter \n\n    if (numParms % 2) {  // Odd number of arguments\n        console.log(parms[i++])\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    } else {            // Even number of arguments\n        console.log(parms[i],\":\",parms[i+1]);\n        i = 2;\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    }\n}\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

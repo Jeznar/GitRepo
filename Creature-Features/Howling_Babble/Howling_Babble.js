@@ -10,6 +10,7 @@ const MACRONAME = "Howling_Babble.js"
  *   Constructs and undead are immune to this effect.
  * 
  * 04/14/22 0.1 Creation of Macro
+ * 05/02/22 0.2 Update for Foundry 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -118,14 +119,13 @@ async function doOnUse() {
         //----------------------------------------------------------------------------------
         // Determine how much damage is to be done
         //
-        let damageRoll = new Roll(`${DAM_DICE}+${jez.getCastMod(aToken)}`).evaluate();
+        let damageRoll = new Roll(`${DAM_DICE}+${jez.getCastMod(aToken)}`).evaluate({async:false});
         game.dice3d?.showForRoll(damageRoll);
         jez.log("damageRoll", damageRoll)
         //----------------------------------------------------------------------------------
         // Step through affectable tokens, making a list of those that saved and failed
         //
         jez.log(targetedArray)
-        
         for (const ELEMENT of targetedArray) {
             jez.log(`Affectable: ${ELEMENT.name}`)
             let save = await ELEMENT.actor.rollAbilitySave(SAVE_TYPE, {FLAVOR:"Something", chatMessage:true, fastforward:true});
@@ -145,7 +145,7 @@ async function doOnUse() {
             //-----------------------------------------------------------------------------------------------
             // Create a fake roll, fudged to come up with half the damage for when target saves
             //
-            let damageRollSaved = new Roll(`${Math.floor(damageRoll.total / 2)}`).evaluate({ async: false });
+            let damageRollSaved = new Roll(`${Math.floor(damageRoll.total / 2)}`).evaluate({async:false});
             //-----------------------------------------------------------------------------------------------
             // Apply damage to those that saved
             //
@@ -189,7 +189,7 @@ async function doOnUse() {
                         { key: `macro.CUB`, mode: jez.CUSTOM, value: `Stunned`, priority: 20 },
                     ]
                 }];
-                await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: ELEMENT.uuid, effects: effectData });
+                await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:ELEMENT.uuid, effects: effectData });
             }
         }
         return (true);

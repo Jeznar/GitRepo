@@ -27,6 +27,7 @@ const MACRONAME = "eyebite"
  * to put an effect with appropriate settings on the target to handle effect expirations. 
  * 
  * 02/21/22 0.1 Creation of Macro
+ * 05/03/22 0.2 Updated for FoundryVTT 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -299,7 +300,7 @@ async function checkTokenSave(selectedEffect) {
             { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Immune to Eyebite from this source", priority: 20 },
         ]
     }]
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: immuneEffect });
+    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:token1.actor.uuid, effects: immuneEffect });
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }

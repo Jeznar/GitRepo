@@ -19,6 +19,7 @@
  * List of Midi-QoL Flags:
  * https://docs.google.com/spreadsheets/u/0/d/1Vze_sJhhMwLZDj1IKI5w1pvfuynUO8wxE2j8AwNbnHE/htmlview
  * 
+ * 05/02/22 Update for Foundry 9.x
  ***********************************************************/
 const macroName = "Wooden_Sword_0.4"
 const debug = 1;
@@ -88,7 +89,7 @@ if (attackHit) {
                 priority: 20
             }]
         };
-        await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: targetD.uuid, effects: [effectData] });
+        await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:targetD.actor.uuid, effects: [effectData] });
     }
 } else {
     let message = ` Missed ${targetD.name}, do not apply attack debuff`;
@@ -117,7 +118,7 @@ let effectData = {
         priority: 20
     }]
 };
-await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: targetD.uuid, effects: [effectData] });
+await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:targetD.actor.uuid, effects: [effectData] });
 /************************************************************************
  * Post the results to chart card
  *************************************************************************/

@@ -5,6 +5,8 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 * [Acid Splash](#acid-splash)
 * [Agonizing Blast](#agonizing-blast)
+* [Chill Touch](#chill-touch)
+* [Decaying Touch](#decaying-touch)
 * [Druid Craft](#druid-craft)
 * [Eldritch Blast](#eldritch-blast)
 * [Fire Bolt](#fire-bolt)
@@ -14,6 +16,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Melf's Acid Arrow](#melfs-acid-arrow)
 * [Mending](#mending)
 * [Prestidigitation](#prestidigitation)
+* [Shillelagh](#shillelagh)
 * [Shocking Grasp](#shocking-grasp)
 * [Thaumaturgy](#thaumaturgy)
 * [Thorn Whip](#thorn-whip)
@@ -38,6 +41,22 @@ This spell is *very* similar to [eldritch blast](#eldritch-blast).  The differen
 ![Agonizing Blast](Agonizing_Blast/Agonizing_Blast.gif)
 
 This spell is available through [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#eldritch-blast) and a configuartion check box to make [Eldritch Blast](#eldritch-blast) into Agonizing blast.  As discussed in my Eldritch Blast notes below, I am sticking with mu implementation.
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Chill Touch
+
+Imported older implementation, appears compatible with FoundryVTT 9.x.
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Decaying Touch
+
+Imported older implementation and updated for FoundryVTT 9.x.
 
 [*Back to Cantrips List*](#cantrips)
 
@@ -141,6 +160,14 @@ This macro simply plays a Rune VFX on the target.
 This macro simply plays a VFX of a D12 over the casting token and spits out some text very briefly describing the spell.
 
 ![Prestidigitation_Video.gif](Prestidigitation/Prestidigitation_Video.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Shillelagh
+
+Imported from previous work, no documentation at this time.
 
 [*Back to Cantrips List*](#cantrips)
 

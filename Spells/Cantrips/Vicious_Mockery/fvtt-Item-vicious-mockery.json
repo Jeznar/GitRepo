@@ -1,0 +1,173 @@
+{
+  "name": "Vicious Mockery",
+  "type": "spell",
+  "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+  "data": {
+    "description": {
+      "value": "<p>You unleash a string of insults laced with subtle enchantments at a creature you can see within range. If the target can hear you (though it need not understand you), it must succeed on a Wisdom saving throw or take 1d4 psychic damage and have disadvantage on the next attack roll it makes before the end of its next turn.</p>\n<p>This spell's damage increases by 1d4 when you reach 5th level (2d4), 11th level (3d4), and 17th level (4d4).</p>",
+      "chat": "<p>You unleash a string of insults laced with subtle enchantments at a creature you can see within range. If the target can hear you (though it need not understand you), it must succeed on a Wisdom saving throw or take 1d4 psychic damage and have disadvantage on the next attack roll it makes before the end of its next turn.</p>\n<p>This spell's damage increases by 1d4 when you reach 5th level (2d4), 11th level (3d4), and 17th level (4d4).</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 285",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "enc",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "cantrip",
+      "formula": "1d4"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 138907,
+      "definitionId": 2290,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 285,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Debuff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro",
+      "effectActivation": false
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-spells.UvLyXWkIpf8ElUBf"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Vicious Mockery",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "// Crymic 21.12.25 Vicious Mockery\n// Let macro deal damage instead of the item, it also supports \"mockeries\" table found in Community Tables Module.\n// Requires ActiveEffect callback macro\nconst lastArg = args[args.length - 1];\nif (lastArg.failedSaves.length === 0) return {};\nlet itemD = lastArg.item;\nlet actorD = game.actors.get(lastArg.actor._id);\nlet tokenD = canvas.tokens.get(lastArg.tokenId);\nlet target = canvas.tokens.get(lastArg.failedSaves[0].id);\nlet getClass = Object.keys(actorD.classes);\nlet level = actorD.classes[getClass].data.data.levels;\nlet numDice = 1 + (Math.floor((level + 1) / 6));\n\njez.runRuneVFX(tokenD, jez.getSpellSchool(itemD))\n\n// COOL-THING: Draw a text message from a roll table\nlet tableName = \"Mockeries-All\";\nlet table = game.tables.getName(tableName);\njez.log(\"table\", table)\nlet damageType = \"psychic\";\nlet mockery = \"\";\nif (table) {\n    let roll = await table.roll();\n    mockery = roll.results[0].data.text;\n} else {\n    mockery = \"Now go away or I shall taunt you a second time-a!\";\n}\n// Call to my library function to generate a formatted chat card\njez.postMessage({color: \"purple\", fSize: 16, icon: tokenD.data.img, \n    msg: mockery, title: `${tokenD.name} speaks mockingly...`, token: tokenD})\n// COOL-THING: Generate a chat bubble on the scene, using a World script!  \nbubbleForAll(tokenD.id, mockery, true, true)\n\nlet combatRound = game.combat ? game.combat.round : 0;\nlet damageRoll = new Roll(`${numDice}d4`).evaluate({ async: false });\nawait new MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, damageType, [target], damageRoll, { flavor: `<hr><div style=\"font-weight:bold;\">${mockery}</div><hr><div>(${CONFIG.DND5E.damageTypes[damageType]})</div>`, itemCardId: lastArg.itemCardId });\nlet effectData = {\n    label: itemD.name,\n    icon: itemD.img,\n    duration: { rounds: 1, turns: 1, startRound: combatRound, startTime: game.time.worldTime },\n    flags: { dae: { macroRepeat: \"none\", specialDuration: [\"1Attack\", \"turnEnd\"] } },\n    origin: lastArg.uuid,\n    disabled: false,\n    changes: [{\n        \"key\": \"flags.midi-qol.disadvantage.attack.all\",\n        \"mode\": 0,\n        \"value\": 1,\n        \"priority\": 20\n    }]\n};\nlet effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize(itemD.name));\nif (!effect) await MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:target.actor.uuid, effects: [effectData] });",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "enhanced-terrain-layer": {
+      "multiple": 1,
+      "min": 0,
+      "max": 0,
+      "environment": ""
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

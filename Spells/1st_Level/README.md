@@ -9,7 +9,9 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Cure Wounds](#cure-wounds)
 * [Detect Magic](#detect-magic)
 * [Dissonant Whispers](#dissonant-whispers)
+* [Earth Tremor](#earth-tremor)
 * [Electrify](#electrify)
+* [Ensnaring Strike](Cantrips#ensnaring-strike)
 * [Entangle](#entangle)
 * [Fog Cloud](#fog-cloud) (ASE)
 * [Guiding Bolt](#guiding-bolt)
@@ -21,6 +23,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Protection from Evil and Good](#protection-from-evil-and-good)
 * [Ray of Sickness](#ray-of-sickness)
 * [Sanctuary](#sanctuary)
+* [Searing Smite](1st_Level#searing-smite)
 * [Sleep](#sleep)
 * [Shield](#shield)
 * [Tasha's Caustic Brew](#tasha-caustic-brew)
@@ -127,6 +130,14 @@ This spell is included in the [Advanced Spell Effects Module](https://github.com
 
 ---
 
+### Earth Tremor
+
+Import of older macro that needs its rough edges sanded off.
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
 ### Electrify
 
 This is another of those tasty **[Kibble's bits: Occultist](https://www.gmbinder.com/share/-M-WtrKeZNFdEXq0MKXw)**.  His spell description:
@@ -154,6 +165,14 @@ That is a whopper of events to automate, including:
 This spell drove the implementation of **Shocking Grasp** which includes a **No Reaction** condition that applies on hit.
 
 ![Electrify.gif](Electrify/Electrify.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Ensnaring Strike
+
+Import of older macro that appears to be FoundryVTT 9.x compatible.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 
@@ -318,6 +337,16 @@ This is closely based on Crymic's macro with the addition of a VFX and a message
 One of my initial spells, so style wise the macro leaves a bit too be desired.  This implementation runs a VFX and posts a message about the effect of the spell.  The effect is left for manual implementation of a saving throw.
 
 ![Sanctuary.gif](Sanctuary/Sanctuary.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Searing Smite
+
+Imported from older work.  No new documentation.
+
+![Searing_Smite.gif](Searing_Smite/Searing_Smite.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

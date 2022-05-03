@@ -16,6 +16,7 @@ const MACRONAME = "Entangling_Plants"
  * tokens.
  * 
  * 02/14/22 0.1 Creation of Macro
+ * 05/03/22 0.2 Updated for FoundryVTT 9.x
  *****************************************************************************************/
 // COOL-THING: Manages two VFX sets, one on targets, one on caster
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -319,14 +320,14 @@ async function applyRestrained(token5e) {
     //let debuffEffect = token5e.actor.effects.find(i => i.value.data.label === DEBUFF_NAME);
     if (debuffEffect) {
         jez.log(`XXX${token5e.name} ${DEBUFF_NAME} found on ${token5e.name}, removing existing copy.`)
-        let rtn = await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: token5e.actor.uuid, effects: [debuffEffect.id] });
+        let rtn = await MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:token5e.actor.uuid, effects: [debuffEffect.id] });
         jez.log(`XXX${token5e.name} Result of removal`, rtn)
     } else jez.log(`XXX${token5e.name} ${DEBUFF_NAME} missing on ${token5e.name}`)
 
     //----------------------------------------------------------------------------------------------
     // Apply the fresh debuff
     //
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token5e.uuid, effects: restrainedEffect });
+    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:token5e.actor.uuid, effects: restrainedEffect });
 }
 /***************************************************************************************************
  * Launch the VFX effect on affected Token

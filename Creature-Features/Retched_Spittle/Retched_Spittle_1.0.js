@@ -1,4 +1,4 @@
-const MACRONAME = "Retched_Spittle.1.0"
+const MACRONAME = "Retched_Spittle.1.1.js"
 /*****************************************************************************************
  * Ilyas Retched Spittle per MandyMod
  * 
@@ -13,6 +13,7 @@ const MACRONAME = "Retched_Spittle.1.0"
  *  early on a success.
  * 
  * 02/06/22 0.1 Rebuild of Macro to include repeating save and general cleanup
+ * 05/02/22 1.1 Update for Foundry 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim off the version number and extension
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
@@ -30,8 +31,6 @@ else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const DEBUFF_NAME = "Poisoned"
-// const VFX_LOOP = "modules/jb2a_patreon/Library/Generic/Template/Circle/OutPulse/OutPulse_02_Regular_GreenOrange_Loop_600x600.webm"
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -39,7 +38,6 @@ const DEBUFF_NAME = "Poisoned"
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					              // DAE reach turn
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-return;
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
@@ -55,6 +53,7 @@ async function doOnUse() {
 
   for (let i = 0; i < numFailed; i++) {
     const target = args[0].failedSaves[i];
+    // target is an actor, not a token
     jez.log(`  Apply Poisoned: ${target.data.name}`);
     jez.log(i, target);
     let effectData = {
@@ -79,8 +78,7 @@ async function doOnUse() {
         { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: ADD, value: 1, priority: 20 }]
     };
     let effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize("Poisoned"));
-    if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.uuid, effects: [effectData] });
-    // jez.log(`Duration: target.actor.data.effects.[0].data.flags.dae.specialDuration (turnEnd)`)
+    if (!effect) await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:target.uuid, effects: [effectData] });
   }
   jez.log(`Ending: ${MACRONAME}`);
   return;

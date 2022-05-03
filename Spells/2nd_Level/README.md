@@ -1,9 +1,11 @@
 # 2nd Level Spells
 This repository will contain my automated 2nd level spells as I create new or update existing (there are many) that currently reside only in my game data (which is regularly backed up) I'll add them here.
 
-Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
+Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Alter Self](#alter-self)
 * [Augury](#augury)
+* [Branding Smite](#branding-smite)
 * [Crown of Madness](#crown-of-madness)
 * [Darkness](#darkness) (ASE)
 * [Darkvision](#darkvision)
@@ -28,6 +30,14 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 
 ## Spell Notes
 
+### Alter Self
+
+Imported older macro, slight update for 9.x compatibility.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
 ### Augury
 
 This spell simply plays a Rune based VFX on the caster using the world macro: [Run_RuneVFX_onSelf](../../Utility_Macros#run-runevfx-onself) which is simply added to the OnUse Macro field of the item.
@@ -35,6 +45,16 @@ This spell simply plays a Rune based VFX on the caster using the world macro: [R
 Updated to require presence of Augury Components, consuming zero, but should be manually set up after adding to character.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Branding Smite
+
+Imported older version.
+
+![Branding_Smite.gif](Branding_Smite/Branding_Smite.gif)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
 
 ---
 

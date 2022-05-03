@@ -3,7 +3,8 @@ const MACRONAME = "Mace_of_Disruption.js"
  * Crymic's code imported and rolled back for Foundry 8.9 compatibility
  * 
  * 04/23/22 0.1 Import of macro and initial compatibility effort
- *****************************************************************************************/
+ * 05/02/22 0.2 Update for Foundry 9.x
+  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
@@ -57,7 +58,7 @@ if (type) {
                 { key: `flags.midi-qol.disadvantage.attack.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 }]
             };
             let effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize("Frightened"));
-            if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.uuid, effects: [effectData] });
+            if (!effect) await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:target.actor.uuid, effects: [effectData] });
         } else {
             saved = "fails";
             ActorUpdate.execute(target.id, { "data.attributes.hp.value": 0 });

@@ -4,6 +4,7 @@ const MACRONAME = "Ray_of_Sickness"
  * and a VFX.
  * 
  * 02/19/22 0.1 Creation of Macro
+ * 05/02/22 0.2 Update for Foundry 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -106,7 +107,7 @@ async function doOn() {
                  { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: 2, value: 1, priority: 20 }]
          };
          let effect = tToken.actor.effects.find(ef => ef.data.label === game.i18n.localize("Poisoned"));
-         if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.uuid, effects: [effectData] });
+         if (!effect) await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tToken.actor.uuid, effects: [effectData] });
          //----------------------------------------------------------------------------------------------
          // Post a message to the chatcard with results
          //

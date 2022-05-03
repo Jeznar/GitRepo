@@ -4,10 +4,13 @@ This repository will contain my automated 3rd level spells as I create new or up
 Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Animate Dead](#animate-dead)
+* [Bestow Curse](#bestow-curse)
+* [Blinding Smite](#blinding-smite)
 * [Call Lightning](#call-lightning) (ASE)
 * [Clairvoyance](#clairvoyance)
 * [Counterspell](#counterspell)
-* [Crusader Mantle](crusadermantle)
+* [Cruel Puppetry](#cruel-puppetry)
+* [Crusader Mantle](crusader-mantle)
 * [Dispel Magic](#dispel-magic)
 * [Fireball](#fireball)
 * [Fly](#fly)
@@ -18,6 +21,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Revivify](#revivify)
 * [Speak with Dead](#speak-with-dead)
 * [Spirit Guardians](#spirit-guardians)
+* [Summon Fey](#summon-fey)
 * [Thunder Step](#thunder-step)
 * [Tidal Wave](#tidal-wave)
 * [Vampiric Touch](#vampiric-touch) (ASE)
@@ -37,6 +41,24 @@ It does seem like the summoned tokens need a few moments to *settle* into the sc
 ~~~javascript
 tokenAttacher.deleteMissingLinks()
 ~~~
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Bestow Curse
+
+Imported older versions and updated for 9.x.  This needs attention.
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Blinding Smite
+
+Imported older versions.
+
+![Blinding_Smite.gif](Blinding_Smite/Blinding_Smite.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
@@ -71,6 +93,14 @@ Nothing more than a tested SRD implementation. It will be handled between player
 Slightly updated spell description from the standard SRD.  Actual use of this spell will be manual for the GM.
 
 04/10/22 Update: Added a call to Run_RuneVFX_onTargets as a world ItemMacro for a bit of visual flair.
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Cruel Puppetry
+
+Import of older Macro.
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
@@ -213,6 +243,20 @@ This spell does a couple of interesting things.
 4. The damage type is set (radiant/necrotic) as appropriate for the caster.
 
 ![Spirit_Guradians.gif](Spirit_Guardians/Spirit_Guradians.gif)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Summon Fey
+
+Spell imported from earlier automation, does a bunch of things I have forgotten -- so no useful info here.
+
+![Fuming.gif](Summon_Fey/Summon_Fey-Fuming.gif)
+
+![Mirthful.gif](Summon_Fey/Summon_Fey-Mirthful.gif)
+
+![Tricksy.gif](Summon_Fey/Summon_Fey-Tricksy.gif)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

@@ -132,7 +132,7 @@ function preCheck() {
     let pairedEffectObj = pairedToken.actor.effects.find(i => i.data.label === pairedEffect);
     if (pairedEffectObj) {
         jez.log(`Attempting to remove ${pairedEffectObj.id} from ${pairedToken.actor.uuid}`)
-        MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
+        MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
     }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
@@ -260,8 +260,7 @@ async function applyGrappling(token1, token2) {
             { key: `macro.itemMacro`, mode: CUSTOM, value: `${token2.id} ${GRAPPLED_COND}`, priority: 20 },
         ]
     }]
-    //await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: constrictingEffect });
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.document.uuid, effects: constrictingEffect });
+    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:token1.actor.uuid, effects: constrictingEffect });
 }
 /***************************************************************************************************
  * Apply the Grappled Condition to the target token
@@ -287,6 +286,5 @@ async function applyGrappling(token1, token2) {
             { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: `${overTimeValue}`, priority: 20 }
         ]
     }]
-    //await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: restrainedEffect });
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.document.uuid, effects: restrainedEffect });
+    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:token1.actor.uuid, effects: restrainedEffect });
  }

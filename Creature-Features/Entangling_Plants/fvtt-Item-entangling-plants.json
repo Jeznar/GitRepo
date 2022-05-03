@@ -1,0 +1,223 @@
+{
+  "name": "Entangling Plants",
+  "type": "feat",
+  "img": "/systems/dnd5e/icons/spells/vines-acid-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Grasping roots and vines sprout in a 15-foot radius centered on the blight, withering away after 1 minute. For the duration, that area is @JournalEntry[pQ83jyKDRqsdmQ5F]{Difficult Terrain} for nonplant creatures.</p>\n<p>In addition, each creature of the blight’s choice in that area when the plants appear must succeed on a DC 12 <strong>Strength saving throw</strong> or become @JournalEntry[CZWEqV2uG9aDWJnD]{Restrained}.</p>\n<p>Creatures can use an action to make a Strength check, freeing itself or another entangled creature within reach on a success.</p>\n<p><strong>FoundryVTT</strong>: Self removal is offered as a pop-up.  Clearing the effect from a <em>friend</em> can be done with the <strong>@Item[YwvCQWfSiuBFLyUj]{Entangling Plants - Break}</strong> item.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": 15,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": 12,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "dI6krR351OjoJJE7",
+      "changes": [
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 0,
+          "value": "stuff",
+          "priority": "20"
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "@token",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 10
+      },
+      "icon": "/systems/dnd5e/icons/spells/vines-acid-2.jpg",
+      "label": "Entangling Plants",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "flags.gm-notes.notes",
+        "macro.itemMacro"
+      ]
+    }
+  ],
+  "sort": 0,
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "autoanimations": {
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "scaleToToken": false,
+        "enableCustomExplosion": false
+      },
+      "override": true,
+      "allSounds": {
+        "item": {
+          "enableAudio": false
+        }
+      },
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "animType": "t8",
+      "animName": "a1",
+      "templates": {
+        "tempType": "circle",
+        "tempAnim": "outpulse02",
+        "tempColor": "whiteblue",
+        "customAnim": false,
+        "removeTemplate": true,
+        "tempLoop": 1,
+        "loopDelay": 250,
+        "persistent": true,
+        "opacity": 0.75,
+        "overhead": false
+      },
+      "explodeVariant": "ex1",
+      "explodeColor": "",
+      "explodeRadius": 5,
+      "explodeLoop": 1,
+      "explodeDelay": 0
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Entangling Plants",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Entangling_Plants\"\n/*****************************************************************************************\n * Vine Blight's Entangling Plant ability\n *\n *   Grasping roots and vines sprout in a 15-foot radius centered on the blight, withering\n *   away after 1 minute. For the duration, that area is difficult terrain for nonplant\n *   creatures. In addition, each creature of the blight’s choice in that area when the\n *   plants appear must succeed on a DC 12 Strength saving throw or become restrained. A\n *   creature can use its action to make a DC 12 Strength check, freeing itself or another\n *   entangled creature within reach on a success.\n *\n * Currently has an odd behavior that sometimes allows double debuffs on targets, seemingly\n * never more than 2 copies and randomly repeatable. \n * \n * Has a partner macro that allows \"allies\" to attempt to remove the effect from adjacent \n * tokens.\n * \n * 02/14/22 0.1 Creation of Macro\n * 05/03/22 0.2 Updated for FoundryVTT 9.x\n *****************************************************************************************/\n// COOL-THING: Manages two VFX sets, one on targets, one on caster\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nconst SAVE_TYPE = \"str\"\nconst SAVE_DC = args[0]?.tag === \"OnUse\" ? aActor.data.data.attributes.spelldc : args[2] // Second arg should be save DC\nlet msg = \"\";\nlet immuneNames = [];\nlet failSaves = []  // Array to contain the tokens that failed their saving throws\nlet madeSaves = []  // Array to contain the tokens that made their saving throws\nlet madeNames = \"\"\nlet failNames = \"\"\nconst DEBUFF_NAME = \"Restrained by Entangling Plants\" // aItem.name || \"Nature's Wraith\";\nconst DEBUFF_ICON = \"modules/combat-utility-belt/icons/restrained.svg\"\nconst GAME_RND = game.combat ? game.combat.round : 0;\n\nconst VFX_TARGET_LOOP = \"modules/jb2a_patreon/Library/1st_Level/Entangle/Entangle_01_Green_400x400.webm\"\nconst VFX_TARGET_OPACITY = 0.8;\nconst VFX_TARGET_SCALE = 0.4;\nconst VFX_NAME = `${MACRO}-${aToken.id}`\nconst VFX_INTRO = \"modules/jb2a_patreon/Library/Generic/Magic_Signs/ConjurationCircleIntro_02_Regular_Green_800x800.webm\"\nconst VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Magic_Signs/ConjurationCircleLoop_02_Regular_Green_800x800.webm\";\nconst VFX_OUTRO = \"modules/jb2a_patreon/Library/Generic/Magic_Signs/ConjurationCircleOutro_02_Regular_Green_800x800.webm\";\nconst VFX_OPACITY = 1.0;\nconst VFX_SCALE = 0.9;\nconst RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName(\"Restrained\").id}]{Restrained}`\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0] === \"on\") await doOn();                   // DAE removal\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    Sequencer.EffectManager.endEffects({ name: `${MACRO}-${aToken.id}`, object: aToken });\n    //----------------------------------------------------------------------------------\n    // If this is invoked on a target (not origin token) reture without more VFX\n    //\n    const ORIGIN_ARRAY = LAST_ARG.origin.split(\".\")    \n    if (aToken.id !== ORIGIN_ARRAY[3]) return;  // Don't apply the VFX to target tokens\n    new Sequence()\n    .effect()\n        .file(VFX_OUTRO)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)  \n        .attachTo(aToken)\n    .play()\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is added by DAE\n * \n * This function is run on each application of an effect, but the VFX should only apply to the \n * original user of the effect.\n ***************************************************************************************************/\nasync function doOn() {\n    const FUNCNAME = \"doOn()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    const ORIGIN_ARRAY = LAST_ARG.origin.split(\".\")    \n    if (aToken.id !== ORIGIN_ARRAY[3]) return;  // Don't apply the VFX to target tokens\n    new Sequence()\n        .effect()\n            .file(VFX_INTRO)\n            .attachTo(aToken)\n            .scale(VFX_SCALE)\n            .opacity(VFX_OPACITY)\n            .waitUntilFinished(-500) // Negative wait time (ms) clips the effect to avoid fadeout\n        .effect()\n            .file(VFX_LOOP)\n            .attachTo(aToken)\n            .belowTokens()\n            .scale(VFX_SCALE)\n            .opacity(VFX_OPACITY)\n            .persist()\n            .name(VFX_NAME)         // Give the effect a uniqueish name\n            .fadeIn(300)            // Fade in for specified time in milliseconds\n            .fadeOut(300)           // Fade out for specified time in milliseconds\n            .extraEndDuration(800)  // Time padding on exit to connect to Outro effect\n        .play()\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set On\n ***************************************************************************************************/\nasync function doEach() {\n    const FUNCNAME = \"doEach()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    const DIALOG_TITLE = \"Make a choice of how to use your action\"\n    const DIALOG_TEXT = `The nasty vines are keeping <b>${aToken.name}</b> restrained.  \n        Would you like to use your action this round to attempt to break the vines \n        (<b>DC${SAVE_DC} Strength</b> check), or simply ignore them and do something else \n        with your action?<br><br>`\n    new Dialog({\n        title: DIALOG_TITLE,\n        content: DIALOG_TEXT,\n        buttons: {\n            yes: {\n                label: \"Break Vines\", callback: async () => {\n                    let flavor = `${aToken.name} uses this turn's <b>action</b> to attempt a \n                    ${CONFIG.DND5E.abilities[SAVE_TYPE]} check vs <b>DC${SAVE_DC}</b> to end the \n                    <b>${DEBUFF_NAME}</b> effect from ${aItem.name}.`;\n                    let check = (await aActor.rollAbilityTest(SAVE_TYPE, {\n                        flavor: flavor,\n                        chatMessage: true,\n                        fastforward: true\n                    })).total;\n                    jez.log(\"Result of check roll\", check);\n                    await aActor.deleteEmbeddedDocuments(\"ActiveEffect\", [LAST_ARG.effectId]);\n                }\n            },\n            no: { label: \"Ignore Vines\", callback: () => { } }\n        },\n        default: \"yes\",\n    }).render(true);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    let isNPC = true;\n    let targetType = \"\"\n\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //----------------------------------------------------------------------------------------------\n    // Grab the max range of this item\n    //\n    const ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS)\n    if (!MAX_RANGE) {\n        msg = `Range is 0 or incorrect units on ${aItem.name}`;\n        jez.log(msg);\n        ui.notifications.warn(msg);\n        return (false)\n    }\n    jez.log(`Range of ${aItem.name} is ${MAX_RANGE} feet`)\n    //----------------------------------------------------------------------------------------------\n    // Get a list of all the tokens within range that could be affected by this spell.\n    //\n    let inRangers = await jez.tokensInRange(aToken, MAX_RANGE)\n    let inRangeCount = inRangers?.length\n    let nonPlantTokens = [];\n    let nonPlantNamesAndIds = [];\n    let exemptType = \"plant\"\n    jez.log(`${inRangeCount} Token(s) found within ${MAX_RANGE} feet`, inRangers)\n    for (let i = 0; i < inRangers.length; i++) {\n        //-----------------------------------------------------------------------------------------\n        // Remove plants from the list to be considered (they are immune)\n        //\n        if (inRangers[i].document._actor.data.type === \"npc\") isNPC = true; else isNPC = false;\n        if (isNPC) targetType = inRangers[i].document._actor.data.data.details.type.value\n        else targetType = inRangers[i].document._actor.data.data.details.race.toLowerCase()\n        if (targetType.includes(exemptType)) {\n            jez.log(`====> ${inRangers[i].name} is ${exemptType}`)\n            immuneNames += `<b>${inRangers[i].name}</b> (${exemptType})<br>`\n        } else nonPlantTokens.push(inRangers[i])\n    }\n    for (let i = 0; i < nonPlantTokens.length; i++) \n        nonPlantNamesAndIds.push(`${nonPlantTokens[i].name} (${nonPlantTokens[i].id})`)\n    //----------------------------------------------------------------------------------------------\n    // Pop dialog to determine which tokens should be forced to make a save to avoid being rooted.\n    //\n    const queryTitle = \"Select Creatures that Should be Forced to Roll Saves\"\n    const queryText = \"Pick any number from the below list\"\n    jez.pickCheckListArray(queryTitle, queryText, pickCheckCallBack, nonPlantNamesAndIds.sort());\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function pickCheckCallBack(selection) {\n    let tokenId = null\n    let tokensIdsToSave = []\n    //----------------------------------------------------------------------------------------------\n    // Build an array of the token IDs that correspond with the tokens that are going to be forced\n    // to roll saving throws. The names embedded in the selection array are followed by  a tokenId \n    // that is wrapped in parens.  Of this form:  Lecherous Meat Bag, Medium (eYstNJefUUgrHk8Q)\n    //\n    for (let i = 0; i < selection.length; i++) {\n        let tokenArray = []     // Array for tokens seperated by \"(\", there will be 2 or more\n        tokenArray = selection[i].split(\"(\")\n        tokenId = tokenArray[tokenArray.length-1].slice(0, -1)  // Chop off last character a \")\"\n        tokensIdsToSave.push(tokenId)  // Stash tha actual tokenId from the selection line\n    }\n    //----------------------------------------------------------------------------------------------\n    // Build an array of Tokens from the array of TokenIds just built.\n    //\n    let token5esToSave = [];\n    for (let i = 0; i < tokensIdsToSave.length; i++) {\n        token5esToSave.push(canvas.tokens.placeables.find(ef => ef.id === tokensIdsToSave[i]))\n        msg += `${i + 1}) ${token5esToSave[i].name}<br>`\n    }\n    //----------------------------------------------------------------------------------------------\n    // Roll saves for the selected tokens and create list of successes and failures, applying debuff\n    // as appropriate.\n    //\n    for (let i = 0; i < token5esToSave.length; i++) {\n        let save = (await token5esToSave[i].actor.rollAbilitySave(SAVE_TYPE, \n            { chatMessage: false, fastforward: true }));\n        if (save.total < SAVE_DC) {\n            jez.log(`${token5esToSave[i].name} failed: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            failSaves.push(token5esToSave[i])\n            failNames += `<b>${token5esToSave[i].name}</b>: ${save.total} (${save._formula})<br>`\n            runVfxToken(token5esToSave[i])\n            applyRestrained(token5esToSave[i])\n        } else {\n            jez.log(`${token5esToSave[i].name} saved: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            madeSaves.push(token5esToSave[i])\n            madeNames += `<b>${token5esToSave[i].name}</b>: ${save.total} (${save._formula})<br>`\n        }\n    }\n    if (madeNames) {\n        await jez.wait(500)\n        jez.postMessage({\n            color: \"darkblue\",\n            fSize: 14,\n            icon: aItem.img,\n            msg: `The following made succesful ${SAVE_TYPE.toUpperCase()} DC${SAVE_DC} saving throws<br><br>`\n                + madeNames + `<br>They are not ${RESTRAINED_JRNL}.`,\n            title: `Succesful Saves vs ${aItem.name}`,\n            token: aToken\n        })\n    }\n    if (failNames) {\n        await jez.wait(500)\n        jez.postMessage({\n            color: \"darkred\",\n            fSize: 14,\n            icon: aItem.img,\n            msg: `The following failed ${SAVE_TYPE.toUpperCase()} DC${SAVE_DC} saving throws<br><br>`\n                + failNames + `<br>They are ${RESTRAINED_JRNL} for a minute or until someone succeeds on a \n        ${SAVE_TYPE.toUpperCase()} DC${SAVE_DC} Skill check.`,\n            title: `Failed Saves vs ${aItem.name}`,\n            token: aToken\n        })\n    }\n}\n\n/***************************************************************************************************\n * Apply the Restrained Effect\n ***************************************************************************************************/\nasync function applyRestrained(token5e) {\n    //----------------------------------------------------------------------------------------------\n    // Apply new Restrained effect\n    //\n    let restrainedEffect = [{\n        label: DEBUFF_NAME,\n        icon: DEBUFF_ICON,\n        // origin: aActor.uuid,\n        origin: LAST_ARG.uuid,\n        flags: { dae: { itemData: aItem, macroRepeat: \"startEveryTurn\", token: token5e.uuid } },\n        disabled: false,\n        duration: { rounds: 10, startRound: GAME_RND },\n        changes: [\n            { key: `flags.VariantEncumbrance.speed`, mode: DOWNGRADE, value: 1, priority: 20 },\n            { key: `data.attributes.movement.walk`, mode: DOWNGRADE, value: 1, priority: 20 },\n            { key: `data.attributes.movement.swim`, mode: DOWNGRADE, value: 1, priority: 20 },\n            { key: `data.attributes.movement.fly`, mode: DOWNGRADE, value: 1, priority: 20 },\n            { key: `data.attributes.movement.climb`, mode: DOWNGRADE, value: 1, priority: 20 },\n            { key: `data.attributes.movement.burrow`, mode: DOWNGRADE, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },\n            { key: `flags.midi-qol.grants.advantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.ability.save.dex`, mode: OVERRIDE, value: 1, priority: 20 },\n            { key: \"macro.itemMacro\", mode: CUSTOM, value: `@token ${SAVE_DC}`, priority: 20 }\n            // The value needs to have the id of the partner token and the name of the effect\n            // { key: `macro.itemMacro`, mode: CUSTOM, value: `${aToken.id} ${GRAPPLING_COND}`, priority: 20 },\n        ]\n    }]\n    //----------------------------------------------------------------------------------------------\n    // Check to see if already restrained by this ability, if so, remove it before applying again\n    //\n    jez.log(`XXX${token5e.name} token5e.actor.effects`, token5e.actor.effects)\n    let debuffEffect = await token5e.actor.effects.find(i => i.data.label === DEBUFF_NAME);\n    //let debuffEffect = token5e.actor.effects.find(i => i.value.data.label === DEBUFF_NAME);\n    if (debuffEffect) {\n        jez.log(`XXX${token5e.name} ${DEBUFF_NAME} found on ${token5e.name}, removing existing copy.`)\n        let rtn = await MidiQOL.socket().executeAsGM(\"removeEffects\",{actorUuid:token5e.actor.uuid, effects: [debuffEffect.id] });\n        jez.log(`XXX${token5e.name} Result of removal`, rtn)\n    } else jez.log(`XXX${token5e.name} ${DEBUFF_NAME} missing on ${token5e.name}`)\n\n    //----------------------------------------------------------------------------------------------\n    // Apply the fresh debuff\n    //\n    await MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:token5e.actor.uuid, effects: restrainedEffect });\n}\n/***************************************************************************************************\n * Launch the VFX effect on affected Token\n ***************************************************************************************************/\n async function runVfxToken(token) {\n    let vfxName = `${MACRO}-${token.id}`\n    let gridSize = game.scenes.viewed.data.grid\n    let size = Math.max(token.w/gridSize, token.h/gridSize, 1)\n    let scale = 0.3 * size // 0.25 fills the grid completely\n    //----------------------------------------------------------------------------------------------\n    // Cancel existing VFX on token (if any)\n    //\n    if (await Sequencer.EffectManager.endEffects({ name: `${MACRO}-${token.id}`, object: token })) {\n        jez.log (`Removed existing VFX from ${token.name}`)\n        await jez.wait(1500)\n    }\n    //----------------------------------------------------------------------------------------------\n    // Apply new VFX\n    //\n    new Sequence()\n       .effect()\n       .file(VFX_TARGET_LOOP)\n       //.atLocation(token)\n       .attachTo(token)\n       .scale(scale)\n       .belowTokens()\n       .opacity(VFX_TARGET_OPACITY)\n       .persist()\n       .name(vfxName)          // Give the effect a uniqueish name\n       .fadeIn(1000)           // Fade in for specified time in milliseconds\n       .fadeOut(1000)          // Fade out for specified time in milliseconds\n       .play();   \n   jez.log(\"VFX Launched\")\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Item.MvekKh4WLO4qWxbl"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    }
+  }
+}

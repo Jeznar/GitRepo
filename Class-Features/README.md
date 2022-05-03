@@ -10,6 +10,7 @@ I anticipate a large number of features here, I will try to drop them into speci
 * [Shared](#shared)
 * [Cleric](#cleric)
 * [Druid](#druid)
+* [Fighter](#fighter)
 * [Occultist](#occultist)
 * [Paladin](#paladin)
 * [Warlock](#warlock)
@@ -41,6 +42,16 @@ This is the standard [Druid class](https://www.dndbeyond.com/classes/druid).  I 
 * [Enhanced Bond](Druid#enhanced-bond)
 * [Summon Wildfire Spirit](Druid#summon-wildfire-spirit)
 
+
+[*Back to Classes with Features list*](#classes-with-features)
+
+---
+
+## [Fighter](Fighter#fighter)
+
+This is the standard [Fighter class](https://www.dndbeyond.com/classes/fighter).  I am only concerned with very basic abilities as I only have NPC clerics in my campaign.
+
+* [Battlemaster Maneuver](Fighter#battlemaster-maneuver)
 
 [*Back to Classes with Features list*](#classes-with-features)
 
