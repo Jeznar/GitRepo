@@ -3,6 +3,7 @@ const MACRONAME = "Plane_Shift_Self_Only"
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
+ * 05/02/22 0.2 Updated for FoundryVTT 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -17,20 +18,11 @@ if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.da
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 //----------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-// but only for OnUse invocation.
-/*if ((args[0]?.tag === "OnUse") && !preCheck()) {
-    msg = `Please target `
-    return;
-}*/
-//----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE removal
-if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 jez.log("")
 return;
@@ -50,11 +42,6 @@ function preCheck() {
         jez.log(msg)
         return(false);
     }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        // ui.notifications.info(msg)
-        return(false);
-    }*/
     return (true)
 }
 /***************************************************************************************************
@@ -65,39 +52,24 @@ function preCheck() {
  async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    await aToken.update({ "hidden": false });
+    await aToken.document.update({ "hidden": false });
     await jez.wait(1000)
     aToken.refresh()
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
   }
-  
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("A place for things to be done");
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-}
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    // let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    // let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    //jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
-    //jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
     //---------------------------------------------------------------------------------------------
     // Run the visual effects
     runVFX(aToken)
     //---------------------------------------------------------------------------------------------
     // Hide the plane shifting token
-    //aToken.update({ "hidden": true });
+    //aToken.document.update({ "hidden": true });
     jez.log('Before: aToken.document.update({ "hidden": true });')
     aToken.document.update({ "hidden": true });
     jez.log('After: aToken.document.update({ "hidden": true });')
@@ -109,17 +81,6 @@ async function doOn() {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     msg = `${aToken.name} blinks out of existance.`
     jez.addMessage(chatMsg, { color: "steelblue", fSize:16, msg:msg, tag:"saves", icon:aItem.img })
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-}
-
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- ***************************************************************************************************/
- async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do On Use code")
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
