@@ -31,6 +31,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Thunderwave](#thunderwave)
 * [Unseen Servant](#unseen-servant)
 * [Witch Bolt](#witch-bolt) (ASE)
+* [Wrathful Smite](#wrathful-smite)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -428,6 +429,16 @@ Here are notes from the author's Wiki:
 
 * The continuous stream will break and the spell will end if the caster and target are more than 30ft away.
 * Each turn, only the owner of the caster will get a prompt to activate the witch bolt. This will be the GM for NPC tokens, and only players for player owned tokens.
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Wrathful Smite
+
+Imported from earlier work.
+
+![Wrathful_Smite.gif](Wrathful_Smite/Wrathful_Smite.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

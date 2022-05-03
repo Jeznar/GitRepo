@@ -42,10 +42,12 @@ I'll try to document functions as I add them to the repository.
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
+* **[Trampling Charge](#trampling-charge)** -- Equine charge / knockdown
 * **[Undead Fortitude](#undead-fortitude)** -- Certain undead's (e.g. Zombie) ability to deny death  
 * **[Undead Slayer](#undead-slayer)** -- Adds an extra 3d6 of damage to weapon attacks vs undead
 * **[Wail](#wail)** -- Banshee's wail that can drop things in their tracks.
 * **[Whispers of Madness]($whispersofmadness) -- Allip's ability
+* **[Vampire Abilities](#vampire-abilities) -- A number of vampire specific abilities.
 * **[Wooden Sword](#wooden-sword)** -- Arabelle's wooden sword debuffing machine.
 
 ## Additional Notes on Functions
@@ -466,6 +468,14 @@ The macro manages immunities cause by saves, checks size differences, performs t
 
 ---
 
+### **Trampling Charge**
+
+Import from older work and update for FoundryVTT 9.x.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Undead Fortitude**
 
 This ability is implemented through one of the ***annoying magic item names***, that is having a feature named **Undead Fortitude** causes the automation of this ability to trigger. 
@@ -507,6 +517,20 @@ Creatures that can't hear the **Wail** are supposed to be unaffected.  That's so
 Since I may need to do some manual fixing after the spell, I setup the chat log to show the amount of damage done to each target, making such fixes fairly easy.  
 
 ![Wail_Chat_Card.png](Wail/Wail_Chat_Card.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### Vampire Abilities
+
+A number of abilities imported from older work.  Including:
+
+- **Regeneration**: A now obsolete macro that implements regeneration is a painful manner.  This is now done with the D&D 5E helper module. 
+- **Set No Regen**: Applies a one turn effect that works in concert with D&D 5E helper module to prevent regen for one turn. 
+- **Vampire Bite**: Returns part of the necrotic damage from the bite as healing to the Vamp.
+- **Vampire Charm**: Obsolete macro, now implemented entirely via DAE configuration.
+- **Vampire Claw**: Inflict damage and grappling.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

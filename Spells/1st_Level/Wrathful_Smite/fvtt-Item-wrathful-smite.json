@@ -1,0 +1,178 @@
+{
+  "name": "Wrathful Smite",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/1st%20Level/Wrathful_Smite.png",
+  "data": {
+    "description": {
+      "value": "<p>The next time you hit with a melee weapon attack during this spell’s duration, your attack deals an<strong> extra 1d6 psychic</strong> damage.</p>\n<p>Additionally, if the target is a creature, it must make a <strong>Wisdom saving </strong>throw or be @JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} of you until the spell ends. As an action, the creature can make a Wisdom check against your spell save DC to steel its resolve and end this spell.</p>\n<p><a href=\"https://www.dndbeyond.com/spells/wrathful-smite\" target=\"_blank\" rel=\"noopener\">D&amp;DBeyond</a></p>",
+      "chat": "<p>The next time you hit with a melee weapon attack during this spell’s duration, your attack deals an extra 1d6 psychic damage. Additionally, if the target is a creature, it must make a Wisdom saving throw or be frightened of you until the spell ends. As an action, the creature can make a Wisdom check against your spell save DC to steel its resolve and end this spell.</p>",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook pg 289",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {
+    "ddbimporter": {
+      "id": 138957,
+      "definitionId": 2324,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 2,
+          "pageNumber": 289,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Control"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-spells.qYE2fkkzuveJ70zH"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Wrathful Smite",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Wrathful_Smite.0.2.js\"\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(MACRONAME)\n/*****************************************************************************************\n * Implment Wrathful Smite!\n * \n * special thanks to theripper93\n * \n * 01/25/22 0.1 Add headers and VFX\n * 05/04/22 0.2 Update for Foundry 9.x\n *****************************************************************************************/\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nconst lastArg = args[args.length - 1];\nconst actorD = game.actors.get(lastArg.actor._id);\nconst tokenD = canvas.tokens.get(lastArg.tokenId);\nconst tactor = canvas.tokens.get(lastArg.tokenId).actor;\nconst gameRound = game.combat ? game.combat.round : 0;\nconst spellDC = tokenD.actor.data.data.attributes.spelldc;\nconst saveType = \"wis\";\n// VFX Settings -------------------------------------------------------------------\nconst VFX_NAME = `${MACRO}-${tokenD.id}`\nconst VFX_TARGET = \"modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Dark_Red_Target_400x400.webm\"\nconst VFX_CASTER = \"modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Dark_Red_Caster_400x400.webm\"\nconst VFX_OPACITY = 1.0;\nconst VFX_SCALE = 0.70;\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nif (args[0].tag === \"OnUse\") {\n    let itemD = lastArg.item;\n    //------------------------------------------------------------------------------------------------\n    // Launch VFX on caster\n    // \n    new Sequence()\n        .effect()\n        .file(VFX_CASTER)\n        .attachTo(tokenD)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(false)\n        .name(VFX_NAME)          // Give the effect a uniqueish name\n        .play()\n    //-------------------------------------------------------------------------------------------------\n    // Define and apply the effect\n    // \n    let effectData = [{\n        changes: [\n            { key: \"flags.dnd5e.DamageBonusMacro\", mode: 0, value: `ItemMacro.${itemD.name}`, priority: 20 },\n            { key: \"flags.midi-qol.itemDetails\", mode: 0, value: `${lastArg.uuid}`, priority: 20 },\n        ],\n        origin: lastArg.uuid,\n        disabled: false,\n        duration: { rounds: 1, seconds: 6, startRound: gameRound, startTime: game.time.worldTime },\n        flags: { dae: { itemData: itemD, specialDuration: [\"DamageDealt\"] } },\n        icon: itemD.img,\n        label: itemD.name\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:tokenD.actor.uuid, effects: effectData });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"doBonusDamage\"\n ***************************************************************************************************/\nif (args[0].tag === \"DamageBonus\") {\n    if (![\"mwak\"].includes(lastArg.item.data.actionType)) return {};\n    let target = canvas.tokens.get(lastArg.hitTargets[0].id);\n    let itemUuid = getProperty(lastArg.actor.flags, \"midi-qol.itemDetails\");\n    let itemN = await fromUuid(itemUuid);\n    let itemD = lastArg.item;\n    let numDice = lastArg.isCritical ? 2 : 1;\n    let saveOptions = target.actor.data.type === \"character\" ? { chatMessage: false, fastForward: false } : { chatMessage: false, fastForward: true };\n    let save = await MidiQOL.socket().executeAsGM(\"rollAbility\", { request: \"save\", targetUuid: target.actor.uuid, ability: saveType, options: saveOptions });\n    let saveSuccess = \"saves\";\n    let conc = tokenD.actor.effects.find(i => i.data.label === \"Concentrating\");\n    //-------------------------------------------------------------------------------------------------------------\n    // Launch VFX on target\n    // \n    new Sequence()\n        .effect()\n        .file(VFX_TARGET)\n        .attachTo(target)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(false)\n        .name(VFX_NAME)          // Give the effect a uniqueish name\n        .play()\n    //-------------------------------------------------------------------------------------------------------------\n    // Perform save\n    //\n    if (save.total < spellDC) {\n        saveSuccess = \"fails\";\n        let effectData = [{\n            label: \"Frightened\",\n            icon: \"icons/svg/terror.svg\",\n            origin: \"\",\n            disabled: false,\n            flags: { dae: {stackable: false, macroRepeat: \"none\" } },\n            duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },\n            changes: [{ key: `flags.midi-qol.disadvantage.ability.check.all`, mode: 2, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.skill.all`, mode: 2, value: 1, priority: 20 },\n            { key: `flags.midi-qol.disadvantage.attack.all`, mode: 2, value: 1, priority: 20 },\n            { key: `flags.dae.deleteUuid`, mode: 5, value: conc.uuid, priority: 20 },\n            { key: `flags.midi-qol.OverTime`, mode: 5, value: `turn=start,label=Frightened,saveDC=${spellDC},saveAbility=${saveType},saveRemove=true`, priority: 20 }\n            ]\n        }];\n        let frightened = target.actor.effects.find(i => i.data.label === \"Frightened\");\n        if (!frightened) applyEffect(target, effectData);\n        await wait(500);\n        updateEffect(tokenD, target, conc);\n        // Bug Fix?  Following line appears to be needed to clear conc after use\n        await MidiQOL.socket().executeAsGM(\"removeEffects\",{actorUuid:tokenD.actor.uuid, effects: [conc.id] });\n    } else {\n        await MidiQOL.socket().executeAsGM(\"removeEffects\",{actorUuid:tokenD.actor.uuid, effects: [conc.id] });\n    }\n    await wait(500);\n    let msgHistory = [];\n    game.messages.reduce((list, message) => {\n        if (message.data?.flags[\"midi-qol\"]?.itemId === itemD._id && message.data.speaker.token === tokenD.id) list.push(message.id);\n        return list;\n    }, msgHistory);\n    let damageType = \"psychic\";\n    let itemCard = msgHistory[msgHistory.length - 1];\n    let saveResult = `<div class=\"midi-qol-flex-container\"><div class=\"midi-qol-target-npc midi-qol-target-name\" id=\"${target.id}\">${target.name} ${saveSuccess} with a ${save.total}</div><img src=\"${target.data.img}\" width=\"30\" height=\"30\" style=\"border:0px\"></div>`;\n    let saveMessage = `<div class=\"midi-qol-nobox midi-qol-bigger-text\">${CONFIG.DND5E.abilities[saveType]} Saving Throw: DC ${spellDC}</div><div class=\"midi-qol-nobox\">${saveResult}</div>`;\n    let chatMessage = await game.messages.get(itemCard);\n    let content = await duplicate(chatMessage.data.content);\n    let searchString = /<div class=\"midi-qol-hits-display\">[\\s\\S]*<div class=\"end-midi-qol-hits-display\">/g;\n    let replaceString = `<div class=\"midi-qol-hits-display\"><div class=\"end-midi-qol-hits-display\">${saveMessage}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    return { damageRoll: `${numDice}d6[${damageType}]`, flavor: `(${itemN.name} (${CONFIG.DND5E.damageTypes[damageType]}))` };\n}\n\nasync function applyEffect(target, effectData){\n    await MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:target.actor.uuid, effects: effectData });\n}\nasync function updateEffect(tokenD, target, conc){\n    let frightened = target.actor.effects.find(i => i.data.label === \"Frightened\");        \n    await MidiQOL.socket().executeAsGM(\"updateEffects\",{actorUuid:tokenD.actor.uuid, updates: [{ _id: conc.id, changes: [{ key: `flags.dae.deleteUuid`, mode: 5, value: frightened.uuid, priority: 20 }] }] });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "enhanced-terrain-layer": {
+      "multiple": 1,
+      "min": 0,
+      "max": 0,
+      "environment": ""
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro",
+      "effectActivation": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "0.8.9",
+      "systemVersion": "1.5.3"
+    },
+    "enhancedcombathud": {
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    }
+  }
+}

@@ -69,6 +69,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Thunderwave](1st_Level#thunderwave)
 * [Unseen Servant](1st_Level#unseen-servant)
 * [Witch Bolt](1st_Level#witch-bolt) (ASE)
+* [Wrathful Smite](1st_Level#wrathful-smite)
 
 [*Back to Spell Level List*](#spells)
 

@@ -3,6 +3,7 @@
 Standard Paladin, specifically Oath of the Ancients Paladin abilities
 
 * [Aura of Protection](#aura-of-protection)
+* [Turn the Faithless](#turn-the-faithless)
 
 [*Back to All Class Features*](../README.md)
 
@@ -27,6 +28,14 @@ The DAE and Active Aura settings are key to this item. The DAE Effects provide t
 3. A macro.execute to my world macro that substitutes for Token Magic
 
 ![Aura_of_Protection_DAE_Effects.png](Aura_of_Protection/Aura_of_Protection_DAE_Effects.png)
+
+[*Back to top of document*](#paladin)
+
+---
+
+### Turn the Faithless
+
+Imported from older archive and updated for FoundryVTT 9.x
 
 [*Back to top of document*](#paladin)
 

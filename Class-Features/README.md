@@ -73,6 +73,8 @@ This is a home-brew class found online: **[5e - Occultist - Witch, Oracle, Shama
 This is the standard [Paladin class](https://www.dndbeyond.com/classes/paladin).  I will be concerned with Oath of the Ancients Paladin abilities, because that is what my game is featuring.
 
 * [Aura of Protection](Paladin#aura-of-protection)
+* [Turn the Faithless](#turn-the-faithless)
+
 
 [*Back to Classes with Features list*](#classes-with-features)
 
