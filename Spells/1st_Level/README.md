@@ -24,6 +24,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Sleep](#sleep)
 * [Shield](#shield)
 * [Tasha's Caustic Brew](#tasha-caustic-brew)
+* [Thunderous Smite](#thunderous-smite)
 * [Thunderwave](#thunderwave)
 * [Unseen Servant](#unseen-servant)
 * [Witch Bolt](#witch-bolt) (ASE)
@@ -353,6 +354,16 @@ This implementation ignores the ability to remove the debuff from nearby friendl
 The macro underlying this was written by Crymic.  I've only added a bit of documentation. 
 
 ![Caustic Brew](Tasha's_Caustic_Brew/Caustic_Brew_Vid.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Thunderous Smite
+
+Older macro imported to GitRepo and updated for FoundryVTT 9.x.  No checking is made for wall or other collisions.
+
+![Thunderous_Smite.gif](Thunderous_Smite/Thunderous_Smite.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

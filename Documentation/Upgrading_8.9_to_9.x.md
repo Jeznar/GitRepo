@@ -36,6 +36,16 @@ I found a similar warning for MidiQOL.socket calls as shown below.  The second l
 await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.uuid, effects: restrainedEffect });
 // The following clears the warning
 await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.document.uuid, effects: restrainedEffect });
+// This also works and feels more correct, so I will be using this form
+await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token1.actor.uuid, effects: restrainedEffect });
+~~~
+
+The first line in the above can fail quietly, no error message, no application of the effect.  
+
+Another concern are lines like:
+
+~~~javascript
+MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
 ~~~
 
 #### Plane_Shift_Self_Only.js Contains two Instances of This
@@ -60,7 +70,7 @@ I fiddled with what looks to be a similar call in *Healing_Light.js* that read a
 await aToken.actor.update(resUpdate);
 ~~~ 
 
-The above does not generate a warning, I'm presuming it is still ok. 
+The above does not generate a warning and it worked on my test 9.x setup, so I am not going to try to *fix* this type of call
 
 ### chatmsg.update 
 This type of call is not a token, but its similarity makes me wonder if it might be affected.  The following line is pretty common in my scripts for updating a chat card:

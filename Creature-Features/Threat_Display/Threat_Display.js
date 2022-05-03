@@ -1,10 +1,11 @@
-const MACRONAME = "Threat_Display_0.1"
+const MACRONAME = "Threat_Display_0.2.js"
 /************************************************************
  * Apply the "Frighted" condition if target fails save.... 
  * 
  * It would be nice for the macro to post results in addition.
  * 
  * 10/29/21 0.1 JGB created from Grapple_Initiate_0.8
+ * 05/03/22 0.2 JGB Updated for FoundryVTT 9.x
  ***********************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -32,21 +33,13 @@ const FRIGHTENED_JRNL = "@JournalEntry[tjg0x0jXlwvbdI9h]{Frightened}"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-//if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-//if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-jez.log("")
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-/***************************************************************************************************
+ ***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function doOnUse() {
@@ -166,7 +159,7 @@ async function doOnUse() {
                 { key: `flags.midi-qol.disadvantage.skill.check.all`,   mode: ADD, value: 1, priority: 20 }
             ]
         };
-        await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.uuid, effects: [effectData] });
+        await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tToken.actor.uuid, effects: [effectData] });
         msg = `${tToken.name} now has ${FRIGHTENED_JRNL} from ${aToken.name}'s ${aItem.name} ability.`;
     } else {
         jez.log(`tToken Wins - Apply ${IMMUNE}`);
@@ -182,7 +175,7 @@ async function doOnUse() {
                 { key: `flags.gm-notes.notes`, mode: CUSTOM, value:`Immune to ${aToken.name}} ${CONDITION}`, priority: 20 },
             ]
         };
-        await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.uuid, effects: [effectData] });
+        await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
         msg = `${tToken.name} now is immune to ${aToken.name}'s ${aItem.name} for the duration of the combat.`;
     }
     jez.log("final message", msg)

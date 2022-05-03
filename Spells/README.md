@@ -59,6 +59,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Sleep](1st_Level#sleep)
 * [Shield](1st_Level#shield)
 * [Tasha's Caustic Brew](1st_Level#tasha-caustic-brew)
+* [Thunderous Smite](#thunderous-smite)
 * [Thunderwave](1st_Level#thunderwave)
 * [Unseen Servant](1st_Level#unseen-servant)
 * [Witch Bolt](1st_Level#witch-bolt) (ASE)

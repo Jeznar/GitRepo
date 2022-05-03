@@ -10,6 +10,7 @@ const MACRONAME = "Constrict"
  * partner and remove it when either partner is removed.
  * 
  * 02/11/22 0.1 Creation of Macro
+ * 05/03/22 0.2 JGB Updated for FoundryVTT 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -153,7 +154,7 @@ function preCheck() {
             { key: `macro.itemMacro`, mode: CUSTOM, value: `${aToken.id} ${GRAPPLING_COND}`, priority: 20 },
         ]
     }]
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.uuid, effects: restrainedEffect });
+    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tToken.actor.uuid, effects: restrainedEffect });
     //----------------------------------------------------------------------------------
     // Apply the GRAPPLING_COND effect to the actor.
     //
@@ -170,7 +171,7 @@ function preCheck() {
             { key: `macro.itemMacro`, mode: CUSTOM, value: `${tToken.id} ${GRAPPLED_COND}`, priority: 20 },
         ]
     }]
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.uuid, effects: constrictingEffect });
+    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:aToken.actor.uuid, effects: constrictingEffect });
     //----------------------------------------------------------------------------------
     // Post completion message
     //
@@ -195,7 +196,7 @@ function preCheck() {
     let pairedEffectObj = pairedToken.actor.effects.find(i => i.data.label === pairedEffect);
     if (pairedEffectObj) {
         jez.log(`Attempting to remove ${pairedEffectObj.id} from ${pairedToken.actor.uuid}`)
-        MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
+        MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
     }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
