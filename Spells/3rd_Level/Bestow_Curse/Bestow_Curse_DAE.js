@@ -1,4 +1,4 @@
-const MACRONAME = "Bestow_Curse.1.3.js";
+const MACRONAME = "Bestow_Curse.1.4.js";
 /*****************************************************************************************
  * Implemention of Bestow Curse.
  * 
@@ -28,6 +28,7 @@ const MACRONAME = "Bestow_Curse.1.3.js";
  * 12/21/21 1.1 JGB Reshuffling looking for itemD not defined error
  * 12/21/21 1.2 JGB Combine nearly redundent selection functions
  * 05/02/22 1.3 JGB Update for Foundry 9.x
+ * 05/05/22 1.4 JGB change createEmbeddedEntity to createEmbeddedDocuments for 9.x
  ******************************************************************************************/
 const DEBUG = false;
 const CURSENAME = "BestowCurse";
@@ -541,26 +542,8 @@ async function bonusDamage(target, itemD, uuid, tokenD, actorD, rounds, seconds,
             { key: "flags.midi-qol.concentration-data.targets", mode: ADD, value: { "actorId": actorD.id, "tokenId": tokenD.id }, priority: 20 }
         ]
     };
-    await actorD.createEmbeddedEntity("ActiveEffect", effectData);
-
-     // --------------------------------------------------------------------------------
-    // When you move the hex onto a new target.   This is a vestige from Hex, retaining 
-    // for future reference.
-    //
-    /*let getConc = actorD.effects
-        .find(i => i.data.label === "Concentrating");
-
-    await actorD.updateEmbeddedEntity("ActiveEffect", {
-        "_id": getConc.id,
-        origin: uuid,
-        "duration": {
-            rounds: rounds,
-            seconds: seconds,
-            startRound: gameRound,
-            startTime: game.time.worldTime
-        }
-    }); */
-
+    // await actorD.createEmbeddedEntity("ActiveEffect", effectData); // Depricated 
+    await actorD.createEmbeddedDocuments("ActiveEffect", [effectData]);
     log("+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +",
         `Finished`, `${MACRONAME} ${FUNCNAME}`);
 }

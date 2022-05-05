@@ -4,6 +4,7 @@ const MACRONAME = "Hex.js"
  * 
  * 0/22 0.1 Creation of Macro
  * 03/22/22 HOMEBREW: If Celestial then Radiant damage
+ * 05/05/22 Change createEmbeddedEntity to createEmbeddedDocuments for 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const FLAG = MACRO                      // Name of the DAE Flag       
@@ -21,7 +22,6 @@ if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
-
 const ITEM_NAME = "Hex - Move"                          // Base name of the helper item
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
 const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book
@@ -181,7 +181,8 @@ async function doOnUse() {
                 { key: "flags.midi-qol.concentration-data.targets", mode: ADD, value: { "actorId": aActor.id, "tokenId": aToken.id }, priority: 20 }
             ]
         };
-        await aActor.createEmbeddedEntity("ActiveEffect", effectData);
+        // await aActor.createEmbeddedEntity("ActiveEffect", effectData); // Depricated 
+        await aActor.createEmbeddedDocuments("ActiveEffect", [effectData]);
         let getConc = aActor.effects.find(i => i.data.label === "Concentrating");
         await aActor.updateEmbeddedEntity("ActiveEffect", {
             "_id": getConc.id, origin: UUID,

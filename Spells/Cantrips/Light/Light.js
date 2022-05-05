@@ -1,5 +1,4 @@
-const MACRONAME = "Light.0.2"
-console.log(MACRONAME)
+const MACRONAME = "Light.0.3.js"
 /*****************************************************************************************
  * Implment the Light Cantrip on Friendly and Unfriendly targets.
  * 
@@ -16,12 +15,13 @@ console.log(MACRONAME)
  * or attempt a save is presented, save resolved (if requested) and efect added to token.
  * 
  * 01/06/22 0.1 Creation of Macro
+ * 05/05/22 0.3 Migration to FoundryVTT 9.x
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     "Starting", `${MACRONAME}`);
-for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const lastArg = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
@@ -33,7 +33,7 @@ const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 
 const SAVE_DC = aActor.data.data.attributes.spelldc;
 const SAVE_TYPE = "DEX"
 const GAME_RND = game.combat ? game.combat.round : 0;
-log("------- Global Values Set -------",
+jez.log("------- Global Values Set -------",
     `Active Token (aToken) ${aToken?.name}`, aToken,
     `Active Actor (aActor) ${aActor?.name}`, aActor,
     `Active Item (aItem) ${aItem?.name}`, aItem)
@@ -51,41 +51,33 @@ let colorCodes = {
 }
 let colorCode = "";
 let result = "";
-
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
 if (!preCheck()) {
-    console.log(errorMsg)
+    jez.log(errorMsg)
     ui.notifications.error(errorMsg)
     postResults(`<b>Spell Failed</b>: ${errorMsg}`)
     return;
 }
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     "Finishing", MACRONAME);
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
 function preCheck() {
     if (!oneTarget()) return(false)
-    log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
+    jez.log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
     return (true)
 }
-
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
@@ -93,19 +85,16 @@ async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
-    log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`,
+    jez.log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`,
         `First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken,
         `First Targeted Actor (tActor) ${tActor?.name}`, tActor);
-
     DialogSaveOrAccept();
-
-    log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
-
     //----------------------------------------------------------------------------------
     // 
     async function DialogSaveOrAccept() {
-        log(SAVE_TYPE.toLowerCase())
+        jez.log(SAVE_TYPE.toLowerCase())
         new Dialog({
             title: "Save or Accept Spell",
             content: `<div><h2>Attempt Save -OR- Accept Effect</h2>
@@ -129,11 +118,10 @@ async function doOnUse() {
             default: "abort",
         }).render(true);
     }
-
     //----------------------------------------------------------------------------------
     // 
     async function PerformCallback(html, mode) {
-        log("PerformCallback() function executing.", "html", html, "mode", mode);
+        jez.log("PerformCallback() function executing.", "html", html, "mode", mode);
         const QUERY_TITLE = "Select Color for the Light Effect"
         const QUERY_TEXT = "Pick one color from the drop down list"
 
@@ -153,45 +141,42 @@ async function doOnUse() {
         }
         await postSpellResult(result)
     }
-
     //----------------------------------------------------------------------------------
     // 
     async function pickColorCallBack(selection) {
         colorCode = selection;
-        log(`The entity named <b>"${colorCode}"</b> was selected in the dialog`)
+        jez.log(`The entity named <b>"${colorCode}"</b> was selected in the dialog`)
         addLightEffect(args[0].uuid, tActor, 60, colorCodes[colorCode])
     }
-
     //----------------------------------------------------------------------------------
     // Return true on success, false on failure
     //
     async function attemptSave() {
         const FUNCNAME = "attemptSave()";
-        log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`);
+        jez.log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`);
         let saved = false;
 
         const flavor = `${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} <b>DC${SAVE_DC}</b>
              to avoid <b>${aItem.name}</b> effect`;
-        log("---- Save Information ---","SAVE_TYPE",SAVE_TYPE,"SAVE_DC",SAVE_DC,"flavor",flavor);
+        jez.log("---- Save Information ---","SAVE_TYPE",SAVE_TYPE,"SAVE_DC",SAVE_DC,"flavor",flavor);
     
         let save = (await tActor.rollAbilitySave(SAVE_TYPE.toLowerCase(), { flavor, chatMessage: true, fastforward: true })).total;
-        log("save",save);
+        jez.log("save",save);
         if (save > SAVE_DC) {
-            log(`save was made with a ${save}`);
+            jez.log(`save was made with a ${save}`);
             saved = true;
-        } else log(`save failed with a ${save}`);
+        } else jez.log(`save failed with a ${save}`);
 
         // addLightEffect(args[0].uuid, tActor, 60, colorCodes[selection])
-        log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+        jez.log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
         return(saved);
     }
-
     //----------------------------------------------------------------------------------
     // 
     async function postSpellResult(mode) {
-        log("")
-        log("postSpellResult(mode)", mode)
-        log("")
+        jez.log("")
+        jez.log("postSpellResult(mode)", mode)
+        jez.log("")
         switch (mode) {
             case "Saved":
                 msg = `${tToken.name} <b>made</b> its save and avoided the ${aItem.name} effect.`
@@ -210,34 +195,32 @@ async function doOnUse() {
                 msg = `Something went wack-a-doodle.  Please ask Joe nicely, to see about fixing this.`
         }
         postResults(msg);
-        log(msg);
+        jez.log(msg);
     }
 }
-
 /************************************************************************
  * Verify exactly one target selected, boolean return
  ************************************************************************/
 function oneTarget() {
     if (!game.user.targets) {
         errorMsg = `Targeted nothing, must target single token to be acted upon`;
-        log(errorMsg);
+        jez.log(errorMsg);
         return (false);
     }
     if (game.user.targets.ids.length != 1) {
         errorMsg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;
-        log(errorMsg);
+        jez.log(errorMsg);
         return (false);
     }
-    log(`Targeting one target, a good thing`);
+    jez.log(`Targeting one target, a good thing`);
     return (true);
 }
-
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function addLightEffect(uuid, actorD, rounds, color) {
     const FUNCNAME = "addLightEffect(uuid, actorD, rounds)";
-    log("--------------${FUNCNAME}-----------", "Starting", `${MACRONAME} ${FUNCNAME}`,
+    jez.log("--------------${FUNCNAME}-----------", "Starting", `${MACRONAME} ${FUNCNAME}`,
         "uuid", uuid,
         "actorD", actorD,
         "rounds", rounds,
@@ -251,23 +234,23 @@ async function addLightEffect(uuid, actorD, rounds, color) {
         duration: { rounds: rounds, seconds: seconds, startRound: GAME_RND, startTime: game.time.worldTime },
         flags: { dae: { itemData: aItem } },
         changes: [
-            { key: "ATL.dimLight", mode: UPGRADE, value: 40, priority: 20 },
-            { key: "ATL.brightLight", mode: UPGRADE, value: 20, priority: 20 },
-            { key: "ATL.lightColor", mode: OVERRIDE, value: color, priority: 30 },
-            { key: "ATL.lightAlpha", mode: OVERRIDE, value: 0.25, priority: 20 },
+            { key: "ATL.light.dim", mode: UPGRADE, value: 40, priority: 20 },
+            { key: "ATL.light.bright", mode: UPGRADE, value: 20, priority: 20 },
+            { key: "ATL.light.color", mode: OVERRIDE, value: color, priority: 30 },
+            { key: "ATL.light.alpha", mode: OVERRIDE, value: 0.07, priority: 20 },
         ]
     };
-    await actorD.createEmbeddedEntity("ActiveEffect", effectData);
-    log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    // await actorD.createEmbeddedEntity("ActiveEffect", effectData); // Depricated 
+    await actorD.createEmbeddedDocuments("ActiveEffect", [effectData]);
+    jez.log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
-
 /****************************************************************************************
  * Create and process selection dialog, passing it onto specified callback function
  ***************************************************************************************/
  function pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions) {
     const FUNCNAME = "pickFromList(queryTitle, queryText, ...queryOptions)";
-    log("---------------------------------------------------------------------------",
+    jez.log("---------------------------------------------------------------------------",
         `Starting`, `${MACRONAME} ${FUNCNAME}`,
         `queryTitle`, queryTitle,
         `queryText`, queryText,
@@ -277,7 +260,7 @@ async function addLightEffect(uuid, actorD, rounds, color) {
     if (typeof(pickCallBack)!="function" ) {
         let msg = `pickFromList given invalid pickCallBack, it is a ${typeof(pickCallBack)}`
         ui.notifications.error(msg);
-        log(msg);
+        jez.log(msg);
         return
     }   
 
@@ -285,7 +268,7 @@ async function addLightEffect(uuid, actorD, rounds, color) {
         let msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
                    but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         ui.notifications.error(msg);
-        log(msg);
+        jez.log(msg);
         return
     }
 
@@ -309,7 +292,7 @@ async function addLightEffect(uuid, actorD, rounds, color) {
                 label: 'OK',
                 callback: async (html) => {
                     const selectedOption = html.find('#selectedOption')[0].value
-                    log('selected option', selectedOption)
+                    jez.log('selected option', selectedOption)
                     await pickCallBack(selectedOption)
                 },
             },
@@ -317,7 +300,7 @@ async function addLightEffect(uuid, actorD, rounds, color) {
                 icon: '<i class="fas fa-times"></i>',
                 label: 'Cancel',
                 callback: async (html) => {
-                    log('canceled')
+                    jez.log('canceled')
                     await pickCallBack(null)
                 },
             },
@@ -325,61 +308,25 @@ async function addLightEffect(uuid, actorD, rounds, color) {
         default: 'cancel',
     }).render(true)
 
-    log("---------------------------------------------------------------------------",
+    jez.log("---------------------------------------------------------------------------",
         `Finished`, `${MACRONAME} ${FUNCNAME}`);
         return;
 }
-
 /***************************************************************************************************
  * Post a new chat message
  ***************************************************************************************************/
  async function postNewChatMessage(msgString) {
     const FUNCNAME = "postChatMessage(msgString)";
-    log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`,
+    jez.log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`,
         "msgString",msgString);
     await ChatMessage.create({ content: msgString });
-    log(`--------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log(`--------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
-
 /***************************************************************************************************
- * Post the results to chat card
+ * Post results to the chat card
  ***************************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
-
-    let chatMessage = game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    log(`chatMessage: `,chatMessage);
-    const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
-    const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
-    return;
+ function postResults(msg) {
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
-
-/***************************************************************************************************
- * DEBUG Logging
- * 
- * If passed an odd number of arguments, put the first on a line by itself in the log,
- * otherwise print them to the log seperated by a colon.  
- * 
- * If more than two arguments, add numbered continuation lines. 
- ***************************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    } else {            // Even number of arguments
-        console.log(parms[i],":",parms[i+1]);
-        i = 2;
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    }
-}
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
