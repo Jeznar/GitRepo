@@ -1,10 +1,10 @@
-const MACRONAME = "Branding_Smite.0.5"
-jez.log(MACRONAME)
+const MACRONAME = "Branding_Smite.0.6.js"
 /*****************************************************************************************
  * Implment Branding Smite!
  * 
  * 01/25/22 0.1 Creation of Macro
  * 01/26/22 0.5 Add VFX
+ * 05/05/22 0.6 Change ATL.dimLight etc. to ATL.light.dim etc. for 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log("")
@@ -17,7 +17,6 @@ let aItem;          // Active Item information, item invoking this macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 jez.log("------- Global Values Set -------",
     `Active Token (aToken) ${aToken?.name}`, aToken,
     `Active Actor (aActor) ${aActor?.name}`, aActor,
@@ -47,12 +46,9 @@ let returnFunc = null
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0]?.tag === "DamageBonus") {
     let returnFunc = await doBonusDamage();    // DAE Damage Bonus
-    return (returnFunc)
+    return(returnFunc)
 }
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-jez.log("")
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -160,9 +156,10 @@ async function doBonusDamage() {
             flags: { dae: { stackable: false, macroRepeat: "none" } },
             duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
             changes: [
-                { key: `ATL.dimLight`, mode: UPGRADE, value: 5, priority: 20 },
-                { key: `ATL.lightColor`, mode: OVERRIDE, value: "#ff0000", priority: 20 },
-                { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Can not become invisible", priority: 20 },
+                { key: `ATL.light.dim`, mode: jez.UPGRADE, value: 5, priority: 20 },
+                { key: `ATL.light.color`, mode: jez.OVERRIDE, value: "#ff0000", priority: 20 },
+                { key: "ATL.light.alpha", mode: jez.OVERRIDE, value: 0.07, priority: 20 }, // As of 9.269 light is far, far too intense
+                { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Can not become invisible", priority: 20 },
                 //{ key: `flags.midi-qol.OverTime`, mode: 5, value: `turn=start,label=${CONDITION},saveDC=${SPELL_DC},saveAbility=${SAVE_TYPE},saveRemove=true`, priority: 20 }
             ]
         }];
@@ -186,11 +183,9 @@ async function doBonusDamage() {
     jez.log(`-------------- Finished(Bottom)--- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
-
 async function applyEffect(target, effectData) {
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.actor.uuid, effects: effectData });
 }
-
 async function updateEffect(aToken, target, conc) {
     let frightened = target.actor.effects.find(i => i.data.label === COND_APPLIED);
     await MidiQOL.socket().executeAsGM("updateEffects", { actorUuid: aToken.actor.uuid, updates: [{ _id: conc.id, changes: [{ key: `flags.dae.deleteUuid`, mode: 5, value: frightened.uuid, priority: 20 }] }] });

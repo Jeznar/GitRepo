@@ -1,14 +1,14 @@
-const MACRONAME = "Searing_Smite.0.2"
+const MACRONAME = "Searing_Smite.0.3.js"
 /*****************************************************************************************
  * Original downloaded from https://www.patreon.com/posts/searing-smite-56611523
  * 
  * 11/09/21 0.0 Cry Posted Version which seems fine
  * 12/27/21 0.1 JGB Add lighting effect for the "on fire" victim
  * 01/25/22 0.2 JGB Add VFX
+ * 05/05/22 0.3 Change ATL.dimLight etc. to ATL.light.dim etc. for 9.x
  *****************************************************************************************/
  const DEBUG = true;
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
- const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
  log("---------------------------------------------------------------------------",
      "Starting", `${MACRONAME} or ${MACRO}`);
  for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
@@ -46,9 +46,9 @@ if (lastArg.tag === "OnUse") {
     // 
     let effectData = [{
         changes: [
-            { key: "flags.dnd5e.DamageBonusMacro", mode: CUSTOM, value: `ItemMacro.${lastArg.item.name}`, priority: 20 },
-            { key: "flags.midi-qol.spellLevel",    mode: CUSTOM, value: `${spellLevel}`, priority: 20 },
-            { key: "flags.midi-qol.spellId",       mode: CUSTOM, value: `${lastArg.uuid}`, priority: 20 },
+            { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${lastArg.item.name}`, priority: 20 },
+            { key: "flags.midi-qol.spellLevel",    mode: jez.CUSTOM, value: `${spellLevel}`, priority: 20 },
+            { key: "flags.midi-qol.spellId",       mode: jez.CUSTOM, value: `${lastArg.uuid}`, priority: 20 },
         ],
         origin: lastArg.uuid,
         disabled: false,
@@ -89,10 +89,13 @@ if (lastArg.tag === "DamageBonus") {
     //
     let effectData = [{
         changes: [
-            { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: `turn=start,label=${spellItem.name},
+            { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: `turn=start,label=${spellItem.name},
                 damageRoll=${spellLevel}d6,saveDC=${spellDC},damageType=${damageType},
                 saveAbility=con,saveRemove=true`, priority: 20 },
-            { key: "ATL.preset", mode: CUSTOM, value: "candle", priority: 20 }
+            { key: "ATL.light.dim",     mode: jez.ADD,      value: 10,          priority: 20},
+            { key: "ATL.light.bright",  mode: jez.ADD,      value: 5,           priority: 20},
+            { key: "ATL.light.color",   mode: jez.OVERRIDE, value: "#f8c377",   priority: 20},
+            { key: "ATL.light.alpha",   mode: jez.OVERRIDE, value: 0.07,        priority: 20},
         ],
         origin: spellUuid,
         flags: { dae: { itemData: spellItem.data, token: target.uuid} },
@@ -110,8 +113,6 @@ if (lastArg.tag === "DamageBonus") {
 
 log("---------------------------------------------------------------------------",
 `Finished`, `${MACRONAME}`);
-return;
-
 /***************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
