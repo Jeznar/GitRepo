@@ -215,3 +215,43 @@ This is from [Crymic 4/28/22](https://discord.com/channels/562549978506199042/84
 > ```new game.dnd5e.dice.DamageRoll("1d4", {},  {critical: true}).evaluate({async:false});```
 > 
 > It'll automatically roll the correct number of dice.
+
+## .createEmbeddedEntity Throws an Error
+
+[Freeze on Discord](https://discord.com/channels/170995199584108546/699750150674972743/928018172865552434)
+
+> createEmbeddedEntity is deprecated, use createEmbeddedDocuments and put [ ] around effectData
+> also lose user: game.user._id (it does nothing), or make it user: game.user.id still doesn't really do anything but at least gives the correct id and not undefined 🙂 in your chatmessage object
+
+These cases need to be moved to use ```.createEmbeddedDocuments("Type", [array data])```.
+
+## Additional Issues
+
+### ChatMessage.create
+
+Investigate: ```ChatMessage.create``` for ```user:``` which seemingly do nothing.
+
+### ATL 
+
+ATL uses a new format for its flags.  Any script that has settings of the form:
+
+~~~javascript
+changes: [
+    { key: "ATL.dimLight", mode: UPGRADE, value: 40, priority: 20 },
+    { key: "ATL.brightLight", mode: UPGRADE, value: 20, priority: 20 },
+    { key: "ATL.lightColor", mode: OVERRIDE, value: color, priority: 30 },
+    { key: "ATL.lightAlpha", mode: OVERRIDE, value: 0.25, priority: 20 },
+]
+~~~
+
+Should be more like this:
+
+~~~javascript
+{ key: "ATL.light.dim", mode: UPGRADE, value: 40, priority: 20 },
+{ key: "ATL.light.bright", mode: UPGRADE, value: 20, priority: 20 },
+{ key: "ATL.light.color", mode: OVERRIDE, value: color, priority: 30 },
+{ key: "ATL.light.alpha", mode: OVERRIDE, value: 0.05, priority: 20 },
+~~~
+
+Notice the tiny alpha value now used to prevent blowing out the scene. 
+
