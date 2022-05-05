@@ -16,6 +16,7 @@ const MACRONAME = "Light.0.3.js"
  * 
  * 01/06/22 0.1 Creation of Macro
  * 05/05/22 0.3 Migration to FoundryVTT 9.x
+ * 05/05/22 0.3 Change createEmbeddedEntity to createEmbeddedDocuments for 9.x
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
