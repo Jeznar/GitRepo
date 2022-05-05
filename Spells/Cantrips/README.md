@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Druid Craft](#druid-craft)
 * [Eldritch Blast](#eldritch-blast)
 * [Fire Bolt](#fire-bolt)
+* [Guided Strike](#guided-strike)
 * [Infestation](#infestation)
 * [Light](#light)
 * [Mage Hand](#mage-hand)
@@ -103,6 +104,14 @@ The repo has corresponding colored icons.
 **Reminder**: For NPC's cantrips need to be scaled manually as they have no level for automated scaling.
 
 ![fire-bolt](Fire_Bolt/Fire_Bolt.gif)
+
+---
+
+### Guided Bolt
+
+Simple implementation using only DAE.  
+
+[*Back to Cantrips List*](#cantrips)
 
 ---
 
