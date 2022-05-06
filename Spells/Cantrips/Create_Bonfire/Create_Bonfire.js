@@ -30,15 +30,13 @@ if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId);
     else aToken = game.actors.get(lastArg.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; 
     else aItem = lastArg.efData?.flags?.dae?.itemData;
-let SAVE_DC = aItem.data.save.dc;
 let msg = "";
 const BONFIRE_ORIG_NAME = "%Bonfire%"
-const EFFECT = "Binding Curse"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "off") await doOff();           // DAE removal
+if (args[0] === "off") await doOff();             // DAE removal
 //if (args[0] === "each") doEach();			      // DAE removal
 jez.log(`-------------------Finishing ${MACRONAME}----------------------------------`);
 /***************************************************************************************************
@@ -51,25 +49,28 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
  async function doOnUse() {
      const FUNCNAME = "doOnUse()";
      const SQ_WID = game.scenes.viewed.data.grid;
-     //let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+     const SAVE_DC = aItem.data.save.dc;
      jez.log(`---------Starting ${MACRONAME} ${FUNCNAME}----------------------`)
      //-----------------------------------------------------------------------------------------
      // Get the TEMPLATE object and delete the template.
      //
      const templateID = args[0].templateId
-     // Set the x,y coordinates of the targeting template that was placed.
      const TEMPLATE = canvas.templates.get(templateID).data
-     //const X = canvas.templates.get(templateID).data.x
-     //const Y = canvas.templates.get(templateID).data.y
-     //let center = { x: TEMPLATE.x, y: TEMPLATE.y}
-     //jez.log("Center", center)
-     // Delete the template that had been placed
      canvas.templates.get(templateID).document.delete()
+    //--------------------------------------------------------------------------------------
+    // Grab our character level and figure out what the damage dice should be
+    //
+    let charLevel = jez.getCharLevel(aToken)
+    let damageDice = "1d8"
+    if (charLevel >= 5)  damageDice = "2d8"
+    if (charLevel >= 11) damageDice = "3d8"
+    if (charLevel >= 17) damageDice = "4d8"
+    jez.log("Damage Dice", damageDice)
     //--------------------------------------------------------------------------------------
     // Spawn in the Bonfire, catch its token.id, exit on failure to spawn
     //
     const BONFIRE_ID = await spawnBonfire({x:TEMPLATE.x+SQ_WID/2,y:TEMPLATE.y+SQ_WID/2}, 
-        `${aToken.name}'s Bonfire`)
+        `${aToken.name}'s Bonfire`,damageDice)
     if (!BONFIRE_ID) {
         msg = `Bonfire could not be spawned.   ${BONFIRE_ORIG_NAME} must be available in <b>Actors 
         Directory</b>.<br><br>
@@ -80,7 +81,15 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
     //--------------------------------------------------------------------------------------
     // Modify the concentrating effect to delete the Bonfire on termination
     //
-    // modConcentratingEffect(aToken, tToken)
+    modConcentratingEffect(aToken, BONFIRE_ID)
+    //--------------------------------------------------------------------------------------
+    // Modify the existing on the bonfire to do appropriate damage
+    //
+    await jez.wait(100)
+    jez.log("BONFIRE_ID --->", BONFIRE_ID)
+    let bonfireToken = canvas.tokens.placeables.find(ef => ef.id === BONFIRE_ID[0])
+    jez.log("bonfire token", bonfireToken)
+    modExistingEffect(bonfireToken, damageDice, SAVE_DC)
     //--------------------------------------------------------------------------------------
     // 
     //
@@ -99,122 +108,10 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
     // Delete the existing bonfire
     //
     let sceneId = game.scenes.viewed.id
-    let casterId = args[1]
-    let bonfireId = args[2]
+    let bonfireId = args[1]
     warpgate.dismiss(bonfireId, sceneId)
     jez.log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
-}
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked each round by DAE
- * 
- *   If a creature starts its turn more than 10 feet from the binding point, they must make 
- *   a Strength saving throw, on faiure dragged 5 feet toward the binding point.
- ***************************************************************************************************/
-async function doEach() {
-    const FUNCNAME = "doEach()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-    //--------------------------------------------------------------------------------------
-    // Need distance between current token and associated bonfire token
-    //
-    const CASTER_ID = args[1]
-    const BONFIRE_ID = args[2]
-    const SAVE_DC = args[3]
-    let bonfireToken = canvas.tokens.placeables.find(ef => ef.id === BONFIRE_ID)
-    if (!bonfireToken) {
-        msg = `Could not find bonfire token with id "${BONFIRE_ID}"`
-        ui.notifications.warn(msg);
-        jez.log(msg)
-        return (false)
-    }
-    let distance = jez.getDistance5e(aToken, bonfireToken);
-    jez.log(`Distance between ${aToken.name} and ${bonfireToken.name} is ${distance} feet.`)
-    if (distance > 10) {
-        //--------------------------------------------------------------------------------------
-        // Roll saving throw to see if aToken needs to be moved 5 feet toward bonfire
-        //
-        const SAVE_TYPE = "str"
-        const flavor = `${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} <b>DC${SAVE_DC}</b>
-        to avoid <b>${aItem.name}</b> pull`;
-        let save = (await aActor.rollAbilitySave(SAVE_TYPE.toLowerCase(),
-            { flavor:flavor, chatMessage: true, fastforward: true })).total;
-        jez.log("save", save);
-        if (save >= SAVE_DC) {
-            msg = `<b>${aToken.name}</b> resisted the pull of <b>${bonfireToken.name}</b>. 
-            Rolling a <b>${save}</b> on the ${SAVE_DC} DC 
-            ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save.`
-            jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
-                msg: msg, title: `Pull resisted`, token: aToken })
-        } else {
-            jez.moveToken(bonfireToken, aToken, -1, 1500)
-            msg = `<b>${aToken.name}</b> is pulled five feet toward <b>${bonfireToken.name}</b>. 
-            Having failed the ${SAVE_DC} DC ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} 
-            save with a <b>${save}</b> roll.`
-            jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
-                msg: msg, title: `Pull succeeded`, token: aToken })
-        }
-    }
-    if (distance > 0) chainEffect(aToken, bonfireToken)
-    //----------------------------------------------------------------------------------------------
-    // Pop Dialog asking GM if the afflicted wants to attempt a save to move.
-    //
-    const SAVE_TYPE = "wis"
-    let template = `<div><label></label>
-     <div class="form-group" style="font-size: 14px; padding: 5px; 
-     border: 2px solid silver; margin: 5px;"><b>${aToken.name}</b> must succeed on a ${SAVE_DC} DC 
-     ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save to move more than 5 feet from
-     <b>${bonfireToken.name}</b>.  Does ${aToken.name} wish to attempt the save?</div>`
-    let d = new Dialog({
-        title: `Does ${aToken.name} want to move away from Bonfire?`,
-        content: template,
-        buttons: {
-            attempt: {
-                label: "Attempt Save",
-                callback: (html) => {
-                    callBackFunc(html);
-                }
-            },
-            decline: {
-                label: "Decline Save",
-                callback: (html) => {
-                    msg = `<b>${aToken.name}</b> has declined to attempt a save, it may not move further 
-                    from <b>${bonfireToken.name}</b> than five feet.`
-                    jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
-                        msg: msg, title: `Declined Save Attempt`, token: aToken })
-                    return (false)
-                }
-            }
-        },
-        default: "attempt"
-    })
-    d.render(true)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-    //----------------------------------------------------------------------------------------------
-    // Dialog call back function to attempt saving throw
-    //
-    async function callBackFunc(html) {
-        const SAVE_TYPE = "wis"
-        const flavor = `${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to move away`;
-        let save = (await aActor.rollAbilitySave(SAVE_TYPE,
-            { flavor:flavor, chatMessage:true, fastforward:true })).total;
-        jez.log("save", save);
-        if (save >= SAVE_DC) {
-            msg = `<b>${aToken.name}</b> resisted restraint of <b>${bonfireToken.name}</b>. Rolling a 
-            <b>${save}</b> on the ${SAVE_DC} DC ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save 
-            and may move freely.`
-            jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
-                msg:msg, title: `Restraint failed`, token:aToken })
-        } else {
-            msg = `<b>${aToken.name}</b> succumbed to restraint of <b>${bonfireToken.name}</b>. Having 
-            failed the ${SAVE_DC} DC ${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} save with a 
-            <b>${save}</b>. ${aToken.name} may move no further than 5 feet from the bonfire.`
-            jez.postMessage({ color:jez.randomDarkColor(), fSize: 14, icon: aItem.img,
-                msg: msg, title: `Restraint succeeded`, token: aToken })
-        }
-
-    }
 }
 /***************************************************************************************************
  * Post the results to chat card
@@ -226,7 +123,7 @@ async function doEach() {
 /***************************************************************************************************
  * Spawn the Bonfire into existance returning the UUID or null on failure
  ***************************************************************************************************/
-async function spawnBonfire(center, newName) {
+async function spawnBonfire(center, newName, damageDice) {
     //--------------------------------------------------------------------------------------
     // Verify the Actor named BONFIRE_ORIG_NAME exists in Anctor Directory
     //
@@ -239,12 +136,42 @@ async function spawnBonfire(center, newName) {
     //--------------------------------------------------------------------------------------
     // Define warpgate updates, options and callbacks 
     //
-    let updates = { token: { name: newName } }
+    let updates = {
+        actor: {name: newName},    
+        token: {name: newName},
+        /*embedded: { // This didn't quite work for reasons unknown
+            ActiveEffect: {
+                "Bonfire Damage Aura": {
+                    flags: {
+                        ActiveAuras: {
+                            aura: "All",
+                            isAura: true,
+                            onlyOnce: true,
+                            radius: 2,
+                        },
+                    },
+                    label: 'Bonfire Damage Aura',
+                    icon: 'Icons_JGB/Misc/campfire.svg',
+                    changes: [{
+                        "key": "macro.tokenMagic",
+                        "mode": jez.CUSTOM,
+                        "value": "Fire v2 (sparks)",
+                        "priority": 30
+                    }, {
+                        "key": "macro.execute",
+                        "value": `Bonfire_Helper ${damageDice}`,
+                        "mode": jez.CUSTOM,
+                        "priority": 30
+                    }],
+                }
+            }
+        }*/
+    }
     const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
     const CALLBACKS = {
         pre: async (template) => {
             preEffects(template);
-            await jez.wait(5000)
+            await jez.wait(2000)
         },
         post: async (template) => {
             postEffects(template);
@@ -287,31 +214,59 @@ async function postEffects(template) { return }
 /***************************************************************************************************
  * Modify existing concentration effect to call Remove_Effect_doOff on removal
  ***************************************************************************************************/
-async function modConcentratingEffect(aToken, tToken) {
-    // COOL-THING: Modify concentrating to remove an effect on target token
+async function modConcentratingEffect(aToken, bonfireId) {
+    // Modify concentrating to delete the bonfire on concentration drop
     //----------------------------------------------------------------------------------------------
     // Make sure the world macro that is used to remove effect exists
     //
-    const REMOVE_MACRO = "Remove_Effect_doOff"
+    const REMOVE_MACRO = "IMSC_Create_Bonfire"
     const removeFunc = game.macros.getName(REMOVE_MACRO);
     if (!removeFunc) {
-        ui.notifications.error(`Cannot locate ${RUNASGMMACRO} run as World Macro`);
+        ui.notifications.error(`Cannot locate ${REMOVE_MACRO} run as World Macro`);
         return;
     }
     //----------------------------------------------------------------------------------------------
-    // Seach the token to find the just added effect
+    // Seach the casting token to find the just added concentration effect
     //
-    await jez.wait(100)
+    await jez.wait(200)
     let effect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
     //----------------------------------------------------------------------------------------------
-    // Define the desired modification to existing effect. In this case, a world macro that will be
-    // given arguments: tToken.id and  for all affected tokens
+    // Define the desired modification to concentartion effect. In this case, a macro that will be
+    // given argument: bonfireId
     //    
-    effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`${REMOVE_MACRO} ${tToken.id} '${EFFECT}'`, priority: 20})
+    effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`${REMOVE_MACRO} ${bonfireId}`, priority: 20})
     jez.log(`effect.data.changes`, effect.data.changes)
     //----------------------------------------------------------------------------------------------
     // Apply the modification to existing effect
     //
     const result = await effect.update({ 'changes': effect.data.changes });
     if (result) jez.log(`Active Effect "Concentrating" updated!`, result);
+}
+/***************************************************************************************************
+ * Modify existing concentration effect to call Remove_Effect_doOff on removal
+ ***************************************************************************************************/
+ async function modExistingEffect(aToken, dDice, SAVE) {
+    // Modify concentrating to delete the bonfire on concentration drop
+    //----------------------------------------------------------------------------------------------
+    // Make sure the world macro that is used to remove effect exists
+    //
+    const MAC_NAME = "Bonfire_Helper"
+    const EXISTING_EFFECT = "Bonfire Damage Aura"
+    //----------------------------------------------------------------------------------------------
+    // Seach the casting token to find the just added concentration effect
+    //
+    await jez.wait(200)
+    let effect = await aToken.actor.effects.find(i => i.data.label === EXISTING_EFFECT);
+    //----------------------------------------------------------------------------------------------
+    // Define the desired modification to concentartion effect. In this case, a macro that will be
+    // given argument: bonfireId
+    //    
+    effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, 
+        value:`${MAC_NAME} ${dDice} ${SAVE}`, priority: 20})
+    jez.log(`effect.data.changes`, effect.data.changes)
+    //----------------------------------------------------------------------------------------------
+    // Apply the modification to existing effect
+    //
+    const result = await effect.update({ 'changes': effect.data.changes });
+    if (result) jez.log(`Active Effect "${EXISTING_EFFECT}" updated!`, result);
 }

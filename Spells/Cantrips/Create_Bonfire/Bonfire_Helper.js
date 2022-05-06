@@ -1,6 +1,6 @@
 const MACRONAME = "Bonfire_Helper.0.1.js"
 /*****************************************************************************************
- * IIntended to be called to apply the damage element of an active Aura attached to 
+ * Intended to be called to apply the damage element of an active Aura attached to 
  * Create Bonfire spell. 
  * 
  * 05/06/22 0.1 Creation of Macro
@@ -9,16 +9,6 @@ const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and exte
 jez.log("---------------------------------------------------------------------------",
     `Starting ${MACRONAME}`,MACRO);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-
-const ATTACK_ITEM = args[1];
-
-if (!ATTACK_ITEM) {
-    ui.notifications.error(`${MACRONAME} received invalid parameters, please, politely ask Joe to fix this`);
-    jez.log(`Bad stuff received by ${MACRONAME}`,"ATTACK_ITEM", ATTACK_ITEM);
-    return;
-}
-jez.log("ATTACK_ITEM",ATTACK_ITEM);
-
 const lastArg = args[args.length - 1];
 let msg = "";
 let aActor;         // Acting actor, creature that invoked the macro
@@ -28,7 +18,7 @@ if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aAc
 if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
 
-if (args[0] === "off") await doOff();         // DAE removal
+//if (args[0] === "off") await doOff();         // DAE removal
 if (args[0] === "on") await doOn();           // DAE Application
 
 jez.log("---------------------------------------------------------------------------",
@@ -56,7 +46,20 @@ async function doOff() {
 async function doOn() {
     const FUNCNAME = "doOn()";
     jez.log("--------------On---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    jez.log("Nothing to do");
+    jez.log(`Active Token, ${aToken.name}`, aToken)
+    const DAMAGE_DICE = args[1]
+    const SAVE_DC     = args[2]
+    const SAVE_TYPE   = "dex"
+    const FLAVOR      = "flavor text"
+    const DAMAGE_TYPE = "fire"
+    let save = (await aActor.rollAbilitySave(SAVE_TYPE, { flavor: FLAVOR, chatMessage: true, 
+        fastforward: true }));
+    jez.log("save", save)
+    let damageRoll = new Roll(`${DAMAGE_DICE}`).evaluate({async:false});
+    jez.log("damageRoll",damageRoll)
+    await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total, DAMAGE_TYPE, 
+        [aToken], damageRoll, 
+        {flavor:`Flavor ${DAMAGE_TYPE}`, itemCardId: "new", itemData: aItem, useOther: false });
     jez.log("--------------On---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }

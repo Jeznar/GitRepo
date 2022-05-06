@@ -23,6 +23,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Acid Splash](Cantrips#acid-splash)
 * [Agonizing Blast](Cantrips#agonizing-blast)
 * [Chill Touch](Cantrips#chill-touch)
+* [Create Bonfire](Cantrips#create-bonfire)
 * [Druid Craft](Cantrips#druid-craft)
 * [Decaying Touch](Cantrips#decaying-touch)
 * [Eldritch Blast](Cantrips#eldritch-blast)

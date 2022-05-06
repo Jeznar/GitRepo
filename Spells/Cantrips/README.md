@@ -6,6 +6,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Acid Splash](#acid-splash)
 * [Agonizing Blast](#agonizing-blast)
 * [Chill Touch](#chill-touch)
+* [Create Bonfire](#create-bonfire)
 * [Decaying Touch](#decaying-touch)
 * [Druid Craft](#druid-craft)
 * [Eldritch Blast](#eldritch-blast)
@@ -50,6 +51,21 @@ This spell is available through [Advanced Spell Effects Module](https://github.c
 ### Chill Touch
 
 Imported older implementation, appears compatible with FoundryVTT 9.x.
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Create Bonfire
+
+This cantrip required quite a complex implementation.  Some highlights:
+
+* Summon a actor (%Bonfire%) to the field,
+* Modify a preexisting effect's aura to inflict cantrip scaling damage,
+* Use a helper macro (Bonfire_Helper) to actually inflict the damage,
+* Inflict damage (mostly) at the right times,
+* Modify concentration effect to enable...
+* Remove the summoned actor on a concentration break,
 
 [*Back to Cantrips List*](#cantrips)
 
