@@ -27,6 +27,7 @@ The functions currently included in this module are:
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
+* **[jez.getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
 * **[jez.getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[jez.getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
 * **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
@@ -189,6 +190,7 @@ amount of error checking.
 #### Functions
 - jez.getCastMod(subject) -- Returns the subject's casting stat modifier
 - jez.getCastStat(subject) -- Returns the subject's casting stat string (e.g. "int")
+- jez.getCharLevel(subject) -- Returns the subject's character level (useful for Cantrip scaling)
 - jez.getStatMod(subject,stat) -- Returns the subject's modifier for passed stat string
 - jez.getSpellDC(subject) -- Returns the subject's spell save DC
 - jez.getProfMod(subject) -- Returns the subject's proficiency modifier

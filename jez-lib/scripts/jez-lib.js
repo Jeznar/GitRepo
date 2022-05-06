@@ -742,6 +742,43 @@ class jez {
         return (actor5e.data.data.attributes.prof)
     }
     /***************************************************************************************************
+     * Obtain and return the character level of the passed token, actor or token.id
+     ***************************************************************************************************/
+    static getCharLevel(subject) {
+        //----------------------------------------------------------------------------------------------
+        // Convert the passed parameter to Actor5e
+        //
+        let actor5e = null
+        if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
+            if (subject.constructor.name === "Token5e") actor5e = subject.actor
+            else if (subject.constructor.name === "Actor5e") actor5e = subject
+            else {
+                let msg = `Object passed to jez.getCharacterLevel(subject) is type '${typeof (subject)}' 
+            must be a Token5e or Actor5e`
+                ui.notifications.error(msg)
+                console.log(msg)
+                return (false)
+            }
+        } else if ((typeof (subject) === "string") && (subject.length === 16))
+            actor5e = jez.getTokenById(subject).actor
+        else {
+            let msg = `Parameter passed to jez.getCharacterLevel(subject) is not a Token5e, Actor5e, or 
+        Token.id: ${subject}`
+            ui.notifications.error(msg)
+            console.log(msg)
+            return (false)
+        }
+        //----------------------------------------------------------------------------------------------
+        // Find the Actor5e's character level.
+        //
+        let charLevel = 0
+        // PC's can have multiple classes, add them all up
+        for (const CLASS in actor5e.data.data.classes) charLevel += actor5e.data.data.classes[CLASS].levels
+        // NPC's don't have classes, use CR instead
+        if (!charLevel) charLevel = actor5e.data.data.details.cr
+        return (charLevel)
+    }
+    /***************************************************************************************************
      * Define static constants for use by other functions.  They are accessed like..
      * 
      * console.log(jez.ADD + jez.OVERRIDE) // 7
