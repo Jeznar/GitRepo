@@ -369,4 +369,17 @@ I have updated my default note format to make this a non-issue for my games.
 
 ![Automatic_Journal_Numbers_Problem1c.png](Attachments/Automatic_Journal_Numbers_Problem1c.png)
 
+## DnD5e Helpers / Long Rest Hit Die Healing for D&D5e
+
+On load, I get a pop up warning and a console message telling me the following:
+
+~~~javascript
+libWrapper-notifications.js:90 [W] libWrapper: Potential conflict detected between module DnD5e Helpers and module Long Rest Hit Die Healing for D&D5e.
+Detected non-libWrapper wrapping of 'CONFIG.Actor.documentClass.prototype.longRest' by module dnd5e-helpers. This will potentially lead to conflicts.
+~~~
+
+As I read that, the module **libWrapper**, is trying to warn me of a potential conflict between **DnD5e Helpers** and **Long Rest Hit Die Healing for D&D5e**.  I don't actually see a negative impact in my game from this, but I may just not have figured out where it is.  
+
+Since libwrapper seems to be pointing to **DnD5e Helpers**, I am reporting it as an issue for that module. 
+
 
