@@ -93,6 +93,9 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
     //--------------------------------------------------------------------------------------
     // 
     //
+    msg = `Any creature in the bonfire's space when it appears must succeed on a ${SAVE_DC}DC 
+    DEX save or take ${damageDice} fire damage. A creature must also make a save when 
+    it moves into the bonfire for the first time on a turn or ends its turn there.`
     postResults(msg);
     jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
@@ -118,7 +121,7 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
  ***************************************************************************************************/
  function postResults(msg) {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.addMessage(chatMsg, {color:jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    jez.addMessage(chatMsg, {color:"FireBrick", fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
  * Spawn the Bonfire into existance returning the UUID or null on failure

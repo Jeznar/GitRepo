@@ -255,3 +255,118 @@ Should be more like this:
 
 Notice the tiny alpha value now used to prevent blowing out the scene. 
 
+# Apparent Module Issues
+
+## Compendium Folders
+
+When I have Compendium Folders active and I close certain items' sheet that was imported from a compendium folder (e.g. Dagger, JSON of that item, disguised as a .txt file, attached) a big fat error message pops in the log.
+
+[fvtt-Item-dagger.json.txt](Attachments/fvtt-Item-dagger.json.txt)
+
+~~~javascript
+Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'folders')
+[Detected 2 packages: compendium-folders, system:dnd5e]
+    at Function.importFolderData (fic-folders.js:1509)
+    at fic-folders.js:460
+    at Function._call (foundry.js:294)
+    at Function.callAll (foundry.js:253)
+    at TokenDocument5e._onUpdateTokenActor (foundry.js:19244)
+    at TokenDocument5e._onUpdate (foundry.js:19140)
+    at ClientDatabaseBackend.callback (foundry.js:10300)
+    at foundry.js:10283
+    at Array.map (<anonymous>)
+    at ClientDatabaseBackend._handleUpdateEmbeddedDocuments (foundry.js:10283)
+    at ClientDatabaseBackend._updateEmbeddedDocuments (foundry.js:10163)
+    at async Function.updateDocuments (document.mjs:373)
+    at async TokenDocument5e.update (document.mjs:456)
+    at async TokenDocument5e.updateActorEmbeddedDocuments (foundry.js:18996)
+    at async Function.updateDocuments (document.mjs:373)
+    at async Item5e.update (document.mjs:456)
+    at async ItemSheet5e._onSubmit (foundry.js:3853)
+    at async ItemSheet5e._onSubmit (sheet.js:543)
+    at async ItemSheet5e.submit (foundry.js:4136)
+    at async ItemSheet5e.close (foundry.js:4108)
+    at async ItemSheet5e.close (foundry.js:4220)
+~~~
+
+Sometimes, when I make additions to the dagger's description, both the above error and the following pop into the log:
+
+~~~javascript
+contexts.ts:164 Uncaught TypeError: Cannot read properties of undefined (reading 'top')
+[Detected 1 package: quick-insert]
+    at new TinyMCEContext (contexts.ts:164)
+    at _x.<anonymous> (tinyMCEPlugin.ts:9)
+    at rx.fire (tinymce.min.js:9)
+    at _x.fire (tinymce.min.js:9)
+    at ax (tinymce.min.js:9)
+    at Object.e (tinymce.min.js:9)
+    at ui.executeHandlers (tinymce.min.js:9)
+    at HTMLBodyElement.o (tinymce.min.js:9)
+~~~
+
+Changes made appear to be entered correctly.  I've not seen any other impact to the game from this, other than polluting the log with error messages.  
+
+### Isolated Testing
+
+When I turn off all modules, except Compendium Folders, a warning appears about lib-wrapper being missing and the troublesome items generate a smaller, but similar error message.
+
+Activating lib-wrapper generates, what appears to be the same error message as when all modules were active for my trouble making Dagger:
+
+~~~javascript
+Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'folders')
+[Detected 2 packages: compendium-folders, system:dnd5e]
+    at Function.importFolderData (fic-folders.js:1509)
+    at fic-folders.js:460
+    at Function._call (foundry.js:294)
+    at Function.callAll (foundry.js:253)
+    at TokenDocument5e._onUpdateTokenActor (foundry.js:19244)
+    at TokenDocument5e._onUpdate (foundry.js:19140)
+    at ClientDatabaseBackend.callback (foundry.js:10300)
+    at foundry.js:10283
+    at Array.map (<anonymous>)
+    at ClientDatabaseBackend._handleUpdateEmbeddedDocuments (foundry.js:10283)
+    at ClientDatabaseBackend._updateEmbeddedDocuments (foundry.js:10163)
+    at async Function.updateDocuments (document.mjs:373)
+    at async TokenDocument5e.update (document.mjs:456)
+    at async TokenDocument5e.updateActorEmbeddedDocuments (foundry.js:18996)
+    at async Function.updateDocuments (document.mjs:373)
+    at async Item5e.update (document.mjs:456)
+    at async ItemSheet5e._onSubmit (foundry.js:3853)
+    at async ItemSheet5e._onSubmit (sheet.js:543)
+    at async ItemSheet5e.submit (foundry.js:4136)
+    at async ItemSheet5e.close (foundry.js:4108)
+    at async ItemSheet5e.close (foundry.js:4220)
+~~~
+
+### Uninformed Speculation
+
+Perhaps the problem is something that is *polluting* the data structure of existing items, perhaps those that were pulled from a compendium in (or not in a folder).  The problem appears to have no impact other than tossing an error message, but that is worrisome and justifies my disabling the module (sadly, as I like what it does).
+
+## Automatic Journal Numbers
+
+Sometime during my upgrade to Foundry 9.256 from 8.9, the **Automatic Journal Numbers** module stopped popping customized symbols for notes onto my scenes.  I noticed the following warning on the console as I drop notes onto the map:
+
+~~~javascript
+jquery.min.js:2 The specified value "" does not conform to the required format.  The format is "#rrggbb" where rr, gg, bb are two-digit hexadecimal numbers.
+index.js:105 null
+~~~
+
+Upon investigation, I noticed that my typical **Background Colors** were set to ```#ffff00``` as shown in the screen shot below. 
+
+![Automatic_Journal_Numbers_Problem1a.png](Attachments/Automatic_Journal_Numbers_Problem1a.png)
+
+This appears to drive the warning I observed and results in a map not appearing with the default *book* icon instead of the customized image. 
+
+I discovered this could be corrected by adding another two digit hex number as shown for the foreground color.  In earlier versions, these final two characters seemingly did nothing and were, from observation, optional.  Now they appear to control opacity and are required. 
+
+Also, curiously, the warning that is generated specifies the format as a 6 place hexadecimal value.  This is wrong, and likely the bug that should be fixed.
+
+Changing to 8 characters fixed my problem:
+
+![Automatic_Journal_Numbers_Problem1b.png](Attachments/Automatic_Journal_Numbers_Problem1b.png)
+
+I have updated my default note format to make this a non-issue for my games.
+
+![Automatic_Journal_Numbers_Problem1c.png](Attachments/Automatic_Journal_Numbers_Problem1c.png)
+
+
