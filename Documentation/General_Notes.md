@@ -10,14 +10,14 @@ Some of the things and commands that I have needed to learn and want to be able 
 
 Command line grep, how I hate to love you...
 
-To search my local repository, the following grep comamnd, run from the root of the repository file tree is useful:
+To search my local repository, the following grep command, run from the root of the repository file tree is useful:
 
 > grep -ri --include=\\*.js cool-thing .
 
 Elements of that:
 
 1. **-r** causes grep to descend the tree
-2. **-i** makes the serach case insensitive
+2. **-i** makes the search case insensitive
 1. **-include** limits the files that will be searched (to just .js in this case)
 1. **'COOL-THING'** string that will be searched for
 1. **.** is the location to begin the search
@@ -96,6 +96,30 @@ The three letter abbreviations are:
 * slt - Sleight of Hand (Dex)
 * ste - Stealth (Dex)
 * sur - Survival (Wis)
+
+|Abr.|Ability (stat)|Roll Text (for Foundry)|
+|---|---|---|
+|acr|Acrobatics (Dex)|[[/r 1d20 + @skills.acr.total]]{Acrobatics Check}|
+|ani|Animal Handling (Wis)|[[/r 1d20 + @skills.ani.total]]{Animal Handling Check}|
+|arc|Arcana (Int)|[[/r 1d20 + @skills.arc.total]]{Arcana Check}|
+|ath|Athletics (Str)|[[/r 1d20 + @skills.ath.total]]{Athletics Check}|
+|dec|Deception (Cha)|[[/r 1d20 + @skills.dec.total]]{Deception Check}|
+|his|History (Int)|[[/r 1d20 + @skills.his.total]]{History Check}|
+|ins|Insight (Wis)|[[/r 1d20 + @skills.ins.total]]{Insight Check}|
+|inv|Investigation (Int)|[[/r 1d20 + @skills.inv.total]]{Investigation Check}|
+|itm|Intimidation (Cha)|[[/r 1d20 + @skills.itm.total]]{Intimidation Check}|
+|med|Medicine (Wis)|[[/r 1d20 + @skills.med.total]]{Medicine Check}|
+|nat|Nature (Int)|[[/r 1d20 + @skills.nat.total]]{Nature Check}|
+|per|Perception (Wis)|[[/r 1d20 + @skills.per.total]]{Perception Check}|
+|prc|Persuasion (Cha)|[[/r 1d20 + @skills.prc.total]]{Persuasion Check}|
+|prf|Performance (Cha)|[[/r 1d20 + @skills.prf.total]]{Performance Check}|
+|rel|Religion (Int)|[[/r 1d20 + @skills.rel.total]]{Religion Check}|
+|slt|Sleight of Hand (Dex)|[[/r 1d20 + @skills.slt.total]]{Sleight of Hand Check}|
+|ste|Stealth (Dex)|[[/r 1d20 + @skills.ste.total]]{Stealth Check}|
+|sur|Survival (Wis)|[[/r 1d20 + @skills.sur.total]]{Survival Check}|
+
+
+
 
 ### Saving Throws
 
