@@ -1,0 +1,203 @@
+{
+  "name": "Etheral Jaunt",
+  "type": "feat",
+  "img": "Icons_JGB/Effects/invisible.jpg",
+  "data": {
+    "description": {
+      "value": "<p>As an Action, Arabelle can enter the @JournalEntry[L6hDTgXyGS80zbsy]{Border Ethereal} Plane for one minute or until she ends the effect as a Bonus Action.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "Is now invisible on the material plane...",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [
+    {
+      "_id": "UDMDVmYriyDxrqu1",
+      "changes": [
+        {
+          "key": "StatusEffect",
+          "mode": 0,
+          "value": "combat-utility-belt.newcondition1",
+          "priority": "20"
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 2,
+          "value": "12",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "turns": 10
+      },
+      "icon": "Icons_JGB/Effects/invisible.jpg",
+      "label": "Border Ethereal",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "durationExpression": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "StatusEffect",
+        "data.abilities.cha.min"
+      ]
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.EYwebSF0kIr2JIHM"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Etheral Jaunt",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Etheral_Jaunt.0.2.js\";\n/*****************************************************************************************\n * Add text to the Itemcard for Ether Jaunt.\n * \n * 12/18/21 0.1 JGB Creation\n * 05/11/22 0.2 JGB Update for 9.x\n *  ******************************************************************************************/\nconst LAST_ARG = args[args.length - 1];\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\n\n//let aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\n//let aItem;          // Active Item information, item invoking this macro\n//if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\n//if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\njez.log(\"---------------------------------------------------------------------------\");\njez.log(`Starting: ${MACRONAME}`, \"aToken.name\", aToken.name)\nfor (let i = 0; i < args.length; i++) jez.log(`    args[${i}]`, args[i]);\nif (args[0]?.tag === \"OnUse\") doOnUse();   \t\t\t// Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff();                   // DAE removal\n//---------------------------------------------------------------------------------------\n// Finish up this bit o'code\n//\njez.log(`Finishing: ${MACRONAME}`);\njez.log(\"---------------------------------------------------------------------------\");\n/***************************************************************************************\n*    END_OF_MAIN_MACRO_BODY\n*                                END_OF_MAIN_MACRO_BODY\n*                                                             END_OF_MAIN_MACRO_BODY\n***************************************************************************************\n* Post the results to chat card\n***************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/****************************************************************************************\n * Execute code for a ItemMacro onUse\n ***************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    jez.log(\"---------------------------------------------------------------------------\");\n    jez.log(`Starting ${MACRONAME} ${FUNCNAME}`);\n    //---------------------------------------------------------------------------------------------\n    // Run the visual effects\n    //\n    runVFX(aToken)\n    //---------------------------------------------------------------------------------------------\n    // Hide the plane shifting token\n    //\n    aToken.document.update({ \"hidden\": true });\n    await jez.wait(1000)\n    aToken.refresh()\n    //---------------------------------------------------------------------------------------------\n    // Post Completion Message\n    //\n    msg = `<b>${aToken.name}</b> fades to invisibility and enters the \n    @JournalEntry[L6hDTgXyGS80zbsy]{Border Ethereal} plane.`\n    postResults(msg);\n    jez.log(`Finished ${MACRONAME} ${FUNCNAME}`);\n    jez.log(\"---------------------------------------------------------------------------\");\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n * \n * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //---------------------------------------------------------------------------------------------\n    // Run the visual effects\n    runVFX(aToken)\n    await jez.wait(1000)\n    await aToken.document.update({ \"hidden\": false });\n    await jez.wait(1000)\n    aToken.refresh()\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the VFX code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function runVFX(token1) {\n    jez.log(\"Launch VFX\")\n    jez.log(\"args[0]\", args[0])\n    const FUNCNAME = \"runVFX(token1)\";\n    const VFX_NAME = `${MACRO}`\n    const VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Portals/Portal_Vortex_Orange_H_400x400.webm\"\n    const VFX_OPACITY = 1.0;\n    const VFX_SCALE = 0.6;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    new Sequence()\n        .effect()\n        .file(VFX_LOOP)\n        .atLocation(token1) \n        .scale(VFX_SCALE)\n        .scaleIn(0.25, 1000)    // Expand from 0.25 to 1 size over 1 second\n        .rotateIn(180, 1000)    // 1/2 Rotation over 1 second \n        .scaleOut(0.25, 1000)   // Contract from 1 to 0.25 size over 1 second\n        .rotateOut(180, 1000)   // 1/2 Counter Rotation over 1 second\n        .opacity(VFX_OPACITY)\n        .duration(3000)\n        .name(VFX_NAME)         // Give the effect a uniqueish name\n        .fadeIn(10)             // Fade in for specified time in milliseconds\n        .fadeOut(1000)          // Fade out for specified time in milliseconds\n        .extraEndDuration(1200) // Time padding on exit to connect to Outro effect\n    .play();\n    await jez.wait(100)         // Don't delete till VFX established\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "gm-notes": {
+      "notes": "<p>&nbsp;</p>\n<div class=\"page\" title=\"Page 5\">\n<div class=\"section\" style=\"background-color: rgb(100.000000%, 100.000000%, 100.000000%);\">\n<div class=\"layoutArea\">\n<div class=\"column\">\n<p><span style=\"font-size: 11.000000pt; font-family: 'HelveticaNeue'; font-weight: bold;\">Rank 2 </span></p>\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Practice entering the Ethereal has explosively developed Arabelle's Zarovan nature. </span></p>\n<ul style=\"list-style-type: disc;\">\n<li style=\"font-size: 10.000000pt; font-family: 'Helvetica'; color: rgb(10.196000%, 10.196000%, 10.588000%);\">\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Arabelle no longer has a limit on how long she can stay in the Ethereal Plane, but must now use an Action to return to the Material Plane </span></p>\n</li>\n<li style=\"font-size: 10.000000pt; font-family: 'Helvetica'; color: rgb(10.196000%, 10.196000%, 10.588000%);\">\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Arabelle has the ability to take up to 5 willing creatures within 30' of her with her when she enters or exits the Ethereal Plane</span></p>\n</li>\n</ul>\n</div>\n</div>\n</div>\n</div>\n<div class=\"page\" title=\"Page 6\">\n<div class=\"section\" style=\"background-color: rgb(100.000000%, 100.000000%, 100.000000%);\">\n<div class=\"layoutArea\">\n<div class=\"column\">\n<p><span style=\"font-family: HelveticaNeue; font-size: 11pt; font-weight: bold;\">Rank 3</span></p>\n</div>\n</div>\n<div class=\"layoutArea\">\n<div class=\"column\">\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Arabelle's Zarovan ability to enter the Ethereal has fully awakened </span></p>\n<ul style=\"list-style-type: disc;\">\n<li style=\"font-size: 10.000000pt; font-family: 'Helvetica'; color: rgb(10.196000%, 10.196000%, 10.588000%);\">\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Arabelle is no longer limited on how many creatures she can take with her, as long as they are willing and within 30' of her. </span></p>\n</li>\n<li style=\"font-size: 10.000000pt; font-family: 'Helvetica'; color: rgb(10.196000%, 10.196000%, 10.588000%);\">\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Arabelle is now able to take inanimate, uncarried objects within 30' with her when she shifts as long as they are not permanently affixed to the ground (For example, she can take wagons, tents, etc with her...but not a bookcase that was bolted to the floor of a building, or the building itself) </span></p>\n</li>\n</ul>\n</div>\n</div>\n</div>\n</div>\n<p>&nbsp;</p>\n<p>&nbsp;</p>"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
