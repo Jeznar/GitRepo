@@ -369,6 +369,17 @@ Applies sleep effect to targets in area considering various immunities and worki
 
 The macro is derived from several found online.  More in the comments of the javascript file.
 
+UPDATE: 5/13/22 - Now reads the icon name looking for a color string that defines the VFX appearance.  Defined mappings are:
+
+* royal:dark\_orangepurple, 
+* eerie:dark\_purple, 
+* sky:regular\_blue, 
+* blue:regular\_blue, 
+* jade:regular\_green, 
+* magenta:regular\_pink, 
+* fire:regular\_yellow
+
+
 ![Sleep.gif](Sleep/Sleep.gif)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)

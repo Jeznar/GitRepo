@@ -1,4 +1,4 @@
-const MACRONAME = "Sleep.1.5"
+const MACRONAME = "Sleep.1.6.js"
 //############################################################################################################
 // READ FIRST
 // based on @ccjmk macro for sleep. Gets targets and ignores those who are immune to sleep.
@@ -13,11 +13,15 @@ const MACRONAME = "Sleep.1.5"
  * 11/03/21 1.3 JGB Minor reformatting and debug level setting
  * 11/04/21 1.4 JGB Workaround for Mini-QoL feature that breaks "isDamaged" effect when on zero damage attack. 
  *                  Also, avoid double application of prone contion.      
- * 02/18/22 1.5 JGB Update to use jez.lib functions and handle VFX             
+ * 02/18/22 1.5 JGB Update to use jez.lib functions and handle VFX          
+ * 05/13/22 1.6 JGB Update to read color string from icon to set VFX color   
  *************************************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+let aItem;          // Active Item information, item invoking this macro
+if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
+
 let immuneRaces = ["undead", "construct", "elf"];    // Set strings that define immune races
 const condition = "Unconscious";                     // Condition to be slept representing sleep 
 let gameRound = game.combat ? game.combat.round : 0; // Added missing initilization -JGB
@@ -229,12 +233,28 @@ async function runVFX() {
     jez.log("args[0]", args[0])
     const FUNCNAME = "doOnUse()";
     const VFX_NAME = `${MACRO}`
-    const VFX_LOOP = "modules/jb2a_patreon/Library/1st_Level/Sleep/SleepMarker01_01_*_400x400.webm"
     const VFX_OPACITY = 1.0;
     const VFX_SCALE = 2.7;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const templateID = args[0].templateId
     jez.log('templateID', templateID)
+    //----------------------------------------------------------------------------------------------
+    // Pick a colour based on a colour string found in the icon's name.
+    // Color Mappings (Icon String : VFX Color):
+    // royal:dark_orangepurple, eerie:dark_purple, sky:blue, blue:blue, jade:green, magenta:pink, fire:yellow
+    //
+    let color = "yellow"
+    const IMAGE = aItem.img.toLowerCase()
+    if (IMAGE.includes("royal")) color = "Dark_OrangePurple"
+    else if (IMAGE.includes("eerie")) color = "Dark_Purple"
+    else if (IMAGE.includes("sky")) color = "Regular_Blue"
+    else if (IMAGE.includes("blue")) color = "Regular_Blue"
+    else if (IMAGE.includes("jade")) color = "Regular_Green"
+    else if (IMAGE.includes("magenta")) color = "Regular_Pink"
+    else if (IMAGE.includes("fire")) color = "Regular_Yellow"
+    //jez.log(`Color ${color}`)
+    const VFX_LOOP = `modules/jb2a_patreon/Library/1st_Level/Sleep/Cloud01_01_${color}_400x400.webm`
+    jez.log(`VFX_File: ${VFX_LOOP}`)
     new Sequence()
     .effect()
         .file(VFX_LOOP)
