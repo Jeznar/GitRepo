@@ -1,0 +1,190 @@
+{
+  "name": "Dancing Lights",
+  "type": "spell",
+  "img": "modules/jb2a_patreon/Library/Cantrip/Dancing_Lights/DancingLights_01_Yellow_Thumb.webp",
+  "data": {
+    "description": {
+      "value": "<p>You create up to four torch-sized lights within range, making them appear as torches, lanterns, or glowing orbs that hover in the air for the duration. You can also combine the four lights into one glowing vaguely humanoid form of Medium size. Whichever form you choose, each light sheds dim light in a 10-foot radius.</p>\n<p>As a bonus action on your turn, you can move the lights up to 60 feet to a new spot within range. A light must be within 20 feet of another light created by this spell, and a light winks out if it exceeds the spell's range.</p>\n<hr />\n<p><strong>FoundryVTT</strong>:  You will have the opportunity to place the 4 dancing light tokens.  During the cast.</p>",
+      "chat": "<p>You create up to four torch-sized lights within range, making them appear as torches, lanterns, or glowing orbs that hover in the air for the duration. You can also combine the four lights into one glowing vaguely humanoid form of Medium size. Whichever form you choose, each light sheds dim light in a 10-foot radius.</p>\n<p>As a bonus action on your turn, you can move the lights up to 60 feet to a new spot within range. A light must be within 20 feet of another light created by this spell, and a light winks out if it exceeds the spell's range.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 230",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "evo",
+    "components": {
+      "value": "a bit of phosphorus or wychwood, or a glowworm",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "a bit of phosphorus or wychwood, or a glowworm",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 136489,
+      "definitionId": 2057,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 230,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Utility"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_68b6mer7s0n"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.6wBhWyaAYH4fsytP"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Dancing Lights",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Dancing_Lights.0.1.js\"\n/*****************************************************************************************\n * Summon 4 dancing lights with WarpGate\n * \n * 05/13/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst SUMMON_PREFIX = \"%Dancing_Light_\"\nconst SUMMON_POSTFIX = \"%\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff();             // DAE removal\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let lightIdArray = []\n    for (let i = 1; i <= 4; i++) {\n        const COLOR = pickColor();\n        jez.log(\"Color\", COLOR)\n        const SIDEBAR_NAME = `${SUMMON_PREFIX}${COLOR}${SUMMON_POSTFIX}`\n        lightIdArray.push(await summonCritter(SIDEBAR_NAME, i, COLOR))\n    }\n    jez.log(\"LightID\", lightIdArray)\n    //--------------------------------------------------------------------------------------\n    // Modify the concentrating effect to delete the Bonfire on termination\n    //\n    modConcentratingEffect(aToken, lightIdArray)\n    //--------------------------------------------------------------------------------------\n    // Post completion message\n    //\n    let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n    msg = `<b>${aToken.name}</b> summons 4 lights...As a bonus action on your turn, you can \n    move the lights up to 60 feet to a new spot within range. A light must be within 20 feet \n    of another light created by this spell and remain in range.`\n    await jez.addMessage(chatMessage, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" })\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Summon the actor and rename with a numeric suffix\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\nasync function summonCritter(summons, number, color) {\n  jez.log(`summonCritter(${summons}, ${number})`)\n  let name = `${aToken.name}'s Dancing Light ${number}`\n  let updates = { \n      actor: {name: name},    \n      token: {name: name},\n  }\n  const OPTIONS = { controllingActor: aActor };\n  const CALLBACKS = {\n    pre: async (template) => {\n      preEffects(template, color);\n      await warpgate.wait(500);\n    },\n    post: async (template, token) => {\n      postEffects(template, color);\n      await warpgate.wait(500);\n      //greetings(template, token);\n    }\n  };\n  return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))\n}\n/***************************************************************************************************\n * Randomly pick a color for the next dancing light\n ***************************************************************************************************/\n function pickColor() {\n    let ColorArray = [\"BlueTeal\", \"BlueYellow\", \"Green\", \"Pink\", \"Purple\", \"Red\", \"Yellow\"]\n    // Returns a random integer from 0 to 6:\n    let INDEX = Math.floor(Math.random() * 7);\n    return(ColorArray[INDEX])\n  }\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function preEffects(template, color) {\n  const PREFIX =\"modules/jb2a_patreon/Library/Generic/Explosion/Explosion_\"\n  const POSTFIX = \"_400x400.webm\"\n  let colorString = \"03_Dark_BlueWhite\"\n  if (color === \"BlueYellow\") colorString = \"03_Regular_BlueYellow\"\n  else if (color === \"Green\") colorString = \"01_Green\"\n  else if (color === \"Pink\") colorString = \"03_Regular_Pink\"\n  else if (color === \"Purple\") colorString = \"04_Dark_Purple\"\n  else if (color === \"Red\") colorString = \"03_Regular_Red\"\n  else if (color === \"Yellow\") colorString = \"01_Yellow\"\n  const VFX_FILE = `${PREFIX}${colorString}${POSTFIX}`\n  jez.log(\"VFX File\",VFX_FILE)\n  new Sequence()\n    .effect()\n    .file(VFX_FILE)\n    .atLocation(template)\n    .center()\n    .scale(0.7)\n    .play()\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function postEffects(template, color) {\n  const PREFIX =\"jb2a.smoke.puff.centered.\"\n  const POSTFIX = `.${Math.floor(Math.random() * 3)}`\n  let colorString = \"grey\"\n  jez.log(\"color\", color)\n  if (color === \"BlueYellow\") colorString = \"blue\"\n  else if (color === \"Green\") colorString = \"dark_green\"\n  else if (color === \"Pink\") colorString = \"grey\"\n  else if (color === \"Purple\") colorString = \"blue\"\n  else if (color === \"Red\") colorString = \"dark_black\"\n  else if (color === \"Yellow\") colorString = \"grey\"\n  const VFX_FILE = `${PREFIX}${colorString}${POSTFIX}`\n  jez.log(\"VFX File\",VFX_FILE)\n  new Sequence()\n    .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .scale(0.7)\n    .play()\n}\n/***************************************************************************************************\n * Modify existing concentration effect to call ItemMacro with ID's of lights to despawn on removal\n ***************************************************************************************************/\n async function modConcentratingEffect(aToken, idArray) {\n    //----------------------------------------------------------------------------------------------\n    // Seach the casting token to find the just added concentration effect\n    //\n    //await jez.wait(200)\n    let effect = await aToken.actor.effects.find(i => i.data.label === \"Concentrating\");\n    //----------------------------------------------------------------------------------------------\n    // Define the desired modification to concentartion effect. In this case, a macro that will be\n    // given arguments: idArray[0]...idArray[3]\n    //    \n    effect.data.changes.push({key: `macro.itemMacro`, mode: jez.CUSTOM, \n        value:`${idArray[0]} ${idArray[1]} ${idArray[2]} ${idArray[3]}`, priority: 20})\n    jez.log(`effect.data.changes`, effect.data.changes)\n    //----------------------------------------------------------------------------------------------\n    // Apply the modification to existing effect\n    //\n    const result = await effect.update({ 'changes': effect.data.changes });\n    if (result) jez.log(`Active Effect \"Concentrating\" updated!`, result);\n}\n/***************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************/\n async function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(\"--------------Off---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    //--------------------------------------------------------------------------------------\n    // Delete the existing dancing lights\n    //\n    let sceneId = game.scenes.viewed.id\n    for (let i = 1; i <= 4; i++) {\n        jez.log(`Deleting light #${i}`, args[i])\n        await jez.wait(500)\n        warpgate.dismiss(args[i], sceneId)\n    }\n    jez.log(\"--------------Off---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

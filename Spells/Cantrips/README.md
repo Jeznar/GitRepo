@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Agonizing Blast](#agonizing-blast)
 * [Chill Touch](#chill-touch)
 * [Create Bonfire](#create-bonfire)
+* [Dancing Lights](#dancing-lights)
 * [Decaying Touch](#decaying-touch)
 * [Druid Craft](#druid-craft)
 * [Eldritch Blast](#eldritch-blast)
@@ -71,6 +72,15 @@ This cantrip required quite a complex implementation.  Some highlights:
 
 ---
 
+### Dancing Lights
+
+This spell is implemented with a macro that leans on WarpGate for function.  It always summons four orbs, if less are desired, some can be manually deleted.  Some colored VFX are used.  The concentration effect is modified during the cast to delete the orbs when concentration drops.
+
+![Dancing_Lights.gif](Dancing_Lights/Dancing_Lights.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
 ### Decaying Touch
 
 Imported older implementation and updated for FoundryVTT 9.x.

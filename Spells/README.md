@@ -24,6 +24,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Agonizing Blast](Cantrips#agonizing-blast)
 * [Chill Touch](Cantrips#chill-touch)
 * [Create Bonfire](Cantrips#create-bonfire)
+* [Dancing Lights](Cantrips#dancing-lights)
 * [Druid Craft](Cantrips#druid-craft)
 * [Decaying Touch](Cantrips#decaying-touch)
 * [Eldritch Blast](Cantrips#eldritch-blast)
