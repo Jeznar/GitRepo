@@ -143,6 +143,8 @@ Early macro cleaned up a bit and added to the GitRepo.
 
 Pops a dialog that allows the target to attempt a save or accept the light effect.  If light is to be applied it is added into FoundryVTT's lighting system with an option to select a color for the light.
 
+UPDATE 5.13.22: Now keeps track of the token ID of previous target and deletes the effect when cast again.
+
 ![Light.gif](Light/Light.gif)
 
 [*Back to Cantrips List*](#cantrips)

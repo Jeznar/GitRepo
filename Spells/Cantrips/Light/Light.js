@@ -1,4 +1,4 @@
-const MACRONAME = "Light.0.3.js"
+const MACRONAME = "Light.0.4.js"
 /*****************************************************************************************
  * Implment the Light Cantrip on Friendly and Unfriendly targets.
  * 
@@ -14,26 +14,30 @@ const MACRONAME = "Light.0.3.js"
  * This macro assumes the effect is being cast on a token.  A choice to accept the effect 
  * or attempt a save is presented, save resolved (if requested) and efect added to token.
  * 
+ * 0.4 Store the token id of target as a DAE Flag.  Delete the effect from that token 
+ *     before adding the new effect.
+ * 
  * 01/06/22 0.1 Creation of Macro
  * 05/05/22 0.3 Migration to FoundryVTT 9.x
  * 05/05/22 0.3 Change createEmbeddedEntity to createEmbeddedDocuments for 9.x
+ * 05/13/22 0.4 Change to manage existing effect
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log("---------------------------------------------------------------------------",
     "Starting", `${MACRONAME}`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-const lastArg = args[args.length - 1];
+const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
 let aItem;          // Active Item information, item invoking this macro
-if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
-if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
+if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const SAVE_DC = aActor.data.data.attributes.spelldc;
 const SAVE_TYPE = "DEX"
 const GAME_RND = game.combat ? game.combat.round : 0;
+const EFFECT = `${aItem.name}-${aActor.id}`
 jez.log("------- Global Values Set -------",
     `Active Token (aToken) ${aToken?.name}`, aToken,
     `Active Actor (aActor) ${aActor?.name}`, aActor,
@@ -89,6 +93,26 @@ async function doOnUse() {
     jez.log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`,
         `First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken,
         `First Targeted Actor (tActor) ${tActor?.name}`, tActor);
+    //----------------------------------------------------------------------------------
+    // Fetch the Flag value and delete existing effect if any
+    //
+    let previousTokenId = await DAE.getFlag(aToken.actor, MACRO);
+    jez.log("previousTokenId from Flag", previousTokenId)
+    if (previousTokenId) {          // Found token ID of previous target
+        let previousToken = canvas.tokens.placeables.find(ef => ef.id === previousTokenId)
+        jez.log("previousToken from Scene",previousToken)
+        if (previousToken) {        // Found previous Token
+            let previousEffect = await previousToken.actor.effects.find(ef => ef.data.label === EFFECT)
+            jez.log("previousEffect from Token",previousEffect)
+            if (previousEffect) {   // Found previous Effect
+                await previousEffect.delete();
+            }
+        }
+    }
+    await DAE.unsetFlag(aToken.actor, MACRO);   // Clear the Flag
+    //----------------------------------------------------------------------------------
+    // Now for the main event
+    //
     DialogSaveOrAccept();
     jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
@@ -148,6 +172,10 @@ async function doOnUse() {
         colorCode = selection;
         jez.log(`The entity named <b>"${colorCode}"</b> was selected in the dialog`)
         addLightEffect(args[0].uuid, tActor, 60, colorCodes[colorCode])
+        //----------------------------------------------------------------------------------------------
+        // Set the DAE Flag so the effect can be deleted the next time this is cast
+        //
+        await DAE.setFlag(aToken.actor, MACRO, tToken.id);
     }
     //----------------------------------------------------------------------------------
     // Return true on success, false on failure
@@ -167,9 +195,8 @@ async function doOnUse() {
             jez.log(`save was made with a ${save}`);
             saved = true;
         } else jez.log(`save failed with a ${save}`);
-
         // addLightEffect(args[0].uuid, tActor, 60, colorCodes[selection])
-        jez.log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+        jez.log(`--------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
         return(saved);
     }
     //----------------------------------------------------------------------------------
@@ -221,29 +248,31 @@ function oneTarget() {
  ***************************************************************************************************/
 async function addLightEffect(uuid, actorD, rounds, color) {
     const FUNCNAME = "addLightEffect(uuid, actorD, rounds)";
-    jez.log("--------------${FUNCNAME}-----------", "Starting", `${MACRONAME} ${FUNCNAME}`,
+    jez.log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`,
         "uuid", uuid,
         "actorD", actorD,
         "rounds", rounds,
         "color", color);
     let seconds = rounds * 6;
     let effectData = {
-        label: aItem.name,
+        label: EFFECT,
         icon: aItem.img,
         origin: uuid,
         disabled: false,
         duration: { rounds: rounds, seconds: seconds, startRound: GAME_RND, startTime: game.time.worldTime },
         flags: { dae: { itemData: aItem } },
         changes: [
-            { key: "ATL.light.dim", mode: UPGRADE, value: 40, priority: 20 },
-            { key: "ATL.light.bright", mode: UPGRADE, value: 20, priority: 20 },
-            { key: "ATL.light.color", mode: OVERRIDE, value: color, priority: 30 },
-            { key: "ATL.light.alpha", mode: OVERRIDE, value: 0.07, priority: 20 },
+            { key: "ATL.light.dim",         mode: jez.UPGRADE,  value: 40,      priority: 20 },
+            { key: "ATL.light.bright",      mode: jez.UPGRADE,  value: 20,      priority: 20 },
+            { key: "ATL.light.color",       mode: jez.OVERRIDE, value: color,   priority: 30 },
+            { key: "ATL.light.alpha",       mode: jez.OVERRIDE, value: 0.07,    priority: 20 },
+            // As of 5.13.22 the following line has no effect, though it would be cool if it did.
+            { key: "ATL.light.animation",   mode: jez.OVERIDE,  value: "Energy Field",priority: 20 },
         ]
     };
     // await actorD.createEmbeddedEntity("ActiveEffect", effectData); // Depricated 
     await actorD.createEmbeddedDocuments("ActiveEffect", [effectData]);
-    jez.log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log(`--------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
 /****************************************************************************************
