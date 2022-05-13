@@ -1,10 +1,10 @@
 {
   "name": "Hold Person",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/shielding-eerie-2.jpg",
+  "img": "icons/magic/control/debuff-chains-ropes-purple.webp",
   "data": {
     "description": {
-      "value": "<p>Choose a humanoid that you can see within range. The target must succeed on a <strong>Wisdom saving throw or be @JournalEntry[AuUMNy1Ta8MErirO]{Paralyzed} </strong>for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.</p>\n<p><strong>FoundryVTT: </strong>Concentration effect must be removed manually when the <em>children</em> spell effects are ended.</p>",
+      "value": "<p>Choose a humanoid that you can see within range. The target must succeed on a <strong>Wisdom saving throw or be @JournalEntry[AuUMNy1Ta8MErirO]{Paralyzed} </strong>for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.</p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>Concentration effect must be removed manually when the&nbsp;<em>children</em> spell effects are ended.</p>",
       "chat": "<p>Choose a humanoid that you can see within range. The target must succeed on a Wisdom saving throw or be paralyzed for the duration. At the end of each of its turns, the target can make another Wisdom saving throw. On a success, the spell ends on the target.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 3rd level or higher, you can target one additional humanoid for each slot level above 2nd. The humanoids must be within 30 feet of each other when you target them.</p>",
       "unidentified": ""
     },
@@ -110,8 +110,11 @@
         "dae": {
           "stackable": "none",
           "macroRepeat": "none",
-          "specialDuration": [],
-          "transfer": false
+          "specialDuration": [
+            "zeroHP"
+          ],
+          "transfer": false,
+          "durationExpression": ""
         },
         "ActiveAuras": {
           "isAura": false,
@@ -123,20 +126,23 @@
           "height": false,
           "hidden": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "displayTemp": false
         },
         "dnd5e-helpers": {
-          "rest-effect": "Ignore"
+          "rest-effect": "Short Rest"
+        },
+        "core": {
+          "statusId": ""
         }
       },
-      "tint": null,
+      "tint": "",
       "selectedKey": [
         "macro.CUB",
         "flags.midi-qol.OverTime"
       ]
     }
   ],
-  "sort": 0,
   "flags": {
     "ddbimporter": {
       "id": 138145,
@@ -228,8 +234,19 @@
     "exportSource": {
       "world": "travels-in-barovia",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     }
   }
 }

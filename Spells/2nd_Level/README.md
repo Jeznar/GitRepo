@@ -185,6 +185,8 @@ The first of these effects causes affected token(s) to roll a wisdom saving thro
 
 The second effect places the CUB Paralyzed effect on the token.  This effect appears and can be managed by the *normal* CUB mechanisms.
 
+UPDATE 5/13/22: Added expiration condition so that the effect drops from afflicted tokens when they reach zero hp. This is desired for NPCs who are *dead* at that point.  Less so for PCs...
+
 ![Hold_Person/Hold_Person_DAE_Effects.png](Hold_Person/Hold_Person_DAE_Effects.png)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
