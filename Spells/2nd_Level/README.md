@@ -286,6 +286,8 @@ great effect against particularly strong and threating opponents.
 
 This implementation manages an effect marker, handles the per round save, and supplies a VFX.  It does not automate the damage reduction portion.  That will take quite a bit more effort and seems an unwise time investment at this point since the spell is rarely used.
 
+UPDATE 5/13/22: VFX is now color selected based on the icon color,  recognizing the following strings in the icon name: blue, yellow (blueyellow), green, teal (purpleteal), magenta (purpleteal)
+
 ![Ray_of_Enfeeblement/Ray_of_Enfeeblement.gif](Ray_of_Enfeeblement/Ray_of_Enfeeblement.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)

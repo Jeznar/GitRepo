@@ -1,6 +1,6 @@
 const MACRONAME = "Ray_of_Enfeeblement"
 /*****************************************************************************************
- * Basic Structure for a rather complete macro
+ * Implement Ray of Enfeeblement
  * 
  * 02/18/22 0.1 Creation of Macro
  *****************************************************************************************/
@@ -32,7 +32,6 @@ if (args[0] === "each") doEach();					    // DAE removal
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0] === "on") await doOn();                     // DAE Application
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-return;
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -41,18 +40,12 @@ return;
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
 function preCheck() {
-// COOL-THING: Make sure only one target was targeted.
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
         ui.notifications.warn(msg)
         jez.log(msg)
         return(false);
     }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        // ui.notifications.info(msg)
-        return(false);
-    }*/
     return (true)
 }
 /***************************************************************************************************
@@ -126,20 +119,19 @@ async function runVFX(token1, token2) {
     const VFX_SCALE = 1.0;
     const VFX_NAME = `${MACRO}`
     //----------------------------------------------------------------------------------------------
-    // Pick a random color for the effect
-    //
-    let color = ""
-    let style = Math.floor(Math.random() * 7); // Returns a random integer from 0 to 6:
-    switch (style) {
-        case 0: color = "Dark_Green"; break
-        case 1: color = "Dark_Purple"; break
-        case 2: color = "Dark_Red"; break
-        case 3: color = "Regular_Blue"; break
-        case 4: color = "Regular_Green"; break
-        case 5: color = "Regular_Red"; break
-        case 6: color = "Regular_Yellow"; break
-    }
-    jez.log(`Color ${style} ${color}`)
+    // Pick a color based on a color string found in the icon's name.
+    // Available VFX colors: blue, blueyellow, green, purpleteal
+    // Recognized  strings: blue, yellow (blueyellow), green, teal (purpleteal), magenta (purpleteal)
+    let color = "green"
+    const IMAGE = aItem.img.toLowerCase()
+    if (IMAGE.includes("yellow")) color = "blueyellow"
+    else if (IMAGE.includes("blue")) color = "blue"
+    else if (IMAGE.includes("green")) color = "green"
+    else if (IMAGE.includes("teal")) color = "purpleteal"
+    else if (IMAGE.includes("magenta")) color = "purpleteal"
+    else if (IMAGE.includes("orange")) color = "orange"
+    else if (IMAGE.includes("purple")) color = "purple"
+    //jez.log(`Color ${color}`)
     //----------------------------------------------------------------------------------------------
     // Pick distance category to be used.
     //
@@ -148,20 +140,25 @@ async function runVFX(token1, token2) {
     let distCategory = "05ft_600x400"
     if (distance > 15) distCategory = "15ft_1000x400"
     if (distance > 30) distCategory = "30ft_1600x400"
+    if (distance > 45) distCategory = "45ft_2200x400"
     if (distance > 60) distCategory = "60ft_2800x400"
     if (distance > 90) distCategory = "90ft_4000x400"
-    jez.log(`distance category ${distCategory}`)
+    //jez.log(`distance category ${distCategory}`) 
     //----------------------------------------------------------------------------------------------
     // Apply the effect
     //
+    //modules/jb2a_patreon/Library/Cantrip/Ray_Of_Frost/RayOfFrost_01_Regular_Green_30ft_1600x400.webm
+    const ROOT = "modules/jb2a_patreon/Library/Cantrip/Ray_Of_Frost/RayOfFrost_01_Regular"
+    const VFX_STRING = `${ROOT}_${color}_${distCategory}.webm`
+    jez.log(`VFX File Name: ${VFX_STRING}`)
     new Sequence()
     .effect()
         .atLocation(token1)
         .stretchTo(token2)
-        .file(`modules/jb2a_patreon/Library/1st_Level/Witch_Bolt/WitchBolt_01_${color}_${distCategory}.webm`)
+        .file(VFX_STRING)
         .scale(VFX_SCALE)
         .opacity(VFX_OPACITY)
-        .duration(6000)
+        //.duration(4000)
         .name(VFX_NAME)         // Give the effect a uniqueish name
     .play();
 }
