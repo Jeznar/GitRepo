@@ -14,6 +14,7 @@ I anticipate a large number of features here, I will try to drop them into speci
 * [Occultist](#occultist)
 * [Paladin](#paladin)
 * [Warlock](#warlock)
+* [Wizard](#wizard)
 
 ## [Shared](Shared#shared)
 
@@ -94,6 +95,16 @@ This is the standard [Warlock class](https://www.dndbeyond.com/classes/warlock).
 
 * [Healing Light](Warlock#healing-light)
 * [Radiant Soul](Warlock#radiant-soul)
+
+[*Back to Classes with Features list*](#classes-with-features)
+
+---
+
+## [Wizard](Wizard#wizard)
+
+This is a bit of the standard [Wizard class](https://www.dndbeyond.com/classes/wizard).  One of my game's NPCs has a feature very much like Portent.
+
+* [Portent](Wizard#portent)
 
 [*Back to Classes with Features list*](#classes-with-features)
 
