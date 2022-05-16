@@ -1,0 +1,128 @@
+{
+  "name": "%%Portent%%",
+  "type": "spell",
+  "img": "Icons_JGB/Class_Features/Portent.png",
+  "data": {
+    "description": {
+      "value": "<p><strong>%%This item is used by the Jez's Portent Macro don't casually mess with it, please%%</strong></p>\n<p>The caster has foreseen the result of the next <span style=\"color:#191813;font-size:13px;font-family:var(--font-primary)\">attack roll, saving throw, or ability check made by you or a creature that you can see</span><span style=\"color:#191813;font-size:13px;font-family:var(--font-primary)\"> </span><span style=\"font-family:var(--font-primary);font-size:var(--font-size-14)\">(d20 roll) differently than was apparently rolled.  </span></p>\n<hr style=\"border-top:1px solid var(--color-border-light-primary);border-bottom:1px solid var(--color-border-light-highlight)\" />\n<p><strong>FoundryVTT</strong>: The appropriate d20 roll should be manually changed to the indicated in the title of this abiity.  </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "div",
+    "components": {
+      "value": "",
+      "vocal": false,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "atwill",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "%%Portent%%",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Portent_Helper.0.1.js\"\n/*****************************************************************************************\n * To be executed as an ItemMacro from within a temporary item that tracks and displays \n * the value of a portent.  The item name must end in a number preceded by a space.  This \n * number controls the \"value\" of the portent.  \n * \n * At completion, this macro will delete the item it was executed from -- lets be careful \n * out there.\n * \n * 05/16/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst DICE_DIR = \"Icons_JGB/Dice/d20/Blue/\"\nconst DICE_POSTFIX = \".png\"\nconst CARD_DIR = \"Icons_JGB/Cards/Tarokka/\"\nconst CARD_POSTFIX = \".jpg\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let nameArray = aItem.name.split(\" \")   // Split the item name into tokens based on spaces\n    const VALUE = nameArray[nameArray.length-1]\n\n    msg = `<b>${aToken.name}</b> has foreseen the result of the next attack roll, saving throw, \n    or ability check. It will be a <b>${VALUE}</b>`\n    postResults(msg)\n    //---------------------------------------------------------------------------------------------\n    // Run the VFX\n    //\n    const DISPLAY = `${CARD_DIR}${VALUE}${CARD_POSTFIX}`\n    //const DISPLAY = `${DICE_DIR}${VALUE}${DICE_POSTFIX}`\n    runVFX(aToken, DISPLAY)\n    //---------------------------------------------------------------------------------------------\n    // Time to delete the item this macro is attached to\n    //\n    // jez.log(\"aItem\", aItem)\n    // await aActor.deleteOwnedItem(aItem._id);                 // Obsoletes as of Foundry 9.x\n    await aActor.deleteEmbeddedDocuments(\"Item\", [aItem._id])   // Format as of Foundry 9.x \n    msg = `Deleted used \"${aItem.name}\" from spell book`        // Set notification message\n    ui.notifications.info(msg);\n    jez.log(msg);\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Launch the VFX effects\n ***************************************************************************************************/\n async function runVFX(token1, VFXimage) {\n    new Sequence()\n        .effect()\n            .file(VFXimage)\n            .attachTo(token1)\n            .scale(0.5)\n            .opacity(1)\n            .scaleIn(0.1, 1000)\n            .rotateIn(180, 1000)    // 1/2 Rotation over 1 second \n            .rotateOut(180, 1000)   // 1/2 Counter Rotation over 1 second\n            .scaleOut(0.1, 1000)\n            .duration(4000)\n            .fadeIn(500) \n            .fadeOut(500) \n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

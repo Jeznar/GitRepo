@@ -1,0 +1,128 @@
+{
+  "name": "Portent",
+  "type": "feat",
+  "img": "Icons_JGB/Class_Features/Portent.png",
+  "data": {
+    "description": {
+      "value": "<p>When you finish a long rest, roll two d20s and record the numbers rolled. You can replace any attack roll, saving throw, or ability check made by you or a creature that you can see with one of these foretelling rolls. You must choose to do so before the roll, and you can replace a roll in this way only once per turn.</p>\n<p>Each foretelling roll can be used only once. When you finish a long rest, you lose any unused foretelling rolls.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell will create a number of at-will spells in character's spell book that can be used to track and indicate usage of the foretellings.</p>\n<p>The number is controlled by the quantity of damage dice rolled (which should generally be d20's)</p>\n<p>&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "2d20",
+          "midi-none"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Portent",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Portent.0.1.js\"\n/*****************************************************************************************\n * Potent RAW Description:\n *   Starting at 2nd level when you choose this school, glimpses of the future begin to \n *   press in on your awareness. When you finish a long rest, roll two d20s and record the \n *   numbers rolled. You can replace any attack roll, saving throw, or ability check made \n *   by you or a creature that you can see with one of these foretelling rolls. You must \n *   choose to do so before the roll, and you can replace a roll in this way only once \n *   per turn. \n * \n *   Each foretelling roll can be used only once. When you finish a long rest, you lose any \n *   unused foretelling rolls.\n * \n * Major Steps in the Macro\n * 1. Delete any prexisting foretellings.  This will be of the form \"Portent - #\" where\n *    the number may be 1 to 20.\n * 2. Scoop up the value of the three d20s rolled on the item card and stash them. The \n *    number of portent items is driven from the item card as the count of dice.\n * 3. Create foretelling cards with teh values rolled\n * 4. Post the results of the rolls.\n * \n * 05/15/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]           // Trim of the version number and extension\n//-----------------------------------------------------------------------------------------\n// Adjust these constants based on world specifics\n//\nconst DICE_DIR = \"Icons_JGB/Dice/d20/Blue/\"     // Path to dir that holds 20 die images\nconst DICE_POSTFIX = \".jpg\"                     // Suffix for the die images\nconst CARD_DIR = \"Icons_JGB/Cards/Tarokka/\"     // Path to dir that holds 20 card images \nconst CARD_POSTFIX = \".jpg\"                     // Suffix for the card images\nconst ITEM_NAME = `%%Portent%%`                 // Name as expected in Items Directory \n//-----------------------------------------------------------------------------------------\n// Proceed with environment setup\n//\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //----------------------------------------------------------------------------------------------\n    // 1. Delete any prexisting foretellings.  This will be of the form \"Portent - #\" where\n    //    the number may be 1 to 20.\n    //\n    let itemFound = null\n    for (let i = 1; i <= 20; i++) {\n        while (itemFound = aToken.actor.items.find(item => item.data.name === `Portent - ${i}`)) {\n            jez.log(\"itemFound\", itemFound)\n            await itemFound.delete();\n            msg = `Deleted expired \"Portent - ${i}\"`      // Set notification message\n            ui.notifications.info(msg);\n            jez.log(msg);\n        }\n    }\n    //----------------------------------------------------------------------------------------------\n    // * 2. Scoop up the value of the d20s rolled on the item card and stash them.\n    //\n    jez.log(\"aItem\", aItem)\n    jez.log(\"LAST_ARG.damageRoll.terms[0].results\", LAST_ARG.damageRoll.terms[0].results) // [0].results\n    let dieCount = LAST_ARG.damageRoll.terms[0].results.length + 1\n    if (LAST_ARG.isCritical) dieCount = dieCount / 2   // For some reason sometimes this is crit damage\n    let rollArray = []\n    for (let i = 0; i < dieCount - 1; i++) {\n        //rollArray[i] = LAST_ARG.damageRoll.terms[0].results[i].result\n        // force the roll to be an integer between 1 and 20 inclusive\n        rollArray[i] = Math.min(Math.max(parseInt(LAST_ARG.damageRoll.terms[0].results[i].result), 1), 20);\n\n    }\n    // TODO: Sort the rollArray (maybe)\n    //----------------------------------------------------------------------------------------------\n    // 3. Create foretelling item/cards with the values rolled\n    //\n    for (let i = 0; i < dieCount - 1; i++) {\n        jez.log(`Create card ${i + 1} with a value of ${rollArray[i]}`)\n        addItemToActor(aToken)\n        await jez.wait(100)\n        updateItemOnActor(aToken, rollArray[i])\n    }\n    //----------------------------------------------------------------------------------------------\n    // 4. Post the results of the rolls.\n    // \n    msg = `${aToken.name} has forseen ${dieCount - 1} events that may occur today: `\n    for (let i = 0; i < dieCount - 1; i++) {\n        msg += rollArray[i]\n        if (i < dieCount - 2) msg += \", \"\n        if (i === dieCount - 2) msg += \".\"\n    }\n    postResults(msg)\n    //----------------------------------------------------------------------------------------------\n    // 5. Run the VFX\n    // \n    for (let i = 0; i < dieCount - 1; i++) {\n        runVFX(aToken, rollArray[i])\n        await jez.wait(4500)\n        msg = `Created new \"Portent - ${rollArray[i]}\" as an At-Will Spell in ${aToken.name}'s spell book`   \n        ui.notifications.info(msg);\n        jez.log(msg);\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n *\n ***************************************************************************************************/\nasync function addItemToActor(token5e) {\n    jez.log(\"Get the item from the Items directory and slap it onto the active actor\")\n    let itemObj = game.items.getName(ITEM_NAME)\n    if (!itemObj) {\n        msg = `Failed to find ${ITEM_NAME} in the Items Directory`\n        ui.notifications.error(msg);\n        postResults(msg)\n        return (false)\n    }\n    console.log('Item5E fetched by Name', itemObj)\n    await token5e.actor.createEmbeddedDocuments(\"Item\", [itemObj.data])\n}\n/***************************************************************************************************\n *\n ***************************************************************************************************/\nasync function updateItemOnActor(token5e, value) {\n    // Icons to be named as so: Icons_JGB/Dice/d20/Blue/#.png\n    // With # being 1 to 20\n    //----------------------------------------------------------------------------------------------\n    jez.log(\"Find the item on the actor\")\n    let aActorItem = token5e.actor.data.items.getName(ITEM_NAME)\n    jez.log(\"aActorItem\", aActorItem)\n    if (!aActorItem) {\n        msg = `Failed to find ${ITEM_NAME} on ${token5e.name}`\n        ui.notifications.error(msg);\n        postResults(msg)\n        return (false)\n    }\n    //-----------------------------------------------------------------------------------------------\n    jez.log(`Remove the don't change this message assumed to be embedded in the item description.  It \n        should be of the form: <p><strong>%%*%%</strong></p> optionally followed by white space`)\n    const searchString = `<p><strong>%%.*%%</strong></p>[\\s\\n\\r]*`;\n    const regExp = new RegExp(searchString, \"g\");\n    const replaceString = ``;\n    let content = await duplicate(aActorItem.data.data.description.value);\n    content = await content.replace(regExp, replaceString);\n    let itemUpdate = {\n        'name': `Portent - ${value}`,       // Change to value specific name for temp item\n        'img': `${DICE_DIR}${value}.png`,\n        'data.description.value': content,  // Drop in altered description\n    }\n    jez.log(\"itemUpdate\", itemUpdate)\n    await aActorItem.update(itemUpdate)\n}\n/***************************************************************************************************\n * Launch the VFX effects\n ***************************************************************************************************/\n async function runVFX(token1, value) {\n    const CARD = `${CARD_DIR}${value}${CARD_POSTFIX}`\n    new Sequence()\n        .effect()\n            .file(CARD)\n            .attachTo(token1)\n            .scale(0.5)\n            .opacity(1)\n            .scaleIn(0.1, 1000)\n            .rotateIn(180, 1000)    // 1/2 Rotation over 1 second \n            .rotateOut(180, 1000)   // 1/2 Counter Rotation over 1 second\n            .scaleOut(0.1, 1000)\n            .duration(4000)\n            .fadeIn(500) \n            .fadeOut(500) \n            //.waitUntilFinished(-1500) \n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
