@@ -161,6 +161,12 @@ Lots of calls to *.delete(...)* that may be affected here.  One example from *To
 await existingEffect.delete();
 ~~~
 
+## deleteOwnedItem(...) -> deleteEmbeddedDocuments("Item", [...]) 
+
+Apparently calls to deleteOwnedItem(...) need to be converted to deleteEmbeddedDocuments("Item", [...]) or other entity (item) types.
+
+
+
 ## Roll now requires async true/false
 Crymic pointed out, rolls needs to specify async:false or be awaited. 
 

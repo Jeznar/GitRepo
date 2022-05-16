@@ -21,11 +21,21 @@ const MACRONAME = "Portent.0.1.js"
  * 
  * 05/15/22 0.1 Creation of Macro
  *****************************************************************************************/
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+const MACRO = MACRONAME.split(".")[0]           // Trim of the version number and extension
+//-----------------------------------------------------------------------------------------
+// Adjust these constants based on world specifics
+//
+const DICE_DIR = "Icons_JGB/Dice/d20/Blue/"     // Path to dir that holds 20 die images
+const DICE_POSTFIX = ".jpg"                     // Suffix for the die images
+const CARD_DIR = "Icons_JGB/Cards/Tarokka/"     // Path to dir that holds 20 card images 
+const CARD_POSTFIX = ".jpg"                     // Suffix for the card images
+const ITEM_NAME = `%%Portent%%`                 // Name as expected in Items Directory 
+//-----------------------------------------------------------------------------------------
+// Proceed with environment setup
+//
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
-jez.log("LAST_ARG", LAST_ARG)
 let aActor;         // Acting actor, creature that invoked the macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
 else aActor = game.actors.get(LAST_ARG.actorId);
@@ -35,12 +45,7 @@ else aToken = game.actors.get(LAST_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-jez.log("aItem",aItem)
 let msg = "";
-
-const IMAGE_DIR = "Icons_JGB/Dice/d20/Blue/"
-const ITEM_NAME = `%%Portent%%`               // Name as expected in Items Directory 
-jez.log("ITEM_NAME", ITEM_NAME)
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -61,7 +66,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
- async function doOnUse() {
+async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
@@ -73,24 +78,31 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
         while (itemFound = aToken.actor.items.find(item => item.data.name === `Portent - ${i}`)) {
             jez.log("itemFound", itemFound)
             await itemFound.delete();
+            msg = `Deleted expired ${item.name}`      // Set notification message
+            ui.notifications.info(msg);
+            jez.log(msg);
         }
     }
     //----------------------------------------------------------------------------------------------
     // * 2. Scoop up the value of the d20s rolled on the item card and stash them.
     //
     jez.log("aItem", aItem)
-    jez.log("LAST_ARG.damageRoll.terms[0].results",LAST_ARG.damageRoll.terms[0].results) // [0].results
+    jez.log("LAST_ARG.damageRoll.terms[0].results", LAST_ARG.damageRoll.terms[0].results) // [0].results
     let dieCount = LAST_ARG.damageRoll.terms[0].results.length + 1
-    if (LAST_ARG.isCritical) dieCount = dieCount/2   // For some reason sometimes this is crit damage
+    if (LAST_ARG.isCritical) dieCount = dieCount / 2   // For some reason sometimes this is crit damage
     let rollArray = []
     for (let i = 0; i < dieCount - 1; i++) {
-        rollArray[i] = LAST_ARG.damageRoll.terms[0].results[i].result
+        //rollArray[i] = LAST_ARG.damageRoll.terms[0].results[i].result
+        // force the roll to be an integer between 1 and 20 inclusive
+        rollArray[i] = Math.min(Math.max(parseInt(LAST_ARG.damageRoll.terms[0].results[i].result), 1), 20);
+
     }
+    // TODO: Sort the rollArray (maybe)
     //----------------------------------------------------------------------------------------------
     // 3. Create foretelling item/cards with the values rolled
     //
     for (let i = 0; i < dieCount - 1; i++) {
-        jez.log(`Create card ${i+1} with a value of ${rollArray[i]}`)
+        jez.log(`Create card ${i + 1} with a value of ${rollArray[i]}`)
         addItemToActor(aToken)
         await jez.wait(100)
         updateItemOnActor(aToken, rollArray[i])
@@ -98,13 +110,20 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     //----------------------------------------------------------------------------------------------
     // 4. Post the results of the rolls.
     // 
-    msg = `${aToken.name} has forseen ${dieCount} events that may occur today: `
+    msg = `${aToken.name} has forseen ${dieCount - 1} events that may occur today: `
     for (let i = 0; i < dieCount - 1; i++) {
-        msg += "rollArray[i]"
-        if (i < diecount - 2) msg += ", "
-        if (i )
+        msg += rollArray[i]
+        if (i < dieCount - 2) msg += ", "
+        if (i === dieCount - 2) msg += "."
     }
     postResults(msg)
+    //----------------------------------------------------------------------------------------------
+    // 5. Run the VFX
+    // 
+    for (let i = 0; i < dieCount - 1; i++) {
+        runVFX(aToken, rollArray[i])
+        await jez.wait(4500)
+    }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
@@ -141,7 +160,7 @@ async function updateItemOnActor(token5e, value) {
     }
     //-----------------------------------------------------------------------------------------------
     jez.log(`Remove the don't change this message assumed to be embedded in the item description.  It 
-        should be of the form: <p><strong>%%*%%</strong></p> followed by white space`)
+        should be of the form: <p><strong>%%*%%</strong></p> optionally followed by white space`)
     const searchString = `<p><strong>%%.*%%</strong></p>[\s\n\r]*`;
     const regExp = new RegExp(searchString, "g");
     const replaceString = ``;
@@ -149,9 +168,30 @@ async function updateItemOnActor(token5e, value) {
     content = await content.replace(regExp, replaceString);
     let itemUpdate = {
         'name': `Portent - ${value}`,       // Change to value specific name for temp item
-        'img': `${IMAGE_DIR}${value}.png`,
+        'img': `${DICE_DIR}${value}.png`,
         'data.description.value': content,  // Drop in altered description
     }
     jez.log("itemUpdate", itemUpdate)
     await aActorItem.update(itemUpdate)
+}
+/***************************************************************************************************
+ * Launch the VFX effects
+ ***************************************************************************************************/
+ async function runVFX(token1, value) {
+    const CARD = `${CARD_DIR}${value}${CARD_POSTFIX}`
+    new Sequence()
+        .effect()
+            .file(CARD)
+            .attachTo(token1)
+            .scale(0.5)
+            .opacity(1)
+            .scaleIn(0.1, 1000)
+            .rotateIn(180, 1000)    // 1/2 Rotation over 1 second 
+            .rotateOut(180, 1000)   // 1/2 Counter Rotation over 1 second
+            .scaleOut(0.1, 1000)
+            .duration(4000)
+            .fadeIn(500) 
+            .fadeOut(500) 
+            //.waitUntilFinished(-1500) 
+        .play();
 }

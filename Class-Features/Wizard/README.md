@@ -19,7 +19,11 @@ The first is to be attached to an item that can be used daily and will generate 
 
 The second are temporary items that initially store the results of Portent.  When used they announce the use of the die roll, the value, a bit of text explaining that the effect is to be handled manually and of course a VFX.  The helper item deletes itself when used. 
 
-[*Back to Cleric top of document*](#cleric)
+![Portent.gif](Portent/Portent.gif)
+
+![Portent_Chat.png](Portent/Portent_Chat.png)
+
+[*Back to Wizard top of document*](#wizard)
 
 ---
 
