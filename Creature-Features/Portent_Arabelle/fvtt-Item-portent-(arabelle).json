@@ -1,10 +1,10 @@
 {
-  "name": "Portent",
+  "name": "Portent (Arabelle)",
   "type": "feat",
   "img": "Icons_JGB/Class_Features/Portent.png",
   "data": {
     "description": {
-      "value": "<p>When you finish a long rest, roll two d20s and record the numbers rolled. You can replace any attack roll, saving throw, or ability check made by you or a creature that you can see with one of these foretelling rolls. You must choose to do so before the roll, and you can replace a roll in this way only once per turn.</p>\n<p>Each foretelling roll can be used only once. When you finish a long rest, you lose any unused foretelling rolls.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell will create a number of at-will spells in character's spell book that can be used to track and indicate usage of the foretellings.</p>\n<p>The number is controlled by the quantity of damage dice rolled (which should generally be d20's)</p>\n<p> </p>",
+      "value": "<p>Arabelle gains the Portent feature of the Divination Wizard (2 dice).</p>\n<p>@Item[vwCMBeeTkcXW4hmP]{Portent}</p>\n<hr />\n<h3>Rank 2</h3>\n<p>Regular use of her Portent has improved the frequency with which she can focus her visions on the coming day</p>\n<p>• Arabelle gains another Portent Die</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -15,7 +15,7 @@
       "condition": "After a long rest"
     },
     "duration": {
-      "value": null,
+      "value": 0,
       "units": ""
     },
     "target": {
@@ -45,12 +45,12 @@
     "chatFlavor": "",
     "critical": {
       "threshold": null,
-      "damage": ""
+      "damage": null
     },
     "damage": {
       "parts": [
         [
-          "2d20",
+          "3d20",
           "midi-none"
         ]
       ],
@@ -64,7 +64,7 @@
     },
     "requirements": "",
     "recharge": {
-      "value": null,
+      "value": 0,
       "charged": false
     }
   },
@@ -83,6 +83,18 @@
       "rechargeType": "t1",
       "rechargeUnit": "r1",
       "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "gm-notes": {
+      "notes": "<div class=\"page\" title=\"Page 5\">\n<div class=\"section\" style=\"background-color: rgb(100.000000%, 100.000000%, 100.000000%);\">\n<div class=\"layoutArea\">\n<div class=\"column\">\n<p><span style=\"font-size: 11.000000pt; font-family: 'HelveticaNeue'; font-weight: bold;\">Rank 2 </span></p>\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Regular use of her Portent has improved the frequency with which she can focus her visions on the coming day </span></p>\n<p><span style=\"font-size: 10.000000pt; font-family: 'Helvetica'; color: rgb(10.196000%, 10.196000%, 10.588000%);\">&bull; </span><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Arabelle gains another Portent Die </span></p>\n<p><span style=\"font-size: 11.000000pt; font-family: 'HelveticaNeue'; font-weight: bold;\">Rank 3 </span></p>\n<p><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Studying her glimpses of the future, Arabelle has learned that she can lean on outcomes a little.<br /></span><span style=\"font-size: 10.000000pt; font-family: 'Helvetica'; color: rgb(10.196000%, 10.196000%, 10.588000%);\">&bull; </span><span style=\"font-size: 10.000000pt; font-family: 'ArialMT';\">Whenever Arabelle rolls a portent die, she rolls it twice and keeps whichever result she prefers. </span></p>\n</div>\n</div>\n</div>\n</div>"
     },
     "midi-qol": {
       "effectActivation": false,
@@ -103,7 +115,7 @@
       "macro": {
         "data": {
           "_id": null,
-          "name": "Portent",
+          "name": "Portent (Arabelle)",
           "type": "script",
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
@@ -117,6 +129,9 @@
           "flags": {}
         }
       }
+    },
+    "core": {
+      "sourceId": "Item.vMnJ95QgA07IgMk7"
     },
     "exportSource": {
       "world": "travels-in-barovia",

@@ -41,6 +41,7 @@ I'll try to document functions as I add them to the repository.
 * **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
+* **Portent (Arabelle)** -- Portent slightly modified for Arabelle
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
 * **[Trampling Charge](#trampling-charge)** -- Equine charge / knockdown
 * **[Undead Fortitude](#undead-fortitude)** -- Certain undead's (e.g. Zombie) ability to deny death  
