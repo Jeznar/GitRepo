@@ -74,11 +74,11 @@ async function doOnUse() {
     //    the number may be 1 to 20.
     //
     let itemFound = null
-    for (let i = 1; i <= 20 - 1; i++) {
+    for (let i = 1; i <= 20; i++) {
         while (itemFound = aToken.actor.items.find(item => item.data.name === `Portent - ${i}`)) {
             jez.log("itemFound", itemFound)
             await itemFound.delete();
-            msg = `Deleted expired ${item.name}`      // Set notification message
+            msg = `Deleted expired "Portent - ${i}"`      // Set notification message
             ui.notifications.info(msg);
             jez.log(msg);
         }
@@ -123,6 +123,9 @@ async function doOnUse() {
     for (let i = 0; i < dieCount - 1; i++) {
         runVFX(aToken, rollArray[i])
         await jez.wait(4500)
+        msg = `Created new "Portent - ${rollArray[i]}" as an At-Will Spell in ${aToken.name}'s spell book`   
+        ui.notifications.info(msg);
+        jez.log(msg);
     }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);

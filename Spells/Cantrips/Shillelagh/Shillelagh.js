@@ -1,5 +1,5 @@
-const MACRONAME = "Shillelagh.0.1"
-console.log(MACRONAME)
+const MACRONAME = "Shillelagh.0.2.js"
+jez.log(MACRONAME)
 /*****************************************************************************************
  * Create/manage a limited duration item for the Shillelagh spell
  * 
@@ -10,12 +10,11 @@ console.log(MACRONAME)
  *   spell ends if you cast it again or if you let go of the weapon.
  * 
  * 12/31/21 0.1 Creation of Macro
+ * 05/17/22 0.2 Update for Foundry 9.x and VFX
  *****************************************************************************************/
-const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-log("---------------------------------------------------------------------------",
-    "Starting", `${MACRONAME}`);
-for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+jez.log(`----------- Starting ${MACRONAME}--------------------------`);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const lastArg = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
@@ -23,90 +22,75 @@ let aItem;          // Active Item information, item invoking this macro
 if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
 if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
-//let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-//let tActor = tToken?.actor;
-
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 const EFFECT_NAME = "Shillelagh"
 const EFFECT_ICON = "Icons_JGB/Weapons/quarterstaff-shillelagh.jpg"
 const MACRO_HELPER = `${MACRO}_Helper_DAE`;
 let attackItem = "Shillelagh";
-
-log("------- Global Values Set -------",
-    `Active Token (aToken) ${aToken?.name}`, aToken,
-    `Active Actor (aActor) ${aActor?.name}`, aActor,
-    `Active Item (aItem) ${aItem?.name}`, aItem);
 let msg = "";
 let errorMsg = "";
 let baseWeapon = ""; // The base weapon turned into a Shillelagh
-
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
 if (!await preCheck()) {
-    console.log(errorMsg)
+    jez.log(errorMsg)
     ui.notifications.error(errorMsg)
     return;
 }
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-
-log("---------------------------------------------------------------------------",
-    "Finishing", MACRONAME);
-return;
-
+//----------------------------------------------------------------------------------
+// All Done
+//
+jez.log(`--------------------Finishing ${MACRONAME}---------------------------------------`)
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
 async function preCheck() {
     // Check anything important...
     if (typeof errorMsg === undefined) {
         let errorMsg = 'global variable "errorMsg" is not defined, but required'
-        console.log(errorMsg)
+        jez.log(errorMsg)
         ui.notifications.error(errorMsg)
     }
     if (!game.macros.getName(MACRO_HELPER)) {
         errorMsg = `Could not locate required macro: ${MACRO_HELPER}`
-        // return (false)
+        return (false)
     }
-
-    log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
+    jez.log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
     return (true)
 }
-
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  * Return false if the spell failed.
  ***************************************************************************************************/
 async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-
+    jez.log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
     //-------------------------------------------------------------------------------
     // If the buff already exists, remove it before adding another one
     //
     let existingEffect = aActor.effects.find(ef => ef.data.label === EFFECT_NAME) ?? null;
-    log("existingEffect", existingEffect)
+    jez.log("existingEffect", existingEffect)
     if (existingEffect) await existingEffect.delete();
-
     //----------------------------------------------------------------------------------
     // Run the preCheckOnUse function which checks inventory and sets attackItem
     //
     if (!await preCheckOnUse()) {
-        console.log(errorMsg)
+        jez.log(errorMsg)
         ui.notifications.error(errorMsg)
         return;
     }
-
+    //----------------------------------------------------------------------------------
+    // Launch Rune VFX
+    //
+    jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))
     //----------------------------------------------------------------------------------
     // Set base weapon dependent variables
     //
@@ -132,17 +116,15 @@ async function doOnUse() {
         damVersatile = "1d10+@mod"
         propVer = "true"
     }
-    log("--- Weapon Properties ---",
+    jez.log("--- Weapon Properties ---",
         "propVer", propVer,
         "damVersatile", damVersatile,
         "descValue", descValue)
-
     //-------------------------------------------------------------------------------
     // Create an effect on the caster to trigger the doOff action to remove temp weap
     //
     let gameRound = game.combat ? game.combat.round : 0;
     let value = `${MACRO_HELPER} "${attackItem}"`;
-
     let effectData = {
         label: MACRO,
         icon: EFFECT_ICON,
@@ -150,12 +132,11 @@ async function doOnUse() {
         disabled: false,
         duration: { rounds: 10, turns: 10, startRound: gameRound, seconds: 60, startTime: game.time.worldTime },
         changes: [
-            { key: "macro.execute", mode: CUSTOM, value: value, priority: 20 },
+            { key: "macro.execute", mode: jez.CUSTOM, value: value, priority: 20 },
         ]
     };
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aActor.uuid, effects: [effectData] });
-    log(`applied ${MACRO} effect`, effectData);
-
+    jez.log(`applied ${MACRO} effect`, effectData);
     //-------------------------------------------------------------------------------
     // Build the item data for the action to be created, a new weapon in inventory
     //
@@ -175,6 +156,7 @@ async function doOnUse() {
                 "parts": [[`1d8+@mod`, `bludgeoning`]],  // Set base damage
                 "versatile": damVersatile               // Set vesatile damage (Houserule)
             },
+            "equipped": true,
             "formula": "",
             "properties": {
                 "mgc": "true",  // Mark the new item as magic
@@ -185,15 +167,18 @@ async function doOnUse() {
         "effects": []
     }];
     await aActor.createEmbeddedDocuments("Item", itemData);
-
     msg = `<p style="color:green;font-size:14px;">
         <b>${aToken.name}</b>'s ${baseWeapon} is wreathed in dim green glow and sprouts 
         magical vines and thorns making it a fearsome weapon.</p>
         <p><b>FoundryVTT</b>: Use newly created item <b>${attackItem}</b> in INVENTORY 
         tab to attack with the temporary weapon.</p>`
     postResults(msg);
-
-    log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    //---------------------------------------------------------------------------------------------
+    // Pop a system notification about the item being added to inventory.
+    //
+    msg = `Created "${attackItem}" in inventory.  It can now be used for melee attacks.`
+    ui.notifications.info(msg);
+    jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
 /***************************************************************************************************
@@ -206,12 +191,12 @@ async function doOnUse() {
 
     if (!baseWeapon) {
         errorMsg = `${aToken.name} has nether a Quarterstaff nor Club. Spell Failed.`
-        log("PreCheckonUse failed")
+        jez.log("PreCheckonUse failed")
         return (false)
     }  
 
-    log("---- preCheckOnUse ----","attackItem",attackItem )
-    log("PreCheckonUse passed")
+    jez.log("---- preCheckOnUse ----","attackItem",attackItem )
+    jez.log("PreCheckonUse passed")
     return (true)
 }
 
@@ -222,21 +207,21 @@ async function doOnUse() {
  *************************************************************************/
 function hasEffect(target, effect) {
     const FUNCNAME = "hasEffect(target, effect)";
-    log("--------------hasEffect-----------", "Starting", `${MACRONAME} ${FUNCNAME}`,
+    jez.log("--------------hasEffect-----------", "Starting", `${MACRONAME} ${FUNCNAME}`,
     "target", target, "effect", effect);
-    log("target.actor.data.effects", target.actor.data.effects);
+    jez.log("target.actor.data.effects", target.actor.data.effects);
  
     let existingEffect = aActor.effects.find(ef => ef.data.label === effect) ?? null; 
-    log("existingEffect", existingEffect)
+    jez.log("existingEffect", existingEffect)
 
     // if (target.actor.effects.find(ef => ef.data.label === effect)) {
     if (existingEffect) {
         let message = `${target.name} already has ${effect} effect`;
         // ui.notifications.info(message);
-        log(message);
+        jez.log(message);
         return(true);
     } else {
-        log(` ${target.name} needs ${effect} effect added`);
+        jez.log(` ${target.name} needs ${effect} effect added`);
         return(false)
     }
 }
@@ -246,9 +231,9 @@ function hasEffect(target, effect) {
  ***************************************************************************************************/
  async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
-    log("--------------Bonus Damage-----------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    log("The do On Use code")
-    log("--------------Bonus Damage-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------Bonus Damage-----------", "Starting", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("The do On Use code")
+    jez.log("--------------Bonus Damage-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
 /***************************************************************************************************
@@ -259,7 +244,7 @@ function hasEffect(target, effect) {
 
     let chatMessage = game.messages.get(lastArg.itemCardId);
     let content = await duplicate(chatMessage.data.content);
-    log(`chatMessage: `,chatMessage);
+    jez.log(`chatMessage: `,chatMessage);
     const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
     const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
     content = await content.replace(searchString, replaceString);
@@ -277,7 +262,7 @@ function hasEffect(target, effect) {
 ***************************************************************************************/
 function hasItem(itemName, actor) {
     const FUNCNAME = "hasItem";
-    log("-------hasItem(itemName, actor)------", "Starting", `${MACRONAME} ${FUNCNAME}`,
+    jez.log("-------hasItem(itemName, actor)------", "Starting", `${MACRONAME} ${FUNCNAME}`,
     "itemName", itemName, `actor ${actor.name}`, actor);
 
     // If actor was not passed, pick up the actor invoking this macro
@@ -285,34 +270,9 @@ function hasItem(itemName, actor) {
 
     let item = actor.items.find(item => item.data.name == itemName)
     if (item == null || item == undefined) {
-        log(`${actor.name} does not have ${itemName}, ${FUNCNAME} returning false`);
+        jez.log(`${actor.name} does not have ${itemName}, ${FUNCNAME} returning false`);
          return(false);
     }
-    log(`${actor.name} has ${itemName}, ${FUNCNAME} returning true`);
+    jez.log(`${actor.name} has ${itemName}, ${FUNCNAME} returning true`);
     return(true);
 }
-
-/***************************************************************************************************
- * DEBUG Logging
- * 
- * If passed an odd number of arguments, put the first on a line by itself in the log,
- * otherwise print them to the log seperated by a colon.  
- * 
- * If more than two arguments, add numbered continuation lines. 
- ***************************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    } else {            // Even number of arguments
-        console.log(parms[i],":",parms[i+1]);
-        i = 2;
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    }
-}
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }

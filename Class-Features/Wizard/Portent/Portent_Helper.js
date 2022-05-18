@@ -68,7 +68,9 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     // jez.log("aItem", aItem)
     // await aActor.deleteOwnedItem(aItem._id);                 // Obsoletes as of Foundry 9.x
     await aActor.deleteEmbeddedDocuments("Item", [aItem._id])   // Format as of Foundry 9.x 
-
+    msg = `Deleted used "${aItem.name}" from spell book`        // Set notification message
+    ui.notifications.info(msg);
+    jez.log(msg);
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
