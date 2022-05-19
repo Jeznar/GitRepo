@@ -1,4 +1,4 @@
-const MACRONAME = "Moonbeam_Helper_DAE.0.4"
+const MACRONAME = "Moonbeam_Helper_DAE.0.5.js"
 console.log(MACRONAME)
 /*****************************************************************************************
  * Intended to be called as a macro.execute from within an ItemMacro to make the doOn and
@@ -7,6 +7,7 @@ console.log(MACRONAME)
  * 12/30/21 0.1 Creation of Macro
  * 12/30/21 0.2 Cleanups
  * 12/31/21 0.4 Dotting i's etc.
+ * 05/16/22 0.5 Update for Foundry 9.x (Note: This macro is no longer used)
  *****************************************************************************************/
 let DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -161,7 +162,8 @@ async function deleteItem(itemName, actor) {
         return (false);
     }
     log(`${actor.name} had ${item.name}`, item);
-    await aActor.deleteOwnedItem(item._id);
+    // await aActor.deleteOwnedItem(item._id);                 // Obsoletes as of Foundry 9.x
+    await aActor.deleteEmbeddedDocuments("Item", [item._id])   // Format as of Foundry 9.x 
     log(`${FUNCNAME} returning true`);
 
     log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);

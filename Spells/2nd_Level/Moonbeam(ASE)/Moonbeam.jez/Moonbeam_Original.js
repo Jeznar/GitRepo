@@ -106,7 +106,8 @@ if (args[0] === "on") {
 // Delete Moonbeam
 if (args[0] === "off") {
   let casterItem = tactor.data.items.find(i => i.name === "Moonbeam repeating" && i.type === "spell")
-  tactor.deleteOwnedItem(casterItem._id)
+  // await tactor.deleteOwnedItem(casterItem._id);                 // Obsoletes as of Foundry 9.x
+  await tactor.deleteEmbeddedDocuments("Item", [casterItem._id])   // Format as of Foundry 9.x 
   let template = canvas.templates.placeables.find(i => i.data.flags.DAESRD?.Moonbeam?.ActorId === tactor.id)
   canvas.scene.deleteEmbeddedDocuments("MeasuredTemplate", [template.id])
 }

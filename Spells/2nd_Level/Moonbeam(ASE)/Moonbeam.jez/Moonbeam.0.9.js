@@ -1,4 +1,4 @@
-const MACRONAME = "Moonbeam.0.9.js"
+const MACRONAME = "Moonbeam.1.0.js"
 console.log(MACRONAME)
 /*****************************************************************************************
  * Implements Moonbeam, based on a sample code.
@@ -12,6 +12,7 @@ console.log(MACRONAME)
  * 12/30/21 0.7 Add the VFX to token summoned
  * 12/31/21 0.8 Create preCheck function to put setup validation in one place 
  * 05/02/22 0.9 Updated for FoundryVTT 9.x
+ * 05/18/22 1.0 Updated for FoundryVTT 9.x (also this macro is no longer used)
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -326,7 +327,8 @@ async function hasItem(itemName, actor) {
         return (false);
     }
     log(`${actor.name} had ${item.name}`, item);
-    await aActor.deleteOwnedItem(item._id);
+    // await aActor.deleteOwnedItem(item._id);                 // Obsoletes as of Foundry 9.x
+    await aActor.deleteEmbeddedDocuments("Item", [item._id])   // Format as of Foundry 9.x 
     log(`${FUNCNAME} returning true`);
 
     log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);

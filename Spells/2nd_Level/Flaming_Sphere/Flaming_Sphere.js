@@ -1,10 +1,10 @@
-const MACRONAME = "Flaming_Sphere.0.4.js"
-jez.log(MACRONAME)
+const MACRONAME = "Flaming_Sphere.0.5.js"
 /*****************************************************************************************
  * Implements Flaming Sphere, based on Moonbeam.0.8 and its Helper_DAE script
  * 
  * 01/01/22 0.1 Creation of Macro
  * 03/16/22 0.2 Move into GitRepo chasing what appears to be permissions issue
+ * 05/16/22 0.5 Update for FoundryVTT 9.x
  *****************************************************************************************/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
  jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -120,7 +120,8 @@ function preCheck() {
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     jez.log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    await deleteItem(ATTACK_ITEM, aActor);
+    //await deleteItem(ATTACK_ITEM, aActor);
+    await jez.deleteItems(ATTACK_ITEM, "spell", aActor);
     const numDice = args[0].spellLevel;
     const damageType = "fire"; 
     let spellDC = aActor.data.data.attributes.spelldc
@@ -217,7 +218,6 @@ function preCheck() {
      jez.log("--------------OnUse---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
-
 /***************************************************************************************
  * Function to delete an item from actor
  *
@@ -225,7 +225,7 @@ function preCheck() {
  *  - itemName: A string naming the item to be found in actor's inventory
  *  - actor: Optional actor to be searched, defaults to actor launching this macro
  ***************************************************************************************/
- async function deleteItem(itemName, actor) {
+ /*async function deleteItem(itemName, actor) {
     const FUNCNAME = "deleteItem(itemName, actor)";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     // If actor was not passed, pick up the actor invoking this macro
@@ -238,10 +238,11 @@ function preCheck() {
         return (false);
     }
     jez.log(`${actor.name} had ${item.name}`, item);
-    await aActor.deleteOwnedItem(item._id);
+    // await aActor.deleteOwnedItem(item._id);                 // Obsoletes as of Foundry 9.x
+    await aActor.deleteEmbeddedDocuments("Item", [item._id])   // Format as of Foundry 9.x 
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
-}
+}*/
 /***************************************************************************************************
  * Summon a token of minion on the template and delete the template
  ***************************************************************************************************/

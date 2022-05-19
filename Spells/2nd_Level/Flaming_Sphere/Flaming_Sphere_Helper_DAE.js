@@ -1,26 +1,25 @@
-const MACRONAME = "Flaming_Sphere_Helper_DAE.0.3"
-console.log(MACRONAME)
+const MACRONAME = "Flaming_Sphere_Helper_DAE.0.4.js"
+jez.log(MACRONAME)
 /*****************************************************************************************
  * Helper fr Flaming_Sphere, based on Moonbeam_Helper_DAE.0.4
  * 
  * 01/01/22 0.1 Creation of Macro
  * 03/16/22 0.2 Move into GitRepo chasing what appears to be permissions issue
+ * 05/16/22 0.5 Update for FoundryVTT 9.x .deleteOwnedItem() --> .deleteEmbeddedDocuments()
  *****************************************************************************************/
-let DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 const MINION_UNIQUE_NAME = args[1];
 const VFX_NAME = args[2];
 const ATTACK_ITEM = args[3];
 const VFX_OPACITY = args[4] || 0.95;
 const VFX_SCALE = args[5] || 0.65;
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     `Starting ${MACRONAME}`,"MINION_UNIQUE_NAME");
-for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 
 if (!MINION_UNIQUE_NAME || !VFX_NAME || !ATTACK_ITEM ) {
     ui.notifications.error(`${MACRONAME} received invalid parameters, please, politely ask Joe to fix this`);
-    DEBUG = true;
-    log(`Bad stuff received by ${MACRONAME}`,
+    jez.log(`Bad stuff received by ${MACRONAME}`,
         "MINION_UNIQUE_NAME", MINION_UNIQUE_NAME,
         "VFX_NAME", VFX_NAME,
         "ATTACK_ITEM", ATTACK_ITEM,
@@ -29,7 +28,7 @@ if (!MINION_UNIQUE_NAME || !VFX_NAME || !ATTACK_ITEM ) {
     return;
 }
 
-log("","MINION_UNIQUE_NAME",MINION_UNIQUE_NAME,"VFX_NAME",VFX_NAME,"ATTACK_ITEM",ATTACK_ITEM,
+jez.log("","MINION_UNIQUE_NAME",MINION_UNIQUE_NAME,"VFX_NAME",VFX_NAME,"ATTACK_ITEM",ATTACK_ITEM,
     "VFX_OPACITY",VFX_OPACITY,"VFX_SCALE",VFX_SCALE);
 
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
@@ -46,7 +45,7 @@ if (args[0] === "off") await doOff();         // DAE removal
 if (args[0] === "on") await doOn();           // DAE Application
 if (args[0] === "each") doEach();			  // DAE each round execution
 
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     "Finished", `${MACRONAME}`);
 return;
 
@@ -61,25 +60,25 @@ return;
  ***************************************************************************************/
 async function doEach() {
     const FUNCNAME = "doEach()";
-    log("===========================================================================",
+    jez.log("===========================================================================",
         `Starting`, `${MACRONAME} ${FUNCNAME}`);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 
     let concentrating = hasEffect(aActor, "Concentrating")
     log ("+ Effect", concentrating)
 
     if (!concentrating) {
-        log("No longer concentrating, remove the Flaming_Sphere effect");
+        jez.log("No longer concentrating, remove the Flaming_Sphere effect");
         let Flaming_SphereEffect = aActor.effects.find(ef => ef.data.label === "Flaming_Sphere") ?? null; 
         if (Flaming_SphereEffect) {
-            log("Flaming_Sphere effect found", Flaming_SphereEffect);
+            jez.log("Flaming_Sphere effect found", Flaming_SphereEffect);
             await Flaming_SphereEffect.delete();
         } else {
-            log("Flaming_Sphere effect was not found, this should not have happened.");
+            jez.log("Flaming_Sphere effect was not found, this should not have happened.");
         }
     }
 
-    log("===========================================================================",
+    jez.log("===========================================================================",
         `Ending`, `${MACRONAME} ${FUNCNAME}`);
     return;
 }
@@ -90,14 +89,14 @@ async function doEach() {
  ***************************************************************************************************/
 function hasEffect(target, effect) {
 
-    log("+++++++++","target.data.effects", target.data.effects, "effect", effect)
+    jez.log("+++++++++","target.data.effects", target.data.effects, "effect", effect)
     let effectData = target.data.effects.contents.find(ef => ef.data.label === effect)
     if (effectData) { // Found a Concentraining Effect
-        log(`${target.name} has ${effect} effect`, effectData);
-        log(`effectData._sourceName`, effectData._sourceName)
+        jez.log(`${target.name} has ${effect} effect`, effectData);
+        jez.log(`effectData._sourceName`, effectData._sourceName)
         return(effectData);
     } else {
-        log(`${target.name} lacks ${effect} effect`);
+        jez.log(`${target.name} lacks ${effect} effect`);
         return(false)
     }
 }
@@ -109,14 +108,15 @@ function hasEffect(target, effect) {
  ***************************************************************************************************/
 async function doOff() {
     const FUNCNAME = "doOff()";
-    log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    log(`doOff ---> Delete ${ATTACK_ITEM} from ${aToken.name} if it exists`, aActor)
-    await deleteItem(ATTACK_ITEM, aActor);
-    log(`doOff ---> Delete the VFX from ${MINION_UNIQUE_NAME}`)
+    jez.log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
+    jez.log(`doOff ---> Delete ${ATTACK_ITEM} from ${aToken.name} if it exists`, aActor)
+    // await deleteItem(ATTACK_ITEM, aActor);
+    await jez.deleteItems(ATTACK_ITEM, "spell", aActor);
+    jez.log(`doOff ---> Delete the VFX from ${MINION_UNIQUE_NAME}`)
     await deleteVFX(MINION_UNIQUE_NAME);
-    log(`doOff ---> Delete ${MINION_UNIQUE_NAME}'s token`)
+    jez.log(`doOff ---> Delete ${MINION_UNIQUE_NAME}'s token`)
     await deleteToken(MINION_UNIQUE_NAME);
-    log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
 
@@ -125,12 +125,11 @@ async function doOff() {
  ***************************************************************************************************/
 async function doOn() {
     const FUNCNAME = "doOn()";
-    log("--------------On---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    log("Nothing to do");
-    log("--------------On---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------On---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("Nothing to do");
+    jez.log("--------------On---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
-
 /***************************************************************************************
  * Function to delete an item from actor
  *
@@ -140,7 +139,7 @@ async function doOn() {
  ***************************************************************************************/
 async function deleteItem(itemName, actor) {
     const FUNCNAME = "deleteItem(itemName, actor)";
-    log("-------------------------------",
+    jez.log("-------------------------------",
         "Starting", `${MACRONAME} ${FUNCNAME}`,
         "itemName", itemName,
         `actor ${actor?.name}`, actor);
@@ -149,34 +148,91 @@ async function deleteItem(itemName, actor) {
     actor = actor ? actor : canvas.tokens.get(args[0].tokenId).actor;
 
     let item = actor.items.find(item => item.data.name === itemName && item.type === "spell")
-    log("*** Item to be deleted:", item);
+    jez.log("*** Item to be deleted:", item);
     if (item == null || item == undefined) {
-        log(`${actor.name} does not have ${itemName}`);
-        log(`${FUNCNAME} returning false`);
+        jez.log(`${actor.name} does not have ${itemName}`);
+        jez.log(`${FUNCNAME} returning false`);
         return (false);
     }
-    log(`${actor.name} had ${item.name}`, item);
-    await aActor.deleteOwnedItem(item._id);
-    log(`${FUNCNAME} returning true`);
+    jez.log(`${actor.name} had ${item.name}`, item);
+    // await aActor.deleteOwnedItem(item._id);                 // Obsoletes as of Foundry 9.x
+    await aActor.deleteEmbeddedDocuments("Item", [item._id])   // Format as of Foundry 9.x 
+    jez.log(`${FUNCNAME} returning true`);
 
-    log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
-
+/***************************************************************************************
+ * Function to delete all copies of a named item of a given type from actor
+ *
+ * Parameters
+ *  - itemName: A string naming the item to be found in actor's inventory
+ *  - subject: actor, token, or token Id to be searched
+ *  - type: type of item to be deleted, e.g. spell, weapon 
+ ***************************************************************************************/
+/*async function deleteItems(itemName, type, subject) {
+    let itemFound = null
+    let message = ""
+    let actor5e = null
+    //----------------------------------------------------------------------------------------------
+    // Validate the subject parameter, stashing it into "actor5e" variable
+    //
+    if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
+        if (subject.constructor.name === "Token5e") actor5e = subject.actor
+        else {
+            if (subject.constructor.name === "Actor5e") actor5e = subject
+            else {
+                message = `Object passed to jez.deleteItems(...) is type 
+                '${typeof (subject)}' must be a Token5e or Actor5e`
+                ui.notifications.error(message)
+                console.log(message)
+                return (false)
+            }
+        }
+    } else {
+        if ((typeof (subject) === "string") && (subject.length === 16))
+            actor5e = jez.getTokenById(subject).actor
+        else {
+            message = `Subject parm passed to jez.deleteItems(...) is not a Token5e, 
+            Actor5e, or Token.id: ${subject}`
+            ui.notifications.error(message)
+            console.log(message)
+            return (false)
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+    // Validate that Type is a string.
+    //
+    if (typeof (type) != "string") {
+        message = `Type parm passed to jez.deleteItems(...) is '${typeof (type)}'.  It
+        must be a string identifying a FoundryVTT item type (e.g. spell, weapon).`
+        ui.notifications.error(message)
+        console.log(message)
+        return (false)
+    }
+    //----------------------------------------------------------------------------------------------
+    // Look for matches and delete them.  Generating a message for each deletion
+    //
+    while (itemFound = actor5e.items.find(item => item.data.name === itemName && 
+            item.type === type)) {
+        jez.log("itemFound", itemFound)
+        await itemFound.delete();
+        msg = `Deleted ${type} ${itemName}`      // Set notification message
+        ui.notifications.info(msg);
+        jez.log(msg);
+    }
+}*/
 /***************************************************************************************************
  * Delete a specified token from the scene using a RunAsGM Macro
  ***************************************************************************************************/
 async function deleteToken(minion) {
-    const FUNCNAME = "deleteToken(minion)";
+    const FUNCNAME = `deleteToken(${minion})`;
     const RUNASGMMACRO = "DeleteTokenMacro";
-    log("-----------------------------------",
-        "Starting", `${MACRONAME} ${FUNCNAME}`,
-        "minion", minion);
-
+    jez.log(`----Starting ${MACRONAME} ${FUNCNAME} -----`)
     let delToken = await findTokenByName(minion)
     if (!delToken) {
-        log("Found only tears")
-        log("------------------------------ ", "Premature End", `${MACRONAME} ${FUNCNAME}`);
+        jez.log("Found only tears")
+        jez.log("------------------------------ ", "Premature End", `${MACRONAME} ${FUNCNAME}`);
         return (false);
     }
     //----------------------------------------------------------------------------------------------
@@ -184,18 +240,16 @@ async function deleteToken(minion) {
     //
     // await wait(2000)
     game.macros.getName(RUNASGMMACRO).execute(delToken);
-
-    log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
-
 /***************************************************************************************************
  * Delete a specified token from the scene using a RunAsGM Macro
  ***************************************************************************************************/
  async function deleteVFX(minion) {
     const FUNCNAME = "executeSummon(minion)";
     const RUNASGMMACRO = "DeleteTokenMacro";
-    log("-----------------------------------",
+    jez.log("-----------------------------------",
         "Starting", `${MACRONAME} ${FUNCNAME}`,
         "minion", minion);
     let delToken = ""
@@ -203,18 +257,18 @@ async function deleteToken(minion) {
     // Find the token that matchs the specified name.  Return if not found.
     //
     let eToken = await findTokenByName(minion)
-    log(`eToken ${eToken.name}`, eToken);
+    jez.log(`eToken ${eToken.name}`, eToken);
     if (!eToken) {
-        log("Found only tears")
-        log("------------------------------ ", "Premature End", `${MACRONAME} ${FUNCNAME}`);
+        jez.log("Found only tears")
+        jez.log("------------------------------ ", "Premature End", `${MACRONAME} ${FUNCNAME}`);
         return (false);
     }
     //----------------------------------------------------------------------------------------------
     // Make the call to end the token effects
     //
-    log("eToken._object", eToken._object)
+    jez.log("eToken._object", eToken._object)
     await Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: eToken });
-    log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 }
 
@@ -223,7 +277,7 @@ async function deleteToken(minion) {
  ***************************************************************************************************/
 async function findTokenByName(name) {
     const FUNCNAME = "findTokenByName(name)";
-    log("-----------------------------------",
+    jez.log("-----------------------------------",
         "Starting", `${MACRONAME} ${FUNCNAME}`,
         "name", name)
     let targetToken = ""
@@ -232,40 +286,15 @@ async function findTokenByName(name) {
     //
     let ownedTokens = canvas.tokens.ownedTokens
     for (let i = 0; i < ownedTokens.length; i++) {
-        // log(`  ${i}) ${ownedTokens[i].name}`, ownedTokens[i]);
+        // jez.log(`  ${i}) ${ownedTokens[i].name}`, ownedTokens[i]);
         if (name === ownedTokens[i].name) {
-            // log("Eureka I found it!")
+            // jez.log("Eureka I found it!")
             targetToken = ownedTokens[i]
             break;
         }
     }
-    if (targetToken) log(`${name}'s token has been found`, targetToken)
-    else log(`${name}'s token was not found :-(`)
-    log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    if (targetToken) jez.log(`${name}'s token has been found`, targetToken)
+    else jez.log(`${name}'s token was not found :-(`)
+    jez.log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (targetToken);
 }
-
-/****************************************************************************************
- * DEBUG Logging
- * 
- * If passed an odd number of arguments, put the first on a line by itself in the log,
- * otherwise print them to the log seperated by a colon.  
- * 
- * If more than two arguments, add numbered continuation lines. 
- ***************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], ":", parms[i + 1]);
-    } else {            // Even number of arguments
-        console.log(parms[i], ":", parms[i + 1]);
-        i = 2;
-        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], ":", parms[i + 1]);
-    }
-}
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }

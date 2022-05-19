@@ -778,6 +778,66 @@ class jez {
         if (!charLevel) charLevel = actor5e.data.data.details.cr
         return (charLevel)
     }
+    /***************************************************************************************
+     * Function to delete all copies of a named item of a given type from actor
+     *
+     * Parameters
+     *  - itemName: A string naming the item to be found in actor's inventory
+     *  - subject: actor, token, or token Id to be searched
+     *  - type: type of item to be deleted, e.g. spell, weapon 
+     ***************************************************************************************/
+    static async deleteItems(itemName, type, subject) {
+        let itemFound = null
+        let message = ""
+        let actor5e = null
+        //----------------------------------------------------------------------------------------------
+        // Validate the subject parameter, stashing it into "actor5e" variable
+        //
+        if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
+            if (subject.constructor.name === "Token5e") actor5e = subject.actor
+            else {
+                if (subject.constructor.name === "Actor5e") actor5e = subject
+                else {
+                    message = `Object passed to jez.deleteItems(...) is type 
+                '${typeof (subject)}' must be a Token5e or Actor5e`
+                    ui.notifications.error(message)
+                    console.log(message)
+                    return (false)
+                }
+            }
+        } else {
+            if ((typeof (subject) === "string") && (subject.length === 16))
+                actor5e = jez.getTokenById(subject).actor
+            else {
+                message = `Subject parm passed to jez.deleteItems(...) is not a Token5e, 
+            Actor5e, or Token.id: ${subject}`
+                ui.notifications.error(message)
+                console.log(message)
+                return (false)
+            }
+        }
+        //----------------------------------------------------------------------------------------------
+        // Validate that Type is a string.
+        //
+        if (typeof (type) != "string") {
+            message = `Type parm passed to jez.deleteItems(...) is '${typeof (type)}'.  It
+        must be a string identifying a FoundryVTT item type (e.g. spell, weapon).`
+            ui.notifications.error(message)
+            console.log(message)
+            return (false)
+        }
+        //----------------------------------------------------------------------------------------------
+        // Look for matches and delete them.  Generating a message for each deletion
+        //
+        while (itemFound = actor5e.items.find(item => item.data.name === itemName &&
+            item.type === type)) {
+            jez.log("itemFound", itemFound)
+            await itemFound.delete();
+            message = `Deleted ${type}: "${itemName}"`      // Set notification message
+            ui.notifications.info(message);
+            jez.log(message);
+        }
+    }
     /***************************************************************************************************
      * Define static constants for use by other functions.  They are accessed like..
      * 
