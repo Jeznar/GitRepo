@@ -4,7 +4,7 @@
   "img": "icons/magic/nature/root-vine-thorned-coil-green.webp",
   "data": {
     "description": {
-      "value": "<p>You create a long, vine-like whip covered in thorns that lashes out at your command toward a creature in range. Make a melee spell attack against the target. If the attack hits, the creature takes 1d6 piercing damage, and if the creature is Large or smaller, you pull the creature up to 10 feet closer to you.</p>\n<p>The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).</p>",
+      "value": "<p>You create a long, vine-like whip covered in thorns that lashes out at your command toward a creature in range.</p>\n<p>Make a&nbsp;<strong>melee spell attack</strong>&nbsp;against the target. If the attack hits, the creature takes&nbsp;<strong>1d6 piercing damage</strong>, and if the creature is&nbsp;<strong>Large or smaller</strong>, you&nbsp;<strong>pull the creature up to 10 feet closer to you</strong>.</p>\n<p>The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).</p>",
       "chat": "<p>You create a long, vine-like whip covered in thorns that lashes out at your command toward a creature in range. Make a melee spell attack against the target. If the attack hits, the creature takes 1d6 piercing damage, and if the creature is Large or smaller, you pull the creature up to 10 feet closer to you.</p>\n<p>The spell's damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).</p>",
       "unidentified": ""
     },
@@ -40,7 +40,7 @@
       "amount": null
     },
     "ability": "",
-    "actionType": "rsak",
+    "actionType": "msak",
     "attackBonus": "0",
     "chatFlavor": "",
     "critical": {
@@ -88,7 +88,6 @@
     }
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "ddbimporter": {
       "id": 138847,
@@ -135,7 +134,8 @@
     },
     "midi-qol": {
       "criticalThreshold": "20",
-      "onUseMacroName": "ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "enhancedcombathud": {
       "set1p": false,
@@ -228,11 +228,22 @@
         "type": ""
       }
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
       "world": "travels-in-barovia",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
     }
   }
 }
