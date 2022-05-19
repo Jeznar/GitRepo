@@ -19,6 +19,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Protection from Energy](#protection-from-energy)
 * [Remove Curse](#remove-curse)
 * [Revivify](#revivify)
+* [Slow](#slow)
 * [Speak with Dead](#speak-with-dead)
 * [Spirit Guardians](#spirit-guardians)
 * [Summon Fey](#summon-fey)
@@ -220,6 +221,24 @@ Spell plays a RuneVFX on the target effects (if any) are left to the GM.
 Fairly generic spell implementation.  A minor Automated Animations effect applied and a new spell component, [Diamond](../../Items#components), added to the spell components inventory.  This requires that the spell be adjusted after it is added to the character sheet to use the Diamond component.
 
 ![Revivify_Description.png](Revivify/Revivify_Description.png)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Slow
+
+This spell targets a 40 foot cube but only affects targets of the caster's choosing.  I've opted to skip automation of the cube element, instead requiring that the targets be pre-selected when the spell is cast and proceeding from there.
+
+The end of turn saves are handled by a DAE Overtime effect of the form:
+
+~~~
+flags.midi-qol.OverTime
+Add
+turn=end,label=Shrug off Slow Effect,saveDC=@attributes.spelldc,saveAbility=wis
+~~~
+
+An every turn (at start) ItemMacro is used to post a reminder message to the chat log about the effects of slow.
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

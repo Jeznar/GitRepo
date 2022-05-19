@@ -120,6 +120,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Protection from Energy](3rd_Level#protection-from-energy)
 * [Remove Curse](3rd_Level#remove-curse)
 * [Revivify](3rd_Level#revivify)
+* [Slow](3rd_Level#slow)
 * [Speak with Dead](3rd_Level#speak-with-dead)
 * [Spirit Guardians](3rd_Level#spirit-guardians)
 * [Summon Fey](3rd_Level#summon-fey)

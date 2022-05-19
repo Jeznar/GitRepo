@@ -7,8 +7,8 @@ console.log(MACRONAME)
  *   her must succeed on a DC 13 Wisdom saving throw or be frightened for 1 minute. A 
  *   frightened target can repeat the saving throw at the end of each of its turns, with 
  *   disadvantage if the banshee is within line of sight, ending the effect on itself on a 
- *   success. If a target’s saving throw is successful or the effect ends for it, the 
- *   target is immune to the banshee’s Horrifying Visage for the next 24 hours.
+ *   success. If a target's saving throw is successful or the effect ends for it, the 
+ *   target is immune to the banshee's Horrifying Visage for the next 24 hours.
  * 
  * 01/01/21 0.1 Creation of Macro
  *****************************************************************************************/
