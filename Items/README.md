@@ -13,6 +13,7 @@ Since there should eventually be a enourmous number of things in this repo, I ha
 * [Items](#items)
 * [Potions](#potions)
 * [Spell Scrolls](#spell-scrolls)
+* [Tools](#tools)
 * [Weapons](#weapons)
 
 ---
@@ -202,14 +203,35 @@ Spell scrolls are rather kludgey.  They don't show up in the HUD that I use, so 
 ___
 
 
-## Weapons
+## Spell Scrolls
 
-Weapon Items crafted for the game get listed here
+Spell scrolls are rather kludgey.  They don't show up in the HUD that I use, so they have to be used from the character sheet.  Also, they need to have the *Magic Item* tab filled out so they will destroy themselves properly.
 
-* [Blood Staff](#blood-staff)
-* [Gulthias Staff](#gulthias-staff)
-* [Shortsword, Crusading](#shortsword-crusading)
-* [Treebane](#treebane)
+**Scrolls that I have built**
+
+* Cone of Cold
+* Fireball
+* Lightning Bolt
+* Magic Circle
+* Raise Dead
+
+![Magic_Circle_Magic.png](Spell_Scroll/Magic_Circle/Magic_Circle_Magic.png) 
+
+___
+
+## Tools
+
+Simple Tool Implementations
+
+* [Thieves' Tools](#thieves-tools)
+
+### Thieves' Tools
+
+Simple implementation that adds proficiency iff the item is marked proficient in the item's (not character's) data sheets.
+
+![Thieves_Tools_Details.png](Tools/Thief_Tools/Thieves_Tools_Details.png)
+
+![Thieves_Tools_Chat.png](Tools/Thief_Tools/Thieves_Tools_Chat.png)
 
 ---
 

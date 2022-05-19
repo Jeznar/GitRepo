@@ -1,0 +1,82 @@
+{
+  "name": "Thieves' Tools",
+  "type": "tool",
+  "img": "/systems/dnd5e/icons/items/inventory/lockpick.jpg",
+  "data": {
+    "description": {
+      "value": "<p>This set of tools includes a small file, a set of lock picks, a small mirror mounted on a metal handle, a set of narrow-bladed scissors, and a pair of pliers.</p>\n<p>Proficiency with these tools lets you add your proficiency bonus to any ability checks you make to disarm traps or open locks.</p>",
+      "chat": "<p>This set of tools includes a small file, a set of lock picks, a small mirror mounted on a metal handle, a set of narrow-bladed scissors, and a pair of pliers. Proficiency with these tools lets you add your proficiency bonus to any ability checks you make to disarm traps or open locks.</p>",
+      "unidentified": "Gear"
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 1,
+    "price": 25,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "common",
+    "identified": true,
+    "toolType": "",
+    "baseItem": "thief",
+    "ability": "dex",
+    "chatFlavor": "Attempt to use Thieves' Tools in some creative or nefarious manner...",
+    "proficient": 0,
+    "bonus": "",
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "critical": {
+      "threshold": null,
+      "damage": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {
+        "type": "Tool",
+        "tags": [
+          "Utility",
+          "Exploration"
+        ],
+        "sources": []
+      },
+      "id": 0,
+      "entityTypeId": 0,
+      "definitionEntityTypeId": 2103445194,
+      "definitionId": 126,
+      "originalName": "Thieves' Tools"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "cf": {
+      "id": "temp_i1ezvj5quke"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.items.MroG3wIczTr0pGrD"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
