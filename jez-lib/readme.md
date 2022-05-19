@@ -25,6 +25,7 @@ The small bundle of files that make up this module need to be paced on the serve
 The functions currently included in this module are:
 
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
+* **[jez.deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
 * **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
 * **[jez.getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
@@ -89,6 +90,26 @@ jez.addMessage(chatMessage, {color:"crimson", fSize:15, msg:msg, tag:"other" })
 The above, will generate a message such as the following:
 
 ![addMessage_example](images/addMessage_example.png)
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### deleteItems(itemName, type, subject)
+
+Function to delete all copies of a named item of a given type from actor
+
+Parameters
+
+- **itemName**: A string naming the item to be found in actor's inventory
+- **subject**: actor, token, or token Id to be searched
+- **type**: type of item to be deleted, e.g. spell, weapon 
+
+A brief deletion messages is popped for each item deleted. Sample call:
+
+```javascript
+await jez.deleteItems(ATTACK_ITEM, "spell", aActor);
+```
 
 [*Back to Functions list*](#functions-in-this-module)
 
