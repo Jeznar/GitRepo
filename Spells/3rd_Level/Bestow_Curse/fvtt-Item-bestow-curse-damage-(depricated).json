@@ -1,0 +1,140 @@
+{
+  "name": "Bestow Curse Damage (Depricated)",
+  "type": "spell",
+  "img": "Icons_JGB/Misc/curse.png",
+  "data": {
+    "description": {
+      "value": "<p><strong>FoundryVTT</strong>: Use this ability to apply the extra damage provided by @Item[nFtuHLOZs0e4jt5I]{Bestow Curse!} spell each time you inflict damage through other means to a cursed target.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": false,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "innate",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Bestow Curse Damage",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Bestow_Curse_Damage_0.1\"\n/*****************************************************************************************\n * Implementation of a extra damage portion of Bestow Curse Spell\n *  \n * 12/14/21 0.1 Creation of Macro\n *****************************************************************************************/\nconst DEBUG = true;\nif (DEBUG) {\n    console.log(`************ Executing ${MACRONAME} ****************`)\n    console.log(`tag ${args[0].tag}, args[0]:`,args[0]);\n}\n\nconst EFFECT = \"Cursed\";\nlet targetD = canvas.tokens.get(args[0].targets[0]?.id);\nlet msg = \"\";\n\nlet actorD = game.actors.get(args[0].actor._id);\nlet tokenD = canvas.tokens.get(args[0].tokenId).actor;\n\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nconst lastArg = args[args.length - 1];\nlet target = canvas.tokens.get(args[0].targets[0].id);\nlet itemD = args[0].item;\n// let tokenD = canvas.tokens.get(args[1]);\n\n\nif (DEBUG) {\n    console.log(` target `, target);\n    console.log(` itemD `, itemD);\n    console.log(` tokenD`, tokenD);\n}\n\nif (args[0] === \"off\") doOff();         // DAE removal (unused)\nif (args[0] === \"on\") doOn();           // DAE Application (unused)\nif (args[0].tag === \"OnUse\") doOnUse(); // Midi ItemMacro On Use\n\nreturn;\n\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n\n /***************************************************************************************\n * Code to execute on onUse ItemMacro\n ***************************************************************************************/\n  async function doOnUse() {\n    if (DEBUG) console.log(`Executing doOnUse()`);\n    if (!oneTarget) { postResults(msg); return; }\n    if (!hasEffect(targetD, EFFECT))  { postResults(msg); return; }\n    dealDamage();\n    msg = `<b>${target.name}</b> takes additional damage from the curse it carries.`\n    await postResults(msg);\n\n    if (DEBUG) console.log(`Finised doOnUse()`);\n}\n\n/************************************************************************\n * Verify exactly one target selected, boolean return\n*************************************************************************/\nfunction oneTarget() {\n    if (!game.user.targets) {\n        msg = `Targeted nothing, must target single token to be acted upon`;\n        if (DEBUG) console.log(msg);\n        return (false);\n    }\n    if (game.user.targets.ids.length != 1) {\n        msg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n        if (DEBUG) console.log(msg);\n        return (false);\n    }\n    if (DEBUG) console.log(`targeting one target`);\n    return (true);\n}\n\n/************************************************************************\n * Check to see if target has named effect. Return boolean result\n*************************************************************************/\nfunction hasEffect(target, effect) {\n    if (target.actor.effects.find(ef => ef.data.label === effect)) {\n        msg = `${target.name} has ${effect} effect.`;\n        if (DEBUG) console.log(msg);\n        return(true);\n    } else {\n        msg = `${target.name} lacks ${effect} effect.`\n        if (DEBUG) console.log(msg);\n        return(false)\n    }\n}\n\n/***************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\n async function postResults(resultsString) {\n    const lastArg = args[args.length - 1];\n\n    let chatMessage = game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    if (DEBUG) console.log(`chatMessage: `,chatMessage);\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}\n\n /***************************************************************************************\n * Apply Damage\n ***************************************************************************************/\nasync function dealDamage() {\n    if (DEBUG) {\n        console.log(`*** EXECUTING dealDamage()...`);\n        console.log(` tokenD: `, tokenD);\n    }\n    await wait(100);\n\n    const DAMAGETYPE = \"necrotic\";\n    let damageRoll = new Roll(`1d8`).evaluate({ async: false });\n\n    if (DEBUG) console.log(` Damage Total: ${damageRoll.total} Type: ${DAMAGETYPE}`);\n    if (DEBUG > 1) {\n        console.log('actorD', actorD);\n        console.log('tokenD', tokenD);\n        console.log('target', target);\n        console.log(`itemD`, itemD);\n        console.log(`target name ${target.name}`);\n        console.log(`item name: ${itemD.name}`);\n    }    \n    game.dice3d?.showForRoll(damageRoll);\n    new MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, DAMAGETYPE,\n        [target], damageRoll, {\n        flavor: `(${CONFIG.DND5E.damageTypes[DAMAGETYPE]})`,\n        itemData: itemD, itemCardId: args[0].itemCardId\n        }\n    );\n    if (DEBUG) console.log(`damageRoll.total `, damageRoll.total);\n    return;\n}\n\n/***************************************************************************************\n * Code to execute on effect application\n ***************************************************************************************/\n async function doOn() {\n    if (DEBUG) console.log(`Executed doOn()`);\n    ui.notifications.error(`Oddly, doOn() was called within ${MACRONAME}`);\n    return;\n}\n\n/***************************************************************************************\n * Code to execute on effect removal \n ***************************************************************************************/\nasync function doOff() {\n    if (DEBUG) console.log(`Executed doOff()`);\n    ui.notifications.error(`Oddly, doOff() was called within ${MACRONAME}`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.p2uPVOtv8QXdKbl5"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
