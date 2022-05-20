@@ -29,6 +29,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Decaying Touch](Cantrips#decaying-touch)
 * [Eldritch Blast](Cantrips#eldritch-blast)
 * [Fire Bolt](Cantrips#fire-bolt)
+* [Guidance](Cantrips#guidance)
 * [Guided Strike](Cantrips#guided-strike)
 * [Infestation](Cantrips#infestation)
 * [Light](Cantrips#light)

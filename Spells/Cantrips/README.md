@@ -12,6 +12,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Druid Craft](#druid-craft)
 * [Eldritch Blast](#eldritch-blast)
 * [Fire Bolt](#fire-bolt)
+* [Guidance](#guidance)
 * [Guided Strike](#guided-strike)
 * [Infestation](#infestation)
 * [Light](#light)
@@ -130,6 +131,14 @@ The repo has corresponding colored icons.
 **Reminder**: For NPC's cantrips need to be scaled manually as they have no level for automated scaling.
 
 ![fire-bolt](Fire_Bolt/Fire_Bolt.gif)
+
+---
+
+### Guidance
+
+22.05.20: This spell as implemented in the DAE samples allows the buff to stack (when cast from different sources) and allows the Concentration effect to remain on the original caster when the buff is used.  This implementation handles those cases and adds a couple (hopefully) useful chat messages to keep players informed as to what is happening.  
+
+[*Back to Cantrips List*](#cantrips)
 
 ---
 
