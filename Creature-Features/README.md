@@ -38,6 +38,7 @@ I'll try to document functions as I add them to the repository.
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
+* **[Slow, Golem](#slow-golem)** -- Golem slow ability mimicing the spell effect
 * **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
@@ -394,6 +395,14 @@ This ability has the user place a targeting, makes con checks for those in the a
 ### **Shapechange, Baba Lysaga**
 
 Simple configuration of the ability with reminder to use the drop to shift feature of FoundryVTT.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Slow, Golem**
+
+This is an implementation of the Slow Spell for Golems (Stone and Amber).  The effects are set to match the spell not the Stone Golem's RAW description that missed some elements that just feel like they should have been included.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

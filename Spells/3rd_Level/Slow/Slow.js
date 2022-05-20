@@ -62,9 +62,11 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     const FUNCNAME = "doEach()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     jez.postMessage({color: jez.randomDarkColor(), 
-        fSize: 14, 
+        fSize: 12, 
         icon: aToken.data.img, 
-        msg: `${aToken.name} is under the effects of Slow.`, 
+        msg: `${aToken.name} is under the effects of Slow.  It can not use reaction. It can use either 
+        an action or a bonus action. It can make no more than one melee or ranged attack this
+        turn. Spells have a 50% chance of being delayed (see spell description).`,
         title: `Still Slowed!`, 
         token: aToken})
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);

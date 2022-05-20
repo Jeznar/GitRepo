@@ -1,0 +1,206 @@
+{
+  "name": "Slow (Golem)",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/fog-magenta-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>The golem targets one or more creatures it can see within 10 ft. of it. Each target must make a DC 17 Wisdom saving throw against this magic. On a failed save, a target is slowed. </p>\n<p><em>The following affects match the Slow spell, RAW the Golem's slow is different.</em></p>\n<p><strong>Slowed</strong> creature suffer the following effects:</p>\n<ul>\n<li>speed is <strong>halved</strong>,</li>\n<li>-2 penalty to <strong>AC</strong> and</li>\n<li>-2 penalty on <strong>Dexterity</strong> saving throws, and</li>\n<li>Afflicted can <strong>not use reactions</strong>.</li>\n<li>Afflicted can use <strong>either</strong> an action <strong>or</strong> a bonus action, <strong>not both</strong>.</li>\n<li>Regardless of the creature’s abilities or magic items, it can’t make more than <strong>one melee or ranged attack </strong>during its turn.</li>\n<li>If the creature attempts to <strong>cast a spell</strong> with a casting time of 1 action, roll a d20. On an 10 or lower, the spell doesn’t take effect until the creature’s next turn, and the creature must use its action on that turn to complete the spell. If it can’t, the spell is wasted.</li>\n</ul>\n<p>A creature affected by this spell makes another Wisdom saving throw at the end of its turn. On a successful save, the effect ends for it.</p>\n<hr style=\"border-top:1px solid var(--color-border-light-primary);border-bottom:1px solid var(--color-border-light-highlight)\" />\n<p><strong>FoundryVTT</strong>: Caster must manual target the six desired targets before casting the spell.  Players are responsible for the 10 foot range check. The first three affects are automated, the remainder need to be handled manually.</p>\n<p> </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 10,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 17,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 5,
+      "charged": true
+    },
+    "attunement": 0
+  },
+  "effects": [
+    {
+      "_id": "ywtvklog64opliwb",
+      "changes": [
+        {
+          "key": "data.attributes.ac.bonus",
+          "mode": 2,
+          "value": "-2",
+          "priority": "20"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "/2",
+          "priority": "20"
+        },
+        {
+          "key": "data.abilities.dex.save",
+          "mode": 2,
+          "value": "-2",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 2,
+          "value": "turn=end,label=Shrug off Slow Effect,saveDC=@attributes.spelldc,saveAbility=wis",
+          "priority": "20"
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/spells/fog-magenta-2.jpg",
+      "label": "Slow (Golem)",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "startEveryTurn",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "data.attributes.ac.bonus",
+        "data.attributes.movement.all",
+        "data.abilities.dex.save",
+        "flags.midi-qol.OverTime",
+        "macro.itemMacro"
+      ]
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.OTQ0OWUyZTBhN2E2"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Slow (Golem)",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Slow.0.1.js\"\n/*****************************************************************************************\n * Macro is intended to be fired as an ItemMacro everyturn by tokens afflicted by slow.\n * \n * 05/17/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\n//if (args[0] === \"on\") await doOn();                     // DAE Application\n//if (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\n// DamageBonus must return a function to the caller\n//if (args[0]?.tag === \"DamageBonus\") return(doBonusDamage());    \njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\n async function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.postMessage({color: jez.randomDarkColor(), \n                fSize: 14, \n                icon: aToken.data.img, \n                msg: `${aToken.name} has been released from the effects of Slow.`, \n                title: `No longer slowed!`, \n                token: aToken})\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked each round by DAE\n ***************************************************************************************************/\n async function doEach() {\n    const FUNCNAME = \"doEach()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.postMessage({color: jez.randomDarkColor(), \n        fSize: 12, \n        icon: aToken.data.img, \n        msg: `${aToken.name} is under the effects of Slow.  It can not use reaction. It can use either \n        an action or a bonus action. It can make no more than one melee or ranged attack this\n        turn. Spells have a 50% chance of being delayed (see spell description).`,\n        title: `Still Slowed!`, \n        token: aToken})\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
