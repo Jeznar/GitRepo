@@ -14,8 +14,9 @@ I'll try to document functions as I add them to the repository.
 * **[Blessing of the Mother Night](#blessing-of-the-mother-night)** -- Baba Lysaga ability
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
 * **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
-* **[Clay Golem Haste](@clay-golem-haste)** -- Applies a DAE Effect
-* **[Clay Golem Slam](@clay-golem-slam)** -- Reduces targets hit points by amount of damage inflicted
+* **[Charge, Sangzor](#charge-sangzor)** -- Implement Sangzor's charge
+* **[Clay Golem Haste](#clay-golem-haste)** -- Applies a DAE Effect
+* **[Clay Golem Slam](#clay-golem-slam)** -- Reduces targets hit points by amount of damage inflicted
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
@@ -119,6 +120,32 @@ Essentially just the Druid Wild Shape ability reskinned.
 
 ---
 
+### **Charge, Sangor**
+
+Sangor's charge that applies a CUB effect via DAE on a failed save in addition to the damage component.
+
+![Charge_Details.png](Charge_Sangzor/Charge_Details.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Clay Golem Haste**
+
+Simple macro that applies a DAE effect to implement Golem's haste ability.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Clay Golem Slam**
+
+Simple macro that applies a DAE effect to reduce target's max hit points by same amount as damage inflicted.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Constrict**
 
 Implements Vine Blight's ability to attack and automatically initiate a grapple of targets size large or smaller.
@@ -146,22 +173,6 @@ The idea is add one (or more) of these to handle the special shared spell pool. 
 Its not an ideal solution, but this feels practical to me.
 
 ![Coven_Casting/Coven.png](Coven_Casting/Coven.png)
-
-*[Back to the Table of Contents](#abilities-in-this-repo)*
-
----
-
-### **Clay Golem Haste**
-
-Simple macro that applies a DAE effect to implement Golem's haste ability.
-
-*[Back to the Table of Contents](#abilities-in-this-repo)*
-
----
-
-### **Clay Golem Slam**
-
-Simple macro that applies a DAE effect to reduce target's max hit points by same amount as damage inflicted.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
