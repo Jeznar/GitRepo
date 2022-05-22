@@ -9,6 +9,7 @@ This repo holds item macros and such.  Mostly, but perhaps, not entirely magic i
 
 Since there should eventually be a enourmous number of things in this repo, I have broken it up into subdirectories.  I'll keep all the README information in this file until and if there gets to be enough to warrent breaking them up like I have for spells.
 
+* [Ammunition](#amunition)
 * [Components](#components)
 * [Items](#items)
 * [Potions](#potions)
@@ -17,6 +18,14 @@ Since there should eventually be a enourmous number of things in this repo, I ha
 * [Weapons](#weapons)
 
 ---
+
+## Ammunition
+
+Some of the ammunition items that have been built are shown below.  Remember that the item that uses an ammunition must be altered to actually use an ammunition **after** both are added to an actor's sheet.
+
+* Sling Bullet +1
+
+___
 
 ## Components
 
