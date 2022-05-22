@@ -44,6 +44,7 @@ This is a generic catch all for things that don't fit into other categories.
 * [Doss Lute](#doss-lute)
 * [Icon of Ravenloft](#icon-of-ravenloft)
 * [Helm of Brilliance](#helm-of-brillance)
+* [Pipes of Haunting](#pipes-of-haunting)
 * [Ring of Mind Shielding](#ring-of-mind-shielding)
 * [Rod of the Pact Keeper](#rod-of-the-pact-keeper)
 
@@ -114,7 +115,7 @@ ___
 
 ### Helm of Brilliance
 
-This is a not baked implementation. Most everything needs manual effort.
+This is a not baked implementation. Everything needs manual effort.
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 
@@ -123,6 +124,20 @@ This is a not baked implementation. Most everything needs manual effort.
 ### Ring of Mind Shielding
 
 Item simply places a DAE effect on the attuned creature with a GM note saying effects are to be handled manually.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+
+### Pipes of Haunting
+
+Basic implementation of this magic item.  It uses a CUB effect to apply frightened to all tokens that fail their save, including the originator.  This will need to be **manually** corrected by deleting the *Pipes of Haunting* effect from the caster (on a failed save) and all non-hostile (if the user picks that option).
+
+I tried to use the *enemy* target type to pick up the hostile element, but couldn't get it to work.  This could be done in a macro, but since I doubt my group will have proficiency for this item, I'll just let it be with a basic implementation.
+
+~~~javascript
+turn=end,label=Save against Pipe's fear,saveDC=15,saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save
+~~~
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 

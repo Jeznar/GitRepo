@@ -1,0 +1,174 @@
+{
+  "name": "Pipes of Haunting",
+  "type": "consumable",
+  "img": "icons/tools/instruments/flute-simple-wood.webp",
+  "data": {
+    "description": {
+      "value": "<p>You must be proficient with wind instruments to use these pipes.</p>\n<p>They have 3 charges. You can use an action to play them and expend 1 charge to create an eerie, spellbinding tune.</p>\n<p>Each creature within 30 feet of you that hears you play must succeed on a DC <strong>15 WIS Save</strong> or become @JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} of you for 1 minute. If you wish, all creatures in the area that aren't hostile toward you automatically succeed on the saving throw.</p>\n<p>A creature that fails the saving throw can <strong>repeat it at the end of each of its turns</strong>, ending the effect on itself on a success. A creature that succeeds on its saving throw is immune to the effect of these pipes for 24 hours.</p>\n<p>The pipes <strong>regain 1d3 expended charges</strong> daily at dawn.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Allowing no-hostile creatures to auto save is not automated.  Recharging this item at dawn is not automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "DMG pg. 185",
+    "quantity": 1,
+    "weight": 1,
+    "price": 6000,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "uncommon",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": "Proficiency with wind instruments."
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 30,
+      "width": null,
+      "units": "ft",
+      "type": "creature"
+    },
+    "range": {
+      "value": 30,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 2,
+      "max": "3",
+      "per": "day",
+      "autoDestroy": false,
+      "autoUse": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 15,
+      "scaling": "flat"
+    },
+    "consumableType": "trinket",
+    "attributes": {
+      "spelldc": 10
+    }
+  },
+  "effects": [
+    {
+      "_id": "9q19xgzmj4ac44i3",
+      "changes": [
+        {
+          "key": "macro.CUB",
+          "mode": 0,
+          "value": "Frightened",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 0,
+          "value": "turn=end,label=Save against Pipe's fear,saveDC=15,saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60,
+        "rounds": 10
+      },
+      "icon": "icons/tools/instruments/flute-simple-wood.webp",
+      "label": "Pipes of Haunting",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "macro.CUB",
+        "flags.midi-qol.OverTime"
+      ]
+    }
+  ],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.items.oNLfJNRQgUHpU8c7"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": true,
+      "equipped": false,
+      "attuned": false,
+      "charges": "3",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": true,
+      "recharge": "1d3",
+      "rechargeType": "t2",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

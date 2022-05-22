@@ -16,6 +16,9 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.22 **[Sling Bullet +1](../Items#ammunition)**
 
+22.05.22 **[Pipes of Haunting](../Items#pipes-of-haunting)**
+
+
 
 
 
