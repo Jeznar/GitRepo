@@ -1,9 +1,8 @@
-const MACRONAME = "Cure_Wounds.0.2.js"
+const MACRONAME = "Cure_Wounds.js"
 /*****************************************************************************************
  * Make sure only one target was targeted and run a runVFX on that target
  * 
  * 03/30/22 0.1 Creation of Macro
- * 05/22/22 0.2 Added message about need to manually backout ineligible heals
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -50,9 +49,7 @@ async function doOnUse() {
     //
     let immuneRaces = ["undead", "construct"];  // Set strings that define immune races
     if (checkType(tToken, immuneRaces)) {
-        msg = `${tToken.name} appears to be unaffected by ${aItem.name}. Heal needs to be manually
-        reversed.`
-        ui.notifications.info(msg)
+        msg = `${tToken.name} appears to be unaffected by ${aItem.name}.`
         postResults(msg);
         return (false);
     }
