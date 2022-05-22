@@ -1,11 +1,20 @@
-const MACRONAME = "Cure_Wounds.js"
+const MACRONAME = "Mass_Cure_Wounds.0.1.js"
 /*****************************************************************************************
- * Make sure only one target was targeted and run a runVFX on that target
+ * Make sure up to six targets were targeted and run a runVFX on that target
  * 
- * 03/30/22 0.1 Creation of Macro
+ *   A wave of healing energy washes out from a point of your choice within range. Choose 
+ *   up to six creatures in a 30-foot-radius sphere centered on that point. Each target 
+ *   regains hit points equal to 3d8 + your spellcasting mod. This spell has no effect on 
+ *   undead or constructs.
+ * 
+ *   At Higher Levels. When you cast this spell using a spell slot of 6th level or higher, 
+ *   the healing increases by 1d8 for each slot level above 5th.
+ * 
+ * 05/22/22 0.1 Creation of Macro
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
@@ -24,9 +33,16 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
 function preCheck() {
-    if (args[0].targets.length !== 1) {     // If not exactly one target, return
-        msg = `Sadly, something went sideways. Must target exactly least one target, targeted 
-        ${args[0].targets.length}.`
+    if (args[0].targets.length === 0) {     // If not at least one target, return
+        msg = `Must target exactly least one target.`
+        ui.notifications.info(msg)
+        postResults(msg);
+        return (false);
+    }
+    if (args[0].targets.length > 6) {       // If not 6 or less targets, return
+        msg = `Must target no more than 6 targets, targeted ${args[0].targets.length}. 
+        Manual cleanup needed.`
+        ui.notifications.warn(msg)
         postResults(msg);
         return (false);
     }
@@ -36,28 +52,33 @@ function preCheck() {
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function doOnUse() {
+    let immuneMsg = ""
     //----------------------------------------------------------------------------------
     // Run the preCheck function to make sure things are setup as best I can check them
     //
     if (!preCheck()) return;
     //----------------------------------------------------------------------------------
-    // Set the tToken
+    // Loop through the targeted tokens
     //
-    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // Targeted Token
-    //-----------------------------------------------------------------------------------------------
-    // If target is immune type, post appropriate message and exit
-    //
-    let immuneRaces = ["undead", "construct"];  // Set strings that define immune races
-    if (checkType(tToken, immuneRaces)) {
-        msg = `${tToken.name} appears to be unaffected by ${aItem.name}.`
-        postResults(msg);
-        return (false);
+    for (let i = 0; i < args[0].targets.length; i++) {
+        //----------------------------------------------------------------------------------
+        // Set the tToken
+        //
+        let tToken = canvas.tokens.get(args[0]?.targets[i]?.id); // Targeted Token
+        jez.log(`Processing ${tToken.name}`, tToken)
+        //-----------------------------------------------------------------------------------------------
+        // If target is immune type, add appropriate message else run the VFX
+        //
+        let immuneRaces = ["undead", "construct"];  // Set strings that define immune races
+        if (checkType(tToken, immuneRaces)) {
+            if (!immuneMsg) immuneMsg = `Some targets appears to be unaffected by ${aItem.name}. Heal 
+            needs to be manually reversed on:<br><br>`
+            immuneMsg += `<b>${tToken.name}</b><br>`
+        } else jez.runRuneVFX(tToken, jez.getSpellSchool(aItem), "yellow")
     }
-    //-----------------------------------------------------------------------------------------------
-    // Launch our VFX
-    //
-    jez.runRuneVFX(tToken, jez.getSpellSchool(aItem), "yellow")
- }
+    if (immuneMsg) postResults(immuneMsg)
+    return
+}
 /***************************************************************************************************
  * Determine if passed token is of one of the types to check against, returning True if found
  ***************************************************************************************************/

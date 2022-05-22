@@ -8,6 +8,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Contact Other Plane](#contact-other-plane)
 * [Dispel Evil and Good](#dispel-evil-and-good)
 * [Geas](#geas)
+* [Mass Cure Wounds](#mass-cure-wounds)
 * [Raise Dead](#raise-dead)
 * [Scrying](#scrying)
 * [Steelwind Strike](#steelwind-strike) (ASE)
@@ -68,6 +69,16 @@ There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_on
 ### Geas
 
 This spell simply places a DAE effect that places a CUB condition of charmed on the target, if it fails its save.  It does not handle the damage element or ultimate removal of the effect as that is very much up to GM judgement.
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Mass Cure Wounds
+
+Spell built on Cure Wounds that allows pre-targeting of tokens, checking to make sure that there are between 1 and 6 targeted. If more than 6, a warning is issued and manual adjustment is needed.
+
+It checks creature types and generates a warning for those that are undead or construct type.  The healing is already applied at that point, so it requires a manual adjustment.
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
