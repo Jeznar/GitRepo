@@ -10,6 +10,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.22 **[Mass Cure Wounds](../Spells/5th_Level#mass-cure-wounds)** -- Implement this spell for first time.
 
+22.05.22 **[Spell Scroll: Mass Cure Wounds](../Items#spell-scrolls)** -- Just what the name suggests
+
 
 [Link back to my Documentation Listing](README.md) 
 
