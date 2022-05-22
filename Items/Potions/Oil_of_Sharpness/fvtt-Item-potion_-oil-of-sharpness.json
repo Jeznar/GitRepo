@@ -1,0 +1,202 @@
+{
+  "name": "Potion: Oil of Sharpness",
+  "type": "consumable",
+  "img": "icons/consumables/potions/potion-vial-tube-yellow.webp",
+  "data": {
+    "description": {
+      "value": "<p>This orange-yellow, gelatinous oil sparkles with tiny, ultrathin silver shards.</p>\n<p>The oil can coat one slashing or piercing weapon or up to 5 pieces of slashing or piercing ammunition. <strong>Applying the oil takes 1 minute.</strong></p>\n<p><strong>Effect</strong>: For 1 hour, the coated item is magical and has a <strong>+3 bonus to attack and damage roll</strong>s.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This item will apply a DAE effect to the <strong>token targeted</strong> before the item is used.&nbsp; Players need to manage the appropriate use (e.g. doesn't help bludgeoning weapons) and only 5 pieces of ammunition.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 255",
+    "quantity": 1,
+    "weight": 0,
+    "price": 120,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "veryRare",
+    "identified": false,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "touch",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": true,
+      "autoUse": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 5,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "consumableType": "potion",
+    "attributes": {
+      "spelldc": 10
+    }
+  },
+  "effects": [
+    {
+      "_id": "i6n9aYPLRIdhS0J3",
+      "changes": [
+        {
+          "key": "data.bonuses.mwak.attack",
+          "mode": 2,
+          "value": "+3",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.rwak.attack",
+          "mode": 2,
+          "value": "+3",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.mwak.damage",
+          "mode": 2,
+          "value": "+3",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.rwak.damage",
+          "mode": 2,
+          "value": "+3",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 3600
+      },
+      "icon": "icons/consumables/potions/potion-vial-tube-yellow.webp",
+      "label": "Oil of Sharpness",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "durationExpression": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
+        }
+      },
+      "tint": "",
+      "selectedKey": [
+        "data.bonuses.mwak.attack",
+        "data.bonuses.rwak.attack",
+        "data.bonuses.mwak.damage",
+        "data.bonuses.rwak.damage"
+      ]
+    }
+  ],
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]Run_RuneVFX_onTargets",
+      "effectActivation": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.claiX9B4Vdlik8y7"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

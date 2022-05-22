@@ -143,6 +143,7 @@ Potion Items as they are created and added should be tagged into this listing.
 * Antitoxin
 * [Greater Healing](#greater-healing)
 * [Heroism](#heroism)
+* [Oil of Sharpness](#oil-of-sharpness)
 * [Poison](#poison)
 
 ### **Alchemy Jug**
@@ -175,6 +176,20 @@ Potion performs healing and will consume a usage (assuming check box remains che
 Play **Run_RuneVFX_onTargets** as an on use Item Macro and applies DAE Effects that match the RAW description.
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+
+### **Oil of Sharpness**
+
+Intended to be used on *one* targeted token.  The associated actor will receive a one hour duration DAE effect that grants +3 to RWAK and MWAK attacks and damage.  
+
+The item assumes the actor will use one slashing/piercing weapon or no more than 5 pieces of ammunition of those types. The assumption fails if the actor uses a non-coated weapon, a bludgeoning weapon, or more than 5 pieces of ammo.  
+
+Making sure this assumption holds is left up to the players.
+ 
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
 
 ### **Poison**
 
