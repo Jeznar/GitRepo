@@ -14,9 +14,12 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.22 **[Spell Scroll: Revivify](../Items#spell-scrolls)** -- Just what the name suggests
 
-22.05.22 **[Sling Bullet +1](../Items#ammunition)**
+22.05.22 **[Sling Bullet +1](../Items#ammunition)** -- Added as Ammunition.
 
-22.05.22 **[Pipes of Haunting](../Items#pipes-of-haunting)**
+22.05.22 **[Pipes of Haunting](../Items#pipes-of-haunting)** -- Added as Item.
+
+22.05.22 **[Stone of Good Luck](../Items#stone-of-good-luck)** -- Added as Item.
+
 
 
 

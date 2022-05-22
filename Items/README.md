@@ -47,6 +47,7 @@ This is a generic catch all for things that don't fit into other categories.
 * [Pipes of Haunting](#pipes-of-haunting)
 * [Ring of Mind Shielding](#ring-of-mind-shielding)
 * [Rod of the Pact Keeper](#rod-of-the-pact-keeper)
+* [Stone of Good Luck](#stone-of-good-luck)
 
 ---
 
@@ -147,7 +148,7 @@ turn=end,label=Save against Pipe's fear,saveDC=15,saveAbility=wis,saveRemove=tru
 
 This item is partially automated.  It handles the +1 to attack and save DC, though, it applies the bonus to all spells not just warlock abilities.  It does not check for the user being a warlock.
 
-It can be *used* to drain the charge bußt the spell slot needs to be manually recovered.
+It can be *used* to drain the charge but the spell slot needs to be manually recovered.
 
 Also, I bumped into the old string addition problem and had to add a trailing plus after the bonus value as shown below.
 
@@ -157,6 +158,15 @@ Also, I bumped into the old string addition problem and had to add a trailing pl
 
 ---
 
+### Stone of Good Luck
+
+Loaded straight from the MIDI SRD examples and it worked.
+
+Don't forget to attune and equip the item to receive the benefit.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
 
 ## Potions
 

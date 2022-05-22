@@ -1,0 +1,178 @@
+{
+  "name": "Stone of Good Luck (Luckstone)",
+  "type": "equipment",
+  "img": "icons/commodities/gems/gem-faceted-octagon-yellow.webp",
+  "data": {
+    "description": {
+      "value": "<p style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\"><em style=\"box-sizing:border-box;user-select:text\">Wondrous item, (requires attunement)</em></p>\n<p style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">While this polished agate is on your person, you gain a +1 bonus to ability checks and saving throws.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "DMG pg. 205",
+    "quantity": 1,
+    "weight": 0.1,
+    "price": 4200,
+    "attunement": 1,
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": false,
+    "activation": {
+      "type": "none",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": null,
+      "type": "trinket",
+      "dex": null
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "baseItem": "",
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": false,
+    "attributes": {
+      "spelldc": 10
+    }
+  },
+  "effects": [
+    {
+      "_id": "6uTSUGYHrI3JC5sg",
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "transfer": true,
+          "specialDuration": [],
+          "durationExpression": "",
+          "macroRepeat": "none"
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "changes": [
+        {
+          "key": "data.bonuses.abilities.check",
+          "mode": 0,
+          "value": "1",
+          "priority": "20"
+        },
+        {
+          "key": "data.bonuses.abilities.save",
+          "mode": 0,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/items/inventory/gem-yellow.jpg",
+      "label": "Good Luck",
+      "tint": null,
+      "transfer": true,
+      "selectedKey": [
+        "data.bonuses.abilities.check",
+        "data.bonuses.abilities.save"
+      ]
+    }
+  ],
+  "flags": {
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "core": {
+      "sourceId": "Item.2SXMmAq0xJ0bu9bP"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
