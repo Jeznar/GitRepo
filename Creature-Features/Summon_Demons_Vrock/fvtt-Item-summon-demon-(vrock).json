@@ -1,0 +1,126 @@
+{
+  "name": "Summon Demon (Vrock)",
+  "type": "feat",
+  "img": "Tokens/Monsters/Vrock/vrock_avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>The demon chooses what to summon and attempts a magical summoning.</p>\n<p>A vrock has a <strong>30 percent</strong> chance of summoning <strong>2d4 dretches</strong> or<strong> one vrock</strong>.</p>\n<p>A summoned demon appears in an unoccupied space <strong>within 60 feet</strong> of its summoner, acts as an ally of its summoner, and can't summon other demons.</p>\n<p>The summoned demon(s) remain for <strong>1 minute</strong>, until it or its summoner <strong>dies</strong>, or until its summoner <strong>dismisses</strong> it as an action.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Players need to be aware of the 60 feet placement restriction.  The summoned demons need to be added to the combat tracker manually. Remove the effect from the Vrock if it dies while active, this will remove the summoned demons.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Summon Demon (Vrock)",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Summon_Demons.0.1.js\"\n/*****************************************************************************************\n * Implement a Vrock's summon ability,\n * \n *   The demon chooses what to summon and attempts a magical summoning.\n *   A vrock has a 30 percent chance of summoning 2d4 dretches or one vrock.\n *   A summoned demon appears in an unoccupied space within 60 feet of its summoner, acts \n *   as an ally of its summoner, and can't summon other demons. It remains for 1 minute, \n *   until it or its summoner dies, or until its summoner dismisses it as an action.\n * \n * 05/21/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff();                   // DAE removal\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n  const FUNCNAME = \"doOnUse()\";\n  let tokenIdArray = [];\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  //------------------------------------------------------------------------------------------------\n  // Run a runeVFX on the summoning token\n  //\n  jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))\n  //------------------------------------------------------------------------------------------------\n  // Determine if the summoning will succeed, post failure message if warrented\n  //\n  let summonAttempt = new Roll(`1d100`).evaluate({ async: false });\n  game.dice3d?.showForRoll(summonAttempt);\n  jez.log(\"Roll result\", summonAttempt.total)\n  if (summonAttempt.total <= 70) {  // 70 gets 70% failure rate\n    msg = `<b>${token.name}</b>'s summon attempt has failed!  It wasted its turn.`\n    jez.log(msg)\n    postResults(msg)\n    return (false)\n  }\n  //------------------------------------------------------------------------------------------------\n  // Pop a dialog to find out if the summoner wants 2d4 dretches or one vrock added to the scene\n  //\n  const queryTitle = \"What type of Demon to summon?\"\n  const queryText = \"Pick from the list\"\n  let demons = [\"Dretches (2d4)\", \"Vrock (1)\"];\n  jez.pickRadioListArray(queryTitle, queryText, summonCallBack, demons);\n  //------------------------------------------------------------------------------------------------\n  // That's all folks\n  //\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return (true);\n  //---------------------------------------------------------------------------------------------\n  async function summonCallBack(selection) {\n    jez.log(\"pickRadioCallBack\", selection)\n\n    const demonType = selection.split(\" \")[0]\n    if (demonType === \"Dretches\") {\n      jez.log(\"Time to summon some Dretches\")\n      summonDretches()\n    }\n    else if (demonType === \"Vrock\") {\n      jez.log(\"Time to summon a Vrock\")\n      summonVrock()\n    } else {\n      msg = `Bad news! This should not have happened to ${MACRO}`\n      ui.notifications.error(msg)\n      return (false)\n    }\n  }\n  //---------------------------------------------------------------------------------------------\n  async function summonDretches() {\n    const CREATURE_NAME = \"Dretch\"\n    let rc = null\n    let dretches = new Roll(`2d4`).evaluate({ async: false });\n    game.dice3d?.showForRoll(dretches);\n    for (let i = 1; i <= dretches.total; i++) {\n      rc = await summonCritter(CREATURE_NAME, i)\n      tokenIdArray.push(rc)\n    }\n    msg = `<b>${aToken.name}</b> summons ${dretches.total} ${CREATURE_NAME}es. They will serve \n    for one minute or until dismissed.`\n    postResults(msg)\n    addWatchdogEffect(tokenIdArray)\n  }\n  //---------------------------------------------------------------------------------------------\n  async function summonVrock() {\n    let rc = null\n    const CREATURE_NAME = \"Vrock\"\n    rc = await summonCritter(CREATURE_NAME, 1)\n    tokenIdArray.push(rc)\n    msg = `<b>${aToken.name}</b> summons a ${CREATURE_NAME}. It will serve \n    for one minute or until dismissed.`\n    postResults(msg)\n    addWatchdogEffect(tokenIdArray)\n  }\n}\n/***************************************************************************************************\n * Summon the actor and rename with a numeric suffix\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\nasync function summonCritter(summons, number) {\n  let name = `${aToken.name}'s ${summons} ${number}`\n  let updates = { token: {name: name},\n                  actor: {name: name},\n                }\n  const OPTIONS = { controllingActor: aActor };\n  const CALLBACKS = {\n    pre: async (template) => {\n      preEffects(template);\n      await warpgate.wait(500);\n    },\n    post: async (template, token) => {\n      postEffects(template);\n      await warpgate.wait(500);\n      //greetings(template, token);\n    }\n  };\n  //updates = mergeObject(updates, choice);\n  return (await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS));\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function preEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n    .file(VFX_FILE)\n    .atLocation(template)\n    .center()\n    .scale(1.0)\n    .play()\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function postEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .scale(1.0)\n    .play()\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n  jez.log(msg);\n  let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n  jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\n async function doOff() {\n  const FUNCNAME = \"doOff()\";\n  const SCENE_ID = game.scenes.viewed.id\n\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  jez.log(\"Something could have been here\")\n  for (let i = 1; i < args.length - 1; i++) {\n    jez.log(`  args[${i}]`, args[i]);\n    await jez.wait(250)\n    warpgate.dismiss(args[i], SCENE_ID)\n  }\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return;\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function addWatchdogEffect(tokenIdArray) {\n  let tokenIds = \"\"\n  const EXPIRE = [\"newDay\", \"longRest\", \"shortRest\"];\n  const GAME_RND = game.combat ? game.combat.round : 0;\n  // Build list of token IDs seperated by spaces\n  for (let i = 0; i < tokenIdArray.length; i++) tokenIds+= `${tokenIdArray[i]} ` \n  let effectData = {\n    label: aItem.name,\n    icon: aItem.img,\n    origin: LAST_ARG.uuid,\n    disabled: false,\n    duration: { rounds: 10, startRound: GAME_RND, startTime: game.time.worldTime },\n    flags: { dae: { macroRepeat: \"none\", specialDuration: EXPIRE } },\n    changes: [\n      { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },\n    ]\n  };\n  await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.utj5h0KyMwF0Jp33"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

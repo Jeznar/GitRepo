@@ -41,6 +41,7 @@ I'll try to document functions as I add them to the repository.
 * **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
 * **[Slow, Golem](#slow-golem)** -- Golem slow ability mimicing the spell effect
 * **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
+* **[Summon Demons, Vrock](#summon-demons-vrock)** -- Implment Vrock's summon
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
 * **Portent (Arabelle)** -- Portent slightly modified for Arabelle
@@ -436,6 +437,20 @@ flags.midi-qol.OverTime OVERIDE turn=end,label=Poison Save,saveDC=15,saveAbility
 ~~~
 
 No macro required.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Summon Demons, Vrock**
+
+Summons per the Vrock ability. This item uses an ItemMacro to:
+
+1. Run a runeVFX on the summoner
+2. Determine if the summon will work (30% chance)
+3. Ask if a Vrock or some Dretches should be summoned
+4. Walk player through placing the summons
+5. Place a watch dog effect on the caster that dismisses the summons when it drops.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
