@@ -1,0 +1,131 @@
+{
+  "name": "Spell Scroll: Revivify",
+  "type": "consumable",
+  "img": "/systems/dnd5e/icons/spells/heal-sky-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>A spell scroll bears the words of a single spell, written in a mystical cipher. If the spell is on your class's spell list, you can use an action to read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible.</p>\n<hr />\n<h3>@Item[udb52eZ7EibpeEAq]{Revivify}</h3>\n<hr />\n<p><strong>FoundryVTT: </strong>The item will be correctly destroyed when used to cast a spell, but the spell may fail if t uses an ItemMacro.  In that case, add the spell temporarily to the spellbook or do other manual adjustments.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 200,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": true,
+    "activation": {
+      "type": "minute",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": 10,
+      "width": null,
+      "units": "ft",
+      "type": "cylinder"
+    },
+    "range": {
+      "value": 10,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": true,
+      "autoUse": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 7,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "consumableType": "scroll",
+    "attributes": {
+      "spelldc": 10
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Item.BzG3UzaCZu556abh"
+    },
+    "midi-qol": {
+      "onUseMacroName": "",
+      "effectActivation": false
+    },
+    "magicitems": {
+      "enabled": true,
+      "equipped": false,
+      "attuned": false,
+      "charges": "1",
+      "chargeType": "c1",
+      "destroy": true,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "destroyCheck": "d1",
+      "destroyType": "dt1",
+      "spells": {
+        "0": {
+          "id": "udb52eZ7EibpeEAq",
+          "name": "Revivify",
+          "pack": "world",
+          "img": "/systems/dnd5e/icons/spells/heal-sky-2.jpg",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "3",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

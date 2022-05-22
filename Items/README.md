@@ -212,6 +212,7 @@ Spell scrolls are rather kludgey.  They don't show up in the HUD that I use, so 
 * Lightning Bolt
 * Magic Circle
 * Raise Dead
+* Revivify
 
 ![Magic_Circle_Magic.png](Spell_Scroll/Magic_Circle/Magic_Circle_Magic.png) 
 

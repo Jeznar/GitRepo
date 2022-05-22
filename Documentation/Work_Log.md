@@ -12,6 +12,11 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.22 **[Spell Scroll: Mass Cure Wounds](../Items#spell-scrolls)** -- Just what the name suggests
 
+22.05.22 **[Spell Scroll: Revivify](../Items#spell-scrolls)** -- Just what the name suggests
+
+
+
+
 
 [Link back to my Documentation Listing](README.md) 
 
