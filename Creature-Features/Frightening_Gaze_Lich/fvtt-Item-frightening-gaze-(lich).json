@@ -1,24 +1,17 @@
 {
-  "name": "Paralyzing Touch (Lich)",
-  "type": "weapon",
-  "img": "Tokens/Monsters/Lich/Lich_M3_Avatar.png",
+  "name": "Frightening Gaze (Lich)",
+  "type": "feat",
+  "img": "Tokens/Monsters/Lich/Lich_M1_Avatar.png",
   "data": {
     "description": {
-      "value": "<p> </p>\n<p><strong>Paralyzing Touch.</strong><em>Melee Weapon Attack: </em>+12, Reach 5 ft., one creature. <em>Hit : </em>10 (3d6) cold damage.</p>\n<p>The target must succeed on a <strong>DC 18 CON Save</strong> or be @JournalEntry[AuUMNy1Ta8MErirO]{Paralyzed} for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.</p>\n<p> </p>",
+      "value": "<p>The lich fixes its gaze on one creature it can see within 10 feet of it. The target must succeed on a <strong>DC 18 Wisdom </strong>saving throw against this magic or become @JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} for 1 minute.</p>\n<p>The frightened target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If a target's saving throw is successful or the effect ends for it, the target is immune to the lich's gaze for the next 24 hours.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Immunity is not automated.</p>",
       "chat": "",
       "unidentified": ""
     },
     "source": "",
-    "quantity": 1,
-    "weight": 1,
-    "price": 0,
-    "attunement": 0,
-    "equipped": true,
-    "rarity": "",
-    "identified": true,
     "activation": {
-      "type": "action",
-      "cost": 1,
+      "type": "legendary",
+      "cost": 2,
       "condition": ""
     },
     "duration": {
@@ -29,12 +22,12 @@
       "value": null,
       "width": null,
       "units": "",
-      "type": "creature"
+      "type": ""
     },
     "range": {
       "value": null,
       "long": null,
-      "units": "touch"
+      "units": ""
     },
     "uses": {
       "value": 0,
@@ -46,75 +39,45 @@
       "target": "",
       "amount": null
     },
-    "ability": "int",
-    "actionType": "mwak",
-    "attackBonus": "0",
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
     "chatFlavor": "",
     "critical": {
       "threshold": null,
-      "damage": ""
+      "damage": null
     },
     "damage": {
-      "parts": [
-        [
-          "3d6",
-          "cold"
-        ]
-      ],
+      "parts": [],
       "versatile": ""
     },
     "formula": "",
     "save": {
-      "ability": "con",
+      "ability": "wis",
       "dc": 18,
-      "scaling": "flat"
+      "scaling": "cha"
     },
-    "armor": {
-      "value": 10
-    },
-    "hp": {
+    "requirements": "",
+    "recharge": {
       "value": 0,
-      "max": 0,
-      "dt": null,
-      "conditions": ""
+      "charged": false
     },
-    "weaponType": "natural",
-    "baseItem": "",
-    "properties": {
-      "amm": false,
-      "hvy": false,
-      "fin": false,
-      "fir": false,
-      "foc": false,
-      "lgt": false,
-      "rch": false,
-      "rel": false,
-      "ret": false,
-      "spc": false,
-      "thr": false,
-      "two": false,
-      "ver": false,
-      "ada": false,
-      "lod": false,
-      "mgc": false,
-      "sil": false
-    },
-    "proficient": true
+    "attunement": null
   },
   "effects": [
     {
-      "_id": "g7xp586fxtvwztaa",
+      "_id": "w1q97dqwuqhecugq",
       "changes": [
         {
           "key": "macro.CUB",
           "mode": 0,
-          "value": "Paralyzed",
+          "value": "Frightened",
           "priority": "20"
         },
         {
           "key": "flags.midi-qol.OverTime",
-          "mode": 5,
-          "value": "turn=end,label=Save against Lich's Paralysis,saveDC=18,saveAbility=con,saveRemove=true,saveMagic=true,rollType=save",
+          "mode": 2,
+          "value": "turn=end,label=Save against Lich's Fright,saveDC=18,saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save",
           "priority": "20"
         }
       ],
@@ -124,8 +87,8 @@
         "seconds": 60,
         "rounds": 10
       },
-      "icon": "Tokens/Monsters/Lich/Lich_M3_Avatar.png",
-      "label": "Paralyzing Touch (Lich)",
+      "icon": "Tokens/Monsters/Lich/Lich_M2_Avatar.png",
+      "label": "Frightening Gaze (lich)",
       "transfer": false,
       "flags": {
         "core": {
@@ -163,20 +126,6 @@
     }
   ],
   "flags": {
-    "midi-qol": {
-      "effectActivation": false
-    },
-    "midiProperties": {
-      "nodam": false,
-      "fulldam": false,
-      "halfdam": false,
-      "rollOther": false,
-      "critOther": false,
-      "magicdam": false,
-      "magiceffect": false,
-      "concentration": false,
-      "toggleEffect": false
-    },
     "magicitems": {
       "enabled": false,
       "equipped": false,
@@ -191,8 +140,31 @@
       "rechargeUnit": "r1",
       "sorting": "l"
     },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
     "core": {
-      "sourceId": "Item.NTI4NmY3MDIxYjkx"
+      "sourceId": "Item.7CP53gO499PeWdTT"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     },
     "exportSource": {
       "world": "travels-in-barovia",

@@ -22,6 +22,7 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.23 **[Paralyzing Touch](../Creatures-Features#paralyzing-touch)** -- A Lich's primary attack, includes a DAE Overtime saving throw and a CUB Condition
 
+22.05.23 **[Frightening Gaze](../Creatures-Features#frightening-gaze)** -- One of a Lich's legendary actions, includes a DAE Overtime saving throw and a CUB Condition
 
 
 

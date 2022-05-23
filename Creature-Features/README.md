@@ -25,6 +25,7 @@ I'll try to document functions as I add them to the repository.
 * **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
 * **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
+* **[Frightening Gaze](#frightening-gaze)** -- One of a Lich's legendary actions
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Gray Ooze](#gray-ooze)** -- Gray Ooze Abilities
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
@@ -244,6 +245,20 @@ This item applies a d6 of damage and the prone condition.  It should be adjusted
 
 ---
 
+### **Frightening Gaze**
+
+One of a Lich's legendary actions.  It includes an effect that is only applied on a failed saving throw and that allows end of turn saves to terminate that effect.  This is done with a MIDI OverTime effect as follows:
+
+~~~javascript
+turn=end,label=Save against Lich's Fright,saveDC=18,saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save
+~~~
+
+This item also applies the CUB Condition: Paralyzed via a DAE effect.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Grasping Root**
 
 This ability automates Wintersplinter (Tree Blight)'s grasping root.  It does the following:
@@ -360,7 +375,6 @@ What it does do is run a VFX and add a persistent debuff that reduces the maximu
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
 ---
-turn=end,label=Save against Pipe's fear,saveDC=15,saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save
 
 ### **Paralyzing Touch**
 
