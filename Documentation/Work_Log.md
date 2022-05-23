@@ -20,6 +20,9 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.22 **[Stone of Good Luck](../Items#stone-of-good-luck)** -- Added as Item.
 
+22.05.23 **[Paralyzing Touch](../Creatures-Features#paralyzing-touch)** -- A Lich's primary attack, includes a DAE Overtime saving throw and a CUB Condition
+
+
 
 
 

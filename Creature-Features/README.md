@@ -35,6 +35,7 @@ I'll try to document functions as I add them to the repository.
 * **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
 * **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
+* **[Paralyzing Touch](#paralyzing-touch)** -- A Lich's primary attack
 * **[Pit](#pit)** -- Abilities for use by the pit *monster*
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
@@ -355,6 +356,21 @@ This one implments the Nighthag haunting ability.  It relies on the GM to run it
 What it does do is run a VFX and add a persistent debuff that reduces the maximum hit points.  The GM will likely want to remove the duration element of the effect so that it becomes *permanent*, well until explicitly removed which is allowed by Greater Restoration and similar abilities.  This should be done manually by the GM.
 
 ![Nightmare_Haunting/Nightmare_Haunting.gif](Nightmare_Haunting/Nightmare_Haunting.gif)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+turn=end,label=Save against Pipe's fear,saveDC=15,saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save
+
+### **Paralyzing Touch**
+
+A Lich's primary attack.  It includes an effect that is only applied on a failed saving throw and that allows end of turn saves to terminate that effect.  This is done with a MIDI OverTime effect as follows:
+
+~~~javascript
+turn=end,label=Save against Lich's Paralysis,saveDC=18,saveAbility=con,saveRemove=true,saveMagic=true,rollType=save
+~~~
+
+This item also applies the CUB Condition: Paralyzed via a DAE effect.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
