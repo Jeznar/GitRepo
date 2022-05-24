@@ -22,6 +22,7 @@ I'll try to document functions as I add them to the repository.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
 * **[Create Specter](#create-specter)** -- Wraith's ability to convert corpse to a specter
 * **[Crocodile Bite](#crocodile-bite)** -- Crocodile bite and grapple possibility
+* **[Disrupt Life, Lich](#disrupt-life-lich)** -- Lich PBAOE ability to damage all non-undeads
 * **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
 * **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
@@ -210,6 +211,17 @@ Import of older macro.
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
 ---
+
+### **Disrupt Life, Lich**
+
+Item runs an ItemMacro that finds all in-range tokens, discards those of type *undead*, and rolls a save for each.  Those that save take half damage.  Those that fail take full damage.  
+
+TODO: Suppress the roll messages and attack list in the chat log.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Ethrealness**
 
 This macro runs a VFX on the targeted token and flips the hidden status too true when it is run.  When the effect it applies is removed it runs the VFX in reverse and flips the hidden status to false.  
