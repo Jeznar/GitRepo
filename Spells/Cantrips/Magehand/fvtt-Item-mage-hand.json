@@ -77,7 +77,7 @@
     },
     "preparation": {
       "mode": "prepared",
-      "prepared": false
+      "prepared": true
     },
     "scaling": {
       "mode": "none",
@@ -85,7 +85,6 @@
     }
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "enhancedcombathud": {
       "set1p": false,
@@ -93,7 +92,8 @@
       "set3p": false
     },
     "midi-qol": {
-      "onUseMacroName": "ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "betterCurses": {
       "isCurse": false,
@@ -116,7 +116,7 @@
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "const MACRONAME = \"Magehand.0.3\"\n/*****************************************************************************************\n * This macro just posts a msg providing basic instructions to teh spell card.\n * \n * 12/02/21 0.1 Creation\n * 12/02/21 0.2 Drastic simplification and resouce consumption can be handled by base code\n * 02/25/22 0.3 Update to use jez.lib and rename the summoned hand\n  *****************************************************************************************/\nlet msg = \"\";\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\njez.log(`Beginning ${MACRONAME}`);\nconst MINION = \"Magehand\"\nconst GAME_RND = game.combat ? game.combat.round : 0;\nconst MINION_NAME = `${aToken.name}'s Magehand ${GAME_RND}`\nconst VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Portals/Portal_Bright_*_H_400x400.webm\"\nlet updates = { token : {name: MINION_NAME} }\n// https://github.com/trioderegion/warpgate/wiki/Summon-Spiritual-Badger\n// COOL-THING: Rename a summoned token with warpgate\nawait warpgate.spawn(MINION, updates);\n//-------------------------------------------------------------------------------------\n// Get the token just summoned for subsequent VFX\n//\nlet nameToken = canvas.tokens.placeables.find(ef => ef.name === MINION_NAME)\nconsole.log('Token5e  fetched by Name', nameToken)\nrunVFX(nameToken)\n//-------------------------------------------------------------------------------------\n// Post message\n//\nlet chatMessage = game.messages.get(args[args.length - 1].itemCardId);\nmsg = `<strong>${actor.name}</strong> summons <strong>${MINION_NAME}</strong> to the field.`;\njez.addMessage(chatMessage, {color:jez.randomDarkColor(), fSize:15, msg:msg, tag:\"saves\" })\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/\n async function runVFX(token5e) {\n    new Sequence()\n    .effect()\n        .file(VFX_LOOP)\n        .attachTo(token5e)\n        .scale(0.5)\n        .scaleIn(0.1, 1500)         // Expand from 0.25 to 1 size over 1 second\n        .rotateIn(180, 1500)        // 1/2 Rotation over 1 second \n        .scaleOut(0.1, 1500)        // Contract from 1 to 0.25 size over 1 second\n        .rotateOut(180, 1500)       // 1/2 Counter Rotation over 1 second\n        .opacity(2.0)\n        .belowTokens()\n        //.persist()\n        .duration(10000)\n        .name(MINION_NAME)             // Give the effect a uniqueish name\n        .fadeIn(1500)               // Fade in for specified time in milliseconds\n        .fadeOut(1500)              // Fade out for specified time in milliseconds\n        //.extraEndDuration(1200)   // Time padding on exit to connect to Outro effect\n    .play();\n    await jez.wait(100)         // Don't delete till VFX established\n    return (true)\n}",
+          "command": "const MACRONAME = \"Magehand.0.4.js\"\n/*****************************************************************************************\n * This macro just posts a msg providing basic instructions to teh spell card.\n * \n * 12/02/21 0.1 Creation\n * 12/02/21 0.2 Drastic simplification and resouce consumption can be handled by base code\n * 02/25/22 0.3 Update to use jez.lib and rename the summoned hand\n * 05/25/22 0.4 Chasing Error: Sequencer | Effect | attachTo - could not find given object\n *              Issue was caused by a conflict with TokenMold/Name.  Now handled with a \n *              warning.\n  *****************************************************************************************/\nlet msg = \"\";\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\njez.log(`Beginning ${MACRONAME}`);\nconst MINION = \"Magehand\"\nconst GAME_RND = game.combat ? game.combat.round : 0;\nconst MINION_NAME = `${aToken.name}'s Magehand ${GAME_RND}`\nconst VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Portals/Portal_Bright_*_H_400x400.webm\"\nlet updates = { token : {name: MINION_NAME} }\n// https://github.com/trioderegion/warpgate/wiki/Summon-Spiritual-Badger\n// COOL-THING: Rename a summoned token with warpgate (Can be stopped by TokenMold)\nlet tokenID = await warpgate.spawn(MINION, updates);\njez.log(\"tokenID\", tokenID)\n//-------------------------------------------------------------------------------------\n// Get the token just summoned for subsequent VFX\n//\nawait jez.wait(100) // Wait for the token to be placed\nlet newToken = await canvas.tokens.placeables.find(ef => ef.name === MINION_NAME)\nif (!newToken) {\n    msg = `${MINION_NAME} not found, perhaps Token Mold is messing with namings?`\n    jez.log(msg)\n    ui.notifications.warn(msg);\n    newToken = await canvas.tokens.placeables.find(ef => ef.id === tokenID[0])\n} else console.log('Token5e  fetched by Name', newToken)\n//-------------------------------------------------------------------------------------\n// Run the VFX\n//\nrunVFX(newToken)\n//-------------------------------------------------------------------------------------\n// Post message\n//\nlet chatMessage = game.messages.get(args[args.length - 1].itemCardId);\nmsg = `<strong>${actor.name}</strong> summons <strong>${MINION_NAME}</strong> to the field.`;\njez.addMessage(chatMessage, {color:jez.randomDarkColor(), fSize:15, msg:msg, tag:\"saves\" })\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/\n async function runVFX(token5e) {\n    jez.log(\"token5e\",token5e)\n    new Sequence()\n    .effect()\n        .file(VFX_LOOP)\n        .attachTo(token5e)\n        .scale(0.5)\n        .scaleIn(0.1, 1500)         // Expand from 0.25 to 1 size over 1 second\n        .rotateIn(180, 1500)        // 1/2 Rotation over 1 second \n        .scaleOut(0.1, 1500)        // Contract from 1 to 0.25 size over 1 second\n        .rotateOut(180, 1500)       // 1/2 Counter Rotation over 1 second\n        .opacity(2.0)\n        .belowTokens()\n        .duration(6000)\n        .name(MINION_NAME)             // Give the effect a uniqueish name\n        .fadeIn(1500)               // Fade in for specified time in milliseconds\n        .fadeOut(1500)              // Fade out for specified time in milliseconds\n        //.extraEndDuration(1200)   // Time padding on exit to connect to Outro effect\n    .play();\n    await jez.wait(100)         // Don't delete till VFX established\n    return (true)\n}",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -126,11 +126,22 @@
         }
       }
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
       "world": "travels-in-barovia",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
     }
   }
 }
