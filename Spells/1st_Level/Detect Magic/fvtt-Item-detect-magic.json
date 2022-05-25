@@ -1,0 +1,192 @@
+{
+  "name": "Detect Magic",
+  "type": "spell",
+  "img": "icons/magic/light/explosion-star-blue.webp",
+  "data": {
+    "description": {
+      "value": "<p>For the duration, you sense the presence of magic within 30 feet of you. If you sense magic in this way, you can use your action to see a faint aura around any visible creature or object in the area that bears magic, and you learn its school of magic, if any.</p>\n<p>The spell can penetrate most barriers, but it is blocked by 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood or dirt.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> The VFX indicates the area of effect of the spell, it does nothing to automate the detection.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 231",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 10,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "level": 1,
+    "school": "div",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": true,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "mW60zsuKP1wz2YSq",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 600
+      },
+      "icon": "systems/dnd5e/icons/spells/light-blue-2.jpg",
+      "label": "Detect Magic",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "#ffffff",
+      "selectedKey": "macro.itemMacro"
+    }
+  ],
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.M2I2YTFhMTQzODAz"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Detect Magic",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Detect_Magic\"\n/*****************************************************************************************\n * Create and manage an aura on the casting token to represent the detction effect area\n * \n * 02/17/22 0.1 Creation from Detect_Evil_And_Good.0.2\n *****************************************************************************************/\nconst DEBUG = true;\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\n\nlog(\"---------------------------------------------------------------------------\",\n    \"Starting\", `${MACRONAME} or ${MACRO}`);\nfor (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\nlet gameRound = game.combat ? game.combat.round : 0;\n\nlet msg = \"\";\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\n\nconst lastArg = args[args.length - 1];\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\n\nconst VFX_NAME  = `${MACRO}-${aToken.id}`\nconst VFX_LOOP = \"modules/JB2A_DnD5e/Library/1st_Level/Detect_Magic/DetectMagicCircle_01_Regular_Blue_1200x1200.webm\"\n//const VFX_LOOP = \"modules/jb2a_patreon/Library/TMFX/Radar/Circle/RadarPulse_02_Circle_Slow_500x500.webm\"\nconst VFX_OPACITY = 0.3;\nconst VFX_SCALE = 1.15;\n\nlog(\"------- Obtained Global Values -------\",\n    `Active Token (aToken) ${aToken.name}`, aToken,\n    `Active Actor (aActor) ${aActor.name}`, aActor,\n    `Active Item (aItem) ${aItem.name}`, aItem,\n    `VFX_NAME`, VFX_NAME);\n\n//-------------------------------------------------------------------------------\n// Depending on where invoked call appropriate function to do the work\n//\n// if (args[0]?.tag === \"OnUse\") doOnUse();   \t\t\t    // Midi ItemMacro On Use\nif (args[0] === \"on\") doOn();          \t\t        // DAE Application\nif (args[0] === \"off\") doOff();        \t\t\t    // DAE removal\n// if (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\n//if (args[0]?.tag === \"DamageBonus\") doBonusDamage();    // DAE Damage Bonus\n\nlog(\"---------------------------------------------------------------------------\",\n    \"Finishing\", MACRONAME);\nreturn;\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n\n /***************************************************************************************\n * Perform the code that runs when this macro is added by DAE, set On\n ***************************************************************************************/\n  async function doOn() {\n    const FUNCNAME = \"doOn()\";\n    log(\"--------------On---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    log(\"effects\", Sequencer.EffectManager.getEffects());\n\n    new Sequence()\n    .effect()\n        .file(VFX_LOOP)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)  \n        .persist()\n        .name(VFX_NAME)         // Give the effect a uniqueish name\n    .play()\n\n    log(\"--------------On---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n \n /***************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n * \n * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects\n ***************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    log(\"--------------Off---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    log(\"effects\", Sequencer.EffectManager.getEffects());\n\n    // Sequencer.EffectManager.endEffects({ name: \"test_effect\", object: token })\n    await Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken._object });\n    // Sequencer.EffectManager.endEffects({ name: aToken.data.name })\n    log(\"--------------Off---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n* DEBUG Logging\n* \n* If passed an odd number of arguments, put the first on a line by itself in the log,\n* otherwise print them to the log seperated by a colon.  \n* \n* If more than two arguments, add numbered continuation lines. \n***************************************************************************************/\nfunction log(...parms) {\n    if (!DEBUG) return;             // If DEBUG is false or null, then simply return\n    let numParms = parms.length;    // Number of parameters received\n    let i = 0;                      // Loop counter\n    let lines = 1;                  // Line counter \n\n    if (numParms % 2) {  // Odd number of arguments\n        console.log(parms[i++])\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    } else {            // Even number of arguments\n        console.log(parms[i],\":\",parms[i+1]);\n        i = 2;\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    }\n}\n\n/****************************************************************************************\n * Tricksy little sleep implementation\n ***************************************************************************************/\n async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
