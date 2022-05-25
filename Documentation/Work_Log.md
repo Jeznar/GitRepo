@@ -30,7 +30,7 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.26 **[Detect Magic](../Spells/Cantrip#detect-magic)** -- Added a note about how FoundryVTT handles this spell in the description (also added the JSON)
 
-
+22.05.26 **[Shield](../Spells/1st_Level#shield)** -- Added a note about how FoundryVTT doesn't handle this spell vs Magic Missle in the description (also added the JSON)
 
 [Link back to my Documentation Listing](README.md) 
 
