@@ -34,6 +34,12 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.25 **[Suggestion](../Spells/2nd_Level#suggestion)** -- Run a runeVFX on failed save and post a effect summary message.
 
+22.05.25 **[Invisibility](../Spells/2nd_Level#invisibility)** -- Foundry 9.x compatibility update. target.update() ==> target.document.update()
+
+22.05.25 **[Greater Invisibility](../Spells/2nd_Level#greater-invisibility)** -- Foundry 9.x compatibility update. target.update() ==> target.document.update()
+
+22.05.26 **[Darkvision](../Spells/2nd_Level#darkvision)** -- Foundry 9.x compatibility update. target.update() ==> target.document.update() and update to spell description.
+
 
 [Link back to my Documentation Listing](README.md) 
 

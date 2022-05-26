@@ -1,9 +1,10 @@
-const MACRONAME = "Greater_Invisibility"
+const MACRONAME = "Greater_Invisibility.0.3.js"
 /*****************************************************************************************
  * Implment Greater Invisibility -- Just a copy of invisibility with different DAE 
  * settings.
  * 
  * 02/27/22 0.2 Revisions to make it actually work
+ * 05/25/22 0.3 Compatibility upgrade for FoundryVTT 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -68,7 +69,8 @@ return;
     let itemID = LAST_ARG.efData.origin.split(".")[3]    // Grab originating item ID from efData.origin
     jez.log(`Origin icon ${ICON}, actorID ${actorID}, itemID ${itemID}`, actorID)
     const target = canvas.tokens.get(LAST_ARG.tokenId)
-    target.update({ "hidden": true });
+    // target.update({ "hidden": true });           // Obsolete as of FoundryVTT 9.x
+    target.document.update({ "hidden": true });     // Syntax as of FoundryVTT 9.x
     //---------------------------------------------------------------------------------------------
     // Dig through the chat log for all messages spoken by the originating actor, using the item
     // of interest.  The last one of this set will be the chat message that needs info appended 
@@ -99,8 +101,9 @@ return;
     const target = canvas.tokens.get(LAST_ARG.tokenId)
     msg = `${target.name} re-appears, no longer invisible.`;
     await jez.postMessage({color:"purple", fSize:14, msg:msg, title:"Greater Invisibility Ends", icon:ICON })
-    await target.update({ "hidden": false });
-    await jez.wait(1000)
+    // await target.update({ "hidden": false });           // Obsolete as of FoundryVTT 9.x
+    await target.document.update({ "hidden": false });     // Syntax as of FoundryVTT 9.x
+    await jez.wait(500)
     target.refresh()
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;

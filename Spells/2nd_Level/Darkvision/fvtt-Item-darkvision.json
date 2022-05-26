@@ -4,7 +4,7 @@
   "img": "/systems/dnd5e/icons/spells/evil-eye-red-1.jpg",
   "data": {
     "description": {
-      "value": "<p>You touch a willing creature to grant it the ability to see in the dark. For the duration, that creature has darkvision out to a range of 60 feet.</p>",
+      "value": "<p>You touch a willing creature to grant it the ability to see in the dark. For the duration, that creature has darkvision out to a range of 60 feet.</p>\n<hr style=\"border-top: 1px solid var(--color-border-light-primary); border-bottom: 1px solid var(--color-border-light-highlight);\" />\n<p><strong>FoundryVTT</strong>: Creature to receive the buff must be pretargeted.</p>",
       "chat": "<p>You touch a willing creature to grant it the ability to see in the dark. For the duration, that creature has darkvision out to a range of 60 feet.</p>",
       "unidentified": ""
     },
@@ -43,7 +43,10 @@
     "actionType": "util",
     "attackBonus": 0,
     "chatFlavor": "",
-    "critical": null,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
     "damage": {
       "parts": [],
       "versatile": ""
@@ -124,7 +127,6 @@
       "transfer": false
     }
   ],
-  "sort": 0,
   "flags": {
     "ddbimporter": {
       "id": 136497,
@@ -172,7 +174,8 @@
       "alwaysActive": false
     },
     "midi-qol": {
-      "onUseMacroName": ""
+      "onUseMacroName": "",
+      "effectActivation": false
     },
     "itemacro": {
       "macro": {
@@ -183,7 +186,7 @@
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "//DAE Macro Execute, Effect Value = \"Macro Name\" @target\nconst LAST_ARG = args[args.length - 1];\nlet msg = \"\"\nlet tactor;\nif (LAST_ARG.tokenId) tactor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse tactor = game.actors.get(LAST_ARG.actorId);\nconst target = canvas.tokens.get(LAST_ARG.tokenId)\n\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n\nlet dimVision = target.data.dimSight;\nif (args[0] === \"on\") {\n    DAE.setFlag(tactor, 'darkvisionSpell', dimVision);\n    let newSight = dimVision < 60 ? 60 : dimVision\n    await target.update({\"dimSight\" : newSight});\n    await tactor.update({\"token.dimSight\" : newSight})\n    msg = `<b>${target.name}'s</b> vision has been improved by ${aItem.name}`;\n    jez.postMessage({color: jez.randomDarkColor(), \n                fSize: 14, \n                icon: target.data.img, \n                msg: msg, \n                title: `Vision has been improved`, \n                token: target})\n}\nif(args[0] === \"off\") {\n    let sight = DAE.getFlag(tactor, 'darkvisionSpell');\n    target.update({\"dimSight\" : sight });\n    await tactor.update({\"token.dimSight\" : sight})\n    DAE.unsetFlag(tactor, 'darkvisionSpell');\n    msg = `<b>${target.name}'s</b> vision has returned to normal, having lost the benefits of ${aItem.name}`;\n    jez.postMessage({color: jez.randomDarkColor(), \n                fSize: 14, \n                icon: target.data.img, \n                msg: msg, \n                title: `Vision is normal`, \n                token: target})\n}",
+          "command": "const MACRONAME = \"Darkvision.0.2.js\"\n/*****************************************************************************************\n * Darkvision\n * \n * 05/26/22 0.2 Compatibility upgrade for FoundryVTT 9.x\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet msg = \"\"\n//----------------------------------------------------------------------------------------\n//DAE Macro Execute, Effect Value = \"Macro Name\" @target\n//\nlet tActor;\nif (LAST_ARG.tokenId) tActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse tActor = game.actors.get(LAST_ARG.actorId);\nconst target = canvas.tokens.get(LAST_ARG.tokenId)\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet dimVision = target.data.dimSight;\n//----------------------------------------------------------------------------------------\n// On Invocation\n//\nif (args[0] === \"on\") {\n    DAE.setFlag(tActor, 'darkvisionSpell', dimVision);\n    let newSight = dimVision < 60 ? 60 : dimVision\n    // target.update({\"dimSight\" : newSight});                      // Obsolete as of FoundryVTT 9.x\n    await target.document.update({\"dimSight\" : newSight});          // Syntax as of FoundryVTT 9.x\n    // await target.update({\"token.dimSight\" : newSight});          // Obsolete as of FoundryVTT 9.x\n    await target.document.update({\"token.dimSight\" : newSight});    // Syntax as of FoundryVTT 9.x\n    msg = `<b>${target.name}'s</b> vision has been improved by ${aItem.name}`;\n    jez.postMessage({color: jez.randomDarkColor(), \n                fSize: 14, \n                icon: target.data.img, \n                msg: msg, \n                title: `Vision has been improved`, \n                token: target})\n}\n//----------------------------------------------------------------------------------------\n// Off Invocation\n//\nif(args[0] === \"off\") {\n    let sight = DAE.getFlag(tActor, 'darkvisionSpell');\n    // target.update({\"dimSight\" : sight});                     // Obsolete as of FoundryVTT 9.x\n    await target.document.update({\"dimSight\" : sight});         // Syntax as of FoundryVTT 9.x\n    // await target.update({\"token.dimSight\" : sight});         // Obsolete as of FoundryVTT 9.x\n    await target.document.update({\"token.dimSight\" : sight});   // Syntax as of FoundryVTT 9.x\n    DAE.unsetFlag(tActor, 'darkvisionSpell');\n    msg = `<b>${target.name}'s</b> vision has returned to normal, having lost the benefits of ${aItem.name}`;\n    jez.postMessage({color: jez.randomDarkColor(), \n                fSize: 14, \n                icon: target.data.img, \n                msg: msg, \n                title: `Vision is normal`, \n                token: target})\n}",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -213,11 +216,22 @@
       "msak": false,
       "rsak": false
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
       "world": "travels-in-barovia",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
     }
   }
 }
