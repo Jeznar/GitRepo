@@ -100,6 +100,8 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Ray of Enfeeblement](2nd_Level#ray-of-enfeeblement)
 * [Scorching Ray](2nd_Level#scorching-ray) (ASE)
 * [Spiritual Weapon](2nd_Level#spiritual-weapon)
+* [Suggestion](2nd_Level#suggestion)
+
 
 [*Back to Spell Level List*](#spells)
 

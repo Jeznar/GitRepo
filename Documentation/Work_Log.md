@@ -28,9 +28,12 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.25 **[Mage Hand](../Spells/Cantrip#mage-hand)** -- Handle conflict between TokenMold/Name and Warpgate renaming of token
 
-22.05.26 **[Detect Magic](../Spells/Cantrip#detect-magic)** -- Added a note about how FoundryVTT handles this spell in the description (also added the JSON)
+22.05.25 **[Detect Magic](../Spells/Cantrip#detect-magic)** -- Added a note about how FoundryVTT handles this spell in the description (also added the JSON)
 
-22.05.26 **[Shield](../Spells/1st_Level#shield)** -- Added a note about how FoundryVTT doesn't handle this spell vs Magic Missle in the description (also added the JSON)
+22.05.25 **[Shield](../Spells/1st_Level#shield)** -- Added a note about how FoundryVTT doesn't handle this spell vs Magic Missle in the description (also added the JSON)
+
+22.05.25 **[Suggestion](../Spells/2nd_Level#suggestion)** -- Run a runeVFX on failed save and post a effect summary message.
+
 
 [Link back to my Documentation Listing](README.md) 
 
