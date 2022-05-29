@@ -13,6 +13,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Ice Storm](#ice-storm)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
+* [Staggering Smite](#staggering-smite)
 * [Stoneskin](#stoneskin)
 
 [*Back to List of All Spells*](../README.md)
@@ -164,6 +165,14 @@ This spell uses the ability to drop a sheet from Actor's directory onto a token'
 Reversing the transform is done with a button that appears at the top of the transformed token's sheet.
 
 ![Polymorph/Polymorph_Restore.png](Polymorph/Polymorph_Restore.png)
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Staggering Smite
+
+Yet another in the series of smite spells.  This one fully automates the RAW spell.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

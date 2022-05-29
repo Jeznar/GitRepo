@@ -40,9 +40,12 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.26 **[Darkvision](../Spells/2nd_Level#darkvision)** -- Foundry 9.x compatibility update. target.update() ==> target.document.update() and update to spell description.
 
-22.05.29 **[Ice Storm](../Spells/4th_Level#ice-storm)** -- Created spell, though it has an error at end of turn removal.  
+22.05.29 **[Ice Storm](../Spells/4th_Level#ice-storm)** -- Created spell, though it has an error at end of turn removal. (BUG)  
 
 22.05.29 **[Cone of Cold](../Spells/5th_Level#cone-of-cold)** -- Updated spell description
+
+22.05.29 **[Staggering Smite](../Spells/4th_Level#staggering-smite)** -- Implemented Staggering Smite from Blinding Smite.
+
 
 
 [Link back to my Documentation Listing](README.md) 

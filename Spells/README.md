@@ -145,6 +145,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Ice Storm](4th_Level#ice-storm)
 * [Phantasmal Killer](4th_Level#phantasmal-killer)
 * [Polymorph](4th_Level#polymorph)
+* [Staggering Smite](4th_Level#staggering-smite)
 * [Stoneskin](4th_Level#stoneskin)
 
 [*Back to Spell Level List*](#spells)
