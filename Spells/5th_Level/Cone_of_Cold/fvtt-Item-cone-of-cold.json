@@ -1,10 +1,10 @@
 {
   "name": "Cone of Cold",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/ice-blue-3.jpg",
+  "img": "icons/magic/water/projectiles-ice-faceted-shard-salvo-blue.webp",
   "data": {
     "description": {
-      "value": "<p>A blast of cold air erupts from your hands. Each creature in a 60-foot cone must make a Constitution saving throw. A creature takes 8d8 cold damage on a failed save, or half as much damage on a successful one.</p><p></p><p>A creature killed by this spell becomes a frozen statue until it thaws.</p><p><strong>Higher Level.</strong>When you cast this spell using a spell slot of 6th level or higher, the damage increases by 1d8 for each slot level above 5th.</p>",
+      "value": "<p>A blast of cold air erupts from your hands. Each creature in a 60-foot cone must make a Constitution saving throw. A creature takes 8d8 cold damage on a failed save, or half as much damage on a successful one.</p>\n<p>A creature killed by this spell becomes a frozen statue until it thaws.</p>\n<p><strong>Higher Level.</strong>When you cast this spell using a spell slot of 6th level or higher, the damage increases by 1d8 for each slot level above 5th.</p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>Frozen statue element is not automated.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -88,16 +88,16 @@
     }
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "core": {
       "sourceId": "Item.NWJhOTNjYTZmN2E5"
     },
     "midi-qol": {
-      "onUseMacroName": ""
+      "onUseMacroName": "",
+      "effectActivation": false
     },
     "autoanimations": {
-      "version": 3,
+      "version": 4,
       "killAnim": false,
       "animLevel": false,
       "options": {
@@ -111,7 +111,8 @@
         "scaleY": null,
         "opacity": null,
         "removeTemplate": true,
-        "persistent": false
+        "persistent": false,
+        "menuType": "cone"
       },
       "override": true,
       "sourceToken": {
@@ -136,11 +137,22 @@
       },
       "preview": false
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
       "world": "travels-in-barovia",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
     }
   }
 }

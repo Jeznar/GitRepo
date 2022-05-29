@@ -42,6 +42,7 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.29 **[Ice Storm](../Spells/4th_Level#ice-storm)** -- Created spell, though it has an error at end of turn removal.  
 
+22.05.29 **[Cone of Cold](../Spells/5th_Level#cone-of-cold)** -- Updated spell description
 
 
 [Link back to my Documentation Listing](README.md) 
