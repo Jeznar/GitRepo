@@ -10,6 +10,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Fire Shield](#fire-shield)
 * [Freedom of Movement](#freedom-of-movement)
 * [Greater Invisibility](#greater-invisibility)
+* [Ice Storm](#ice-storm)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
 * [Stoneskin](#stoneskin)
@@ -133,6 +134,14 @@ There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_on
 This is just a minor reskinning of [Invisibility](../2nd_Level#invisibility).  It has a 10 round duration and does not drop when the invisible token attacks or casts a spell.
 
 Curiously, it quietly supports upcasting, in the same manner as the Invisibility spell.  It being easier than having people target correctly than removing the option. 
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Ice Storm
+
+This spell places Tile with a cracked earth effect to mark the area of difficult terrain.  The tile should be removed at the end of the caster's next turn, but that is failing as of 5/29 on what seems like a Midi/Times-Up issue that I need to research.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

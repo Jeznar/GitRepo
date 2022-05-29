@@ -1,4 +1,4 @@
-const MACRONAME = "Banishment.js"
+const MACRONAME = "Banishment.0.2.js"
 /*****************************************************************************************
  * This is based on a MidiQOL Sample Item which handled "banishing" one target with a very
  * simple set of messages to the GM in chat. 
@@ -10,6 +10,7 @@ const MACRONAME = "Banishment.js"
  * Well, it does those things now
  * 
  * 04/10/22 0.1 Creation of Macro from MidiQOL Sample Item
+ * 05/26/22 0.2 Compatibility upgrade for FoundryVTT 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -42,7 +43,8 @@ if (args[0] === "on") {
         token: aToken
     })
     await jez.wait(1000)
-    await target.update({ hidden: true });
+    // await target.update({ hidden: true });           // Obsolete as of FoundryVTT 9.x
+     await target.document.update({ hidden: true });     // Syntax as of FoundryVTT 9.x
     await target.actor.setFlag('world', 'banishment', 1);
     //ChatMessage.create({content: target.name + "  was banished"})
 }
@@ -50,9 +52,9 @@ if (args[0] === "on") {
 //
 if (args[0] === "off") {
     let target = canvas.tokens.get(args[1]);
-
-    target.update({ hidden: false })
-    target.actor.unsetFlag('world', 'banishment');
+    // await target.update({ hidden: false });           // Obsolete as of FoundryVTT 9.x
+    await target.document.update({ hidden: false });     // Syntax as of FoundryVTT 9.x
+    await target.actor.unsetFlag('world', 'banishment');
     await jez.wait(500)
     jez.postMessage({
         color: jez.randomDarkColor(),

@@ -13,7 +13,7 @@ const MACRONAME = "Earth_Tremor_0.2.js"
  *   higher, the damage increases by 1d6 for each slot level above 1st.
  * 
  * 12/11/21 0.1 Creation of Macro
- * 05/17/22 0.2 Convert to pace a tile instead of just a sequencer video
+ * 05/17/22 0.2 Convert to place a tile instead of just a sequencer video
  *****************************************************************************************/
 const CONDITION = `Prone`;
 const ICON = `modules/combat-utility-belt/icons/prone.svg`;
