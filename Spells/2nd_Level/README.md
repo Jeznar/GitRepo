@@ -18,6 +18,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Knock](#knock)
 * [Levitate](#levitate)
 * [Locate Object](#locate-object)
+* [Magic Weapon](#magic-weapon)
 * [Mirror Image](#mirror-image) (ASE)
 * [Misty Step](#misty-step)
 * [Moonbeam](#moonbeam) (ASE)
@@ -227,6 +228,16 @@ Applies a DAE effect to indicate levitate's presence and runs a VFX on the targe
 ### Locate Object
 
 Nothing more than a tested SRD implmentation. It works.  Nothing special.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Magic Weapon
+
+Incorporated sample found somewhere with some additional error checking and comments.
+
+Interesting element: modifies an item on an actor to reflect the magic benefit fro the duration of the spell.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

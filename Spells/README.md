@@ -93,6 +93,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Knock](2nd_Level#knock)
 * [Levitate](2nd_Level#levitate)
 * [Locate Object](2nd_Level#locate-object)
+* [Magic Weapon](2nd_Level#magic-weapon)
 * [Mirror Image](2nd_Level#mirror-image) (ASE)
 * [Misty Step](2nd_Level#misty-step)
 * [Moonbeam](2nd_Level#moonbeam) (ASE)

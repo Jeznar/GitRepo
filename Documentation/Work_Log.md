@@ -48,6 +48,9 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.31 **[Phantom Steed](../Spells/3rd_Level#phantom-steed)** -- Summons a steed using warpgate and dismisses it at end of spell duration. 
 
+22.05.31 **[Magic Weapon](../Spells/nd_Level#magic-weapon)** -- Slight mod to an example macro.  Interesting element: modifies an item on an actor to reflect the magic benefit.
+
+
 
 
 [Link back to my Documentation Listing](README.md) 
