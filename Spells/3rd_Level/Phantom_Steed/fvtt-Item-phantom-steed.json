@@ -1,0 +1,141 @@
+{
+  "name": "Phantom Steed",
+  "type": "spell",
+  "img": "Tokens/Spells/3rd_Level/Phatom_Steed/Phantom_Steed_Avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>A Large quasi-real, horse-like creature appears on the ground in an unoccupied space of your choice within range. You decide the creature's appearance, but it is equipped with a saddle, bit, and bridle. Any of the equipment created by the spell vanishes in a puff of smoke if it is carried more than 10 feet away from the steed.</p>\n<p>For the duration, you or a creature you choose can ride the steed. The creature uses the statistics for a <strong>riding horse</strong>, except it has a <strong>speed of 100 feet</strong> and can travel <span style=\"text-decoration:underline\">10 miles in an hour</span>, or 13 miles at a fast pace.</p>\n<p>When the spell ends, the steed gradually fades, giving the rider 1 minute to dismount. The spell ends if you use an action to dismiss it or if the steed takes any damage.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>A mount will be summoned and should be controlled by summoning actor.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "minute",
+      "cost": 1,
+      "condition": "3/day"
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "ill",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": true,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.MmQ4NDU0NmVkZTI4"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Phantom Steed",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Phantom_Steed.0.1.js\"\n/*****************************************************************************************\n * This macro implmenets Phantom Steed.\n * \n *   A Large quasi-real, horse-like creature appears on the ground in an unoccupied space \n *   of your choice within range. You decide the creature's appearance, but it is equipped \n *   with a saddle, bit, and bridle. Any of the equipment created by the spell vanishes in \n *   a puff of smoke if it is carried more than 10 feet away from the steed.\n * \n *   For the duration, you or a creature you choose can ride the steed. The creature uses \n *   the statistics for a riding horse, except it has a speed of 100 feet and can travel \n *   10 miles in an hour, or 13 miles at a fast pace.\n * \n *   When the spell ends, the steed gradually fades, giving the rider 1 minute to dismount. \n *   The spell ends if you use an action to dismiss it or if the steed takes any damage.\n * \n * 1. Setup variables\n * 2. Verify the Actor %Phantom Steed% exists \n * 3. Define warpgate updates, options and callbacks \n * 4. Fire off warpgate\n * 5. Add a watchdog effect that despawns the mount when removed at spell expiration\n * 6. Post a completion message\n * \n * 05/31/22 0.1 Creation from Find Steed Specific\n ******************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nlet msg = \"\";\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \n   else aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n   else aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \n   else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\njez.log(`Beginning ${MACRONAME}`);\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\n//if (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n//if (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\n// DamageBonus must return a function to the caller\n//if (args[0]?.tag === \"DamageBonus\") return(doBonusDamage());    \njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    //-------------------------------------------------------------------------------------\n    // 1. Setup variables. Mount to be summoned will be name ${aToken.name}'s Phantom Steed\n    //\n    const STEED_TEMPLATE = '%Phantom Steed%'\n    const STEED_NAME = `${aToken.name}'s Phantom Steed`\n    jez.log(`STEED_NAME: \"${STEED_NAME}\"`)\n    //--------------------------------------------------------------------------------------\n    // 2. Verify the Actor named in the aItem.name exists\n    //\n    if (!game.actors.getName(STEED_TEMPLATE)) {   // If steed not found, that's all folks\n        msg = `Could not find \"<b>${STEED_TEMPLATE}</b>\" in the <b>Actors Directory</b>. \n        <br><br>Can not complete the ${aItem.name} action.`;\n        postResults(msg);\n        return (false);\n    }\n    //--------------------------------------------------------------------------------------\n    // If actor currently has a watchdog effect for this spell, delete it. \n    //\n    let existingEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);\n    await existingEffect.delete();\n    await jez.wait(100) // Let the deletion of the effect despawn the summoned token\n    //--------------------------------------------------------------------------------------\n    // If summoned token or tokens exist in the scene, dismiss, delete, despawn it. \n    //\n    let existToken = null\n    let sceneId = game.scenes.viewed.id\n    while (existToken = await canvas.tokens.placeables.find(ef => ef.name === STEED_NAME)) {\n        warpgate.dismiss(existToken.id, sceneId)\n        await jez.wait(100)\n    }\n    //--------------------------------------------------------------------------------------\n    // 3. Define warpgate updates, options and callbacks \n    //\n    let updates = {\n        token: { name: STEED_NAME },\n        actor: { name: STEED_NAME }\n    }\n    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet\n    const CALLBACKS = {\n        pre: async (template) => {\n            preEffects(template);\n            await warpgate.wait(2000);\n        },\n        post: async (template, token) => {\n            postEffects(template);\n            await warpgate.wait(500);\n        }\n    };\n    //--------------------------------------------------------------------------------------\n    // 4. Fire off warpgate \n    //\n    //let returned = await warpgate.spawnAt({x:x,y:y},summons, updates, CALLBACKS, OPTIONS);\n    let returned = await warpgate.spawn(STEED_TEMPLATE, updates, CALLBACKS, OPTIONS);\n    jez.log(\"returned\", returned)\n    //--------------------------------------------------------------------------------------\n    // 5. Add watchdog effect to despawn summoned token at expiration (1 hour) via doOff \n    //\n    const EXPIRE = [\"newDay\", \"longRest\", \"shortRest\"];\n    const GAME_RND = game.combat ? game.combat.round : 0;\n    let effectData = {\n      label: aItem.name,\n      icon: aItem.img,\n      origin: LAST_ARG.uuid,\n      disabled: false,\n      duration: { \n          rounds: 600, startRound: GAME_RND, \n          seconds: 3600,  startTime: game.time.worldTime, \n          token: aToken.uuid, stackable: false \n        },\n      flags: { dae: { macroRepeat: \"none\", specialDuration: EXPIRE } },\n      changes: [\n        { key: `macro.itemMacro`, mode: jez.ADD, value: returned, priority: 20 },\n      ]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });\n    //--------------------------------------------------------------------------------------\n    // 6. Post a completion message\n    //\n    msg = `<b>${aToken.name}</b> has summoned <b>${STEED_NAME}</b>`\n    postResults(msg);\n    return;\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\nasync function preEffects(template) {\n    //const VFX_FILE = \"jb2a.explosion.orange.0\"\n    const VFX_FILE = \"jb2a.swirling_sparkles.01.bluepink\"\n    new Sequence()\n        .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .opacity(1.0)\n        .scale(1.0)\n        .play()\n}\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function postEffects(template) {\n    const VFX_OPACITY = 1.0\n    const VFX_SCALE = 0.8\n    const VFX_FILE = \"jb2a.firework.02.bluepink.03\"\n    new Sequence()\n      .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        //.waitUntilFinished(-1000) \n    .play()\n  }\n/***************************************************************************************************\n * Delete the summoned token,defined as args[1]\n ***************************************************************************************************/\n async function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(\"Token to dismiss\", args[1])\n    let sceneId = game.scenes.viewed.id\n    warpgate.dismiss(args[1], sceneId)\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

@@ -16,6 +16,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Fly](#fly)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
+* [Phantom Steed](#phantom-steed)
 * [Protection from Energy](#protection-from-energy)
 * [Remove Curse](#remove-curse)
 * [Revivify](#revivify)
@@ -189,6 +190,14 @@ Here's what the spell looks like on the random battle map.
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
 --- 
+ 
+### Phantom Steed
+
+This item use a macro to grab an actor named *%Phantom Steed%* from the actor's directory and place it on the field with a name identifying the summoning actor.  It deletes any previous summonings of this steed and creates a watchdog effect that deletes the new summoning when it expires. 
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
 
 ### Protection from Energy
 

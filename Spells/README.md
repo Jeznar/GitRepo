@@ -120,6 +120,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Fly](3rd_Level#fly)
 * [Lightning Bolt](3rd_Level#lightning-bolt)
 * [Magic Circle](3rd_Level#magic-circle)
+* [Phantom Steed](3rd_Level#phantom-steed)
 * [Protection from Energy](3rd_Level#protection-from-energy)
 * [Remove Curse](3rd_Level#remove-curse)
 * [Revivify](3rd_Level#revivify)

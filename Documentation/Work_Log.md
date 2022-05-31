@@ -46,6 +46,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.29 **[Staggering Smite](../Spells/4th_Level#staggering-smite)** -- Implemented Staggering Smite from Blinding Smite.
 
+22.05.31 **[Phantom Steed](../Spells/3rd_Level#phantom-steed)** -- Summons a steed using warpgate and dismisses it at end of spell duration. 
+
 
 
 [Link back to my Documentation Listing](README.md) 
