@@ -14,6 +14,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Find Steed](#find-steed)
 * [Flaming Sphere](#flaming-sphere)
 * [Hold Person](#hold-person)
+* [Gust of Wind](#gust-of-wind)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
 * [Levitate](#levitate)
@@ -195,6 +196,20 @@ UPDATE 5/13/22: Added expiration condition so that the effect drops from afflict
 
 ---
 
+### Gust of Wind
+
+Manages a tile containing a VFX for gust of wind.  Consequences of the wind are not automated.
+
+Placing the effect is a bit odd, ok, really odd. The targeting template needs to be placed horizontally from left to right. After the template is placed the created Tile can be rotated (cmd-mouse wheel) and dragged into correct position. 
+
+If a bonus action is spent to move the direction the line blasts from the caster, it will need to be manually adjusted in the same manner as initial placement.
+
+NOTE: The gust moves with the caster.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
 ### Invisibility
 
 This spell requires that the user target token(s) before using it.  It will apply an effect that grants attack advantage and forces disadvantage on inbound attacks.  It drops when the affected token attacks or casts a spell.
@@ -211,7 +226,7 @@ Basically the same macro is used by [Greater Invisibility](../4th_Level#greater-
 
 ### Knock
 
-Nothing more than a tested SRD implmentation. It works.  Nothing special.
+Nothing more than a tested SRD implementation. It works.  Nothing special.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

@@ -90,6 +90,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Enlarge/Reduce](2nd_Level#enlargereduce)
 * [Find Steed](2nd_Level#find-steed)
 * [Flaming Sphere](2nd_Level#flaming-sphere)
+* [Gust of Wind](2nd_Level#gust-of-wind)
 * [Hold Person](2nd_Level#hold-person)
 * [Invisibility](2nd_Level#invisibility)
 * [Knock](2nd_Level#knock)
