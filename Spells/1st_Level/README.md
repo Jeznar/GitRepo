@@ -6,6 +6,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Animal Friendship](#animal-friendship)
 * [Binding Curse](#binding-curse)
 * [Bless](#bless)
+* [Comprehend Languages](#comprehend-languages)
 * [Cure Wounds](#cure-wounds)
 * [Detect Magic](#detect-magic)
 * [Dissonant Whispers](#dissonant-whispers)
@@ -92,6 +93,16 @@ This does result in bit of ugly in the chat log, but at least it is correct math
 This is a known issue with DAE, [Active effects concatenated with global bonus in special traits](https://gitlab.com/foundrynet/dnd5e/-/issues/1134).
 
 ![Bless](Bless/Bless.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Comprehend Languages
+
+Runs a runeVFX on the caster and place a timed effect marking existence of the spell effect.
+
+No macro used.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

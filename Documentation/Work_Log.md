@@ -50,6 +50,9 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.31 **[Magic Weapon](../Spells/nd_Level#magic-weapon)** -- Slight mod to an example macro.  Interesting element: modifies an item on an actor to reflect the magic benefit.
 
+22.05.31 **[Comprehend Languages](1st_Level#comprehend-languages)** -- Runs a RuneVFX and places a DAE effect (no macro needed).
+
+
 
 
 

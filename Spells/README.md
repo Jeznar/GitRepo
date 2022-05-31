@@ -50,6 +50,8 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Animal Friendship](1st_Level#animal-friendship)
 * [Binding Curse](1st_Level#binding-curse)
 * [Bless](1st_Level#bless)
+* [Comprehend Languages](1st_Level#comprehend-languages)
+* [Cure Wounds](1st_Level#cure-wounds)
 * [Detect Magic](1st_Level#detect-magic)
 * [Dissonant Whispers](1st_Level#dissonant-whispers)
 * [Earth Tremor](1st_Level#earth-tremor)
