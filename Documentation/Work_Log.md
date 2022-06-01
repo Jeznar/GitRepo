@@ -58,6 +58,9 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.01 **[Steelwind Strike](../Spells/5th_Level#steelwind-strike)** -- Polished up the ASE implementation by adding a usage note: pre-target before using this spell.
 
+22.06.01 **[Animate Objects](../Spells/5th_Level#animate-objects)** -- Uses warpgate and a menu that adjusts based on remaining summoning budget to add actors to scene.  Manages a watchdog to delete on end of spell.
+
+
 
 
 

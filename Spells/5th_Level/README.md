@@ -3,6 +3,7 @@ This repository will contain my automated 5th level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Animate Objects](#animate-objects)
 * [Cloudkill](#cloudkill)
 * [Cone of Cold](#cone-of-cold)
 * [Contact Other Plane](#contact-other-plane)
@@ -17,6 +18,27 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 [*Back to List of All Spells*](../README.md)
 
 ## Spell Notes
+
+---
+
+### Animate Objects
+
+This item uses an adaptive menu to guide the use of WarpGate to place up to 10 actors from the actor's directory onto the scene.  A watchdog is utilized to remove any summons that may remain at the end of the spell's duration. 
+
+Some spell highlights:
+
+* Checks for availability of all summons before offering them
+* Manages a summoning budget, terminating when spent
+* Places new actors via warpgate
+* Runs some VFXs to dress up the summons
+* Deletes all of the summons at end of spell
+* Renames summons to mark the summoner and make unique.
+
+![Animate_Objects.gif](Animate_Objects/Animate_Objects.gif)
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
 
 ### Cloudkill
 

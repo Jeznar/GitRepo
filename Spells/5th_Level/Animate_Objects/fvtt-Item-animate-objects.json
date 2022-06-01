@@ -1,0 +1,132 @@
+{
+  "name": "Animate Objects",
+  "type": "spell",
+  "img": "icons/magic/earth/projectile-stone-boulder-purple.webp",
+  "data": {
+    "description": {
+      "value": "<p>Objects come to life at your command. Choose up to <strong>ten nonmagical objects</strong> within range that are not being worn or carried.</p>\n<ul>\n<li><strong>Medium</strong> targets count as two objects,</li>\n<li><strong>Large</strong> targets count as four objects,</li>\n<li><strong>Huge</strong> targets count as eight objects.</li>\n</ul>\n<p>You can't animate any object larger than Huge. Each target animates and becomes a creature under your control until the spell ends or until reduced to 0 hit points.</p>\n<p>As a bonus action, you can mentally command any creature you made with this spell if the creature is within 500 feet of you (if you control multiple creatures, you can command any or all of them at the same time, issuing the same command to each one). You decide what action the creature will take and where it will move during its next turn, or you can issue a general command, such as to guard a particular chamber or corridor. If you issue no commands, the creature only defends itself against hostile creatures. Once given an order, the creature continues to follow it until its task is complete.</p>\n<p>Animated Object Statistics</p>\n<ul>\n<li><strong>Tiny</strong> - HP: 20, AC: 18, Attack: +8 to hit, 1d4 + 4 damage, Str: 4, Dex: 18</li>\n<li><strong>Small</strong> - HP: 25, AC: 16, Attack: +6 to hit, 1d8 + 2 damage, Str: 6, Dex: 14</li>\n<li><strong>Medium</strong> - HP: 40, AC: 13, Attack: +5 to hit, 2d6 + 1 damage, Str: 10, Dex: 12</li>\n<li><strong>Large</strong> - HP: 50, AC: 10, Attack: +6 to hit, 2d10 + 2 damage, Str: 14, Dex: 10</li>\n<li><strong>Huge</strong> - HP: 80, AC: 10, Attack: +8 to hit, 2d12 + 4 damage, Str: 18, Dex: 6</li>\n</ul>\n<p>An animated object is a construct with AC, hit points, attacks, Strength, and Dexterity determine by its size. Its Constitution is 10 and its Intelligence and Wisdom are 3, and its Charisma is 1. Its speed is 30 feet, if the objects lack legs or other appendages it can use for locomotion, it instead has a flying speed of 30 feet and can hover. If the object is securely attached to a surface or larger object, such as a chain bolted to a wall, its speed is 0. It has blindsight with a radius of 30 feet and is blind beyond that distance. When the animated object drops to 0 hit points, it reverts to its original object form, and any remaining damage carries over to its original object form.</p>\n<p>If you command an object to attack, it can make a single melee attack against a creature within 5 feet of it. It makes a slam attack with an attack bonus and bludgeoning damage determine by its size. The DM might rule that a specific object inflicts slashing or piercing damage based on its form.</p>\n<p><strong>Higher Level.</strong>If you cast this spell using a spell slot of 6th level or higher, you can animate two additional objects for each slot level above 5th.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>This spell will guide the placement of summoned objects which are <em>assumed</em> to be readily available.  GM may rule otherwise.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 5,
+    "school": "trs",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.NWYwNzNmNmZlOTIz"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Animate Objects",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Animate_Objects.0.1.js\"\n/*****************************************************************************************\n * Implement Animate Objects which is a rather complicated spell.  This macro assumes\n * enoiugh of the appropriate type of objects are in range.  The general flow of this \n * is as follows:\n * \n * - Make sure the 5 template creatures exist in the actor's directory, %Animate SIZE%, \n *   with size being Huge, Large, Medium, Small and Tint.\n * - Ask the caster what type of creature is to be summoned in a dialog that shows budget\n *   and cost\n * - Use Warpgate to summon and rename an actor to teh scene\n * - Repeat previous two steps till budget is spent.\n * - Modify conentration function to act as watchdog effect to delete summons at end \n * \n * 06/01/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nlet summonableCreatures = [ \"%Animated Tiny%\",  \"%Animated Small%\", \"%Animated Medium%\", \n                            \"%Animated Large%\", \"%Animated Huge%\" ]\nlet summonCosts = [ 1, 1, 2, 4, 8 ]\nlet menuCreatures = [ \"Tiny, cost:1\",  \"Small, cost:1\", \"Medium, cost:2\", \n\"Large, cost:4\", \"Huge, cost:8\" ]\nlet summonBudget = 10\nlet tokenIdArray = [];  \nlet count = 0 // Count of objects animated\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff();                   // DAE removal\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n  const FUNCNAME = \"doOnUse()\";\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  //------------------------------------------------------------------------------------------------\n  // Make sure all 5 potentially needed actors exist in the actor's directory.\n  //\n  for (const CRITTER of summonableCreatures) {\n    jez.log(`Checking for creature: \"${CRITTER}\"`)\n    let critter = game.actors.getName(CRITTER)\n    jez.log(\"critter\", critter)\n    if (!critter) {\n      msg = `Configuration problem: <b>${CRITTER}</b> was not found in the actor's directory.`\n      ui.notifications.error(msg)\n      postResults(msg)\n      return\n    }\n  }\n  //------------------------------------------------------------------------------------------------\n  // Run a runeVFX on the summoning token\n  //\n  jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))\n  //------------------------------------------------------------------------------------------------\n  // Call the function that will begin the recursive process of asking for summon type and placing.\n  //\n  animate();\n  //------------------------------------------------------------------------------------------------\n  // That's all folks\n  //\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n}\n/***************************************************************************************************\n * Build dialog to ask what size to animate next, perform summon and call this function again until \n * budget is exhausted.\n ***************************************************************************************************/\nfunction animate() {\n  const FUNCNAME = 'animate()'\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  const queryTitle = \"What size object should be animated next?\";\n  const queryText = `Remaining animation budget is <b>${summonBudget}</b>`;\n  let summonList = [ menuCreatures[0], menuCreatures[1]];\n  if (summonBudget >= summonCosts[2]) summonList.push(menuCreatures[2]);\n  if (summonBudget >= summonCosts[3]) summonList.push(menuCreatures[3]);\n  if (summonBudget >= summonCosts[4]) summonList.push(menuCreatures[4]);\n  jez.pickRadioListArray(queryTitle, queryText, summonCallBack, summonList);\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return (true);\n  //---------------------------------------------------------------------------------------------\n  async function summonCallBack(selection) {\n    let index = 0\n    jez.log(\"pickRadioCallBack\", selection);\n    const ANIMATION_SIZE = selection.split(\",\")[0];\n    switch (ANIMATION_SIZE) {\n      case \"Tiny\": index = 0; break;\n      case \"Small\": index = 1; break;\n      case \"Medium\": index = 2; break;\n      case \"Large\": index = 3; break;\n      case \"Huge\": index = 4; break;\n    }\n    jez.log(`Time to summon a ${summonableCreatures[index]}, index was ${index}`);\n    await summonObject(index);\n    summonBudget -= summonCosts[index]\n    if (summonBudget > 0) {\n      jez.log(`Remaining budget is ${summonBudget}`)\n      animate()\n    } \n    else {\n      msg = `<b>${aToken.name}</b> animates ${count} objects. They will serve \n      for one minute or until dismissed.`;\n      postResults(msg);\n      addWatchdogEffect(tokenIdArray);\n    }\n  }\n  //---------------------------------------------------------------------------------------------\n  async function summonObject(index) {\n    let rc = null;\n    const CREATURE_NAME = summonableCreatures[index];\n    rc = await summonCritter(CREATURE_NAME);\n    tokenIdArray.push(rc);\n  }\n}\n/***************************************************************************************************\n * Summon the actor and rename with a numeric suffix\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\nasync function summonCritter(summons) {\n  let name = `${aToken.name}'s Object ${++count}`\n  let updates = { token: {name: name},\n                  actor: {name: name},\n                }\n  const OPTIONS = { controllingActor: aActor };\n  const CALLBACKS = {\n    pre: async (template) => {\n      preEffects(template);\n      await warpgate.wait(500);\n    },\n    post: async (template, token) => {\n      postEffects(template);\n      await warpgate.wait(500);\n      //greetings(template, token);\n    }\n  };\n  //updates = mergeObject(updates, choice);\n  return (await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS));\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function preEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n    .file(VFX_FILE)\n    .atLocation(template)\n    .center()\n    .scale(1.0)\n    .play()\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function postEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .scale(1.0)\n    .play()\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n  jez.log(msg);\n  let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n  jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\n async function doOff() {\n  const FUNCNAME = \"doOff()\";\n  const SCENE_ID = game.scenes.viewed.id\n\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  for (let i = 1; i < args.length - 1; i++) {\n    jez.log(`  args[${i}]`, args[i]);\n    await jez.wait(250)\n    warpgate.dismiss(args[i], SCENE_ID)\n  }\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return;\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function addWatchdogEffect(tokenIdArray) {\n  let tokenIds = \"\"\n  const EXPIRE = [\"newDay\", \"longRest\", \"shortRest\"];\n  const GAME_RND = game.combat ? game.combat.round : 0;\n  // Build list of token IDs seperated by spaces\n  for (let i = 0; i < tokenIdArray.length; i++) tokenIds+= `${tokenIdArray[i]} ` \n  let effectData = {\n    label: aItem.name,\n    icon: aItem.img,\n    origin: LAST_ARG.uuid,\n    disabled: false,\n    duration: { rounds: 10, startRound: GAME_RND, startTime: game.time.worldTime },\n    flags: { dae: { macroRepeat: \"none\", specialDuration: EXPIRE } },\n    changes: [\n      { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },\n    ]\n  };\n  await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

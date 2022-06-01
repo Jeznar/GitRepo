@@ -157,6 +157,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [5th Level Spells](5th_Level)
 
+* [Animate Objects](5th_Level#animate-objects)
 * [Cloudkill](5th_Level#cloudkill)
 * [Cone of Cold](5th_Level#cone-of-cold)
 * [Contact Other Plane](5th_Level#contact-other-plane)
