@@ -56,6 +56,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.01 **[Animate Dead](../Spells/3rd_Level#animate-dead)** -- Uses an ASE implementation to summon undead tokens to the scene replacing existing *dead* (0 health) tokens.
 
+22.06.01 **[Steelwind Strike](../Spells/5th_Level#steelwind-strike)** -- Polished up the ASE implementation by adding a usage note: pre-target before using this spell.
+
 
 
 

@@ -112,9 +112,9 @@ This implementation does a few things:
 
 This spell looks awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#steel-wind-strike).
 
-![steelwind-strike](https://user-images.githubusercontent.com/32877348/137191296-88113589-a903-46bb-bb72-03b781f8a4b2.gif)
+When this spell is used, it is essential that the targets be pre-selected before casting the spell.  I have added a note to that effect.
 
-As it seems unlikely to be used in my current game, I have simply loaded what the module offers and gave it a super quick spin...although, perhaps a certain Vampire may prep this spell after seeing this spell in action. 
+![Steel_Wind_Strike.gif](Steel_Wind_Strike/Steel_Wind_Strike.gif)
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
