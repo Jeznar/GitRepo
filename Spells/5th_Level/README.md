@@ -114,6 +114,8 @@ This spell looks awesome as built in the [Advanced Spell Effects Module](https:/
 
 When this spell is used, it is essential that the targets be pre-selected before casting the spell.  I have added a note to that effect.
 
+Side Note: This spell can leave the active token unfortunately rotated.  This can be fixed, on a mac, by selecting the token and rotating it with cmd-mouse wheel.
+
 ![Steel_Wind_Strike.gif](Steel_Wind_Strike/Steel_Wind_Strike.gif)
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
