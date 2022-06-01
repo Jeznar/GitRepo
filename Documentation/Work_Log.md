@@ -54,6 +54,7 @@ Trying to keep track of things as I add or make significant changes.
 
 22.05.31 **[Gust of Wind](../Spells/2nd_Level#gust-of-wind)** -- Manages a VFX in a tile representing  the area affected by the gust.  The tile is removed on spell completion or concentration break.
 
+22.06.01 **[Animate Dead](../Spells/3rd_Level#animate-dead)** -- Uses an ASE implementation to summon undead tokens to the scene replacing existing *dead* (0 health) tokens.
 
 
 

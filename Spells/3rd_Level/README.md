@@ -34,11 +34,13 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 
 ### Animate Dead
 
-This spell is offered in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#animate-dead), when I tried to use it I ran into conflicts with [Automated Evocations](https://github.com/theripper93/automated-evocations) module which I have been using for a while now.  I ended up opting to keep the AE implementation which works just fine and doesn't require (or check for) nearby corpses. That seems like a better choice as I don't want to force the GM to litter dead tokens everywhere they should be.  
+This spell has been converted to use the [Advanced Spell Effects (ASE) Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#animate-dead).  I had set it up to use the[Automated Evocations](https://github.com/theripper93/automated-evocations) module which I uninstalled when moving to Foundry 9.x as it seems to offer little beyond WarpGate other than headaches.
+
+This spell **does require** an adequate number of corpses within 10 feet to operate and doesn't make the summoned undead uniquely named, which is disappointing to me, but it's done, so there is that.
 
 ![animate-dead](Animate_Dead/Animate_Undead.gif)
 
-It does seem like the summoned tokens need a few moments to *settle* into the scene.  If they are moved too soon, Token Attacher will get all grumpy and the following command may need to run to fix it:
+The old version is retained in the repo, marked as depricated.  That version did seem to need the summoned tokens need a few moments to *settle* into the scene.  If they are moved too soon, Token Attacher will get all grumpy and the following command may need to run to fix it:
 
 ~~~javascript
 tokenAttacher.deleteMissingLinks()

@@ -1,0 +1,142 @@
+{
+  "name": "Animate Dead (ASE)",
+  "type": "spell",
+  "img": "icons/magic/control/fear-fright-monster-red.webp",
+  "data": {
+    "description": {
+      "value": "<p>This spell creates an undead servant. Choose a pile of bones or a corpse of a <strong>Medium or Small humanoid</strong> within range. Your spell imbues the target with a foul mimicry of life, raising it as an undead creature. The target becomes a <strong>skeleton if you chose bones</strong> or a <strong>zombie if you chose a corpse</strong> (the DM has the creature's game statistics).</p>\n<p>On each of your turns, you can use a <strong>bonus action to mentally command</strong> any creature you made with this spell if the creature is <strong>within 60 feet</strong> of you (if you control multiple creatures, you can command any or all of them at the same time, issuing the<strong> same command to each one</strong>). You decide what action the creature will take and where it will move during its next turn, or you can issue a <span style=\"text-decoration:underline\">general command</span>, such as to <strong>guard a particular chamber </strong>or corridor. If you issue no commands, the creature only <span style=\"text-decoration:underline\">defends itself against hostile creatures</span>. Once given an order, the creature continues to follow it until its task is complete.</p>\n<p>The creature is under your control for 24 hours, after which it stops obeying any command you've given it. To maintain control of the creature for another 24 hours, you must cast this spell on the creature again before the current 24-hour period ends. This use of the spell reasserts your control over up to four creatures you have animated with this spell, rather than animating a new one.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 4th level or higher, you animate or reassert control over two additional undead creatures for each slot level above 3rd. Each of the creatures must come from a different corpse or pile of bones.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>This spell is automated via ASE.  It requires dead corpses within 10 feet that will be converted to skeletons or zombies.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 212",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 10,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "level": 3,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Item.MjEzMTYxNDU5NmY4"
+    },
+    "midi-qol": {
+      "onUseMacroName": "",
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "advancedspelleffects": {
+      "enableASE": true,
+      "spellEffect": "Animate Dead",
+      "effectOptions": {
+        "summons": {
+          "zombie": {
+            "actor": "46Q5IfCzO8qRrU0h"
+          },
+          "skeleton": {
+            "actor": "hVYWiHkNbXvyeC28"
+          }
+        },
+        "range": 10,
+        "magicSchool": "abjuration",
+        "magicSchoolColor": "blue",
+        "effectAColor": "dark_green",
+        "effectBColor": "blue",
+        "magicSchoolSound": "",
+        "magicSchoolSoundDelay": 0,
+        "magicSchoolVolume": 1,
+        "magicSchoolSoundOutro": "",
+        "magicSchoolSoundDelayOutro": 0,
+        "magicSchoolVolumeOutro": 1,
+        "effectASound": "",
+        "effectASoundDelay": 0,
+        "effectASoundVolume": 1,
+        "effectBSound": "",
+        "effectBSoundDelay": 0,
+        "effectBSoundVolume": 1
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
