@@ -19,6 +19,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Mage Hand](#mage-hand)
 * [Melf's Acid Arrow](#melfs-acid-arrow)
 * [Mending](#mending)
+* [Minor Illusion](#minor-illusion)
 * [Prestidigitation](#prestidigitation)
 * [Shillelagh](#shillelagh)
 * [Shocking Grasp](#shocking-grasp)
@@ -196,6 +197,16 @@ Transferred from older macro archive to GitRepo as part of migration to FoundryV
 ### Mending
 
 This macro simply plays a Rune VFX on the target. 
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Minor Illusion
+
+This item uses an ItemMacro to run a runeVFX in a tile at the targeted location.  It deletes the tile on spell completion (1 minute) or when the effect is dropped. No attempt is made to show the actual effect created by the caster, just a rune marking the location.
+
+![Minor_Illusion.gif](Minor_Illusion/Minor_Illusion.gif)
 
 [*Back to Cantrips List*](#cantrips)
 

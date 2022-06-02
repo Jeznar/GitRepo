@@ -14,6 +14,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Dispel Magic](#dispel-magic)
 * [Fireball](#fireball)
 * [Fly](#fly)
+* [Haste](#haste)
 * [Lightning Bolt](#lightning-bolt)
 * [Magic Circle](#magic-circle)
 * [Phantom Steed](#phantom-steed)
@@ -158,6 +159,18 @@ NOTE: I needed to disable Automated Animations global match to fireball to avoid
 This spell applies a DAE effect that upgrades flight speed to 60.  It also makes a call to the world macro, **[Run RuneVFX onTargets](../../Utility_Macros#run-runevfx-ontargets)**, to play a VFX on the target(s), which are assumed to be willing.
 
 ![Fly_DAE_Effects.png](Fly/Fly_DAE_Effects.png)
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Haste 
+
+This spell applies a DAE effect that adds the haste automatable benefits to the target.  It also runs an every-turn function that reminds the players of the extra action.  When the effect drops it tags the token with a CUB condition for *no_actions*
+
+![Haste.gif](Haste/Haste.gif)
+
+![Haste_Chat.png](Haste/Haste_Chat.png)
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

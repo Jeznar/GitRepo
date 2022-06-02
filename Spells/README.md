@@ -36,6 +36,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Mage Hand](Cantrips#mage-hand)
 * [Melf's Acid Arrow](Cantrips#melfs-acid-arrow)
 * [Mending](Cantrips#mending)
+* [Minor Illusion](Cantrips#minor-illusion)
 * [Prestidigitation](Cantrips#prestidigitation)
 * [Shillelagh](Cantrips#shillelagh)
 * [Shocking Grasp](Cantrips#shocking-grasp)

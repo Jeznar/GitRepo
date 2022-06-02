@@ -44,6 +44,7 @@ This is a generic catch all for things that don't fit into other categories.
 * [Doss Lute](#doss-lute)
 * [Icon of Ravenloft](#icon-of-ravenloft)
 * [Helm of Brilliance](#helm-of-brillance)
+* [Morning Amulet](#morning-amulet)
 * [Pipes of Haunting](#pipes-of-haunting)
 * [Ring of Mind Shielding](#ring-of-mind-shielding)
 * [Rod of the Pact Keeper](#rod-of-the-pact-keeper)
@@ -125,6 +126,16 @@ This is a not baked implementation. Everything needs manual effort.
 ### Ring of Mind Shielding
 
 Item simply places a DAE effect on the attuned creature with a GM note saying effects are to be handled manually.
+
+*[Back to the Contents of this Repo](#contents-of-this-repo)*
+
+---
+
+### Morning Amulet
+
+Simple little macro that turns a VFX on/off of the active token and shows messages indicating the effect.  That effect is not automated. 
+
+This one also has a "broken" item that applies the haste effect gained when the amulet is destroyed.
 
 *[Back to the Contents of this Repo](#contents-of-this-repo)*
 

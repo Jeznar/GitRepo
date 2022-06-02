@@ -60,6 +60,9 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.01 **[Animate Objects](../Spells/5th_Level#animate-objects)** -- Uses warpgate and a menu that adjusts based on remaining summoning budget to add actors to scene.  Manages a watchdog to delete on end of spell.
 
+22.06.01 **[Minor Illusion](../Spells/Cantrips#minor-illusion)** -- Places and deletes a tile containing a VFX marking the spell effect location.
+
+22.06.02 **[Morning Amulet](../Items#morning-amulet)** -- Turns on/off a VFX and posts message about item effect.
 
 
 

@@ -1,0 +1,136 @@
+{
+  "name": "Mourning Amulet",
+  "type": "feat",
+  "img": "icons/equipment/neck/pendant-faceted-red.webp",
+  "data": {
+    "description": {
+      "value": "<p>The posessor of this amulet may activate/deactivate a shield provided by this amulet with a bonus action.</p>\n<p>Once active one-half the damage that the wearer takes is transferred to the Mourning Amulet. If the amulet absorbs damage that reduces it to 0 hit points, it is destroyed, and the wearer takes any leftover damage.</p>\n<p>The Mourning Amulet has <strong>40HP</strong> and is restored to that number of hit points each dawn, provided it has at least 1 hit point remaining. If the Mourning Amulet is broken, Mila goes into a bloodlust and is considered to be under the effects of <strong>non-magical Haste spell for 1 minute</strong>.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This item is not automated beyond placing a marker effect on the wearer when the item is used, removing the effect if it is already in place.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.NmRhZTk5OTA2OWNm"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Mourning Amulet",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Morning_Amulet.js\"\n/*****************************************************************************************\n * Implments a bit of VFX and a message for Morning Amulet which is largely manual.\n * \n * 06/02/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n//---------------------------------------------------------------------------------------\n// Set some global variables and constants\n//\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//---------------------------------------------------------------------------------------\n// See https://gitlab.com/tposney/dae#lastarg for info on what is included in lastArg\n//\nconst VFX_NAME  = `${MACRO}-${aToken.id}`\nconst VFX_INTRO = \"modules/jb2a_patreon/Library/1st_Level/Shield/Shield_01_Regular_Red_Intro_400x400.webm\"\nconst VFX_LOOP  = \"modules/jb2a_patreon/Library/1st_Level/Shield/Shield_03_Regular_Red_Loop_400x400.webm\";\nconst VFX_OUTRO = \"modules/jb2a_patreon/Library/1st_Level/Shield/Shield_03_Regular_Red_OutroExplode_400x400.webm\";\nconst VFX_OPACITY = 0.7;\nconst VFX_SCALE = 1.9;\nconst EFFECT = MACRO;\n//---------------------------------------------------------------------------------------\n// Do something Useful\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"on\") doOn();          \t\t    // DAE Application\nif (args[0] === \"off\") doOff();        \t\t\t    // DAE removal\n//---------------------------------------------------------------------------------------\n// That's all folks\n//\njez.log(\"---------------------------------------------------------------------------\",\n    \"Finishing\", MACRONAME);\nreturn;\n/****************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let existingEffect = await aToken.actor.effects.find(i => i.data.label === EFFECT);\n    if (existingEffect) {\n        msg = `<b>${aToken.name}</b> is no longer benefitted by the <b>Mourning Amulet</b>`\n        await existingEffect.delete()\n        postResults(msg)\n        return\n    }\n    else {\n        const GAME_RND = game.combat ? game.combat.round : 0;\n        let effectData = {\n            label: EFFECT,\n            icon: aItem.img,\n            origin: aToken.uuid,\n            disabled: false,\n            flags: { dae: { itemData: aItem } },\n            duration: { rounds: 100, seconds: 600, startRound: GAME_RND, startTime: game.time.worldTime },\n            changes: [\n                { key: `macro.itemMacro`, mode: jez.CUSTOM, value: 40, priority: 20 },\n            ]\n        };\n        await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: [effectData] });\n        msg = `A shimmering second skin appears around <b>${aToken.name}</b>.`\n        postResults(msg)\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n\n/***************************************************************************************\n * Perform the steps that runs when this macro is executed by DAE to add to target\n ***************************************************************************************/\n async function doOn() {\n    const FUNCNAME = \"doOn()\";\n    jez.log(\"--------------On---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n    jez.runRuneVFX(aToken, jez.getSpellSchool(aItem), \"red\")\n    new Sequence()\n    .effect()\n        .file(VFX_INTRO)\n        .attachTo(aToken)\n        .scaleToObject(VFX_SCALE)\n        .opacity(VFX_OPACITY)           \n        .waitUntilFinished(-500) // Negative wait time (ms) clips the effect to avoid fadeout\n    .effect()\n        .file(VFX_LOOP)\n        .attachTo(aToken)\n        .scaleToObject(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(true)  \n        .persist()\n        .name(VFX_NAME)         // Give the effect a uniqueish name\n        .extraEndDuration(800)  // Time padding on exit to connect to Outro effect\n    .play()\n\n    jez.log(\"--------------On---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n /***************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************/\n  async function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(\"--------------Off---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n\n    Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken });\n\n    new Sequence()\n    .effect()\n        .file(VFX_OUTRO)\n        .scaleToObject(VFX_SCALE)\n        .opacity(VFX_OPACITY)  \n        .attachTo(aToken)\n    .play()\n\n    jez.log(\"--------------Off---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}
