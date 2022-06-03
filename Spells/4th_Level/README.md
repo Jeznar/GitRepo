@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Black Tentacles](#black-tentacles)
 * [Blight](#blight)
 * [Death Ward](#death-ward)
+* [Faithful Hound](#faithful-hound)
 * [Fire Shield](#fire-shield)
 * [Freedom of Movement](#freedom-of-movement)
 * [Greater Invisibility](#greater-invisibility)
@@ -91,6 +92,20 @@ The macro also plays a simple rune VFX on the target.
 ### Death Ward
 
 There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_onTargets and places a DAE effect that simply marks the existence of the spell.  Effects to be handled manually.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Faithful Hound
+
+This item leverages WarpGate to place a faithful hound token on the map with an attack ability scaled per RAW.  It setups up a watchdog effect that will de-spawn the summoned token when it is removed. 
+
+The spell does not manage the barking at 30 feet or de-spawn if separated by more than 100 feet elements of the spell.  The player is responsible for using the hound's attack ability when appropriate. 
+
+The summoned hound will be visible to all the players, please remind them that it can only be seen by the summoner.
+
+![Faithful_Hound.gif](Faithful_Hound/Faithful_Hound.gif)
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
