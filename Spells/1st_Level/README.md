@@ -17,6 +17,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Fog Cloud](#fog-cloud) (ASE)
 * [Guiding Bolt](#guiding-bolt)
 * [Hex](#hex)
+* [Hideous Laughter](#hideous-laughter)
 * [Longstrider](#longstrider)
 * [Mage Armor](#mage-armor)
 * [Magic Missle](#magic-missile) (ASE)
@@ -235,6 +236,20 @@ HOMEBREW: If the user of this spell is a subclass *celestial* (typically a warlo
 Following are a few messages that this macro can produce.
 
 ![Hex/Hex_Chat.png](Hex/Hex_Chat.png)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Hideous Laughter
+
+This is an adaptation of Crymic's spell, which seems to have several bugs, those have been cleaned up.  It now manages the debuffs, saves and checks for low intelligence immunity.
+
+This one uses a hook to take action on damage received.  It is a bit messy still, but works.
+
+![Hideous_laughter.gif](Hideous_Laughter/Hideous_laughter.gif)
+
+![Hideous_Laughter.png](Hideous_Laughter/Hideous_Laughter.png)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

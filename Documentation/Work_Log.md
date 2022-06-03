@@ -64,6 +64,12 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.02 **[Morning Amulet](../Items#morning-amulet)** -- Turns on/off a VFX and posts message about item effect.
 
+22.06.02 **[Hideous Laughter](../Spells/1st_Level#hideous-laughter)** -- Loaded and debugged Crymic's macro.  This one uses a hook to take action on damage received.  It is a bit messy still, but works.
+
+22.06.03 **[Black Tentacles](../Spells/4th_Level#black-tentacles)** -- Moved back to ItemMacro from a macro in the game folders that was causing cleanup issues.
+
+
+
 
 
 

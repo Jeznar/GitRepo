@@ -74,7 +74,8 @@ async function preCheck() {
     jez.postMessage({color: jez.randomDarkColor(), 
                 fSize: 14, 
                 icon: aToken.data.img, 
-                msg: `${aToken.name} suffers from waves of lethergy as the ferntic energy fades.`, 
+                msg: `${aToken.name} suffers from waves of lethergy as the ferntic energy fades. No
+                actions until end of nect turn.`, 
                 title: `No longer hasted!`, 
                 token: aToken})
     // ---------------------------------------------------------------------------------------

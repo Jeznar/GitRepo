@@ -24,7 +24,7 @@ let msg = "";
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
+if (args[0] === "each") doEach();					    // DAE everyround
 // DamageBonus must return a function to the caller
 if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
 jez.log(`============== Finishing === ${MACRONAME} =================`);
