@@ -82,7 +82,7 @@ async function doOnUse() {
     game.dice3d?.showForRoll(aActorRoll);
     jez.log(` Player's str check: ${aActorRoll.total}`);
     //----------------------------------------------------------------------------------------------
-    // Roll atheletics check for the targeted Actor
+    // Roll athletics check for the targeted Actor
     //
     let tActorRoll = await tActor.rollSkill('ath', { chatMessage: false, fastForward: true });
     game.dice3d?.showForRoll(tActorRoll);
@@ -146,7 +146,7 @@ async function doOnUse() {
          </div>
      </div>
      <div>
-         <div style="text-align:center">Atheletics</div>
+         <div style="text-align:center">Athletics</div>
          <div class="dice-roll">
              <div class="dice-result">
                  <div class="dice-formula">${tActorRoll.formula}</div>
