@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Eyebite](#eyebite)
 * [Globe of Invulnerability](#globe-of-invulnerability)
 * [Steel Wind Strike](#steel-wind-strike)
+* [True Seeing](#true-seeing)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -58,6 +59,14 @@ This implementation runs a VFX indicating the area containing the globe.  It doe
 This spell seems awesome as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki).
 
 ![chain-lightning](https://user-images.githubusercontent.com/32877348/137191296-88113589-a903-46bb-bb72-03b781f8a4b2.gif)
+
+[*Back to 6th Level Spell List*](#6th-level-spells)
+
+---
+
+### True Seeing
+
+Adds a DAE effect for True Sight, plays a rune VFX and adds an appropriate summary to the chat log.  It does not automate the vision effect.
 
 [*Back to 6th Level Spell List*](#6th-level-spells)
 

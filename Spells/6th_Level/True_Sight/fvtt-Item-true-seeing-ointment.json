@@ -1,0 +1,36 @@
+{
+  "name": "True Seeing Ointment",
+  "type": "loot",
+  "img": "icons/consumables/potions/bottle-circular-corked-labeled-green.webp",
+  "data": {
+    "description": {
+      "value": "<p>An ointment for the eyes that costs 25 gp; is made from mushroom powder, saffron, and fat; and is consumed by the spell @Item[PsOIQ9gGkPFWgscH]{True Seeing}.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0.1,
+    "price": 25,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": true,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Item.oMT6lMuwzsRS2UWE"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

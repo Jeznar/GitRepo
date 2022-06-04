@@ -72,6 +72,9 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.04 **[Arcane Hand](../Spells/5th_Level#arcane-hand)** -- Complex warpgate implementation that needed 5 macros and abilities customized.  This includes a new method of handling grapple that implements a mutual watch dog to remove paired effects.
 
+22.06.05 **[True Seeing](../Spells/6th_Level#true-seeing)** -- Just adds a DAE Effect marker, plays a runeVFX, and summarizes the effect to a chat card.
+
+
 
 
 

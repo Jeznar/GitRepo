@@ -1,0 +1,136 @@
+{
+  "name": "Arcane Hand",
+  "type": "spell",
+  "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_Thumb.webp",
+  "data": {
+    "description": {
+      "value": "<p>You create a Large hand of shimmering, translucent force in an unoccupied space that you can see within range. The hand lasts for the spell’s Duration, and it moves at your command, mimicking the movements of your own hand.</p>\n<p>The hand is an object that has AC 20 and Hit Points equal to your hit point maximum. If it drops to 0 Hit Points, the spell ends. It has a Strength of 26 (+8) and a Dexterity of 10 (+0). The hand doesn’t fill its space.</p>\n<p>When you cast the spell and as a Bonus Action on your subsequent turns, you can move the hand up to 60 feet and then cause one of the following Effects with it:</p>\n<ul>\n<li><strong>Clenched Fist</strong></li>\n<li><strong>Forceful Hand</strong></li>\n<li><strong>Grasping Hand</strong></li>\n<li><strong>Interposing Hand</strong></li>\n</ul>\n<hr />\n<p><strong>FoundryVTT: </strong>This spell will summon an actor to the scene that has the four effects embedded as features that explain what they do and can used from that actor.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 120,
+      "long": 120,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "level": 5,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.spells.a2KJHCIbY5Mi4Dmn"
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "advancedspelleffects": {
+      "enableASE": true,
+      "spellEffect": "Animate Dead"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Arcane Hand",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Arcane_Hand.0.1.js\"\n/*****************************************************************************************\n * Summon aand customize an Arcane Hound to the scene\n *  \n * - Summon with WarpGate\n * - Modify Bite ability to have correct to-hit bonus\n * - Delete summon when effect on original caster is removed (or expires)\n * \n * 02/11/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Setup some specific global values\n//\nconst MINION_TEMPLATE = `%Arcane Hand%`;\nlet colorArray = [\"Blue\", \"Green\", \"Purple\", \"Rainbow\", \"Red\", \"Grey\"];\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    jez.log(`Checking for creature: \"${MINION_TEMPLATE}\"`)\n    let critter = game.actors.getName(MINION_TEMPLATE)\n    if (!critter) {\n        msg = `Configuration problem: <b>${MINION_TEMPLATE}</b> was not found in the actor's directory.`\n        ui.notifications.error(msg)\n        postResults(msg)\n        return (false)\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    for (let i = 1; i < args.length - 1; i++) {\n        jez.log(`  args[${i}]`, args[i]);\n        await jez.wait(250)\n        warpgate.dismiss(args[i], game.scenes.viewed.id)\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    if (!await preCheck()) return (false);\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    await popColorDialog();\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Pop a Radio Button Dialog to select the color of the hand to be used.\n ***************************************************************************************************/\nasync function popColorDialog() {\n  const queryTitle = \"What Color Should Hand Be?\"\n  const queryText = `Select one color that should be used for the Arcane Hand.`\n  jez.pickRadioListArray(queryTitle, queryText, pickColorCallBack, colorArray);\n}\n/***************************************************************************************************\n * Process the callback from dialog and fork to correct function to apply effect\n ***************************************************************************************************/\nasync function pickColorCallBack(selection) {\n  if (!selection) popColorDialog()          // Try again if no selection made\n  else {\n    let color = selection\n    if (color === \"Grey\") color = \"Rock01\" // Rock is the only 'color' with a suffix\n    let houndInfo = await summonHound(color)\n    addWatchdogEffect(houndInfo);\n    msg = `<b>${aToken.name}</b> has summoned a ${selection} arcane hand that will serve for the \n    duration of the spell.`\n    postResults(msg)\n  }\n}\n/***************************************************************************************************\n * Summon the minion and update HP\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\nasync function summonHound(color) {\n  const CAST_MOD = jez.getCastMod(aToken);\n  const CHAR_LVL = jez.getCharLevel(aToken);\n  const MAX_HP = aActor.data.data.attributes.hp.max\n  const NAME = `${aToken.name}'s Arcane Hand`\n  const SPELL_LVL = args[0].spellLevel\n  const FIST_DAM = `${4 + (SPELL_LVL - 5) * 2}d8`\n  const GRASP_DAM = `${2 + (SPELL_LVL - 5) * 2}d6 + ${CAST_MOD}`\n  const CAST_STAT = aActor.data.data.abilities[jez.getCastStat(aToken)].value\n  let updates = {\n    token: {\n      name: NAME,\n      img: `modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_${color}_400x400.webm`,\n    },\n    actor: {\n      name: NAME,\n      img: `modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_${color}_Thumb.webp`,\n      'data.attributes.hp': { \n        formula: MAX_HP,\n        max: MAX_HP,\n        value: MAX_HP,  \n       },\n      'data.details.cr': CHAR_LVL,            // Set CRto make hands proficency bonus match the casters\n      'data.abilities.int.value': CAST_STAT,  // Make hand's cast stat match casters\n    },\n    embedded: {\n      Item: {\n        \"Clenched Fist\": {\n          'data.damage.parts': [[FIST_DAM, \"force\"]],\n          'data.attackBonus': `${CAST_MOD}[mod]`,\n          img: `modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_${color}_Thumb.webp`,\n        },\n        \"Forceful Hand\": {\n          img: `modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_${color}_Thumb.webp`,\n        },\n        \"Grasping Hand\": {\n          'data.damage.versatile': GRASP_DAM,\n          img: `modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_${color}_Thumb.webp`,\n        },\n        \"Interposing Hand\": {\n          img: `modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_${color}_Thumb.webp`,\n        },\n      }\n    }\n  }\n  const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet\n  const CALLBACKS = {\n    pre: async (template) => {\n      preEffects(template, color);\n      await warpgate.wait(1000);\n    },\n    post: async (template) => {\n      postEffects(template, color);\n      await warpgate.wait(500);\n    }\n  };\n  return (await warpgate.spawn(MINION_TEMPLATE, updates, CALLBACKS, OPTIONS));\n}\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function preEffects(template, color) {\n    let vfxFile = \"jb2a.explosion.yellow.1\"\n    switch (color) {\n      case \"Blue\":    vfxFile = \"jb2a.explosion.07.bluewhite\"; break;\n      case \"Green\":   vfxFile = \"jb2a.explosion.04.green\"; break;\n      case \"Purple\":  vfxFile = \"jb2a.explosion.07.purplepink\"; break;\n      case \"Rainbow\": vfxFile = \"jb2a.explosion.tealyellow.2\"; break;\n      case \"Red\":     vfxFile = \"jb2a.explosion.red.0\"; break;\n      case \"Rock01\":  vfxFile = \"jb2a.explosion.yellow.1\"; break;\n    }\n    new Sequence()\n      .effect()\n      .file(vfxFile)\n      .atLocation(template)\n      .center()\n      .scale(0.5)\n      .opacity(0.75)\n      .play()\n  }\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function postEffects(template, color) {\n    const VFX_OPACITY = 1.0\n    const VFX_SCALE = 1.0\n     let vfxFile = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_400x400.webm\"\n     switch (color) {\n       case \"Blue\":\n         vfxFile = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_Blue_400x400.webm\";\n         break;\n       case \"Green\":\n         vfxFile = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm\";\n         break;\n       case \"Purple\":\n        vfxFile = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Purple_400x400.webm\";\n        break;\n       case \"Rainbow\":\n        vfxFile = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Black_400x400.webm\";\n        break;\n       case \"Red\":\n        vfxFile = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Purple_400x400.webm\";\n        break;\n       case \"Rock01\":\n        vfxFile = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_Grey_400x400.webm\";\n        break;\n     }\n     \n    new Sequence()\n      .effect()\n        .file(vfxFile)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*.5)\n        .opacity(VFX_OPACITY*0.75)\n        .waitUntilFinished(-1000) \n    .effect()\n        .file(vfxFile)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*.75)\n        .opacity(VFX_OPACITY*0.5)\n        .waitUntilFinished(-1000) \n    .effect()\n        .file(vfxFile)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*1)\n        .opacity(VFX_OPACITY*0.25)\n        .waitUntilFinished(-1000) \n    .play()\n  }\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function addWatchdogEffect(tokenIdArray) {\n    let tokenIds = \"\"\n    const EXPIRE = [\"longRest\"];\n    const GAME_RND = game.combat ? game.combat.round : 0;\n    // Build list of token IDs seperated by spaces\n    for (let i = 0; i < tokenIdArray.length; i++) tokenIds+= `${tokenIdArray[i]} ` \n    let effectData = {\n      label: aItem.name,\n      icon: aItem.img,\n      origin: LAST_ARG.uuid,\n      disabled: false,\n      duration: { rounds: 4800, startRound: GAME_RND, seconds: 28800, startTime: game.time.worldTime },\n      flags: { dae: { macroRepeat: \"none\", specialDuration: EXPIRE } },\n      changes: [\n        { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },\n      ]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });\n  }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

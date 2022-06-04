@@ -1,0 +1,1105 @@
+{
+  "name": "%Arcane Hand%",
+  "type": "npc",
+  "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_Thumb.webp",
+  "data": {
+    "abilities": {
+      "str": {
+        "value": 26,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "dex": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "con": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "int": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "wis": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      },
+      "cha": {
+        "value": 10,
+        "proficient": 0,
+        "bonuses": {
+          "check": "",
+          "save": ""
+        }
+      }
+    },
+    "attributes": {
+      "ac": {
+        "flat": 20,
+        "calc": "flat",
+        "formula": ""
+      },
+      "hp": {
+        "value": 10,
+        "min": 0,
+        "max": 10,
+        "temp": null,
+        "tempmax": 0,
+        "formula": "10"
+      },
+      "init": {
+        "value": 0,
+        "bonus": 0
+      },
+      "movement": {
+        "burrow": 0,
+        "climb": 0,
+        "fly": 60,
+        "swim": 0,
+        "walk": 0,
+        "units": "ft",
+        "hover": true
+      },
+      "attunement": {
+        "max": 3
+      },
+      "senses": {
+        "darkvision": 0,
+        "blindsight": 0,
+        "tremorsense": 0,
+        "truesight": 0,
+        "units": "ft",
+        "special": ""
+      },
+      "spellcasting": "int"
+    },
+    "details": {
+      "biography": {
+        "value": "",
+        "public": ""
+      },
+      "alignment": "",
+      "race": "",
+      "type": {
+        "value": "",
+        "subtype": "",
+        "swarm": "",
+        "custom": ""
+      },
+      "environment": "",
+      "cr": 1,
+      "spellLevel": 0,
+      "xp": {
+        "value": 10
+      },
+      "source": ""
+    },
+    "traits": {
+      "size": "lg",
+      "di": {
+        "value": [],
+        "custom": ""
+      },
+      "dr": {
+        "value": [],
+        "custom": ""
+      },
+      "dv": {
+        "value": [],
+        "custom": ""
+      },
+      "ci": {
+        "value": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "diseased",
+          "exhaustion",
+          "frightened",
+          "grappled",
+          "incapacitated",
+          "invisible",
+          "paralyzed",
+          "petrified",
+          "poisoned",
+          "prone",
+          "restrained",
+          "stunned",
+          "unconscious"
+        ],
+        "custom": ""
+      },
+      "languages": {
+        "value": [],
+        "custom": ""
+      }
+    },
+    "currency": {
+      "pp": 0,
+      "gp": 0,
+      "ep": 0,
+      "sp": 0,
+      "cp": 0
+    },
+    "skills": {
+      "acr": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ani": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "arc": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ath": {
+        "value": 0,
+        "ability": "str",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "dec": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "his": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ins": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "itm": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "inv": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "med": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "nat": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "prc": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "prf": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "per": {
+        "value": 0,
+        "ability": "cha",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "rel": {
+        "value": 0,
+        "ability": "int",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "slt": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "ste": {
+        "value": 0,
+        "ability": "dex",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      },
+      "sur": {
+        "value": 0,
+        "ability": "wis",
+        "bonuses": {
+          "check": "",
+          "passive": ""
+        }
+      }
+    },
+    "spells": {
+      "spell1": {
+        "value": 0,
+        "override": null
+      },
+      "spell2": {
+        "value": 0,
+        "override": null
+      },
+      "spell3": {
+        "value": 0,
+        "override": null
+      },
+      "spell4": {
+        "value": 0,
+        "override": null
+      },
+      "spell5": {
+        "value": 0,
+        "override": null
+      },
+      "spell6": {
+        "value": 0,
+        "override": null
+      },
+      "spell7": {
+        "value": 0,
+        "override": null
+      },
+      "spell8": {
+        "value": 0,
+        "override": null
+      },
+      "spell9": {
+        "value": 0,
+        "override": null
+      },
+      "pact": {
+        "value": 0,
+        "override": null
+      }
+    },
+    "bonuses": {
+      "mwak": {
+        "attack": "",
+        "damage": ""
+      },
+      "rwak": {
+        "attack": "",
+        "damage": ""
+      },
+      "msak": {
+        "attack": "",
+        "damage": ""
+      },
+      "rsak": {
+        "attack": "",
+        "damage": ""
+      },
+      "abilities": {
+        "check": "",
+        "save": "",
+        "skill": ""
+      },
+      "spell": {
+        "dc": ""
+      }
+    },
+    "resources": {
+      "legact": {
+        "value": 0,
+        "max": 0
+      },
+      "legres": {
+        "value": 0,
+        "max": 0
+      },
+      "lair": {
+        "value": false,
+        "initiative": 0
+      }
+    }
+  },
+  "token": {
+    "name": "Arcane Hand",
+    "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_400x400.webm",
+    "displayName": 30,
+    "actorLink": false,
+    "width": 2,
+    "height": 2,
+    "scale": 0.8,
+    "mirrorX": false,
+    "mirrorY": false,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 0.55,
+    "vision": false,
+    "dimSight": 0,
+    "brightSight": 0,
+    "dimLight": 0,
+    "brightLight": 0,
+    "sightAngle": 0,
+    "lightAngle": 0,
+    "lightAlpha": 0.25,
+    "lightAnimation": {
+      "speed": 5,
+      "intensity": 5
+    },
+    "disposition": 0,
+    "displayBars": 30,
+    "bar1": {
+      "attribute": "attributes.hp"
+    },
+    "bar2": {
+      "attribute": ""
+    },
+    "flags": {
+      "splatter": {
+        "bloodColor": ""
+      },
+      "token-hud-wildcard": {
+        "default": ""
+      },
+      "token-auras": {
+        "aura1": {
+          "permission": "all",
+          "colour": "#ffffff",
+          "opacity": 0.5,
+          "distance": null,
+          "square": false
+        },
+        "aura2": {
+          "permission": "all",
+          "colour": "#ffffff",
+          "opacity": 0.5,
+          "distance": null,
+          "square": false
+        }
+      },
+      "tagger": {
+        "tags": ""
+      },
+      "monks-little-details": {
+        "token-combat-animation": "",
+        "token-highlight": ""
+      }
+    },
+    "randomImg": false,
+    "tint": null,
+    "lightColor": null,
+    "lockCamera": false,
+    "x": null,
+    "y": null,
+    "elevation": null,
+    "light": {
+      "alpha": 0.5,
+      "angle": 0,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "gradual": true,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "color": null
+    },
+    "actor": {
+      "data": {
+        "flags": {
+          "conditional-visibility": {
+            "blindsight": {
+              "visionLevelValue": 0
+            },
+            "blinded": {
+              "visionLevelValue": 0
+            },
+            "darkvision": {
+              "visionLevelValue": 0
+            },
+            "devilssight": {
+              "visionLevelValue": 0
+            },
+            "seeinvisible": {
+              "visionLevelValue": 0
+            },
+            "tremorsense": {
+              "visionLevelValue": 0
+            },
+            "truesight": {
+              "visionLevelValue": 0
+            },
+            "dataforcevisible": false,
+            "datausestealthpassive": false,
+            "hidden": {
+              "visionLevelValue": 0
+            },
+            "indarkness": {
+              "visionLevelValue": 0
+            },
+            "invisible": {
+              "visionLevelValue": 0
+            },
+            "obscured": {
+              "visionLevelValue": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "items": [
+    {
+      "_id": "52dAyWpfplyVZXbp",
+      "name": "Clenched Fist",
+      "type": "weapon",
+      "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_Thumb.webp",
+      "data": {
+        "description": {
+          "value": "<p><span style=\"color: #191813; font-size: 13px;\">The hand strikes one creature or object within 5 feet of it. Make a melee spell Attack for the hand using your game Statistics. On a hit, the target takes 4d8 force damage.</span></p>\n<p><span style=\"color: #191813; font-size: 13px;\"><strong style=\"box-sizing: border-box; user-select: text;\">At Higher Levels.</strong>&nbsp;When you cast this spell using a spell slot of 6th level or higher, the damage from the clenched fist option increases by 2d8&nbsp; for each slot level above 5th.<br /></span></p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "",
+        "quantity": 1,
+        "weight": 0,
+        "price": 0,
+        "attunement": 0,
+        "equipped": true,
+        "rarity": "",
+        "identified": true,
+        "activation": {
+          "type": "special",
+          "cost": 1,
+          "condition": "Caster uses its bonus action to command Arcane Hand"
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": 5,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "dex",
+        "actionType": "mwak",
+        "attackBonus": "6",
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [
+            [
+              "4d8",
+              "force"
+            ]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "armor": {
+          "value": 10
+        },
+        "hp": {
+          "value": 0,
+          "max": 0,
+          "dt": null,
+          "conditions": ""
+        },
+        "weaponType": "natural",
+        "baseItem": "",
+        "properties": {
+          "ada": false,
+          "amm": false,
+          "fin": false,
+          "fir": false,
+          "foc": false,
+          "hvy": false,
+          "lgt": false,
+          "lod": false,
+          "mgc": false,
+          "rch": false,
+          "rel": false,
+          "ret": false,
+          "sil": false,
+          "spc": false,
+          "thr": false,
+          "two": false,
+          "ver": false
+        },
+        "proficient": true
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "magicitems": {
+          "enabled": false,
+          "equipped": false,
+          "attuned": false,
+          "charges": "0",
+          "chargeType": "c1",
+          "destroy": false,
+          "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+          "rechargeable": false,
+          "recharge": "0",
+          "rechargeType": "t1",
+          "rechargeUnit": "r1",
+          "sorting": "l"
+        },
+        "midi-qol": {
+          "effectActivation": false
+        },
+        "midiProperties": {
+          "nodam": false,
+          "fulldam": false,
+          "halfdam": false,
+          "rollOther": false,
+          "critOther": false,
+          "magicdam": false,
+          "magiceffect": false,
+          "concentration": false,
+          "toggleEffect": false
+        },
+        "autoanimations": {
+          "version": 4,
+          "killAnim": false,
+          "animLevel": false,
+          "options": {
+            "ammo": false,
+            "menuType": "weapon",
+            "variant": "physical",
+            "enableCustom": false,
+            "repeat": null,
+            "delay": null,
+            "scale": null
+          },
+          "override": true,
+          "sourceToken": {
+            "enable": false
+          },
+          "targetToken": {
+            "enable": false
+          },
+          "levels3d": {
+            "type": ""
+          },
+          "macro": {
+            "enable": false
+          },
+          "animType": "melee",
+          "animation": "unarmedstrike",
+          "color": "random",
+          "audio": {
+            "a01": {
+              "enable": false
+            },
+            "a02": {
+              "enable": false
+            }
+          },
+          "preview": false,
+          "meleeSwitch": {
+            "switchType": "on",
+            "returning": false
+          },
+          "explosions": {
+            "enable": false
+          }
+        }
+      },
+      "changes": []
+    },
+    {
+      "_id": "xEOdyusIYBi83310",
+      "name": "Forceful Hand",
+      "type": "feat",
+      "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_Thumb.webp",
+      "data": {
+        "description": {
+          "value": "<p><span style=\"color: #191813; font-size: 13px;\">The hand attempts to push a creature within 5 feet of it in a direction you choose.</span></p>\n<p><span style=\"color: #191813; font-size: 13px;\">Make a check with the&nbsp;<strong>hand&rsquo;s Strength</strong>&nbsp;contested by the&nbsp;<strong>Strength (Athletics)&nbsp;</strong>check of the target. If the target is&nbsp;<strong>Medium or smaller, you have advantage&nbsp;</strong>on the check.</span></p>\n<p><span style=\"color: #191813; font-size: 13px;\">If you succeed, the hand pushes the target up to 5 feet plus a number of feet equal to five times your Spellcasting ability modifier. The hand moves with the target to remain within 5 feet of it.</span></p>\n<hr />\n<p><strong>FoundryVTT: </strong>Skill contest is automated.&nbsp; Subsequent movement is left to the players.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "",
+        "activation": {
+          "type": "special",
+          "cost": 1,
+          "condition": "Caster uses its bonus action to command Arcane Hand"
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": 5,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "other",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "requirements": "",
+        "recharge": {
+          "value": null,
+          "charged": false
+        }
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "magicitems": {
+          "enabled": false,
+          "equipped": false,
+          "attuned": false,
+          "charges": "0",
+          "chargeType": "c1",
+          "destroy": false,
+          "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+          "rechargeable": false,
+          "recharge": "0",
+          "rechargeType": "t1",
+          "rechargeUnit": "r1",
+          "sorting": "l"
+        },
+        "midi-qol": {
+          "effectActivation": false,
+          "onUseMacroName": "[postActiveEffects]ItemMacro"
+        },
+        "midiProperties": {
+          "nodam": false,
+          "fulldam": false,
+          "halfdam": false,
+          "rollOther": false,
+          "critOther": false,
+          "magicdam": false,
+          "magiceffect": false,
+          "concentration": false,
+          "toggleEffect": false
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Forceful Hand",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"Forceful_Hand.0.2.js\"\n/*****************************************************************************************\n * Initiate a Forceful Hand push for Arcane Hand\n * \n *   The hand attempts to push a creature within 5 feet of it in a direction you choose.\n * \n *   Make a check with the hand's Strength contested by the Strength (Athletics) check of \n *   the target. If the target is Medium or smaller, you have advantage on the check.\n * \n *   If you succeed, the hand pushes the target up to 5 feet plus a number of feet equal \n *   to five times your Spellcasting ability modifier. The hand moves with the target to \n *   remain within 5 feet of it. \n * \n * 06/03/22 0.1 JGB Creation\n *****************************************************************************************/\n const MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\n jez.log(`============== Starting === ${MACRONAME} =================`);\n for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n const LAST_ARG = args[args.length - 1];\n let aActor;         // Acting actor, creature that invoked the macro\n if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \n else aActor = game.actors.get(LAST_ARG.actorId);\n let aToken;         // Acting token, token for creature that invoked the macro\n if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n else aToken = game.actors.get(LAST_ARG.tokenId);\n let aItem;          // Active Item information, item invoking this macro\n if (args[0]?.item) aItem = args[0]?.item; \n else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n let msg = \"\";\n //----------------------------------------------------------------------------------\n // Run the main procedures, choosing based on how the macro was invoked\n //\n if (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n jez.log(`============== Finishing === ${MACRONAME} =================`);\n /***************************************************************************************************\n  *    END_OF_MAIN_MACRO_BODY\n  *                                END_OF_MAIN_MACRO_BODY\n  *                                                             END_OF_MAIN_MACRO_BODY\n  ***************************************************************************************************\n  * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n  ***************************************************************************************************/\n async function preCheck() {\n     if (args[0].targets.length !== 1) {     // If not exactly one target, return\n         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n         postResults(msg);\n         return (false);\n     }\n     return(true)\n }\n /***************************************************************************************************\n  * Post results to the chat card\n  ***************************************************************************************************/\n  function postResults(msg) {\n     jez.log(msg);\n     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n }\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    if (!await preCheck()) return (false);\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //----------------------------------------------------------------------------------------------\n    // Get size of target and set advantage appropriately\n    //\n    let tSizeObj = await jez.getSize(tToken)\n    let advan = null\n    if (tSizeObj.value <= 3) advan = true\n    //----------------------------------------------------------------------------------------------\n    // Roll strength check for the active actor\n    //\n    let aActorRoll = await aActor.rollAbilityTest('str', \n        { chatMessage: false, fastforward: true, advantage: advan });\n    jez.log(\"aActorRoll\",aActorRoll)\n    let rollType = aActorRoll.terms[0].modifiers[0] === \"kh\" ? \" (Advantage)\" : \n        aActorRoll.terms[0].modifiers[0] === \"kl\" ? \" (Disadvantage)\" : \"\";\n    jez.log(\"rollType\",rollType)\n    game.dice3d?.showForRoll(aActorRoll);\n    jez.log(` Player's str check: ${aActorRoll.total}`);\n    //----------------------------------------------------------------------------------------------\n    // Roll athletics check for the targeted Actor\n    //\n    let tActorRoll = await tActor.rollSkill('ath', { chatMessage: false, fastForward: true });\n    game.dice3d?.showForRoll(tActorRoll);\n    jez.log(` Target's athletics check: ${tActorRoll.total}`);\n    //----------------------------------------------------------------------------------------------\n    // Determine who won the contest (used in ugly dialog)\n    //\n    let playerWin = \"\";\n    let targetWin = \"\";\n    aActorRoll.total >= tActorRoll.total ? playerWin = `success` : targetWin = `success`;\n    //----------------------------------------------------------------------------------------------\n    // Build and post complex chat message reporting contested results\n    //\n    await postChatCard()\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // Post results card \n    //\n    if (playerWin) {\n        let distance = 5 + Math.max(0,jez.getCastMod(aToken))*5\n        msg = `<b>${tToken.name}</b> is pushed up to ${distance} feet. The hand moves with the \n        target to remain within 5 feet of it.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n            msg: msg, title: `${tToken.name} is pushed...`, token: aToken\n        })\n    }\n    else {\n        msg = `<b>${tToken.name}</b> is not moved by ${aToken.name}'s push.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n            msg: msg, title: `${tToken.name} holds firm!`, token: aToken\n        })\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    /****************************************************************************************\n     * Build godawful messy format for a chat card reporting results\n     ***************************************************************************************/\n    async function postChatCard() {\n        (async () => {\n            let damage_results = `\n <div class=\"flexrow 2\">\n <div><div style=\"text-align:center\">${aToken.name}</div></div><div><div style=\"text-align:center\">${tToken.name}</div></div>\n </div>\n <div class=\"flexrow 2\">\n     <div>\n         <div style=\"text-align:center\">Strength${rollType}</div>\n         <div class=\"dice-roll\">\n             <div class=\"dice-result\">\n                 <div class=\"dice-formula\">${aActorRoll.formula}</div>\n                 <div class=\"dice-tooltip\">\n                     <div class=\"dice\">\n                         <header class=\"part-header flexrow\">\n                             <span class=\"part-formula\">${aActorRoll.formula}</span>\n                             <span class=\"part-total\">${aActorRoll.total}</span>\n                         </header>\n                     </div>\n                 </div>\n                 <h4 class=\"dice-total ${playerWin}\">${aActorRoll.total}</h4>\n             </div>\n         </div>\n     </div>\n     <div>\n         <div style=\"text-align:center\">Athletics</div>\n         <div class=\"dice-roll\">\n             <div class=\"dice-result\">\n                 <div class=\"dice-formula\">${tActorRoll.formula}</div>\n                 <div class=\"dice-tooltip\">\n                     <div class=\"dice\">\n                         <header class=\"part-header flexrow\">\n                             <span class=\"part-formula\">${tActorRoll.formula}</span>\n                             <span class=\"part-total\">${tActorRoll.total}</span>\n                         </header>\n                     </div>\n                 </div>\n                 <h4 class=\"dice-total ${targetWin}\">${tActorRoll.total}</h4>\n             </div>\n         </div>\n     </div>\n     \n </div>`;\n            jez.log(\" Built damage results string\");\n            const chatMessage = game.messages.get(args[0].itemCardId);\n            let content = duplicate(chatMessage.data.content);\n            const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n            const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${damage_results}`;\n            content = content.replace(searchString, replaceString);\n            await chatMessage.update({ content: content });\n            await ui.chat.scrollBottom();\n        })();\n    }\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        }
+      }
+    },
+    {
+      "_id": "vB2dK44eVQVukcbE",
+      "name": "Interposing Hand",
+      "type": "feat",
+      "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_Thumb.webp",
+      "data": {
+        "description": {
+          "value": "<p><span style=\"color: #191813; font-size: 13px;\">The hand interposes itself between you and a creature you choose until you give the hand a different command. </span></p>\n<p><span style=\"color: #191813; font-size: 13px;\">The hand moves to stay between you and the target, providing you with half cover against the target. The target can&rsquo;t move through the hand&rsquo;s space if its Strength score is less than or equal to the hand&rsquo;s Strength score. If its Strength score is higher than the hand&rsquo;s Strength score, the target can move toward you through the hand&rsquo;s space, but that space is difficult terrain for the target.</span></p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated.</p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "",
+        "activation": {
+          "type": "special",
+          "cost": 1,
+          "condition": "Caster uses its bonus action to command Arcane Hand"
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "other",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "requirements": "",
+        "recharge": {
+          "value": null,
+          "charged": false
+        }
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "magicitems": {
+          "enabled": false,
+          "equipped": false,
+          "attuned": false,
+          "charges": "0",
+          "chargeType": "c1",
+          "destroy": false,
+          "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+          "rechargeable": false,
+          "recharge": "0",
+          "rechargeType": "t1",
+          "rechargeUnit": "r1",
+          "sorting": "l"
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Interposing Hand",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"Interposing_Hand.0.2.js\"\n/*****************************************************************************************\n * This macro just pops a descriptive text onto the chat card.\n * \n * 06/04/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 13, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    msg = `<b>${aToken.name}</b> stays between its creator and the target, providing half \n    cover against the target. The target can't move through the hand's space if its Strength  \n    is less than or equal to the hand's. If it is higher, the target can move toward\n    the summoner, but as difficult terrain.`\n    postResults(msg)\n    return (true);\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        },
+        "midi-qol": {
+          "effectActivation": false,
+          "onUseMacroName": "[postActiveEffects]ItemMacro"
+        },
+        "midiProperties": {
+          "nodam": false,
+          "fulldam": false,
+          "halfdam": false,
+          "rollOther": false,
+          "critOther": false,
+          "magicdam": false,
+          "magiceffect": false,
+          "concentration": false,
+          "toggleEffect": false
+        }
+      }
+    },
+    {
+      "_id": "lZoCDtStICVdIKAs",
+      "name": "Grasping Hand",
+      "type": "feat",
+      "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_Thumb.webp",
+      "data": {
+        "description": {
+          "value": "<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><span style=\"font-weight: 400;\">The hand attempts to grapple a Huge or smaller creature within 5 feet of it. You use the hand&rsquo;s Strength score to resolve the grapple. If the target is Medium or smaller, you have advantage on the check. </span></strong></p>\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><span style=\"font-weight: 400;\">While the hand is Grappling the target, you can use a Bonus Action to have the hand crush it. When you do so, the target takes bludgeoning damage equal to 2d6 + your Spellcasting ability modifier.</span></strong></p>\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">At Higher Levels.</strong><span style=\"color: #191813; font-size: 13px;\">&nbsp;When you cast this spell using a spell slot of 6th level or higher, the damage from the clenched fist option increases by 2d8 and the damage from the grasping hand increases by 2d6 for each slot level above 5th.</span></p>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "",
+        "activation": {
+          "type": "special",
+          "cost": 1,
+          "condition": "Caster uses its bonus action to command Arcane Hand"
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": 5,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "",
+        "actionType": "other",
+        "attackBonus": 0,
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "requirements": "",
+        "recharge": {
+          "value": null,
+          "charged": false
+        }
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "magicitems": {
+          "enabled": false,
+          "equipped": false,
+          "attuned": false,
+          "charges": "0",
+          "chargeType": "c1",
+          "destroy": false,
+          "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+          "rechargeable": false,
+          "recharge": "0",
+          "rechargeType": "t1",
+          "rechargeUnit": "r1",
+          "sorting": "l"
+        },
+        "midi-qol": {
+          "effectActivation": false,
+          "onUseMacroName": "[postActiveEffects]ItemMacro"
+        },
+        "midiProperties": {
+          "nodam": false,
+          "fulldam": false,
+          "halfdam": false,
+          "rollOther": false,
+          "critOther": false,
+          "magicdam": false,
+          "magiceffect": false,
+          "concentration": false,
+          "toggleEffect": false
+        },
+        "itemacro": {
+          "macro": {
+            "data": {
+              "_id": null,
+              "name": "Grasping Hand",
+              "type": "script",
+              "author": "ZjFlOWYxZjM5ZTZj",
+              "img": "icons/svg/dice-target.svg",
+              "scope": "global",
+              "command": "const MACRONAME = \"Grasping_Hand.0.2.js\"\n/*****************************************************************************************\n * Initiate a Grasping Hand grapple or squeeze if already grappling\n * \n *   The hand attempts to grapple a Huge or smaller creature within 5 feet of it. You use \n *   the hand's Strength score to resolve the grapple. If the target is Medium or smaller, \n *   you have advantage on the check.\n * \n *   While the hand is Grappling the target, you can use a Bonus Action to have the hand \n *   crush it. When you do so, the target takes bludgeoning damage equal to 2d6 + your \n *   Spellcasting ability modifier.\n * \n * 06/03/22 0.1 JGB Creation\n *****************************************************************************************/\n const MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\n jez.log(`============== Starting === ${MACRONAME} =================`);\n for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n const LAST_ARG = args[args.length - 1];\n let aActor;         // Acting actor, creature that invoked the macro\n if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \n else aActor = game.actors.get(LAST_ARG.actorId);\n let aToken;         // Acting token, token for creature that invoked the macro\n if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n else aToken = game.actors.get(LAST_ARG.tokenId);\n let aItem;          // Active Item information, item invoking this macro\n if (args[0]?.item) aItem = args[0]?.item; \n else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n let msg = \"\";\n //----------------------------------------------------------------------------------\n // Run the main procedures, choosing based on how the macro was invoked\n //\n if (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n jez.log(`============== Finishing === ${MACRONAME} =================`);\n /***************************************************************************************************\n  *    END_OF_MAIN_MACRO_BODY\n  *                                END_OF_MAIN_MACRO_BODY\n  *                                                             END_OF_MAIN_MACRO_BODY\n  ***************************************************************************************************\n  * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n  ***************************************************************************************************/\n async function preCheck() {\n     if (args[0].targets.length !== 1) {     // If not exactly one target, return\n         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n         postResults(msg);\n         return (false);\n     }\n     return(true)\n }\n /***************************************************************************************************\n  * Post results to the chat card\n  ***************************************************************************************************/\n  function postResults(msg) {\n     jez.log(msg);\n     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n }\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    if (!await preCheck()) return (false);\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //----------------------------------------------------------------------------------------------\n    // Is the hand already grappling?  If so, it needs to damage its grappled target, if targeted, \n    // or drop the grapple and try to grapple the new target.\n    //\n    let grapplingEffect = await aActor.effects.find(i => i.data.label === \"Grappling\");\n    if (grapplingEffect) {\n        jez.log(`Already grappling, determine if current target is what we are grappling`)\n        let grappledTokenId = null\n        let found = false\n        for (const ELEMENT of grapplingEffect.data.changes) {\n            if (ELEMENT.key === \"macro.execute\") {\n                grappledTokenId = ELEMENT.value.split(\" \")[1]   // First arg is grappled's ID\n                found = true\n                break\n            }\n        }\n        if (!found) {\n            msg = `The grappling effect lacked macro.execute.  This is odd.  Need Help.  Quiting.`\n            ui.notifications.error(msg)\n            postResults(msg)\n            return\n        }\n        if (tToken.id === grappledTokenId) { // Targeting currently grappled target, damage it!\n            jez.log(`Need to do ${aItem.data.damage.versatile} force damage here!!!`)\n            let damageRoll = new Roll(`${aItem.data.damage.versatile}`).evaluate({ async: false });\n            let flavor = \"Squeezes its grappled target\"\n            await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total, \"force\", [tToken],\n                damageRoll, { flavor: flavor, itemCardId: LAST_ARG.itemCardId });\n            game.dice3d?.showForRoll(damageRoll);\n            return\n        }\n        else await grapplingEffect.delete()  // Targeting a new token, clear current grappling\n    }\n    //----------------------------------------------------------------------------------------------\n    // Get size of target and set advantage appropriately\n    //\n    let tSizeObj = await jez.getSize(tToken)\n    if (tSizeObj.value >= 6) {\n        msg = `${tToken.name} is too large for ${aToken.name} to grasp, no effect.`\n        postResults(msg)\n        return(false)\n    }\n    let advan = null\n    if (tSizeObj.value <= 3) advan = true\n    //----------------------------------------------------------------------------------------------\n    // Roll strength check for the active actor\n    //\n    let aActorRoll = await aActor.rollAbilityTest('str', \n        { chatMessage: false, fastforward: true, advantage: advan });\n    jez.log(\"aActorRoll\",aActorRoll)\n    let rollType = aActorRoll.terms[0].modifiers[0] === \"kh\" ? \" (Advantage)\" : \n        aActorRoll.terms[0].modifiers[0] === \"kl\" ? \" (Disadvantage)\" : \"\";\n    jez.log(\"rollType\",rollType)\n    game.dice3d?.showForRoll(aActorRoll);\n    jez.log(` Player's str check: ${aActorRoll.total}`);\n    //----------------------------------------------------------------------------------------------\n    // Determing the target's check result (roll dialog)\n    //\n    let tSkill = \"ath\"; // Assume it will be Ath then check to see if right\n    if (tActor.data.data.skills.acr.total >= tActor.data.data.skills.ath.total) {tSkill = \"acr\"}\n    // Set long form of skill\n    let targetSkill = tSkill == \"ath\" ? \"Atheletics\" : \"Acrobatics\";\n    let tActorRoll = await tActor.rollSkill(tSkill, { chatMessage: false, fastForward: true });\n    game.dice3d?.showForRoll(tActorRoll);\n    jez.log(` Target's check result: ${tActorRoll.total}`);\n    //----------------------------------------------------------------------------------------------\n    // Determine who won the contest (used in ugly dialog)\n    //\n    let playerWin = \"\";\n    let targetWin = \"\";\n    aActorRoll.total >= tActorRoll.total ? playerWin = `success` : targetWin = `success`;\n    //----------------------------------------------------------------------------------------------\n    // Build and post complex chat message reporting contested results\n    //\n    await postChatCard()\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // If grapple succeeded add apropriate conditions so they are mutually dependent.\n    //\n    if (playerWin) {\n        await game.cub.addCondition(\"Grappling\", aToken)\n        await game.cub.addCondition(\"Grappled\",  tToken)\n        await jez.wait(500) // Let things settle a bit\n        // Find the Grappling and Grappled effects to access their Id's\n        let aEffect = await aActor.effects.find(i => i.data.label === \"Grappling\");\n        jez.log(\"aEffect\", aEffect)\n        let tEffect = await tActor.effects.find(i => i.data.label === \"Grappled\");\n        jez.log(\"tEffect\", tEffect)\n        //\n        // Modify the grapple effect on the aActor to remove the associated effect on the tActor\n        let aValue = `Remove_Paired_Effect ${tToken.id} ${tEffect.id}`\n        jez.log('aValue', aValue)\n        aEffect.data.changes.push({ key:`macro.execute`, mode:jez.CUSTOM, value:aValue, priority: 20 })\n        let aResult = await aEffect.update({'changes': aEffect.data.changes});\n        if (aResult) jez.log(`Active Effect \"Grappling\" updated!`, aResult);\n        //\n        // Modify the grapple effect on the tActor to remove the associated effect on the aActor\n        let tValue = `Remove_Paired_Effect ${aEffect.id} ${aToken.id}`\n        jez.log('tValue', tValue)\n        tEffect.data.changes.push({ key:`macro.execute`, mode:jez.CUSTOM, value:tValue, priority: 20 })\n        let tResult = await tEffect.update({'changes': tEffect.data.changes});\n        if (tResult) jez.log(`Active Effect \"Grappling\" updated!`, tResult);\n    }\n    //----------------------------------------------------------------------------------------------\n    // Post results card \n    //\n    if (playerWin) {\n        let distance = 5 + Math.max(0,jez.getCastMod(aToken))*5\n        msg = `<b>${tToken.name}</b> is grappled by <b>${aToken.name}</b>.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n            msg: msg, title: `${tToken.name} is Grappled`, token: aToken\n        })\n    }\n    else {\n        msg = `<b>${tToken.name}</b> avoids <b>${aToken.name}</b>'s grapple attempt.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n            msg: msg, title: `${tToken.name} remains free`, token: aToken\n        })\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    /****************************************************************************************\n     * Build godawful messy format for a chat card reporting results\n     ***************************************************************************************/\n    async function postChatCard() {\n        (async () => {\n            let damage_results = `\n <div class=\"flexrow 2\">\n <div><div style=\"text-align:center\">${aToken.name}</div></div><div><div style=\"text-align:center\">${tToken.name}</div></div>\n </div>\n <div class=\"flexrow 2\">\n     <div>\n         <div style=\"text-align:center\">Strength${rollType}</div>\n         <div class=\"dice-roll\">\n             <div class=\"dice-result\">\n                 <div class=\"dice-formula\">${aActorRoll.formula}</div>\n                 <div class=\"dice-tooltip\">\n                     <div class=\"dice\">\n                         <header class=\"part-header flexrow\">\n                             <span class=\"part-formula\">${aActorRoll.formula}</span>\n                             <span class=\"part-total\">${aActorRoll.total}</span>\n                         </header>\n                     </div>\n                 </div>\n                 <h4 class=\"dice-total ${playerWin}\">${aActorRoll.total}</h4>\n             </div>\n         </div>\n     </div>\n     <div>\n         <div style=\"text-align:center\">${targetSkill}</div>\n         <div class=\"dice-roll\">\n             <div class=\"dice-result\">\n                 <div class=\"dice-formula\">${tActorRoll.formula}</div>\n                 <div class=\"dice-tooltip\">\n                     <div class=\"dice\">\n                         <header class=\"part-header flexrow\">\n                             <span class=\"part-formula\">${tActorRoll.formula}</span>\n                             <span class=\"part-total\">${tActorRoll.total}</span>\n                         </header>\n                     </div>\n                 </div>\n                 <h4 class=\"dice-total ${targetWin}\">${tActorRoll.total}</h4>\n             </div>\n         </div>\n     </div>\n     \n </div>`;\n            jez.log(\" Built damage results string\");\n            const chatMessage = game.messages.get(args[0].itemCardId);\n            let content = duplicate(chatMessage.data.content);\n            const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n            const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${damage_results}`;\n            content = content.replace(searchString, replaceString);\n            await chatMessage.update({ content: content });\n            await ui.chat.scrollBottom();\n        })();\n    }\n}",
+              "folder": null,
+              "sort": 0,
+              "permission": {
+                "default": 0
+              },
+              "flags": {}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Actor.T9RPRwtnp4rcpIPl"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

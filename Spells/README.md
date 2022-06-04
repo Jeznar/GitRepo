@@ -181,6 +181,8 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Eyebite](6th_Level#eyebite)
 * [Globe of Invulnerability](6th_Level#globe-of-invulnerability)
 * [Steel Wind Strike](6th_Level#steel-wind-strike)
+* [True Seeing](6th_Level#true-seeing)
+
 
 [*Back to Spell Level List*](#spells)
 
