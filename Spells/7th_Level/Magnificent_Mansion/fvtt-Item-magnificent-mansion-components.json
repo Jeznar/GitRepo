@@ -1,0 +1,36 @@
+{
+  "name": "Magnificent Mansion Components",
+  "type": "loot",
+  "img": "icons/magic/symbols/runes-star-pentagon-blue.webp",
+  "data": {
+    "description": {
+      "value": "<p>Components needed for casting @Item[9uD9bHPpRvXzRNwp]{Magnificent Mansion}:</p>\n<ul>\n<li>Miniature portal carved from ivory,</li>\n<li>Small piece of polished marble,</li>\n<li>Tiny silver spoon,</li>\n</ul>\n<p>Each item worth at least 5 gp the set weighting 1 pound.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 1,
+    "price": 20,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": true,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Item.eBQTcilSAZZUTHT3"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.0"
+    }
+  }
+}

@@ -189,6 +189,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 ## [7th Level Spells](7th_Level)
 
 * [Finger of Death](7th_Level#finger_of_death)
+* [Magnificent Mansion](7th_Level#magnificent-mansion)
 * [Mirage Arcane](#mirage_arcane)
 * [Plane Shift (Self Only)](7th_Level#plane-shift-self-only)
 * [Teleport](7th_Level#teleport)

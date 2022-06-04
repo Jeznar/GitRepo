@@ -4,6 +4,7 @@ This repository will contain my automated 7th level spells as I create new or up
 Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Finger of Death](#finger_of_death)
+* [Magnificent Mansion](#magnificent-mansion)
 * [Mirage Arcane](#mirage_arcane)
 * [Plane Shift](#plane-shift-self-only)
 * [Teleport](#teleport)
@@ -15,6 +16,14 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 ### Finger of Death
 
 This implementation simply updated the description of the spell noting that the zombie *raising* when the spell kills a humanoid is to be handled **manually**.  It also uses a very generic macro that runs a VFX on the targeted tokens.
+
+[*Back to 7th Level Spell List*](#7th-level-spells)
+
+---
+
+### Magnificent Mansion
+
+Simply runs a RuneVFX on the caster and checks for a component (Magnificent Mansion Components) that can be added to inventory and configured into the spell.
 
 [*Back to 7th Level Spell List*](#7th-level-spells)
 
