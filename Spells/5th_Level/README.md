@@ -4,6 +4,7 @@ This repository will contain my automated 5th level spells as I create new or up
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Animate Objects](#animate-objects)
+* [Arcane Hand](#arcane-hand)
 * [Cloudkill](#cloudkill)
 * [Cone of Cold](#cone-of-cold)
 * [Contact Other Plane](#contact-other-plane)
@@ -35,6 +36,46 @@ Some spell highlights:
 * Renames summons to mark the summoner and make unique.
 
 ![Animate_Objects.gif](Animate_Objects/Animate_Objects.gif)
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Arcane Hand
+
+This ability uses WarpGate to summon and customize an actor, *%Arcane Hand%* from the actor's directory.  The caster is first presented with a dialog that allows the selection of one of the supported colors for the hand which will then be used for the token and the image icons for all of the abilities.  
+
+Next The hand is modified when summoned in a couple of ways:
+
+1. The name is changed to incorporate the summoner's name
+2. Hit points are set to the maximum health of the summoner
+3. Challenge rating of the hand is set to the level of the summoner to force the proficiency bonus to match
+4. Intelligence stat is set to match the summoner's casting stat for cast mod purposes.  
+
+The abilities are:
+
+1. **Clenched Fist** this ability is scaled for damage when created.  When used it acts as a simple melee attack against the target.
+2. **Forceful Hand** conducts a strength vs athletics test.  If the hand wins, it posts a chat message explaining how far the target is pushed. 
+3. **Grasping Hand** this ability is scaled when called to reflect the increased damage caused at higher casting levels.  When used, it checks to see if the hand is currently grappling.  If it is grappling and is targeting the grappled target, it inflicts damage and ends.  If it is grappling a different target, it drops that grapple.  If continuing, it attempts to grapple the current target.
+4. **Interposing Hand** posts a message about the effects of this option but doesn't automate them. 
+
+All of the above requires 4 macros and a configured actor in the actor's directory.
+
+One more thing, a utility macro has been crafted so that the grappled/grappling effects can remove their paired effect.  This macro **Remove_Paired_Effect** needs to be placed in the macro folder and is called when effects are removed to cleanse their partner from the scene.
+
+![Arcane_hand.gif](Arcane_Hand/Arcane_Hand.gif)
+
+Following are some of the chat cards this can produce:
+
+![Arcane_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Arcane_Hand_Chat.png)
+
+![Clenched_Fist_Chat.png](Arcane_Hand/Chat_Snaps/Clenched_Fist_Chat.png)
+
+![Forceful_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Forceful_Hand_Chat.png)
+
+![Grasping_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Grasping_Hand_Chat.png)
+
+![Interposing_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Interposing_Hand_Chat.png)
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 

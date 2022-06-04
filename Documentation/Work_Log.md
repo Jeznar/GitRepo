@@ -70,6 +70,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.03 **[Faithful Hound](../Spells/4th_Level#faithful-hound)** -- Summons a hound token with warpgate, scaling its attack ability and setting up a watchdog (haha!) effect.
 
+22.06.04 **[Arcane Hand](../Spells/5th_Level#arcane-hand)** -- Complex warpgate implementation that needed 5 macros and abilities customized.  This includes a new method of handling grapple that implements a mutual watch dog to remove paired effects.
+
 
 
 
