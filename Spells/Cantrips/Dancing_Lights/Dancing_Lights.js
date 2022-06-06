@@ -1,8 +1,10 @@
-const MACRONAME = "Dancing_Lights.0.1.js"
+const MACRONAME = "Dancing_Lights.0.2.js"
 /*****************************************************************************************
  * Summon 4 dancing lights with WarpGate
  * 
  * 05/13/22 0.1 Creation of Macro
+ * 06/06/22 0.2 Chasing player can't summon with warpgate issue.  Fix was granting players
+ *              permission to browse files in the player permissions within FoundryVTT.
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -36,7 +38,7 @@ async function doOnUse() {
     let lightIdArray = []
     for (let i = 1; i <= 4; i++) {
         const COLOR = pickColor();
-        jez.log("Color", COLOR)
+        jez.log(`${i} Color`, COLOR)
         const SIDEBAR_NAME = `${SUMMON_PREFIX}${COLOR}${SUMMON_POSTFIX}`
         lightIdArray.push(await summonCritter(SIDEBAR_NAME, i, COLOR))
     }
@@ -62,7 +64,7 @@ async function doOnUse() {
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
 async function summonCritter(summons, number, color) {
-  jez.log(`summonCritter(${summons}, ${number})`)
+  jez.log(`summonCritter(${summons}, ${number}, ${color})`)
   let name = `${aToken.name}'s Dancing Light ${number}`
   let updates = { 
       actor: {name: name},    
@@ -71,15 +73,18 @@ async function summonCritter(summons, number, color) {
   const OPTIONS = { controllingActor: aActor };
   const CALLBACKS = {
     pre: async (template) => {
+      jez.log(`Calling preEffects(template, color)`,"template",template,"color")
       preEffects(template, color);
       await warpgate.wait(500);
     },
     post: async (template, token) => {
+      jez.log(`Calling postEffects(template, color)`,"template",template,"color")
       postEffects(template, color);
       await warpgate.wait(500);
       //greetings(template, token);
     }
   };
+  jez.log(`await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS)`,"summons",summons,"updates",updates,"CALLBACKS",CALLBACKS,"OPTIONS",OPTIONS)
   return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))
 }
 /***************************************************************************************************

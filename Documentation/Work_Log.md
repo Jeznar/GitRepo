@@ -76,6 +76,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.04 **[Magnificent Mansion](../Spells/7th_Level#magnificent-mansion)** -- Runs runeVFX and includes a spell component that can be added to inventories.
 
+22.06.06 **WarpGate** -- Resolved issue with player summons failing because of lack of permission to browse files within Foundry.  See [WarpGate Issue 61](https://github.com/trioderegion/warpgate/issues/61)
+
 
 
 
