@@ -64,7 +64,7 @@ async function preCheck() {
  * Post results to the chat card
  ***************************************************************************************************/
  function postResults(msg) {
-    jez.log(msg);
+    //jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }

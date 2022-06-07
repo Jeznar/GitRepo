@@ -13,6 +13,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Enlarge/Reduce](#enlargereduce)
 * [Find Steed](#find-steed)
 * [Flaming Sphere](#flaming-sphere)
+* [Heat Metal](#heat-metal)
 * [Hold Person](#hold-person)
 * [Gust of Wind](#gust-of-wind)
 * [Invisibility](#invisibility)
@@ -172,6 +173,16 @@ This item does a number of things:
 6. It also plays some pretty nice VFX.
 
 ![Flaming Sphere.gif](Flaming_Sphere/Flaming_Sphere2.gif)
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Heat Metal
+
+Imported and updated from earlier efforts.  This item used library functions to grab a helper macro and customize it on the caster's sheet.  It builds a temp item that is used to inflict damage to the victim.  It does not need to have the victim targeted to inflict the damage.
+
+![Heat_Metal.gif](Heat Metal/Heat_Metal.gif)
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

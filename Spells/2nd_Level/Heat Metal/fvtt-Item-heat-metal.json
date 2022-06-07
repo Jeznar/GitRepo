@@ -1,0 +1,212 @@
+{
+  "name": "Heat Metal",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/2nd_Level/Heat_Metal.png",
+  "data": {
+    "description": {
+      "value": "<p>Choose a manufactured metal object, such as a metal weapon or a suit of heavy or medium metal armor, that you can see within range. You cause the object to glow red-hot.</p>\n<p>Any creature in physical contact with the object takes <strong>2d8 fire damage </strong>when you cast the spell. Until the spell ends, you can use a <strong>bonus action </strong>on each of your subsequent turns <strong>to cause this damage again</strong>.</p>\n<p>If a creature is holding or wearing the object and takes the damage from it, the creature must succeed on a Constitution saving throw or drop the object if it can. <strong>If it doesn’t drop the object, it has disadvantage</strong> on <strong>attack rolls </strong>and <strong>ability checks</strong> until the start of your next turn.</p>\n<p><strong>Higher Level.</strong>When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d8 for each slot above 2nd.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "object"
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [
+        [
+          "2d8",
+          "fire"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": 15,
+      "scaling": "spell"
+    },
+    "level": 2,
+    "school": "trs",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "A piece of iron and a flame",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "1d8"
+    }
+  },
+  "effects": [
+    {
+      "_id": "kE1bAxWLxsvZR3Ip",
+      "changes": [
+        {
+          "key": "flags.midi-qol.disadvantage.ability.check.all",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.attack.all",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60,
+        "rounds": 10
+      },
+      "icon": "Icons_JGB/Spells/2nd_Level/Heat_Metal.png",
+      "label": "Heat Metal",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "startEveryTurn",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "flags.midi-qol.disadvantage.ability.check.all",
+        "flags.midi-qol.disadvantage.attack.all",
+        "macro.itemMacro"
+      ]
+    }
+  ],
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.NWYzNmIxZDE5OGQ1"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Heat Metal",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Heat_Metal_0.8.js\"\njez.log(MACRONAME)\n/*****************************************************************************************\n * Create a temporary attack item to use against the victim of Heat Metal\n * \n * 01/01/21 0.1 Creation of Macro\n * 06/07/22 0.8 Upgrade to use an OverTime DoT and include VFX\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Set Macro specific global variables\n//\nconst ATTACK_ITEM = `${aToken.name} Heat Metal`;\nconst DEBUFF_NAME = \"Heat Metal\";\nconst CAST = \"Cast\", ABORT = \"Cancel\"\nlet itemHeated = \"\";\nlet itemWorn = false\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0] === \"on\") await doOn();                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE repeat execution each round\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        postResults(msg);\n        return (false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n * \n * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(\"--------------Off---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    let originID = LAST_ARG.origin.split(\".\")[1] // aqNN90V6BjFcJpI5 (Origin  ID)\n    jez.log(\"originID\", originID);\n    let oToken = canvas.tokens.objects.children.find(e => e.data.actorId === originID)\n    jez.log(\"oToken\", oToken)\n    const ATTACK_ITEM = `${oToken.name} Heat Metal`;\n    let oActor = oToken.actor\n    jez.log(\"oActor\", oActor)\n     jez.log(`doOff ---> Delete ${ATTACK_ITEM} from ${oToken.data.name} if it exists`)\n\n    //await deleteItem(ATTACK_ITEM, oActor);  // TODO: Make Library call\n    await jez.deleteItems(ATTACK_ITEM, \"spell\", oActor);\n    jez.log(\"--------------Off---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set On\n ***************************************************************************************************/\nasync function doOn() {\n    const FUNCNAME = \"doOn()\";\n    jez.log(\"--------------On---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    runVFX(aToken)\n    jez.log(\"--------------On---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    if (!await preCheck()) return (false);\n    await jez.deleteItems(ATTACK_ITEM, \"spell\", aActor);\n    const FUNCNAME = \"doOnUse()\";\n    const NUM_DICE = args[0].spellLevel;\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    // jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    // jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n    //----------------------------------------------------------------------------------\n    // Create a dialog to allow specification of the item to be heated and proceed\n    //\n    new Dialog({\n        title: \"Select Item to be Heated\",\n        content: `\n    <div><h3>What type of item is to be heated by <b>${aToken.name}'s</b> Heat Metal spell?</h3><div>\n    <div>You should specify a manufactured metal object, such as a metal weapon or a suit of \n    heavy or medium metal armor, that you can see within range, carried or worn by \n    <b>${tToken.name}</b> that you will cause to glow red-hot.</div><br>\n    <div>Item Description (Optional): <input name=\"DESCTEXT\" style=\"width:350px\"/><br><br></div>\n    <div><input name=\"WORNITEM\" type=\"checkbox\"/>Item is worn and/or not easily dropped?<br><br></div>\n    `,\n        buttons: {\n            cast: {\n                label: CAST,\n                callback: (html) => {\n                    PerformCallback(html, CAST)\n                }\n            },\n            abort: {\n                label: ABORT,\n                callback: (html) => {\n                    PerformCallback(html, ABORT)\n                }\n            },\n        },\n        default: \"abort\",\n    }).render(true);\n    jez.log(\"--------------OnUse-----------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return (true);\n    //----------------------------------------------------------------------------------\n    // Callback function\n    //\n    async function PerformCallback(html, mode) {\n        jez.log(\"PerformCallback() function executing.\", \"mode\", mode, \"html\", html);\n        if (mode === CAST) {\n            itemHeated = html.find(\"[name=DESCTEXT]\")[0].value;\n            //jez.log(\"itemHeated as entered\", itemHeated)\n            if (!itemHeated) itemHeated = \"Unspecified Item\"\n            itemWorn = html.find(\"[name=WORNITEM]\")[0].checked;\n            //jez.log(\"Values as prepared for create temporary ability\",\"Heated\",itemHeated,\"Worn\",itemWorn);\n            //await CreateTemporaryAbility();\n            //-------------------------------------------------------------------------------------------\n            // Slap the template item onto the actor\n            //\n            await jez.itemAddToActor(aToken, \"%%Heat Metal Damage%%\")\n            //-------------------------------------------------------------------------------------------\n            // Update the item's name and extract the comments from the description\n            //\n            let itemUpdate = {\n                name: ATTACK_ITEM,                 // Change to actor specific name for temp item\n            }\n            await jez.itemUpdateOnActor(aToken, \"%%Heat Metal Damage%%\", itemUpdate, \"spell\")\n            //-------------------------------------------------------------------------------------------\n            // Grab the data for the new item from the actor\n            //\n            let getItem = await jez.itemFindOnActor(aToken, ATTACK_ITEM, \"spell\");\n            //-------------------------------------------------------------------------------------------\n            // Update the description field\n            //\n            let description = getItem.data.data.description.value\n            description = description.replace(/%NUMDICE%/g, `${NUM_DICE}`);         // Replace %NUMDICE%\n            description = description.replace(/%TARGETNAME%/g, `${tToken.name}`);   // Replace %TARGETNAME%\n            //-------------------------------------------------------------------------------------------\n            // Update the macro field\n            //\n            let macro = getItem.data.flags.itemacro.macro.data.command\n            macro = macro.replace(/%ACTORID%/g, `${tActor?.data._id}`); // Replace %ACTORID%\n            macro = macro.replace(/%NUMDICE%/g, `${NUM_DICE}`);         // Replace %NUMDICE%\n            //-------------------------------------------------------------------------------------------\n            // Build a new itemUpdate Object\n            //\n            itemUpdate = {\n                data: { description: { value: description } },   // Drop in altered description\n                flags: {\n                    itemacro: {\n                        macro: {\n                            data: {\n                                command: macro,\n                                name: ATTACK_ITEM,\n                                img: args[0].item.img,\n                            },\n                        },\n                    },\n                },\n                img: args[0].item.img,\n            }\n            //-------------------------------------------------------------------------------------------\n            // Update the item with new information\n            //\n            await jez.itemUpdateOnActor(aToken, ATTACK_ITEM, itemUpdate, \"spell\")\n        } else return (false);\n        //-------------------------------------------------------------------------------------------\n        // Store info on heated item as a flag on the target \n        //\n        let heatedItem = {\n            description: itemHeated,\n            worn: itemWorn,\n            dropped: false  // Used to track if the heated item is still \"in hand\"\n        }\n        await DAE.setFlag(tActor, `${MACRO}.HeatedItem`, heatedItem);\n        //-------------------------------------------------------------------------------------------\n        // Build and post summary message to chat card.\n        //\n        let textVariable = \"unless item is <b>dropped</b>\"\n        if (itemWorn) textVariable = \"until item is <b>removed</b>\"\n        msg = `<p style=\"color:red;font-size:14px;\">\n        <b>${tToken.name}</b>'s <b>${itemHeated}</b> begins to glow a dull red with intense heat. \n        taking ${NUM_DICE}d8 fire damage immediately. The red hot item imposes disadvantage \n        on attack rolls and ability checks, ${textVariable}.</p>\n        <p style=\"font-size:14px;\">As a bonus action. <b>${aToken.name}</b> can repeat this damage \n        each round for up to a minute, concentraion drops, or the item is dropped.\n        </p>`;\n        postResults(msg);\n        return (true);\n    }\n}\n/****************************************************************************************\n * Execute code for a DAE Macro each time on the target's turn per DAE setting\n ***************************************************************************************/\nasync function doEach() {\n    const FUNCNAME = \"doEach()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n    let heatedItem = DAE.getFlag(aActor, `${MACRO}.HeatedItem`);\n    if (heatedItem.worn || heatedItem.dropped) { // Worn item can not be easily removed, so just return\n        jez.log(`-------------- Finishing --- ${MACRONAME} ${FUNCNAME} -----------------`);\n        return (true)\n    }\n    //----------------------------------------------------------------------------------\n    // Create a dialog to allow afflicted actor to choose to drop heated item\n    //\n    // jez.log(\"Marco....\")\n    new Dialog({\n        title: \"Drop Red Hot Item?\",\n        content: `<div><h3>Does <b>${aToken.name}</b> want to drop the red hot \n        <b>${heatedItem.description}</b>?</h3></div>\n        <div>If item is dropped, ${aToken.name} will no longer be burned by the item, \n        but of course will no longer have the item on their person.</div><br>`,\n        buttons: {\n            cast: {\n                label: \"Drop It\",\n                callback: (html) => {\n                    doEachCallback(html, \"Drop\")\n                }\n            },\n            abort: {\n                label: \"Hold It\",\n                callback: (html) => {\n                    doEachCallback(html, \"Hold\")\n                }\n            },\n        },\n        default: \"Drop It\",\n    }).render(true);\n    // jez.log(\"     ....Polo\")\n    //----------------------------------------------------------------------------------\n    // Callback function\n    //\n    async function doEachCallback(html, mode) {\n        jez.log(\"doEachCallback(html) function executing.\", \"html\", html, \"mode\", mode);\n\n        if (mode === \"Drop\") {\n            let debuffEffect = aActor.effects.find(ef => ef.data.label === DEBUFF_NAME) ?? null;\n            if (debuffEffect) {\n                // jez.log(\"Removing debuff effect\", \"aActor\", aActor, \"debuffEffect\", debuffEffect);\n                await debuffEffect.delete();\n                await jez.wait(100);\n                heatedItem.dropped = true;\n                await DAE.setFlag(aActor, `${MACRO}.HeatedItem`, heatedItem);\n                msg = `<b>${aToken.name}</b> has dropped the red hot <b>${heatedItem.description}</b> \n                and can no longer use it, or be damaged by it.`;\n            } else msg = `Strangely, ${aToken.name} lacked ${DEBUFF_NAME} effect.  Code issue here.`;\n        }\n        if (mode === \"Hold\") {\n            msg = `</b>${aToken.name}</b> has choosen to hold the red hot <b>${heatedItem.description}</b>.\n            It can still use the item and be damaged by it.`;\n        }\n        await ChatMessage.create({ content: msg });\n        return (true);\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\nreturn;\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    //jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Run VFX\n ***************************************************************************************************/\n function runVFX(target) {\n    let color = \"\"\n    const IMAGE = aItem.img.toLowerCase()\n    if (IMAGE.includes(\"blue\")) color = \"blue\"\n    else if (IMAGE.includes(\"green\")) color = \"green\"\n    else if (IMAGE.includes(\"orange\")) color = \"orange\"\n    else if (IMAGE.includes(\"purple\")) color = \"purple\"\n    else if (IMAGE.includes(\"magenta\")) color = \"purple\"\n    else if (IMAGE.includes(\"sky\")) color = \"blue\"\n    else if (IMAGE.includes(\"royal\")) color = \"green\"\n    if (!color) color = \"orange\"\n  \n    new Sequence()\n        .effect()\n        //.file(\"jb2a.fire_bolt.orange\")\n        .file(`jb2a.flames.01.${color}`)\n        .duration(10000)\n        // .persist()\n        .fadeIn(1000)\n        .opacity(0.80)\n        .fadeOut(1000)\n        // .name(VFX_NAME)\n        .atLocation(target)\n        .play()\n  }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

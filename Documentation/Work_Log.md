@@ -84,6 +84,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.06 **[Produce Flame](../Spells/Cantrips#produce-flame)** -- Imported and upgraded to work with FoundryVTT 9.x.  (Also uses the new Library Functions)
 
+22.06.07 **[Heat Metal](../Spells/2nd_Level#heat-metal)** -- Updated to use Library and provide VFX
+
 
 
 

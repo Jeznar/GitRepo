@@ -169,7 +169,7 @@ class jez {
             }
             chatTag = CHAT.tag
         }
-        jez.log("chatMsg", chatMsg)
+        //jez.log("chatMsg", chatMsg)
         //-----------------------------------------------------------------------------------------------
         // Put correct suffix on the chatTag
         //
@@ -983,7 +983,7 @@ class jez {
         // Validity check on move
         // 
         if (!moveArray.includes(move)) {
-            msg = `Move distance requested, ${move} not supported by ${FUNCNAME}`;
+            let msg = `Move distance requested, ${move} not supported by ${FUNCNAME}`;
             ui.notifications.error(msg);
             return (false);
         }
@@ -1158,7 +1158,7 @@ class jez {
         // jez.log(`Copy ${ItemName} from the Items directory to ${token5e.name}`)
         let itemObj = game.items.getName(ItemName)
         if (!itemObj) {
-            msg = `Failed to find ${ItemName} in the Items Directory`
+            let msg = `Failed to find ${ItemName} in the Items Directory`
             ui.notifications.error(msg);
             // postResults(msg)
             return (false)
@@ -1207,7 +1207,7 @@ class jez {
         //let aActorItem = token5e.actor.data.items.getName(itemName)
         let aActorItem = await jez.itemFindOnActor(token5e, itemName, itemType)
         if (!aActorItem) {
-            msg = `Failed to find ${itemName} on ${token5e.name}`
+            let msg = `Failed to find ${itemName} on ${token5e.name}`
             ui.notifications.error(msg);
             // postResults(msg)
             return (false)

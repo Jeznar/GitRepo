@@ -208,16 +208,66 @@ let getItem = await jez.itemFindOnActor(aToken, itemName, "spell");
 For the item named as "itemName", optionally of the specified itemType on the token5e update the item as specified in the itemUpdate object.  
 
 ~~~javascript
+//-------------------------------------------------------------------------------------------
+// Update the item's name and extract the comments from the description
+//
 let itemUpdate = {
-    'name': NEW_ITEM_NAME,                 // Change to actor specific name for temp item
-    // 'data.description.value': content,  // Drop in altered description
-    'data.level': LAST_ARG.spellLevel,     // Change spell level of temp item 
-    'data.damage.parts' : [[`${NUM_DICE}d6`, DMG_TYPE]]
+    name: ATTACK_ITEM,                 // Change to actor specific name for temp item
 }
-await jez.itemUpdateOnActor(aToken, TEMPLATE_NAME, itemUpdate, "spell")
+await jez.itemUpdateOnActor(aToken, "%%Heat Metal Damage%%", itemUpdate, "spell")
 ~~~
 
 **Special case**, if data.description.value is not specified in the update object, then this function will strip out anything set off in bold surrounded by double percent symbols. This is intended to remove the **don't change this message** assumed to be embedded in the item description.  Within the HTML It should be of the form: `<p><strong>%%.*%%</strong></p>` it can have any amount of white space trailing it which will also be stripped out.
+
+Following is a complete use of a couple of these commands to place and update an item.  In this example the update is run twice, the first time renames the item and strips the comments.  The data on the item is then used as a basis for the second set of changes.
+
+~~~javascript
+//-------------------------------------------------------------------------------------------
+// Update the item's name and extract the comments from the description
+//
+let itemUpdate = {
+    name: ATTACK_ITEM,                 // Change to actor specific name for temp item
+}
+await jez.itemUpdateOnActor(aToken, "%%Heat Metal Damage%%", itemUpdate, "spell")
+//-------------------------------------------------------------------------------------------
+// Grab the data for the new item from the actor
+//
+let getItem = await jez.itemFindOnActor(aToken, ATTACK_ITEM, "spell");
+//-------------------------------------------------------------------------------------------
+// Update the description field
+//
+let description = getItem.data.data.description.value
+description = description.replace(/%NUMDICE%/g, `${NUM_DICE}`);         // Replace %NUMDICE%
+description = description.replace(/%TARGETNAME%/g, `${tToken.name}`);   // Replace %TARGETNAME%
+//-------------------------------------------------------------------------------------------
+// Update the macro field
+//
+let macro = getItem.data.flags.itemacro.macro.data.command
+macro = macro.replace(/%ACTORID%/g, `${tActor?.data._id}`); // Replace %ACTORID%
+macro = macro.replace(/%NUMDICE%/g, `${NUM_DICE}`);         // Replace %NUMDICE%
+//-------------------------------------------------------------------------------------------
+// Build a new itemUpdate Object
+//
+itemUpdate = {
+    data: { description: { value: description } },   // Drop in altered description
+    flags: {
+        itemacro: {
+            macro: {
+                data: {
+                    command: macro,
+                    name: ATTACK_ITEM,
+                    img: args[0].item.img,
+                },
+            },
+        },
+    },
+    img: args[0].item.img,
+}
+//-------------------------------------------------------------------------------------------
+// Update the item with new information
+//
+await jez.itemUpdateOnActor(aToken, ATTACK_ITEM, itemUpdate, "spell")
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
