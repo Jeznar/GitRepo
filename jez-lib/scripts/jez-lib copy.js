@@ -956,6 +956,7 @@ class jez {
             .opacity(opacity)
             .play();
     }
+
     /***************************************************************************************************
      * Move the movingToken up to the number of spaces specified as move away from the amchorToken if 
      * move is a positive value, toward if negative, after a delay in milliseconds
@@ -1138,98 +1139,6 @@ class jez {
         if (isNPC) targetType = subject.data.data.details.type.value.toLowerCase()
         else targetType = subject.data.data.details.race.toLowerCase()
         return (targetType)
-    }
-
-    /***************************************************************************************************
-     * Following are my "item" handling functions.  All of them intended to deal with items on a token's
-     * actor.
-     * 
-     * - itemAddToActor
-     * - itemDeleteFromActor
-     * - itemFindOnActor
-     * - itemUpdateOnActor
-     ***************************************************************************************************/
-
-    /***************************************************************************************************
-     * Copy the item named as "ItemName" from the items directory to the token named as token5e.  Since 
-     * we control the items directory, going to assume the wisdom to make ItemName unique is exercised.
-     ***************************************************************************************************/
-    static async itemAddToActor(token5e, ItemName) {
-        // jez.log(`Copy ${ItemName} from the Items directory to ${token5e.name}`)
-        let itemObj = game.items.getName(ItemName)
-        if (!itemObj) {
-            msg = `Failed to find ${ItemName} in the Items Directory`
-            ui.notifications.error(msg);
-            // postResults(msg)
-            return (false)
-        }
-        return (token5e.actor.createEmbeddedDocuments("Item", [itemObj.data]))
-    }
-    /***************************************************************************************************
-    * Delete specified item (string matching name) from specified token5e.  Return true on success, 
-    * false on failure. If a third parameter "itemType" is passed limit the search to items of that
-    * type.
-    * 
-    * This function is similar to jez.deleteItems, but only deletes one copy of the item.
-    ***************************************************************************************************/
-    static async itemDeleteFromActor(token5e, itemName, itemType) {
-        // jez.log("itemDeleteFromActor(token5e, itemName, itemType)", "token5e", token5e, "itemName", itemName, "itemType", itemType)
-        let getItem = await jez.itemFindOnActor(token5e, itemName, itemType);
-        // jez.log("getItem", getItem)
-        if (!getItem) return (false);
-        return (await getItem.delete());
-    }
-    /***************************************************************************************************
-     * Search the specified Token5e's actor for the named item.  Return false if not found, return
-     * the item if found.  If a third parameter "itemType" is passed limit the search to items of that
-     * type.
-     *
-     * Some known itemTypes: backpack, class, consumable, equipment, feat, loot, spell, tool, weapon
-     ***************************************************************************************************/
-    static async itemFindOnActor(token5e, itemName, itemType) {
-        // jez.log("itemFindOnActor(token5e, itemName, itemType)", "token5e", token5e, "itemName", itemName, "itemType", itemType)
-        let foundItem = false
-        if (!itemType) foundItem = token5e.actor.items.find(i => i.name === itemName);
-        else foundItem = token5e.actor.items.find(i => i.name === itemName && i.type === itemType);
-        // jez.log("foundItem", foundItem)
-        return (foundItem);
-    }
-    /***************************************************************************************************
-     * For the item named as itemName, optionally of the specified itemType on the token5e update the 
-     * item as specified in the itemUpdate object.  
-     * 
-     * Special case, if data.description.value is not specified in the update object, then this function
-     * will strip out anything set off in bold surrounded by double percent symbols. 
-     ***************************************************************************************************/
-    static async itemUpdateOnActor(token5e, itemName, itemUpdate, itemType) {
-        //----------------------------------------------------------------------------------------------
-        // jez.log(`Searching for ${itemName} on ${token5e.name}`)
-        //let aActorItem = token5e.actor.data.items.getName(itemName)
-        let aActorItem = await jez.itemFindOnActor(token5e, itemName, itemType)
-        if (!aActorItem) {
-            msg = `Failed to find ${itemName} on ${token5e.name}`
-            ui.notifications.error(msg);
-            // postResults(msg)
-            return (false)
-        }
-        //----------------------------------------------------------------------------------------------
-        // If the passed update, doesn't change the value of the decription, then pull out the comments.
-        //
-        if (!itemUpdate?.data?.description?.value) {
-            //-----------------------------------------------------------------------------------------------
-            // Remove the don't change this message assumed to be embedded in the item description.  It 
-            // should be of the form: <p><strong>%%.*%%</strong></p> optionally followed by white space
-            //
-            const searchString = `<p><strong>.*%%.*%%</strong></p>[\s\n\r]*`;
-            const regExp = new RegExp(searchString, "g");
-            const replaceString = ``;
-            let content = await duplicate(aActorItem.data.data.description.value);
-            content = await content.replace(regExp, replaceString);
-            // jez.log('content', content)
-            itemUpdate.data = { 'description.value': content } // Drop in altered description
-            // jez.log("itemUpdate", itemUpdate)
-        }
-        return (await aActorItem.update(itemUpdate))
     }
 } // END OF class jez
 Object.freeze(jez);

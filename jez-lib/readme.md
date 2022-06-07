@@ -40,6 +40,10 @@ The functions currently included in this module are:
 * **[jez.getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
 * **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
+* **[jez.itemAddToActor(token5e, ItemName)](#item-functions])** -- Copies an item to Actor
+* **[jez.itemDeleteFromActor(token5e, itemName, itemType)](#item-functions])** -- Deletes an item from Actor
+* **[jez.itemFindOnActor(token5e, itemName, itemType)](#item-functions])** -- Finds and item on Actor
+* **[jez.itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions])** -- Updates an Item on Actor
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay)** -- Push or pull token 1, 2 or 3 spaces
 * **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
@@ -155,6 +159,65 @@ if(!jez.inRange(aToken, tToken, maxRange)) {
     return(false);
 }
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### Item Functions
+
+A set of functions built to standardize how I handle copying items from the Item Directory to actors and manipulate them.  Parameters used by these are listed below along with their meanings.
+
+* **token5e** -- token data of the type "token5e" (I didn't bother to make these functions extra flexible with inputs).
+* **itemName** -- A string naming the item in question, must be an exact match.
+* **itemType** -- This is typically an optional parameter, that narrows the selection by giving a string that names an item type.  The item types of which I am aware are: backpack, class, consumable, equipment, feat, loot, spell, tool, weapon
+* **itemUpdate** -- This is an object that defines changes to be made to an item.  More on this below.
+
+The functions, short descriptions, and samples usage follow.
+
+#### jez.itemAddToActor(token5e, ItemName)
+
+Copy the item specified by "ItemName" from the items directory to the token identified as "token5e".  Since we control the items directory, going to assume the wisdom to make ItemName unique is exercised.
+
+~~~javascript
+await jez.itemAddToActor(aToken, TEMPLATE_NAME)
+~~~
+
+#### jez.itemDeleteFromActor(token5e, itemName, itemType)
+
+Delete specified item specified by "ItemName" from specified token5e.  Return true on success, false on failure. If a third parameter "itemType" is passed limit the search to items of that type.
+ 
+This function is similar to jez.deleteItems(...), but only deletes one copy of the item.
+
+~~~javascript
+// As long as an item is deleted, keep on deleting
+do { } while (await jez.itemDeleteFromActor(aToken, TEMP_SPELL_NAME, "spell"));
+
+~~~
+
+#### jez.itemFindOnActor(token5e, itemName, itemType)
+
+Search the specified Token5e's actor for the named item.  Return false if not found, return the item if found.  If a third parameter "itemType" is passed limit the search to items of that type.
+
+~~~javascript
+let getItem = await jez.itemFindOnActor(aToken, itemName, "spell");
+~~~
+
+#### jez.itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)
+
+For the item named as "itemName", optionally of the specified itemType on the token5e update the item as specified in the itemUpdate object.  
+
+~~~javascript
+let itemUpdate = {
+    'name': NEW_ITEM_NAME,                 // Change to actor specific name for temp item
+    // 'data.description.value': content,  // Drop in altered description
+    'data.level': LAST_ARG.spellLevel,     // Change spell level of temp item 
+    'data.damage.parts' : [[`${NUM_DICE}d6`, DMG_TYPE]]
+}
+await jez.itemUpdateOnActor(aToken, TEMPLATE_NAME, itemUpdate, "spell")
+~~~
+
+**Special case**, if data.description.value is not specified in the update object, then this function will strip out anything set off in bold surrounded by double percent symbols. This is intended to remove the **don't change this message** assumed to be embedded in the item description.  Within the HTML It should be of the form: `<p><strong>%%.*%%</strong></p>` it can have any amount of white space trailing it which will also be stripped out.
 
 [*Back to Functions list*](#functions-in-this-module)
 

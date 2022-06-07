@@ -38,6 +38,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Mending](Cantrips#mending)
 * [Minor Illusion](Cantrips#minor-illusion)
 * [Prestidigitation](Cantrips#prestidigitation)
+* [Produce Flame](Cantrips#produce-flame)
 * [Shillelagh](Cantrips#shillelagh)
 * [Shocking Grasp](Cantrips#shocking-grasp)
 * [Thaumaturgy](Cantrips#thaumaturgy)

@@ -78,7 +78,11 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.06 **WarpGate** -- Resolved issue with player summons failing because of lack of permission to browse files within Foundry.  See [WarpGate Issue 61](https://github.com/trioderegion/warpgate/issues/61)
 
+22.06.06 **Incorrect Initiative** -- Bug in Dnd5e 1.6.0 that added dexterity to initiative rolls for tie breakers ([Issue 1500](https://gitlab.com/foundrynet/dnd5e/-/issues/1500)) resolved by upgrading to 1.6.2.
 
+22.06.06 **Item Library Functions** -- Added four library functions to streamline adding, updating, finding, deleting items from actors.
+
+22.06.06 **[Produce Flame](../Spells/Cantrips#produce-flame)** -- Imported and upgraded to work with FoundryVTT 9.x.  (Also uses the new Library Functions)
 
 
 

@@ -21,6 +21,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Mending](#mending)
 * [Minor Illusion](#minor-illusion)
 * [Prestidigitation](#prestidigitation)
+* [Produce Flame](#produce-flame)
 * [Shillelagh](#shillelagh)
 * [Shocking Grasp](#shocking-grasp)
 * [Thaumaturgy](#thaumaturgy)
@@ -217,6 +218,18 @@ This item uses an ItemMacro to run a runeVFX in a tile at the targeted location.
 This macro simply plays a VFX of a D12 over the casting token and spits out some text very briefly describing the spell.
 
 ![Prestidigitation_Video.gif](Prestidigitation/Prestidigitation_Video.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Produce Flame
+
+Rebuilt the ancient implementation that was really just Crymic's.  It once again works (it had broken at FoundryVTT 9.x) and now has so nice VFX.
+
+It nabs an item out of the item directory, modifies it a bit and allows the caster to use a Flame spell as a one-time spell.  The caster also emits light while the fire is in hand. 
+
+![Produce_Flame.gif](Produce_Flame/Produce_Flame.gif)
 
 [*Back to Cantrips List*](#cantrips)
 
