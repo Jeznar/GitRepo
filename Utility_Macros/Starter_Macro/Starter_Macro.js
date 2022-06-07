@@ -8,16 +8,22 @@ const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and exte
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
+let msg = "";
+//
+// Set the value for the Active Actor (aActor)
+let aActor;         
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
 else aActor = game.actors.get(LAST_ARG.actorId);
-let aToken;         // Acting token, token for creature that invoked the macro
+//
+// Set the value for the Active Token (aToken)
+let aToken;         
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
 else aToken = game.actors.get(LAST_ARG.tokenId);
-let aItem;          // Active Item information, item invoking this macro
+//
+// Set the value for the Active Item (aItem)
+let aItem;         
 if (args[0]?.item) aItem = args[0]?.item; 
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-let msg = "";
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -28,19 +34,17 @@ if (args[0] === "each") doEach();					    // DAE everyround
 // DamageBonus must return a function to the caller
 if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
  ***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
+ * Check the setup of things.  Post bad message and return false fr bad, true for ok!
  ***************************************************************************************************/
 async function preCheck() {
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-        await postResults(msg);
+        postResults(msg);
         return (false);
     }
     /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return

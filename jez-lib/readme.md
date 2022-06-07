@@ -40,10 +40,10 @@ The functions currently included in this module are:
 * **[jez.getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
 * **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
-* **[jez.itemAddToActor(token5e, ItemName)](#item-functions])** -- Copies an item to Actor
-* **[jez.itemDeleteFromActor(token5e, itemName, itemType)](#item-functions])** -- Deletes an item from Actor
-* **[jez.itemFindOnActor(token5e, itemName, itemType)](#item-functions])** -- Finds and item on Actor
-* **[jez.itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions])** -- Updates an Item on Actor
+* **[jez.itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
+* **[jez.itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
+* **[jez.itemFindOnActor(token5e, itemName, itemType)](#item-functions)** -- Finds and item on Actor
+* **[jez.itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions)** -- Updates an Item on Actor
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay)** -- Push or pull token 1, 2 or 3 spaces
 * **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
