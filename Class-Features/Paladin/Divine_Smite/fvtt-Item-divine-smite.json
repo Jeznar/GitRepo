@@ -1,0 +1,147 @@
+{
+  "name": "Divine Smite",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/skills/light_05.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Starting at 2nd level, when you hit a creature with a melee weapon attack, you can expend one spell slot to deal radiant damage to the target, in addition to the weapon’s damage. The extra damage is 2d8 for a 1st-level spell slot, plus 1d8 for each spell level higher than 1st, to a maximum of 5d8. The damage increases by 1d8 if the target is an undead or a fiend, to a maximum of 6d8.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": false,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "always",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "forceCEOn": false,
+      "effectActivation": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Divine Smite",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Divine_Smite.0.3.js\"\n/*****************************************************************************************\n * Original downloaded from https://www.patreon.com/posts/divine-smite-47781600\n * \n * 12/24/21 0.0 Cry 12/25/21 Posted Version which didn't work for me\n * 12/26/21 0.1 JGB Adding headers and some debug to see what might be going sideways\n * 01/26/22 0.2 JGB Add VFX\n * 06/07/22 0.3 JGB Reorganize and add trace statements looking for apparent transitory bug\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n//----------------------------------------------------------------------------------------\n// Define standard macro variables\n//\nconst LAST_ARG = args[args.length - 1];\nlet msg = \"\";\n//\n// Set the value for the Active Actor (aActor)\nlet aActor;         \nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\n//\n// Set the value for the Active Token (aToken)\nlet aToken;         \nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\n//\n// Set the value for the Active Item (aItem)\nlet aItem;         \nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//----------------------------------------------------------------------------------------\n// Define specific macro variables\n//\nlet numDice = Math.min(5, Number(LAST_ARG.spellLevel) + 1);\nconst VFX_NAME = `${MACRO}-${aToken.id}`\nconst VFX_TARGET = \"modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_GreenYellow_Target_400x400.webm\"\nconst VFX_CASTER = \"modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_GreenYellow_Caster_400x400.webm\"\nconst VFX_OPACITY = 1.0;\nconst VFX_SCALE = 0.70;\n//----------------------------------------------------------------------------------------\n// Execute the actual code\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let creatureTypes = [\"undead\", \"fiend\"];\n    let damageType = \"radiant\";\n    let improved = aActor.items.find(i => i.name === \"Improved Divine Smite\");\n    jez.log(\"improved\", improved)\n    if (improved) numDice = numDice *= 2;\n    let msgHistory = Object.values(MidiQOL.Workflow.workflows).filter(i => i.actor.id === aActor.id && \n        i.workflowType === \"Workflow\" && i.item?.name != aItem.name);\n    jez.log(\"msgHistory\", msgHistory)\n    if (msgHistory.length === 0) return ui.notifications.error(`You need to successfully attack first.`);\n    let lastAttack = msgHistory[msgHistory.length - 1];\n    jez.log(\"lastAttack\", lastAttack)\n    let tToken = canvas.tokens.get(lastAttack.damageList[0].tokenId);\n    jez.log(\"tToken\", tToken)\n    let undead = creatureTypes.some(i => (tToken.actor.data.data.details?.type?.value || \n        tToken.actor.data.data.details?.race).toLowerCase().includes(i));\n    jez.log(\"undead\",undead)\n    if (undead) numDice = numDice *= 2;\n    //-------------------------------------------------------------------------------------------------------------\n    // Launch VFX on tToken\n    // \n    runVFX(tToken);\n    //-------------------------------------------------------------------------------------------------------------\n    // \n    //\n    let damageRoll = lastAttack.isCritical ? \n        new Roll(`${numDice * 2}d8[${damageType}]`).evaluate({ async: false }) : \n        new Roll(`${numDice}d8[${damageType}]`).evaluate({ async: false });\n    jez.log(\"damageRoll\",damageRoll)\n    await game.dice3d?.showForRoll(damageRoll);\n    let damageWorkflow = await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total, damageType, [tToken], \n        damageRoll, { flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`, itemCardId: LAST_ARG.itemCardId, \n        itemData: aItem, useOther: false });\n    jez.log(\"damageWorkflow\",damageWorkflow)\n    let damageBonusMacro = getProperty(aActor.data.flags, `${game.system.id}.DamageBonusMacro`);\n    jez.log(\"damageBonusMacro\", damageBonusMacro)\n    if (damageBonusMacro) {\n        await damageWorkflow.rollBonusDamage(damageBonusMacro);\n    } else {\n        await damageWorkflow;\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Run some VFX on the target\n ***************************************************************************************************/\nfunction runVFX(target) {\n    new Sequence()\n        .effect()\n        .file(VFX_TARGET)\n        .attachTo(target)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(false)\n        //.repeats(3,1000,2000)\n        .name(VFX_NAME) // Give the effect a uniqueish name\n        .waitUntilFinished(-2000) // Negative wait time (ms) clips the effect to avoid fadeout*/\n        .effect()\n        .file(VFX_CASTER)\n        .attachTo(target)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(false)\n        .repeats(numDice - 1, 1000, 2000)\n        .name(VFX_NAME) // Give the effect a uniqueish name\n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "enhanced-terrain-layer": {
+      "multiple": 1,
+      "min": 0,
+      "max": 0,
+      "environment": ""
+    },
+    "core": {
+      "sourceId": "Item.GByjyNRYXr8i91Yz"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    }
+  }
+}
