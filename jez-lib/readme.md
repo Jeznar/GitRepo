@@ -187,7 +187,7 @@ await jez.itemAddToActor(aToken, TEMPLATE_NAME)
 
 Delete specified item specified by "ItemName" from specified token5e.  Return true on success, false on failure. If a third parameter "itemType" is passed limit the search to items of that type.
  
-This function is similar to jez.deleteItems(...), but only deletes one copy of the item.
+This function is similar to [jez.deleteItems(...)](#deleteItemsitemName-type-subject), but only deletes one copy of the item.
 
 ~~~javascript
 // As long as an item is deleted, keep on deleting
