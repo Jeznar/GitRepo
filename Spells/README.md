@@ -168,6 +168,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Cone of Cold](5th_Level#cone-of-cold)
 * [Contact Other Plane](5th_Level#contact-other-plane)
 * [Dispel Evil and Good](5th_Level#dispel-evil-and-good)
+* [Dream](5th_Level#dream)
 * [Geas](5th_Level#geas)
 * [Mass Cure Wounds](5th_Level#mass-cure-wounds)
 * [Raise Dead](5th_Level#raise-dead)

@@ -90,6 +90,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.08 **Hex** -- Updated to use the library calls to manipulate the temporary item.
 
+22.06.08 **[Dream](../Spells/5th_Level#dream)** -- Added with a simple RuneVFX on caster and target.  It is not automated.
+
 
 
 

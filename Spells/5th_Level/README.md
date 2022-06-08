@@ -9,6 +9,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Cone of Cold](#cone-of-cold)
 * [Contact Other Plane](#contact-other-plane)
 * [Dispel Evil and Good](#dispel-evil-and-good)
+* [Dream](#dream)
 * [Geas](#geas)
 * [Mass Cure Wounds](#mass-cure-wounds)
 * [Raise Dead](#raise-dead)
@@ -126,6 +127,14 @@ The spell description must contain the *magic* phrase ***no damage on save*** to
 There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_onSelf and places a DAE effect that simply marks the existence of the spell.  Effects to be handled manually.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Dream
+
+This spell simply runs a runeVFX on the caster and target.  The description notes that the spell is not automate, but does include clickable links to roll a save and to roll (but not apply) damage.
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
 
 ---
 
