@@ -1,11 +1,11 @@
-const MACRONAME = "Hex.js"
-/*****************************************************************************************
+const MACRONAME = "Hex.0.4.js"
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * My rewrite of Hex, borrowing heavily from Crymic's code
  * 
- * 0/22 0.1 Creation of Macro
- * 03/22/22 HOMEBREW: If Celestial then Radiant damage
- * 05/05/22 Change createEmbeddedEntity to createEmbeddedDocuments for 9.x
- *****************************************************************************************/
+ * 03/22/22 0.2 HOMEBREW: If Celestial then Radiant damage
+ * 05/05/22 0.3 Change createEmbeddedEntity to createEmbeddedDocuments for 9.x
+ * 06/08/22 0.4 Modified to use library functions to manage temp item
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const FLAG = MACRO                      // Name of the DAE Flag       
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -24,15 +24,14 @@ const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 
 let msg = "";
 const ITEM_NAME = "Hex - Move"                          // Base name of the helper item
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
-const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book
-//------------------------------------------------------------------------------------------
+const NEW_ITEM_NAME = `${aToken.name} ${ITEM_NAME}`     // Name of item in actor's spell book
+//---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0]?.tag === "DamageBonus") return (doBonusDamage());    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-return;
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -135,10 +134,11 @@ async function doOnUse() {
     for (let i = 0; i < ABILITY_FNAME.length; i++) {
         let fName = ABILITY_FNAME[i];
         let sName = ABILITY_SNAME[i];
-        if (i === 0) template += `<input type="radio" id="${sName}" name="selectedLine" value="${sName}" checked="checked"> <label for="${sName}">${fName}</label><br>
-`
-        else template += `<input type="radio" id="${sName}" name="selectedLine" value="${sName}"> <label for="${sName}">${fName}</label><br>
-`
+        // Pick the first entry as the pre-selected value
+        if (i === 0) template += `<input type="radio" id="${sName}" name="selectedLine" 
+        value="${sName}" checked="checked"> <label for="${sName}">${fName}</label><br>`
+        else template += `<input type="radio" id="${sName}" name="selectedLine" 
+        value="${sName}"> <label for="${sName}">${fName}</label><br>`
     }
     //-----------------------------------------------------------------------------------------------
     // Build and display the dialog to pick stat being hexed
@@ -166,28 +166,47 @@ async function doOnUse() {
     // Define a function to use as a call back from the dialog.
     //
     async function bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND) {
-        jez.log(`bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND)`, "tToken", tToken,
-            "aItem", aItem, "UUID", UUID, "aToken", aToken, "aActor", aActor, "RNDS", RNDS, "SECONDS", SECONDS, "GAME_RND", GAME_RND)
+        jez.log(`bonusDamage(tToken, aItem, UUID, aToken, aActor, RNDS, SECONDS, GAME_RND)`, 
+            "tToken", tToken, "aItem", aItem, "UUID", UUID, "aToken", aToken, "aActor", aActor, 
+            "RNDS", RNDS, "SECONDS", SECONDS, "GAME_RND", GAME_RND)
         let effectData = {
             label: aItem.name,
             icon: "systems/dnd5e/icons/skills/violet_24.jpg",
             origin: UUID,
             disabled: false,
-            duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime },
+            duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, 
+                startTime: game.time.worldTime },
             flags: { dae: { itemData: aItem } },
             changes: [
                 { key: "flags.midi-qol.hexMark", mode: OVERRIDE, value: tToken.id, priority: 20 },
-                { key: "flags.dnd5e.DamageBonusMacro", mode: CUSTOM, value: `ItemMacro.${aItem.name}`, priority: 20 },
-                { key: "flags.midi-qol.concentration-data.targets", mode: ADD, value: { "actorId": aActor.id, "tokenId": aToken.id }, priority: 20 }
+                { key: "flags.dnd5e.DamageBonusMacro", mode: CUSTOM, value: `ItemMacro.${aItem.name}`, 
+                    priority: 20 },
+                { key: "flags.midi-qol.concentration-data.targets", mode: ADD, 
+                    value: { "actorId": aActor.id, "tokenId": aToken.id }, priority: 20 }
             ]
         };
         // await aActor.createEmbeddedEntity("ActiveEffect", effectData); // Depricated 
         await aActor.createEmbeddedDocuments("ActiveEffect", [effectData]);
         let getConc = aActor.effects.find(i => i.data.label === "Concentrating");
-        await aActor.updateEmbeddedEntity("ActiveEffect", {
+        jez.log("aActor.updateEmbeddedEntity call start")
+        //-------------------------------------------------------------------------------------------
+        // Discord Flix (he/him) - 03/21/2022                             [This is a Foundry 9.x fix]
+        // Replace updateEmbeddedEntity with updateEmbeddedDocuments and pass it an array of objects 
+        // instead of just one object
+        //
+        // Discord Zhell - 03/21/2022
+        // Take all Entity and replace with Documents. 
+        //    i.e., createEmbeddedEntity -> createEmbeddedDocuments. 
+        // And wrap the curly one inside square brackets.
+        //
+        // Old Line: await aActor.updateEmbeddedEntity("ActiveEffect", {
+        //
+        await aActor.updateEmbeddedDocuments("ActiveEffect", [{
             "_id": getConc.id, origin: UUID,
-            "duration": { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime }
-        });
+            "duration": { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, 
+                startTime: game.time.worldTime }
+        }]);
+        jez.log("aActor.updateEmbeddedEntity call finished")
     }
 }
 /***************************************************************************************************
@@ -217,19 +236,23 @@ async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECON
     // Crymic's code looked for "hex" I changed it to look for the name of the item instead.
     const hexEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);
     const concEffect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
-    jez.log(`aToken.id ${aToken?.id}`, aToken)
-    jez.log(`hexEffect.id ${hexEffect?.id}`, hexEffect)
-    jez.log(`concEffect.id ${concEffect?.id}`, concEffect.id)
+    //jez.log(`aToken.id ${aToken?.id}`, aToken)
+    //jez.log(`hexEffect.id ${hexEffect?.id}`, hexEffect)
+    //jez.log(`concEffect.id ${concEffect?.id}`, concEffect.id)
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
         origin: UUID,
         disabled: false,
-        duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect.id, concId: concEffect.id } },
-        changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20 }]
+        duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, 
+            startTime: game.time.worldTime },
+        flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect.id, 
+            concId: concEffect.id } },
+        changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, 
+            priority: 20 }]
     };
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, 
+        effects: [effectData] });
     //-----------------------------------------------------------------------------------------------
     // Modify the concentrating effect to make this macro an ItemMacro
     //
@@ -237,80 +260,19 @@ async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECON
     //------------------------------------------------------------------------------------------
     // Copy the item from the item directory to the spell book
     //
-    msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name} for the duration of this spell`
+    await jez.itemAddToActor(aToken, SPEC_ITEM_NAME)
+    let itemUpdate = { 'name': NEW_ITEM_NAME }                 
+    await jez.itemUpdateOnActor(aToken, SPEC_ITEM_NAME, itemUpdate, "spell")
+    msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name} for the duration 
+    of this spell`
     ui.notifications.info(msg);
-    copyEditItem(aToken)
     //-----------------------------------------------------------------------------------------------
     // Post chat message
     //
     jez.log("ability", ability)
-    msg = `${tToken.name}'s ${ability.toUpperCase()} is now hexed, and will make stat checks at disadvantage. 
-    ${aToken.name} will do additional damage on each hit to ${tToken.name}`
+    msg = `${tToken.name}'s ${ability.toUpperCase()} is now hexed, and will make stat checks at 
+    disadvantage. ${aToken.name} will do additional damage on each hit to ${tToken.name}`
     postResults(msg)
-}
-/***************************************************************************************************
- * Copy the temporary item to actor's spell book and edit it as appropriate
- ***************************************************************************************************/
-async function copyEditItem(token5e) {
-    const FUNCNAME = "copyEditItem(token5e)";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    //----------------------------------------------------------------------------------------------
-    let oldActorItem = token5e.actor.data.items.getName(NEW_ITEM_NAME)
-    if (oldActorItem) await deleteItem(token5e.actor, oldActorItem)
-    //----------------------------------------------------------------------------------------------
-    jez.log("Get the item from the Items directory and slap it onto the active actor")
-    let itemObj = game.items.getName(SPEC_ITEM_NAME)
-    if (!itemObj) {
-        msg = `Failed to find ${SPEC_ITEM_NAME} in the Items Directory`
-        ui.notifications.error(msg);
-        postResults(msg)
-        return (false)
-    }
-    console.log('Item5E fetched by Name', itemObj)
-    await replaceItem(token5e.actor, itemObj)
-    //----------------------------------------------------------------------------------------------
-    jez.log("Edit the item on the actor")
-    let aActorItem = token5e.actor.data.items.getName(SPEC_ITEM_NAME)
-    jez.log("aActorItem", aActorItem)
-    if (!aActorItem) {
-        msg = `Failed to find ${SPEC_ITEM_NAME} on ${token5e.name}`
-        ui.notifications.error(msg);
-        postResults(msg)
-        return (false)
-    }
-    //-----------------------------------------------------------------------------------------------
-    jez.log(`Remove the don't change this message assumed to be embedded in the item description.  It 
-             should be of the form: <p><strong>%%*%%</strong></p> followed by white space`)
-    const searchString = `<p><strong>%%.*%%</strong></p>[\s\n\r]*`;
-    const regExp = new RegExp(searchString, "g");
-    const replaceString = ``;
-    let content = await duplicate(aActorItem.data.data.description.value);
-    content = await content.replace(regExp, replaceString);
-    let itemUpdate = {
-        'name': NEW_ITEM_NAME,
-        'data.description.value': content,
-    }
-    await aActorItem.update(itemUpdate)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-}
-/*************************************************************************************
- * replaceItem
- * 
- * Replace or Add targetItem to inventory of actor5e passed as parms
- *************************************************************************************/
-async function replaceItem(actor5e, targetItem) {
-    await deleteItem(actor5e, targetItem)
-    return (actor5e.createEmbeddedDocuments("Item", [targetItem.data]))
-}
-/*************************************************************************************
- * deleteItem
- * 
- * Delete targetItem to inventory of actor5e passed as parms
- *************************************************************************************/
-async function deleteItem(actor5e, targetItem) {
-    let itemFound = actor5e.items.find(item => item.data.name === targetItem.data.name && item.type === targetItem.type)
-    if (itemFound) await itemFound.delete();
 }
 /***************************************************************************************************
  * Modify existing concentration effect to call a this macro as an ItemMacro that can use doOff

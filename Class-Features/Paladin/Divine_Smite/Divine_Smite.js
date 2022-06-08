@@ -62,7 +62,11 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     let msgHistory = Object.values(MidiQOL.Workflow.workflows).filter(i => i.actor.id === aActor.id && 
         i.workflowType === "Workflow" && i.item?.name != aItem.name);
     jez.log("msgHistory", msgHistory)
-    if (msgHistory.length === 0) return ui.notifications.error(`You need to successfully attack first.`);
+    if (msgHistory.length === 0) {
+        msg = `You need to successfully attack first.`
+        postResults(msg)
+        return ui.notifications.error(msg);
+    }
     let lastAttack = msgHistory[msgHistory.length - 1];
     jez.log("lastAttack", lastAttack)
     let tToken = canvas.tokens.get(lastAttack.damageList[0].tokenId);
@@ -120,4 +124,12 @@ function runVFX(target) {
         .repeats(numDice - 1, 1000, 2000)
         .name(VFX_NAME) // Give the effect a uniqueish name
         .play();
+}
+/***************************************************************************************************
+ * Post results to the chat card
+ ***************************************************************************************************/
+ function postResults(msg) {
+    //jez.log(msg);
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }

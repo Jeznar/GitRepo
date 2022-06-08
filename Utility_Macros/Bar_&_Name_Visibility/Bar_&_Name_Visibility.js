@@ -1,3 +1,4 @@
+const macroName = "Bar_&_Name_Visibility.1.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9
  * Script to Update all tokens in currentr secene so that the name shows on hover and the 
  * bars always show.
@@ -8,7 +9,6 @@
  * 10/19/21 1.0 JGB Add dialogs before each action
  * 05/02/22 1.1 Updated for FoundryVTT 9.x
  *********1*********2*********3*********4*********5*********6*********7*********8*********/ 
- const macroName = "Bar & Name Visibility 1.1"
  jez.log(`Starting: ${macroName}`);
  /*********1*********2*********3*********4*********5*********6*********7*********8*********9
  * Query user to make sure they want to execute this macro (fat finger protection).

@@ -88,6 +88,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.07 **Divine Smite** -- Added a lot of log statements to the macro trying to figure out why it was failing sometimes.  Have not seen another failure after adding logging code.
 
+22.06.08 **Hex** -- Updated to use the library calls to manipulate the temporary item.
+
 
 
 
