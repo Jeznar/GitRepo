@@ -17,7 +17,8 @@ if (args[0] != "on") {  // Don't do anything if invoked by DAE during applicatio
         if (existingEffect) await existingEffect.delete()
     }
     else {
-        let fetchedActor = game.actors.get(args[1])
+        //let fetchedActor = game.actors.get(args[1])
+        let fetchedActor = canvas.tokens.placeables.find(ef => ef.data.actorId === args[1]).actor
         jez.log("fetchedActor", fetchedActor)
         if (fetchedActor) {
             let existingEffect = await fetchedActor.effects.find(i => i.id === args[2]);
