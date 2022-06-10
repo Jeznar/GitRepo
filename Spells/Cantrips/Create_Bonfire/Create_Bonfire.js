@@ -234,7 +234,7 @@ async function modConcentratingEffect(aToken, bonfireId) {
     await jez.wait(200)
     let effect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
     //----------------------------------------------------------------------------------------------
-    // Define the desired modification to concentartion effect. In this case, a macro that will be
+    // Define the desired modification to concentration effect. In this case, a macro that will be
     // given argument: bonfireId
     //    
     effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`${REMOVE_MACRO} ${bonfireId}`, priority: 20})

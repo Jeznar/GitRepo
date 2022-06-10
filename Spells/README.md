@@ -152,6 +152,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Fire Shield](4th_Level#fire-shield)
 * [Freedom of Movement](4th_Level#freedom-of-movement)
 * [Greater Invisibility](4th_Level#greater-invisibility)
+* [Hypnotic Pattern](4th_Level#hypnotic-pattern)
 * [Ice Storm](4th_Level#ice-storm)
 * [Phantasmal Killer](4th_Level#phantasmal-killer)
 * [Polymorph](4th_Level#polymorph)

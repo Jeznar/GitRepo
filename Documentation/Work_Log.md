@@ -92,6 +92,11 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.08 **[Dream](../Spells/5th_Level#dream)** -- Added with a simple RuneVFX on caster and target.  It is not automated.
 
+22.06.08 **[Hypnotic Pattern](../Spells/4th_Level#hypnotic-pattern)** -- Plays a RuneVFX on caster and adds a simple message to chat card with a small macro.  Uses DAE and AA modules for the heavy lifting.
+
+22.06.10 **Remove Paired Effect** -- Utility macro pulled out of Arcane_Hand and setup as independent utility macro.
+
+
 
 
 

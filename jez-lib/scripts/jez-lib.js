@@ -1231,5 +1231,213 @@ class jez {
         }
         return (await aActorItem.update(itemUpdate))
     }
+
+    /**************************************************************************************************************
+     * Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to 
+     * named effect on the pair of tokens supplied.  
+     * 
+     * Note: This operates on effect by name which can result in unexpected results if multiple effects on a an
+     * actor have the same name.  Not generally an issue, but it might be.
+     * 
+     * subject1 & subject2 are types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)
+     * effectName1 & effectName2 are strings that name effects on their respective token actors.
+     **************************************************************************************************************/
+    static async pairEffects(subject1, effectName1, subject2, effectName2) {
+        //---------------------------------------------------------------------------------------------------------
+        // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
+        //
+        let actor1 = jez.getActor5eDataObj(subject1)
+        if (!actor1) return (ui.notfications.error("First subject not a token, actor, tokenId or actorId"))
+        let actor2 = jez.getActor5eDataObj(subject2)
+        if (!actor2) return (ui.notfications.error("Second subject not a token, actor, tokenId or actorId"))
+        //---------------------------------------------------------------------------------------------------------
+        // Make sure the macro that will be called later exists.  Throw an error and return if not
+        //
+        let pairingMacro = game.macros.find(i => i.name === "Remove_Paired_Effect");
+        if (!pairingMacro) return ui.notifications.error("REQUIRED: Remove_Paired_Effect macro is missing.");
+        //---------------------------------------------------------------------------------------------------------
+        // Grab the effect data from the first token
+        //
+        let effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
+        if (!effectData1) {
+            msg = `Sadly "${effectName1}" effect not found on ${actor1.name}.  Effects not paired.`
+            jez.log(msg)
+            ui.notifications.warn(msg)
+            return (false)
+        }
+        //---------------------------------------------------------------------------------------------------------
+        // Grab the effect data from the second token
+        //
+        let effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
+        if (!effectData2) {
+            msg = `Sadly "${effectName2}" effect not found on ${actor2.name}.  Effects not paired.`
+            jez.log(msg)
+            ui.notifications.warn(msg)
+            return (false)
+        }
+        //---------------------------------------------------------------------------------------------------------
+        // Add the actual pairings
+        //
+        await addPairing(effectData2, actor1, effectData1)
+        await addPairing(effectData1, actor2, effectData2)
+        //---------------------------------------------------------------------------------------------------------
+        // Define a function to do the actual pairing
+        //
+        async function addPairing(effectChanged, tokenPaired, effectPaired) {
+            let value = `Remove_Paired_Effect ${tokenPaired.id} ${effectPaired.id}`
+            effectChanged.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: value, priority: 20 })
+            return (await effectChanged.update({ changes: effectChanged.data.changes }))
+        }
+        return (true)
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Function to return the Actor5e data associated with the passed parameter.
+     *
+     * Parameters
+     *  - subject: actor, token, or token Id to be searched
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9**********/
+    static getActor5eDataObj(subject) {
+        let mes = ""
+        let actor5e = null
+        const FUNCNAME = "jez.getActor5eDataObj(subject)"
+        //(`${FUNCNAME} received`, subject)
+        //----------------------------------------------------------------------------------------------
+        // Validate the subject parameter, stashing it into "actor5e" variable, returning false is bad
+        //
+        if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
+            if (subject.constructor.name === "Token5e") {
+                actor5e = subject.actor
+                return (actor5e)
+            }
+            else {
+                if (subject.constructor.name === "Actor5e") {
+                    actor5e = subject
+                    return (actor5e)
+                }
+                else {
+                    mes = `Object passed to ${FUNCNAME} is type "${typeof (subject)}" must be Token5e or Actor5e`
+                    ui.notifications.error(mes)
+                    jez.log(mes)
+                    return (false)
+                }
+            }
+        }
+        else {                  // subject is not an object maybe it is 16 char string? 
+            //jez.log("subject is not an object maybe it is 16 char string?", subject)
+            if ((typeof (subject) === "string") && (subject.length === 16)) {
+                actor5e = jez.getTokenById(subject)?.actor// Maybe string is a token id?
+                if (actor5e) return (actor5e)             // Subject is a token ID 
+                actor5e = game.actors.get(subject)        // Maybe string is an actor id?
+                if (actor5e) return (actor5e)             // Subject is an actor ID 
+                mes = `Subject parm passed to ${FUNCNAME} looks like an id but does not map to a token or actor: ${subject}`
+                ui.notifications.error(mes)
+                jez.log(mes)
+                return (false)
+            }
+            else {                                      // Oh fudge, subject is something unrecognized
+                mes = `Subject parm passed to ${FUNCNAME} is not a Token5e, Actor5e, Token.id, or Actor.id: ${subject}`
+                ui.notifications.error(mes)
+                jez.log(mes)
+                return (false)
+            }
+        }
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Function to return the Effect data object identified by arguments
+     *
+     * Parameters
+     *  - effect: either a string naming the effect, an id or a uuid 
+     *    e.g. 52 character string: Actor.i9vqeZXzvIcdZ3BU.ActiveEffect.DmvGS7OsCz3HoggP
+     *  - subject: identifies the actor with effect in question, supported by getActor5eDataObj
+     *    i.e. Objects: actor5e, token5e; 16 character Strings: token5e.id, actor5e.id
+     *    this parameter is required if given a named effect or an id, otherwise not used 
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9**********/
+    static async getEffectDataObj(effect, subject) {
+        let mes = ""
+        let effectUuid = ""
+        const FUNCNAME = "getEffectDataObj(effect, subject)"
+        //jez.log(`-------------- Starting --- ${FUNCNAME} -----------------`);
+        //jez.log(`PARAMATERS`, "effect", effect, "subject", subject )
+        //----------------------------------------------------------------------------------------------
+        // If we were not given a "subject" parameter, the effect must be a UUID, validate this.
+        //
+        if (!subject) {
+            if ((typeof (effect) === "string") && (effect.length === 52)) {
+                // tokenize the effect and validate
+                let tokens = effect.split(".")
+                if (tokens.length != 4) {
+                    mes = `BAD NEWS: ${FUNCNAME}'s effect tokenized to ${tokens.length} elements`
+                    ui.notifications.error(mes); jez.log(mes); return (false)
+                }
+                if (tokens[1].length != 16) {
+                    mes = `BAD NEWS: Second token of ${FUNCNAME}'s effect was invalid length (tokens[1].length)`
+                    ui.notifications.error(mes); jez.log(mes); return (false)
+                }
+                if (tokens[2] != "ActiveEffect") {
+                    mes = `BAD NEWS: Third token of ${FUNCNAME}'s effect was not 'ActiveEffect'`
+                    ui.notifications.error(mes); jez.log(mes); return (false)
+                }
+                if (tokens[3].length != 16) {
+                    mes = `BAD NEWS: Forth token of ${FUNCNAME}'s effect was invalid length (tokens[1].length)`
+                    ui.notifications.error(mes); jez.log(mes); return (false)
+                }
+                effectUuid = effect
+                //jez.log(`effectUuid directly provided`, effectUuid)
+            }
+            else {
+                mes = `BAD NEWS: effect is not a valid UUID and no subject provided.`
+                ui.notifications.error(mes); jez.log(mes); return (false)
+            }
+        }
+        else {  // Must have been passed a subject, so see if parameters are valid
+            //------------------------------------------------------------------------------------------
+            // Obtain an Actor5e data object from subject
+            //
+            //jez.log(`Calling jez.getActor5eDataObj(subject) with`, subject)
+            let actor5e = jez.getActor5eDataObj(subject)
+            if (!actor5e) {
+                mes = `BAD NEWS: actor data object not found for subject parm in ${FUNCNAME}`
+                ui.notifications.error(mes); jez.log(mes); return (false)
+            }
+            //------------------------------------------------------------------------------------------
+            // effect needs to be an id (16 character string) or a string providing name of effect
+            //
+            if (typeof (effect) != "string") {
+                mes = `BAD NEWS: Subject parameter of ${FUNCNAME}'s effect needs to be a string, is a ${typeof (effect)}`
+                ui.notifications.error(mes); jez.log(mes); return (false)
+            }
+            //------------------------------------------------------------------------------------------
+            // Assemble a UUID (which may have a name string embedded in place of an actual id)
+            //
+            effectUuid = `Actor.${actor5e.id}.ActiveEffect.${effect}`
+            jez.log(`effectUuid from data pair`, effectUuid)
+        }
+        //----------------------------------------------------------------------------------------------
+        // Now that things are validated, fetch the actor's data
+        //
+        jez.log(`effectUuid`, effectUuid)
+        let tokens = effectUuid.split(".")
+        const ACTOR_ID = tokens[1]
+        let actor5e = jez.getActor5eDataObj(ACTOR_ID)
+        if (!actor5e) {
+            mes = `BAD NEWS: ${FUNCNAME} could not find actor from ID ${ACTOR_ID}`
+            ui.notifications.error(mes); jez.log(mes); return (false)
+        }
+        //jez.log(`Actor5e ${actor5e.name}`, actor5e)
+        //----------------------------------------------------------------------------------------------
+        // 
+        //
+        //jez.log(`Seeking effect "${tokens[3]}" within`, actor5e.effects)
+        let effectData = await actor5e.effects.find(i => i.id === tokens[3] || i.data.label === tokens[3]);
+        //let effectData = await actor5e.effects.find(i => i.name === tokens[3]);
+        if (!effectData) {
+            mes = `BAD NEWS: ${FUNCNAME} could not find "${tokens[3]}" on ${actor5e.name}`
+            ui.notifications.error(mes); jez.log(mes); return (false)
+        }
+        jez.log(`Effect ${effectData.name}`, effectData)
+        //jez.log(`-------------- Finished --- ${FUNCNAME} -----------------`);
+        return (effectData)
+    }
+
 } // END OF class jez
 Object.freeze(jez);

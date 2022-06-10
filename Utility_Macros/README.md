@@ -21,6 +21,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **Light Picker**: sample macro that sets the type of light emitted by a token.
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
+* **[Remove Paired Effect](#remove-paired-effect)** Removes effect identified by id from actor also specified by id
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
 * **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
 * **[Samples](#samples)** Various sample macros that do itty bitty things
@@ -234,13 +235,32 @@ It does the following:
 
 ---
 
+### Remove Paired Effect
+
+Macro intended to called from a DAE effect to trigger the removal of a "paired" effect.  It takes two arguments:
+
+Subject.id -- 16 character identifier for the token whose actor will be acted on, or the actor's id
+Effect.id -- 16 character identifier for the effect to be removed.
+
+A DAE Effect might be setup with a line like this:
+
+~~~javascript
+macro.execute CUSTOM Remove_Paired_Effect i9vqeZXzvIcdZ3BU All2XSeYJ1swpBIN
+~~~
+
+![Remove_Paired_Effect.png](Remove_Paired_Effect/Remove_Paired_Effect.png)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
 ### Run RuneVFX onTargets
 
 Macro to be used as an OnUse macro from an item sheet.  It simply runs [jez.runRuneVFX(...)](../jez-lib/#runRuneVFX) on the targeted token(s), making sure the color is the same random selection on each.
 
 Used by adding the following to the OnUse Macro field at the bottom of the **Item Details** page:
 
-~~~javasctipt
+~~~ javascript
 Run_RuneVFX_onTargets
 ~~~
 
@@ -254,7 +274,7 @@ Macro to be used as an OnUse macro from an item sheet.  It simply runs [jez.runR
 
 Used by adding the following to the OnUse Macro field at the bottom of the **Item Details** page:
 
-~~~javasctipt
+~~~ javascript
 Run_RuneVFX_onSelf
 ~~~
 

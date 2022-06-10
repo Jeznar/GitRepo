@@ -9,46 +9,141 @@ let MACRONAME = "Demo_Change_Effect.js"
  * 
  * 02/22/22 0.1 Creation of Macro
  *****************************************************************************************/
- const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
- jez.log(`============== Starting === ${MACRONAME} =================`);
- for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
- const LAST_ARG = args[args.length - 1];
- let aActor;         // Acting actor, creature that invoked the macro
- let aToken;         // Acting token, token for creature that invoked the macro
- if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
- if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
- const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
- 
- const CONDITION = "Poisoned"
- const SPELL_DC = aActor.data.data.attributes.spelldc;
- const SAVE_TYPE = "wis"
- const NUM_DICE = 1
-//----------------------------------------------------------------------------------
-// Appy the "existing" condition (This is what will be changed)
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+jez.log(`============== Starting === ${MACRONAME} =================`);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const LAST_ARG = args[args.length - 1];
 //
-await game.cub.addCondition(CONDITION, aToken) // await completion of application
-//----------------------------------------------------------------------------------
-// Seach the token to find the just added effect
+// Set the value for the Active Actor (aActor)
+let aActor;
+if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
+else aActor = game.actors.get(LAST_ARG.actorId);
 //
-let effect = await aToken.actor.effects.find(i => i.data.label === CONDITION);
-jez.log("effect", effect)
-//----------------------------------------------------------------------------------
-// Notice the existing effects are effect.data.changes, they need to be kept.
-// 
-jez.log(`effect.data.changes 1`,effect.data.changes)
-//----------------------------------------------------------------------------------
-// Define the desired modification to existing effect.
+// Set the value for the Active Token (aToken)
+let aToken;
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
 //
-//    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects
+// Set the value for the Active Item (aItem)
+let aItem;
+if (args[0]?.item) aItem = args[0]?.item;
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
 //
-let overTimeVal = `turn=end, label=${CONDITION},
+// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+const GAME_RND = game.combat ? game.combat.round : 0;
+const CONDITION1 = "Poisoned"
+const CONDITION2 = "Phantasmal Killer"
+const SPELL_DC = aActor.data.data.attributes.spelldc;
+const SAVE_TYPE = "wis"
+const NUM_DICE = 1
+//---------------------------------------------------------------------------------------------------
+// Run the main procedures, choosing based on how the macro was invoked
+//
+if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
+jez.log(`============== Finished === ${MACRONAME} =================`);
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ *    END_OF_MAIN_MACRO_BODY
+ *                                END_OF_MAIN_MACRO_BODY
+ *                                                             END_OF_MAIN_MACRO_BODY
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********
+ * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function doOnUse() {
+  const FUNCNAME = "doOnUse()";
+
+  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+  //----------------------------------------------------------------------------------
+  // Appy the "existing" condition (This is what will be changed)
+  //
+  await game.cub.addCondition(CONDITION1, aToken, {allowDuplicates:true, replaceExisting:false, warn:true})
+  //----------------------------------------------------------------------------------
+  // Seach the token to find the just added effect
+  //
+  jez.log(`About to: aToken.actor.effects.find(i => i.data.label === ${CONDITION1})`)
+  let effect = await aToken.actor.effects.find(i => i.data.label === CONDITION1);
+  jez.log("effect before additions", effect)
+
+  //----------------------------------------------------------------------------------
+  // Notice the existing effects are effect.data.changes, they need to be kept.
+  // 
+  jez.log(`effect.data.changes 1`, effect.data.changes)
+  //----------------------------------------------------------------------------------
+  // Define the desired modification to existing effect.
+  //
+  //    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects
+  //
+  let overTimeVal = `turn=end, label=${CONDITION1},
   saveDC=${SPELL_DC}, saveAbility=${SAVE_TYPE}, saveRemove=true, saveMagic=true, rollType=save,
   damageRoll=${NUM_DICE}d10, damageType=psychic`
-//const newData = { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: overTimeVal, priority: 20 }
-effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: overTimeVal, priority: 20 })
-jez.log(`effect.data.changes 2`,effect.data.changes)
-//----------------------------------------------------------------------------------
-// Apply the modification to existing effect
-//
-const result = await effect.update({'changes': effect.data.changes});
-if (result) jez.log(`Active Effect ${CONDITION} updated!`, result);
+  //const newData = { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: overTimeVal, priority: 20 }
+  effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal, priority: 20 })
+  jez.log(`effect.data.changes 2`, effect.data.changes)
+  //----------------------------------------------------------------------------------
+  // Exercise jez.getActor5eDataObj function (Not directly relevant to this macro)
+  //
+  let x = null
+  x = jez.getActor5eDataObj(aToken)
+  jez.log(`aToken to ${x.name}`,x)
+  x = jez.getActor5eDataObj(aActor)
+  jez.log(`aActor to ${x.name}`,x)
+  x = jez.getActor5eDataObj(aToken.id)
+  jez.log(`aToken.id to ${x.name}`,x)
+  x = jez.getActor5eDataObj(aActor.id)
+  jez.log(`aActor.id to ${x.name}`,x)
+  //x = jez.getActor5eDataObj("ABCDEF012345678")
+  //jez.log(`garbage input returned`, x)
+  //----------------------------------------------------------------------------------
+  // Exercise jez.getEffectDataObj function (Not directly relevant to this macro)
+  //
+  x = await jez.getEffectDataObj(CONDITION1, aToken)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aToken`,x)
+    x = await jez.getEffectDataObj(CONDITION1, aActor)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aActor`,x)
+  x = await jez.getEffectDataObj(CONDITION1, aToken.id)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aToken.id`,x)
+  x = await jez.getEffectDataObj(CONDITION1, aActor.id)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aActor.id`,x)
+  x = await jez.getEffectDataObj(CONDITION2, aToken)
+  jez.log(`Effect Data Obj for ${CONDITION2} on ${aToken.name}`,x)
+  x = await jez.getEffectDataObj("Actor.i9vqeZXzvIcdZ3BU.ActiveEffect.DmvGS7OsCz3HoggP")
+  jez.log(`Effect Data Obj for direct UUID`,x)
+  //----------------------------------------------------------------------------------
+  // Apply the modification to existing effect
+  //
+  const result = await effect.update({ 'changes': effect.data.changes });
+  if (result) jez.log(`Active Effect ${CONDITION1} updated!`, result);
+  //----------------------------------------------------------------------------------
+  // Lets add another effect, this time by direct calls
+  //
+  let overTimeVal2 = `turn=end, label=${CONDITION2}, saveDC=${SPELL_DC}, saveAbility=${SAVE_TYPE},
+saveRemove=true, damageRoll=${NUM_DICE}d10, saveMagic=true, damageType=psychic`
+  let effectData = [{
+    label: CONDITION2,
+    icon: aItem.img,
+    origin: aToken.document.uuid,
+    disabled: false,
+    // flags: { dae: { stackable: false, macroRepeat: "none" } },
+    // flags: { dae: { itemData: aItem.data, macroRepeat: "startEveryTurn", token: aToken.uuid } },
+    flags: { dae: { itemData: aItem, macroRepeat: "startEveryTurn", token: aToken.document.uuid, stackable: false } },
+    duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
+    changes: [
+      // COOL-THING: Midi-QoL OverTime dot & save effect
+      { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal2, priority: 20 },
+      { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: jez.ADD, value: 1, priority: 20 },
+      { key: `flags.midi-qol.disadvantage.skill.all`, mode: jez.ADD, value: 1, priority: 20 },
+      { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },
+      { key: `macro.itemMacro`, mode: jez.CUSTOM, value: aToken.name, priority: 20 },
+      //{ key: `macro.execute`, mode: jez.CUSTOM, value: executeValue, priority: 20}
+    ]
+  }];
+  await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: effectData });
+  //-------------------------------------------------------------------------------------------------------------
+  // Grab the data for the two effects to be paired
+  //
+  await jez.wait(100)
+  jez.pairEffects(aActor, CONDITION1, aActor, CONDITION2)
+  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+  return (true);
+}

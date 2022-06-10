@@ -26,10 +26,12 @@ The functions currently included in this module are:
 
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[jez.deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
+* **[jez.getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
 * **[jez.getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
 * **[jez.getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
+* **[jez.getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
 * **[jez.getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
 * **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
 * **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
@@ -46,6 +48,7 @@ The functions currently included in this module are:
 * **[jez.itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions)** -- Updates an Item on Actor
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay)** -- Push or pull token 1, 2 or 3 spaces
+* **[jez.pairEffects(subject1, effectName1, subject2, effectName2)](#pairEffectssubject1-effectName1-subject2-effectName2))** -- Add lines to DAE effects to remove other member of pair when either removed.
 * **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
 * **[jez.pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a drop down list.  User's selection is passed to the specified callback function. 
 * **[jez.pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
@@ -119,6 +122,34 @@ await jez.deleteItems(ATTACK_ITEM, "spell", aActor);
 
 ---
 
+### Get Functions
+
+A series of functions that return simple integer values or false on errors with a fair amount of error checking.
+
+#### Functions
+- **jez.getCastMod(subject)** -- Returns the subject's casting stat modifier
+- **jez.getCastStat(subject)** -- Returns the subject's casting stat string (e.g. "int")
+- **jez.getCharLevel(subject)** -- Returns the subject's character level (useful for Cantrip scaling)
+- **jez.getStatMod(subject,stat)** -- Returns the subject's modifier for passed stat string
+- **jez.getSpellDC(subject)** -- Returns the subject's spell save DC
+- **jez.getProfMod(subject)** -- Returns the subject's proficiency modifier
+- **jez.getTokenById(subjectId)** -- Returns the Token5e associated with the passed ID
+
+#### Parameters
+* Subject: Token5e or Actor5e object or 16 character id of a token
+* Stat: A string from: "str", "dex", "con", "int", "wis", "chr"
+* SubjectId: 16 character identifier for a token in the current scene
+
+#### And Two more
+Two additional get functions intended to make handling the overloaded inputs a bit easier to code:
+
+- **jez.getActor5eDataObj(subject)** -- Function to return the Actor5e data associated with the passed parameter. The subject can be  actor5e data object, token5e data object, token Id or actor Id
+- **getEffectDataObj(effect, subject)** -- Function to return the Effect data object identified by arguments. The **effect** parameter can be either a string naming the effect, an id or a uuid, e.g. 52 character string: `Actor.i9vqeZXzvIcdZ3BU.ActiveEffect.DmvGS7OsCz3HoggP`. **Subject** (optional) identifies the actor with effect in question, it just be a type supported by getActor5eDataObj, this parameter is not required if effect is a UUID.
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
 ### getDistance5e(one, two)
 
 This function returns the distance between two placeable entities (e.g. tokens) in the D&D 5E alternate rule set where diagonal movement is charged as 5-10-5-10-5 feet of movement.  The returned value will be evenly divisible by 5.
@@ -126,6 +157,21 @@ This function returns the distance between two placeable entities (e.g. tokens) 
 I snarfed the logic from Vance Cole's lovely Distance macro, which can be found at: [macros/distance.js](https://github.com/VanceCole/macros/blob/master/distance.js) 
 
 [*Back to Functions list*](#functions-in-this-module)
+
+--- 
+
+### getRace(entity)
+
+Return the race of the passes **Actor5e**, **Token5e**, or **TokenDocument5e**.  The value will be a lowercase string, which may be empty.  It is taken from a user input field, so garbage may be present.  
+
+If passed a parameter not of a supported type, returns FALSE
+
+~~~javascript
+for ( let token of canvas.tokens.controlled ){
+  let race = jez.getRace(token.document))
+  if (race.includes("construct")) console.log(`${token.name} is construct`)
+}
+~~~
 
 ---
 
@@ -139,6 +185,66 @@ This function returns a string naming a valid random JB2A rune color.  Possible 
 * purple,
 * red, and
 * yellow.
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getRange(aItem, allowedUnits)
+
+This function returns the maximum range defined on the names item and verifies that the units set on that item are in the allowed set.  The set of allowedUnits is an array of strings. 
+
+Following is a sample call.
+
+~~~javascript
+const ALLOWED_UNITS = ["", "ft", "any"];
+
+let maxRange = jez.getRange(aItem, ALLOWED_UNITS)
+if (!maxRange) {
+    msg = `Range is 0 or incorrect units on ${aItem.name}`;
+    jez.log(msg);
+    ui.notifications.warn(msg);
+    return(false)
+}
+~~~
+
+Below is a sample output from the test harness function (included in the library repo) that ran this function and then displayed the results.
+
+![Test_GetSize](images/Test_GetSize.png)
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getSize(token5e)
+
+This function pops grabs size information from the specified token and returns an object with size expressed in several formats.
+
+The returned object will be composed of:
+
+* @typedef  {Object} CreatureSizes
+* @property {integer} value  - Numeric value of size: 1 is tiny to 6 gargantuan
+* @property {string}  str    - Short form for size generally used in FoundryVTT data 
+* @property {string}  string - Spelled out size all lower case
+* @property {string}  String - Spelled out size with the first letter capitalized  
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getSpellSchool(item)
+
+This function obtains the spell school from the passed parameter.  The school will be a string as used by JB2A module.  Possible returned values are:
+
+* abjuration
+* conjuration
+* divination
+* enchantment
+* evocation
+* illusion
+* necromancy
+* transmutation
+* and FALSE (if no valid school found)
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -316,104 +422,6 @@ jez-lib |  (2) Selected Token Name : Meat Bag, Medium
 
 ---
 
-### Get Functions
-
-A series of functions that return simple integer values or false on errors with a fair 
-amount of error checking.
-
-#### Functions
-- jez.getCastMod(subject) -- Returns the subject's casting stat modifier
-- jez.getCastStat(subject) -- Returns the subject's casting stat string (e.g. "int")
-- jez.getCharLevel(subject) -- Returns the subject's character level (useful for Cantrip scaling)
-- jez.getStatMod(subject,stat) -- Returns the subject's modifier for passed stat string
-- jez.getSpellDC(subject) -- Returns the subject's spell save DC
-- jez.getProfMod(subject) -- Returns the subject's proficiency modifier
-- jez.getTokenById(subjectId) -- Returns the Token5e associated with the passed ID
-
-#### Parameters
-* Subject: Token5e or Actor5e object or 16 character id of a token
-* Stat: A string from: "str", "dex", "con", "int", "wis", "chr"
-* SubjectId: 16 character identifier for a token in the current scene
-
-[*Back to Functions list*](#functions-in-this-module)
-
---- 
-
-### getRace(entity)
-
-Return the race of the passes **Actor5e**, **Token5e**, or **TokenDocument5e**.  The value will be a lowercase string, which may be empty.  It is taken from a user input field, so garbage may be present.  
-
-If passed a parameter not of a supported type, returns FALSE
-
-~~~javascript
-for ( let token of canvas.tokens.controlled ){
-  let race = jez.getRace(token.document))
-  if (race.includes("construct")) console.log(`${token.name} is construct`)
-}
-~~~
-
----
-
-### getRange(aItem, allowedUnits)
-
-This function returns the maximum range defined on the names item and verifies that the units set on that item are in the allowed set.  The set of allowedUnits is an array of strings. 
-
-Following is a sample call.
-
-~~~javascript
-const ALLOWED_UNITS = ["", "ft", "any"];
-
-let maxRange = jez.getRange(aItem, ALLOWED_UNITS)
-if (!maxRange) {
-    msg = `Range is 0 or incorrect units on ${aItem.name}`;
-    jez.log(msg);
-    ui.notifications.warn(msg);
-    return(false)
-}
-~~~
-
-Below is a sample output from the test harness function (included in the library repo) that ran this function and then displayed the results.
-
-![Test_GetSize](images/Test_GetSize.png)
-
-[*Back to Functions list*](#functions-in-this-module)
-
----
-
-### getSize(token5e)
-
-This function pops grabs size information from the specified token and returns an object with size expressed in several formats.
-
-The returned object will be composed of:
-
-* @typedef  {Object} CreatureSizes
-* @property {integer} value  - Numeric value of size: 1 is tiny to 6 gargantuan
-* @property {string}  str    - Short form for size generally used in FoundryVTT data 
-* @property {string}  string - Spelled out size all lower case
-* @property {string}  String - Spelled out size with the first letter capitalized  
-
-[*Back to Functions list*](#functions-in-this-module)
-
----
-
-### getSpellSchool(item)
-
-This function obtains the spell school from the passed parameter.  The school will be a string as used by JB2A module.  Possible returned values are:
-
-* abjuration
-* conjuration
-* divination
-* enchantment
-* evocation
-* illusion
-* necromancy
-* transmutation
-* and FALSE (if no valid school found)
-
-[*Back to Functions list*](#functions-in-this-module)
-
----
-
 ### moveToken(anchorToken, movingToken, move, delay)
 
 This function moves the **movingToken** 1, 2, or 3 spaces (specified by value of **move**) away (positive values of move) or toward (negative values) the **anchorToken** adding a **delay** in milliseconds before the actual move (intended to allow VFX or other timing steps).  
@@ -428,6 +436,28 @@ jez.moveToken(anchorToken, aToken, -1, 1500)
 The above would move *aToken* (active token) one space toward the *anchorToken* after a wait of 1.5 seconds.
 
 The function returns a boolean value with false indicating a problem encountered and true representing normal completion. 
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+### pairEffects(subject1, effectName1, subject2, effectName2)
+
+Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to named effect on the pair of tokens supplied.  
+
+Note: This operates on effect by name which can result in unexpected results if multiple effects on a an actor have the same name.  Not generally an issue, but it might be.
+
+* **subject1** & **subject2** are types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)
+* **effectName1** & **effectName2** are strings that name effects on their respective token actors.
+
+~~~javascript
+jez.pairEffects(aActor, CONDITION1, aActor, CONDITION2)
+~~~
+
+The function adds a line to the bottom of both effects that triggers [Remove_Paired_Effect](../Utility_Macros#remove-paired-effect) macro when the effect is removed.  That macro will then exterminate the other member of the pair.  
+
+It will result in something like as the last line in the effects:
+
+![Remove_Paired_Effect.png](../Utility_Macros/Remove_Paired_Effect/Remove_Paired_Effect.png)
 
 [*Back to Functions list*](#functions-in-this-module)
 
