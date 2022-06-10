@@ -96,12 +96,7 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.10 **Remove Paired Effect** -- Utility macro pulled out of Arcane_Hand and setup as independent utility macro.
 
-Remove_Paired_Effect 7BJKpNufDB5XseeU hxjytmxgcskkc5dn
-                     7BJKpNufDB5XseeU hxjytmxgcskkc5dn
-                     
-(token).actor.id 7BJKpNufDB5XseeU
-
-
+22.06.10 **[Phantasmal Killer](../Spells/4th_Level#phantasmal-killer)** -- Link concentrate and spell effect with [jez.pairEffects(...)](../jez-lib#pairEffectssubject1-effectName1-subject2-effectName2) so they both go away together.
 
 [Link back to my Documentation Listing](README.md) 
 

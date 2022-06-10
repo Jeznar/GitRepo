@@ -180,6 +180,8 @@ This spell places Tile with a cracked earth effect to mark the area of difficult
 
 This spell places a DoT on the target which is allowed a save at the end of each turn. The DoT is implemented with Midi-QoL overtime settings.
 
+6/10/22 Update: Now links the concentration and active effect with [jez.pairEffects(...)](../../jez-lib#pairEffectssubject1-effectName1-subject2-effectName2) library function. It also runs VFXes on target.
+
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
 ---

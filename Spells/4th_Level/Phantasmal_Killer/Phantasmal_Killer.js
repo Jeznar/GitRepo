@@ -15,7 +15,6 @@ let aItem;          // Active Item information, item invoking this macro
 if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
 if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 const GAME_RND = game.combat ? game.combat.round : 0;
 let chatMessage = game.messages.get(args[args.length - 1].itemCardId);
@@ -25,14 +24,12 @@ const SAVE_TYPE = "wis"
 const NUM_DICE = args[0].spellLevel;
 const FRIGHTENED_JRNL = `@JournalEntry[${game.journal.getName("Frightened").id}]{Frightened}`
 const FRIGHTENED_ICON = "Icons_JGB/Monster_Features/Frightened.png"
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE removal
 if (args[0] === "off") await doOff();                   // DAE removal
-
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -62,11 +59,6 @@ async function doOnUse() {
         return
     }
     //-------------------------------------------------------------------------------------------------------------
-    // Grab the data for the new Concentrating effect so that it can be removed when created effect drops
-    //
-    let concEffectData = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
-    //let executeValue = `Remove_Paired_Effect ${aToken.id} ${concEffectData.id}`
-    //-------------------------------------------------------------------------------------------------------------
     // Apply Phantasmal Killer condition
     // https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects
     //
@@ -94,69 +86,22 @@ async function doOnUse() {
             { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: jez.ADD, value: 1, priority: 20 },
             { key: `flags.midi-qol.disadvantage.skill.all`, mode: jez.ADD, value: 1, priority: 20 },
             { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },
-            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: aToken.name, priority: 20 },
+            // { key: `macro.CUB`, mode: jez.CUSTOM, value: "Frightened", priority: 20 },
+            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: aToken.name, priority: 20 },         
             //{ key: `macro.execute`, mode: jez.CUSTOM, value: executeValue, priority: 20}
         ]
     }];
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: effectData });
 // COOL-THING: Add lines to pair effects for mutual termination.
     //-------------------------------------------------------------------------------------------------------------
+    // Launch that VFX
+    //
+    runVFX(tToken)
+    //-------------------------------------------------------------------------------------------------------------
     // Grab the data for the two effects to be paired
     //
     await jez.wait(200)
     jez.pairEffects(aToken, "Concentrating", tToken, CONDITION)
-    /**************************************************************************************************************
-     * Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to 
-     * named effect on the pair of tokens supplied.  
-     * 
-     * token1 & token2 are Token5e objects
-     * effectName1 & effectName2 are strings that name effects on their respective token actors.
-     **************************************************************************************************************/
-    /*async function pairEffects(token1, effectName1, token2, effectName2) {
-        await jez.wait(100)
-        //---------------------------------------------------------------------------------------------------------
-        // Make sure the macro that will be called later exists.  Throw an error and return if not
-        //
-        let pairingMacro = game.macros.find(i=> i.name === "Remove_Paired_Effect");
-        if(!pairingMacro) return ui.notifications.error("REQUIRED: Remove_Paired_Effect macro is missing.");
-        //---------------------------------------------------------------------------------------------------------
-        // Grab the effect data from the first token
-        //
-        let effectData1 = await token1.actor.effects.find(i => i.data.label === effectName1);
-        if (!effectData1) {
-            msg = `Sadly "${effectName1}" effect not found on ${token1.name}.  Effects not paired.`
-            jez.log(msg)
-            ui.notifications.warn(msg) 
-            return(false)
-        }
-        //---------------------------------------------------------------------------------------------------------
-        // Grab the effect data from the second token
-        //
-        let effectData2 = await token2.actor.effects.find(i => i.data.label === effectName2);
-        if (!effectData2) {
-            msg = `Sadly "${effectName2}" effect not found on ${token2.name}.  Effects not paired.`
-            jez.log(msg)
-            ui.notifications.warn(msg) 
-            return(false)
-        }
-        //---------------------------------------------------------------------------------------------------------
-        // Add the actual pairings
-        //
-        await addPairing(effectData2, token1, effectData1)
-        await addPairing(effectData1, token2, effectData2)
-        //---------------------------------------------------------------------------------------------------------
-        // Define a function to do the actual pairing
-        //
-        async function addPairing(effectChanged, tokenPaired, effectPaired) {
-            let value = `Remove_Paired_Effect ${tokenPaired.id} ${effectPaired.id}`
-            effectChanged.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: value, priority: 20 })
-            jez.log("Adding changes", "tokenPaired", tokenPaired.name, "value", value, "effectChanged.data.changes", effectChanged.data.changes )
-            return (await effectChanged.update({ changes: effectChanged.data.changes }))
-            //return (await effectChanged.update())
-
-        }
-        return(true)
-    }*/
     //-------------------------------------------------------------------------------------------------------------
     // Post Completion message
     //
@@ -179,6 +124,10 @@ async function doOnUse() {
     msg = `${aToken.name} is still ${FRIGHTENED_JRNL}.  May not willing move closer to ${oToken.name}.`
     await jez.postMessage({color:"purple", fSize:15, msg:msg, title:`${aToken.name} Frightened`, 
         token:aToken, icon:FRIGHTENED_ICON})
+    //-------------------------------------------------------------------------------------------------------------
+    // Launch that VFX
+    //
+    runVFX(aToken)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
 }
@@ -209,4 +158,18 @@ async function preCheck() {
         return(false);
     }
     return (true)
+}
+/***************************************************************************************************
+ * Run Frightened VFX on Target
+ ***************************************************************************************************/
+async function runVFX(target) {
+    const VFX_LOOP = "modules/jb2a_patreon/Library/Generic/UI/IconHorror_*_200x200.webm"
+    new Sequence()
+        .effect()
+        .fadeIn(1000)
+        .fadeOut(1000)
+        .file(VFX_LOOP)
+        .atLocation(target)
+        .scaleToObject(1.25)
+        .play();
 }

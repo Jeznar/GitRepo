@@ -9,7 +9,7 @@ const MACRONAME = "Remove_Paired_Effect.0.3.js"
  *****************************************************************************************/
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-if (args[0] != "on") {  // Don't do anything if invoked by DAE during application
+if (args[0] === "off") {  // Only execute this when removed from Token
     let fetchedToken = canvas.tokens.placeables.find(ef => ef.id === args[1])
     jez.log("fetchedToken", fetchedToken)
     if (fetchedToken) {
