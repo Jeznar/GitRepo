@@ -1327,6 +1327,8 @@ class jez {
             if ((typeof (subject) === "string") && (subject.length === 16)) {
                 actor5e = jez.getTokenById(subject)?.actor// Maybe string is a token id?
                 if (actor5e) return (actor5e)             // Subject is a token ID 
+                actor5e = canvas.tokens.placeables.find(ef => ef.data.actorId === subject).actor
+                if (actor5e) return (actor5e)             // Subject is an actorID embedded in a scene token 
                 actor5e = game.actors.get(subject)        // Maybe string is an actor id?
                 if (actor5e) return (actor5e)             // Subject is an actor ID 
                 mes = `Subject parm passed to ${FUNCNAME} looks like an id but does not map to a token or actor: ${subject}`

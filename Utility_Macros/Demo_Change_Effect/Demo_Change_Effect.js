@@ -54,15 +54,22 @@ async function doOnUse() {
   const FUNCNAME = "doOnUse()";
 
   jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+  let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+  if (!tToken) {
+    msg = `Please target at least one token`
+    ui.notifications.warn(msg)
+    jez.log(msg)
+    return(false)
+  }
   //----------------------------------------------------------------------------------
   // Appy the "existing" condition (This is what will be changed)
   //
-  await game.cub.addCondition(CONDITION1, aToken, {allowDuplicates:true, replaceExisting:false, warn:true})
+  await game.cub.addCondition(CONDITION1, tToken, {allowDuplicates:true, replaceExisting:false, warn:true})
   //----------------------------------------------------------------------------------
   // Seach the token to find the just added effect
   //
-  jez.log(`About to: aToken.actor.effects.find(i => i.data.label === ${CONDITION1})`)
-  let effect = await aToken.actor.effects.find(i => i.data.label === CONDITION1);
+  jez.log(`About to: tToken.actor.effects.find(i => i.data.label === ${CONDITION1})`)
+  let effect = await tToken.actor.effects.find(i => i.data.label === CONDITION1);
   jez.log("effect before additions", effect)
 
   //----------------------------------------------------------------------------------
@@ -81,34 +88,34 @@ async function doOnUse() {
   effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal, priority: 20 })
   jez.log(`effect.data.changes 2`, effect.data.changes)
   //----------------------------------------------------------------------------------
-  // Exercise jez.getActor5eDataObj function (Not directly relevant to this macro)
+  // Exercise getActor5eDataObj function (Not directly relevant to this macro)
   //
-  let x = null
-  x = jez.getActor5eDataObj(aToken)
+  /*let x = null
+  x = getActor5eDataObj(aToken)
   jez.log(`aToken to ${x.name}`,x)
-  x = jez.getActor5eDataObj(aActor)
+  x = getActor5eDataObj(aActor)
   jez.log(`aActor to ${x.name}`,x)
-  x = jez.getActor5eDataObj(aToken.id)
+  x = getActor5eDataObj(aToken.id)
   jez.log(`aToken.id to ${x.name}`,x)
-  x = jez.getActor5eDataObj(aActor.id)
-  jez.log(`aActor.id to ${x.name}`,x)
-  //x = jez.getActor5eDataObj("ABCDEF012345678")
+  x = getActor5eDataObj(aActor.id)
+  jez.log(`aActor.id to ${x.name}`,x)*/
+  //x = getActor5eDataObj("ABCDEF012345678")
   //jez.log(`garbage input returned`, x)
   //----------------------------------------------------------------------------------
   // Exercise jez.getEffectDataObj function (Not directly relevant to this macro)
   //
-  x = await jez.getEffectDataObj(CONDITION1, aToken)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aToken`,x)
+  /*x = await jez.getEffectDataObj(CONDITION1, tToken)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken`,x)
     x = await jez.getEffectDataObj(CONDITION1, aActor)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aActor`,x)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken`,x)
   x = await jez.getEffectDataObj(CONDITION1, aToken.id)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aToken.id`,x)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken.id`,x)
   x = await jez.getEffectDataObj(CONDITION1, aActor.id)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${aToken.name}, aActor.id`,x)
+  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken.id`,x)
   x = await jez.getEffectDataObj(CONDITION2, aToken)
   jez.log(`Effect Data Obj for ${CONDITION2} on ${aToken.name}`,x)
   x = await jez.getEffectDataObj("Actor.i9vqeZXzvIcdZ3BU.ActiveEffect.DmvGS7OsCz3HoggP")
-  jez.log(`Effect Data Obj for direct UUID`,x)
+  jez.log(`Effect Data Obj for direct UUID`,x)*/
   //----------------------------------------------------------------------------------
   // Apply the modification to existing effect
   //
@@ -143,7 +150,120 @@ saveRemove=true, damageRoll=${NUM_DICE}d10, saveMagic=true, damageType=psychic`
   // Grab the data for the two effects to be paired
   //
   await jez.wait(100)
-  jez.pairEffects(aActor, CONDITION1, aActor, CONDITION2)
+  pairEffects(tToken.actor, CONDITION1, aActor, CONDITION2)
   jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
   return (true);
+}
+/**************************************************************************************************************
+     * Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to 
+     * named effect on the pair of tokens supplied.  
+     * 
+     * Note: This operates on effect by name which can result in unexpected results if multiple effects on a an
+     * actor have the same name.  Not generally an issue, but it might be.
+     * 
+     * subject1 & subject2 are types supported by getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)
+     * effectName1 & effectName2 are strings that name effects on their respective token actors.
+     **************************************************************************************************************/
+ async function pairEffects(subject1, effectName1, subject2, effectName2) {
+  //---------------------------------------------------------------------------------------------------------
+  // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
+  //
+  jez.log("pairEffects(subject1, effectName1, subject2, effectName2)","subject1",subject1,"effectName1",effectName1, "subject2",subject2,"effectName2",effectName2)
+  let actor1 = getActor5eDataObj(subject1)
+  if (!actor1) return (ui.notfications.error("First subject not a token, actor, tokenId or actorId"))
+  let actor2 = getActor5eDataObj(subject2)
+  if (!actor2) return (ui.notfications.error("Second subject not a token, actor, tokenId or actorId"))
+  //---------------------------------------------------------------------------------------------------------
+  // Make sure the macro that will be called later exists.  Throw an error and return if not
+  //
+  let pairingMacro = game.macros.find(i => i.name === "Remove_Paired_Effect");
+  if (!pairingMacro) return ui.notifications.error("REQUIRED: Remove_Paired_Effect macro is missing.");
+  //---------------------------------------------------------------------------------------------------------
+  // Grab the effect data from the first token
+  //
+  let effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
+  if (!effectData1) {
+      msg = `Sadly "${effectName1}" effect not found on ${actor1.name}.  Effects not paired.`
+      jez.log(msg)
+      ui.notifications.warn(msg)
+      return (false)
+  }
+  //---------------------------------------------------------------------------------------------------------
+  // Grab the effect data from the second token
+  //
+  let effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
+  if (!effectData2) {
+      msg = `Sadly "${effectName2}" effect not found on ${actor2.name}.  Effects not paired.`
+      jez.log(msg)
+      ui.notifications.warn(msg)
+      return (false)
+  }
+  //---------------------------------------------------------------------------------------------------------
+  // Add the actual pairings
+  //
+  await addPairing(effectData2, actor1, effectData1)
+  await addPairing(effectData1, actor2, effectData2)
+  //---------------------------------------------------------------------------------------------------------
+  // Define a function to do the actual pairing
+  //
+  async function addPairing(effectChanged, tokenPaired, effectPaired) {
+      let value = `Remove_Paired_Effect ${tokenPaired.id} ${effectPaired.id}`
+      effectChanged.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: value, priority: 20 })
+      return (await effectChanged.update({ changes: effectChanged.data.changes }))
+  }
+  return (true)
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Function to return the Actor5e data associated with the passed parameter.
+ *
+ * Parameters
+ *  - subject: actor, token, or token Id to be searched
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9**********/
+ function getActor5eDataObj(subject) {
+  let mes = ""
+  let actor5e = null
+  const FUNCNAME = "getActor5eDataObj(subject)"
+  //(`${FUNCNAME} received`, subject)
+  //----------------------------------------------------------------------------------------------
+  // Validate the subject parameter, stashing it into "actor5e" variable, returning false is bad
+  //
+  if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
+      if (subject.constructor.name === "Token5e") {
+          actor5e = subject.actor
+          return (actor5e)
+      }
+      else {
+          if (subject.constructor.name === "Actor5e") {
+              actor5e = subject
+              return (actor5e)
+          }
+          else {
+              mes = `Object passed to ${FUNCNAME} is type "${typeof (subject)}" must be Token5e or Actor5e`
+              ui.notifications.error(mes)
+              jez.log(mes)
+              return (false)
+          }
+      }
+  }
+  else {                  // subject is not an object maybe it is 16 char string? 
+      //jez.log("subject is not an object maybe it is 16 char string?", subject)
+      if ((typeof (subject) === "string") && (subject.length === 16)) {
+          actor5e = jez.getTokenById(subject)?.actor// Maybe string is a token id?
+          if (actor5e) return (actor5e)             // Subject is a tokenID 
+          actor5e = canvas.tokens.placeables.find(ef => ef.data.actorId === subject).actor
+          if (actor5e) return (actor5e)             // Subject is an actorID embedded in a scene token 
+          actor5e = game.actors.get(subject)        // Maybe string is an actor id?
+          if (actor5e) return (actor5e)             // Subject is an actor ID 
+          mes = `Subject parm passed to ${FUNCNAME} looks like an id but does not map to a token or actor: ${subject}`
+          ui.notifications.error(mes)
+          jez.log(mes)
+          return (false)
+      }
+      else {                                      // Oh fudge, subject is something unrecognized
+          mes = `Subject parm passed to ${FUNCNAME} is not a Token5e, Actor5e, Token.id, or Actor.id: ${subject}`
+          ui.notifications.error(mes)
+          jez.log(mes)
+          return (false)
+      }
+  }
 }

@@ -103,8 +103,8 @@ async function doOnUse() {
     //-------------------------------------------------------------------------------------------------------------
     // Grab the data for the two effects to be paired
     //
-    await jez.wait(100)
-    pairEffects(aToken, "Concentrating", tToken, CONDITION)
+    await jez.wait(200)
+    jez.pairEffects(aToken, "Concentrating", tToken, CONDITION)
     /**************************************************************************************************************
      * Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to 
      * named effect on the pair of tokens supplied.  
@@ -112,7 +112,7 @@ async function doOnUse() {
      * token1 & token2 are Token5e objects
      * effectName1 & effectName2 are strings that name effects on their respective token actors.
      **************************************************************************************************************/
-    async function pairEffects(token1, effectName1, token2, effectName2) {
+    /*async function pairEffects(token1, effectName1, token2, effectName2) {
         await jez.wait(100)
         //---------------------------------------------------------------------------------------------------------
         // Make sure the macro that will be called later exists.  Throw an error and return if not
@@ -156,7 +156,7 @@ async function doOnUse() {
 
         }
         return(true)
-    }
+    }*/
     //-------------------------------------------------------------------------------------------------------------
     // Post Completion message
     //

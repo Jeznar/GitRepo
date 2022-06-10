@@ -11,12 +11,14 @@ jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 if (args[0] != "on") {  // Don't do anything if invoked by DAE during application
     let fetchedToken = canvas.tokens.placeables.find(ef => ef.id === args[1])
+    jez.log("fetchedToken", fetchedToken)
     if (fetchedToken) {
         let existingEffect = await fetchedToken.actor.effects.find(i => i.id === args[2]);
         if (existingEffect) await existingEffect.delete()
     }
     else {
         let fetchedActor = game.actors.get(args[1])
+        jez.log("fetchedActor", fetchedActor)
         if (fetchedActor) {
             let existingEffect = await fetchedActor.effects.find(i => i.id === args[2]);
             if (existingEffect) await existingEffect.delete()

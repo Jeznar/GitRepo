@@ -96,8 +96,10 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.10 **Remove Paired Effect** -- Utility macro pulled out of Arcane_Hand and setup as independent utility macro.
 
-
-
+Remove_Paired_Effect 7BJKpNufDB5XseeU hxjytmxgcskkc5dn
+                     7BJKpNufDB5XseeU hxjytmxgcskkc5dn
+                     
+(token).actor.id 7BJKpNufDB5XseeU
 
 
 
