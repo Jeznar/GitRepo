@@ -32,7 +32,6 @@ console.log(`Scene (${sceneName}), ID ${sceneID}`, game.scenes.viewed)
 let journalID = game.journal.contents[0]?.id
 let journalName = game.journal.contents[0]?.name
 console.log(`Journal 0 (${journalName}), ID ${journalID}`, game.journal.contents[0])
-
 //----------------------------------------------------------------------------------------
 // Get token / actor / item / journal etc by ID
 //
@@ -44,7 +43,7 @@ console.log('TokenDoc fetched by ID', fetchedTokenDoc)
 let fetchedToken    = canvas.tokens.placeables.find(ef => ef.id === tokenID)
 console.log('Token5e  fetched by ID', fetchedToken)
 let fetchedActor    = game.actors.get(actorID)
-console.log('Actor5E  fetched by ID', fetchedActor)
+console.log('Actor5E fetched by ID from sidebar', fetchedActor)
 let fetchedActorItem = sToken.actor.data.items.get(itemID)
 console.log('Item5E   fetched by ID', fetchedActorItem)
 let fetchedScene    = game.scenes.get(sceneID)
@@ -53,9 +52,16 @@ let fetchedJournal  = game.journal.get(journalID)
 console.log(`JournalEntry     by ID`, fetchedJournal)
 // Following line fetches a template from its ID
 //let fetchedTemplate = canvas.templates.objects.children.find(i => i.data._id === templateID);
-// following line fetches a tile from its ID
+// Following line fetches a tile from its ID
 //  let fetchedTile = await canvas.scene.tiles.get(tileId)
-
+//----------------------------------------------------------------------------------------
+// Get token / actor from an ID identifying an inscreen actor.  This is especially useful
+// to nab the data associated with an unlinked actor/token
+//
+let fetchedActor2 = canvas.tokens.placeables.find(ef => ef.data.actorId === args[1]).actor
+console.log('Actor5E fetched by ID from canvas', fetchedActor2)
+let fetchedToken2 = canvas.tokens.placeables.find(ef => ef.data.actorId === args[1])
+console.log('Token5E fetched by Actor ID from canvas', fetchedToken2)
 //----------------------------------------------------------------------------------------
 // Get token / actor / item / journal etc by Name
 //

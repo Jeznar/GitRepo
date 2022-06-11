@@ -98,6 +98,15 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.10 **[Phantasmal Killer](../Spells/4th_Level#phantasmal-killer)** -- Link concentrate and spell effect with [jez.pairEffects(...)](../jez-lib#pairEffectssubject1-effectName1-subject2-effectName2) so they both go away together.
 
+22.06.11 **Token/Actor Data from Actor** -- Learned how to obtain the token5e and actor5e data object from an actor id.  This enables finding the token associated with an actor. Following snippet has been added to Get_Entities.js and embedded here to improve retrieval. 
+
+~~~javascript
+let fetchedActor2 = canvas.tokens.placeables.find(ef => ef.data.actorId === args[1]).actor
+console.log('Actor5E fetched by ID from canvas', fetchedActor2)
+let fetchedToken2 = canvas.tokens.placeables.find(ef => ef.data.actorId === args[1])
+console.log('Token5E fetched by Actor ID from canvas', fetchedToken2)
+~~~
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
