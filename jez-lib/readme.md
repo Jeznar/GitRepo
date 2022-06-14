@@ -486,6 +486,36 @@ async function pickCheckCallBack(selection) { ... }
 
 ![pickFromListArray_example](images/pickCheckListArray.png)
 
+The return values from this function can be:
+
+* ***SelectionArray*** selected lines (strings) in an array if the **Ok** button is clicked.  Note: the array will be empty (and thus length zero) if nothing was selected.
+* ***null*** if the **Cancel** button is clicked
+* Simple termination of the function without calling call back if the **Close** button is clicked
+
+The following callback function is setup to process the return value possibilities. 
+
+~~~javascript
+function pickCheckCallBack(selection) {
+   msg = `pickCheckCallBack: ${selection.length} actor(s) selected in the dialog`
+   jez.log(msg)
+   //--------------------------------------------------------------------------------------------
+   // If cancel button was selected on the preceding dialog, null is returned ==> Terminate
+   //
+   if (selection === null) return;
+   //--------------------------------------------------------------------------------------------
+   // If nothing was selected (empty array), call preceding function and terminate this one
+   //
+   if (selection.length === 0) {
+       jez.log("No selection passed to pickCheckCallBack(selection), trying again.")
+       itemCallBack(itemSelected)		// itemSelected is a global that is passed to preceding func
+       return;
+   }
+   //--------------------------------------------------------------------------------------------
+   // Start doing actual things to advance the mission...
+   //
+   ...
+~~~
+
 [*Back to Functions list*](#functions-in-this-module)
 
 ---
@@ -512,12 +542,40 @@ const flavors = [
     `Smash the doll: causing it take ${numDice}d6 bludgeoning damage.`,
     `Rip the doll in half: ends spell and does ${numDice}d12 necrotic damage.`
 ]
-pickFromListArray(queryTitle, queryText, pickFlavorCallBack, flavors);
-
-async function pickFlavorCallBack(selection) { ... }
+pickFromListArray(queryTitle, queryText, itemCallBack, flavors);
 ~~~
 
 ![pickFromListArray_example](images/pickFromListArray_example.png)
+
+The return values from this function can be:
+
+* ***Line*** selected (string) in the dialog if the **Ok** button is clicked.  Note: the string will be empty (and thus falsey) if nothing was selected.
+* ***null*** if the **Cancel** button is clicked
+* Simple termination of the function without calling call back if the **Close** button is clicked
+
+The following callback function is setup to process the return value possibilities.
+
+~~~javascript
+function itemCallBack(itemSelected) {
+   msg = `itemCallBack: Item named "${itemSelected}" was selected in the dialog`
+   jez.log(msg)
+   //--------------------------------------------------------------------------------------------
+   // If cancel button was selected on the preceding dialog, null is returned ==> Terminate
+   //
+   if (itemSelected === null) return;
+   //--------------------------------------------------------------------------------------------
+   // If nothing was selected call preceding function and terminate this one
+   //
+   if (!itemSelected) {
+       jez.log("No selection passed to itemCallBack(itemSelected), trying again.")
+       typeCallBack(itemType);
+       return;
+   }
+   //--------------------------------------------------------------------------------------------
+   // Now, start doing actual things to advance the mission...
+   //
+   ...
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -554,6 +612,8 @@ jez.pickRadioListArray(queryTitle, queryText, pickFlavorCallBack, actorItems.sor
 ~~~
 
 ![pickRadioListArray_example](images/pickRadioListArray_example.png)
+
+Refer to [pickFromListArray(...)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions), the previous function, for an example of a call back function and explanation of return values, which are the same.
 
 [*Back to Functions list*](#functions-in-this-module)
 

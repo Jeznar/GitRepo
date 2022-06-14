@@ -70,18 +70,18 @@ class jez {
      ***************************************************************************************************/
     static async postMessage(msgParm) {
         const FUNCNAME = "postMessage(msgParm)";
-        jez.log(`-------------- Starting ${FUNCNAME} -----------`);
+        // jez.log(`-------------- Starting ${FUNCNAME} -----------`);
         let typeOfParm = typeof (msgParm)
         let chatCard = msgParm
         let speaker = null              // The speaking Token
         if (typeOfParm === "object") {
             if (msgParm?.token) {       // If a speaking token is defined it must be a Token5e
-                jez.log("msgParm.token?.constructor.name", msgParm.token?.constructor.name)
+                // jez.log("msgParm.token?.constructor.name", msgParm.token?.constructor.name)
                 if (msgParm.token?.constructor.name !== "Token5e") {
                     let msg = `Coding error. Speaking Token (${msgParm?.token?.name}) is a 
                                ${msgParm.token?.constructor.name} must be a Token5e`
                     ui.notifications.error(msg)
-                    jez.log(msg)
+                    // jez.log(msg)
                     return (null)
                 }
             }
@@ -94,7 +94,7 @@ class jez {
                 token: msgParm?.token || null       // Token5e that is speaking
             }
             speaker = CHAT.token
-            jez.log("speaker", speaker)
+            // jez.log("speaker", speaker)
             chatCard = `
             <div class="dnd5e chat-card item-card midi-qol-item-card">
                 <header class="card-header flexrow">
@@ -117,7 +117,7 @@ class jez {
 
         await jez.wait(100);
         await ui.chat.scrollBottom();
-        jez.log(`-------------- Finished ${FUNCNAME}-----------`);
+        // jez.log(`-------------- Finished ${FUNCNAME}-----------`);
         return;
     }
 
@@ -139,14 +139,14 @@ class jez {
      ***************************************************************************************************/
     static async addMessage(chatMessage, msgParm) {
         const FUNCNAME = "postChatMessage(chatMessage, msgParm)";
-        jez.log(`-------------- Starting ${FUNCNAME} -----------`);
+        // jez.log(`-------------- Starting ${FUNCNAME} -----------`);
         const allowedTags = ["saves", "attack", "damage", "hits", "other"]
         //-----------------------------------------------------------------------------------------------
         // chatMessage must be a ChatMessage object
         //
         if (chatMessage?.constructor.name !== "ChatMessage") {
             let errMsg = `Coding error. Chat message passed (${chatMessage}) is a ${chatMessage?.constructor.name}, must be ChatMessage.`
-            jez.log("--- ERROR ---", errMsg)
+            console.log("--- ERROR ---", errMsg)
             ui.notifications.error(errMsg)
             return (false)
         }
@@ -180,7 +180,7 @@ class jez {
             case "damage":
             case "other": chatTag += "-roll"; break;
         }
-        jez.log("chatTag", chatTag)
+        // jez.log("chatTag", chatTag)
         //-----------------------------------------------------------------------------------------------
         // Add our new text to the HTML using a RegEx which needs to be built
         //
@@ -193,7 +193,7 @@ class jez {
 
         await jez.wait(100);
         await ui.chat.scrollBottom();
-        jez.log(`-------------- Finished ${FUNCNAME}-----------`);
+        // jez.log(`-------------- Finished ${FUNCNAME}-----------`);
         return;
     }
     /***************************************************************************************************
@@ -204,10 +204,10 @@ class jez {
     static getRange(itemD, allowedUnits) {
         let range = itemD.data.range?.value;
         let unit = itemD.data.range?.units;
-        jez.log("range", range, "unit", unit);
+        // jez.log("range", range, "unit", unit);
         if (!allowedUnits.includes(unit)) {
             let msg = `Unit ${unit} not in allowed units`
-            jez.log(msg, allowedUnits);
+            // jez.log(msg, allowedUnits);
             ui.notifications.warn(msg);
             return (0);
         }
@@ -238,7 +238,7 @@ class jez {
         //
         if (distance > maxRange) {
             let msg = `jez.inRange: Distance between ${token1.name} and ${token2.name} is ${distance}`
-            jez.log(msg);
+            // jez.log(msg);
             return (false);
         }
         return (true);
@@ -276,13 +276,13 @@ class jez {
         if (sel?.constructor.name !== "Token5e") {
             let msg = `Coding error. Selection (${sel}) is a ${sel?.constructor.name} must be a Token5e`
             ui.notifications.error(msg)
-            jez.log(msg)
+            console.log(msg)
             return (null)
         }
         if (typeof (range) !== "number") {
             let msg = `Coding error. Range (${range}) is a ${typeof (range)} must be a number`
             ui.notifications.error(msg)
-            jez.log(msg)
+            console.log(msg)
             return (null)
         }
         //----------------------------------------------------------------------------------------------
@@ -389,7 +389,7 @@ class jez {
                     icon: '<i class="fas fa-times"></i>',
                     label: 'Cancel',
                     callback: async (html) => {
-                        jez.log('canceled')
+                        console.log('canceled')
                         pickCallBack(null)
                     },
                 },
@@ -409,17 +409,17 @@ class jez {
      ***************************************************************************************/
     static async pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions) {
         const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
-        jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
-            `queryTitle`, queryTitle,
-            `queryText`, queryText,
-            `pickCallBack`, pickCallBack,
-            `queryOptions`, queryOptions);
+        // jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
+        //     `queryTitle`, queryTitle,
+        //     `queryText`, queryText,
+        //     `pickCallBack`, pickCallBack,
+        //     `queryOptions`, queryOptions);
         let msg = ""
 
         if (typeof (pickCallBack) != "function") {
             msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
             ui.notifications.error(msg);
-            jez.log(msg);
+            console.log(msg);
             return
         }
 
@@ -427,7 +427,7 @@ class jez {
             msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
                but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             ui.notifications.error(msg);
-            jez.log(msg);
+            console.log(msg);
             return
         }
 
@@ -451,7 +451,7 @@ class jez {
                     label: 'OK',
                     callback: async (html) => {
                         const selectedOption = html.find('#selectedOption')[0].value
-                        jez.log('selected option', selectedOption)
+                        // jez.log('selected option', selectedOption)
                         pickCallBack(selectedOption)
                     },
                 },
@@ -459,7 +459,7 @@ class jez {
                     icon: '<i class="fas fa-times"></i>',
                     label: 'Cancel',
                     callback: async (html) => {
-                        jez.log('canceled')
+                        // jez.log('canceled')
                         pickCallBack(null)
                     },
                 },
@@ -467,7 +467,7 @@ class jez {
             default: 'cancel',
         }).render(true)
 
-        jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
+        // jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
         return;
     }
     /***************************************************************************************
@@ -494,14 +494,14 @@ class jez {
         if (typeof (pickCallBack) != "function") {
             msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
             ui.notifications.error(msg);
-            jez.log(msg);
+            console.log(msg);
             return
         }
         if (!queryTitle || !queryText || !queryOptions) {
             msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
            but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             ui.notifications.error(msg);
-            jez.log(msg);
+            console.log(msg);
             return
         }
         let template = `

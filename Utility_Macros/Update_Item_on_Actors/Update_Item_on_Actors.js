@@ -83,11 +83,11 @@ async function main() {
         jez.log(msg)
         let itemsFound = []
         //--------------------------------------------------------------------------------------------
-        // If cancel button was selected on the preceeding dialog, null is returned.
+        // If cancel button was selected on the preceding dialog, null is returned.
         //
         if (itemType === null) return; 
         //--------------------------------------------------------------------------------------------
-        // If nothing was selected call preceeding function and terminate this one
+        // If nothing was selected call preceding function and terminate this one
         //
         if (!itemType) {
             //jez.log("itemType",itemType)
@@ -120,15 +120,16 @@ async function main() {
             jez.log(msg)
             let actorFullWithItem = [];
             //--------------------------------------------------------------------------------------------
-            // If cancel button was selected on the preceeding dialog, null is returned.
+            // If cancel button was selected on the preceding dialog, null is returned, and this function
+            // terminates.
             //
             if (itemSelected === null) return;
             //--------------------------------------------------------------------------------------------
-            // If nothing was selected call preceeding function and terminate this one
+            // If nothing was selected call preceding function and terminate this one
             //
             if (!itemSelected) {
                 //jez.log("itemType", itemSelected)
-                jez.log("No selection passed to itemCallBack(${itemSelected}), trying again.")
+                jez.log("No selection passed to itemCallBack(itemSelected), trying again.")
                 typeCallBack(itemType);
                 return;
             }
@@ -152,17 +153,17 @@ async function main() {
              * pickCheckCallBack
              *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
             async function pickCheckCallBack(selection) {
-                msg = `pickCheckCallBack: ${selection.length} actors selected in the dialog`
+                msg = `pickCheckCallBack: ${selection.length} actor(s) selected in the dialog`
                 jez.log(msg)
                 let actorsIdsToUpdate = [];
                 let selectionString = ""
                 //--------------------------------------------------------------------------------------------
-                // If cancel button was selected on the preceeding dialog, null is returned.
+                // If cancel button was selected on the preceding dialog, null is returned.
                 //
                 //jez.log("selection", selection)
                 if (selection === null) return;
                 //--------------------------------------------------------------------------------------------
-                // If nothing was selected call preceeding function and terminate this one
+                // If nothing was selected call preceding function and terminate this one
                 //
                 if (selection.length === 0) {
                     //jez.log("itemType", selection)
@@ -217,7 +218,7 @@ async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
     // Get Actor
     //
     let tActor = game.actors.get(targetActorId);
-    jez.log(`Push_Update: Processing ${tActor.data.token.name}`,tActor) 
+    jez.log(`Push_Update: Processing ${tActor.data.token.name}`) 
     //----------------------------------------------------------------------------------------------
     // Get Items
     //
@@ -257,12 +258,13 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         //
         // The magic phrase must be found and retained in the updated description...oh boy!
         //
+
         // Reg Ex string used by the DnD 5e Helpers module: 
         //   const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) ${hitPointsString}`);
         //
         if (itemOrigin.name === "Regeneration" || itemOrigin.name === "Self-Repair") {
             msg = `Special case item: ${itemOrigin.name}`
-            jez.log(msg, itemOrigin)
+            jez.log(msg)
             ui.notifications.info(msg)
             const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) hit points`);
             let originMagic = itemOrigin.data.data.description.value.match(regenRegExp);
