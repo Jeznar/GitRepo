@@ -169,7 +169,7 @@ class jez {
             }
             chatTag = CHAT.tag
         }
-        //jez.log("chatMsg", chatMsg)
+        // jez.log("chatMsg", chatMsg)
         //-----------------------------------------------------------------------------------------------
         // Put correct suffix on the chatTag
         //
@@ -299,12 +299,12 @@ class jez {
                     // jez.log(`  ${token.name} is too far away`);
                     if (toFarCnt++) { toFar += ", " };
                     toFar += token.name;
-                    //jez.log(`  To Far #${toFarCnt} ${token.name} is ${d} feet. To Fars: ${toFar}`);
+                    // jez.log(`  To Far #${toFarCnt} ${token.name} is ${d} feet. To Fars: ${toFar}`);
                 } else {
                     // jez.log(`  ${token.name} is in range`);
                     inRangeTokens.push(token);
                     inRangeCnt++;
-                    //jez.log(`  In Range #${inRangeCnt} ${token.name} is ${d} feet. In Ranges:`, inRangeTokens);
+                    // jez.log(`  In Range #${inRangeCnt} ${token.name} is ${d} feet. In Ranges:`, inRangeTokens);
                 }
             }
         });
@@ -328,23 +328,23 @@ class jez {
      ***************************************************************************************/
     static async pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions) {
         const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
-        jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
-            `queryTitle`, queryTitle,
-            `queryText`, queryText,
-            `pickCallBack`, pickCallBack,
-            `queryOptions`, queryOptions);
+        // jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
+        //     `queryTitle`, queryTitle,
+        //     `queryText`, queryText,
+        //     `pickCallBack`, pickCallBack,
+        //     `queryOptions`, queryOptions);
         let msg = ""
         if (typeof (pickCallBack) != "function") {
             msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
             ui.notifications.error(msg);
-            console.log(msg);
+            // jez.log(msg);
             return
         }
         if (!queryTitle || !queryText || !queryOptions) {
             msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
    but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             ui.notifications.error(msg);
-            console.log(msg);
+            // jez.log(msg);
             return
         }
         let template = `
@@ -357,7 +357,7 @@ class jez {
 `   // Back tick on its on line to make the console output better formatted
         }
         template += `</div></div>`
-        jez.log(template)
+        // jez.log(template)
 
         let selections = []
         new Dialog({
@@ -368,10 +368,10 @@ class jez {
                     icon: '<i class="fas fa-check"></i>',
                     label: 'Selected Only',
                     callback: async (html) => {
-                        jez.log("html contents", html)
+                        // jez.log("html contents", html)
 
                         html.find("[name=selectedLine]:checked").each(function () {
-                            jez.log($(this).val());
+                            //jez.log($(this).val());
                             selections.push($(this).val())
                         })
                         pickCallBack(selections)
@@ -381,7 +381,7 @@ class jez {
                     icon: '<i class="fas fa-check-double"></i>',
                     label: 'All Displayed',
                     callback: async (html) => {
-                        jez.log("Selected All", queryOptions)
+                        //jez.log("Selected All", queryOptions)
                         pickCallBack(queryOptions)
                     },
                 },
@@ -396,7 +396,7 @@ class jez {
             },
             default: 'cancel',
         }).render(true)
-        jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
+        // jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
         return;
     }
     /***************************************************************************************
@@ -485,23 +485,23 @@ class jez {
      ***************************************************************************************/
     static async pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions) {
         const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
-        jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
-            `queryTitle`, queryTitle,
-            `queryText`, queryText,
-            `pickCallBack`, pickCallBack,
-            `queryOptions`, queryOptions);
+        // jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
+            // `queryTitle`, queryTitle,
+            // `queryText`, queryText,
+            // `pickCallBack`, pickCallBack,
+            // `queryOptions`, queryOptions);
         let msg = ""
         if (typeof (pickCallBack) != "function") {
             msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
             ui.notifications.error(msg);
-            console.log(msg);
+            jez.log(msg);
             return
         }
         if (!queryTitle || !queryText || !queryOptions) {
             msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
            but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             ui.notifications.error(msg);
-            console.log(msg);
+            jez.log(msg);
             return
         }
         let template = `
@@ -514,7 +514,7 @@ class jez {
     `   // Back tick on its on line to make the console output better formatted
         }
         template += `</div></div>`
-        jez.log(template)
+        // jez.log(template)
 
         new Dialog({
             title: queryTitle,
@@ -524,10 +524,10 @@ class jez {
                     icon: '<i class="fas fa-check"></i>',
                     label: 'OK',
                     callback: async (html) => {
-                        jez.log("html contents", html)
+                        // jez.log("html contents", html)
                         const SELECTED_OPTION = html.find("[name=selectedLine]:checked").val();
-                        jez.log("Radio Button Selection", SELECTED_OPTION)
-                        jez.log('selected option', SELECTED_OPTION)
+                        // jez.log("Radio Button Selection", SELECTED_OPTION)
+                        // jez.log('selected option', SELECTED_OPTION)
                         pickCallBack(SELECTED_OPTION)
                     },
                 },
@@ -535,14 +535,14 @@ class jez {
                     icon: '<i class="fas fa-times"></i>',
                     label: 'Cancel',
                     callback: async (html) => {
-                        jez.log('canceled')
+                        // jez.log('canceled')
                         pickCallBack(null)
                     },
                 },
             },
             default: 'cancel',
         }).render(true)
-        jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
+        // jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
         return;
     }
     /***************************************************************************************************
@@ -579,11 +579,11 @@ class jez {
         let token1Size = token1SizeObject.value;  // Returns 0 on failure to match size string
         if (!token1Size) {
             let message = `Size of ${token1.name}, ${token1SizeString} failed to parse.<br>`;
-            jez.console.log(message);
+            jez.// jez.log(message);
             ui.notifications.error(message);
             return (false);
         }
-        jez.log(` Token1: ${token1SizeString} ${token1Size}`)
+        // jez.log(` Token1: ${token1SizeString} ${token1Size}`)
         return (token1SizeObject)
     }
     /*************************************************************************************
@@ -612,7 +612,7 @@ class jez {
         if ((typeof (tokenId) != "string") || (tokenId.length !== 16)) {
             let msg = `Parameter passed to jez.getTokenById(tokenId) is not an ID: ${tokenId}`
             ui.notifications.error(msg)
-            console.log(msg)
+            // jez.log(msg)
             return (false)
         }
         return (canvas.tokens.placeables.find(ef => ef.id === tokenId));
@@ -628,14 +628,14 @@ class jez {
             else {
                 let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
                 ui.notifications.error(msg)
-                console.log(msg)
+                // jez.log(msg)
                 return (false)
             }
         } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
         else {
             let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
             ui.notifications.error(msg)
-            console.log(msg)
+            // jez.log(msg)
             return (false)
         }
         return (actor5e.data.data.attributes.spellcasting)
@@ -651,14 +651,14 @@ class jez {
                 else {
                     let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
                     ui.notifications.error(msg)
-                    console.log(msg)
+                    // jez.log(msg)
                     return (false)
                 }
             } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
             else {
                 let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
                 ui.notifications.error(msg)
-                console.log(msg)
+                // jez.log(msg)
                 return (false)
             }
             return (actor5e.data.data.attributes.spelldc)
@@ -831,11 +831,11 @@ class jez {
         //
         while (itemFound = actor5e.items.find(item => item.data.name === itemName &&
             item.type === type)) {
-            jez.log("itemFound", itemFound)
+            // jez.log("itemFound", itemFound)
             await itemFound.delete();
             message = `Deleted ${type}: "${itemName}"`      // Set notification message
             ui.notifications.info(message);
-            jez.log(message);
+            // jez.log(message);
         }
     }
     /***************************************************************************************************
@@ -861,7 +861,7 @@ class jez {
       ***************************************************************************************************/
      static async familiarNameGet(actor5e) {
          let currentName = await DAE.getFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME);
-         console.log("currentName", currentName)
+         // jez.log("currentName", currentName)
          if (!currentName) currentName = ""
          return (currentName)
      }
@@ -915,7 +915,7 @@ class jez {
         color = color || jez.getRandomRuneColor()   // If color not provided get a random one
         scale = scale || 1.2                        // If scale not provided use 1.0
         opacity = opacity || 1.0                    // If opacity not provided use 1.0
-        //jez.log("runRuneVFX(target, school, color, scale, opacity)","target",target,"school",school,"scale",scale,"opacity",opacity)
+        // jez.log("runRuneVFX(target, school, color, scale, opacity)","target",target,"school",school,"scale",scale,"opacity",opacity)
         if (Array.isArray(target)) {                // If function called with array, do recursive calls
             for (let i = 0; i < target.length; i++) jez.runRuneVFX(target[i], school, color, scale, opacity);
             return (true)                           // Stop this invocation after recursive calls
@@ -1131,7 +1131,7 @@ class jez {
         if (objType === "TokenDocument5e")   // Maybe it is a TokenDocument5e
             subject = entity._actor         // point subject at the actor5e
         if (subject === null) return (false) // garbage in, return false
-        //jez.log(`------ Get Race Call ------`, `Object '${objType}'`, entity, `Subject ${subject.name}`, 
+        // jez.log(`------ Get Race Call ------`, `Object '${objType}'`, entity, `Subject ${subject.name}`, 
         //subject, `subject.data.type`, subject.data.type)
         let isNPC, targetType;
         if (subject.data.type === "npc") isNPC = true; else isNPC = false;
@@ -1261,7 +1261,7 @@ class jez {
         let effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
         if (!effectData1) {
             msg = `Sadly "${effectName1}" effect not found on ${actor1.name}.  Effects not paired.`
-            jez.log(msg)
+            // jez.log(msg)
             ui.notifications.warn(msg)
             return (false)
         }
@@ -1271,7 +1271,7 @@ class jez {
         let effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
         if (!effectData2) {
             msg = `Sadly "${effectName2}" effect not found on ${actor2.name}.  Effects not paired.`
-            jez.log(msg)
+            // jez.log(msg)
             ui.notifications.warn(msg)
             return (false)
         }
@@ -1317,13 +1317,13 @@ class jez {
                 else {
                     mes = `Object passed to ${FUNCNAME} is type "${typeof (subject)}" must be Token5e or Actor5e`
                     ui.notifications.error(mes)
-                    jez.log(mes)
+                    // jez.log(mes)
                     return (false)
                 }
             }
         }
         else {                  // subject is not an object maybe it is 16 char string? 
-            //jez.log("subject is not an object maybe it is 16 char string?", subject)
+            // jez.log("subject is not an object maybe it is 16 char string?", subject)
             if ((typeof (subject) === "string") && (subject.length === 16)) {
                 actor5e = jez.getTokenById(subject)?.actor// Maybe string is a token id?
                 if (actor5e) return (actor5e)             // Subject is a token ID 
@@ -1333,13 +1333,13 @@ class jez {
                 if (actor5e) return (actor5e)             // Subject is an actor ID 
                 mes = `Subject parm passed to ${FUNCNAME} looks like an id but does not map to a token or actor: ${subject}`
                 ui.notifications.error(mes)
-                jez.log(mes)
+                // jez.log(mes)
                 return (false)
             }
             else {                                      // Oh fudge, subject is something unrecognized
                 mes = `Subject parm passed to ${FUNCNAME} is not a Token5e, Actor5e, Token.id, or Actor.id: ${subject}`
                 ui.notifications.error(mes)
-                jez.log(mes)
+                // jez.log(mes)
                 return (false)
             }
         }
@@ -1358,8 +1358,8 @@ class jez {
         let mes = ""
         let effectUuid = ""
         const FUNCNAME = "getEffectDataObj(effect, subject)"
-        //jez.log(`-------------- Starting --- ${FUNCNAME} -----------------`);
-        //jez.log(`PARAMATERS`, "effect", effect, "subject", subject )
+        // jez.log(`-------------- Starting --- ${FUNCNAME} -----------------`);
+        // jez.log(`PARAMATERS`, "effect", effect, "subject", subject )
         //----------------------------------------------------------------------------------------------
         // If we were not given a "subject" parameter, the effect must be a UUID, validate this.
         //
@@ -1384,7 +1384,7 @@ class jez {
                     ui.notifications.error(mes); jez.log(mes); return (false)
                 }
                 effectUuid = effect
-                //jez.log(`effectUuid directly provided`, effectUuid)
+                // jez.log(`effectUuid directly provided`, effectUuid)
             }
             else {
                 mes = `BAD NEWS: effect is not a valid UUID and no subject provided.`
@@ -1395,7 +1395,7 @@ class jez {
             //------------------------------------------------------------------------------------------
             // Obtain an Actor5e data object from subject
             //
-            //jez.log(`Calling jez.getActor5eDataObj(subject) with`, subject)
+            // jez.log(`Calling jez.getActor5eDataObj(subject) with`, subject)
             let actor5e = jez.getActor5eDataObj(subject)
             if (!actor5e) {
                 mes = `BAD NEWS: actor data object not found for subject parm in ${FUNCNAME}`
@@ -1412,12 +1412,12 @@ class jez {
             // Assemble a UUID (which may have a name string embedded in place of an actual id)
             //
             effectUuid = `Actor.${actor5e.id}.ActiveEffect.${effect}`
-            jez.log(`effectUuid from data pair`, effectUuid)
+            // jez.log(`effectUuid from data pair`, effectUuid)
         }
         //----------------------------------------------------------------------------------------------
         // Now that things are validated, fetch the actor's data
         //
-        jez.log(`effectUuid`, effectUuid)
+        // jez.log(`effectUuid`, effectUuid)
         let tokens = effectUuid.split(".")
         const ACTOR_ID = tokens[1]
         let actor5e = jez.getActor5eDataObj(ACTOR_ID)
@@ -1425,19 +1425,19 @@ class jez {
             mes = `BAD NEWS: ${FUNCNAME} could not find actor from ID ${ACTOR_ID}`
             ui.notifications.error(mes); jez.log(mes); return (false)
         }
-        //jez.log(`Actor5e ${actor5e.name}`, actor5e)
+        // jez.log(`Actor5e ${actor5e.name}`, actor5e)
         //----------------------------------------------------------------------------------------------
         // 
         //
-        //jez.log(`Seeking effect "${tokens[3]}" within`, actor5e.effects)
+        // jez.log(`Seeking effect "${tokens[3]}" within`, actor5e.effects)
         let effectData = await actor5e.effects.find(i => i.id === tokens[3] || i.data.label === tokens[3]);
         //let effectData = await actor5e.effects.find(i => i.name === tokens[3]);
         if (!effectData) {
             mes = `BAD NEWS: ${FUNCNAME} could not find "${tokens[3]}" on ${actor5e.name}`
             ui.notifications.error(mes); jez.log(mes); return (false)
         }
-        jez.log(`Effect ${effectData.name}`, effectData)
-        //jez.log(`-------------- Finished --- ${FUNCNAME} -----------------`);
+        // jez.log(`Effect ${effectData.name}`, effectData)
+        // jez.log(`-------------- Finished --- ${FUNCNAME} -----------------`);
         return (effectData)
     }
 

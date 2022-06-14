@@ -48,6 +48,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
 async function preCheck() {
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
+        ui.notifications.warn(msg)
         postResults(msg);
         return (false);
     }

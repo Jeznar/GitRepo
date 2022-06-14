@@ -29,6 +29,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Share Item Within Scene](#share-item-within-scene)** Adds/Updates/Deletes an item from a token to other tokens in the same scene.
 * **[Swap Hidden Tokens](#swap-hidden-tokens)** swaps the visibility state of all or selected npc tokens.
 * **[Swap Map](#swap-map)** swaps the current background image for the next or base. A naming convention must be followed.
+* **[Update Item on Actors](#update-item-on-actors)** Updates sidebar and selected tokens to match a reference item
 * **[World Macros](world-macros)** Special world macros like: BubblesForAll
 
 ## Notes on Functions
@@ -355,6 +356,37 @@ File_Name.<SeqNum>.<Extension>
 The file name can be whatever, though, it must be a constant across the set of files used by this macro.  It **must** be followed by a period (.) that delimits the next element. The **SeqNum** (sequence number) is an integer, quite likely single digit, but I know of no limit other than patience of the user.  After the SeqNum is another period (.) that marks the beginning of the file **Extension** (e.g. webp, jpeg, png).
 
 A base image is assumed to exist with SeqNum zero (0) or one (1).  If both exist we are clearly dealing with a programmer at the keyboard and zero will be the starting point.
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Update Item on Actors
+
+This is intended to be run from the Macro hot-bar and used by the GM to update items on various actors in the actor's directory (not on scenes).  It is a multi-step beastie that goes through the following major steps:
+
+1. Make sure exactly one token is selected (exit if not)
+2. Read through all the items on a token and then display a dialog asking the GM to choose from one of the types of items on that character.  If the GM clicks **Ok** without making a selection, display the dialog again.  If the GM clicks **Cancel** or **Close** terminate.
+3. Read through all the items on the token of the selected type and display a dialog asking for a selection. If the GM clicks **Ok** without making a selection, display the dialog again.  If the GM clicks **Cancel** or **Close** terminate.
+4. Read through all of the actors in the actors directory (sidebar) finding all that have an item with the name and type selected in previous dialogs. Post a dialog showing all the actors found and asking for some or all of them to be selected in a click box dialog.  If none selected and **Selected Only** is clicked, redisplay the dialog. If the GM clicks **Cancel** or **Close** terminate.  Otherwise, proceed with the selected actor(s).
+5. Next, update the sidebar copy (if it doesn't exist, exit with an error message) so that (1) Item Description, (2) Item Macro, (3) Auto Animations are updated on the sidebar to match the reference item. 
+6. Step through each selected actor updating their item for those same three fields, respecting a couple special cases listed below. 
+
+Following is a recording on this macro in use to update *Regeneration* on three actors.  This version of regeneration exercises both special cases with *%TOKENNAME%* and hit points per turn in use.
+
+![Update_Item_on_Actors.gif](Update_Item_on_Actors/Update_Item_on_Actors.gif)
+
+#### Special Case: %TOKENNAME%
+
+The string `%TOKENNAME%` is given special treatment when found in the description data.  The special string is replaced by the name of the token possessing the item in question.  
+
+The idea is that `%TOKENNAME%` can be used within the *master* item (on the actor starting this whole thing) to create a bit more flexibility in wording, i.e. the creature's token name will be substituted in where a more stilted generic phrasing was previously used. 
+
+#### Special Case: Regeneration & Self-Repair Items
+
+Items with the names `Regeneration` or `Self-Repair` receive special treatment because of the *magic phrase* used by the **DnD 5e Helpers module** to implement automatic self healing.  I'm not crazy about this, but for now, I am using it and have bent this macro to accommodate it, in fact require it for those two very specific items. 
+
+The **DnD 5e Helpers module** looks for a string that looks like "X hit points" where X can be a static value or a dice formula, or so the author claims.  In reality the RegEx he uses allows X too basically be an integer or a die expression of the form XdY where X is any number of digits and Y is 1 to 9 followed by any number of digits.  Notice that no + or - is included, so rolling dice and adding a modifier is unsupported.
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
