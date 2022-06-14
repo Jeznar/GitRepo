@@ -370,7 +370,13 @@ This is intended to be run from the Macro hot-bar and used by the GM to update i
 3. Read through all the items on the token of the selected type and display a dialog asking for a selection. If the GM clicks **Ok** without making a selection, display the dialog again.  If the GM clicks **Cancel** or **Close** terminate.
 4. Read through all of the actors in the actors directory (sidebar) finding all that have an item with the name and type selected in previous dialogs. Post a dialog showing all the actors found and asking for some or all of them to be selected in a click box dialog.  If none selected and **Selected Only** is clicked, redisplay the dialog. If the GM clicks **Cancel** or **Close** terminate.  Otherwise, proceed with the selected actor(s).
 5. Next, update the sidebar copy (if it doesn't exist, exit with an error message) so that (1) Item Description, (2) Item Macro, (3) Auto Animations are updated on the sidebar to match the reference item. 
-6. Step through each selected actor updating their item for those same three fields, respecting a couple special cases listed below. 
+6. Step through each selected actor updating their item for those same three fields, respecting a couple special cases listed below.
+
+To recap, this macro updates select fields of an item on actors in the actors directory (sidebar) and a reference copy of the item in the items directory (sidebar).  It is not for creating new items on actors or populating empty items, just updating, my most common maintenance activity.
+
+* **Item Description** (Substitute token name for %TOKENNAME% magic phrase and handle Regeneration special case)
+* **Item Macro** (replace the contents of the ItemMacro, if any)
+* **Automated Animations** settings
 
 Following is a recording on this macro in use to update *Regeneration* on three actors.  This version of regeneration exercises both special cases with *%TOKENNAME%* and hit points per turn in use.
 
