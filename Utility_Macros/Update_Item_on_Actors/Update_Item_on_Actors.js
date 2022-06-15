@@ -190,7 +190,9 @@ async function main() {
                 // Update item in side bar, by calling a macro from this macro
                 //
                 // jez.log(`Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)`, "sActor.name", sActor.name,"itemSelected", itemSelected, "itemType", itemType)
-                if (!await Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)) return(false)
+                // if (!await Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)) return(false)
+                if (!await Update_Item_In_Sidebar(sToken, itemSelected, itemType)) return(false)
+
                 //----------------------------------------------------------------------------------------------
                 // Update the selected actor's item
                 //
@@ -205,6 +207,7 @@ async function main() {
  * 
  * Called by main function in a loop to update all actors chosen by the user.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+// async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
 async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
     const FUNCNAME = "Push_Update(targetActorId, nameOfItem, typeOfItem)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"targetActorId",targetActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
@@ -316,18 +319,20 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Update the item in the Item directory, sidebar.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-async function Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem) {
-    const FUNCNAME = "Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem)";
+// async function Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem) {
+async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
+    const FUNCNAME = "Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"originActorId",originActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
     //----------------------------------------------------------------------------------------------
     // Get Actor data for provided ID
     //
-    let originActor = game.actors.get(originActorId);
+    // let originActor = game.actors.get(originActorId);
     // jez.log("originActor", originActor)
     //----------------------------------------------------------------------------------------------
     // Get Item data for provided name within the actor data, this is the "master" item
     //
-    let itemOrigin = originActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
+    // let itemOrigin = originActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
+    let itemOrigin = tokenD.actor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     // jez.log("itemOrigin", itemOrigin, "itemOrigin.name", itemOrigin.name, "itemOrigin.id", itemOrigin.id);
     //----------------------------------------------------------------------------------------------
     // Get Item data from item in the sidebar
@@ -340,10 +345,12 @@ async function Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem) {
         ui.notifications.warn(msg)
         return(false)
     }
+    // jez.log('Sidebar Item', itemInSidebar)
     //----------------------------------------------------------------------------------------------
     // Assemble the update object we need
     //
     let updateSet = Create_Update_Object(itemOrigin, itemInSidebar);
+    // jez.log('Sidebar updates', updateSet)
     //----------------------------------------------------------------------------------------------
     // Update the item in the sidebar with the item from the origin actor
     //
