@@ -123,6 +123,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.15 **[Update Item on Actors](../Utility_Macros/#update-item-on-actors)** Macro created to update sidebar and selected tokens to match a reference item
 
+22.06.15 **Wail** fixed to drain temp hp if present and include that info in the summary.
 
 [Link back to my Documentation Listing](README.md) 
 

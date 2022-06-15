@@ -1,9 +1,9 @@
-const MACRONAME = "Wail.0.1"
+const MACRONAME = "Wail.0.2.js"
 console.log(MACRONAME)
 /*****************************************************************************************
  * Implment Banshee Wail
  * 
- *   As an action, release a mournful wail, provided the actor isn’t in sunlight.
+ *   As an action, release a mournful wail, provided the actor isn't in sunlight.
  *   This wail has no effect on constructs and undead.
  *   All other creatures within 30 feet that can hear her must make a Constitution saving 
  *   throw. On a failure, a creature drops to 0 hit points. On a success, a creature takes 
@@ -12,7 +12,8 @@ console.log(MACRONAME)
  * The "can hear" portion is not implemented as I have no consistency or interest in 
  * placing walls that block sound or tracking deafness.
  * 
- * 01/01/21 0.1 Creation of Macro
+ * 01/01/22 0.1 Creation of Macro
+ * 06/15/22 0.2 Change to make a faied save wipe out temp HP too.
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim off the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -34,23 +35,17 @@ const VFX_INTRO = "modules/jb2a_patreon/Library/Generic/Template/Circle/VortexIn
 const VFX_OUTRO = "modules/jb2a_patreon/Library/Generic/Template/Circle/VortexOutro_01_Regular_Blue_600x600.webm"
 const VFX_OPACITY = 0.8;
 const VFX_SCALE = 2.25;
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 jez.log("")
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function doOnUse() {
@@ -151,7 +146,7 @@ async function doOnUse() {
         jez.log(` ${i + 1}) ${failSaves[i].name}`, failSaves[i])
         damDone = await applyDamage(failSaves[i], 99999)
         jez.log(`  ${damDone} Damage Done <==================================`)
-        damTaken += `<b>${failSaves[i].name}</b> took ${damDone} damage<br>`
+        // damTaken += `<b>${failSaves[i].name}</b> took ${damDone}<br>`
     }
     //---------------------------------------------------------------------------------------------
     // Process Tokens that made Saves. Apply the prescribed damage.
@@ -163,21 +158,26 @@ async function doOnUse() {
         jez.log(` ${i + 1}) ${madeSaves[i].name}`, madeSaves[i])
         damDone = await applyDamage(madeSaves[i],damageRoll.total)
         jez.log(`  ${damDone} Damage Done <==================================`)
-        damTaken += `<b>${madeSaves[i].name}</b> took ${damDone}<br>`
+        // damTaken += `<b>${madeSaves[i].name}</b> took ${damDone}<br>`
     }
     async function applyDamage(token1, amount) {
+        jez.log('HP', token1.actor.data.data.attributes.hp)
         let hpVal = token1.actor.data.data.attributes.hp.value;
-        let damageDone = Math.min(hpVal, amount)
+        let hpTmp = token1.actor.data.data.attributes.hp.temp;
+        let damageDone = Math.min(hpVal+hpTmp, amount)
         let damageRollObj = new Roll(`${damageDone}`).evaluate({ async: false });
         jez.log(`damageRollObj`, damageRollObj);
         await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageDone, 
             DAMAGE_TYPE,[token1], damageRollObj,
             {
-                flavor: `(${CONFIG.DND5E.healingTypes[DAMAGE_TYPE]})`,
-                itemCardId: null,
+                flavor: `Banshee Wail`,
+                itemCardId: "new",
                 useOther: false
             }
         );
+        damTaken += `<b>${token1.name}</b> took ${damageDone}`
+        if (hpTmp) damTaken += `, had ${hpTmp} tmp<br>`
+        else damTaken += `<br>`
         return(damageDone)
     }
     //---------------------------------------------------------------------------------------------

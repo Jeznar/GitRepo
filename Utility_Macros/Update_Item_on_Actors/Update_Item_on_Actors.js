@@ -11,8 +11,8 @@ const MACRONAME = "Update_Item_on_Actors.js"
  * 01/30/22 0.3 Add Radio Button possibility and change calls to jez-lib funcs
  *****************************************************************************/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
- jez.log(`============== Starting === ${MACRONAME} =================`);
- for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+console.log(`============== Starting === ${MACRONAME} =================`);
+for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
@@ -26,7 +26,7 @@ let item = ""
 // Run the main procedures, choosing based on how the macro was invoked
 //
 main();
-jez.log(`============== Finishing === ${MACRONAME} =================`);
+// jez.log(`============== Finishing === ${MACRONAME} =================`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -37,7 +37,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
 async function preCheck() {
     if (canvas.tokens.controlled.length !== 1) {
         msg = `Must select one token to be used to find the item that will be searched for.  Selected ${canvas.tokens.controlled.length}`
-        jez.log(msg)
+        console.log(msg)
         ui.notifications.warn(msg)
         jez.postMessage({
             color: jez.randomDarkColor(), fSize: 14, icon: "Icons_JGB/Misc/Jez.png",
@@ -55,17 +55,17 @@ async function main() {
     // Setup variables for main function & children
     //
     let sToken = canvas.tokens.controlled[0]
-    //jez.log(`Source Token ${sToken.name}`, sToken);
+    // jez.log(`Source Token ${sToken.name}`, sToken);
     let sActor = sToken.actor
     let typesFound = []
     //--------------------------------------------------------------------------------------------
     // Read through all of the targets items to find all of the types represented
     //
     for (let i = 0; i < sActor.items.contents.length; i++) {
-        //jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
+        // jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
         if (!typesFound.includes(sActor.items.contents[i].data.type)) typesFound.push(sActor.items.contents[i].data.type)
     }
-    //jez.log(`Found ${typesFound.length} types}`, typesFound.sort())
+    // jez.log(`Found ${typesFound.length} types}`, typesFound.sort())
     //--------------------------------------------------------------------------------------------
     // Pop a dialog to select the type of thing to be operated on
     //
@@ -80,7 +80,7 @@ async function main() {
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
     async function typeCallBack(itemType) {
         msg = `typeCallBack: Type "${itemType}" was selected in the dialog`
-        jez.log(msg)
+        console.log(msg)
         let itemsFound = []
         //--------------------------------------------------------------------------------------------
         // If cancel button was selected on the preceding dialog, null is returned.
@@ -90,8 +90,8 @@ async function main() {
         // If nothing was selected call preceding function and terminate this one
         //
         if (!itemType) {
-            //jez.log("itemType",itemType)
-            jez.log("No selection passed to typeCallBack(itemType), trying again.")
+            // jez.log("itemType",itemType)
+            console.log("No selection passed to typeCallBack(itemType), trying again.")
             main();
             return;
         }
@@ -99,10 +99,10 @@ async function main() {
         // Find all the item of type "itemType"
         //
         for (let i = 0; i < sActor.items.contents.length; i++) {
-            //jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
+            // jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
             if (sActor.items.contents[i].data.type === itemType) itemsFound.push(sActor.items.contents[i].data.name)
         }
-        //jez.log(`Found ${itemsFound.length} ${itemType}(s)`, itemsFound.sort())
+        // jez.log(`Found ${itemsFound.length} ${itemType}(s)`, itemsFound.sort())
         //--------------------------------------------------------------------------------------------
         // From the Items found, ask which item should trigger opening a sheet.
         //
@@ -117,19 +117,17 @@ async function main() {
          *********1*********2*********3*********4*********5*********6*********7*********8*********9*****/
         function itemCallBack(itemSelected) {
             msg = `itemCallBack: Item named "${itemSelected}" was selected in the dialog`
-            jez.log(msg)
+            console.log(msg)
             let actorFullWithItem = [];
             //--------------------------------------------------------------------------------------------
-            // If cancel button was selected on the preceding dialog, null is returned, and this function
-            // terminates.
+            // If cancel button was selected on the preceding dialog, null is returned ==> Terminate
             //
             if (itemSelected === null) return;
             //--------------------------------------------------------------------------------------------
             // If nothing was selected call preceding function and terminate this one
             //
             if (!itemSelected) {
-                //jez.log("itemType", itemSelected)
-                jez.log("No selection passed to itemCallBack(itemSelected), trying again.")
+                console.log("No selection passed to itemCallBack(itemSelected), trying again.")
                 typeCallBack(itemType);
                 return;
             }
@@ -148,27 +146,25 @@ async function main() {
             const Q_TEXT = `Choose the actor(s) to have their ${itemSelected} of type ${itemType} updated to 
             that held by ${sToken.name}`
             jez.pickCheckListArray(Q_TITLE, Q_TEXT, pickCheckCallBack, actorFullWithItem);
-            //jez.log(`Ending ${MACRONAME}`);
+            // jez.log(`Ending ${MACRONAME}`);
             /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
              * pickCheckCallBack
              *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
             async function pickCheckCallBack(selection) {
                 msg = `pickCheckCallBack: ${selection.length} actor(s) selected in the dialog`
-                jez.log(msg)
+                console.log(msg)
                 let actorsIdsToUpdate = [];
                 let selectionString = ""
                 //--------------------------------------------------------------------------------------------
                 // If cancel button was selected on the preceding dialog, null is returned.
                 //
-                //jez.log("selection", selection)
                 if (selection === null) return;
                 //--------------------------------------------------------------------------------------------
-                // If nothing was selected call preceding function and terminate this one
+                // If nothing was selected (empty array), call preceding function and terminate this one
                 //
                 if (selection.length === 0) {
-                    //jez.log("itemType", selection)
-                    jez.log("No selection passed to pickCheckCallBack(selection), trying again.")
-                    itemCallBack(itemSelected)
+                    console.log("No selection passed to pickCheckCallBack(selection), trying again.")
+                    itemCallBack(itemSelected)  // itemSelected is a global that is passed to preceding func
                     return;
                 }
                 //--------------------------------------------------------------------------------------------
@@ -182,7 +178,7 @@ async function main() {
                 // Build an array of the actor IDs that might be updated
                 // Selection lines are of this form: Lecherous Meat Bag, Medium (eYstNJefUUgrHk8Q)
                 //
-                //jez.log('selection', selection)
+                // jez.log('selection', selection)
                 for (let i = 0; i < selection.length; i++) {
                     // jez.log(`${i + 1} ${selection[i]}`)
                     let actorArray = []     // Array for actors seperated by "(", there will be 2 or more
@@ -193,8 +189,7 @@ async function main() {
                 //----------------------------------------------------------------------------------------------
                 // Update item in side bar, by calling a macro from this macro
                 //
-                //jez.log(`Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)`, "sActor.name", sActor.name, 
-                //"itemSelected", itemSelected, "itemType", itemType)
+                // jez.log(`Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)`, "sActor.name", sActor.name,"itemSelected", itemSelected, "itemType", itemType)
                 if (!await Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)) return(false)
                 //----------------------------------------------------------------------------------------------
                 // Update the selected actor's item
@@ -212,13 +207,19 @@ async function main() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
     const FUNCNAME = "Push_Update(targetActorId, nameOfItem, typeOfItem)";
-    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,
-    // "targetActorId",targetActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
+    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"targetActorId",targetActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
     //----------------------------------------------------------------------------------------------
     // Get Actor
     //
     let tActor = game.actors.get(targetActorId);
-    jez.log(`Push_Update: Processing ${tActor.data.token.name}`) 
+    if (!tActor) {
+        msg = `Passed targetActorId "${targetActorId}" did find an actor data object`
+        console.log(msg)
+        ui.notifications.error(msg)
+        return(false)
+    }
+    // jez.log("tActor",tActor)
+    console.log(`Push_Update: Processing ${tActor.data.token.name}`) 
     //----------------------------------------------------------------------------------------------
     // Get Items
     //
@@ -228,8 +229,8 @@ async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
     // Get Item Properties to Move
     //
     let updateSet = Create_Update_Object(itemOrigin, itemTarget, tActor);
-    //jez.log("Update Set", updateSet);
-    //jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    // jez.log("Update Set", updateSet);
+    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (await itemTarget.update(updateSet))
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -237,8 +238,7 @@ async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
     const FUNCNAME = "Create_Update_Object(itemOrigin, itemTarget, tActor = null)";
-    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,
-    //     "itemOrigin", itemOrigin, "itemTarget", itemTarget, "tActor", tActor);
+    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"itemOrigin", itemOrigin, "itemTarget", itemTarget, "tActor", tActor);
     let itemDescription = itemOrigin.data.data.description.value ?? null;
     let itemMacro = itemOrigin.data.flags?.itemacro ?? null;
     let itemAnimation = itemOrigin.data.flags?.autoanimations ?? null;
@@ -262,9 +262,9 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         // Reg Ex string used by the DnD 5e Helpers module: 
         //   const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) ${hitPointsString}`);
         //
-        if (itemOrigin.name === "Regeneration" || itemOrigin.name === "Self-Repair") {
-            msg = `Special case item: ${itemOrigin.name}`
-            jez.log(msg)
+        if (itemOrigin.name.startsWith("Regeneration") || itemOrigin.name.startsWith("Self-Repair")) {
+            msg = `Special case for ${tActor.data.token.name}, item: ${itemOrigin.name}`
+            console.log(msg)
             ui.notifications.info(msg)
             const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) hit points`);
             let originMagic = itemOrigin.data.data.description.value.match(regenRegExp);
@@ -282,13 +282,13 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
                 else {
                     // jez.log("Falsey")
                     msg = `Disturbingly, ${tActor.name} had no magic phrase in its description`
-                    jez.log(msg)
+                    console.log(msg)
                     ui.notifications.info(msg)
                 }
             }
             else {
                 msg = `Reference is missing magic phrase in description, skipping ${tActor?.name}`
-                jez.log(msg)
+                console.log(msg)
                 ui.notifications.warn(msg)
                 return
             }
@@ -310,8 +310,7 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         //img: itemTarget.img,
     }
     // jez.log('Returning itemUpdate', itemUpdate);
-    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`,
-    //    "Returning itemUpdate", itemUpdate);
+    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`,"Returning itemUpdate", itemUpdate);
     return itemUpdate;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -319,8 +318,7 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 async function Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem) {
     const FUNCNAME = "Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem)";
-    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,
-    // "originActorId",originActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
+    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"originActorId",originActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
     //----------------------------------------------------------------------------------------------
     // Get Actor data for provided ID
     //
@@ -338,7 +336,7 @@ async function Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem) {
     if (!itemInSidebar) {
         msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not found in Item Directory (sidebar),
         can not continue.`
-        jez.log(msg)
+        console.log(msg)
         ui.notifications.warn(msg)
         return(false)
     }
