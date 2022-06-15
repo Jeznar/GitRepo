@@ -484,6 +484,8 @@ jez.pickCheckListArray(queryTitle, queryText, pickCheckCallBack, actorItems.sort
 async function pickCheckCallBack(selection) { ... }
 ~~~
 
+**WARNING**: Double quotes within the queryOptions will cause the selection to be prematurely terminated.
+
 ![pickFromListArray_example](images/pickCheckListArray.png)
 
 The return values from this function can be:

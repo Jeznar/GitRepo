@@ -107,6 +107,23 @@ let fetchedToken2 = canvas.tokens.placeables.find(ef => ef.data.actorId === args
 console.log('Token5E fetched by Actor ID from canvas', fetchedToken2)
 ~~~
 
+22.06.14 **Regeneration in DnD 5e Helpers** -- Modified file ```~/modules/dnd5e-helpers/scripts/modules/Regeneration.js``` to find identify regeneration ability as an item starting with, not exactly matching the *magic* name.  
+
+Original line 35: 
+
+~~~javascript
+const regen = actor.items.find(i => i.name === regenName || i.name === selfRepairName);
+~~~
+
+Became:
+
+~~~javascript
+const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.startsWith(selfRepairName));
+~~~
+
+22.06.15 **[Update Item on Actors](../Utility_Macros/#update-item-on-actors)** Macro created to update sidebar and selected tokens to match a reference item
+
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
