@@ -125,6 +125,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.15 **Wail** fixed to drain temp hp if present and include that info in the summary.
 
+22.06.14 **Guidance** fixed to expire on skill checks in addition to ability checks.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -1,4 +1,4 @@
-const MACRONAME = "Guidance.0.1.js"
+const MACRONAME = "Guidance.0.2.js"
 /*****************************************************************************************
  * Macro does the following:
  * - Verify exactly one target is targeted
@@ -7,6 +7,7 @@ const MACRONAME = "Guidance.0.1.js"
  * - When guidance drops, remove concentration on the caster
  * 
  * 05/20/22 0.1 Creation of Macro
+ * 06/15/22 0.2 Expire buff after an ability check as well as after skill check
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -26,11 +27,7 @@ let msg = "";
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-// DamageBonus must return a function to the caller
-//if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -86,11 +83,14 @@ async function preCheck() {
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
+ * 
+ * The expiration conditions are documented on my GitHub: 
+ * https://github.com/Jeznar/GitRepo/blob/main/Documentation/Effect_Duration.md#other-special-durations
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     const GAME_RND = game.combat ? game.combat.round : 0;
-    const EXPIRE = ["isSkill", "newDay", "longRest", "shortRest"];
+    const EXPIRE = ["isCheck", "isSkill", "newDay", "longRest", "shortRest"];
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
     // Verify exactly one target is targeted
