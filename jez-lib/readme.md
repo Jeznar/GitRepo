@@ -687,6 +687,7 @@ Inputs
 * **string** the string that will be searched and updated
 * **substring** the substring that will be sought and replaced
 * **newSubstring** the string that will replace occurrences of substring
+* **wrapChar** a string, usually a special character that wraps the substring
 
 Return Object:
 
@@ -696,14 +697,19 @@ Return Object:
 #### Example Calls:
 ~~~javascript
 testString = "rocket RoCKEt hi Rocket This is a roc ket. ROCKET's engine Rocketeer Sprocket"
-result = replaceSubString(testString, "ROCKET", "%TOKENNAME%")
+result = jez.replaceSubString(testString, "ROCKET", "%TOKENNAME%")
 console.log(result.count, result.string)
 // ==> 4 "%TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket"
 
 testString = "rocket RoCKEt hi Rocket This is a roc ket. ROCKET's engine Rocketeer Sprocket"
-result = replaceSubString(testString, "ROCKET", "%TOKENNAME%").string
+result = jez.replaceSubString(testString, "ROCKET", "%TOKENNAME%").string
 console.log(result)
 // ==> %TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket
+
+let descObj = jez.replaceSubString(itemDescription, 'TOKENNAME', tActor.data.token.name, '%')
+if (descObj.count > 0) 
+    console.log(`Replaced "%TOKENNAME%" with ${tActor.data.token.name} ${descObj.count} time(s)`)
+itemDescription = descObj.string
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

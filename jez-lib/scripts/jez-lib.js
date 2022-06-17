@@ -1449,6 +1449,7 @@ class jez {
      * @param {String} string the string that will be searched and updated
      * @param {String} substring the substring that will be sought and replaced
      * @param {String} newSubstring the string that will replace occurrences of substring
+     * @param {String} wrapChar a string, usually a special character that wraps the substring
      *
      * Return Object:
      * @typedef  {Object} replaceSubStr
@@ -1466,9 +1467,10 @@ class jez {
      *    console.log(result)
      *    ==> %TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*****/
-    static replaceSubString(string, substring, newSubstring) {
+    static replaceSubString(string, substring, newSubstring, wrapChar = null) {
+        // jez.log("replaceSubString(string, substring, newSubstring)","string",string,"substring",substring,"newSubstring",newSubstring,"wrapChar",wrapChar)
         let returnObj = {}
-        let re = new RegExp(`\\b${substring}\\b`, 'gi');
+        let re = new RegExp(`${wrapChar}\\b${substring}\\b${wrapChar}`, 'gi');
         returnObj.count = (string.match(re, newSubstring) || []).length
         returnObj.string = string.replace(re, newSubstring)
         return (returnObj)
