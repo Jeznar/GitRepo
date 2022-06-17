@@ -151,6 +151,16 @@ async function doOnUse() {
     //---------------------------------------------------------------------------------------------
     // Process Tokens that made Saves. Apply the prescribed damage.
     //
+    // Freeze suggested an alternitive damage function on discord. 
+    // https://discord.com/channels/170995199584108546/699750150674972743/986703175279079485
+    //
+    // if(!token) return;
+    // let targets = new Set();
+    // targets.add(token);
+    // await MidiQOL.applyTokenDamage([{damage: 10, type: "piercing"}], 10, targets)
+    //
+    // this gives 10 damage to a token without an item card, maybe something like 
+    // this is what you are looking for?
     jez.log(`${madeSaves.length} Tokens passed saves, need damage applied`)
     let damageRoll = new Roll(`${DAMAGE_DICE}`).evaluate({ async: false });
     game.dice3d?.showForRoll(damageRoll);

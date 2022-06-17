@@ -100,6 +100,8 @@ Trying to keep track of things as I add or make significant changes.
 
 22.06.11 **Token/Actor Data from Actor** -- Learned how to obtain the token5e and actor5e data object from an actor id.  This enables finding the token associated with an actor. Following snippet has been added to Get_Entities.js and embedded here to improve retrieval. 
 
+22.06.16 **Aura of Protection** -- Changed the macro to not display sparkles and set global setting for Active Auras to penetrate walls.
+
 ~~~javascript
 let fetchedActor2 = canvas.tokens.placeables.find(ef => ef.data.actorId === args[1]).actor
 console.log('Actor5E fetched by ID from canvas', fetchedActor2)
@@ -126,6 +128,9 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 22.06.15 **Wail** fixed to drain temp hp if present and include that info in the summary.
 
 22.06.14 **Guidance** fixed to expire on skill checks in addition to ability checks.
+
+22.06.17 **[Refresh Item on Actors](../Utility_Macros/#refresh-item-on-actors)** Macro created to refresh (replace) sidebar and selected tokens to match a reference item
+
 
 [Link back to my Documentation Listing](README.md) 
 

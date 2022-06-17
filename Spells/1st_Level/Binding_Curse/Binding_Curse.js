@@ -1,4 +1,4 @@
-const MACRONAME = "Binding_Curse.0.1"
+const MACRONAME = "Binding_Curse.0.2.js"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Binding Curse.  Post a simple message to the chat card describing the effect

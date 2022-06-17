@@ -34,6 +34,12 @@ The DAE and Active Aura settings are key to this item. The DAE Effects provide t
 
 ![Aura_of_Protection_DAE_Effects.png](Aura_of_Protection/Aura_of_Protection_DAE_Effects.png)
 
+6/12/22 Session of Barovia had an issue with aura not penetrating walls.  That is actually controlled by a global setting of active auras (unfortunate), but I think it is safe enough to change it so all auras penetrate walls. I opened an [enhancement request](https://github.com/kandashi/Active-Auras/issues/231) to allow more granular control. 
+
+6/16/22 Update added flag that allows disabling of sparkles effect and set it to FALSE (off).
+
+![Active_Auras_and_Walls.png](Aura_of_Protection/Active_Auras_and_Walls.png)
+
 [*Back to top of document*](#paladin)
 
 ---

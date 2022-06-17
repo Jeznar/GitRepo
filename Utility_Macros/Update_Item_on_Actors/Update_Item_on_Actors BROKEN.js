@@ -1,12 +1,13 @@
 const MACRONAME = "Update_Item_on_Actors.0.4.js"
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Provide dialogs to select an item from selected actor.  That item is used as a reference to use
- * to update select fields on actors selected and also the item directory (sidebar)
+/******************************************************************************
+ * Macro to find all actors who have a specified item and open their sheets
+ * to make replacing items easier.
  * 
  * This macro should be run from the hotbar with a (one!) token of interest
  * selected in a scene.
  *
- * 06/16/22 0.4 Updates
+ * 06/13/22 0.3 Add Radio Button possibility and change calls to jez-lib funcs
+ * 06/16/22 0.4 Add DAE effects to list of things to update
  *****************************************************************************/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`============== Starting === ${MACRONAME} =================`);
@@ -222,22 +223,6 @@ async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
     // jez.log("tActor",tActor)
     console.log(`Push_Update: Processing ${tActor.data.token.name}`) 
     //----------------------------------------------------------------------------------------------
-    // Make sure the item exists and is unique within the actor 
-    //
-    let matches = itemCount(tActor.items.contents, nameOfItem, typeOfItem)
-    if (matches === 0) {
-        msg = `Item "${nameOfItem}" of type "${typeOfItem}" not on actor ${tActor.name}, very odd, skipping.`
-        console.log(msg)
-        ui.notifications.warn(msg)
-        return(false)
-    }
-    if (matches > 1) {
-        msg = `Item "${nameOfItem}" of type "${typeOfItem}" not unique on ${tActor.name}, skipping.`
-        console.log(msg)
-        ui.notifications.warn(msg)
-        return(false)
-    }
-    //----------------------------------------------------------------------------------------------
     // Get Items
     //
     let itemOrigin = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
@@ -259,6 +244,8 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
     let itemDescription = itemOrigin.data.data.description.value ?? null;
     let itemMacro = itemOrigin.data.flags?.itemacro ?? null;
     let itemAnimation = itemOrigin.data.flags?.autoanimations ?? null;
+    let itemEffects = itemOrigin.data?.effects ?? null;                 // Added 0.4 -Jez
+    jez.log("itemEffects", itemEffects)                                 // Added 0.4 -Jez
     //----------------------------------------------------------------------------------------------
     // Update the description field
     //
@@ -320,13 +307,16 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
                 value: itemDescription
             }
         },
+        // The next line throws error: Uncaught (in promise) TypeError: documentData is not iterable
+        // because, it is actually a collection of embeddeddocuments.  Keeping for now as warning.
+        // effects: itemEffects, 
         flags: {
             itemacro: { macro: itemMacro?.macro },
             autoanimations: itemAnimation
         },
         //img: itemTarget.img,
     }
-    // jez.log('Returning itemUpdate', itemUpdate);
+    jez.log('Returning itemUpdate', itemUpdate);
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`,"Returning itemUpdate", itemUpdate);
     return itemUpdate;
 }
@@ -337,6 +327,11 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
 async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
     const FUNCNAME = "Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"originActorId",originActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
+    //----------------------------------------------------------------------------------------------
+    // Get Actor data for provided ID
+    //
+    // let originActor = game.actors.get(originActorId);
+    // jez.log("originActor", originActor)
     //----------------------------------------------------------------------------------------------
     // Get Item data for provided name within the actor data, this is the "master" item
     //
@@ -364,12 +359,65 @@ async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
     //
     let itemInSidebar = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     if (!itemInSidebar) {
-        msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not found in Item Directory (sidebar),
-        can not continue.`
+        msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not found in Item Directory (sidebar), can not continue.`
         console.log(msg)
         ui.notifications.warn(msg)
         return(false)
     }
+
+    //----------------------------------------------------------------------------------------------
+    // For kicks, lets dump out the effects on the origin item, also build an array holding that 
+    // sweet, sweet data.
+    //
+    let effectArray = []
+    jez.log("")
+    let effectOriginArray = itemOrigin.data.effects.contents
+    for (let i = 0; i < effectOriginArray.length; i++) {
+        jez.log(`${i} ${effectOriginArray[i].data.label}`,effectOriginArray[i])
+        const EFFECT_DOC = itemOrigin.getEmbeddedDocument("ActiveEffect", effectOriginArray[i].id);
+        effectArray.push(EFFECT_DOC)
+        jez.log(`   Object`,EFFECT_DOC)
+    }
+    //----------------------------------------------------------------------------------------------
+    // Now, do the same for the target item
+    //
+    jez.log("")
+    let effectTargetArray = itemInSidebar.data.effects.contents
+    for (let i = 0; i < effectTargetArray.length; i++) {
+        jez.log(`${i} ${effectTargetArray[i].data.label}`,effectTargetArray[i])
+        const EFFECT_DOC = itemOrigin.getEmbeddedDocument("ActiveEffect", effectTargetArray[i].id);
+        jez.log(`   Object`,EFFECT_DOC)
+    }
+    //----------------------------------------------------------------------------------------------
+    // Lets copy the effects from the origin to the target
+    //
+    jez.log("before effectArray", effectArray)
+    await itemInSidebar.createEmbeddedDocuments("ActiveEffect", effectArray) // This fails
+    jez.log("after effectArray", effectArray)
+    return(false)
+
+    // Zhell's Discord thoughts...
+    // https://discord.com/channels/170995199584108546/699750150674972743/987118754381058048
+    // Delete the item in sidebar
+    await game.items.getName("name of the sidebar item to delete").delete()     
+    // Get item to add to sidebar from actor
+    const item = token.actor.items.getName("name of the item to put in the sidebar");
+    // Add item to sidebar
+    await Item.createDocuments([item.toObject()]);
+    // Following Should copy from selected token actor to targeted token actor(and delete)
+    const target = game.user.targets.first().actor;
+    const source = token.actor;
+    const itemName = "name of the item";
+    const newItem = source.items.getName(itemName);
+    await target.items.getName(itemName).delete();
+    await target.createEmbeddedDocuments("Item", [newItem.toObject()]);
+
+    // let test = await tokenD.actor.items
+    // contents[5].data.effects
+    // jez.log("test", test)
+
+
+
     // jez.log('Sidebar Item', itemInSidebar)
     //----------------------------------------------------------------------------------------------
     // Assemble the update object we need
@@ -384,6 +432,14 @@ async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
     return(true)
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Search the passed array for items of a given name and type. Return the number of matches
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ function itemCount(array, name, type) {
+    let count = 0 
+    for (const ITEM of array) if ((ITEM.name===name) && (ITEM.type===type)) count++
+    return(count)
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Capitalize each first word in a string and return the result -- Seemingly broken 6/13/22
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 // function capitalize(input) {
@@ -394,11 +450,3 @@ async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
 //         return word[0].toUpperCase() + word.substring(1);
 //     }).join(" ");
 // }
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Search the passed array for items of a given name and type. Return the number of matches
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- function itemCount(array, name, type) {
-    let count = 0 
-    for (const ITEM of array) if ((ITEM.name===name) && (ITEM.type===type)) count++
-    return(count)
-}

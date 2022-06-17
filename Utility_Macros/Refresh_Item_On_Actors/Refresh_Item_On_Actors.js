@@ -1,25 +1,36 @@
-const MACRONAME = "Update_Item_on_Actors.0.4.js"
+const MACRONAME = "Refresh_Item_On_Actors.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Provide dialogs to select an item from selected actor.  That item is used as a reference to use
- * to update select fields on actors selected and also the item directory (sidebar)
+ * Provide dialogs to select an item from selected actor.  That item is used as a reference to create
+ * new versions on actors selected and also replacing it into the item directory (sidebar)
  * 
- * This macro should be run from the hotbar with a (one!) token of interest
- * selected in a scene.
+ * This macro should be run from the hotbar with a (one!) token of interest selected in a scene.
+ * 
+ * Here's the main flow of this beasty
+ * - Item directory (sidebar) is searched for an item match (name & type) and checked for uniquness
+ * - Match is deleted from sidebar, incidentally breaking any links to its item id
+ * - Selected item is duplicated in sidebar and considered the reference from this point
+ * - Each selected actor is searched for a unique copy of the item in question, skip if not unique
+ * - Match on actor is scrapped for key information to be retained
+ *   - preperation data, e.g. if the actor has it via pact magic want to retain that
+ *   - uses data, i.e. stash any times per day or similar for reapplication
+ *   - Quantity for Regeneration special case in the description
+ * - Delete the match on the actor
+ * - Create new item on actor by copying the reference item
+ * - Update the new item with retained information from original
+ * - Process the next selected actor
  *
- * 06/16/22 0.4 Updates
- *****************************************************************************/
+ * 06/16/22 0.1 Creation
+ * 06/17/22 0.2 Implment Zhell's suggested method, or close to it.
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-let itemFound = null;
 let msg = ""
 let queryTitle = ""
 let queryText = ""
-let type = ""
-let item = ""
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -134,7 +145,7 @@ async function main() {
             //
             let allActors = game.actors
             for (let entity of allActors) {
-                itemFound = entity.items.find(item => item.data.name === itemSelected && item.type === itemType)
+                let itemFound = entity.items.find(item => item.data.name === itemSelected && item.type === itemType)
                 if (itemFound) actorFullWithItem.push(`${entity.name} (${entity.id})`);
             }
             //--------------------------------------------------------------------------------------------
@@ -222,32 +233,29 @@ async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
     // jez.log("tActor",tActor)
     console.log(`Push_Update: Processing ${tActor.data.token.name}`) 
     //----------------------------------------------------------------------------------------------
-    // Make sure the item exists and is unique within the actor 
-    //
-    let matches = itemCount(tActor.items.contents, nameOfItem, typeOfItem)
-    if (matches === 0) {
-        msg = `Item "${nameOfItem}" of type "${typeOfItem}" not on actor ${tActor.name}, very odd, skipping.`
-        console.log(msg)
-        ui.notifications.warn(msg)
-        return(false)
-    }
-    if (matches > 1) {
-        msg = `Item "${nameOfItem}" of type "${typeOfItem}" not unique on ${tActor.name}, skipping.`
-        console.log(msg)
-        ui.notifications.warn(msg)
-        return(false)
-    }
-    //----------------------------------------------------------------------------------------------
     // Get Items
     //
     let itemOrigin = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     let itemTarget = tActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     //----------------------------------------------------------------------------------------------
-    // Get Item Properties to Move
+    // Get Item Properties to Retain from target item and build an update
     //
     let updateSet = Create_Update_Object(itemOrigin, itemTarget, tActor);
     // jez.log("Update Set", updateSet);
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    //----------------------------------------------------------------------------------------------
+    // Now, inspired by Zhell's Discord thoughts...
+    // https://discord.com/channels/170995199584108546/699750150674972743/987118754381058048
+    // Delete the item from the target actor and copy it, unchanged from the item directory.
+    await itemTarget.delete();
+    await tActor.createEmbeddedDocuments("Item", [itemOrigin.toObject()]);
+    //----------------------------------------------------------------------------------------------
+    // itemTarget that was referenced has been destroyed, need to get the current version.
+    //
+    itemTarget = await tActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
+    //----------------------------------------------------------------------------------------------
+    // Return to calling function while applying the update that was built
+    //
     return (await itemTarget.update(updateSet))
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -257,16 +265,21 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
     const FUNCNAME = "Create_Update_Object(itemOrigin, itemTarget, tActor = null)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"itemOrigin", itemOrigin, "itemTarget", itemTarget, "tActor", tActor);
     let itemDescription = itemOrigin.data.data.description.value ?? null;
-    let itemMacro = itemOrigin.data.flags?.itemacro ?? null;
-    let itemAnimation = itemOrigin.data.flags?.autoanimations ?? null;
+    let itemEffects = itemOrigin.data?.effects ?? null;                 // Added 0.4 -Jez
+    // jez.log("itemEffects", itemEffects)                              // Added 0.4 -Jez
     //----------------------------------------------------------------------------------------------
-    // Update the description field
+    // Grab some of the settings of the target's item for reapplication
+    //
+    let itemPreparation = itemTarget.data.data.preparation ?? null; 
+    let itemUses = itemTarget.data.data.uses ?? null; 
+    //----------------------------------------------------------------------------------------------
+    // Update the description field, if tActor is set, we are updating the sidebar and don't want to
+    // alter the description.
     //
     if (itemDescription !== null && tActor !== null) {
-        //------------------------------------------------------------------------------------------
-        // If tActor is not set, we are updating the sidebar and don't want to replace place holder
-        // strings.
-        // jez.log("tActor.data.token.name", tActor.data.token.name)
+        //----------------------------------------------------------------------------------------------
+        // Replace the magic token, %TOKENNAME%, with the name of the token.
+        //
         itemDescription = itemDescription.replace(/%TOKENNAME%/g, `${tActor.data.token.name}`);
         //----------------------------------------------------------------------------------------------
         // Consider special case created by DnD 5e Helpers for Regeneration effect:  If the item is
@@ -275,7 +288,6 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         //
         // The magic phrase must be found and retained in the updated description...oh boy!
         //
-
         // Reg Ex string used by the DnD 5e Helpers module: 
         //   const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) ${hitPointsString}`);
         //
@@ -317,14 +329,11 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
     let itemUpdate = {
         data: {
             description: {
-                value: itemDescription
-            }
+                value: itemDescription      // Specially processed description
+            },
+            preparation: itemPreparation,   // Target's preperation information
+            uses: itemUses,                 // Target's use information
         },
-        flags: {
-            itemacro: { macro: itemMacro?.macro },
-            autoanimations: itemAnimation
-        },
-        //img: itemTarget.img,
     }
     // jez.log('Returning itemUpdate', itemUpdate);
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`,"Returning itemUpdate", itemUpdate);
@@ -364,24 +373,27 @@ async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
     //
     let itemInSidebar = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     if (!itemInSidebar) {
-        msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not found in Item Directory (sidebar),
-        can not continue.`
+        msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not found in Item Directory (sidebar), can not continue.`
         console.log(msg)
         ui.notifications.warn(msg)
         return(false)
     }
-    // jez.log('Sidebar Item', itemInSidebar)
     //----------------------------------------------------------------------------------------------
-    // Assemble the update object we need
+    // Zhell's Discord thoughts...
+    // https://discord.com/channels/170995199584108546/699750150674972743/987118754381058048
     //
-    let updateSet = Create_Update_Object(itemOrigin, itemInSidebar);
-    // jez.log('Sidebar updates', updateSet)
-    //----------------------------------------------------------------------------------------------
-    // Update the item in the sidebar with the item from the origin actor
-    //
-    await itemInSidebar.update(updateSet);
+    itemInSidebar.delete()                                  // Delete the item in sidebar
+    await Item.createDocuments([itemOrigin.toObject()]);    // Create the item in sidebar
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return(true)
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Search the passed array for items of a given name and type. Return the number of matches
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ function itemCount(array, name, type) {
+    let count = 0 
+    for (const ITEM of array) if ((ITEM.name===name) && (ITEM.type===type)) count++
+    return(count)
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Capitalize each first word in a string and return the result -- Seemingly broken 6/13/22
@@ -394,11 +406,3 @@ async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
 //         return word[0].toUpperCase() + word.substring(1);
 //     }).join(" ");
 // }
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Search the passed array for items of a given name and type. Return the number of matches
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- function itemCount(array, name, type) {
-    let count = 0 
-    for (const ITEM of array) if ((ITEM.name===name) && (ITEM.type===type)) count++
-    return(count)
-}

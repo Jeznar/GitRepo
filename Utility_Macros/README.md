@@ -1,6 +1,6 @@
 # Utility Macros
 
-This repo holds macros that I have found to be of general utility **and** have foud the time to push to GitHub so that others might make of them what they will.
+This repo holds macros that I have found to be of general utility **and** have found the time to push to GitHub so that others might make of them what they will.
 
 [Link back to my Repo Listing](https://github.com/Jeznar/GitRepo)
 
@@ -21,6 +21,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **Light Picker**: sample macro that sets the type of light emitted by a token.
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
+* **[Refresh Item on Actors](#refresh-item-on-actors)** Refreshes (replaces) sidebar and selected tokens to match a reference item, retaining very specific fields.
 * **[Remove Paired Effect](#remove-paired-effect)** Removes effect identified by id from actor also specified by id
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
 * **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
@@ -231,6 +232,33 @@ It does the following:
 1. Opens the sheet of all the actors in the *Actors Directory*.
 
 ![Open_Actor_Sheets_With_Example.png](Images/Open_Actor_Sheets_With_Example.png)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Refresh Item on Actors
+
+This is intended to be run from the Macro hot-bar and used by the GM to refresh items on various actors in the actor's directory (not on scenes).  This is very similar to **[Update Item on Actors](#update-item-on-actors)**, retaining much of the code of that macro, but it takes the opposite tack.  Instead of only updating specific fields, this one deletes its targets and copies the reference, after the copy it goes back to replace very specific data fields that are retained.  
+
+Those fields are:
+
+ * preparation data, e.g. if the actor has it via pact magic want to retain that
+ * uses data, i.e. stash any times per day or similar for reapplication
+ * Quantity for Regeneration special case in the description
+
+It is a multi-step beastie that goes through the following major steps:
+
+1. Make sure exactly one token is selected (exit if not)
+2. Read through all the items on a token and then display a dialog asking the GM to choose from one of the types of items on that character.  If the GM clicks **Ok** without making a selection, display the dialog again.  If the GM clicks **Cancel** or **Close** terminate.
+3. Read through all the items on the token of the selected type and display a dialog asking for a selection. If the GM clicks **Ok** without making a selection, display the dialog again.  If the GM clicks **Cancel** or **Close** terminate.
+4. Read through all of the actors in the actors directory (sidebar) finding all that have an item with the name and type selected in previous dialogs. Post a dialog showing all the actors found and asking for some or all of them to be selected in a click box dialog.  If none selected and **Selected Only** is clicked, redisplay the dialog. If the GM clicks **Cancel** or **Close** terminate.  Otherwise, proceed with the selected actor(s).
+5. Next, delete/replace the sidebar copy (if it doesn't exist, exit with an error message).
+6. Step through each selected actor scraping/deleting/replacing/updating their item.
+
+To recap, this macro replaces items retaining select fields from the original item on actors in the actors directory (sidebar) and a reference copy of the item in the items directory (sidebar).  It is not for creating new items on actors or populating empty items, just refreshing.
+
+See **[Update Item on Actors](#update-item-on-actors)** for discussion of special cases. 
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
