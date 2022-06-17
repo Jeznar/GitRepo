@@ -54,6 +54,7 @@ The functions currently included in this module are:
 * **[jez.pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
 * **[jez.postMessage(msgParm)](#postmessagemsgparm)** -- Posts a new message to the **Chat Log**
 * **[jez.randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
+* **[jez.replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring))** -- Returns updated string and count of replacements in an object.
 * **[jez.runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[jez.tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
 * **[jez.wait(ms)](#wait)** -- Waits for specified milliseconds.
@@ -677,6 +678,38 @@ jez.addMessage(chatMessage, {color:jez.randomDarkColor(), fSize:15, msg:msg, tag
 
 ---
 
+### replaceSubString(string, substring, newSubstring) 
+
+Accept a string and find the substring passed with it.  Return an object that has count and an updated string with the substring replaced. 
+
+Inputs
+
+* **string** the string that will be searched and updated
+* **substring** the substring that will be sought and replaced
+* **newSubstring** the string that will replace occurrences of substring
+
+Return Object:
+
+* **count**  - Count of times substring appears in string
+* **string** - Updated string with substring replaced by newSubstring
+
+#### Example Calls:
+~~~javascript
+testString = "rocket RoCKEt hi Rocket This is a roc ket. ROCKET's engine Rocketeer Sprocket"
+result = replaceSubString(testString, "ROCKET", "%TOKENNAME%")
+console.log(result.count, result.string)
+// ==> 4 "%TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket"
+
+testString = "rocket RoCKEt hi Rocket This is a roc ket. ROCKET's engine Rocketeer Sprocket"
+result = replaceSubString(testString, "ROCKET", "%TOKENNAME%").string
+console.log(result)
+// ==> %TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
 ### runRuneVFX(...)
 
 This function will run a simple three stage VFX on a passed token. It supports a number of optional parameters.  The complete of parms allowed is as follows:
@@ -701,6 +734,7 @@ jez.runRuneVFX(args[0].targets, jez.getSpellSchool(aItem), jez.getRandomRuneColo
 [*Back to Functions list*](#functions-in-this-module)
 
 ---
+
 ### tokensInRange(selToken, range) 
 
 This function returns an array of all the tokens within *range* feet (plus a fudge factor, currently 4 feet, to make diagonals happier), excluding the passed token. If no tokens are in range, the returned array will be zero length. 

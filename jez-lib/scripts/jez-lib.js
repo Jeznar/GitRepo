@@ -1441,5 +1441,38 @@ class jez {
         return (effectData)
     }
 
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9******
+     * Accept a string and find the substring passed with it.  Return an object that has count and
+     * an updated string with the substring replaced. 
+     * 
+     * Inputs
+     * @param {String} string the string that will be searched and updated
+     * @param {String} substring the substring that will be sought and replaced
+     * @param {String} newSubstring the string that will replace occurrences of substring
+     *
+     * Return Object:
+     * @typedef  {Object} replaceSubStr
+     * @property {number} count  - Count of times substring appears in string
+     * @property {string} string - Updated string with substring replaced by newSubstring
+     *
+     * Example Calls:
+     * 1. testString = "rocket RoCKEt hi Rocket This is a roc ket. ROCKET's engine Rocketeer Sprocket"
+     *    result = replaceSubString(testString, "ROCKET", "%TOKENNAME%")
+     *    console.log(result.count, result.string)
+     *    ==> 4 "%TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket"
+     *
+     * 2. testString = "rocket RoCKEt hi Rocket This is a roc ket. ROCKET's engine Rocketeer Sprocket"
+     *    result = replaceSubString(testString, "ROCKET", "%TOKENNAME%").string
+     *    console.log(result)
+     *    ==> %TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*****/
+    static replaceSubString(string, substring, newSubstring) {
+        let returnObj = {}
+        let re = new RegExp(`\\b${substring}\\b`, 'gi');
+        returnObj.count = (string.match(re, newSubstring) || []).length
+        returnObj.string = string.replace(re, newSubstring)
+        return (returnObj)
+    }
+
 } // END OF class jez
 Object.freeze(jez);
