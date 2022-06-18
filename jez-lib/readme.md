@@ -25,6 +25,7 @@ The small bundle of files that make up this module need to be paced on the serve
 The functions currently included in this module are:
 
 * **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
+* **[jez.badNews(message)](#badNewsmessage)** -- Displays warning message on console and ui then returns false
 * **[jez.deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
 * **[jez.getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
@@ -45,6 +46,7 @@ The functions currently included in this module are:
 * **[jez.itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
 * **[jez.itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
 * **[jez.itemFindOnActor(token5e, itemName, itemType)](#item-functions)** -- Finds and item on Actor
+* **[jez.itemMgmt_itemCount(array, name, type)](#itemMgmt_itemCountarray-name-type)** -- Returns count of item/type in array
 * **[jez.itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions)** -- Updates an Item on Actor
 * **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
 * **[jez.moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay)** -- Push or pull token 1, 2 or 3 spaces
@@ -102,6 +104,18 @@ The above, will generate a message such as the following:
 [*Back to Functions list*](#functions-in-this-module)
 
 ---
+
+### badNews(message)
+
+Pop the passed string (message) onto the console and as ui warning popup and return false.
+
+```javascript
+if (matches === 0) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not in Item Directory, can not continue.`)
+```
+
+[*Back to Functions list*](#functions-in-this-module)
+
+--- 
 
 ### deleteItems(itemName, type, subject)
 
@@ -374,6 +388,30 @@ itemUpdate = {
 // Update the item with new information
 //
 await jez.itemUpdateOnActor(aToken, ATTACK_ITEM, itemUpdate, "spell")
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### itemMgmt_itemCount(array, name, type) 
+
+Search the passed array for items of a given name and type. Return the number of matches
+
+The passed array should be an array of Item5e objects that contain, at a minimum these fields:
+
+* **name**  - Count of times substring appears in string
+* **type** - Updated string with substring replaced by newSubstring
+
+#### Typical Calls
+
+~~~javascript
+let matches = 0
+let nameOfItem = "Longsword"
+let typeOfItem = "weapon"
+// matches = jez.itemMgmt_itemCount(game.items.contents, nameOfItem, typeOfItem)  // matches in sidebar
+matches = jez.itemMgmt_itemCount(tActor.items.contents, nameOfItem, typeOfItem)   // matches on actor
+if (matches > 1) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not unique (found ${matches}) in Item Directory, can not continue.`)
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

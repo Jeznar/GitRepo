@@ -1467,7 +1467,7 @@ class jez {
      *    console.log(result)
      *    ==> %TOKENNAME% %TOKENNAME% hi %TOKENNAME% This is a roc ket. %TOKENNAME%'s engine Rocketeer Sprocket
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*****/
-    static replaceSubString(string, substring, newSubstring, wrapChar = null) {
+    static replaceSubString(string, substring, newSubstring, wrapChar = "") {
         // jez.log("replaceSubString(string, substring, newSubstring)","string",string,"substring",substring,"newSubstring",newSubstring,"wrapChar",wrapChar)
         let returnObj = {}
         let re = new RegExp(`${wrapChar}\\b${substring}\\b${wrapChar}`, 'gi');
@@ -1475,6 +1475,44 @@ class jez {
         returnObj.string = string.replace(re, newSubstring)
         return (returnObj)
     }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Pop the passed string (message) onto the console and as ui warning popup and return false.
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static badNews(message) {
+        console.log(`BadNews | ${message}`)
+        ui.notifications.warn(message)
+        return (false)
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Search the passed array for items of a given name and type. Return the number of matches
+     * 
+     * The passed array should be an array of Item5e objects that contain, at a minimum these fields:
+     * @typedef  {Object} Item5e
+     * @property {string} name  - Count of times substring appears in string
+     * @property {string} type - Updated string with substring replaced by newSubstring
+     * 
+     * Typical Calls
+     * =============
+     * let matches = 0
+     * let nameOfItem = "Longsword"
+     * let typeOfItem = "weapon"
+     * matches = itemMgmt_itemCount(game.items.contents, nameOfItem, typeOfItem)     // matches in sidebar
+     * matches = itemMgmt_itemCount(tActor.items.contents, nameOfItem, typeOfItem)   // matches on actor
+     * if (matches > 1) {
+     *    msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not unique in Item Directory.`
+     *    console.log(msg)
+     *    ui.notifications.warn(msg)
+     *    return (false)
+     * }
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static itemMgmt_itemCount(array, name, type) {
+        // jez.log(array)
+        let count = 0
+        for (const ITEM of array) if ((ITEM.name === name) && (ITEM.type === type)) count++
+        return (count)
+    }
+
+
 
 } // END OF class jez
 Object.freeze(jez);

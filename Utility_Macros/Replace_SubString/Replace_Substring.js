@@ -28,7 +28,7 @@ console.log(result)
  * Inputs
  * @param {String} string the string that will be searched and updated
  * @param {String} substring the substring that will be sought and replaced
- * @param {String} newSubstring the string that will replace occurances of substring
+ * @param {String} newSubstring the string that will replace occurrences of substring
  * 
  * Return Object:
  * @typedef  {Object} replaceSubStr

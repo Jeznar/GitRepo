@@ -11,7 +11,7 @@ const MACRONAME = "Refresh_Item_On_Actors.0.2.js"
  * - Selected item is duplicated in sidebar and considered the reference from this point
  * - Each selected actor is searched for a unique copy of the item in question, skip if not unique
  * - Match on actor is scrapped for key information to be retained
- *   - preperation data, e.g. if the actor has it via pact magic want to retain that
+ *   - preparation data, e.g. if the actor has it via pact magic want to retain that
  *   - uses data, i.e. stash any times per day or similar for reapplication
  *   - Quantity for Regeneration special case in the description
  * - Delete the match on the actor
@@ -23,7 +23,7 @@ const MACRONAME = "Refresh_Item_On_Actors.0.2.js"
  * 06/17/22 0.2 Implment Zhell's suggested method, or close to it.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-console.log(`============== Starting === ${MACRONAME} =================`);
+console.log(`       ============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
@@ -45,9 +45,7 @@ main();
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function preCheck() {
     if (canvas.tokens.controlled.length !== 1) {
-        msg = `Must select one token to be used to find the item that will be searched for.  Selected ${canvas.tokens.controlled.length}`
-        console.log(msg)
-        ui.notifications.warn(msg)
+        jez.badNews(`Must select one token to be used to find the item that will be searched for.  Selected ${canvas.tokens.controlled.length}`)
         jez.postMessage({
             color: jez.randomDarkColor(), fSize: 14, icon: "Icons_JGB/Misc/Jez.png",
             msg: msg, title: `Try Again, Selecting One Token`,
@@ -198,14 +196,13 @@ async function main() {
                 //----------------------------------------------------------------------------------------------
                 // Update item in side bar, by calling a macro from this macro
                 //
-                // jez.log(`Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)`, "sActor.name", sActor.name,"itemSelected", itemSelected, "itemType", itemType)
-                // if (!await Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)) return(false)
-                if (!await Update_Item_In_Sidebar(sToken, itemSelected, itemType)) return(false)
+                // jez.log(`updateItemInSidebar(sActor.id, itemSelected, itemType)`, "sActor.name", sActor.name,"itemSelected", itemSelected, "itemType", itemType)
+                if (!await updateItemInSidebar(sToken, itemSelected, itemType)) return(false)
 
                 //----------------------------------------------------------------------------------------------
                 // Update the selected actor's item
                 //
-                for (let line of actorsIdsToUpdate) await Push_Update(line, itemSelected, itemType);
+                for (let line of actorsIdsToUpdate) await pushUpdate(line, itemSelected, itemType);
             }
         }
     }
@@ -216,39 +213,46 @@ async function main() {
  * 
  * Called by main function in a loop to update all actors chosen by the user.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-// async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
-async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
-    const FUNCNAME = "Push_Update(targetActorId, nameOfItem, typeOfItem)";
+async function pushUpdate(targetActorId, nameOfItem, typeOfItem) {
+    //const FUNCNAME = "pushUpdate(targetActorId, nameOfItem, typeOfItem)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"targetActorId",targetActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
     //----------------------------------------------------------------------------------------------
-    // Get Actor
+    // Get target Actor
     //
     let tActor = game.actors.get(targetActorId);
     if (!tActor) {
         msg = `Passed targetActorId "${targetActorId}" did find an actor data object`
         console.log(msg)
         ui.notifications.error(msg)
-        return(false)
+        return (false)
     }
     // jez.log("tActor",tActor)
-    console.log(`Push_Update: Processing ${tActor.data.token.name}`) 
+    console.log(("***********************************************************************"))
+    console.log(`*** pushUpdate: Processing ${tActor.data.token.name}`)
     //----------------------------------------------------------------------------------------------
-    // Get Items
+    // Make sure the item exists and is unique within the target actor 
+    //
+    let matches = jez.itemMgmt_itemCount(tActor.items.contents, nameOfItem, typeOfItem)
+    if (matches === 0) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not on ${tActor.name}, skipping.`)
+    if (matches > 1)   return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not unique on ${tActor.name}, skipping.`)
+    //----------------------------------------------------------------------------------------------
+    // Get Items, itemOrigin (reference) from sidebar and target from the tActor
     //
     let itemOrigin = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     let itemTarget = tActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     //----------------------------------------------------------------------------------------------
-    // Get Item Properties to Retain from target item and build an update
+    // Fetcg Item Properties to Retain from target item and build an update
     //
-    let updateSet = Create_Update_Object(itemOrigin, itemTarget, tActor);
+    let updateSet = createUpdateObj(itemOrigin, itemTarget, tActor);
     // jez.log("Update Set", updateSet);
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
     // Now, inspired by Zhell's Discord thoughts...
     // https://discord.com/channels/170995199584108546/699750150674972743/987118754381058048
-    // Delete the item from the target actor and copy it, unchanged from the item directory.
-    await itemTarget.delete();
-    await tActor.createEmbeddedDocuments("Item", [itemOrigin.toObject()]);
+    // Delete the item from the target actor and copy reference item from the item directory.
+    // await itemTarget.delete();
+    // await tActor.createEmbeddedDocuments("Item", [itemOrigin.toObject()]);
+    await itemTarget.update(itemOrigin.toObject())              // Update reference to match source
     //----------------------------------------------------------------------------------------------
     // itemTarget that was referenced has been destroyed, need to get the current version.
     //
@@ -261,17 +265,15 @@ async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Build an update object for our item
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
-    const FUNCNAME = "Create_Update_Object(itemOrigin, itemTarget, tActor = null)";
+function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
+    const FUNCNAME = "createUpdateObj(itemOrigin, itemTarget, tActor = null)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"itemOrigin", itemOrigin, "itemTarget", itemTarget, "tActor", tActor);
     let itemDescription = itemOrigin.data.data.description.value ?? null;
-    let itemEffects = itemOrigin.data?.effects ?? null;                 // Added 0.4 -Jez
-    // jez.log("itemEffects", itemEffects)                              // Added 0.4 -Jez
     //----------------------------------------------------------------------------------------------
     // Grab some of the settings of the target's item for reapplication
     //
-    let itemPreparation = itemTarget.data.data.preparation ?? null; 
-    let itemUses = itemTarget.data.data.uses ?? null; 
+    let itemPreparation = itemTarget.data.data.preparation ?? null;
+    let itemUses = itemTarget.data.data.uses ?? null;
     //----------------------------------------------------------------------------------------------
     // Update the description field, if tActor is set, we are updating the sidebar and don't want to
     // alter the description.
@@ -280,7 +282,12 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         //----------------------------------------------------------------------------------------------
         // Replace the magic token, %TOKENNAME%, with the name of the token.
         //
-        itemDescription = itemDescription.replace(/%TOKENNAME%/g, `${tActor.data.token.name}`);
+        // itemDescription = itemDescription.replace(/%TOKENNAME%/g, `${tActor.data.token.name}`);
+        let descObj = jez.replaceSubString(itemDescription, 'TOKENNAME', tActor.data.token.name, '%')
+        // jez.log("descObj", descObj)
+        if (descObj.count > 0)
+            console.log(`Status  | Replaced "%TOKENNAME%" with ${tActor.data.token.name} ${descObj.count} time(s)`)
+        itemDescription = descObj.string
         //----------------------------------------------------------------------------------------------
         // Consider special case created by DnD 5e Helpers for Regeneration effect:  If the item is
         // named "Regeneration" or "Self-Repair" then the description should contain the magic phrase
@@ -293,7 +300,7 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         //
         if (itemOrigin.name.startsWith("Regeneration") || itemOrigin.name.startsWith("Self-Repair")) {
             msg = `Special case for ${tActor.data.token.name}, item: ${itemOrigin.name}`
-            console.log(msg)
+            console.log(`Status  | ${msg}`)
             ui.notifications.info(msg)
             const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) hit points`);
             let originMagic = itemOrigin.data.data.description.value.match(regenRegExp);
@@ -311,20 +318,15 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
                 else {
                     // jez.log("Falsey")
                     msg = `Disturbingly, ${tActor.name} had no magic phrase in its description`
-                    console.log(msg)
+                    console.log(`Warning | ${msg}`)
                     ui.notifications.info(msg)
                 }
             }
-            else {
-                msg = `Reference is missing magic phrase in description, skipping ${tActor?.name}`
-                console.log(msg)
-                ui.notifications.warn(msg)
-                return
-            }
+            else return jez.badNews(`Reference is missing magic phrase in description, skipping ${tActor?.name}`)
         }
     }
     //----------------------------------------------------------------------------------------------
-    // Build item update object
+    // Build item update object to return the protected fields to original values
     //
     let itemUpdate = {
         data: {
@@ -342,58 +344,65 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Update the item in the Item directory, sidebar.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-// async function Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem) {
-async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
-    const FUNCNAME = "Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem)";
+async function updateItemInSidebar(tokenD, nameOfItem, typeOfItem) {
+    const FUNCNAME = "updateItemInSidebar(tokenD, nameOfItem, typeOfItem)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"originActorId",originActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
+    console.log(("***********************************************************************"))
+    console.log(`*** Update Sidebar Item ${typeOfItem} named ${nameOfItem}`)
     //----------------------------------------------------------------------------------------------
     // Get Item data for provided name within the actor data, this is the "master" item
     //
-    // let itemOrigin = originActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     let itemOrigin = tokenD.actor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     // jez.log("itemOrigin", itemOrigin, "itemOrigin.name", itemOrigin.name, "itemOrigin.id", itemOrigin.id);
     //----------------------------------------------------------------------------------------------
     // Make sure the item exists and is unique within the sidebar 
     //
-    let matches = itemCount(game.items.contents, nameOfItem, typeOfItem)
-    if (matches === 0) {
-        msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not in Item Directory (sidebar), can not continue.`
-        console.log(msg)
-        ui.notifications.warn(msg)
-        return(false)
-    }
-    if (matches > 1) {
-        msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not unique in Item Directory (sidebar), can not continue.`
-        console.log(msg)
-        ui.notifications.warn(msg)
-        return(false)
-    }
+    let matches = jez.itemMgmt_itemCount(game.items.contents, nameOfItem, typeOfItem)
+    if (matches === 0) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not in Item Directory, can not continue.`)
+    if (matches > 1) return   jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not unique (found ${matches}) in Item Directory, can not continue.`)
     //----------------------------------------------------------------------------------------------
     // Get Item data from item in the sidebar
     //
     let itemInSidebar = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
-    if (!itemInSidebar) {
-        msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not found in Item Directory (sidebar), can not continue.`
-        console.log(msg)
-        ui.notifications.warn(msg)
-        return(false)
-    }
+    if (!itemInSidebar) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not found in Item Directory, can not continue.`)
     //----------------------------------------------------------------------------------------------
     // Zhell's Discord thoughts...
     // https://discord.com/channels/170995199584108546/699750150674972743/987118754381058048
     //
-    itemInSidebar.delete()                                  // Delete the item in sidebar
-    await Item.createDocuments([itemOrigin.toObject()]);    // Create the item in sidebar
+    // itemInSidebar.delete()                                   // Delete the item in sidebar
+    // await Item.createDocuments([itemOrigin.toObject()]);     // Create the item in sidebar
+    await itemInSidebar.update(itemOrigin.toObject())           // Update reference to match source
+    //----------------------------------------------------------------------------------------------
+    // itemInSidebar that was referenced has been destroyed, need to get the current version.
+    //
+    itemInSidebar = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
+    if (!itemInSidebar) return jez.badNews(`New "${nameOfItem}" of type "${typeOfItem}" not found in Item Directory, can not continue.`)
+    //----------------------------------------------------------------------------------------------
+    // Update the description to replace instances of the token name with %TOKENNAME%
+    //
+    let itemDescription = itemInSidebar.data.data.description.value ?? null;
+    let descObj = jez.replaceSubString(itemDescription, tokenD.name, '%TOKENNAME%')
+    // jez.log("sidebar descObj", descObj)
+    if (descObj.count > 0)
+        console.log(`Status  | Replaced ${tokenD.name} with "%TOKENNAME%" ${descObj.count} time(s)`)
+    itemDescription = descObj.string
+    //----------------------------------------------------------------------------------------------
+    // Build item update object
+    //
+    let itemUpdate = {
+        data: {
+            description: {
+                value: itemDescription      // Specially processed description
+            },
+        },
+    }
+    // jez.log("Sidebar itemUpdate", itemUpdate)
+    //----------------------------------------------------------------------------------------------
+    // Update that sidebar item!
+    //
+    await itemInSidebar.update(itemUpdate)
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return(true)
-}
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Search the passed array for items of a given name and type. Return the number of matches
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- function itemCount(array, name, type) {
-    let count = 0 
-    for (const ITEM of array) if ((ITEM.name===name) && (ITEM.type===type)) count++
-    return(count)
+    return (true)
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Capitalize each first word in a string and return the result -- Seemingly broken 6/13/22
