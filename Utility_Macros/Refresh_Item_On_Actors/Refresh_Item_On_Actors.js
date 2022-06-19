@@ -11,6 +11,7 @@ const MACRONAME = "Refresh_Item_On_Actors.0.2.js"
  * - Selected item is duplicated in sidebar and considered the reference from this point
  * - Each selected actor is searched for a unique copy of the item in question, skip if not unique
  * - Match on actor is scrapped for key information to be retained
+ *   - consumption data, e.g. data on the consumables used by a item
  *   - preparation data, e.g. if the actor has it via pact magic want to retain that
  *   - uses data, i.e. stash any times per day or similar for reapplication
  *   - Quantity for Regeneration special case in the description
@@ -274,6 +275,7 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     //
     let itemPreparation = itemTarget.data.data.preparation ?? null;
     let itemUses = itemTarget.data.data.uses ?? null;
+    let itemConsume = itemTarget.data.data.consume ?? null;
     //----------------------------------------------------------------------------------------------
     // Update the description field, if tActor is set, we are updating the sidebar and don't want to
     // alter the description.
@@ -333,7 +335,8 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
             description: {
                 value: itemDescription      // Specially processed description
             },
-            preparation: itemPreparation,   // Target's preperation information
+            consume: itemConsume,           // Targets consumption data 
+            preparation: itemPreparation,   // Target's preparation information
             uses: itemUses,                 // Target's use information
         },
     }

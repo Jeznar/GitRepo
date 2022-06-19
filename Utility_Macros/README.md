@@ -243,7 +243,8 @@ This is intended to be run from the Macro hot-bar and used by the GM to refresh 
 
 Those fields are:
 
- * preparation data, e.g. if the actor has it via pact magic want to retain that
+ * consumption data, e.g. data on the consumables used by a item
+ * preparation data, e.g. if the actor has it via pact magic want to retain that info
  * uses data, i.e. stash any times per day or similar for reapplication
  * Quantity for Regeneration special case in the description
 
