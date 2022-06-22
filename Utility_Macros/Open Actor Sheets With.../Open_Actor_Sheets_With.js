@@ -1,4 +1,4 @@
-const MACRONAME = "Open_Actor_Sheets_With.js"
+const MACRONAME = "Open_Actor_Sheets_With.0.4.js"
 /******************************************************************************
  * Macro to find all actors who have a specified item and open their sheets
  * to make replacing items easier.
@@ -9,98 +9,87 @@ const MACRONAME = "Open_Actor_Sheets_With.js"
  * 12/03/21 0.1 Creation
  * 01/23/22 0.2 Add Front end to enter the item name
  * 01/30/22 0.3 Add Radio Button possibility and change calls to jez-lib funcs
+ * 06/20/22 0.4 Update to use jez-lib dialog function
  *****************************************************************************/
-let cnt = 0;
-let cntFound = 0;
-let itemFound = null;
-let actorsWithItem = [];
+ const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+ console.log(`       ============== Starting === ${MACRONAME} =================`);
+ for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
 let msg = ""
-let queryTitle = ""
-let queryText = ""
-let type = ""
-let item = ""
-
-jez.log(`Beginning ${MACRONAME}`);
-
-let sToken = canvas.tokens.controlled[0]
-if (!sToken) {
-    msg = `Must select one token to be used to find the item that will be searched for.`
-    jez.postMessage({color:"crimson", fSize:14, msg:msg, title:`ERROR: Select a Token`})
-    return
-}
-jez.log(`Source Token ${sToken.name}`, sToken);
-let sActor = sToken.actor
-let itemsFound = []
-let typesFound = []
-for (let i=0; i < sActor.items.contents.length; i++) {
-    jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
-    if (!typesFound.includes(sActor.items.contents[i].data.type)) typesFound.push(sActor.items.contents[i].data.type)
-    //if (sActor.items.contents[i].data.type === "spell") itemsFound.push(sActor.items.contents[i].data.name)
-}
-jez.log(`Found ${typesFound.length} types}`, typesFound.sort())
-
-
-queryTitle = "What item of type of thing?"
-queryText = "Please, pick one from list below."
-if (typesFound.length > 9)  // If 9 or less, use a radio button dialog
-    await jez.pickFromListArray(queryTitle, queryText, typeCallBack, typesFound.sort())
-else
-    await jez.pickRadioListArray(queryTitle, queryText, typeCallBack, typesFound.sort())
-
-async function typeCallBack(itemType) {
-    jez.log("typeCallBack", itemType)
-    msg = `The type named <b>"${itemType}"</b> was selected in the dialog`
-    //--------------------------------------------------------------------------------------------
-    // Find all the item of type "itemType"
-    //
-    for (let i = 0; i < sActor.items.contents.length; i++) {
-        jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
-        if (sActor.items.contents[i].data.type === itemType) itemsFound.push(sActor.items.contents[i].data.name)
-    }
-    jez.log(`Found ${itemsFound.length} ${itemType}(s)`, itemsFound.sort())
-    //--------------------------------------------------------------------------------------------
-    // From the Items found, ask which item should trigger opening a sheet.
-    //
-    queryTitle = "Sheets with with which item should be opened?"
-    queryText = `Pick one from list of ${itemType} item(s)`
-    if (itemsFound.length > 9)  // If 9 or less, use a radio button dialog
-        await jez.pickFromListArray(queryTitle, queryText, itemCallBack, itemsFound.sort())
-    else
-        await jez.pickRadioListArray(queryTitle, queryText, itemCallBack, itemsFound.sort())
-
-    function itemCallBack(itemSelected) {
-        jez.log("typeCallBack", itemSelected)
-        msg = `The item named <b>"${itemSelected}"</b> was selected in the dialog`
-        //--------------------------------------------------------------------------------------------
-        // Find and open all the actor sheets that contain the selected item
-        //
-        jez.log("Item Type", itemType)
-        jez.log("Item Selected", itemSelected)
-
-        let allActors = game.actors
-
-        for (let entity of allActors) {
-            cnt++
-            itemFound = entity.items.find(item => item.data.name === itemSelected && item.type === itemType)
-            if (itemFound) {
-                cntFound++;
-                actorsWithItem.push(entity.name);
-            }
-        }
-
-        msg = `<u>Found ${cntFound} actor(s) with ${itemSelected} ${itemType}</u><br>`
-
-        let i = 0;
-        console.log(`Searched ${cnt} entities, found ${cntFound} with ${itemSelected} ${itemType}:`)
-        for (let line of actorsWithItem) {
-            jez.log(`${++i}) ${line}`);
-            msg += `${line}<br>`
-            game.actors.getName(line).sheet.render(true);
-        }
-
-        jez.log(`Actors with ${itemSelected}`)
-        jez.postMessage({ color: "purple", fSize: 14, msg: msg, title: `Actors with ${itemSelected} ${itemType}` })
-        jez.log(`Ending ${MACRONAME}`);
+//---------------------------------------------------------------------------------------------------
+// Run the main procedures, choosing based on how the macro was invoked
+//
+main();
+jez.log(`============== Finishing === ${MACRONAME} =================`);
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ *    END_OF_MAIN_MACRO_BODY
+ *                                END_OF_MAIN_MACRO_BODY
+ *                                                             END_OF_MAIN_MACRO_BODY
+ ****************************************************************************************************
+ * Check the setup of things.  Post bad message and return false fr bad, true for ok!
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+async function preCheck() {
+    if (canvas.tokens.controlled.length !== 1) {
+        jez.badNews(`Must select one token to be used to find the item that will be searched for.  Selected ${canvas.tokens.controlled.length}`)
+        jez.postMessage({
+            color: jez.randomDarkColor(), fSize: 14, icon: "Icons_JGB/Misc/Jez.png",
+            msg: msg, title: `Try Again, Selecting One Token`,
+        })
+        return (false)
     }
 }
-return
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Main function
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function main() {
+    if (!preCheck()) return (false)
+    //--------------------------------------------------------------------------------------------
+    // Setup variables for main function & children
+    //
+    let sToken = canvas.tokens.controlled[0]
+    let promptObj = {
+        // title1: "What item of type of thing should be Refreshed?",
+        // text1 : "Please, pick item type from list below.",
+        // title2: "Which specific item should be Refreshed?",
+        // text2 : "Pick one from list of items of the type picked in previous dialog.",
+        title3: "Select Actors to Open",
+        text3 : "Choose the actor(s) to have their sheets opened onto screen"
+    }
+    //--------------------------------------------------------------------------------------------
+    // Start the real efforts
+    //
+    Dialog.confirm({
+        title: "Open Selected Actor's Sheets",
+        content: `<p>This macro will lead you through selecting an item located on 
+        <b>${sToken.name}</b>'s actor's sheet.</p>  
+        <p>It will then find all actors in the actor's directory that have that item and 
+        ask you to select those that you would like to open onto the screen.</p>
+        <p>Would you like to continue?</p>`,
+        yes: () => jez.selectItemOnActor(sToken, promptObj, workHorse),
+        no: () => console.log("You choose ... to quit"),
+        defaultYes: true
+       });
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Use Selection Information...
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ async function workHorse(dataObj) {
+    const FUNCNAME = "workHorse()";
+    jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`, "dataObj.sToken",dataObj.sToken,"dataObj.idArray", dataObj.idArray, "dataObj.itemName", dataObj.itemName, "dataObj.itemType", dataObj.itemType)
+    //----------------------------------------------------------------------------------------------
+    // Update item in side bar, by calling a macro from this macro
+    //
+    let i = 0
+    msg = `<u>Opened ${dataObj.idArray.length} actor(s) with ${dataObj.itemName} ${dataObj.itemType}</u><br>`
+    for (let line of dataObj.idArray) {
+        msg += `${++i}) ${game.actors.get(line).name}<br>`
+        game.actors.get(line).sheet.render(true);
+    }
+    // jez.log(`Actors with ${dataObj.itemName}`)
+    jez.postMessage({ color: "purple", fSize: 14, msg: msg, title: `Actors with ${dataObj.itemName} ${dataObj.itemType}` })
+    // jez.log(`Ending ${MACRONAME}`);
+
+    jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+}

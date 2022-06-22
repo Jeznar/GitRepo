@@ -70,7 +70,7 @@ class jez {
      ***************************************************************************************************/
     static async postMessage(msgParm) {
         const FUNCNAME = "postMessage(msgParm)";
-        // jez.log(`-------------- Starting ${FUNCNAME} -----------`);
+        // jez.log(`--- Starting ${FUNCNAME} ---`,msgParm);
         let typeOfParm = typeof (msgParm)
         let chatCard = msgParm
         let speaker = null              // The speaking Token
@@ -528,7 +528,7 @@ class jez {
                         const SELECTED_OPTION = html.find("[name=selectedLine]:checked").val();
                         // jez.log("Radio Button Selection", SELECTED_OPTION)
                         // jez.log('selected option', SELECTED_OPTION)
-                        pickCallBack(SELECTED_OPTION)
+                        await pickCallBack(SELECTED_OPTION) // Trying await before the call back -Jez
                     },
                 },
                 cancel: {
@@ -1512,7 +1512,203 @@ class jez {
         return (count)
     }
 
-
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * jez.selectItemOnActor(...)
+     * 
+     * Series of 3 dialogs to select an Item from selected actor and then find all of the actors that 
+     * have that item, building a data object that is passed to the nextFunction (passed in as a 
+     * parameter).
+     * 
+     * Inputs
+     * @arg {object} sToken - a Token5e data object representing the source token to be read
+     * @arg {object} prompts - An object containing a number of strings, any of which may be omitted
+     * @arg {function} nextFunction - Called at successful conclusion and passed selection object
+     * 
+     * NextFunction contents
+     * @typedef  {Object} promptObj
+     * @property {string} title1 - Dialog title for first pop-up dialog
+     * @property {string} text1  - Dialog text for first pop-up dialog
+     * @property {string} title2 - Dialog title for second pop-up dialog
+     * @property {string} text2  - Dialog text for second pop-up dialog
+     * @property {string} title3 - Dialog title for third pop-up dialog
+     * @property {string} text3  - Dialog text for third pop-up dialog 
+     * 
+     * Default value for dialogs
+     * Title1 = "What type of thing?"
+     * Text1  = "Please, pick one from list below."
+     * Title2 = "Which specific item should be acted upon?"
+     * Text2  = `Pick one item from list of "${itemType}" item(s)`
+     * Title3 = "Select Actor(s) to have their item acted upon."
+     * Text3  = `Choose the actor(s) to have their ${itemSelected} of type ${itemType} acted upon.`
+     * 
+     * The nextFunction is called with a selObj that will contain the following
+     * @typedef  {Object} selObj
+     * @property {object} sToken - a Token5e data object representing the source token to be read
+     * @property {array} actorsIdsToUpdate - array of actor IDs for the actor selected in dialogs
+     * @property {string} itemSelected - string naming the item being acted upon
+     * @property {type} itemType - string naming the type of object (e.g. spell, weapon) targeted
+     * 
+     * Execution can be aborted from each dialog by selecting cancel or the X button.  If that is the 
+     * case a false if returned.
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async selectItemOnActor(sToken, prompts, nextFunction) {
+        let typesFound = []
+        //--------------------------------------------------------------------------------------------
+        // Set up our variables for this function
+        //
+        let sActor = sToken.actor
+        //--------------------------------------------------------------------------------------------
+        // Read through all of the targets items to find all of the types represented
+        //
+        for (let i = 0; i < sActor.items.contents.length; i++) {
+            // jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
+            if (!typesFound.includes(sActor.items.contents[i].data.type))
+                typesFound.push(sActor.items.contents[i].data.type);
+        }
+        // jez.log(`Found ${typesFound.length} types}`, typesFound.sort())
+        //--------------------------------------------------------------------------------------------
+        // Pop a dialog to select the type of thing to be operated on
+        //
+        const Q_TITLE = prompts.title1 ?? "What type of thing?";
+        const Q_TEXT = prompts.text1 ?? "Please, pick one from list below.";
+        if (typesFound.length > 9) await jez.pickFromListArray(Q_TITLE, Q_TEXT, typeCallBack, typesFound.sort());
+        else await jez.pickRadioListArray(Q_TITLE, Q_TEXT, typeCallBack, typesFound.sort());
+        /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+         * typeCallBack
+         *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+        async function typeCallBack(itemType) {
+            const FUNCNAME = "typeCallBack(itemType)";
+            // jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`,"itemType",itemType);
+            let msg = `typeCallBack: Type "${itemType}" was selected in the dialog`;
+            console.log(msg);
+            let itemsFound = [];
+            //--------------------------------------------------------------------------------------------
+            // If cancel button was selected on the preceding dialog, null is returned.
+            //
+            if (itemType === null)
+                return (false);
+            //--------------------------------------------------------------------------------------------
+            // If nothing was selected call preceding function and terminate this one
+            //
+            if (!itemType) {
+                // jez.log("itemType",itemType)
+                console.log("No selection passed to typeCallBack(itemType), trying again.");
+                jez.selectItemOnActor(sToken, prompts, nextFunction);
+                return (false);
+            }
+            //--------------------------------------------------------------------------------------------
+            // Find all the item of type "itemType"
+            //
+            for (let i = 0; i < sActor.items.contents.length; i++) {
+                // jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
+                if (sActor.items.contents[i].data.type === itemType)
+                    itemsFound.push(sActor.items.contents[i].data.name);
+            }
+            // jez.log(`Found ${itemsFound.length} ${itemType}(s)`, itemsFound.sort())
+            //--------------------------------------------------------------------------------------------
+            // From the Items found, ask which item should trigger opening a sheet.
+            //
+            const Q_TITLE = prompts.title2 ?? "Which specific item should be acted upon?";
+            const Q_TEXT = prompts.text2 ?? `Pick one item from list of "${itemType}" item(s)`;
+            if (itemsFound.length > 9) await jez.pickFromListArray(Q_TITLE, Q_TEXT, itemCallBack, itemsFound.sort());
+            else await jez.pickRadioListArray(Q_TITLE, Q_TEXT, itemCallBack, itemsFound.sort());
+            // jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+            /*********1*********2*********3*********4*********5*********6*********7*********8*********9******
+             * itemCallBack
+             *********1*********2*********3*********4*********5*********6*********7*********8*********9*****/
+            function itemCallBack(itemSelected) {
+                let msg = `itemCallBack: Item named "${itemSelected}" was selected in the dialog`;
+                console.log(msg);
+                let actorFullWithItem = [];
+                //--------------------------------------------------------------------------------------------
+                // If cancel button was selected on the preceding dialog, null is returned ==> Terminate
+                //
+                if (itemSelected === null)
+                    return (false);
+                //--------------------------------------------------------------------------------------------
+                // If nothing was selected call preceding function and terminate this one
+                //
+                if (!itemSelected) {
+                    console.log("No selection passed to itemCallBack(itemSelected), trying again.");
+                    typeCallBack(itemType);
+                    return (false);
+                }
+                //--------------------------------------------------------------------------------------------
+                // Search all actors in the actor directory for our item/type combos
+                //
+                let allActors = game.actors;
+                for (let entity of allActors) {
+                    let itemFound = entity.items.find(item => item.data.name === itemSelected && item.type === itemType);
+                    if (itemFound)
+                        actorFullWithItem.push(`${entity.name} (${entity.id})`);
+                }
+                //--------------------------------------------------------------------------------------------
+                // From the Items found, ask which item should trigger opening a sheet.
+                //
+                const Q_TITLE = prompts.title3 ?? "Select Actor(s) to have their item acted upon.";
+                const Q_TEXT = prompts.text3 ?? `Choose the actor(s) to have their ${itemSelected} of type ${itemType} acted upon.`;
+                jez.pickCheckListArray(Q_TITLE, Q_TEXT, pickCheckCallBack, actorFullWithItem);
+            // jez.log(`*** Ending pickCheckListArray ${MACRONAME}`);
+            /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+             * pickCheckCallBack
+             *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+            /*async*/ function pickCheckCallBack(selection) {
+                    let actorsIdsToUpdate = [];
+                    let selectionString = "";
+                    //--------------------------------------------------------------------------------------------
+                    // If cancel button was selected on the preceding dialog, null is returned.
+                    //
+                    // jez.log("selection", selection)
+                    if (selection === null) return (false);
+                    //--------------------------------------------------------------------------------------------
+                    // If nothing was selected (empty array), call preceding function and terminate this one
+                    //
+                    if (selection.length === 0) {
+                        console.log("No selection passed to pickCheckCallBack(selection), trying again.");
+                        itemCallBack(itemSelected); // itemSelected is a global that is passed to preceding func
+                        return (false);
+                    }
+                    //--------------------------------------------------------------------------------------------
+                    // Write function start with number selected to console.log
+                    //
+                    let msg = `pickCheckCallBack: ${selection.length} actor(s) selected in the dialog`;
+                    console.log(msg);
+                    //--------------------------------------------------------------------------------------------
+                    // Build a string with <br> embedded between entries, other than last
+                    //
+                    for (let i = 0; i < selection.length; i++) {
+                        if (selectionString)
+                            selectionString += "<br>";
+                        selectionString += selection[i];
+                    }
+                    //----------------------------------------------------------------------------------------------
+                    // Build an array of the actor IDs that might be updated
+                    // Selection lines are of this form: Lecherous Meat Bag, Medium (eYstNJefUUgrHk8Q)
+                    //
+                    // jez.log('selection', selection)
+                    for (let i = 0; i < selection.length; i++) {
+                        // jez.log(`${i + 1} ${selection[i]}`)
+                        let actorArray = []; // Array for actors seperated by "(", there will be 2 or more
+                        actorArray = selection[i].split("(");
+                        let actorId = actorArray[actorArray.length - 1].slice(0, -1); // Chop off last character a ")"
+                        actorsIdsToUpdate.push(actorId); // Stash the actual actorId from the selection line
+                    }
+                    //----------------------------------------------------------------------------------------------
+                    // Build object to be returned to calling function
+                    //
+                    // jez.log(`--- Loading Data ---`,"sToken",sToken,"actorsIdsToUpdate",actorsIdsToUpdate,"itemSelected",itemSelected,"itemType",itemType)
+                    let selObj = {
+                        sToken: sToken,
+                        idArray: actorsIdsToUpdate,
+                        itemName: itemSelected,
+                        itemType: itemType
+                    }
+                    // jez.log(`--- Passing Data ---`,"selObj.sToken",selObj.sToken,"selObj.idArray",selObj.idArray,"selObj.itemName",selObj.itemName,"selObj.itemType",selObj.itemType)
+                    nextFunction(selObj)    // Call teh nextFunction (passed to this function with our selection object
+                }
+            }
+        }
+    }
 
 } // END OF class jez
 Object.freeze(jez);

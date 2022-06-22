@@ -22,44 +22,45 @@ The small bundle of files that make up this module need to be paced on the serve
 
 ## Functions in this Module
 
-The functions currently included in this module are:
+The functions currently included in this module are (all need to be proceeded by **jez.** when called):
 
-* **[jez.addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
-* **[jez.badNews(message)](#badNewsmessage)** -- Displays warning message on console and ui then returns false
-* **[jez.deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
-* **[jez.getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
-* **[jez.getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
-* **[jez.getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
-* **[jez.getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
-* **[jez.getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
-* **[jez.getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
-* **[jez.getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
-* **[jez.getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
-* **[jez.getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
-* **[jez.getSpellDC(subject)](#get-functions)** -- Returns a string containing the subjects spell DC
-* **[jez.getSpellSchool(item)](#getspellschoolitem)** -- Returns a string naming the school of passed item
-* **[jez.getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
-* **[jez.getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifier
-* **[jez.getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
-* **[jez.getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
-* **[jez.inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
-* **[jez.itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
-* **[jez.itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
-* **[jez.itemFindOnActor(token5e, itemName, itemType)](#item-functions)** -- Finds and item on Actor
-* **[jez.itemMgmt_itemCount(array, name, type)](#itemMgmt_itemCountarray-name-type)** -- Returns count of item/type in array
-* **[jez.itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions)** -- Updates an Item on Actor
-* **[jez.log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
-* **[jez.moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay)** -- Push or pull token 1, 2 or 3 spaces
-* **[jez.pairEffects(subject1, effectName1, subject2, effectName2)](#pairEffectssubject1-effectName1-subject2-effectName2))** -- Add lines to DAE effects to remove other member of pair when either removed.
-* **[jez.pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
-* **[jez.pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a drop down list.  User's selection is passed to the specified callback function. 
-* **[jez.pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
-* **[jez.postMessage(msgParm)](#postmessagemsgparm)** -- Posts a new message to the **Chat Log**
-* **[jez.randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
-* **[jez.replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring))** -- Returns updated string and count of replacements in an object.
-* **[jez.runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
-* **[jez.tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
-* **[jez.wait(ms)](#wait)** -- Waits for specified milliseconds.
+* **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
+* **[badNews(message)](#badNewsmessage)** -- Displays warning message on console and ui then returns false
+* **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
+* **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
+* **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
+* **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
+* **[getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
+* **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
+* **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
+* **[getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
+* **[getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
+* **[getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
+* **[getSpellDC(subject)](#get-functions)** -- Returns a string containing the subjects spell DC
+* **[getSpellSchool(item)](#getspellschoolitem)** -- Returns a string naming the school of passed item
+* **[getStatMod(subject)](#get-functions)** -- Returns the subject's modifier for passed stat string
+* **[getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifier
+* **[getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
+* **[getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
+* **[inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
+* **[itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
+* **[itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
+* **[itemFindOnActor(token5e, itemName, itemType)](#item-functions)** -- Finds and item on Actor
+* **[itemMgmt_itemCount(array, name, type)](#itemMgmt_itemCountarray-name-type)** -- Returns count of item/type in array
+* **[itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions)** -- Updates an Item on Actor
+* **[log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
+* **[moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay)** -- Push or pull token 1, 2 or 3 spaces
+* **[pairEffects(subject1, effectName1, subject2, effectName2)](#pairEffectssubject1-effectName1-subject2-effectName2))** -- Add lines to DAE effects to remove other member of pair when either removed.
+* **[pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
+* **[pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a drop down list.  User's selection is passed to the specified callback function. 
+* **[pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
+* **[postMessage(msgParm)](#postmessagemsgparm)** -- Posts a new message to the **Chat Log**
+* **[randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
+* **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring))** -- Returns updated string and count of replacements in an object.
+* **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
+* **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc))** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
+* **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
+* **[wait(ms)](#wait)** -- Waits for specified milliseconds.
 
 More about each of these in the following sections. 
 
@@ -774,6 +775,110 @@ jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
 jez.runRuneVFX(args[0].targets, jez.getSpellSchool(aItem), jez.getRandomRuneColor())
 ```
 
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### selectItemOnActor(sToken, prompts, nextFunc)
+
+Complex series of 3 dialogs to select an Item from an actor and then find all of the actors that 
+have that item, building a data object that is passed to nextFunc (passed in as a parameter).
+
+Execution can be aborted from each dialog by selecting cancel or the X button.  If that is the 
+case a false if returned.
+ 
+#### Inputs
+
+* sToken (Token5e object) - a Token5e data object representing the source token to be read
+* prompts (Custom object) - An object containing a number of strings, any of which may be omitted
+* nextFunc (function) - Called at successful conclusion and passed selection object
+ 
+#### Prompts Object Contents
+
+| Variable   | Purpose              | Default Value                                         |
+|------------|----------------------|-------------------------------------------------------|
+| **title1** | Title for 1st dialog | "What type of thing?"                                 |
+| **text1**  | Text for 1st dialog  | "Please, pick one from list below."                   |
+| **title2** | Title for 2nd dialog | "Which specific item should be acted upon?"           | 
+| **text2**  | Text for 2nd dialog  | \`Pick one item from list of "\${itemType}" item(s)\` |
+| **title3** | Title for 3rd dialog | "Select Actor(s) to have their item acted upon."      | 
+| **text3**  | Text for 3rd dialog  | \`Choose the actor(s) to have their \${itemSelected} of type \${itemType} acted upon.\`|
+
+#### nextFunc Argument
+
+The nextFunc is called with a selection object (selObj) that will contain the following
+
+* **sToken** - a Token5e data object representing the source token to be read
+* **actorsIdsToUpdate** - array of actor IDs for the actor selected in dialogs
+* **itemSelected** - string naming the item being acted upon
+* **itemType** - string naming the type of object (e.g. spell, weapon) targeted
+
+Here is a sample usage, it does the following major steps:
+
+1. Obtain the selected token data (Token5e)
+2. Create two custom dialog titles to override the defaults
+3. Define a dialog that explains what the macro is about to do allowing the user to cancel out
+4. Define callback function for yes to **jez.selectItemOnActor(sToken, promptObj, workHorse)**
+5. Define callback function for no to a snarky console message
+6. Set the default button to yes (a false value sets No to be default)
+
+~~~javascript
+// Step 1
+let sToken = canvas.tokens.controlled[0]                            
+
+// Step 2
+let promptObj = {
+    title1: "What item of type of thing should be Updated?",
+    title2: "Which specific item should be Updated?",
+}
+
+// Step 3
+Dialog.confirm({
+    title: "Update Item on Actors' Sheets",
+    content: `<p>This macro will lead you through selecting an item located on 
+    <b>${sToken.name}</b>'s actor's sheet.  It will then find all actors in the actor's 
+    directory that have that item and ask you to select those that you would like those 
+    that you want to update the item on.</p>
+    <p>If you commit the update, the version of the item in the Item Directory (sidebar) 
+    will first be updated from ${sToken.name}'s copy of the item. Then the item on the 
+    selected actors will be updated from the sidebar.</p>
+    <p>
+    <ul>
+    <li>Description -- See below</li>
+    <li>Item Macro -- Update macro body to match source</li>
+    <li>Animations -- Update animations to match source</li>
+    </ul>
+    </p><p>
+    The description will be customized if it contains the 
+    token's name, %TOKENNAME%, or is a special case REGENERATION item.</p>
+    <p>Would you like to continue?</p>`,
+
+// Step 4    
+    yes: () => jez.selectItemOnActor(sToken, promptObj, workHorse),
+
+// Step 5
+    no: () => console.log("You choose ... poorly"),
+
+// Step 6
+    defaultYes: true
+});
+~~~
+
+A sample workhorse function is shown below.
+
+~~~javascript
+async function workHorse(dataObj) {
+   //----------------------------------------------------------------------------------------------
+   // Update item in side bar, by calling a macro from this macro
+   //
+   if (!await updateItemInSidebar(dataObj.sToken, dataObj.itemName, dataObj.itemType)) return (false);
+   //----------------------------------------------------------------------------------------------
+   // Update the selected actor's item, all of the selected actors
+   //
+   for (let line of dataObj.idArray) await pushUpdate(line, dataObj.itemName, dataObj.itemType);
+}
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 

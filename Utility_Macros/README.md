@@ -20,7 +20,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[DisplayDescription](#displaydescription)** Prints the item description to the bottom of the chat card.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **Light Picker**: sample macro that sets the type of light emitted by a token.
-* **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetchs a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
+* **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetches a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
 * **[Refresh Item on Actors](#refresh-item-on-actors)** Refreshes (replaces) sidebar and selected tokens to match a reference item, retaining very specific fields.
 * **[Remove Paired Effect](#remove-paired-effect)** Removes effect identified by id from actor also specified by id
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
@@ -233,6 +233,8 @@ It does the following:
 
 ![Open_Actor_Sheets_With_Example.png](Images/Open_Actor_Sheets_With_Example.png)
 
+6/22/22 Updated to use **[selectItemOnActor(sToken, prompts, nextFunc)](../jez-lib#selectitemonactorstoken-prompts-nextfunc))** and provide description of macro with a cancel option on launch.
+
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
 ---
@@ -260,6 +262,8 @@ It is a multi-step beastie that goes through the following major steps:
 To recap, this macro replaces items retaining select fields from the original item on actors in the actors directory (sidebar) and a reference copy of the item in the items directory (sidebar).  It is not for creating new items on actors or populating empty items, just refreshing.
 
 See **[Update Item on Actors](#update-item-on-actors)** for discussion of special cases. 
+
+6/22/22 Updated to use **[selectItemOnActor(sToken, prompts, nextFunc)](../jez-lib#selectitemonactorstoken-prompts-nextfunc))** and provide description of macro with a cancel option on launch.
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
@@ -422,6 +426,8 @@ The idea is that `%TOKENNAME%` can be used within the *master* item (on the acto
 Items with the names `Regeneration` or `Self-Repair` receive special treatment because of the *magic phrase* used by the **DnD 5e Helpers module** to implement automatic self healing.  I'm not crazy about this, but for now, I am using it and have bent this macro to accommodate it, in fact require it for those two very specific items. 
 
 The **DnD 5e Helpers module** looks for a string that looks like "X hit points" where X can be a static value or a dice formula, or so the author claims.  In reality the RegEx he uses allows X too basically be an integer or a die expression of the form XdY where X is any number of digits and Y is 1 to 9 followed by any number of digits.  Notice that no + or - is included, so rolling dice and adding a modifier is unsupported.
+
+6/22/22 Updated to use **[selectItemOnActor(sToken, prompts, nextFunc)](../jez-lib#selectitemonactorstoken-prompts-nextfunc))** and provide description of macro with a cancel option on launch.
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

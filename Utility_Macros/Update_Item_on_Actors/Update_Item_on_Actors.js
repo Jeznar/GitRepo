@@ -1,4 +1,4 @@
-const MACRONAME = "Update_Item_on_Actors.0.4.js"
+const MACRONAME = "Update_Item_on_Actors.0.5.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Provide dialogs to select an item from selected actor.  That item is used as a reference to use
  * to update select fields on actors selected and also the item directory (sidebar)
@@ -7,8 +7,9 @@ const MACRONAME = "Update_Item_on_Actors.0.4.js"
  * selected in a scene.
  *
  * 06/16/22 0.4 Updates
- *****************************************************************************/
- const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+ * 06/21/22 0.5 Change to use jez.selectItemOnActor(sToken, promptObj, workHorse)
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
@@ -54,150 +55,56 @@ async function main() {
     //
     let sToken = canvas.tokens.controlled[0]
     // jez.log(`Source Token ${sToken.name}`, sToken);
-    let sActor = sToken.actor
-    let typesFound = []
-    //--------------------------------------------------------------------------------------------
-    // Read through all of the targets items to find all of the types represented
-    //
-    for (let i = 0; i < sActor.items.contents.length; i++) {
-        // jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
-        if (!typesFound.includes(sActor.items.contents[i].data.type)) typesFound.push(sActor.items.contents[i].data.type)
+    let promptObj = {
+        title1: "What item of type of thing should be Updated?",
+        // text1 : "Please, pick item type from list below.",
+        title2: "Which specific item should be Updated?",
+        // text2 : "Pick one from list of items of the type picked in previous dialog.",
+        // title3: "Select Actors to receive refreshed item.",
+        // text3 : "Choose the actor(s) to have their item refreshed to match the selected item"
     }
-    // jez.log(`Found ${typesFound.length} types}`, typesFound.sort())
     //--------------------------------------------------------------------------------------------
-    // Pop a dialog to select the type of thing to be operated on
+    // Start the real efforts
     //
-    queryTitle = "What item of type of thing?"
-    queryText = "Please, pick one from list below."
-    if (typesFound.length > 9)  // If 9 or less, use a radio button dialog
-        await jez.pickFromListArray(queryTitle, queryText, typeCallBack, typesFound.sort())
-    else
-        await jez.pickRadioListArray(queryTitle, queryText, typeCallBack, typesFound.sort())
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-     * typeCallBack
-     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    async function typeCallBack(itemType) {
-        msg = `typeCallBack: Type "${itemType}" was selected in the dialog`
-        console.log(msg)
-        let itemsFound = []
-        //--------------------------------------------------------------------------------------------
-        // If cancel button was selected on the preceding dialog, null is returned.
-        //
-        if (itemType === null) return; 
-        //--------------------------------------------------------------------------------------------
-        // If nothing was selected call preceding function and terminate this one
-        //
-        if (!itemType) {
-            // jez.log("itemType",itemType)
-            console.log("No selection passed to typeCallBack(itemType), trying again.")
-            main();
-            return;
-        }
-        //--------------------------------------------------------------------------------------------
-        // Find all the item of type "itemType"
-        //
-        for (let i = 0; i < sActor.items.contents.length; i++) {
-            // jez.log(`${i} ${sActor.items.contents[i].data.type} ${sActor.items.contents[i].data.name}`)
-            if (sActor.items.contents[i].data.type === itemType) itemsFound.push(sActor.items.contents[i].data.name)
-        }
-        // jez.log(`Found ${itemsFound.length} ${itemType}(s)`, itemsFound.sort())
-        //--------------------------------------------------------------------------------------------
-        // From the Items found, ask which item should trigger opening a sheet.
-        //
-        queryTitle = "Sheets with with which item should be processed?"
-        queryText = `Pick one from list of ${itemType} item(s)`
-        if (itemsFound.length > 9)  // If 9 or less, use a radio button dialog
-            await jez.pickFromListArray(queryTitle, queryText, itemCallBack, itemsFound.sort())
-        else
-            await jez.pickRadioListArray(queryTitle, queryText, itemCallBack, itemsFound.sort())
-        /*********1*********2*********3*********4*********5*********6*********7*********8*********9******
-         * itemCallBack
-         *********1*********2*********3*********4*********5*********6*********7*********8*********9*****/
-        function itemCallBack(itemSelected) {
-            msg = `itemCallBack: Item named "${itemSelected}" was selected in the dialog`
-            console.log(msg)
-            let actorFullWithItem = [];
-            //--------------------------------------------------------------------------------------------
-            // If cancel button was selected on the preceding dialog, null is returned ==> Terminate
-            //
-            if (itemSelected === null) return;
-            //--------------------------------------------------------------------------------------------
-            // If nothing was selected call preceding function and terminate this one
-            //
-            if (!itemSelected) {
-                console.log("No selection passed to itemCallBack(itemSelected), trying again.")
-                typeCallBack(itemType);
-                return;
-            }
-            //--------------------------------------------------------------------------------------------
-            // Search all actors in the actor directory for our item/type combos
-            //
-            let allActors = game.actors
-            for (let entity of allActors) {
-                itemFound = entity.items.find(item => item.data.name === itemSelected && item.type === itemType)
-                if (itemFound) actorFullWithItem.push(`${entity.name} (${entity.id})`);
-            }
-            //--------------------------------------------------------------------------------------------
-            // From the Items found, ask which item should trigger opening a sheet.
-            //
-            const Q_TITLE = "Select Actors to Update"
-            const Q_TEXT = `Choose the actor(s) to have their ${itemSelected} of type ${itemType} updated to 
-            that held by ${sToken.name}`
-            jez.pickCheckListArray(Q_TITLE, Q_TEXT, pickCheckCallBack, actorFullWithItem);
-            // jez.log(`Ending ${MACRONAME}`);
-            /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-             * pickCheckCallBack
-             *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-            async function pickCheckCallBack(selection) {
-                msg = `pickCheckCallBack: ${selection.length} actor(s) selected in the dialog`
-                console.log(msg)
-                let actorsIdsToUpdate = [];
-                let selectionString = ""
-                //--------------------------------------------------------------------------------------------
-                // If cancel button was selected on the preceding dialog, null is returned.
-                //
-                if (selection === null) return;
-                //--------------------------------------------------------------------------------------------
-                // If nothing was selected (empty array), call preceding function and terminate this one
-                //
-                if (selection.length === 0) {
-                    console.log("No selection passed to pickCheckCallBack(selection), trying again.")
-                    itemCallBack(itemSelected)  // itemSelected is a global that is passed to preceding func
-                    return;
-                }
-                //--------------------------------------------------------------------------------------------
-                // Build a string with <br> embedded between entries, other than last
-                //
-                for (let i = 0; i < selection.length; i++) {
-                    if (selectionString) selectionString += "<br>"
-                    selectionString += selection[i]
-                }
-                //----------------------------------------------------------------------------------------------
-                // Build an array of the actor IDs that might be updated
-                // Selection lines are of this form: Lecherous Meat Bag, Medium (eYstNJefUUgrHk8Q)
-                //
-                // jez.log('selection', selection)
-                for (let i = 0; i < selection.length; i++) {
-                    // jez.log(`${i + 1} ${selection[i]}`)
-                    let actorArray = []     // Array for actors seperated by "(", there will be 2 or more
-                    actorArray = selection[i].split("(")
-                    let actorId = actorArray[actorArray.length - 1].slice(0, -1)  // Chop off last character a ")"
-                    actorsIdsToUpdate.push(actorId)  // Stash tha actual actorId from the selection line
-                }
-                //----------------------------------------------------------------------------------------------
-                // Update item in side bar, by calling a macro from this macro
-                //
-                // jez.log(`Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)`, "sActor.name", sActor.name,"itemSelected", itemSelected, "itemType", itemType)
-                // if (!await Update_Item_In_Sidebar(sActor.id, itemSelected, itemType)) return(false)
-                if (!await Update_Item_In_Sidebar(sToken, itemSelected, itemType)) return(false)
-
-                //----------------------------------------------------------------------------------------------
-                // Update the selected actor's item
-                //
-                for (let line of actorsIdsToUpdate) await Push_Update(line, itemSelected, itemType);
-            }
-        }
-    }
+    Dialog.confirm({
+        title: "Update Item on Actors' Sheets",
+        content: `<p>This macro will lead you through selecting an item located on 
+        <b>${sToken.name}</b>'s actor's sheet.  It will then find all actors in the actor's 
+        directory that have that item and ask you to select those that you would like those 
+        that you want to update the item on.</p>
+        <p>If you commit the update, the version of the item in the Item Directory (sidebar) 
+        will first be updated from ${sToken.name}'s copy of the item. Then the item on the 
+        selected actors will be updated from the sidebar.</p>
+        <p>
+        <ul>
+        <li>Description -- See below</li>
+        <li>Item Macro -- Update macro body to match source</li>
+        <li>Animations -- Update animations to match source</li>
+        </ul>
+        </p><p>
+        The description will be customized if it contains the 
+        token's name, %TOKENNAME%, or is a special case REGENERATION item.</p>
+        <p>Would you like to continue?</p>`,
+        yes: () => jez.selectItemOnActor(sToken, promptObj, workHorse),
+        no: () => console.log("You choose ... poorly"),
+        defaultYes: true
+    });
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Use Selection Information...
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ async function workHorse(dataObj) {
+    const FUNCNAME = "workHorse()";
+    // jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`, "dataObj.sToken",dataObj.sToken,"dataObj.idArray", dataObj.idArray, "dataObj.itemName", dataObj.itemName, "dataObj.itemType", dataObj.itemType)
+    //----------------------------------------------------------------------------------------------
+    // Update item in side bar, by calling a macro from this macro
+    //
+    if (!await updateItemInSidebar(dataObj.sToken, dataObj.itemName, dataObj.itemType)) return (false);
+    //----------------------------------------------------------------------------------------------
+    // Update the selected actor's item, all of the selected actors
+    //
+    for (let line of dataObj.idArray) await pushUpdate(line, dataObj.itemName, dataObj.itemType);
+    // jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Function to update a target actor's item with the origin actor's item. Should be used to quickly 
@@ -205,9 +112,9 @@ async function main() {
  * 
  * Called by main function in a loop to update all actors chosen by the user.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-// async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
-async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
-    const FUNCNAME = "Push_Update(targetActorId, nameOfItem, typeOfItem)";
+// async function pushUpdate(targetActorId, nameOfItem, typeOfItem) {
+async function pushUpdate(targetActorId, nameOfItem, typeOfItem) {
+    const FUNCNAME = "pushUpdate(targetActorId, nameOfItem, typeOfItem)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"targetActorId",targetActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
     //----------------------------------------------------------------------------------------------
     // Get Actor
@@ -220,11 +127,12 @@ async function Push_Update(targetActorId, nameOfItem, typeOfItem) {
         return(false)
     }
     // jez.log("tActor",tActor)
-    console.log(`Push_Update: Processing ${tActor.data.token.name}`) 
+    console.log(("***********************************************************************"))
+    console.log(`*** pushUpdate: Processing ${tActor.data.token.name}`) 
     //----------------------------------------------------------------------------------------------
     // Make sure the item exists and is unique within the actor 
     //
-    let matches = itemCount(tActor.items.contents, nameOfItem, typeOfItem)
+    let matches = jez.itemMgmt_itemCount(tActor.items.contents, nameOfItem, typeOfItem) 
     if (matches === 0) {
         msg = `Item "${nameOfItem}" of type "${typeOfItem}" not on actor ${tActor.name}, very odd, skipping.`
         console.log(msg)
@@ -267,7 +175,11 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         // If tActor is not set, we are updating the sidebar and don't want to replace place holder
         // strings.
         // jez.log("tActor.data.token.name", tActor.data.token.name)
-        itemDescription = itemDescription.replace(/%TOKENNAME%/g, `${tActor.data.token.name}`);
+        // itemDescription = itemDescription.replace(/%TOKENNAME%/g, `${tActor.data.token.name}`);
+        let descObj = jez.replaceSubString(itemDescription, 'TOKENNAME', tActor.data.token.name,'%')
+        if (descObj.count > 0)
+            console.log(`Status  | Replaced "%TOKENNAME%" with ${tActor.data.token.name} ${descObj.count} time(s)`)
+        itemDescription = descObj.string
         //----------------------------------------------------------------------------------------------
         // Consider special case created by DnD 5e Helpers for Regeneration effect:  If the item is
         // named "Regeneration" or "Self-Repair" then the description should contain the magic phrase
@@ -275,7 +187,6 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
         //
         // The magic phrase must be found and retained in the updated description...oh boy!
         //
-
         // Reg Ex string used by the DnD 5e Helpers module: 
         //   const regenRegExp = new RegExp(`([0-9]+|[0-9]*d0*[1-9][0-9]*) ${hitPointsString}`);
         //
@@ -311,6 +222,19 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
             }
         }
     }
+    if (itemDescription !== null && tActor === null) { // Replace token name with %TOKENNAME%
+        //----------------------------------------------------------------------------------------------
+        // Update the description to replace instances of the token name with %TOKENNAME%
+        //
+        let sToken = canvas.tokens.controlled[0]
+        let tokenName = sToken.name
+        // jez.log("tokenName", tokenName)
+        let descObj = jez.replaceSubString(itemDescription, sToken.name, '%TOKENNAME%')
+        // jez.log("sidebar descObj", descObj)
+        if (descObj.count > 0)
+            console.log(`Status  | Replaced ${sToken.name} with "%TOKENNAME%" ${descObj.count} time(s)`)
+        itemDescription = descObj.string
+    }
     //----------------------------------------------------------------------------------------------
     // Build item update object
     //
@@ -333,10 +257,11 @@ function Create_Update_Object(itemOrigin, itemTarget, tActor = null) {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Update the item in the Item directory, sidebar.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-// async function Update_Item_In_Sidebar(originActorId, nameOfItem, typeOfItem) {
-async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
-    const FUNCNAME = "Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem)";
+async function updateItemInSidebar(tokenD, nameOfItem, typeOfItem) {
+    const FUNCNAME = "updateItemInSidebar(tokenD, nameOfItem, typeOfItem)";
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"originActorId",originActorId,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
+    console.log(("***********************************************************************"))
+    console.log(`*** Update Item in Sidebar: ${nameOfItem} of type ${typeOfItem}`) 
     //----------------------------------------------------------------------------------------------
     // Get Item data for provided name within the actor data, this is the "master" item
     //
@@ -346,7 +271,7 @@ async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
     //----------------------------------------------------------------------------------------------
     // Make sure the item exists and is unique within the sidebar 
     //
-    let matches = itemCount(game.items.contents, nameOfItem, typeOfItem)
+    let matches = jez.itemMgmt_itemCount(game.items.contents, nameOfItem, typeOfItem)
     if (matches === 0) {
         msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not in Item Directory (sidebar), can not continue.`
         console.log(msg)
@@ -382,23 +307,4 @@ async function Update_Item_In_Sidebar(tokenD, nameOfItem, typeOfItem) {
     await itemInSidebar.update(updateSet);
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return(true)
-}
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Capitalize each first word in a string and return the result -- Seemingly broken 6/13/22
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-// function capitalize(input) {
-//     // Separate words in string by the " " spaces between them.
-//     const words = input.split(" ");
-//     // For each word separated, capitalize the first letters and then join them together.
-//     words.map((word) => {
-//         return word[0].toUpperCase() + word.substring(1);
-//     }).join(" ");
-// }
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Search the passed array for items of a given name and type. Return the number of matches
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- function itemCount(array, name, type) {
-    let count = 0 
-    for (const ITEM of array) if ((ITEM.name===name) && (ITEM.type===type)) count++
-    return(count)
 }

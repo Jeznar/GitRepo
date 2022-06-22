@@ -131,6 +131,12 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.17 **[Refresh Item on Actors](../Utility_Macros/#refresh-item-on-actors)** Macro created to refresh (replace) sidebar and selected tokens to match a reference item
 
+22.06.20 **[jez.itemMgmt_itemCount(array, name, type)](../jez-lib#itemMgmt_itemCountarray-name-type)** Searches the passed array of Item5e objects for items of a given name and type. Returning the number of matches.
+
+22.06.21 **[selectItemOnActor(sToken, prompts, nextFunc)](../jez-lib#selectitemonactorstoken-prompts-nextfunc))** -- Creation that that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
+
+22.06.22 Updated **Open_Actor_Sheets_With**, **Refresh_Item_On_Actors**, and **Update_Item_on_Actors** to use **jez.selectItemOnActor**
+
 
 [Link back to my Documentation Listing](README.md) 
 
