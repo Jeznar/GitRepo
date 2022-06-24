@@ -1710,5 +1710,83 @@ class jez {
         }
     }
 
+    /***************************************************************************************************
+ * Function to play a VFX explosion at the specified location.  Built for summoning with warpgate
+ * 
+ * Template can be coordinates (e.g. {x: 875, y: 805}) or anything else accepted by sequencer
+ * 
+ * Supported colors: "Blue", "Green", "Orange", "Purple", "Yellow", "*"
+ * 
+ * @typedef  {Object} optionObj
+ * @property {string} color - one of the supported colors
+ * @property {number} opactity - real number defining opacity, defaults to 1.0
+ * @property {number} scale - real number defining scale, defaults to 1.0
+ ***************************************************************************************************/
+ static async vfxPreSummonEffects(template, optionObj) {
+    //-------------------------------------------------------------------------------------------------
+    // Anticipated VFX files include
+    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Blue_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Green_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Orange_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Purple_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Yellow_400x400.webm
+    //
+    const colors = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
+    let color 
+    if (colors.includes(optionObj?.color)) color = optionObj?.color 
+    else color = "*"
+    const SCALE = optionObj.scale ?? 1.0
+    const OPACITY = optionObj.opacity ?? 1.0
+    const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
+  
+    new Sequence()
+      .effect()
+      .file(VFX_FILE)
+      .atLocation(template)
+      .center()
+      .scale(SCALE)
+      .opacity(OPACITY)
+      .play()
+  }
+  /***************************************************************************************************
+   * Function to play a VFX smoke at the specified location.  Built for summoning with warpgate
+   * 
+   * Template can be coordinates (e.g. {x: 875, y: 805}) or anything else accepted by sequencer
+   * 
+   * Supported colors: "Blue", "Black", "Green", "Purple", "Grey", "*"
+   * 
+   * @typedef  {Object} optionObj
+   * @property {string} color - one of the supported colors
+   * @property {number} opactity - real number defining opacity, defaults to 1.0
+   * @property {number} scale - real number defining scale, defaults to 1.0
+   ***************************************************************************************************/
+   static async vfxPostSummonEffects(template, optionObj) {
+    //-------------------------------------------------------------------------------------------------
+    // Anticipated VFX files include
+    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Blue_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Black_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Green_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Purple_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Grey_400x400.webm
+    //
+    const colors = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
+    let color // = optionObj.color ?? "Green"
+    if (colors.includes(optionObj?.color)) color = optionObj?.color 
+    else color = "*"
+    const SCALE = optionObj.scale ?? 1.0
+    const OPACITY = optionObj.opacity ?? 1.0
+    //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
+    const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_*_${color}_400x400.webm`
+  
+    new Sequence()
+      .effect()
+        .file(VFX_FILE)
+        .atLocation(template)
+        .center()
+        .scale(SCALE)
+        .opacity(OPACITY)
+      .play()
+  }
+
 } // END OF class jez
 Object.freeze(jez);

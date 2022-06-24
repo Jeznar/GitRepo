@@ -60,6 +60,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc))** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
+* **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
+* **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
 * **[wait(ms)](#wait)** -- Waits for specified milliseconds.
 
 More about each of these in the following sections. 
@@ -898,6 +900,48 @@ jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### vfxPreSummonEffects(template, optionObj) 
+
+Runs a VFX explosion useful to warpgate summons as a pre-effect.  It is called with a template object (e.g. {x: 875, y: 805}) that defines the location for the explosion and accepts a number of optional parameters in the optionObj, which is defined as:
+
+**optionObj** an object that can have the following properties:
+
+* color - a supported color ("Blue", "Green", "Orange", "Purple", "Yellow", "\*"), defaults to "\*"
+* opacity - real number defining opacity, defaults to 1.0
+* scale - real number defining scale, defaults to 1.0
+
+~~~javascript
+...
+  const CALLBACKS = {
+    pre: async (template) => {
+      jez.vfxPreSummonEffects(template, {color:"*", scale:1, opacity:1});
+      await warpgate.wait(500);
+    },
+    post: async (template) => {
+      jez.vfxPostSummonEffects(template, {color:"*", scale:1, opacity:1});
+      await warpgate.wait(500); 
+    }
+  };
+  return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))
+}
+~~~
+
+---
+
+### vfxPostSummonEffects(template, optionObj) 
+
+Runs a VFX smoke useful to warpgate summons as a post-effect.  It is called with a template object (e.g. {x: 875, y: 805}) that defines the location for the puff and accepts a number of optional parameters in the optionObj, which is defined as:
+
+**optionObj** an object that can have the following properties:
+
+* color - a supported color ("Blue", "Black", "Green", "Purple", "Grey", "\*"), defaults to "\*"
+* opacity - real number defining opacity, defaults to 1.0
+* scale - real number defining scale, defaults to 1.0
+
+See **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)]** for an example usage.
 
 ---
 

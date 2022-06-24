@@ -137,6 +137,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.22 Updated **Open_Actor_Sheets_With**, **Refresh_Item_On_Actors**, and **Update_Item_on_Actors** to use **jez.selectItemOnActor**
 
+22.06.24 Added jez.vfxPreSummonEffects and jez.vfxPostSummonEffects to Jez-Lib and progress on Danse Macabre
 
 [Link back to my Documentation Listing](README.md) 
 
