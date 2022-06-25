@@ -1,6 +1,6 @@
 const MACRONAME = "Danse_Macabre.0.2.js"
 /*****************************************************************************************
- * Implment the amazing Danse Macabre spell
+ * Implement the amazing Danse Macabre spell
  * 
  * This macro does quite a few things.  Here are the highlights:
  * - Verify potentially summoned actors exist

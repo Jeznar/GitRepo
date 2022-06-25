@@ -17,6 +17,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **Demo getCharLevel**: Demonstrate library function ```getCharLevel(subject)``` 
 * **[Demo Get Functions](#demo-get-functions)** Exercise a collection of Get functions
 * **[Demo Template VFX](#demo-temlate-vfx)** Demonstrates placement of a VFX at a template location.
+* **[Dismiss_Tokens](#dismisstokens)** Macro to be called by DAE on removal of effect to delete tokens
 * **[DisplayDescription](#displaydescription)** Prints the item description to the bottom of the chat card.
 * **[Get Entities](#get-entities)** accesses various actor, token, scene, item data from a single selected token. This is a demo of how to access various data types, not something directly useful. 
 * **Light Picker**: sample macro that sets the type of light emitted by a token.
@@ -121,7 +122,7 @@ Macro to be used as an OnUse macro from an item sheet.  It simply echos the item
 
 Used by adding the following to the OnUse Macro field at the bottom of the **Item Details** page:
 
-~~~javasctipt
+~~~javascript
 DisplayDescription
 ~~~
 
@@ -131,9 +132,26 @@ DisplayDescription
 
 ### **Demo Tile VFX** 
 
-Simple little macro that pops a tile with a VFX at the location of the targeting template from the calling item (ItemMacro OnUse).  The macro deletes the template and uses a black tenticles video file.
+Simple little macro that pops a tile with a VFX at the location of the targeting template from the calling item (ItemMacro OnUse).  The macro deletes the template and uses a black tentacles video file.
 
 ![Demo_Tile_VFX.gif](Demo_Tile_VXF/Demo_Tile_VFX.gif)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### **Dismiss Tokens** 
+
+Macro to be called with a list of token UUID's that will be dismissed.  It plays a VFX on each deletion. See [Danse Macabre spell](../Spells/5th_Level#danse-macabre) for an example of usage.
+ 
+UUIDs must be of the form: `Scene.<scene ID>.Token.<token ID>`
+
+Examples of token UUIDs:
+
+~~~
+Scene.MzEyYTVkOTQ4NmZk.Token.jMrQNpQTkteJJoaW
+Scene.MzEyYTVkOTQ4NmZk.Token.7fmaYOm5uCIO8bvE
+~~~
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

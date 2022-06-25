@@ -1,0 +1,169 @@
+{
+  "name": "Danse Macabre",
+  "type": "spell",
+  "img": "systems/dnd5e/icons/skills/green_25.jpg",
+  "data": {
+    "description": {
+      "value": "<p class=\"Core-Styles_Core-Body\">Threads of dark power leap from %TOKENNAME%'s fingers to pierce up to <strong>five Small or Medium corpses</strong> he/she can see within range. Each corpse immediately stands up and becomes undead. You decide whether it is a <strong>zombie or a skeleton</strong> (the statistics for zombies and skeletons are in the <span class=\"Serif-Character-Style_Italic-Serif\">Monster Manual</span>), and it gains a <span style=\"text-decoration:underline\">bonus to its attack and damage rolls equal to your spellcasting ability modifier.</span></p>\n<p class=\"Core-Styles_Core-Body\">You can use a <strong>bonus action</strong> to mentally command the creatures you make with this spell, issuing the same command to all of them. To receive the command, a creature must be within 60 feet of you. You decide what action the creatures will take and where they will move during their next turn, or you can issue a general command, such as to guard a chamber or passageway against your foes. If you issue no commands, the creatures do nothing except defend themselves against hostile creatures. Once given an order, the creatures continue to follow it until their task is complete.</p>\n<p class=\"Core-Styles_Core-Body\">The creatures are under your control until the spell ends, after which they become inanimate once more.</p>\n<p class=\"Core-Styles_Core-Body\"><span class=\"Serif-Character-Style_Inline-Subhead-Serif\"><strong>At Higher Levels.</strong> </span>When you cast this spell using a spell slot of 6th level or higher, you animate up to two additional corpses for each slot level above 5th.</p>\n<hr />\n<p class=\"Core-Styles_Core-Body\"><strong>FoundryVTT</strong>: This spell is automated.</p>",
+      "chat": "<p class=\"Core-Styles_Core-Body\">Threads of dark power leap from your fingers to pierce up to five Small or Medium corpses you can see within range. Each corpse immediately stands up and becomes undead. You decide whether it is a zombie or a skeleton (the statistics for zombies and skeletons are in the <span class=\"Serif-Character-Style_Italic-Serif\">Monster Manual</span>), and it gains a bonus to its attack and damage rolls equal to your spellcasting ability modifier.</p>\n<p class=\"Core-Styles_Core-Body\">You can use a bonus action to mentally command the creatures you make with this spell, issuing the same command to all of them. To receive the command, a creature must be within 60 feet of you. You decide what action the creatures will take and where they will move during their next turn, or you can issue a general command, such as to guard a chamber or passageway against your foes. If you issue no commands, the creatures do nothing except defend themselves against hostile creatures. Once given an order, the creatures continue to follow it until their task is complete.</p>\n<p class=\"Core-Styles_Core-Body\">The creatures are under your control until the spell ends, after which they become inanimate once more.</p>\n<p class=\"Core-Styles_Core-Body\"><span class=\"Serif-Character-Style_Inline-Subhead-Serif\"><strong>At Higher Levels.</strong> </span>When you cast this spell using a spell slot of 6th level or higher, you animate up to two additional corpses for each slot level above 5th.</p>",
+      "unidentified": ""
+    },
+    "source": "Xanathar's Guide to Everything pg 153",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 5,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 137975,
+      "definitionId": 14830,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 27,
+          "pageNumber": 153,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Creation",
+        "Control"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_gn79wuzqjq6"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.IbkwVZX26kQZNvqr"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Danse Macabre",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Danse_Macabre.0.2.js\"\n/*****************************************************************************************\n * Implment the amazing Danse Macabre spell\n * \n * This macro does quite a few things.  Here are the highlights:\n * - Verify potentially summoned actors exist\n * - Ask the user how many skeletons/zombies are to be summoned\n * - Validate the input, repeating the dialog if invalid\n * - Place the summoned, modified tokens, on the scene with warpgate, with VFX\n * - Modify concentrating effect to remove the tokens on completion\n * - Trigger Dismiss_Tokens when concentrating effect removed to delete summons\n * \n * 06/24/22 0.1 Creation of Macro\n * 06/25/22 0.2 Cleanup and polish\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst SKELETON_NAME = \"Skeleton\"  // Name of skeleton to call as base item\nconst ZOMBIE_NAME   = \"Zombie\"    // Name of zombie to call as base item\nconst CAST_MOD = jez.getCastMod(aActor)\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n  //---------------------------------------------------------------------------------------------------\n  // Make sure actors that may be summoned exist and are unique before continuing\n  //\n  if (!game.actors.getName(SKELETON_NAME))    \n    return jez.badNews(`Could not find \"<b>${SKELETON_NAME}</b>\" in the <b>Actors Directory</b>. Quitiing`) \n  if (!game.actors.getName(ZOMBIE_NAME))    \n    return jez.badNews(`Could not find \"<b>${ZOMBIE_NAME}</b>\" in the <b>Actors Directory</b>. Quitiing`) \n  //---------------------------------------------------------------------------------------------------\n  // Determine how many critters can be summoned \n  //\n  let summonMax = 5 + (LAST_ARG?.spellLevel - 5)*2\n  //---------------------------------------------------------------------------------------------------\n  // Proceed with the dialog\n  //\n  dialogSummonUndeads({maxSummons: summonMax})\n  return (true);\n}\n/***************************************************************************************************\n * Called by the dialog after a legal count of zombies and skeletons obtained\n ***************************************************************************************************/\nasync function doIt(args) {\n  let numSkeletons = args?.numSkeletons\n  let numZombies = args?.numZombies\n  let summonId\n  let summonUuid\n  let summonUuidArray = []\n  const SCENE_ID = game.scenes.viewed.id\n  jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))\n  //---------------------------------------------------------------------------------------------------\n  // Spawn in the Skeletons\n  //\n  for (let i = 1; i <= numSkeletons; i++) {\n    summonId = await summonCritter(SKELETON_NAME, i)\n    // summonIdArray.push(summonId)  // Catch the id of summoned token\n    // Build UUID for this token, e.g. Scene.MzEyYTVkOTQ4NmZk.Token.MsbMe9mgA23RTjV2\n    summonUuid = `Scene.${SCENE_ID}.Token.${summonId}`\n    summonUuidArray.push(summonUuid)\n  }\n  //---------------------------------------------------------------------------------------------------\n  // Spawn in the Zombies\n  //\n  for (let i = 1; i <= numZombies; i++) {\n    summonId = await summonCritter(ZOMBIE_NAME, i)\n    // Build UUID for this token, e.g. Scene.MzEyYTVkOTQ4NmZk.Token.MsbMe9mgA23RTjV2\n    summonUuid = `Scene.${SCENE_ID}.Token.${summonId}`\n    summonUuidArray.push(summonUuid)\n  }\n  jez.log(\"summonUuidArray\", summonUuidArray)\n  //--------------------------------------------------------------------------------------\n  // Modify the conc. effect to delete the summoned creatures on concentration break\n  //\n  jez.modConcentratingEffect(aToken, \"Dismiss_Tokens\", summonUuidArray)\n  //---------------------------------------------------------------------------------------------------\n  // Post completion message\n  //\n  msg = `<b>${aToken.name}</b> summons `\n  if (numSkeletons > 0) {\n    if (numSkeletons === 1) msg += `a ${SKELETON_NAME}`\n    else msg += `${numSkeletons} ${SKELETON_NAME}s`\n    if (numZombies > 0) msg += ` and `\n    else msg += `. `\n  }\n  if (numZombies > 0) {\n    if (numZombies === 1) msg += `a ${ZOMBIE_NAME}. `\n    else msg += `${numZombies} ${ZOMBIE_NAME}s. `\n  }\n  msg += `They can be directed, as a group, with a <b>Bonus Action</b> each turn.`\n  postResults(msg)\n}\n/***************************************************************************************************\n * Dialog to obtain the number of skeletons and zombies to summon, returning an object containing:\n * \n * @typedef  {Object} returnObj\n * @property {integer} numSkeletons - number of skeletons to summon\n * @property {integer} numZombies - number of zombies to summon\n * @property {integer} maxSummons - maximum number of summons allowed\n * @property {string} tryAgain - Message to display on subsequent attempts\n ***************************************************************************************************/\n async function dialogSummonUndeads(args) {\n  //---------------------------------------------------------------------------------------------------\n  // Set function specific variables\n  //\n  let content = \"\"\n  let numSkeletons = args?.numSkeletons ?? 0\n  let numZombies = args?.numZombies ?? 0\n  let maxSummons = args?.maxSummons ?? 5\n  let tryAgain = args?.tryAgain ?? \"\"\n  //---------------------------------------------------------------------------------------------------\n  // Build the HTML string for the dialog\n  //\n  if (tryAgain) content += `\n  <p style=\"color:Red;\">${tryAgain}</p><p></p>\n  `\n  content += `\n  <form class=\"flexcol\">\n    <p style=\"color:DarkSlateBlue;\">You can animate up to ${maxSummons} small or medium corpses that \n  you can see within 60 feet. They can be a mix of skeletons and zombies as you prefer, but no more \n  than ${maxSummons} total.<br></p>\n    <p></p>\n    <div class=\"form-group\">\n      <label for=\"numSkeletons\">Skeletons</label>\n      <input type=\"text\" name=\"numSkeletons\" value=${numSkeletons}>\n    </div>\n    <div class=\"form-group\">\n    <label for=\"numZombies\">Zombies</label>\n    <input type=\"text\" name=\"numZombies\" value=${numZombies}>\n  </div>\n  <p></p>\n  <p style=\"color:DarkRed;\">This spell does not check for the existance/visibility of corpses to animate, \n  that is left to the players to handle.</p>\n  </form>\n  `\n  //---------------------------------------------------------------------------------------------------\n  // Define the dialog to be displayed\n  //\n  let d = await new Dialog({\n      title: 'Danse Macabre Summoning',\n      content: content,\n      buttons: {\n          //------------------------------------------------------------------------------------------\n          // Define the \"yes\" button, the button on the left\n          //\n          yes: {\n              icon: '<i class=\"fas fa-check\"></i>',\n              label: 'Continue',\n              callback: (html) => {\n                  numSkeletons = parseInt(html.find('[name=\"numSkeletons\"]').val());\n                  numZombies = parseInt(html.find('[name=\"numZombies\"]').val());\n                  jez.log(\"Summons Counts Entered\",\"numSkeletons\", numSkeletons, \"numZombies  \", numZombies)\n                  //-----------------------------------------------------------------------------------\n                  // Build the object that will be passed to recursive call if required\n                  //\n                  let newArgs = {\n                      numSkeletons: numSkeletons,\n                      numZombies: numZombies,\n                      maxSummons: maxSummons, \n                      tryAgain: \"Please enter valid integers.\"\n                  }\n                  //-----------------------------------------------------------------------------------\n                  // Validate the input calling this function recursively if it was bad\n                  //\n                  if (isNaN(numSkeletons) || isNaN(numZombies)) {\n                      jez.log(\"Try again, entries were not parseable as integers\")\n                      newArgs.tryAgain = \"Please enter valid integers in the quantity fields.\"\n                      dialogSummonUndeads(newArgs)\n                  } else if (numSkeletons === 0 && numZombies === 0) {\n                          jez.log(\"Try again, since zero was entered for the total\")\n                          newArgs.tryAgain = `Did you really want to summon zero undeads?<br>If so \n                          Cancel this dialog.`\n                          dialogSummonUndeads(newArgs)\n                      } else if (numSkeletons < 0 || numZombies < 0) {\n                          jez.log(\"Try again, a negative number of summons was entered\")\n                          newArgs.tryAgain = `Ok, really?  You can't summon a negative quantity of critters.\n                          <br>Try again.`\n                          dialogSummonUndeads(newArgs)\n                      } else if (numSkeletons + numZombies > maxSummons) {\n                          jez.log(`Try again, attempted to summon ${numSkeletons + numZombies}, max of \n                          ${maxSummons} allowed`)\n                          newArgs.tryAgain = `Ambition is one thing, but that was too much. You attempted to \n                          summon ${numSkeletons + numZombies}, max of ${maxSummons} allowed.  Try again.`\n                          dialogSummonUndeads(newArgs)\n                      }                      \n                      else {\n                      // jez.log(\"Call the next function as we have a valid input.\")\n                      doIt(newArgs)\n                  }\n              }\n          },\n          //------------------------------------------------------------------------------------------\n          // Define the \"no\" button, the button on the right\n          //\n          no: {\n              icon: '<i class=\"fas fa-times\"></i>',\n              label: 'Cancel',\n              callback: (html) => {\n                  console.log('Dialog Cancelled');\n              }\n          },\n      },\n      default: 'yes',\n      close: () => {\n          console.log('Dialog Closed');\n      }\n  }).render(true)\n}\n/***************************************************************************************************\n * Summon the actor and rename with a numeric suffix also add the caster's stat mod to attack and \n * damage rolls\n ***************************************************************************************************/\nasync function summonCritter(summons, number) {\n  let name = `${aToken.name}'s ${summons} ${number}`\n  const OPTIONS = { controllingActor: aActor };\n  let updates = {\n    token: { name: name },\n    actor: {\n      name: name,\n      data: {\n        bonuses: {\n          mwak: {\n            attack: CAST_MOD, // Add the caster's stat mod to attack rolls\n            damage: CAST_MOD, // Add the caster's stat mod to damage rolls\n          },\n          rwak: {\n            attack: CAST_MOD, // Add the caster's stat mod to attack rolls\n            damage: CAST_MOD, // Add the caster's stat mod to damage rolls\n          },\n          msak: {\n            attack: CAST_MOD, // Add the caster's stat mod to attack rolls\n            damage: CAST_MOD, // Add the caster's stat mod to damage rolls\n          },\n          rsak: {\n            attack: CAST_MOD, // Add the caster's stat mod to attack rolls\n            damage: CAST_MOD, // Add the caster's stat mod to damage rolls\n          }\n        }\n      }\n    }\n  }\n  const CALLBACKS = {\n    pre: async (template) => {\n      jez.vfxPreSummonEffects(template, { color: \"*\", scale: 1, opacity: 1 });\n      await warpgate.wait(500);\n    },\n    post: async (template) => {\n      jez.vfxPostSummonEffects(template, { color: \"*\", scale: 1, opacity: 1 });\n      await warpgate.wait(500);\n    }\n  };\n  return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \n function postResults(msg) {\n  let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n  jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

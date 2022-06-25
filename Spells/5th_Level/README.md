@@ -8,6 +8,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Cloudkill](#cloudkill)
 * [Cone of Cold](#cone-of-cold)
 * [Contact Other Plane](#contact-other-plane)
+* [Danse Macabre](#danse-macabre)
 * [Dispel Evil and Good](#dispel-evil-and-good)
 * [Dream](#dream)
 * [Geas](#geas)
@@ -121,6 +122,28 @@ The spell description must contain the *magic* phrase ***no damage on save*** to
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
 ---
+
+### Danse Macabre
+
+Implement the amazing Danse Macabre spell
+ 
+This macro does quite a few things.  Here are the highlights:
+
+* Verify potentially summoned actors exist
+* Ask the user how many skeletons/zombies are to be summoned
+* Validate the input, repeating the dialog if invalid
+* Place the summoned, modified tokens, on the scene with warpgate, with VFX
+* Modify concentrating effect to remove the tokens on completion
+* Trigger Dismiss_Tokens when concentrating effect removed to delete summons
+
+![Danse_Macabre.gif](Danse_Macabre/Danse_Macabre.gif)
+
+![Danse_Macabre.png](Danse_Macabre/Danse_Macabre.png)
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
 
 ### Dispel Evil and Good
 
