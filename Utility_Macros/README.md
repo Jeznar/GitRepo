@@ -27,6 +27,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
 * **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
 * **[Samples](#samples)** Various sample macros that do itty bitty things
+* **[Search Items in Sidebar](#search-items-in-sidebar)** searches item directory for various things
 * **[Set Familiar Name](#set-familiar-name)** Manages stored familiar name for actor
 * **[Share Item Within Scene](#share-item-within-scene)** Adds/Updates/Deletes an item from a token to other tokens in the same scene.
 * **[Swap Hidden Tokens](#swap-hidden-tokens)** swaps the visibility state of all or selected npc tokens.
@@ -125,6 +126,8 @@ Used by adding the following to the OnUse Macro field at the bottom of the **Ite
 ~~~javascript
 DisplayDescription
 ~~~
+
+This macro is used by **[Gray Ooze Pseudopod](#gray-ooze)**.
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
@@ -340,6 +343,22 @@ Some small macros that just handle small things.
 
 - **Shrink or Enlarge**: Flips selected tokens between 1 square and 2 square sizes.  Not great for tokens of other than 1x1 or 2x2 shapes.
 
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Search Items in Sidebar 
+
+Macro that searches through the item directory for:
+
+* Duplicate Item Names
+* Hard coded effect name
+* Hard coded item macro name
+
+The hard coded elements require the macro to be edited to change.  
+
+All of the output of this macro goes to the console.  It can be extensive.
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
