@@ -1735,8 +1735,8 @@ class jez {
         let color
         if (colors.includes(optionObj?.color)) color = optionObj?.color
         else color = "*"
-        const SCALE = optionObj.scale ?? 1.0
-        const OPACITY = optionObj.opacity ?? 1.0
+        const SCALE = optionObj?.scale ?? 1.0
+        const OPACITY = optionObj?.opacity ?? 1.0
         const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
 
         new Sequence()
@@ -1773,8 +1773,8 @@ class jez {
         let color // = optionObj.color ?? "Green"
         if (colors.includes(optionObj?.color)) color = optionObj?.color
         else color = "*"
-        const SCALE = optionObj.scale ?? 1.0
-        const OPACITY = optionObj.opacity ?? 1.0
+        const SCALE = optionObj?.scale ?? 1.0
+        const OPACITY = optionObj?.opacity ?? 1.0
         //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
         const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_*_${color}_400x400.webm`
 

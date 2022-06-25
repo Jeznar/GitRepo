@@ -1,8 +1,17 @@
-const MACRONAME = "Danse_Macabre.0.1.js"
+const MACRONAME = "Danse_Macabre.0.2.js"
 /*****************************************************************************************
- * Basic Structure for a rather complete macro
+ * Implment the amazing Danse Macabre spell
+ * 
+ * This macro does quite a few things.  Here are the highlights:
+ * - Verify potentially summoned actors exist
+ * - Ask the user how many skeletons/zombies are to be summoned
+ * - Validate the input, repeating the dialog if invalid
+ * - Place the summoned, modified tokens, on the scene with warpgate, with VFX
+ * - Modify concentrating effect to remove the tokens on completion
+ * - Trigger Dismiss_Tokens when concentrating effect removed to delete summons
  * 
  * 06/24/22 0.1 Creation of Macro
+ * 06/25/22 0.2 Cleanup and polish
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -14,7 +23,6 @@ let aItem;          // Active Item information, item invoking this macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 const SKELETON_NAME = "Skeleton"  // Name of skeleton to call as base item
 const ZOMBIE_NAME   = "Zombie"    // Name of zombie to call as base item
@@ -23,7 +31,6 @@ const CAST_MOD = jez.getCastMod(aActor)
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-// if (args[0] === "off") await doOff();             // DAE removal
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -36,7 +43,10 @@ async function doOnUse() {
   //---------------------------------------------------------------------------------------------------
   // Make sure actors that may be summoned exist and are unique before continuing
   //
-
+  if (!game.actors.getName(SKELETON_NAME))    
+    return jez.badNews(`Could not find "<b>${SKELETON_NAME}</b>" in the <b>Actors Directory</b>. Quitiing`) 
+  if (!game.actors.getName(ZOMBIE_NAME))    
+    return jez.badNews(`Could not find "<b>${ZOMBIE_NAME}</b>" in the <b>Actors Directory</b>. Quitiing`) 
   //---------------------------------------------------------------------------------------------------
   // Determine how many critters can be summoned 
   //
@@ -53,17 +63,16 @@ async function doOnUse() {
 async function doIt(args) {
   let numSkeletons = args?.numSkeletons
   let numZombies = args?.numZombies
-  // let summonId
-  // let summonIdArray = []
+  let summonId
   let summonUuid
   let summonUuidArray = []
   const SCENE_ID = game.scenes.viewed.id
-  // jez.log("Inputs to doIt(args)","numSkeletons",numSkeletons,"numZombies",numZombies)
+  jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))
   //---------------------------------------------------------------------------------------------------
   // Spawn in the Skeletons
   //
   for (let i = 1; i <= numSkeletons; i++) {
-    // summonId = await summonCritter(SKELETON_NAME, i)
+    summonId = await summonCritter(SKELETON_NAME, i)
     // summonIdArray.push(summonId)  // Catch the id of summoned token
     // Build UUID for this token, e.g. Scene.MzEyYTVkOTQ4NmZk.Token.MsbMe9mgA23RTjV2
     summonUuid = `Scene.${SCENE_ID}.Token.${summonId}`
@@ -73,24 +82,32 @@ async function doIt(args) {
   // Spawn in the Zombies
   //
   for (let i = 1; i <= numZombies; i++) {
-    // summonId = await summonCritter(ZOMBIE_NAME, i)
-    // summonIdArray.push(summonId)  // Catch the id of summoned token
+    summonId = await summonCritter(ZOMBIE_NAME, i)
     // Build UUID for this token, e.g. Scene.MzEyYTVkOTQ4NmZk.Token.MsbMe9mgA23RTjV2
     summonUuid = `Scene.${SCENE_ID}.Token.${summonId}`
     summonUuidArray.push(summonUuid)
   }
-  jez.log("summonIdArray", summonIdArray)
   jez.log("summonUuidArray", summonUuidArray)
   //--------------------------------------------------------------------------------------
   // Modify the conc. effect to delete the summoned creatures on concentration break
   //
-  modConcentratingEffect(aToken, "Dismiss_Tokens", summonUuidArray)
+  jez.modConcentratingEffect(aToken, "Dismiss_Tokens", summonUuidArray)
   //---------------------------------------------------------------------------------------------------
   // Post completion message
   //
-  let chatMessage = game.messages.get(args[args.length - 1].itemCardId);
-  msg = `<b>${aToken.name}</b> summons ${numSkeletons.total} ${SKELETON_NAME} and ${numZombies} ${ZOMBIE_NAME}`
-  await jez.addMessage(chatMessage, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" })
+  msg = `<b>${aToken.name}</b> summons `
+  if (numSkeletons > 0) {
+    if (numSkeletons === 1) msg += `a ${SKELETON_NAME}`
+    else msg += `${numSkeletons} ${SKELETON_NAME}s`
+    if (numZombies > 0) msg += ` and `
+    else msg += `. `
+  }
+  if (numZombies > 0) {
+    if (numZombies === 1) msg += `a ${ZOMBIE_NAME}. `
+    else msg += `${numZombies} ${ZOMBIE_NAME}s. `
+  }
+  msg += `They can be directed, as a group, with a <b>Bonus Action</b> each turn.`
+  postResults(msg)
 }
 /***************************************************************************************************
  * Dialog to obtain the number of skeletons and zombies to summon, returning an object containing:
@@ -115,7 +132,7 @@ async function doIt(args) {
   //
   if (tryAgain) content += `
   <p style="color:Red;">${tryAgain}</p><p></p>
-`
+  `
   content += `
   <form class="flexcol">
     <p style="color:DarkSlateBlue;">You can animate up to ${maxSummons} small or medium corpses that 
@@ -215,7 +232,6 @@ async function doIt(args) {
 async function summonCritter(summons, number) {
   let name = `${aToken.name}'s ${summons} ${number}`
   const OPTIONS = { controllingActor: aActor };
-  // jez.log("CAST_MOD", CAST_MOD)
   let updates = {
     token: { name: name },
     actor: {
@@ -254,47 +270,10 @@ async function summonCritter(summons, number) {
   };
   return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))
 }
-/***************************************************************************************************
- * Modify an existing concentrating effect to contain a DAE effect line of the form:
- *   macro.execute custom <macroName> <argument[1]> <argument[2]> ...
- * 
- * macroName should be a string that names an existing macro to be called by DAE when the effect 
- * is removed with the arguments provided.
- * 
- * argArray should be an array of arguments to pass to macroName as a string with a single space
- * between each.
- ***************************************************************************************************/
-async function modConcentratingEffect(aToken, macroName, argArray) {
-  let argValue = ""
-  const EFFECT = "Concentrating"
-  // Make sure the macro to be called exists
-  if (!game.macros.getName(macroName)) return (badNews(`Cannot locate ${macroName} macro.`))
-  // Search the passed token to find the effect, return if it doesn't
-  let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
-  if (!effect) return (jez.badNews(`Unable to find ${EFFECT} on ${aToken.name}`))
-  // Build the value string from the argArray
-  for (const element of argArray) argValue += `${element} `
-  // Define the desired modification to concentartion effect. 
-  effect.data.changes.push(
-    {key: `macro.execute`, mode: jez.CUSTOM, value:`${macroName} ${argValue}`, priority: 20}
-  )
-  // Apply the modification to existing effect
-  await effect.update({ 'changes': effect.data.changes });
-}
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set Off
- ***************************************************************************************************/
- async function doOff() {
-  const FUNCNAME = "doOff()";
-  // jez.log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-  // Delete the existing summoned critters
-  //
-  let sceneId = game.scenes.viewed.id
-  for (let i = 1; i <= args.length-2; i++) {
-      jez.log(`Deleting undead #${i}`, args[i])
-      await jez.wait(500)
-      warpgate.dismiss(args[i], sceneId)
-  }
-  // jez.log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
-  return;
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Post results to the chat card
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ function postResults(msg) {
+  let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+  jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
