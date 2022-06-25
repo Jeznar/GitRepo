@@ -49,6 +49,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[itemMgmt_itemCount(array, name, type)](#itemMgmt_itemCountarray-name-type)** -- Returns count of item/type in array
 * **[itemUpdateOnActor(token5e, itemName, itemUpdate, itemType)](#item-functions)** -- Updates an Item on Actor
 * **[log(...parms)](#logparms)** -- Posts parameters, with some minimal formatting, to console if enabled
+* **[modConcentratingEffect(aToken, macroName, argArray)](#modConcentratingEffectaToken-macroName-argArray)** -- Modify existing concentrating effect to call specified macro with supplied arguments.
 * **[moveToken(anchorToken, movingToken, move, delay)](#movetokenanchorToken-movingToken-move-delay)** -- Push or pull token 1, 2 or 3 spaces
 * **[pairEffects(subject1, effectName1, subject2, effectName2)](#pairEffectssubject1-effectName1-subject2-effectName2))** -- Add lines to DAE effects to remove other member of pair when either removed.
 * **[pickCheckListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a check box dialog offering list of selections.  User's selection array is passed to the specified callback function. 
@@ -459,6 +460,32 @@ jez-lib |  (2) Selected Token Name : Meat Bag, Medium
 </details>
 
 <!--![Linker](images/jez.log_debug_mode.png)-->
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### modConcentratingEffect(aToken, macroName, argArray)
+
+Modify an existing concentrating effect to contain a DAE effect line of the form: 
+
+```macro.execute custom <macroName> <argument[1]> <argument[2]> ...```
+
+**macroName** should be a string that names an existing macro to be called by DAE when the effect is removed with the arguments provided.
+
+**argArray** should be an array of arguments to pass to macroName as a string with a single space between each.  
+
+Following is a typical call to this function:
+
+```
+jez.modConcentratingEffect(aToken, "Dismiss_Tokens", ["Scene.MzEyYTVkOTQ4NmZk.Token.MsbMe9mgA23RTjV2"])
+```
+Note: A token's UUID is stored in the Token5e data object as parameter `Token5e.document.uuid`
+
+
+The above would move *aToken* (active token) one space toward the *anchorToken* after a wait of 1.5 seconds.
+
+The function returns a boolean value with false indicating a problem encountered and true representing normal completion. 
 
 [*Back to Functions list*](#functions-in-this-module)
 

@@ -1711,82 +1711,110 @@ class jez {
     }
 
     /***************************************************************************************************
- * Function to play a VFX explosion at the specified location.  Built for summoning with warpgate
- * 
- * Template can be coordinates (e.g. {x: 875, y: 805}) or anything else accepted by sequencer
- * 
- * Supported colors: "Blue", "Green", "Orange", "Purple", "Yellow", "*"
- * 
- * @typedef  {Object} optionObj
- * @property {string} color - one of the supported colors
- * @property {number} opactity - real number defining opacity, defaults to 1.0
- * @property {number} scale - real number defining scale, defaults to 1.0
- ***************************************************************************************************/
- static async vfxPreSummonEffects(template, optionObj) {
-    //-------------------------------------------------------------------------------------------------
-    // Anticipated VFX files include
-    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Blue_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Green_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Orange_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Purple_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Yellow_400x400.webm
-    //
-    const colors = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
-    let color 
-    if (colors.includes(optionObj?.color)) color = optionObj?.color 
-    else color = "*"
-    const SCALE = optionObj.scale ?? 1.0
-    const OPACITY = optionObj.opacity ?? 1.0
-    const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
-  
-    new Sequence()
-      .effect()
-      .file(VFX_FILE)
-      .atLocation(template)
-      .center()
-      .scale(SCALE)
-      .opacity(OPACITY)
-      .play()
-  }
-  /***************************************************************************************************
-   * Function to play a VFX smoke at the specified location.  Built for summoning with warpgate
-   * 
-   * Template can be coordinates (e.g. {x: 875, y: 805}) or anything else accepted by sequencer
-   * 
-   * Supported colors: "Blue", "Black", "Green", "Purple", "Grey", "*"
-   * 
-   * @typedef  {Object} optionObj
-   * @property {string} color - one of the supported colors
-   * @property {number} opactity - real number defining opacity, defaults to 1.0
-   * @property {number} scale - real number defining scale, defaults to 1.0
+    * Function to play a VFX explosion at the specified location.  Built for summoning with warpgate
+    * 
+    * Template can be coordinates (e.g. {x: 875, y: 805}) or anything else accepted by sequencer
+    * 
+    * Supported colors: "Blue", "Green", "Orange", "Purple", "Yellow", "*"
+    * 
+    * @typedef  {Object} optionObj
+    * @property {string} color - one of the supported colors
+    * @property {number} opactity - real number defining opacity, defaults to 1.0
+    * @property {number} scale - real number defining scale, defaults to 1.0
+    ***************************************************************************************************/
+    static async vfxPreSummonEffects(template, optionObj) {
+        //-------------------------------------------------------------------------------------------------
+        // Anticipated VFX files include
+        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Blue_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Green_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Orange_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Purple_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Yellow_400x400.webm
+        //
+        const colors = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
+        let color
+        if (colors.includes(optionObj?.color)) color = optionObj?.color
+        else color = "*"
+        const SCALE = optionObj.scale ?? 1.0
+        const OPACITY = optionObj.opacity ?? 1.0
+        const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
+
+        new Sequence()
+            .effect()
+            .file(VFX_FILE)
+            .atLocation(template)
+            .center()
+            .scale(SCALE)
+            .opacity(OPACITY)
+            .play()
+    }
+    /***************************************************************************************************
+     * Function to play a VFX smoke at the specified location.  Built for summoning with warpgate
+     * 
+     * Template can be coordinates (e.g. {x: 875, y: 805}) or anything else accepted by sequencer
+     * 
+     * Supported colors: "Blue", "Black", "Green", "Purple", "Grey", "*"
+     * 
+     * @typedef  {Object} optionObj
+     * @property {string} color - one of the supported colors
+     * @property {number} opactity - real number defining opacity, defaults to 1.0
+     * @property {number} scale - real number defining scale, defaults to 1.0
    ***************************************************************************************************/
-   static async vfxPostSummonEffects(template, optionObj) {
-    //-------------------------------------------------------------------------------------------------
-    // Anticipated VFX files include
-    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Blue_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Black_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Green_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Purple_400x400.webm
-    // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Grey_400x400.webm
-    //
-    const colors = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
-    let color // = optionObj.color ?? "Green"
-    if (colors.includes(optionObj?.color)) color = optionObj?.color 
-    else color = "*"
-    const SCALE = optionObj.scale ?? 1.0
-    const OPACITY = optionObj.opacity ?? 1.0
-    //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
-    const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_*_${color}_400x400.webm`
-  
-    new Sequence()
-      .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scale(SCALE)
-        .opacity(OPACITY)
-      .play()
-  }
+    static async vfxPostSummonEffects(template, optionObj) {
+        //-------------------------------------------------------------------------------------------------
+        // Anticipated VFX files include
+        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Blue_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Black_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Green_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Purple_400x400.webm
+        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Grey_400x400.webm
+        //
+        const colors = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
+        let color // = optionObj.color ?? "Green"
+        if (colors.includes(optionObj?.color)) color = optionObj?.color
+        else color = "*"
+        const SCALE = optionObj.scale ?? 1.0
+        const OPACITY = optionObj.opacity ?? 1.0
+        //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
+        const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_*_${color}_400x400.webm`
+
+        new Sequence()
+          .effect()
+            .file(VFX_FILE)
+            .atLocation(template)
+            .center()
+            .scale(SCALE)
+            .opacity(OPACITY)
+          .play()
+    }
+
+    /***************************************************************************************************
+     * Modify an existing concentrating effect to contain a DAE effect line of the form:
+     *   macro.execute custom <macroName> <argument[1]> <argument[2]> ...
+     * 
+     * macroName should be a string that names an existing macro to be called by DAE when the effect 
+     * is removed with the arguments provided.
+     * 
+     * argArray should be an array of arguments to pass to macroName as a string with a single space
+     * between each.
+     ***************************************************************************************************/
+    static async modConcentratingEffect(aToken, macroName, argArray) {
+        let argValue = ""
+        const EFFECT = "Concentrating"
+        // Make sure the macro to be called exists
+        if (!game.macros.getName(macroName)) return (jez.badNews(`Cannot locate ${macroName} macro.`))
+        // Search the passed token to find the effect, return if it doesn't
+        let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
+        if (!effect) return (jez.badNews(`Unable to find ${EFFECT} on ${aToken.name}`))
+        // Build the value string from the argArray
+        for (const element of argArray) argValue += `${element} `
+        // Define the desired modification to concentartion effect. 
+        effect.data.changes.push(
+            { key: `macro.execute`, mode: jez.CUSTOM, value: `${macroName} ${argValue}`, priority: 20 }
+        )
+        // Apply the modification to existing effect
+        await effect.update({ 'changes': effect.data.changes });
+    }
 
 } // END OF class jez
 Object.freeze(jez);
