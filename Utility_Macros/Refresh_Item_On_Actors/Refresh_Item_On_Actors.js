@@ -1,4 +1,4 @@
-const MACRONAME = "Refresh_Item_On_Actors.0.5.js"
+const MACRONAME = "Refresh_Item_On_Actors.0.6.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Provide dialogs to select an item from selected actor.  That item is used as a reference to create
  * new versions on actors selected and also replacing it into the item directory (sidebar)
@@ -23,13 +23,13 @@ const MACRONAME = "Refresh_Item_On_Actors.0.5.js"
  * 
  * TODO: 
  *  2. Dialog to select fields to protect
- *  4. Handle "Finesse" property on item
  * 
  * 06/16/22 0.1 Creation
  * 06/17/22 0.2 Implment Zhell's suggested method, or close to it.
  * 06/20/22 0.3 Pull dialogs and selection into a function that can be moved to jez-lib
  * 06/26/22 0.4 Report on what is actually protected 
  * 06/26/22 0.5 Retain the Magic setting
+ * 06/26/22 0.6 Add special handling of finesse weapons
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`       ============== Starting === ${MACRONAME} =================`);
@@ -258,6 +258,14 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     let itemOriginMagic = itemOrigin.data.data.properties.mgc ?? null;
     let itemOriginFinesse = itemOrigin.data.data.properties.fin ?? null;  
     //----------------------------------------------------------------------------------------------
+    // Special handling for Finesse weapon
+    //
+    let modStat = "str"
+    if (itemOriginFinesse) {
+        // Need to set itemTarget.data.data.ability appropriately
+        if (jez.getStatMod(tActor,"dex") > jez.getStatMod(tActor,"str")) modStat = "dex"
+    }
+    //----------------------------------------------------------------------------------------------
     // Update the description field, if tActor is set, we are updating the sidebar and don't want to
     // alter the description.
     //
@@ -315,7 +323,7 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     if (!isEqual(itemTargetPrep, itemOriginPrep))       console.log(`Status  | Prep retained   :`, itemTargetPrep)
     if (!isEqual(itemTargetUses, itemOriginUses))       console.log(`Status  | Uses retained   :`, itemTargetUses)
     if (!isEqual(itemTargetConsume, itemOriginConsume)) console.log(`Status  | Consume retained:`, itemTargetConsume)
-    if (!isEqual(itemTargetMagic, itemOriginMagic))     console.log(`Status  | Magic retained  :`, itemTargetFinesse)
+    if (!isEqual(itemTargetMagic, itemOriginMagic))     console.log(`Status  | Magic retained  :`, itemTargetMagic)
     //----------------------------------------------------------------------------------------------
     // Build item update object to return the protected fields to original values
     //
@@ -328,9 +336,13 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
             preparation: itemTargetPrep,    // Target's preparation information
             uses: itemTargetUses,           // Target's use information
             properties: {
-                mgc: itemTargetMagic        // Target's setting of teh magic flag on item
+                mgc: itemTargetMagic        // Target's setting of the magic flag on item
             },
         },
+    }
+    if (itemOriginFinesse) {
+        console.log(`Status  | Finesse Stat Pic:`, modStat)
+        itemUpdate.data.ability = modStat // str or dex if this is a finesse weapon
     }
     // jez.log('Returning itemUpdate', itemUpdate);
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`,"Returning itemUpdate", itemUpdate);
