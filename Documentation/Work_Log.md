@@ -139,6 +139,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.24 Added jez.vfxPreSummonEffects and jez.vfxPostSummonEffects to Jez-Lib and progress on Danse Macabre
 
+22.06.26 Fairly large set of additions to **Refresh_Item_On_Actors** supporting additional fields for special treatment and allowing the user to choose what to retain.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

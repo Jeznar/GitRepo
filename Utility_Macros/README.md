@@ -267,9 +267,13 @@ This is intended to be run from the Macro hot-bar and used by the GM to refresh 
 Those fields are:
 
  * consumption data, e.g. data on the consumables used by a item
+ * damage data, the line(s) of data that are typically added to weapons
+ * magic item check box can be retained in its target state
  * preparation data, e.g. if the actor has it via pact magic want to retain that info
  * uses data, i.e. stash any times per day or similar for reapplication
  * Quantity for Regeneration special case in the description
+
+ *Finesse* is treated as another special case with the higher bonus of str and dex applied to it when refreshed onto an actor.
 
 It is a multi-step beastie that goes through the following major steps:
 
@@ -277,14 +281,17 @@ It is a multi-step beastie that goes through the following major steps:
 2. Read through all the items on a token and then display a dialog asking the GM to choose from one of the types of items on that character.  If the GM clicks **Ok** without making a selection, display the dialog again.  If the GM clicks **Cancel** or **Close** terminate.
 3. Read through all the items on the token of the selected type and display a dialog asking for a selection. If the GM clicks **Ok** without making a selection, display the dialog again.  If the GM clicks **Cancel** or **Close** terminate.
 4. Read through all of the actors in the actors directory (sidebar) finding all that have an item with the name and type selected in previous dialogs. Post a dialog showing all the actors found and asking for some or all of them to be selected in a click box dialog.  If none selected and **Selected Only** is clicked, redisplay the dialog. If the GM clicks **Cancel** or **Close** terminate.  Otherwise, proceed with the selected actor(s).
-5. Next, delete/replace the sidebar copy (if it doesn't exist, exit with an error message).
-6. Step through each selected actor scraping/deleting/replacing/updating their item.
+5. Determine which (if any) of the special treatments are applicable and provide a dialog to the used to choose what to retain.  Defaults are somewhat reasonably setup.
+6. Next, delete/replace the sidebar copy (if it doesn't exist, exit with an error message).
+7. Step through each selected actor scraping/deleting/replacing/updating their item.
 
 To recap, this macro replaces items retaining select fields from the original item on actors in the actors directory (sidebar) and a reference copy of the item in the items directory (sidebar).  It is not for creating new items on actors or populating empty items, just refreshing.
 
 See **[Update Item on Actors](#update-item-on-actors)** for discussion of special cases. 
 
 6/22/22 Updated to use **[selectItemOnActor(sToken, prompts, nextFunc)](../jez-lib#selectitemonactorstoken-prompts-nextfunc))** and provide description of macro with a cancel option on launch.
+
+6/26/22 Added a dialog that allows for selective retention of data elements and added a few more. Specifically, Finesse weapons now choose the better of strength/dexterity when they are refreshed and Damage on an item can be retained.  
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 
