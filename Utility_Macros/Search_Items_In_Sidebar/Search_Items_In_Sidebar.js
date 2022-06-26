@@ -9,6 +9,11 @@ for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let msg = "";
 //----------------------------------------------------------------------------------------
+// Items searched for are coded below
+//
+const EFFECT = "macro.CUB"              // Name of effect to be found
+const TARGET = "DisplayDescription"     // Name of ItemMacro to be found
+//----------------------------------------------------------------------------------------
 // Build Array of item names
 //
 let itemNameArray = []
@@ -25,7 +30,6 @@ for (let i = 0; i < itemNameArray.length; i++)
 //----------------------------------------------------------------------------------------
 // Search for effects that utilize CUB 
 //
-const EFFECT = "macro.CUB"
 jez.log("")
 jez.log(`Searching Items for ${EFFECT} effects`)
 jez.log("-----------------------------------------")
@@ -39,13 +43,11 @@ for (const element of game.items.contents) {
         }
     }
 }
-
 //----------------------------------------------------------------------------------------
 // Search for instances of a string in itemMacro fields -- Find calls to a specific macro
 //
-const TARGET = "DisplayDescription"
 jez.log("")
-jez.log("Searching Items for ${TARGET}")
+jez.log(`Searching Items for ${TARGET}`)
 jez.log("-----------------------------------------")
 for (const element of game.items.contents) {
     // jez.log(element.data.flags)

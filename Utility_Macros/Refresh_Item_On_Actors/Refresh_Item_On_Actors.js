@@ -1,4 +1,4 @@
-const MACRONAME = "Refresh_Item_On_Actors.0.3.js"
+const MACRONAME = "Refresh_Item_On_Actors.0.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Provide dialogs to select an item from selected actor.  That item is used as a reference to create
  * new versions on actors selected and also replacing it into the item directory (sidebar)
@@ -19,10 +19,18 @@ const MACRONAME = "Refresh_Item_On_Actors.0.3.js"
  * - Create new item on actor by copying the reference item
  * - Update the new item with retained information from original
  * - Process the next selected actor
- *
+ * 
+ * TODO: 
+ *  1. Report on what was actually protected
+ *  2. Dialog to select fields to protect
+ *  3. Protect "magic" property on item
+ *  4. Handle "Finesse" property on item
+ *  5. 
+ * 
  * 06/16/22 0.1 Creation
  * 06/17/22 0.2 Implment Zhell's suggested method, or close to it.
  * 06/20/22 0.3 Pull dialogs and selection into a function that can be moved to jez-lib
+ * 06/26/22 0.4 Report on what is actually protected 
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`       ============== Starting === ${MACRONAME} =================`);
@@ -121,7 +129,7 @@ async function workHorse(dataObj) {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
  async function updateItemInSidebar(tokenD, nameOfItem, typeOfItem) {
     const FUNCNAME = "updateItemInSidebar(tokenD, nameOfItem, typeOfItem)";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"tokenD",tokenD,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
+    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"tokenD",tokenD,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
     console.log(("***********************************************************************"))
     console.log(`*** Refresh Sidebar Item ${typeOfItem} named ${nameOfItem}`)
     //----------------------------------------------------------------------------------------------
@@ -242,11 +250,14 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,"itemOrigin", itemOrigin, "itemTarget", itemTarget, "tActor", tActor);
     let itemDescription = itemOrigin.data.data.description.value ?? null;
     //----------------------------------------------------------------------------------------------
-    // Grab some of the settings of the target's item for reapplication
+    // Grab some of the settings of the items for reapplication
     //
-    let itemPreparation = itemTarget.data.data.preparation ?? null;
-    let itemUses = itemTarget.data.data.uses ?? null;
-    let itemConsume = itemTarget.data.data.consume ?? null;
+    let itemTargetPrep = itemTarget.data.data.preparation ?? null;
+    let itemTargetUses = itemTarget.data.data.uses ?? null;
+    let itemTargetConsume = itemTarget.data.data.consume ?? null;
+    let itemOriginPrep = itemOrigin.data.data.preparation ?? null;
+    let itemOriginUses = itemOrigin.data.data.uses ?? null;
+    let itemOriginConsume = itemOrigin.data.data.consume ?? null;
     //----------------------------------------------------------------------------------------------
     // Update the description field, if tActor is set, we are updating the sidebar and don't want to
     // alter the description.
@@ -299,6 +310,13 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
         }
     }
     //----------------------------------------------------------------------------------------------
+    // Report to console what is actually being retained from original
+    //
+    // jez.log('Origin Data',"itemOriginPrep",itemOriginPrep,"itemOriginUses",itemOriginUses,"itemOriginConsume",itemOriginConsume)
+    if (!isEqual(itemTargetPrep, itemOriginPrep))       console.log(`Status  | Prep retained   `, itemTargetPrep)
+    if (!isEqual(itemTargetUses, itemOriginUses))       console.log(`Status  | Uses retained   `, itemTargetUses)
+    if (!isEqual(itemTargetConsume, itemOriginConsume)) console.log(`Status  | Consume retained`, itemTargetConsume)
+    //----------------------------------------------------------------------------------------------
     // Build item update object to return the protected fields to original values
     //
     let itemUpdate = {
@@ -306,12 +324,58 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
             description: {
                 value: itemDescription      // Specially processed description
             },
-            consume: itemConsume,           // Targets consumption data 
-            preparation: itemPreparation,   // Target's preparation information
-            uses: itemUses,                 // Target's use information
+            consume: itemTargetConsume,           // Targets consumption data 
+            preparation: itemTargetPrep,   // Target's preparation information
+            uses: itemTargetUses,                 // Target's use information
         },
     }
     // jez.log('Returning itemUpdate', itemUpdate);
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`,"Returning itemUpdate", itemUpdate);
     return itemUpdate;
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Somewhat simple minded object comparison function based on one found online.
+ * https://medium.com/geekculture/object-equality-in-javascript-2571f609386e
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+function isEqual(obj1, obj2) {
+    // jez.log("isEqual(obj1, obj2)","obj1",obj1,"obj1 type",typeof(obj1),"obj2",obj2,"obj2 type",typeof(obj2))
+    if (!obj1 && !obj2) {
+        // jez.log("obj1 & obj2 are falsey, return true")
+        return true 
+    } else if (!obj1 || !obj2) {
+        // jez.log("one of obj1 & obj2 are falsey, return false")
+        return false
+    }
+    // jez.log("continue")
+
+    var props1 = Object.getOwnPropertyNames(obj1);
+    // jez.log("props1",props1)
+    var props2 = Object.getOwnPropertyNames(obj2);
+    // jez.log("props2",props2)
+
+    if (props1.length != props2.length) {
+        // jez.log("length mismatch, return false")
+        return false;
+    }
+    for (var i = 0; i < props1.length; i++) {
+        let val1 = obj1[props1[i]];
+        // jez.log("val1",val1)
+
+        let val2 = obj2[props1[i]];
+        // jez.log("val2",val2)
+
+        let isObjects = isObject(val1) && isObject(val2);
+        //jez.log("isObject",isObject)
+        if (((isObjects && !isEqual(val1, val2)) || (!isObjects && val1 !== val2)) 
+              && !(!val1 && !val2)) {
+            // jez.log("Not sure what this case is, return false")
+            return false;
+        } // jez.log("Alternative result, continue")
+    }
+    // jez.log("made it, return true")
+    return true;
+    function isObject(object) {
+        // jez.log("==> object",object)
+        return object != null && typeof object === 'object';
+      }
 }
