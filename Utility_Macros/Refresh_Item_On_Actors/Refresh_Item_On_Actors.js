@@ -1,4 +1,4 @@
-const MACRONAME = "Refresh_Item_On_Actors.0.4.js"
+const MACRONAME = "Refresh_Item_On_Actors.0.5.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Provide dialogs to select an item from selected actor.  That item is used as a reference to create
  * new versions on actors selected and also replacing it into the item directory (sidebar)
@@ -15,22 +15,21 @@ const MACRONAME = "Refresh_Item_On_Actors.0.4.js"
  *   - preparation data, e.g. if the actor has it via pact magic want to retain that
  *   - uses data, i.e. stash any times per day or similar for reapplication
  *   - Quantity for Regeneration special case in the description
+ *   - magic property flag setting
  * - Delete the match on the actor
  * - Create new item on actor by copying the reference item
  * - Update the new item with retained information from original
  * - Process the next selected actor
  * 
  * TODO: 
- *  1. Report on what was actually protected
  *  2. Dialog to select fields to protect
- *  3. Protect "magic" property on item
  *  4. Handle "Finesse" property on item
- *  5. 
  * 
  * 06/16/22 0.1 Creation
  * 06/17/22 0.2 Implment Zhell's suggested method, or close to it.
  * 06/20/22 0.3 Pull dialogs and selection into a function that can be moved to jez-lib
  * 06/26/22 0.4 Report on what is actually protected 
+ * 06/26/22 0.5 Retain the Magic setting
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`       ============== Starting === ${MACRONAME} =================`);
@@ -98,6 +97,7 @@ async function main() {
         <li>Consumption -- components consumed to use item</li>
         <li>Preperation -- method of preperation, e.g. pact magic</li>
         <li>Uses -- number of uses per period</li>
+        <li>Magic Property -- setting of the magic property flag.</li>
         </ul>
         </p><p>
         The description will be customized if it contains the token's name, %TOKENNAME%, or is 
@@ -224,14 +224,9 @@ async function pushUpdate(targetActorId, nameOfItem, typeOfItem) {
     // Fetcg Item Properties to Retain from target item and build an update
     //
     let updateSet = createUpdateObj(itemOrigin, itemTarget, tActor);
-    // jez.log("Update Set", updateSet);
-    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
-    // Now, inspired by Zhell's Discord thoughts...
-    // https://discord.com/channels/170995199584108546/699750150674972743/987118754381058048
-    // Delete the item from the target actor and copy reference item from the item directory.
-    // await itemTarget.delete();
-    // await tActor.createEmbeddedDocuments("Item", [itemOrigin.toObject()]);
+    // Perform the actual update
+    //
     await itemTarget.update(itemOrigin.toObject())              // Update reference to match source
     //----------------------------------------------------------------------------------------------
     // itemTarget that was referenced has been destroyed, need to get the current version.
@@ -255,9 +250,13 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     let itemTargetPrep = itemTarget.data.data.preparation ?? null;
     let itemTargetUses = itemTarget.data.data.uses ?? null;
     let itemTargetConsume = itemTarget.data.data.consume ?? null;
+    let itemTargetMagic = itemTarget.data.data.properties.mgc ?? null;
+    let itemTargetFinesse = itemTarget.data.data.properties.fin ?? null;
     let itemOriginPrep = itemOrigin.data.data.preparation ?? null;
     let itemOriginUses = itemOrigin.data.data.uses ?? null;
     let itemOriginConsume = itemOrigin.data.data.consume ?? null;
+    let itemOriginMagic = itemOrigin.data.data.properties.mgc ?? null;
+    let itemOriginFinesse = itemOrigin.data.data.properties.fin ?? null;  
     //----------------------------------------------------------------------------------------------
     // Update the description field, if tActor is set, we are updating the sidebar and don't want to
     // alter the description.
@@ -313,9 +312,10 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     // Report to console what is actually being retained from original
     //
     // jez.log('Origin Data',"itemOriginPrep",itemOriginPrep,"itemOriginUses",itemOriginUses,"itemOriginConsume",itemOriginConsume)
-    if (!isEqual(itemTargetPrep, itemOriginPrep))       console.log(`Status  | Prep retained   `, itemTargetPrep)
-    if (!isEqual(itemTargetUses, itemOriginUses))       console.log(`Status  | Uses retained   `, itemTargetUses)
-    if (!isEqual(itemTargetConsume, itemOriginConsume)) console.log(`Status  | Consume retained`, itemTargetConsume)
+    if (!isEqual(itemTargetPrep, itemOriginPrep))       console.log(`Status  | Prep retained   :`, itemTargetPrep)
+    if (!isEqual(itemTargetUses, itemOriginUses))       console.log(`Status  | Uses retained   :`, itemTargetUses)
+    if (!isEqual(itemTargetConsume, itemOriginConsume)) console.log(`Status  | Consume retained:`, itemTargetConsume)
+    if (!isEqual(itemTargetMagic, itemOriginMagic))     console.log(`Status  | Magic retained  :`, itemTargetFinesse)
     //----------------------------------------------------------------------------------------------
     // Build item update object to return the protected fields to original values
     //
@@ -324,9 +324,12 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
             description: {
                 value: itemDescription      // Specially processed description
             },
-            consume: itemTargetConsume,           // Targets consumption data 
-            preparation: itemTargetPrep,   // Target's preparation information
-            uses: itemTargetUses,                 // Target's use information
+            consume: itemTargetConsume,     // Targets consumption data 
+            preparation: itemTargetPrep,    // Target's preparation information
+            uses: itemTargetUses,           // Target's use information
+            properties: {
+                mgc: itemTargetMagic        // Target's setting of teh magic flag on item
+            },
         },
     }
     // jez.log('Returning itemUpdate', itemUpdate);
