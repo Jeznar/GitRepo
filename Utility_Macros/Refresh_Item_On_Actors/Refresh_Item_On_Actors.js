@@ -98,7 +98,7 @@ async function main() {
         <li>Preperation -- method of preperation, e.g. pact magic</li>
         <li>Uses -- number of uses per period</li>
         <li>Magic Property -- setting of the magic property flag.</li>
-        <li>Finessed Property -- Stat set to actors best of STR/DEX.</li>
+        <li>Finesse Property -- Stat set to actors best of STR/DEX.</li>
         </ul>
         </p><p>
         The description will be customized if it contains the token's name, %TOKENNAME%, or is 
