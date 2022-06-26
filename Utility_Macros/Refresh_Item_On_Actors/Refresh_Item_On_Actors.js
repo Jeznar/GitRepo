@@ -1,4 +1,4 @@
-const MACRONAME = "Refresh_Item_On_Actors.0.6.js"
+const MACRONAME = "Refresh_Item_On_Actors.0.7.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Provide dialogs to select an item from selected actor.  That item is used as a reference to create
  * new versions on actors selected and also replacing it into the item directory (sidebar)
@@ -22,7 +22,7 @@ const MACRONAME = "Refresh_Item_On_Actors.0.6.js"
  * - Process the next selected actor
  * 
  * TODO: 
- *  2. Dialog to select fields to protect
+ *  - Weapon Damage?
  * 
  * 06/16/22 0.1 Creation
  * 06/17/22 0.2 Implment Zhell's suggested method, or close to it.
@@ -30,14 +30,39 @@ const MACRONAME = "Refresh_Item_On_Actors.0.6.js"
  * 06/26/22 0.4 Report on what is actually protected 
  * 06/26/22 0.5 Retain the Magic setting
  * 06/26/22 0.6 Add special handling of finesse weapons
+ * 06/26/22 0.7 Add dialog to allow selective retention of data fields.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`       ============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
 let msg = ""
+//---------------------------------------------------------------------------------------------------
+// null: there are no differences in the field so option should not be provided
+// true: there are differences and the target's value is to be retained
+// false: there are differences and the target's value is to be overwritten
+//
+let protectFieldsObj = {
+    prep: null,
+    uses: null,
+    consume: null,
+    magic: null,
+}
+let protectFieldsDefaultObj = {
+    prep: true,
+    uses: true,
+    consume: true,
+    magic: true,
+}
+let selObj = {
+    sToken: null,
+    idArray: null,
+    itemName: null,
+    itemType: null
+}
+jez.log("protectFieldsObj", protectFieldsObj)
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -104,26 +129,94 @@ async function main() {
         The description will be customized if it contains the token's name, %TOKENNAME%, or is 
         a special case REGENERATION item.<p>
         <p>Would you like to continue?</p>`,
-        yes: () => jez.selectItemOnActor(sToken, promptObj, workHorse),
+        yes: () => jez.selectItemOnActor(sToken, promptObj, chooseFields),
         no: () => console.log("You choose ... poorly"),
         defaultYes: true
     });
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Pop dialog to determine which fields to retain...
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function chooseFields(dataObj) {
+    const FUNCNAME = "chooseFields()";
+    selObj = dataObj    // copy the returned object into our global selection object
+    // jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`, "selObj.sToken", selObj.sToken, "selObj.idArray", selObj.idArray, "selObj.itemName", selObj.itemName, "selObj.itemType", selObj.itemType)
+    //----------------------------------------------------------------------------------------------
+    // Determine which protectable fields contain differences from the reference
+    //
+    await findDifferences(selObj.idArray, selObj.itemName, selObj.itemType)
+    // jez.log("*** findDifferences protectFieldsObj", protectFieldsObj)
+    //---------------------------------------------------------------------------------------------------
+    // Pop the dialog to determine which fields to retain on the targets
+    //
+    let dialogTitle = "Select the fields to retain"
+    let dialogText = `This dialog lists fields where there are differences between the reference and the 
+    target actors. You may retain the target actor field values by checking the box next to each.<br><br>
+    When satisfied, click a button at the bottom to execute.`
+    customCheckDialog(dialogTitle, dialogText, workHorse)
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Use Selection Information...
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-async function workHorse(dataObj) {
+async function workHorse(args) {
     const FUNCNAME = "workHorse()";
-    // jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`, "dataObj.sToken",dataObj.sToken,"dataObj.idArray", dataObj.idArray, "dataObj.itemName", dataObj.itemName, "dataObj.itemType", dataObj.itemType)
+    // jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`,"args",args)
+    //--------------------------------------------------------------------------------------------
+    // If cancel button was selected on the preceding dialog, null is returned ==> Terminate
+    //
+    if (args === null) return;
+    //----------------------------------------------------------------------------------------------
+    // Set the data retention object to match the dialog input
+    //
+    protectFieldsObj.prep = protectFieldsObj.uses = protectFieldsObj.consume = protectFieldsObj.magic = false
+    if (args.includes("Preperation")) protectFieldsObj.prep = true
+    if (args.includes("Uses")) protectFieldsObj.uses = true
+    if (args.includes("Consume")) protectFieldsObj.consume = true
+    if (args.includes("Magic")) protectFieldsObj.magic = true
     //----------------------------------------------------------------------------------------------
     // Refresh item in side bar
     //
-    if (!await updateItemInSidebar(dataObj.sToken, dataObj.itemName, dataObj.itemType)) return (false);
+    if (!await updateItemInSidebar(selObj.sToken, selObj.itemName, selObj.itemType)) return (false);
     //----------------------------------------------------------------------------------------------
     // Refresh the selected actor's item, all of the selected actors
     //
-    for (let line of dataObj.idArray) await pushUpdate(line, dataObj.itemName, dataObj.itemType);
+    for (let line of selObj.idArray) await pushUpdate(line, selObj.itemName, selObj.itemType);
     // jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * 
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ async function findDifferences(actorIdArray, nameOfItem, typeOfItem) {
+    const FUNCNAME = "findDifferences(targetActorId, nameOfItem, typeOfItem)";
+    // jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`,"actorIdArray",actorIdArray,"nameOfItem",nameOfItem,"typeOfItem",typeOfItem);
+    //----------------------------------------------------------------------------------------------
+    // Grab a copy of the reference item from the sidebar
+    //
+    let itemOrigin = await game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
+    if (!itemOrigin) return jez.badNews(`Item "${nameOfItem}" of type "${typeOfItem}" not found in sidebar`)
+    //----------------------------------------------------------------------------------------------
+    // Spin through all of the selected actors
+    //
+    for (let targetActorId of actorIdArray) {
+        let tActor = await game.actors.get(targetActorId);
+        if (!tActor) return jez.badNews(`${targetActorId} does not map to an actor data object`)
+        // Get the item from the target actor
+        let itemTarget = tActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
+        if (!itemTarget) return jez.badNews(`Cound not find ${tActor.name}'s "${nameOfItem}"`)
+        // Compare the preperation data
+        if (!isEqual(itemTarget.data.data?.preparation, itemOrigin.data.data?.preparation))
+            protectFieldsObj.prep = protectFieldsDefaultObj.prep
+        // Compare the uses data
+        if (!isEqual(itemTarget.data.data?.uses, itemOrigin.data.data?.uses))
+            protectFieldsObj.uses = protectFieldsDefaultObj.uses
+        // Compare the consume data
+        if (!isEqual(itemTarget.data.data?.consume, itemOrigin.data.data?.consume))
+        protectFieldsObj.consume = protectFieldsDefaultObj.consume
+        // Compare the magic data
+        if (!isEqual(itemTarget.data.data.properties?.mgc, itemOrigin.data.data.properties?.mgc))
+            protectFieldsObj.magic = protectFieldsDefaultObj.magic
+        // jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    }
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Update the item in the Item directory, sidebar.
@@ -202,7 +295,7 @@ async function pushUpdate(targetActorId, nameOfItem, typeOfItem) {
     //
     let tActor = game.actors.get(targetActorId);
     if (!tActor) {
-        msg = `Passed targetActorId "${targetActorId}" did find an actor data object`
+        msg = `Passed targetActorId "${targetActorId}" did not find an actor data object`
         console.log(msg)
         ui.notifications.error(msg)
         return (false)
@@ -222,7 +315,7 @@ async function pushUpdate(targetActorId, nameOfItem, typeOfItem) {
     let itemOrigin = game.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     let itemTarget = tActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
     //----------------------------------------------------------------------------------------------
-    // Fetcg Item Properties to Retain from target item and build an update
+    // Fetch Item Properties to Retain from target item and build an update
     //
     let updateSet = createUpdateObj(itemOrigin, itemTarget, tActor);
     //----------------------------------------------------------------------------------------------
@@ -251,20 +344,20 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     let itemTargetPrep = itemTarget.data.data.preparation ?? null;
     let itemTargetUses = itemTarget.data.data.uses ?? null;
     let itemTargetConsume = itemTarget.data.data.consume ?? null;
-    let itemTargetMagic = itemTarget.data.data.properties.mgc ?? null;
-    let itemTargetFinesse = itemTarget.data.data.properties.fin ?? null;
+    let itemTargetMagic = itemTarget.data.data.properties?.mgc ?? null;
+    let itemTargetFinesse = itemTarget.data.data.properties?.fin ?? null;
     let itemOriginPrep = itemOrigin.data.data.preparation ?? null;
     let itemOriginUses = itemOrigin.data.data.uses ?? null;
     let itemOriginConsume = itemOrigin.data.data.consume ?? null;
-    let itemOriginMagic = itemOrigin.data.data.properties.mgc ?? null;
-    let itemOriginFinesse = itemOrigin.data.data.properties.fin ?? null;  
+    let itemOriginMagic = itemOrigin.data.data.properties?.mgc ?? null;
+    let itemOriginFinesse = itemOrigin.data.data.properties?.fin ?? null;
     //----------------------------------------------------------------------------------------------
     // Special handling for Finesse weapon
     //
     let modStat = "str"
     if (itemOriginFinesse) {
         // Need to set itemTarget.data.data.ability appropriately
-        if (jez.getStatMod(tActor,"dex") > jez.getStatMod(tActor,"str")) modStat = "dex"
+        if (jez.getStatMod(tActor, "dex") > jez.getStatMod(tActor, "str")) modStat = "dex"
     }
     //----------------------------------------------------------------------------------------------
     // Update the description field, if tActor is set, we are updating the sidebar and don't want to
@@ -321,10 +414,10 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     // Report to console what is actually being retained from original
     //
     // jez.log('Origin Data',"itemOriginPrep",itemOriginPrep,"itemOriginUses",itemOriginUses,"itemOriginConsume",itemOriginConsume)
-    if (!isEqual(itemTargetPrep, itemOriginPrep))       console.log(`Status  | Prep retained   :`, itemTargetPrep)
-    if (!isEqual(itemTargetUses, itemOriginUses))       console.log(`Status  | Uses retained   :`, itemTargetUses)
-    if (!isEqual(itemTargetConsume, itemOriginConsume)) console.log(`Status  | Consume retained:`, itemTargetConsume)
-    if (!isEqual(itemTargetMagic, itemOriginMagic))     console.log(`Status  | Magic retained  :`, itemTargetMagic)
+    // if (!isEqual(itemTargetPrep, itemOriginPrep)) console.log(`Status  | Prep retained   :`, itemTargetPrep)
+    // if (!isEqual(itemTargetUses, itemOriginUses)) console.log(`Status  | Uses retained   :`, itemTargetUses)
+    // if (!isEqual(itemTargetConsume, itemOriginConsume)) console.log(`Status  | Consume retained:`, itemTargetConsume)
+    // if (!isEqual(itemTargetMagic, itemOriginMagic)) console.log(`Status  | Magic retained  :`, itemTargetMagic)
     //----------------------------------------------------------------------------------------------
     // Build item update object to return the protected fields to original values
     //
@@ -333,20 +426,36 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
             description: {
                 value: itemDescription      // Specially processed description
             },
-            consume: itemTargetConsume,     // Targets consumption data 
-            preparation: itemTargetPrep,    // Target's preparation information
-            uses: itemTargetUses,           // Target's use information
-            properties: {
-                mgc: itemTargetMagic        // Target's setting of the magic flag on item
-            },
+            // consume: itemTargetConsume,     // Targets consumption data 
+            // preparation: itemTargetPrep,    // Target's preparation information
+            // uses: itemTargetUses,           // Target's use information
+            // properties: {
+            //     mgc: itemTargetMagic        // Target's setting of the magic flag on item
         },
     }
+    // jez.log("******* protectFieldsObj",protectFieldsObj)
+    if (protectFieldsObj.consume) {
+        console.log(`        | Retain Consume  :`, itemTargetConsume)
+        itemUpdate.data.preparation = itemTargetConsume
+    }
+    if (protectFieldsObj.prep) {
+        console.log(`        | Retain Prep.    :`, itemTargetPrep)
+        itemUpdate.data.consume = itemTargetPrep
+    }
+    if (protectFieldsObj.uses) {
+        console.log(`        | Retain Uses     :`, itemTargetUses)
+        itemUpdate.data.uses = itemTargetUses
+    }
+    if (protectFieldsObj.magic) {
+        console.log(`        | Retain Magic    :`, itemTargetMagic)
+        itemUpdate.data.properties = { mgc: itemTargetMagic }
+    }
     if (itemOriginFinesse) {
-        console.log(`Status  | Finesse Stat Pic:`, modStat)
+        console.log(`        | Finesse Stat    :`, modStat)
         itemUpdate.data.ability = modStat // str or dex if this is a finesse weapon
     }
     // jez.log('Returning itemUpdate', itemUpdate);
-    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`,"Returning itemUpdate", itemUpdate);
+    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`, "Returning itemUpdate", itemUpdate);
     return itemUpdate;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -394,4 +503,91 @@ function isEqual(obj1, obj2) {
         // jez.log("==> object",object)
         return object != null && typeof object === 'object';
       }
+}
+/***************************************************************************************
+ * Create and process custom dialog, passing array onto specified callback function
+ ***************************************************************************************/
+ async function customCheckDialog(queryTitle, queryText, pickCallBack) {
+    const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...protectFieldsObj)";
+    // jez.log("--- Starting --- ${FUNCNAME}---",`queryTitle`, queryTitle,`queryText`, queryText,`pickCallBack`, pickCallBack,`protectFieldsObj`, protectFieldsObj);
+    let queryObjects = []
+    let queryCheck = []
+    //---------------------------------------------------------------------------------------------------
+    // Setup the options to be provided in the dialog
+    //
+    addLine(protectFieldsObj.prep,"Preperation")
+    addLine(protectFieldsObj.uses,"Uses")
+    addLine(protectFieldsObj.consume,"Consume")
+    addLine(protectFieldsObj.magic,"Magic")
+    function addLine(entry, label) {
+        // jez.log("addLine(entry, label)","entry",entry,"label",label)
+        if (entry != null) {                        // If value is null, don't create a line
+            queryObjects.push(label)                // Add to array the string for this item
+            if (entry) queryCheck.push("checked")   // Precheck if indicated by entry
+            else queryCheck.push("")                // Leave blank otherwise
+        }
+    }
+    //---------------------------------------------------------------------------------------------------
+    // 
+    //
+    if (typeof (pickCallBack) != "function") {
+        msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
+        ui.notifications.error(msg);
+        // jez.log(msg);
+        return
+    }
+    if (!queryTitle || !queryText || !protectFieldsObj) {
+        msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [protectFieldsObj]),
+        but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${protectFieldsObj}`;
+        ui.notifications.error(msg);
+        // jez.log(msg);
+        return
+    }
+    let template = `
+    <div>
+    <label>${queryText}</label>
+    <div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">`
+    // jez.log("queryObjects.length",queryObjects.length)
+    for (let i = 0; i < queryObjects.length; i++) {
+        template += `<input type="checkbox" ${queryCheck[i]} id=${queryObjects[i]} name="selectedLine" value="${queryObjects[i]}"> <label for="${queryObjects[i]}">${queryObjects[i]}</label><br>`
+    }
+    template += `</div></div>`
+    // jez.log(template)
+    let selections = []
+    new Dialog({
+        title: queryTitle,
+        content: template,
+        buttons: {
+            ok: {
+                icon: '<i class="fas fa-check"></i>',
+                label: 'Selected Only',
+                callback: async (html) => {
+                    html.find("[name=selectedLine]:checked").each(function () {
+                        //jez.log($(this).val());
+                        selections.push($(this).val())
+                    })
+                    pickCallBack(selections)
+                },
+            },
+            all: {
+                icon: '<i class="fas fa-check-double"></i>',
+                label: 'All Displayed',
+                callback: async (html) => {
+                    //jez.log("Selected All", queryOptions)
+                    pickCallBack(queryObjects)
+                },
+            },
+            cancel: {
+                icon: '<i class="fas fa-times"></i>',
+                label: 'Cancel',
+                callback: async (html) => {
+                    console.log('canceled')
+                    pickCallBack(null)
+                },
+            },
+        },
+        default: 'cancel',
+    }).render(true)
+    // jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
+    return;
 }
