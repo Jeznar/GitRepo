@@ -21,9 +21,6 @@ const MACRONAME = "Refresh_Item_On_Actors.1.1.js"
  * - Update the new item with retained information from original
  * - Process the next selected actor
  * 
- * TODO: 
- *  - Weapon Damage?
- * 
  * 06/16/22 0.1 Creation
  * 06/17/22 0.2 Implment Zhell's suggested method, or close to it.
  * 06/20/22 0.3 Pull dialogs and selection into a function that can be moved to jez-lib
