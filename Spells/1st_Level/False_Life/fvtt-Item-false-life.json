@@ -1,0 +1,191 @@
+{
+  "name": "False Life",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/heal-royal-1.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Bolstering yourself with a necromantic facsimile of life, you gain 1d4 + 4 temporary hit points for the duration.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, you gain 5 additional temporary hit points for each slot level above 1st.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell is automated.</p>",
+      "chat": "<p>Bolstering yourself with a necromantic facsimile of life, you gain 1d4 + 4 temporary hit points for the duration.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, you gain 5 additional temporary hit points for each slot level above 1st.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 239",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "nec",
+    "components": {
+      "value": "a small amount of alcohol or distilled spirits",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "a small amount of alcohol or distilled spirits",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 136759,
+      "definitionId": 2093,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 239,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Buff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_y8e7215chl"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.tnz5XRMNXGt7SXOx"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "False Life",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"False_Life.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * False Life places a scaling effect on the caster, giving them 1d4+4 temp hit points that \n * increases by 5 for every upcast level. \n * \n * 06/27/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet msg = \"\";\n//\n// Set the value for the Active Actor (aActor)\nlet aActor;         \nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \nelse aActor = game.actors.get(LAST_ARG.actorId);\n//\n// Set the value for the Active Token (aToken)\nlet aToken;         \nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\n//\n// Set the value for the Active Item (aItem)\nlet aItem;         \nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst SPELL_LEVEL = LAST_ARG?.spellLevel;\n\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \n function postResults(msg) {\n    //jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 13, msg: msg, tag: \"saves\" });\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \n async function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //-----------------------------------------------------------------------------------------------\n    // Determine how many temp hp can be added to the caster\n    //\n    let tempHitPointRoll = new Roll(`1d4`).evaluate({ async: false });\n    // jez.log(\"tempHitPointRoll\",tempHitPointRoll)\n    game.dice3d?.showForRoll(tempHitPointRoll);\n    let tempHP = tempHitPointRoll.total + 4 + (SPELL_LEVEL-1)*5\n    let oldTempHp = aToken.actor.data.data.attributes.hp.temp;\n    let newTempHp = Math.max(tempHP, oldTempHp)\n    // jez.log(\"newTempHp\",newTempHp)\n    //-----------------------------------------------------------------------------------------------\n    // If HP is being added, update the actor and bake an appropriate message\n    //\n    if (tempHP <= oldTempHp) {\n        // jez.log(`Old temp HP was ${oldTempHp}, not changing temporary hit points`); \n        msg = `${aToken.name} has ${oldTempHp} temporary hit points. The ${tempHP} can not be used.`\n    } else { \n        jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))\n        await aToken.actor.update({\n            'data.attributes.hp.temp' : newTempHp,\n            // 'data.attributes.hp.tempmax' : newTempHp.total\n        })\n        msg = `<b>${aToken.name}</b> had ${oldTempHp} temporary hit points, added ${tempHP-oldTempHp}. \n        ${aToken.name} now has ${newTempHp} temporary HP.`\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    postResults(msg)\n    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "gm-notes": {},
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

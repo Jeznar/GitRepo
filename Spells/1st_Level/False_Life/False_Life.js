@@ -44,29 +44,29 @@ if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
  function postResults(msg) {
     //jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 13, msg: msg, tag: "saves" });
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    // jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //-----------------------------------------------------------------------------------------------
     // Determine how many temp hp can be added to the caster
     //
     let tempHitPointRoll = new Roll(`1d4`).evaluate({ async: false });
-    jez.log("tempHitPointRoll",tempHitPointRoll)
+    // jez.log("tempHitPointRoll",tempHitPointRoll)
     game.dice3d?.showForRoll(tempHitPointRoll);
     let tempHP = tempHitPointRoll.total + 4 + (SPELL_LEVEL-1)*5
     let oldTempHp = aToken.actor.data.data.attributes.hp.temp;
     let newTempHp = Math.max(tempHP, oldTempHp)
-    jez.log("newTempHp",newTempHp)
+    // jez.log("newTempHp",newTempHp)
     //-----------------------------------------------------------------------------------------------
     // If HP is being added, update the actor and bake an appropriate message
     //
     if (tempHP <= oldTempHp) {
-        jez.log(`Old temp HP was ${oldTempHp}, not changing temporary hit points`); 
+        // jez.log(`Old temp HP was ${oldTempHp}, not changing temporary hit points`); 
         msg = `${aToken.name} has ${oldTempHp} temporary hit points. The ${tempHP} can not be used.`
     } else { 
         jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))
@@ -81,6 +81,6 @@ if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
     // Comments, perhaps
     //
     postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }

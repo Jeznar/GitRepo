@@ -14,6 +14,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Electrify](#electrify)
 * [Ensnaring Strike](Cantrips#ensnaring-strike)
 * [Entangle](#entangle)
+* [False Life](#false-life)
 * [Fog Cloud](#fog-cloud) (ASE)
 * [Guiding Bolt](#guiding-bolt)
 * [Hex](#hex)
@@ -186,6 +187,14 @@ This spell drove the implementation of **Shocking Grasp** which includes a **No 
 ### Ensnaring Strike
 
 Import of older macro that appears to be FoundryVTT 9.x compatible.
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### False Life
+
+Simple ItemMacro based spell that automates the addition of appropriate amount of temporary hit points (TempHP)
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

@@ -60,6 +60,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Electrify](1st_Level#electrify)
 * [Ensnaring Strike](Cantrips#ensnaring-strike)
 * [Entangle](1st_Level#entangle)
+* [False Life](1st_Level#false-life)
 * [Fog Cloud](1st_Level#fog-cloud) (ASE)
 * [Guiding Bolt](1st_Level#guiding-bolt)
 * [Hideous Laughter](1st_Level#hideous-laughter)
