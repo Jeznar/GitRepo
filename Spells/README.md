@@ -94,6 +94,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Enlarge/Reduce](2nd_Level#enlargereduce)
 * [Find Steed](2nd_Level#find-steed)
 * [Flaming Sphere](2nd_Level#flaming-sphere)
+* [Gentle Repose](2nd_Level#gentile-repose)
 * [Gust of Wind](2nd_Level#gust-of-wind)
 * [Heat Metal](2nd_Level#heat-metal)
 * [Hold Person](2nd_Level#hold-person)

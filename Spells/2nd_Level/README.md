@@ -15,6 +15,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Flaming Sphere](#flaming-sphere)
 * [Heat Metal](#heat-metal)
 * [Hold Person](#hold-person)
+* [Gentle Repose](#gentile-repose)
 * [Gust of Wind](#gust-of-wind)
 * [Invisibility](#invisibility)
 * [Knock](#knock)
@@ -178,6 +179,28 @@ This item does a number of things:
 
 ---
 
+### Gentile Repose
+
+Simple item that places a DAE effect on the target as a marker of its effect. Simple little macro runs a VFX on the target and displays a message to the chart card giving a small description of the effect.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
+### Gust of Wind
+
+Manages a tile containing a VFX for gust of wind.  Consequences of the wind are not automated.
+
+Placing the effect is a bit odd, ok, really odd. The targeting template needs to be placed horizontally from left to right. After the template is placed the created Tile can be rotated (cmd-mouse wheel) and dragged into correct position. 
+
+If a bonus action is spent to move the direction the line blasts from the caster, it will need to be manually adjusted in the same manner as initial placement.
+
+NOTE: The gust moves with the caster.
+
+[*Back to 2nd Level Spell List*](#2nd-level-spells)
+
+---
+
 ### Heat Metal
 
 Imported and updated from earlier efforts.  This item used library functions to grab a helper macro and customize it on the caster's sheet.  It builds a temp item that is used to inflict damage to the victim.  It does not need to have the victim targeted to inflict the damage.
@@ -202,20 +225,6 @@ The second effect places the CUB Paralyzed effect on the token.  This effect app
 UPDATE 5/13/22: Added expiration condition so that the effect drops from afflicted tokens when they reach zero hp. This is desired for NPCs who are *dead* at that point.  Less so for PCs...
 
 ![Hold_Person/Hold_Person_DAE_Effects.png](Hold_Person/Hold_Person_DAE_Effects.png)
-
-[*Back to 2nd Level Spell List*](#2nd-level-spells)
-
----
-
-### Gust of Wind
-
-Manages a tile containing a VFX for gust of wind.  Consequences of the wind are not automated.
-
-Placing the effect is a bit odd, ok, really odd. The targeting template needs to be placed horizontally from left to right. After the template is placed the created Tile can be rotated (cmd-mouse wheel) and dragged into correct position. 
-
-If a bonus action is spent to move the direction the line blasts from the caster, it will need to be manually adjusted in the same manner as initial placement.
-
-NOTE: The gust moves with the caster.
 
 [*Back to 2nd Level Spell List*](#2nd-level-spells)
 

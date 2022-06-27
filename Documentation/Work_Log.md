@@ -143,6 +143,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.27 Added **False Life** spell with temp HP
 
+22.06.27 Implemented super simple **Gentle Repose** spell. It just places a marker DAE effect on its target and displays a chat card message.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
