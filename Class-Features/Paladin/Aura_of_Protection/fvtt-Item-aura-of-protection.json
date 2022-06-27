@@ -1,10 +1,10 @@
 {
   "name": "Aura of Protection",
   "type": "feat",
-  "img": "systems/dnd5e/icons/skills/blue_13.jpg",
+  "img": "icons/magic/air/wind-tornado-wall-blue.webp",
   "data": {
     "description": {
-      "value": "<p>Starting at 6th level, whenever you or a friendly creature within 10 feet of you must make a saving throw, the creature gains a bonus to the saving throw equal to your Charisma modifier (with a minimum bonus of +1). You must be conscious to grant this bonus.</p><p> At 18th level, the range of this aura increases to 30 feet.</p>",
+      "value": "<p>Starting at 6th level, whenever %TOKENNAME% or a friendly creature within 10 feet of&nbsp;<span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">%TOKENNAME%</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">&nbsp;must make a saving throw, the creature gains a <strong>bonus to the saving throw</strong> equal to&nbsp;</span><strong>%TOKENNAME%'s </strong><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\"><strong>&nbsp;Charisma modifier </strong>(with a minimum bonus of +1). </span></p>\n<p><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">%TOKENNAME%</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">&nbsp;must be conscious to grant this bonus.</span></p>\n<p>At 18th level, the range of this aura increases to 30 feet.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is automated, other than the level 18+ benefit.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -44,7 +44,10 @@
     "actionType": "",
     "attackBonus": 0,
     "chatFlavor": "",
-    "critical": null,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
     "damage": {
       "parts": [],
       "versatile": "",
@@ -78,16 +81,21 @@
           "ignoreSelf": false,
           "height": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "displayTemp": false
         },
         "dae": {
           "stackable": "none",
           "specialDuration": [],
           "transfer": true,
-          "macroRepeat": "none"
+          "macroRepeat": "none",
+          "durationExpression": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
+        },
+        "core": {
+          "statusId": ""
         }
       },
       "changes": [
@@ -100,7 +108,7 @@
         {
           "key": "macro.tokenMagic",
           "mode": 0,
-          "value": "invalid",
+          "value": "bevel",
           "priority": "20"
         },
         {
@@ -121,12 +129,11 @@
       "transfer": true,
       "selectedKey": [
         "data.bonuses.abilities.save",
-        "__",
+        "macro.tokenMagic",
         "macro.execute"
       ]
     }
   ],
-  "sort": 0,
   "flags": {
     "dae": {
       "activeEquipped": false,
@@ -152,8 +159,8 @@
     "exportSource": {
       "world": "travels-in-barovia",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }
