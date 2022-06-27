@@ -1,4 +1,4 @@
-const MACRONAME = "Refresh_Item_On_Actors.0.8.js"
+const MACRONAME = "Refresh_Item_On_Actors.1.0.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Provide dialogs to select an item from selected actor.  That item is used as a reference to create
  * new versions on actors selected and also replacing it into the item directory (sidebar)
@@ -32,6 +32,8 @@ const MACRONAME = "Refresh_Item_On_Actors.0.8.js"
  * 06/26/22 0.6 Add special handling of finesse weapons
  * 06/26/22 0.7 Add dialog to allow selective retention of data fields.
  * 06/26/22 0.8 Added support for the damage element to be retained on the target tokens
+ * 06/26/22 0.9 Add Equipped, Identified, and Proficient to the data potentially retained
+ * 06/26/22 1.0 Added color to final dialog and path to bypass if no options available
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 console.log(`       ============== Starting === ${MACRONAME} =================`);
@@ -48,15 +50,21 @@ let msg = ""
 let protectFieldsObj = {
     consume: null,
     damage: null,
+    equipped: null,
+    identified: null,
     magic: null,
     prep: null,
+    proficient: null,
     uses: null,
 }
 let protectFieldsDefaultObj = {
     consume: true,
     damage: false,
+    equipped: true,
+    identified: true,
     magic: true,
     prep: true,
+    proficient: true,
     uses: true,
 }
 let selObj = {
@@ -153,10 +161,11 @@ async function chooseFields(dataObj) {
     // Pop the dialog to determine which fields to retain on the targets
     //
     let dialogTitle = "Select the fields to retain"
-    let dialogText = `This dialog lists fields where there are differences between the reference and the 
-    target actors. You may retain the target actor field values by checking the box next to each.<br><br>
-    When satisfied, click a button at the bottom to execute.`
-    customCheckDialog(dialogTitle, dialogText, workHorse)
+    let dialogText1 = `<p style="color:DarkSlateBlue;">This dialog lists fields where there are differences between the reference and the 
+    target actors. You may retain the target actor field values by checking the box next to each.</p>
+    <p style=color:DarkCyan>The console log will display progress and update results.  Use it!`
+    let dialogText2 = `<p style=color:DarkRed;>Check the box(es) to retain specific target setting(s)!</p>`
+    customCheckDialog(dialogTitle, dialogText1, dialogText2, workHorse)
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Use Selection Information...
@@ -172,11 +181,17 @@ async function workHorse(args) {
     // Set the data retention object to match the dialog input
     //
     protectFieldsObj.prep = protectFieldsObj.uses = protectFieldsObj.consume = protectFieldsObj.magic = protectFieldsObj.damage = false
-    if (args.includes("Consume")) protectFieldsObj.consume = true
-    if (args.includes("Damage")) protectFieldsObj.damage = true
-    if (args.includes("Magic")) protectFieldsObj.magic = true
-    if (args.includes("Preperation")) protectFieldsObj.prep = true
-    if (args.includes("Uses")) protectFieldsObj.uses = true
+    protectFieldsObj.equipped = protectFieldsObj.identified = protectFieldsObj.proficient = false
+    if (Array.isArray(args)) {
+        if (args.includes("Consume")) protectFieldsObj.consume = true
+        if (args.includes("Damage")) protectFieldsObj.damage = true
+        if (args.includes("Equipped")) protectFieldsObj.equipped = true
+        if (args.includes("Identified")) protectFieldsObj.identified = true
+        if (args.includes("Magic")) protectFieldsObj.magic = true
+        if (args.includes("Preperation")) protectFieldsObj.prep = true
+        if (args.includes("Proficient")) protectFieldsObj.proficient = true
+        if (args.includes("Uses")) protectFieldsObj.uses = true
+    }
     //----------------------------------------------------------------------------------------------
     // Refresh item in side bar
     //
@@ -213,16 +228,26 @@ async function findDifferences(actorIdArray, nameOfItem, typeOfItem) {
         // Compare the damage data
         if (!isEqual(itemTarget.data.data?.damage, itemOrigin.data.data?.damage))
             protectFieldsObj.damage = protectFieldsDefaultObj.damage
+        // Compare the equipped data
+        if (!isEqual(itemTarget.data.data?.equipped, itemOrigin.data.data?.equipped))
+            protectFieldsObj.equipped = protectFieldsDefaultObj.equipped
+        // Compare the damage data
+        if (!isEqual(itemTarget.data.data?.identified, itemOrigin.data.data?.identified))
+            protectFieldsObj.identified = protectFieldsDefaultObj.identified
         // Compare the magic data
         if (!isEqual(itemTarget.data.data.properties?.mgc, itemOrigin.data.data.properties?.mgc))
             protectFieldsObj.magic = protectFieldsDefaultObj.magic
         // Compare the preperation data
         if (!isEqual(itemTarget.data.data?.preparation, itemOrigin.data.data?.preparation))
             protectFieldsObj.prep = protectFieldsDefaultObj.prep
+        // Compare the proficient data
+        if (!isEqual(itemTarget.data.data?.proficient, itemOrigin.data.data?.proficient))
+            protectFieldsObj.proficient = protectFieldsDefaultObj.proficient
         // Compare the uses data
         if (!isEqual(itemTarget.data.data?.uses, itemOrigin.data.data?.uses))
-        protectFieldsObj.uses = protectFieldsDefaultObj.uses
-
+            protectFieldsObj.uses = protectFieldsDefaultObj.uses
+        // jez.log("protectFieldsObj",protectFieldsObj)
+        // jez.log("protectFieldsDefaultObj",protectFieldsDefaultObj)
         // jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
     }
 }
@@ -349,16 +374,14 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     //----------------------------------------------------------------------------------------------
     // Grab some of the settings of the items for reapplication
     //
-    let itemTargetConsume = itemTarget.data.data.consume ?? null;
-    let itemTargetDamage = itemTarget.data.data.damage ?? null;
+    let itemTargetConsume = itemTarget.data.data?.consume ?? null;
+    let itemTargetDamage = itemTarget.data.data?.damage ?? null;
+    let itemTargetEquipped = itemTarget.data.data?.equipped ?? null;
+    let itemTargetIdentified = itemTarget.data.data?.identified ?? null;
     let itemTargetMagic = itemTarget.data.data.properties?.mgc ?? null;
-    let itemTargetPrep = itemTarget.data.data.preparation ?? null;
-    let itemTargetUses = itemTarget.data.data.uses ?? null;
-    // let itemTargetFinesse = itemTarget.data.data.properties?.fin ?? null;
-    // let itemOriginPrep = itemOrigin.data.data.preparation ?? null;
-    // let itemOriginUses = itemOrigin.data.data.uses ?? null;
-    // let itemOriginConsume = itemOrigin.data.data.consume ?? null;
-    // let itemOriginMagic = itemOrigin.data.data.properties?.mgc ?? null;
+    let itemTargetPrep = itemTarget.data.data?.preparation ?? null;
+    let itemTargetUses = itemTarget.data.data?.uses ?? null;
+    let itemTargetProficient = itemTarget.data.data?.proficient ?? null;
     let itemOriginFinesse = itemOrigin.data.data.properties?.fin ?? null;
     //----------------------------------------------------------------------------------------------
     // Special handling for Finesse weapon
@@ -435,11 +458,6 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
             description: {
                 value: itemDescription      // Specially processed description
             },
-            // consume: itemTargetConsume,     // Targets consumption data 
-            // preparation: itemTargetPrep,    // Target's preparation information
-            // uses: itemTargetUses,           // Target's use information
-            // properties: {
-            //     mgc: itemTargetMagic        // Target's setting of the magic flag on item
         },
     }
     // jez.log("******* protectFieldsObj",protectFieldsObj)
@@ -451,6 +469,14 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
         console.log(`        | Retain Damage   :`, itemTargetDamage)
         itemUpdate.data.damage = itemTargetDamage
     }
+    if (protectFieldsObj.equipped) {
+        console.log(`        | Retain Equipped :`, itemTargetEquipped)
+        itemUpdate.data.equipped = itemTargetEquipped
+    }
+    if (protectFieldsObj.identified) {
+        console.log(`        | Retain identified:`, itemTargetIdentified)
+        itemUpdate.data.identified = itemTargetIdentified
+    }
     if (protectFieldsObj.magic) {
         console.log(`        | Retain Magic    :`, itemTargetMagic)
         itemUpdate.data.properties = { mgc: itemTargetMagic }
@@ -458,6 +484,10 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     if (protectFieldsObj.prep) {
         console.log(`        | Retain Prep.    :`, itemTargetPrep)
         itemUpdate.data.preparation = itemTargetPrep
+    }
+    if (protectFieldsObj.proficient) {
+        console.log(`        | Retain Prof.    :`, itemTargetProficient)
+        itemUpdate.data.proficient = itemTargetProficient
     }
     if (protectFieldsObj.uses) {
         console.log(`        | Retain Uses     :`, itemTargetUses)
@@ -520,9 +550,9 @@ function isEqual(obj1, obj2) {
 /***************************************************************************************
  * Create and process custom dialog, passing array onto specified callback function
  ***************************************************************************************/
- async function customCheckDialog(queryTitle, queryText, pickCallBack) {
-    const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...protectFieldsObj)";
-    // jez.log("--- Starting --- ${FUNCNAME}---",`queryTitle`, queryTitle,`queryText`, queryText,`pickCallBack`, pickCallBack,`protectFieldsObj`, protectFieldsObj);
+ async function customCheckDialog(queryTitle, text1, text2, pickCallBack) {
+    const FUNCNAME = "jez.pickFromList(queryTitle, text1, ...protectFieldsObj)";
+    jez.log("--- Starting --- ${FUNCNAME}---",`text1`, text1, "text2",text2,`queryTitle`, queryTitle,`pickCallBack`, pickCallBack,`protectFieldsObj`, protectFieldsObj);
     let queryObjects = []
     let queryCheck = []
     //---------------------------------------------------------------------------------------------------
@@ -530,8 +560,11 @@ function isEqual(obj1, obj2) {
     //
     addLine(protectFieldsObj.consume,"Consume")
     addLine(protectFieldsObj.damage,"Damage")
+    addLine(protectFieldsObj.equipped,"Equipped")
+    addLine(protectFieldsObj.identified,"Identified")
     addLine(protectFieldsObj.magic,"Magic")
     addLine(protectFieldsObj.prep,"Preperation")
+    addLine(protectFieldsObj.proficient,"Proficient")
     addLine(protectFieldsObj.uses,"Uses")
     function addLine(entry, label) {
         // jez.log("addLine(entry, label)","entry",entry,"label",label)
@@ -542,7 +575,7 @@ function isEqual(obj1, obj2) {
         }
     }
     //---------------------------------------------------------------------------------------------------
-    // 
+    // Check some inputs
     //
     if (typeof (pickCallBack) != "function") {
         msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
@@ -550,23 +583,35 @@ function isEqual(obj1, obj2) {
         // jez.log(msg);
         return
     }
-    if (!queryTitle || !queryText || !protectFieldsObj) {
-        msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [protectFieldsObj]),
-        but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${protectFieldsObj}`;
+    if (!queryTitle || !text1 || !protectFieldsObj) {
+        msg = `pickFromList arguments should be (queryTitle, text1, pickCallBack, [protectFieldsObj]),
+        but yours are: ${queryTitle}, ${text1}, ${pickCallBack}, ${protectFieldsObj}`;
         ui.notifications.error(msg);
         // jez.log(msg);
         return
     }
+    //---------------------------------------------------------------------------------------------------
+    // If no options exist (nothing is different to potentially retain), simply call the nect function
+    // and exit this function.
+    if (queryObjects.length === 0) {
+        msg = `Nothing found that could be retained, skipping dialog from customCheckDialog()`
+        jez.log(msg)
+        ui.notifications.info(msg)
+        pickCallBack(true)
+        return
+    }
+    //---------------------------------------------------------------------------------------------------
+    // Define and display dialog to select which fields to protect
+    //
     let template = `
     <div>
-    <label>${queryText}</label>
+    ${text1} 
     <div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">`
-    // jez.log("queryObjects.length",queryObjects.length)
+    jez.log("template",template)
     for (let i = 0; i < queryObjects.length; i++) {
         template += `<input type="checkbox" ${queryCheck[i]} id=${queryObjects[i]} name="selectedLine" value="${queryObjects[i]}"> <label for="${queryObjects[i]}">${queryObjects[i]}</label><br>`
     }
-    template += `</div></div>`
-    // jez.log(template)
+    template += `</div>${text2}</div>`
     let selections = []
     new Dialog({
         title: queryTitle,
