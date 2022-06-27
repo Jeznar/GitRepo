@@ -1,4 +1,4 @@
-const MACRONAME = "Refresh_Item_On_Actors.1.0.js"
+const MACRONAME = "Refresh_Item_On_Actors.1.1.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Provide dialogs to select an item from selected actor.  That item is used as a reference to create
  * new versions on actors selected and also replacing it into the item directory (sidebar)
@@ -34,6 +34,7 @@ const MACRONAME = "Refresh_Item_On_Actors.1.0.js"
  * 06/26/22 0.8 Added support for the damage element to be retained on the target tokens
  * 06/26/22 0.9 Add Equipped, Identified, and Proficient to the data potentially retained
  * 06/26/22 1.0 Added color to final dialog and path to bypass if no options available
+ * 06/26/22 1.1 More tuning and making messages consistent
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 // jez.log(`       ============== Starting === ${MACRONAME} =================`);
@@ -53,7 +54,7 @@ let protectFieldsObj = {
     equipped: null,
     identified: null,
     magic: null,
-    prep: null,
+    preparation: null,
     proficient: null,
     uses: null,
 }
@@ -63,7 +64,7 @@ let protectFieldsDefaultObj = {
     equipped: true,
     identified: true,
     magic: true,
-    prep: true,
+    preparation: true,
     proficient: true,
     uses: true,
 }
@@ -185,7 +186,7 @@ async function workHorse(args) {
     //----------------------------------------------------------------------------------------------
     // Set the data retention object to match the dialog input
     //
-    protectFieldsObj.prep = protectFieldsObj.uses = protectFieldsObj.consume = protectFieldsObj.magic = protectFieldsObj.damage = false
+    protectFieldsObj.preparation = protectFieldsObj.uses = protectFieldsObj.consume = protectFieldsObj.magic = protectFieldsObj.damage = false
     protectFieldsObj.equipped = protectFieldsObj.identified = protectFieldsObj.proficient = false
     if (Array.isArray(args)) {
         if (args.includes("Consume")) protectFieldsObj.consume = true
@@ -193,7 +194,7 @@ async function workHorse(args) {
         if (args.includes("Equipped")) protectFieldsObj.equipped = true
         if (args.includes("Identified")) protectFieldsObj.identified = true
         if (args.includes("Magic")) protectFieldsObj.magic = true
-        if (args.includes("Preperation")) protectFieldsObj.prep = true
+        if (args.includes("Preperation")) protectFieldsObj.preparation = true
         if (args.includes("Proficient")) protectFieldsObj.proficient = true
         if (args.includes("Uses")) protectFieldsObj.uses = true
     }
@@ -227,33 +228,32 @@ async function findDifferences(actorIdArray, nameOfItem, typeOfItem) {
         // Get the item from the target actor
         let itemTarget = tActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
         if (!itemTarget) return jez.badNews(`Cound not find ${tActor.name}'s "${nameOfItem}"`)
-        // Compare the consume data
-        if (!jez.isEqual(itemTarget.data.data?.consume, itemOrigin.data.data?.consume))
-            protectFieldsObj.consume = protectFieldsDefaultObj.consume
-        // Compare the damage data
-        if (!jez.isEqual(itemTarget.data.data?.damage, itemOrigin.data.data?.damage))
-            protectFieldsObj.damage = protectFieldsDefaultObj.damage
-        // Compare the equipped data
-        if (!jez.isEqual(itemTarget.data.data?.equipped, itemOrigin.data.data?.equipped))
-            protectFieldsObj.equipped = protectFieldsDefaultObj.equipped
-        // Compare the damage data
-        if (!jez.isEqual(itemTarget.data.data?.identified, itemOrigin.data.data?.identified))
-            protectFieldsObj.identified = protectFieldsDefaultObj.identified
-        // Compare the magic data
-        if (!jez.isEqual(itemTarget.data.data.properties?.mgc, itemOrigin.data.data.properties?.mgc))
-            protectFieldsObj.magic = protectFieldsDefaultObj.magic
-        // Compare the preperation data
-        if (!jez.isEqual(itemTarget.data.data?.preparation, itemOrigin.data.data?.preparation))
-            protectFieldsObj.prep = protectFieldsDefaultObj.prep
-        // Compare the proficient data
-        if (!jez.isEqual(itemTarget.data.data?.proficient, itemOrigin.data.data?.proficient))
-            protectFieldsObj.proficient = protectFieldsDefaultObj.proficient
-        // Compare the uses data
-        if (!jez.isEqual(itemTarget.data.data?.uses, itemOrigin.data.data?.uses))
-            protectFieldsObj.uses = protectFieldsDefaultObj.uses
-        // jez.log("protectFieldsObj",protectFieldsObj)
-        // jez.log("protectFieldsDefaultObj",protectFieldsDefaultObj)
-        // jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+        doDataField("consume")
+        doDataField("damage")
+        doDataField("equipped")
+        doDataField("identified")
+        doDataField("preparation")
+        doDataField("properties.mgc","magic")
+        doDataField("proficient")
+        doDataField("uses")
+        //----------------------------------------------------------------------------------------------
+        // Bottle up that data field processing
+        //
+        function doDataField(field, label = field) {
+            // jez.log("doDataField(field, label = field)","field",field,"label",label)
+            const fieldArray = field.split(".")
+            // jez.log("fieldArray.length", fieldArray.length)
+            if (fieldArray.length > 2) return jez.badNews("doDataField breaks with more than 2 levels of depth") 
+            if (fieldArray.length === 1)
+                if (!jez.isEqual(itemTarget.data.data[field], itemOrigin.data.data[field]))
+                    protectFieldsObj[label] = protectFieldsDefaultObj[label]
+            if (fieldArray.length === 2)
+                if (!jez.isEqual(itemTarget.data.data[fieldArray[0]][fieldArray[1]], itemOrigin.data.data[fieldArray[0]][fieldArray[1]]))
+                    protectFieldsObj[label] = protectFieldsDefaultObj[label]
+            if (fieldArray.length === 3)
+                if (!jez.isEqual(itemTarget.data.data[fieldArray[0]][fieldArray[1]][fieldArray[2]], itemOrigin.data.data[fieldArray[0]][fieldArray[1]][fieldArray[2]]))
+                    protectFieldsObj[label] = protectFieldsDefaultObj[label]
+        }
     }
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -385,8 +385,18 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     let itemTargetIdentified = itemTarget.data.data?.identified ?? null;
     let itemTargetMagic = itemTarget.data.data.properties?.mgc ?? null;
     let itemTargetPrep = itemTarget.data.data?.preparation ?? null;
-    let itemTargetUses = itemTarget.data.data?.uses ?? null;
     let itemTargetProficient = itemTarget.data.data?.proficient ?? null;
+    let itemTargetUses = itemTarget.data.data?.uses ?? null;
+
+    let itemOriginConsume = itemOrigin.data.data?.consume ?? null;
+    let itemOriginDamage = itemOrigin.data.data?.damage ?? null;
+    let itemOriginEquipped = itemOrigin.data.data?.equipped ?? null;
+    let itemOriginIdentified = itemOrigin.data.data?.identified ?? null;
+    let itemOriginMagic = itemOrigin.data.data.properties?.mgc ?? null;
+    let itemOriginPrep = itemOrigin.data.data?.preparation ?? null;
+    let itemOriginProficient = itemOrigin.data.data?.proficient ?? null;
+    let itemOriginUses = itemOrigin.data.data?.uses ?? null;
+
     let itemOriginFinesse = itemOrigin.data.data.properties?.fin ?? null;
     //----------------------------------------------------------------------------------------------
     // Special handling for Finesse weapon
@@ -461,35 +471,59 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     if (protectFieldsObj.consume) {
         console.log(`        | Retain Consume  :`, itemTargetConsume)
         itemUpdate.data.consume = itemTargetConsume
-    }
+    } 
+    else if (!jez.isEqual(itemTargetConsume, itemOriginConsume))
+        console.log(`        | Change Consume  :`, itemTargetConsume)
+    //  ----------------------------------------------------------------------
     if (protectFieldsObj.damage) {
         console.log(`        | Retain Damage   :`, itemTargetDamage)
         itemUpdate.data.damage = itemTargetDamage
     }
+    else if (!jez.isEqual(itemTargetDamage, itemOriginDamage))
+        console.log(`        | Change Damage   :`, itemTargetDamage)
+    //  ----------------------------------------------------------------------
     if (protectFieldsObj.equipped) {
         console.log(`        | Retain Equipped :`, itemTargetEquipped)
         itemUpdate.data.equipped = itemTargetEquipped
     }
+    else if (!jez.isEqual(itemTargetEquipped, itemOriginEquipped))
+        console.log(`        | Change Equipped :`, itemTargetEquipped)
+    //  ----------------------------------------------------------------------
     if (protectFieldsObj.identified) {
-        console.log(`        | Retain identified:`, itemTargetIdentified)
+        console.log(`        | Retain ident.   :`, itemTargetIdentified)
         itemUpdate.data.identified = itemTargetIdentified
     }
+    else if (!jez.isEqual(itemTargetIdentified, itemOriginIdentified))
+        console.log(`        | Change ident.   :`, itemTargetIdentified)
+    //  ----------------------------------------------------------------------
     if (protectFieldsObj.magic) {
         console.log(`        | Retain Magic    :`, itemTargetMagic)
         itemUpdate.data.properties = { mgc: itemTargetMagic }
     }
-    if (protectFieldsObj.prep) {
+    else if (!jez.isEqual(itemTargetMagic, itemOriginMagic))
+        console.log(`        | Change Magic    :`, itemTargetMagic)
+    //  ----------------------------------------------------------------------
+    if (protectFieldsObj.preparation) {
         console.log(`        | Retain Prep.    :`, itemTargetPrep)
         itemUpdate.data.preparation = itemTargetPrep
     }
+    else if (!jez.isEqual(itemTargetPrep, itemOriginPrep))
+        console.log(`        | Change Prep.    :`, itemTargetPrep)
+    //  ----------------------------------------------------------------------
     if (protectFieldsObj.proficient) {
         console.log(`        | Retain Prof.    :`, itemTargetProficient)
         itemUpdate.data.proficient = itemTargetProficient
     }
+    else if (!jez.isEqual(itemTargetProficient, itemOriginProficient))
+        console.log(`        | Change Prof.    :`, itemTargetProficient)
+    //  ----------------------------------------------------------------------
     if (protectFieldsObj.uses) {
         console.log(`        | Retain Uses     :`, itemTargetUses)
         itemUpdate.data.uses = itemTargetUses
     }
+    else if (!jez.isEqual(itemTargetUses, itemOriginUses))
+        console.log(`        | Change Uses     :`, itemTargetUses)
+    //  ----------------------------------------------------------------------
     if (itemOriginFinesse) {
         console.log(`        | Finesse Stat    :`, modStat)
         itemUpdate.data.ability = modStat // str or dex if this is a finesse weapon
@@ -514,7 +548,7 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     addLine(protectFieldsObj.equipped,"Equipped")
     addLine(protectFieldsObj.identified,"Identified")
     addLine(protectFieldsObj.magic,"Magic")
-    addLine(protectFieldsObj.prep,"Preperation")
+    addLine(protectFieldsObj.preparation,"Preperation")
     addLine(protectFieldsObj.proficient,"Proficient")
     addLine(protectFieldsObj.uses,"Uses")
     function addLine(entry, label) {
