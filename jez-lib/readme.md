@@ -43,6 +43,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
 * **[getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
+* **[isEqual(obj1, obj2)](#isEqualobj1-obj2)** -- Somewhat simple minded object comparison function based on one found online.
 * **[itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
 * **[itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
 * **[itemFindOnActor(token5e, itemName, itemType)](#item-functions)** -- Finds and item on Actor
@@ -61,6 +62,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc))** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
+* **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
 * **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
 * **[wait(ms)](#wait)** -- Waits for specified milliseconds.
@@ -284,6 +286,17 @@ if(!jez.inRange(aToken, tToken, maxRange)) {
     return(false);
 }
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### isEqual(obj1, obj2)
+
+This function returns true if the two arguments evaluate as equal.
+
+Somewhat simple minded object comparison function based on one found online.
+[https://medium.com/geekculture/object-equality-in-javascript-2571f609386e](https://medium.com/geekculture/object-equality-in-javascript-2571f609386e)
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -924,6 +937,44 @@ const RANGE = 30
 let inRangers = await jez.tokensInRange(aToken, RANGE)
 let inRangeCount = inRangers?.length
 jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### typeOf(arg) 
+
+Return a type string that differentiates object objects from array objects which are the same thing when looked at with the normal typeof function.
+
+This uses the object prototype, which seemingly exists for all variables and a few add on bits of magic to return the same type of string returned by typeof, but with a bit more precision.
+
+~~~javascript
+const fruits = ['Apple', 'Mango', 'Banana'];
+
+const user = {
+    name: 'John Doe',
+    age: 12
+};
+
+Object.prototype.toString.call(fruits); // [object Array]
+Object.prototype.toString.call(user);   // [object Object]
+~~~
+
+This was derived from: https://attacomsian.com/blog/javascript-check-variable-is-object
+
+Example results
+
+~~~javascript
+jez.typeOf("John")                  // string
+jez.typeOf("3.14")                  // number
+jez.typeOf("NaN")                   // number
+jez.typeOf("false")                 // boolean
+jez.typeOf("[1,2,3,4]")             // array
+jez.typeOf("{name:'John', age:34}") // object
+jez.typeOf("new Date()")            // date
+jez.typeOf("function () {}")        // function
+jez.typeOf("null")                  // null
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

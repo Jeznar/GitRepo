@@ -36,8 +36,8 @@ const MACRONAME = "Refresh_Item_On_Actors.1.0.js"
  * 06/26/22 1.0 Added color to final dialog and path to bypass if no options available
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-console.log(`       ============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) console.log(`  args[${i}]`, args[i]);
+// jez.log(`       ============== Starting === ${MACRONAME} =================`);
+// for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
@@ -73,7 +73,15 @@ let selObj = {
     itemName: null,
     itemType: null,
 }
-jez.log("protectFieldsObj", protectFieldsObj)
+
+// jez.log("jez.isEqual('3', '4')",jez.isEqual('3', '4'))
+// jez.log("jez.isEqual(3, 4)",jez.isEqual(3, 4))
+// jez.log("jez.isEqual(43, 43)",jez.isEqual(43, 43))
+// jez.log("jez.isEqual('abc', 'abc')",jez.isEqual('abc', 'abc'))
+// jez.log("jez.isEqual('abc', 'abd')",jez.isEqual('abc', 'abd'))
+// jez.log("jez.isEqual([1,2],[1,2])",jez.isEqual([1,2],[1,2]))
+// jez.log("jez.isEqual({1:1, 2:2},{1:1, 2:2})",jez.isEqual({1:1, 2:2},{1:1, 2:2}))
+// jez.log("jez.isEqual([1,2],{1:1, 2:2})",jez.isEqual([1,2],{1:1, 2:2}))
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -88,11 +96,8 @@ main();
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function preCheck() {
     if (canvas.tokens.controlled.length !== 1) {
-        jez.badNews(`Must select one token to be used to find the item that will be searched for.  Selected ${canvas.tokens.controlled.length}`)
-        jez.postMessage({
-            color: jez.randomDarkColor(), fSize: 14, icon: "Icons_JGB/Misc/Jez.png",
-            msg: msg, title: `Try Again, Selecting One Token`,
-        })
+        jez.badNews(`Must select one token to be used to find the item that will be searched.  
+        Selected ${canvas.tokens.controlled.length}`)
         return (false)
     }
 }
@@ -223,28 +228,28 @@ async function findDifferences(actorIdArray, nameOfItem, typeOfItem) {
         let itemTarget = tActor.items.find(item => item.data.name === nameOfItem && item.type === typeOfItem);
         if (!itemTarget) return jez.badNews(`Cound not find ${tActor.name}'s "${nameOfItem}"`)
         // Compare the consume data
-        if (!isEqual(itemTarget.data.data?.consume, itemOrigin.data.data?.consume))
+        if (!jez.isEqual(itemTarget.data.data?.consume, itemOrigin.data.data?.consume))
             protectFieldsObj.consume = protectFieldsDefaultObj.consume
         // Compare the damage data
-        if (!isEqual(itemTarget.data.data?.damage, itemOrigin.data.data?.damage))
+        if (!jez.isEqual(itemTarget.data.data?.damage, itemOrigin.data.data?.damage))
             protectFieldsObj.damage = protectFieldsDefaultObj.damage
         // Compare the equipped data
-        if (!isEqual(itemTarget.data.data?.equipped, itemOrigin.data.data?.equipped))
+        if (!jez.isEqual(itemTarget.data.data?.equipped, itemOrigin.data.data?.equipped))
             protectFieldsObj.equipped = protectFieldsDefaultObj.equipped
         // Compare the damage data
-        if (!isEqual(itemTarget.data.data?.identified, itemOrigin.data.data?.identified))
+        if (!jez.isEqual(itemTarget.data.data?.identified, itemOrigin.data.data?.identified))
             protectFieldsObj.identified = protectFieldsDefaultObj.identified
         // Compare the magic data
-        if (!isEqual(itemTarget.data.data.properties?.mgc, itemOrigin.data.data.properties?.mgc))
+        if (!jez.isEqual(itemTarget.data.data.properties?.mgc, itemOrigin.data.data.properties?.mgc))
             protectFieldsObj.magic = protectFieldsDefaultObj.magic
         // Compare the preperation data
-        if (!isEqual(itemTarget.data.data?.preparation, itemOrigin.data.data?.preparation))
+        if (!jez.isEqual(itemTarget.data.data?.preparation, itemOrigin.data.data?.preparation))
             protectFieldsObj.prep = protectFieldsDefaultObj.prep
         // Compare the proficient data
-        if (!isEqual(itemTarget.data.data?.proficient, itemOrigin.data.data?.proficient))
+        if (!jez.isEqual(itemTarget.data.data?.proficient, itemOrigin.data.data?.proficient))
             protectFieldsObj.proficient = protectFieldsDefaultObj.proficient
         // Compare the uses data
-        if (!isEqual(itemTarget.data.data?.uses, itemOrigin.data.data?.uses))
+        if (!jez.isEqual(itemTarget.data.data?.uses, itemOrigin.data.data?.uses))
             protectFieldsObj.uses = protectFieldsDefaultObj.uses
         // jez.log("protectFieldsObj",protectFieldsObj)
         // jez.log("protectFieldsDefaultObj",protectFieldsDefaultObj)
@@ -443,14 +448,6 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
         }
     }
     //----------------------------------------------------------------------------------------------
-    // Report to console what is actually being retained from original
-    //
-    // jez.log('Origin Data',"itemOriginPrep",itemOriginPrep,"itemOriginUses",itemOriginUses,"itemOriginConsume",itemOriginConsume)
-    // if (!isEqual(itemTargetPrep, itemOriginPrep)) console.log(`Status  | Prep retained   :`, itemTargetPrep)
-    // if (!isEqual(itemTargetUses, itemOriginUses)) console.log(`Status  | Uses retained   :`, itemTargetUses)
-    // if (!isEqual(itemTargetConsume, itemOriginConsume)) console.log(`Status  | Consume retained:`, itemTargetConsume)
-    // if (!isEqual(itemTargetMagic, itemOriginMagic)) console.log(`Status  | Magic retained  :`, itemTargetMagic)
-    //----------------------------------------------------------------------------------------------
     // Build item update object to return the protected fields to original values
     //
     let itemUpdate = {
@@ -501,58 +498,12 @@ function createUpdateObj(itemOrigin, itemTarget, tActor = null) {
     // jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`, "Returning itemUpdate", itemUpdate);
     return itemUpdate;
 }
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Somewhat simple minded object comparison function based on one found online.
- * https://medium.com/geekculture/object-equality-in-javascript-2571f609386e
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-function isEqual(obj1, obj2) {
-    // jez.log("isEqual(obj1, obj2)","obj1",obj1,"obj1 type",typeof(obj1),"obj2",obj2,"obj2 type",typeof(obj2))
-    if (!obj1 && !obj2) {
-        // jez.log("obj1 & obj2 are falsey, return true")
-        return true 
-    } else if (!obj1 || !obj2) {
-        // jez.log("one of obj1 & obj2 are falsey, return false")
-        return false
-    }
-    // jez.log("continue")
-
-    var props1 = Object.getOwnPropertyNames(obj1);
-    // jez.log("props1",props1)
-    var props2 = Object.getOwnPropertyNames(obj2);
-    // jez.log("props2",props2)
-
-    if (props1.length != props2.length) {
-        // jez.log("length mismatch, return false")
-        return false;
-    }
-    for (var i = 0; i < props1.length; i++) {
-        let val1 = obj1[props1[i]];
-        // jez.log("val1",val1)
-
-        let val2 = obj2[props1[i]];
-        // jez.log("val2",val2)
-
-        let isObjects = isObject(val1) && isObject(val2);
-        //jez.log("isObject",isObject)
-        if (((isObjects && !isEqual(val1, val2)) || (!isObjects && val1 !== val2)) 
-              && !(!val1 && !val2)) {
-            // jez.log("Not sure what this case is, return false")
-            return false;
-        } // jez.log("Alternative result, continue")
-    }
-    // jez.log("made it, return true")
-    return true;
-    function isObject(object) {
-        // jez.log("==> object",object)
-        return object != null && typeof object === 'object';
-      }
-}
 /***************************************************************************************
  * Create and process custom dialog, passing array onto specified callback function
  ***************************************************************************************/
  async function customCheckDialog(queryTitle, text1, text2, pickCallBack) {
     const FUNCNAME = "jez.pickFromList(queryTitle, text1, ...protectFieldsObj)";
-    jez.log("--- Starting --- ${FUNCNAME}---",`text1`, text1, "text2",text2,`queryTitle`, queryTitle,`pickCallBack`, pickCallBack,`protectFieldsObj`, protectFieldsObj);
+    // jez.log("--- Starting --- ${FUNCNAME}---",`text1`, text1, "text2",text2,`queryTitle`, queryTitle,`pickCallBack`, pickCallBack,`protectFieldsObj`, protectFieldsObj);
     let queryObjects = []
     let queryCheck = []
     //---------------------------------------------------------------------------------------------------
@@ -595,7 +546,7 @@ function isEqual(obj1, obj2) {
     // and exit this function.
     if (queryObjects.length === 0) {
         msg = `Nothing found that could be retained, skipping dialog from customCheckDialog()`
-        jez.log(msg)
+        // jez.log(msg)
         ui.notifications.info(msg)
         pickCallBack(true)
         return
@@ -607,7 +558,7 @@ function isEqual(obj1, obj2) {
     <div>
     ${text1} 
     <div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">`
-    jez.log("template",template)
+    // jez.log("template",template)
     for (let i = 0; i < queryObjects.length; i++) {
         template += `<input type="checkbox" ${queryCheck[i]} id=${queryObjects[i]} name="selectedLine" value="${queryObjects[i]}"> <label for="${queryObjects[i]}">${queryObjects[i]}</label><br>`
     }

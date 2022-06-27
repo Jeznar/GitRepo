@@ -1816,5 +1816,82 @@ class jez {
         await effect.update({ 'changes': effect.data.changes });
     }
 
+    /***************************************************************************************************
+     * Return a type string that differentiates object objects from array objects which are the same 
+     * thing when looked at with the normal typeof function.
+     * 
+     * This uses the object prototype, which seemingly exists for all variables and a few add on bits
+     * of magic to return the same type of string returned by typeof, but with a bit more precision.
+     * 
+     * Object.prototype.toString.call(fruits); // [object Array]
+     * Object.prototype.toString.call(user); // [object Object]
+     * 
+     * This was derived from: https://attacomsian.com/blog/javascript-check-variable-is-object
+     * 
+     * Example results
+     *   jez.typeOf("John")                  // string
+     *   jez.typeOf("3.14")                  // number
+     *   jez.typeOf("NaN")                   // number
+     *   jez.typeOf("false")                 // boolean
+     *   jez.typeOf("[1,2,3,4]")             // array
+     *   jez.typeOf("{name:'John', age:34}") // object
+     *   jez.typeOf("new Date()")            // date
+     *   jez.typeOf("function () {}")        // function
+     *   jez.typeOf("null")                  // null
+     ***************************************************************************************************/
+    static typeOf(arg) {
+        return Object.prototype.toString.call(arg).split(" ")[1].slice(0, -1).toLowerCase()
+    }
+
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Somewhat simple minded object comparison function based on one found online.
+     * https://medium.com/geekculture/object-equality-in-javascript-2571f609386e
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static isEqual(obj1, obj2) {
+        // jez.log("jez.isEqual(obj1, obj2)","obj1",obj1,"obj1 type",typeof(obj1),"obj2",obj2,"obj2 type",typeof(obj2))
+        if (!obj1 && !obj2) {
+            // jez.log("obj1 & obj2 are falsey, return true")
+            return true
+        } else if (!obj1 || !obj2) {
+            // jez.log("one of obj1 & obj2 are falsey, return false")
+            return false
+        }
+        // jez.log("continue")
+        let obj1Type = jez.typeOf(obj1)
+        let obj2Type = jez.typeOf(obj2)
+        if (obj1Type != obj2Type) return false
+
+        if (!(obj1Type === "object" || obj1Type === "array")) {
+            // If either obj are neither object nor array  perform strict comparison
+            return obj1 === obj2
+        }
+        var props1 = Object.getOwnPropertyNames(obj1);
+        // jez.log("props1",props1)
+        var props2 = Object.getOwnPropertyNames(obj2);
+        // jez.log("props2",props2)
+
+        if (props1.length != props2.length) {
+            // jez.log("length mismatch, return false")
+            return false;
+        }
+        for (var i = 0; i < props1.length; i++) {
+            let val1 = obj1[props1[i]];
+            let val2 = obj2[props1[i]];
+            let isObjects = isObject(val1) && isObject(val2);
+            if (((isObjects && !jez.isEqual(val1, val2)) || (!isObjects && val1 !== val2))
+                && !(!val1 && !val2)) {
+                // jez.log("Not sure what this case is, return false")
+                return false;
+            }   // jez.log("Alternative result, continue")
+        }
+        // jez.log("made it, return true")
+        return true;
+
+        function isObject(object) {
+            // jez.log("==> object",object)
+            return object != null && typeof object === 'object';
+        }
+    }
+
 } // END OF class jez
 Object.freeze(jez);
