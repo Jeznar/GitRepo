@@ -1476,11 +1476,31 @@ class jez {
         return (returnObj)
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-     * Pop the passed string (message) onto the console and as ui warning popup and return false.
+     * Pop the passed string (message) onto the console and as ui notification and return false.
+     * 
+     * This function can accept one or two arguments
+     * message: required string that will be used as the error message
+     * badness: optional severity indicator.  It can be an integer (1, 2, or 3) or a string that begins 
+     *          with a i, w, or e (technically, the code is much more permissive but this is intent.)
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static badNews(message) {
+    static badNews(message, badness = 2) {
+        if (typeof message !== "string") {
+            let msg = `The message paramater passed to badNews must be a string.  Bad, bad, programmer.`
+            console.log(msg, message)
+            ui.notifications.error(`ERROR: ${msg}`)
+            return (false)
+        }
+        if (typeof badness === "string") {
+            switch (badness.toLowerCase().at(0)) {
+                case "i": badness = 1; break
+                case "w": badness = 2; break
+                default: badness = 3
+            }
+        }
         console.log(`BadNews | ${message}`)
-        ui.notifications.warn(message)
+        if (badness < 2) ui.notifications.info(`INFO: ${message}`)
+        else if (badness === 2) ui.notifications.warn(`WARN: ${message}`)
+        else ui.notifications.error(`ERROR: ${message}`)
         return (false)
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0

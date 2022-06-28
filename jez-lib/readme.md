@@ -25,7 +25,7 @@ The small bundle of files that make up this module need to be paced on the serve
 The functions currently included in this module are (all need to be proceeded by **jez.** when called):
 
 * **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
-* **[badNews(message)](#badNewsmessage)** -- Displays warning message on console and ui then returns false
+* **[badNews(message, <badness>)](#badNewsmessage-badness)** -- Displays warning message on console and ui then returns false
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
 * **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
@@ -111,12 +111,21 @@ The above, will generate a message such as the following:
 
 ---
 
-### badNews(message)
+### badNews(message, <badness>)
 
-Pop the passed string (message) onto the console and as ui warning popup and return false.
+Pop the passed string (message) onto the console and as ui notification and return false.
+
+This function can accept one or two arguments
+
+* message: required string that will be used as the error message
+* badness: optional severity indicator.  It can be an integer (1, 2, or 3) or a string that begins with a i, w, or e (technically, the code is much more permissive but this is intent.)
 
 ```javascript
 if (matches === 0) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not in Item Directory, can not continue.`)
+
+jez.badNews("Info Message", 1)  // Information
+jez.badNews("Warn Message", 2)  // Warning
+jez.badNews("Error Message", 3) // Error
 ```
 
 [*Back to Functions list*](#functions-in-this-module)
