@@ -852,6 +852,7 @@ class jez {
      static get DAEFLAG_FAMILIAR_NAME() { return "familiar_name" }
      static get ACTOR_UPDATE_MACRO() { return "ActorUpdate"}
      static get TOKEN_REFRESH_MACRO() { return "TokenRefresh"}
+     static get UPDATE_EMBEDDED_MACRO() { return "UpdateEmbeddedDocuments"}
      /***************************************************************************************************
       * Set the Familiar name into the DAE Flag
       ***************************************************************************************************/
@@ -1946,6 +1947,40 @@ class jez {
     static isToken5e(obj) {
         if (obj?.constructor.name === "Token5e") return (true)
         return (false)
+    }
+
+    /***************************************************************************************************
+     * Use the UPDATE_EMBEDDED_MACRO to update embedded documents as GM. 
+     * 
+     * type:    a string that names the type of document, e.g. "Token"
+     * updates: an array of objects that define the changes to be made.  Following snippet is example
+     *         let updates = [];
+     *         updates.push({
+     *             _id: tok.id,
+     *             height: newWidth,
+     *             width: newWidth
+     *         });
+     ***************************************************************************************************/
+    static async updateEmbeddedDocs(type, updates) {
+        const UPDATE_EMBEDDED_MACRO = jez.getMacroRunAsGM(jez.UPDATE_EMBEDDED_MACRO)
+        if (!UPDATE_EMBEDDED_MACRO) return false
+        await UPDATE_EMBEDDED_MACRO.execute(type, updates)
+        return true
+    }
+    /***************************************************************************************************
+     * Use the ACTOR_UPDATE_MACRO to update an Actor as GM. 
+     * 
+     * token: is a Token5e or an id for such an object
+     * updates: object defining the changes to be made.  Here is an example:
+     *          { "data.bonuses.mwak.damage": bonus, "data.traits.size": SIZE_ARRAY[ogSizeValue - 1] }
+     ***************************************************************************************************/
+    static async actorUpdate(token, updates) {
+        let tokenId = token
+        if (jez.isToken5e(token)) tokenId = token.id
+        const ACTOR_UPDATE = jez.getMacroRunAsGM(jez.ACTOR_UPDATE_MACRO)
+        if (!ACTOR_UPDATE) return false
+        await ACTOR_UPDATE.execute(tokenId, updates);
+        return true
     }
 
 } // END OF class jez
