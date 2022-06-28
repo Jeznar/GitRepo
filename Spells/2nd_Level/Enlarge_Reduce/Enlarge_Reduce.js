@@ -1,8 +1,10 @@
 const MACRONAME = "Enlarge_Reduce_0.7.js"
-console.log(MACRONAME)
+jez.log(MACRONAME)
 /*****************************************************************************************
  * Implement Enlarge/Reduce and allow a choice for the target to accept the effect or 
  * attempt a saving throw.
+ * 
+ * Requires: DAE Callback macro: ActorUpdate runAsGM
  * 
  * DAE Macro.ItemMacro Execute, Effect Value = "Macro Name" @target **Maybe?**
  * 
@@ -21,9 +23,9 @@ console.log(MACRONAME)
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     "Starting", `${MACRONAME}`);
-for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const lastArg = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
@@ -33,7 +35,7 @@ if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = 
 if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 const SIZE_ARRAY = ["error", "tiny", "sm", "med", "lg", "huge", "grg"]
-log("------- Global Values Set -------",
+jez.log("------- Global Values Set -------",
     `Active Token (aToken) ${aToken?.constructor.name} ${aToken?.name}`, aToken,
     `Active Actor (aActor) ${aActor?.constructor.name} ${aActor?.name}`, aActor,
     `Active Item (aItem) ${aItem?.constructor.name} ${aItem?.name}`, aItem)
@@ -44,12 +46,18 @@ const EFFECT_NAME = "Enlarge/Reduce"
 const SAVE_DC = aActor.data.data.attributes.spelldc;
 const SAVE_TYPE = "CON"
 const GAME_RND = game.combat ? game.combat.round : 0;
-
+//----------------------------------------------------------------------------------
+// Make sure we have ActorUpdate and it is runAsGM
+//
+const ACTOR_UPDATE = game.macros?.getName("ActorUpdate");
+if (!ACTOR_UPDATE) return ui.notifications.error(`Cannot locate ActorUpdate GM Macro`);
+if (!ACTOR_UPDATE.data.flags["advanced-macros"].runAsGM) 
+    return ui.notifications.error(`ActorUpdate "Execute as GM" needs to be checked.`);
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
 if (!preCheck()) {
-    console.log(errorMsg)
+    jez.log(errorMsg)
     ui.notifications.error(errorMsg)
     return;
 }
@@ -61,7 +69,7 @@ if (args[0] === "off") await doOff();                   // DAE removal
 //if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 
-log("---------------------------------------------------------------------------",
+jez.log("---------------------------------------------------------------------------",
     "Finishing", MACRONAME);
 
 return;
@@ -78,7 +86,7 @@ function preCheck() {
     if (args[0]?.tag === "OnUse") {
         if (!oneTarget()) return (false)
     }
-    log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
+    jez.log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
     return (true)
 }
 
@@ -89,19 +97,19 @@ function preCheck() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
-    log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`,
+    jez.log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`,
         `First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken,
         `First Targeted Actor (tActor) ${tActor?.name}`, tActor);
 
     DialogSaveOrAccept();
 
-    log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (true);
 
     //----------------------------------------------------------------------------------
     // 
     async function DialogSaveOrAccept() {
-        log(SAVE_TYPE.toLowerCase())
+        jez.log(SAVE_TYPE.toLowerCase())
         new Dialog({
             title: "Save or Accept Spell",
             content: `<div><h2>Attempt Save -OR- Accept Effect</h2>
@@ -129,24 +137,24 @@ function preCheck() {
     //----------------------------------------------------------------------------------
     // 
     async function PerformCallback(html, mode) {
-        log("PerformCallback() function executing.", "html", html, "mode", mode);
+        jez.log("PerformCallback() function executing.", "html", html, "mode", mode);
         let result = "";
         if (mode === "Save") {
             if (await attemptSave()) {  // Save was made
                 result = "Saved"
-                log("PerformCallback obtained status:", result);
+                jez.log("PerformCallback obtained status:", result);
                 msg = `<p style="color:DarkRed;"><b>${tToken.name}</b> avoids the effect of <b>${aToken.name}'s</b> ${aItem.name} 
                 spell with a successful save.
                 ${saveMsg}`
                 postResults(msg);
              } else {                    // Save failed
                 result = "Failed"
-                log("PerformCallback obtained status:", result);
+                jez.log("PerformCallback obtained status:", result);
                 doEnlargeReduce();
             }
         } else if (mode === "Accept") {
             result = "Accepted"
-            log("PerformCallback obtained status:", result);
+            jez.log("PerformCallback obtained status:", result);
             saveMsg = `<p>${tToken.name} <b>declined</b> to attempt a <b>DC${SAVE_DC} ${SAVE_TYPE}</b> saving throw.</p>`
             doEnlargeReduce();
         }
@@ -156,49 +164,48 @@ function preCheck() {
     //
      async function attemptSave() {
          const FUNCNAME = "attemptSave()";
-         log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`);
+         jez.log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`);
          let saved = false;
 
          const flavor = `${CONFIG.DND5E.abilities[SAVE_TYPE.toLowerCase()]} <b>DC${SAVE_DC}</b>
              to avoid <b>${aItem.name}</b> effect`;
-         log("---- Save Information ---", "SAVE_TYPE", SAVE_TYPE, "SAVE_DC", SAVE_DC, "flavor", flavor);
+         jez.log("---- Save Information ---", "SAVE_TYPE", SAVE_TYPE, "SAVE_DC", SAVE_DC, "flavor", flavor);
 
          let save = (await tActor.rollAbilitySave(SAVE_TYPE.toLowerCase(), { flavor, chatMessage: true, fastforward: true })).total;
-         log("save", save);
+         jez.log("save", save);
          if (save > SAVE_DC) {
-             log(`save was made with a ${save}`);
+             jez.log(`save was made with a ${save}`);
              saved = true;
              saveMsg = `<p style="color:Green;">${tToken.name} <b>made</b> its save with a <b>${save}</b> 
                         versus a <b>DC${SAVE_DC} ${SAVE_TYPE}</b> saving throw.</p>`          
              // Remove the effect already applied by DAE to the target, testing to make sure it exists
              let tActorExistingEffect = await tActor.effects.find(ef => ef.data.label === EFFECT_NAME)
              if (tActorExistingEffect) {
-                 log("")
-                 log(`Deleting existing effect`, tActorExistingEffect)
+                 jez.log("")
+                 jez.log(`Deleting existing effect`, tActorExistingEffect)
                  await tActorExistingEffect.delete();
              } else {
                  let msg = `${tToken.name} lacks the ${EFFECT_NAME} effect. This shouldn't happen.`
                  ui.notifications.error(mesg);
-                 log("")
-                 log(msg);
+                 jez.log("")
+                 jez.log(msg);
                  return (false);
              }
          } else {
              saveMsg = `<p style="color:Red;">${tToken.name} <b>failed</b> its save with a 
                         <b>${save}</b> versus a <b>DC${SAVE_DC} ${SAVE_TYPE}</b> saving throw.</p>`
-             log(`save failed with a ${save}`);
+             jez.log(`save failed with a ${save}`);
          }
          // addLightEffect(args[0].uuid, tActor, 60, colorCodes[selection])
-         log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+         jez.log("--------------${FUNCNAME}-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
          return (saved);
      }
-
      //----------------------------------------------------------------------------------
      // Actually do the enlarge or reduce
      //
      async function doEnlargeReduce() {
          const FUNCNAME = "doEnlargeReduce()";
-         log(`--------------${FUNCNAME}---------------------`, "Starting", `${MACRONAME} ${FUNCNAME}`);
+         jez.log(`--------------${FUNCNAME}---------------------`, "Starting", `${MACRONAME} ${FUNCNAME}`);
          let originalWidth = tToken.data.width;
          let mwak = tActor.data.data.bonuses.mwak.damage;
          let ogSizeValue = sizeOfToken(tToken); // Original Size of token, 1 = Tiny, ..., 6 = Gargantuan
@@ -208,14 +215,13 @@ function preCheck() {
             "ogMwak": mwak,
             "ogSize": ogSize
         });
-
          await new Dialog({
              title: "Enlarge or Reduce",
              buttons: {
                  one: {
                      label: "Enlarge",
                      callback: async () => {
-                         log("Choice made: Enlarge")
+                         jez.log("Choice made: Enlarge")
                          let bonus = mwak + "+1d4";
                          let newWidth = (originalWidth + 1);
                          if (ogSizeValue > 5) { 
@@ -224,11 +230,24 @@ function preCheck() {
                              postResults(msg);
                              return (false);
                          }
-                         await tActor.update({ "data.bonuses.mwak.damage": bonus, 
-                                               "data.traits.size": SIZE_ARRAY[ogSizeValue + 1] });
+                         jez.log("Ready  to call tActor.update","bonus",bonus,"SIZE_ARRAY[ogSizeValue + 1]",SIZE_ARRAY[ogSizeValue + 1])
+                         // The next line throws a permission error of the form:
+                         // --> Uncaught (in promise) Error: User Jon M. lacks permission to update Actor 
+                         // await tActor.update({ "data.bonuses.mwak.damage":bonus, "data.traits.size":SIZE_ARRAY[ogSizeValue + 1] }); 
+                         let updateData = { "data.bonuses.mwak.damage":bonus, "data.traits.size":SIZE_ARRAY[ogSizeValue + 1] }
+                         await ACTOR_UPDATE.execute(tActor.id, updateData);
+
+                         await jez.wait(1000)
+                         jez.log("jezUpdateTokenHeightWidth(tToken, newWidth)","tToken",tToken,"newWidth",newWidth)
                          await jezUpdateTokenHeightWidth(tToken, newWidth);
-                         tToken.refresh();  // Causes the token to be redrawn *NOW*
-                         log(`tToken ${tToken.name}`, tToken)
+                         jez.log("Ready to call tToken.refresh()")
+                         // The next line throws a permission error of the form:
+                         // --> Uncaught (in promise) Error: User Jon M. lacks permission to update Token [rveDGfJ0ygwzHYFb] in parent Scene [MzEyYTVkOTQ4NmZk]
+                         //
+                         await tToken.refresh();  // Causes the token to be redrawn *NOW*
+                         await jez.wait(1000)
+
+                         jez.log(`tToken ${tToken.name}`, tToken)
                          msg = `<p style="color:DarkGreen;">
                                 <b>${aToken.name}'s</b> attempt to <b>enlarge</b> ${tToken.name} is met with success!.</p>
                                 ${saveMsg}
@@ -239,7 +258,7 @@ function preCheck() {
                  two: {
                      label: "Reduce",
                      callback: async () => {
-                         log("Choice made: Reduce")
+                         jez.log("Choice made: Reduce")
                          let bonus = mwak + "-1d4";
                          let newWidth = (originalWidth > 1) ? (originalWidth - 1) : (originalWidth - 0.25);
                          if (ogSizeValue < 2) {
@@ -255,13 +274,13 @@ function preCheck() {
                                 ${saveMsg}
                                 ${tToken.name} is now one size category smaller.</p>`
                          postResults(msg);
-                         await wait(500);
+                         await jez.wait(500);
                          await tToken.refresh();  // Causes the token to be redrawn *NOW*
                      }
                  },
              }
          }).render(true);
-         log(`--------------${FUNCNAME}---------------------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
+         jez.log(`--------------${FUNCNAME}---------------------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
          return;
      }
 
@@ -270,7 +289,7 @@ function preCheck() {
      //
      function sizeOfToken(token1) {
          const FUNCNAME = "sizeOfToken(token1)";
-         log(`--------------${FUNCNAME}---------------------`, "Starting", `${MACRONAME} ${FUNCNAME}`, "token1", token1);
+         jez.log(`--------------${FUNCNAME}---------------------`, "Starting", `${MACRONAME} ${FUNCNAME}`, "token1", token1);
          class CreatureSizes {
              constructor(size) {
                  this.SizeString = size;
@@ -291,21 +310,20 @@ function preCheck() {
          let token1Size = token1SizeObject.SizeInt;  // Returns 0 on failure to match size string
          if (!token1Size) {
              errorMsg = `Size of ${token1.name}, ${token1SizeString} failed to parse. End ${macroName}<br>`;
-             log(errorMsg);
+             jez.log(errorMsg);
              ui.notifications.error(errorMsg);
              return (99);
          }
-         log(`=====> Token1 ${token1.name}: ${token1SizeString} ${token1Size}`)
+         jez.log(`=====> Token1 ${token1.name}: ${token1SizeString} ${token1Size}`)
          return (token1Size);
      }
 }
-
 /************************************************************************
  * Verify exactly one target selected, boolean return
  ************************************************************************/
 async function jezUpdateTokenHeightWidth(tok, newWidth) {
-    if (jezIsToken5e(tok)) {
-        log(`Update ${tok.name} updating width to ${newWidth}`)
+    if (jez.IsToken5e(tok)) {
+        jez.log(`Update ${tok.name} updating width to ${newWidth}`)
         let updates = [];
         updates.push({
             _id: tok.id,
@@ -317,32 +335,28 @@ async function jezUpdateTokenHeightWidth(tok, newWidth) {
         return(true);
     } else {
         errorMsg = `Argument passed was not of object type Token5e`
-        log(errorMsg, tok)
+        jez.log(errorMsg, tok)
         ui.notifications.error(errorMsg)
         return(false)
     }
 }
-
 /************************************************************************
  * Verify exactly one target selected, boolean return
  ************************************************************************/
 function oneTarget() {
     if (!game.user.targets) {
         errorMsg = `Targeted nothing, must target single token to be acted upon`;
-        log(errorMsg);
+        jez.log(errorMsg);
         return (false);
     }
     if (game.user.targets.ids.length != 1) {
         errorMsg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;
-        log(errorMsg);
+        jez.log(errorMsg);
         return (false);
     }   
-    log(`Targeting one target, a good thing`);
+    jez.log(`Targeting one target, a good thing`);
     return (true);
 }
-
-
-
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
  * 
@@ -350,9 +364,9 @@ function oneTarget() {
  ***************************************************************************************************/
 async function doOff() {
     const FUNCNAME = "doOff()";
-    log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
     let flag = DAE.getFlag(aActor, 'enlageReduceSpell');
-    log("flag", flag)
+    jez.log("flag", flag)
     if (flag) {
         await aActor.update({
             "data.bonuses.mwak.damage": flag.ogMwak,
@@ -367,66 +381,23 @@ async function doOff() {
         ChatMessage.create({ content: `<b>${aToken.name}</b> is returned to normal size` });
     } else {
         msg = `"DAE.getFlag(aActor, 'enlageReduceSpell') did not find flag value.`
-        log(msg)
+        jez.log(msg)
     }
-    log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    jez.log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
-
 /***************************************************************************************************
  * Post the results to chat card
  ***************************************************************************************************/
  async function postResults(resultsString) {
     const lastArg = args[args.length - 1];
-
     let chatMessage = game.messages.get(lastArg.itemCardId);
     let content = await duplicate(chatMessage.data.content);
-    log(`chatMessage: `,chatMessage);
+    jez.log(`chatMessage: `,chatMessage);
     const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
     const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
     content = await content.replace(searchString, replaceString);
     await chatMessage.update({ content: content });
     await ui.chat.scrollBottom();
     return;
-}
-
-/***************************************************************************************************
- * DEBUG Logging
- * 
- * If passed an odd number of arguments, put the first on a line by itself in the log,
- * otherwise print them to the log seperated by a colon.  
- * 
- * If more than two arguments, add numbered continuation lines. 
- ***************************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    } else {            // Even number of arguments
-        console.log(parms[i],":",parms[i+1]);
-        i = 2;
-        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],":",parms[i+1]);
-    }
-}
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
-
-/***************************************************************************************************
- * Return true if passed argument is of object type "Token5e"
- ***************************************************************************************************/
-function jezIsToken5e(obj) {
-    if (obj?.constructor.name === "Token5e") return(true)
-    return(false)
-}
-
-/***************************************************************************************************
- * Return true if passed argument is of object type "Token5e"
- ***************************************************************************************************/
- function jezIsActor5e(obj) {
-    if (obj?.constructor.name === "Actor5e") return(true)
-    return(false)
 }

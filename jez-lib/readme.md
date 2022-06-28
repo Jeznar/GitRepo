@@ -44,7 +44,9 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
 * **[getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
+* **isActor5e(obj)** -- Returns true if obj is an Actor5e object, otherwise false.
 * **[isEqual(obj1, obj2)](#isEqualobj1-obj2)** -- Somewhat simple minded object comparison function based on one found online.
+* **isToken5e(obj)** -- Returns true if obj is an Token5e object, otherwise false.
 * **[itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
 * **[itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
 * **[itemFindOnActor(token5e, itemName, itemType)](#item-functions)** -- Finds and item on Actor

@@ -850,6 +850,8 @@ class jez {
      static get UPGRADE()    { return 4 }
      static get OVERRIDE()   { return 5 }
      static get DAEFLAG_FAMILIAR_NAME() { return "familiar_name" }
+     static get ACTOR_UPDATE_MACRO() { return "ActorUpdate"}
+     static get TOKEN_REFRESH_MACRO() { return "TokenRefresh"}
      /***************************************************************************************************
       * Set the Familiar name into the DAE Flag
       ***************************************************************************************************/
@@ -1929,6 +1931,21 @@ class jez {
         if (!ACTOR_UPDATE.data.flags["advanced-macros"].runAsGM)
             return jez.badNews(`${macroName} -- Execute as GM box, needs to be checked.`, "Error");
         return (ACTOR_UPDATE)
+    }
+
+    /***************************************************************************************************
+     * Test to see is the passed argument is a Token5e object. Return true it is; otherwise false
+    ***************************************************************************************************/
+    static isActor5e(obj) {
+        if (obj?.constructor.name === "Actor5e") return (true)
+        return (false)
+    }
+    /***************************************************************************************************
+     * Test to see is the passed argument is a Token5e object. Return true it is; otherwise false
+     ***************************************************************************************************/
+    static isToken5e(obj) {
+        if (obj?.constructor.name === "Token5e") return (true)
+        return (false)
     }
 
 } // END OF class jez
