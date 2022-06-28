@@ -1,13 +1,13 @@
-badNews(42)
-badNews("Plain Message")
+jez.badNews(42)
+jez.badNews("Plain Message")
 await jez.wait(5500)
-badNews("Info Message", 1)  // Information
-badNews("Warn Message", 2)  // Warning
-badNews("Error Message", 3) // Error
+jez.badNews("Info Message", 1)  // Information
+jez.badNews("Warn Message", 2)  // Warning
+jez.badNews("Error Message", 3) // Error
 await jez.wait(5500)
-badNews("Info Message", "info them!")  // Information
-badNews("Warn Message", "WARN THEM!")  // Warning
-badNews("Error Message", "error") // Error
+jez.badNews("Info Message", "info them!")  // Information
+jez.badNews("Warn Message", "WARN THEM!")  // Warning
+jez.badNews("Error Message", "error") // Error
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Pop the passed string (message) onto the console and as ui notification and return false.
  * 

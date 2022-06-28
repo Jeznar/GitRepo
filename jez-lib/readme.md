@@ -33,6 +33,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
+* **[getMacroRunAsGM(macroName)](#getmacrorunasgmmacroname)** -- Obtains a run as GM macro or issues error
 * **[getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
 * **[getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
 * **[getSize(token5e)](#getsizetoken5e)** -- Returns an object with size info for specified token.
@@ -202,6 +203,23 @@ for ( let token of canvas.tokens.controlled ){
   if (race.includes("construct")) console.log(`${token.name} is construct`)
 }
 ~~~
+
+---
+
+### getMacroRunAsGM(macroName)
+
+Test to see if the received string links to a run as GM macro.  Return the macro or false.
+
+~~~javascript
+console.log(jez.getMacroRunAsGM("ImaginaryMacro"))  // Generates an error
+console.log(jez.getMacroRunAsGM("Test getRace"))    // Should exist but not be run As GM
+console.log(jez.getMacroRunAsGM("ActorUpdate"))     // Should actually exist and be Run as GM
+
+const GM_MACRO = jez.getMacroRunAsGM("ActorUpdate") // This macro will display ui.notification.error
+if (!GM_MACRO) return false
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
 
 ---
 
