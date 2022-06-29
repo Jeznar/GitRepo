@@ -70,7 +70,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
-* **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms*)** -- Worker function for **trc** and **log**.
+* **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
                                      
 More about each of these in the following sections. 
 
