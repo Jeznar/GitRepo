@@ -163,8 +163,6 @@ async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
         return returnValue; // If newTile is defined, return the id.
     }
     else {   // newTile will be undefined for players, so need to fish for a tile ID
-
-        let newTiles = []
         let gameTiles = null
         let i
         for (i = 1; i < 20; i++) {
@@ -178,7 +176,6 @@ async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
         jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
         let returnValue = gameTiles[gameTiles.length - 1].id
         jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
-        //let gameTiles[gameTiles.length - 1].id = gameTiles[gameTiles.length - 1].id
         return returnValue
     }
 // }

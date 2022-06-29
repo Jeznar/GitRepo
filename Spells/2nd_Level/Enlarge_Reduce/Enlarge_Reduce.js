@@ -232,9 +232,6 @@ function preCheck() {
                         // await tActor.update({ "data.bonuses.mwak.damage":bonus, "data.traits.size":SIZE_ARRAY[ogSizeValue + 1] }); 
                         await jez.actorUpdate(tToken, { "data.bonuses.mwak.damage": bonus, "data.traits.size": SIZE_ARRAY[ogSizeValue + 1] })
                         await updateTokenHeightWidth(tToken, newWidth, newScale);
-                        // The next line throws a permission error of the form (ALSO IT SEEMS UNEEDED):
-                        // --> Uncaught (in promise) Error: User Jon M. lacks permission to update Token [rveDGfJ0ygwzHYFb] in parent Scene [MzEyYTVkOTQ4NmZk]
-                        // await tToken.refresh();  // Causes the token to be redrawn *NOW*
                         // jez.log(`tToken ${tToken.name}`, tToken)
                         msg = `<p style="color:DarkGreen;">
                                 <b>${aToken.name}'s</b> attempt to <b>enlarge</b> ${tToken.name} is met with success!.</p>

@@ -86,7 +86,7 @@
       "mode": "level",
       "formula": "1d6"
     },
-    "attunement": null
+    "attunement": 0
   },
   "effects": [],
   "flags": {

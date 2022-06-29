@@ -1,9 +1,12 @@
-const MACRONAME = "Gust_of_Wind.0.1.js"
+const MACRONAME = "Gust_of_Wind.0.2.js"
 /*****************************************************************************************
  * 05/31/22 0.1 Creation of Macro
+ * 06/29/22 0.2 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
+ *              canvas.scene.deleteEmbeddedDocuments
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log(`============== Starting === ${MACRONAME} =================`);
+let trcLvl = 1;
+jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
@@ -43,7 +46,9 @@ async function doOff() {
     if (args[1] === "Tile") {
         const TILE_ID = args[2]
         jez.log(`Delete the VFX tile`, TILE_ID)
-        await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
+        // Following line throws a permission error for non-GM acountnts running this code.
+        // await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
+        await jez.deleteEmbeddedDocs("Tile", [TILE_ID])  
         jez.log(`Deleted Tile ${TILE_ID}`)
     } 
     else if (args[1] === "Effect") {
@@ -114,6 +119,10 @@ async function doOnUse() {
  * Pop a VFX Tile where the template was and return the ID of the tile
  ***************************************************************************************************/
 async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
+    const FUNCNAME = "placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh)";
+    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID,"vfxFile",vfxFile,"tilesWide",tilesWide,"tilesHigh",tilesHigh)
+
     // Grab the size of grid in pixels per square
     const GRID_SIZE = canvas.scene.data.grid;
     // Search for the MeasuredTemplate that should have been created by the calling item
@@ -129,9 +138,31 @@ async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
         height: GRID_SIZE * tilesHigh   // ditto
     };
     // let newTile = await Tile.create(tileProps)   // Depricated 
-    let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
-    jez.log("newTile", newTile);
-    return (newTile[0].data._id);
+    // Following line throws a permission error for non-GM acountnts running this code.
+    // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
+    let existingTiles = game.scenes.current.tiles.contents
+    let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])
+    jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
+    if (newTile) {
+        let returnValue = newTile[0].data._id
+        jez.trc(2,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Generated:`,returnValue);
+        return returnValue; // If newTile is defined, return the id.
+    }
+    else {   // newTile will be undefined for players, so need to fish for a tile ID
+        let gameTiles = i = null
+        let delay = 5
+        for (i = 1; i < 20; i++) {
+            await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
+            jez.trc(3,trcLvl,`Seeking new tile, try ${i} at ${delay*i} ms after return`)
+            gameTiles = game.scenes.current.tiles.contents
+            if (gameTiles.length > existingTiles.length) break
+        }
+        if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
+        jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
+        let returnValue = gameTiles[gameTiles.length - 1].id
+        jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
+        return returnValue
+    }   
 }
 /***************************************************************************************************
  * Modify existing concentration effect to trigger removal of the associated DAE effect on caster
