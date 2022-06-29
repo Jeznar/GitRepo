@@ -20,7 +20,6 @@ class jez {
     static TEMPLATES = {
         TODOLIST: `modules/${this.ID}/templates/todo-list.hbs`
     }
-
     static contents() {
         let functions = `
   addMessage(chatMessage, msgParm) -- add text message to specified chat message.
@@ -37,16 +36,12 @@ class jez {
      * Trace
      * 
      * This is a variation on the log function that requires the first parameter to be an integer that
-     * will be compared to the presumably existing "traceLevel" variable in the environment.  If 
-     * traceLevel is not set (is undefined), it will be assumed to be a 2.
+     * will be compared to the second parameter, presumably a global in the calling macro.  
      * 
      * Ex: jez.trc(1, "Post this message to the console", variable)
      ***************************************************************************************************/
-    static trc(level, ...parms) {
-        let traceLvl
-        if (typeof traceLevel === "undefined") traceLvl = 2
-        else traceLvl = traceLevel
-        if (level > traceLvl) return false
+    static trc(level, threshold, ...parms) {
+        if (level > threshold) return false
         return jez.writeTrcLog(" TRACE ", ...parms)
     }
     /***************************************************************************************************
@@ -882,6 +877,7 @@ class jez {
      static get TOKEN_REFRESH_MACRO() { return "TokenRefresh"}
      static get UPDATE_EMBEDDED_MACRO() { return "UpdateEmbeddedDocuments"}
      static get CREATE_EMBEDDED_MACRO() { return "CreateEmbeddedDocuments"}
+     static get DELETE_EMBEDDED_MACRO() { return "DeleteEmbeddedDocuments"}
      /***************************************************************************************************
       * Set the Familiar name into the DAE Flag
       ***************************************************************************************************/
@@ -1999,11 +1995,15 @@ class jez {
 
     static async createEmbeddedDocs(type, updates) {
         const CREATE_EMBEDDED_MACRO = jez.getMacroRunAsGM(jez.CREATE_EMBEDDED_MACRO)
-        jez.log("CREATE_EMBEDDED_MACRO",CREATE_EMBEDDED_MACRO)
         if (!CREATE_EMBEDDED_MACRO) return false
-        jez.log("CREATE_EMBEDDED_MACRO.execute(type, updates)","type",type,"updates",updates)
         let CEMreturn = await CREATE_EMBEDDED_MACRO.execute(type, updates)
-        jez.log("==> CEMreturn", CEMreturn)
+        return CEMreturn
+    }
+
+    static async deleteEmbeddedDocs(type, ids) {
+        const DELETE_EMBEDDED_MACRO = jez.getMacroRunAsGM(jez.DELETE_EMBEDDED_MACRO)
+        if (!DELETE_EMBEDDED_MACRO) return false
+        let CEMreturn = await DELETE_EMBEDDED_MACRO.execute(type, ids)
         return CEMreturn
     }
     /***************************************************************************************************

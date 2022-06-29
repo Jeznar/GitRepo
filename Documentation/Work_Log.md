@@ -151,6 +151,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.28 **Enlarge/Reduce** player permission issue addressed and calls moved to jez-lib.
 
+22.06.29 **Minor Illusion** had several permission issues.  RunAsGM and jez-lib functions added to handle creation, modification, deletion of embedded documents.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

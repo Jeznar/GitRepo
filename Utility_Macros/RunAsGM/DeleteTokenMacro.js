@@ -1,4 +1,4 @@
-const MACRONAME = "DeleteTokenMacro_0.4"
+const MACRONAME = "DeleteTokenMacro.0.4.js"
 /***************************************************************************************
  * Run as GM Macro that deletes the token passedto it as the only argument
  * 

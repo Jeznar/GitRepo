@@ -26,6 +26,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Remove Paired Effect](#remove-paired-effect)** Removes effect identified by id from actor also specified by id
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
 * **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
+* **[RunAsGM](#runasgm)** Series of functions that have their runasgm flag turned on.
 * **[Samples](#samples)** Various sample macros that do itty bitty things
 * **[Search Items in Sidebar](#search-items-in-sidebar)** searches item directory for various things
 * **[Set Familiar Name](#set-familiar-name)** Manages stored familiar name for actor
@@ -339,6 +340,24 @@ Used by adding the following to the OnUse Macro field at the bottom of the **Ite
 ~~~ javascript
 Run_RuneVFX_onSelf
 ~~~
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### RunAsGM 
+
+Collection of small macros that handle a specific task with the runAsGM flag enabled.  Many of these have a wrapper in jez-lib to make their use simpler.
+
+* **ActorUpdate**: Updates data within an actor.  Derived from a Crymic Macro
+* **CreateEmbeddedDocuments**: Creates embedded documents, wrapped by ...
+* **DeleteEmbeddedDocuments**: Deletes embedded documents, wrapped by ...
+* **DeleteTokenMacro**: Deletes specified token with warpgate.dismiss (not yet wrapped)
+* **SummonCreatureMacro**: Summons a creature without using a module, deprecated use warpgate instead
+* **TokenRefresh**: Refresh a token, though it has issues and is not currently (6/29/22) working
+* **UpdateEmbeddedDocuments**: Updates embedded documents, wrapped by ...
+- **Shrink or Enlarge**: Flips selected tokens between 1 square and 2 square sizes.  Not great for tokens of other than 1x1 or 2x2 shapes.
+
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

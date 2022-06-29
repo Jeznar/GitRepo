@@ -24,6 +24,10 @@ The small bundle of files that make up this module need to be paced on the serve
 
 The functions currently included in this module are (all need to be proceeded by **jez.** when called):
 
+* **[createEmbeddedDocs(type, updates)](#embeddeddocsfunctions)** -- Creates an embedded document, wraps a RunAsGM function
+* **[deleteEmbeddedDocs(type, ids)](#embeddeddocsfunctions)** -- Deletes an embedded document, wraps a RunAsGM function
+* **[updateEmbeddedDocs(type, updates)](#embeddeddocsfunctions)** -- Updates an embedded document, wraps a RunAsGM function
+
 * **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[badNews(message, <badness>)](#badNewsmessage-badness)** -- Displays warning message on console and ui then returns false
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
@@ -152,6 +156,92 @@ A brief deletion messages is popped for each item deleted. Sample call:
 ```javascript
 await jez.deleteItems(ATTACK_ITEM, "spell", aActor);
 ```
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### EmbeddedDocs
+
+Series of functions that wrap runAsGM Macros to manage embedded documents when fired off by the GM or by players.
+
+* **createEmbeddedDocs(type, updates)** -- Creates an embedded document, wraps a RunAsGM function
+* **deleteEmbeddedDocs(type, ids)** -- Deletes an embedded document, wraps a RunAsGM function
+* **updateEmbeddedDocs(type, updates)** -- Updates an embedded document, wraps a RunAsGM function
+
+All of them utilize static variables included in jez-lib that name the macros to be called.  These variables are available to other macros, but are likely not needed by them.  They must map to macros with the runAsGM flag set. 
+
+~~~javascript
+ CREATE_EMBEDDED_MACRO = "CreateEmbeddedDocuments"
+ DELETE_EMBEDDED_MACRO = "DeleteEmbeddedDocuments"
+ UPDATE_EMBEDDED_MACRO = "UpdateEmbeddedDocuments"
+~~~
+
+#### createEmbeddedDocs(type, updates)
+
+This function will create a document of the type named by  *type*, which is a string with values like: *item*, *tile*.  The updates parameter should be an object describing the new object.  The function will return an ID to the GM and nothing to players.  To make this work for players some creativity is needed.  Following is a chunk of code that handles this for Minor_Illusion.js.
+
+~~~javascript
+let existingTiles = []
+for (tile of game.scenes.current.tiles.contents) {
+    jez.trc(4,trcLvl,"tile ID", tile.id)
+    existingTiles.push(tile.id)
+}
+jez.trc(3,trcLvl,"Value of existingTiles",existingTiles)
+let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])  
+jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
+if (newTile) {
+    let returnValue = newTile[0].data._id
+    jez.trc(2,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Generated:`,returnValue);
+    return returnValue; // If newTile is defined, return the id.
+}
+else {   // newTile will be undefined for players, so need to fish for a tile ID
+    let gameTiles = null
+    let i
+    for (i = 1; i < 20; i++) {
+        let delay = 5
+        await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
+        jez.trc(3,trcLvl,`Seeking new tile, try ${i} at ${delay*i} ms after return`)
+        gameTiles = game.scenes.current.tiles.contents
+        if (gameTiles.length > existingTiles.length) break
+    }
+    if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
+    jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
+    let returnValue = gameTiles[gameTiles.length - 1].id
+    jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
+    return returnValue
+}
+~~~
+
+#### deleteEmbeddedDocs(type, ids)
+
+This function is similar. The *ids* argument needs to be an array of ids that will be deleted. Following is an example usage.
+
+~~~javascript
+if (args[1] === "Tile") {
+    const TILE_ID = args[2]
+    jez.trc(3,trcLvl,`Delete the VFX tile`, TILE_ID)
+    await jez.deleteEmbeddedDocs("Tile", [TILE_ID])  
+    jez.trc(3,trcLvl,`Deleted Tile ${TILE_ID}`)
+} 
+~~~
+
+#### updateEmbeddedDocs(type, updates)
+
+This one allows a player to make changes to tokens they typical cannot change. 
+
+~~~javascript
+if (jez.isToken5e(tok)) {
+    let updates = [];
+    updates.push({
+        _id: tok.id,
+        height: newWidth,
+        scale: newScale,
+        width: newWidth
+    });
+    await jez.updateEmbeddedDocs("Token", updates)  
+} 
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
