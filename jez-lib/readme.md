@@ -24,12 +24,10 @@ The small bundle of files that make up this module need to be paced on the serve
 
 The functions currently included in this module are (all need to be proceeded by **jez.** when called):
 
-* **[createEmbeddedDocs(type, updates)](#embeddeddocsfunctions)** -- Creates an embedded document, wraps a RunAsGM function
-* **[deleteEmbeddedDocs(type, ids)](#embeddeddocsfunctions)** -- Deletes an embedded document, wraps a RunAsGM function
-* **[updateEmbeddedDocs(type, updates)](#embeddeddocsfunctions)** -- Updates an embedded document, wraps a RunAsGM function
-
 * **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[badNews(message, <badness>)](#badNewsmessage-badness)** -- Displays warning message on console and ui then returns false
+* **[createEmbeddedDocs(type, updates)](#embeddeddocsfunctions)** -- Creates an embedded document, wraps a RunAsGM function
+* **[deleteEmbeddedDocs(type, ids)](#embeddeddocsfunctions)** -- Deletes an embedded document, wraps a RunAsGM function
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
 * **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
@@ -71,6 +69,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
 * **[trc(level, ...parms)](#trclevel-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
+* **[updateEmbeddedDocs(type, updates)](#embeddeddocsfunctions)** -- Updates an embedded document, wraps a RunAsGM function
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
