@@ -61,17 +61,17 @@ The functions currently included in this module are (all need to be proceeded by
 * **[pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
 * **[postMessage(msgParm)](#postmessagemsgparm)** -- Posts a new message to the **Chat Log**
 * **[randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
-* **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring))** -- Returns updated string and count of replacements in an object.
+* **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring)** -- Returns updated string and count of replacements in an object.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
-* **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc))** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
+* **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
 * **[trc(level, ...parms)](#trclevel-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
-* **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
-* **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
+* **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
+* **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[wait(ms)](#wait)** -- Waits for specified milliseconds.
-* **[writeTrcLog(prefix, ...parms)](#writeTrcLogprefix-parms*)]** -- Worker function for **trc** and **log**.
-
+* **[writeTrcLog(prefix, ...parms)](writetrclogprefix-parms*)** -- Worker function for **trc** and **log**.
+                                     
 More about each of these in the following sections. 
 
 ---
@@ -505,7 +505,7 @@ jez-lib |  (2) Selected Token Name : Meat Bag, Medium
 
 <!--![Linker](images/jez.log_debug_mode.png)-->
 
-6/29/22: The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](#writeTrcLogprefix-parms*)]
+6/29/22: The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](writetrclogprefix-parms*)]
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -980,7 +980,7 @@ jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
 
 This function checks level against the potentially defined global variable **traceLevel**.  If traceLevel is not declared in the code, then a **2** is assumed. If level is less than or equal to traceLevel, then **writeTrcLog** is called with a prefix of "* TRACE *"
 
-The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](#writeTrcLogprefix-parms*)]
+The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](writetrclogprefix-parms*)]
 
 [*Back to Functions list*](#functions-in-this-module)
 
