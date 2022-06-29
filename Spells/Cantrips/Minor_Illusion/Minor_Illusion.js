@@ -86,22 +86,28 @@ async function doOnUse() {
     msg = `Placed Tile ID: ${fetchedTile.id}. <br>Image file used as source:<br>${fetchedTile.data.img}`;
     jez.log("msg", msg);
     // ---------------------------------------------------------------------------------------
-    // Add an effect to the active token that expires at the end of its next turn. 
+    // If a previous casting is still active, delete it before creating a new one.
     //
+    let existingEffect = aActor.effects.find(ef => ef.data.label === aItem.name)
+    if (existingEffect) await existingEffect.delete();
+    // ---------------------------------------------------------------------------------------
+    // Add an effect to the active token 
+    //
+    const GAME_RND = game.combat ? game.combat.round : 0;
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
         origin: aToken.uuid,
         disabled: false,
+        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         flags: { dae: { itemData: aItem } },
         changes: [
             { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `Tile ${fetchedTile.id}`, priority: 20 },
         ]
     };
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aActor.uuid, effects: [effectData] });
-    msg = `Strong wind blasts from <b>${aToken.name}</b>. Eash token that starts its turn in the 
-    gusts must make a DC${jez.getSpellDC(aToken)} STR Save or be moved 15 feet.  
-    Moving into the wind costs double.`
+    msg = `<b>${aToken.name}</b> creates a sound or an image of an object within range that lasts for the 
+    duration. Effects are not automated.`
     postResults(msg)
     // ---------------------------------------------------------------------------------------
     // Modify the concentrating effect to trigger removal of the associated effect
@@ -126,16 +132,44 @@ async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
     canvas.templates.get(TEMPLATE_ID).document.delete();
     // Place the tile with an embedded VFX
     let tileProps = {
-        x: template.center.x - GRID_SIZE * tilesWide / 2,   // X coordinate is poorly understood
-        y: template.center.y - GRID_SIZE * tilesHigh / 2,   // Y coordinate is center of the template
+        _id: game.scenes.current.id,                        // ID of current scene to hold tile
+        x: template.center.x, //- GRID_SIZE * tilesWide / 2,   // X coordinate is poorly understood
+        y: template.center.y, //- GRID_SIZE * tilesHigh / 2,   // Y coordinate is center of the template
         img: vfxFile,
         width: GRID_SIZE * tilesWide,   // VFX should occupy 2 tiles across
         height: GRID_SIZE * tilesHigh   // ditto
     };
+    //-----------------------------------------------------------------------------------------------
+    // Build an array of tile ids in the current scene so we can figure out what tile was just added
+    //
+    let existingTiles = []
+    for (tile of game.scenes.current.tiles.contents) {
+        jez.log("tile ID", tile.id)
+        existingTiles.push(tile.id)
+    }
+    jez.log("existingTiles",existingTiles)
     // let newTile = await Tile.create(tileProps)   // Depricated 
-    let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
-    jez.log("newTile", newTile);
-    return (newTile[0].data._id);
+    // Following line throws a permission error for non-GM acountnts running this code.
+    //   Uncaught (in promise) Error: User Jon M. lacks permission to create Tile [v0VARMGmr4fCaTLr] in parent Scene [MzEyYTVkOTQ4NmZk]
+    // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
+    let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])  
+    jez.log("newTile placeTileVFX", newTile);
+    if (newTile) return (newTile[0].data._id); // If newTile is defined, return the id.
+    else {   // newTile will be undefined for players, so need to fish for a tile ID
+
+        let newTiles = []
+        let gameTiles = null
+        let i
+        for (i = 0; i <= 40; i++) {
+            await jez.wait(10)
+            jez.log(`${i}`)
+            gameTiles = game.scenes.current.tiles.contents
+            if (gameTiles.length > existingTiles.length) break
+        }
+        if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
+        jez.log("Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
+        return gameTiles[gameTiles.length - 1].id
+    }
 }
 /***************************************************************************************************
  * Run a 3 part spell rune VFX on indicated token  with indicated rune, Color, scale, and opacity

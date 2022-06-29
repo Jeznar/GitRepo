@@ -34,29 +34,57 @@ class jez {
     }
 
     /***************************************************************************************************
-     * DEBUG Logging
+     * Trace
+     * 
+     * This is a variation on the log function that requires the first parameter to be an integer that
+     * will be compared to the presumably existing "traceLevel" variable in the environment.  If 
+     * traceLevel is not set (is undefined), it will be assumed to be a 2.
+     * 
+     * Ex: jez.trc(1, "Post this message to the console", variable)
+     ***************************************************************************************************/
+    static trc(level, ...parms) {
+        let traceLvl
+        if (typeof traceLevel === "undefined") traceLvl = 2
+        else traceLvl = traceLevel
+        if (level > traceLvl) return false
+        return jez.writeTrcLog(" TRACE ", ...parms)
+    }
+    /***************************************************************************************************
+     * Log
+     * 
+     * Call the writeTrcLog function with prefix "jez-log" and all passed arguments
+     * 
+     * Ex: jez.log("Post this message to the console", variable)
+     ***************************************************************************************************/
+    static log(...parms) {
+        return jez.writeTrcLog("jez-log", ...parms)
+    }
+    /***************************************************************************************************
+     * Write Trace/Log to console
      * 
      * If passed an odd number of arguments, put the first on a line by itself in the log,
      * otherwise print them to the log seperated by a colon.  
      * 
      * If more than two arguments, add numbered continuation lines. 
      * 
-     * Ex: jez.log("Post this message to the console", variable)
+     * Ex: jez.log("jez-log","Post this message to the console", variable)
      ***************************************************************************************************/
-    static log(...parms) {
-        if (game.modules.get('_dev-mode')?.api?.getPackageDebugValue(this.ID) === false) return (true)
+    static writeTrcLog(prefix, ...parms) {
+
+        //if (game.modules.get('_dev-mode')?.api?.getPackageDebugValue(this.ID) === false) return (true)
         let numParms = parms.length;    // Number of parameters received
         let i = 0;                      // Loop counter
         let lines = 1;                  // Line counter 
 
         if (numParms % 2) {  // Odd number of arguments
-            console.log(this.ID, '|', parms[i++])
-            for (i; i < numParms; i = i + 2) console.log(this.ID, '|', ` (${lines++})`, parms[i], ":", parms[i + 1]);
+            console.log(prefix, '|', parms[i++])
+            for (i; i < numParms; i = i + 2) console.log(prefix, '|', ` (${lines++})`, parms[i], ":", parms[i + 1]);
         } else {            // Even number of arguments
-            console.log(this.ID, '|', parms[i], ":", parms[i + 1]);
+            console.log(prefix, '|', parms[i], ":", parms[i + 1]);
             i = 2;
-            for (i; i < numParms; i = i + 2) console.log(this.ID, '|', ` (${lines++})`, parms[i], ":", parms[i + 1]);
+            for (i; i < numParms; i = i + 2) console.log(prefix, '|', ` (${lines++})`, parms[i], ":", parms[i + 1]);
         }
+        return true
     }
 
     /***************************************************************************************************
@@ -853,6 +881,7 @@ class jez {
      static get ACTOR_UPDATE_MACRO() { return "ActorUpdate"}
      static get TOKEN_REFRESH_MACRO() { return "TokenRefresh"}
      static get UPDATE_EMBEDDED_MACRO() { return "UpdateEmbeddedDocuments"}
+     static get CREATE_EMBEDDED_MACRO() { return "CreateEmbeddedDocuments"}
      /***************************************************************************************************
       * Set the Familiar name into the DAE Flag
       ***************************************************************************************************/
@@ -1966,6 +1995,16 @@ class jez {
         if (!UPDATE_EMBEDDED_MACRO) return false
         await UPDATE_EMBEDDED_MACRO.execute(type, updates)
         return true
+    }
+
+    static async createEmbeddedDocs(type, updates) {
+        const CREATE_EMBEDDED_MACRO = jez.getMacroRunAsGM(jez.CREATE_EMBEDDED_MACRO)
+        jez.log("CREATE_EMBEDDED_MACRO",CREATE_EMBEDDED_MACRO)
+        if (!CREATE_EMBEDDED_MACRO) return false
+        jez.log("CREATE_EMBEDDED_MACRO.execute(type, updates)","type",type,"updates",updates)
+        let CEMreturn = await CREATE_EMBEDDED_MACRO.execute(type, updates)
+        jez.log("==> CEMreturn", CEMreturn)
+        return CEMreturn
     }
     /***************************************************************************************************
      * Use the ACTOR_UPDATE_MACRO to update an Actor as GM. 

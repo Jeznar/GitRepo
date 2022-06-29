@@ -65,10 +65,12 @@ The functions currently included in this module are (all need to be proceeded by
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc))** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
+* **[trc(level, ...parms)](#trclevel-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
 * **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)]** -- Run pre VFX for warpgate summons
 * **[wait(ms)](#wait)** -- Waits for specified milliseconds.
+* **[writeTrcLog(prefix, ...parms)](#writeTrcLogprefix-parms*)]** -- Worker function for **trc** and **log**.
 
 More about each of these in the following sections. 
 
@@ -502,6 +504,8 @@ jez-lib |  (2) Selected Token Name : Meat Bag, Medium
 </details>
 
 <!--![Linker](images/jez.log_debug_mode.png)-->
+
+6/29/22: The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](#writeTrcLogprefix-parms*)]
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -972,6 +976,16 @@ jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
 
 ---
 
+### trc(level, ...parms) 
+
+This function checks level against the potentially defined global variable **traceLevel**.  If traceLevel is not declared in the code, then a **2** is assumed. If level is less than or equal to traceLevel, then **writeTrcLog** is called with a prefix of "* TRACE *"
+
+The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](#writeTrcLogprefix-parms*)]
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
 ### typeOf(arg) 
 
 Return a type string that differentiates object objects from array objects which are the same thing when looked at with the normal typeof function.
@@ -1059,6 +1073,58 @@ Hey!   This one is easy.  It just does a wait for the specified milliseconds.  P
 ~~~javascript
     await jez.wait(1000) // Will wait for 1 second, 1,000 milliseconds
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### writeTrcLog(prefix, ...parms)
+
+This function utilizes the [Developer Mode](https://github.com/League-of-Foundry-Developers/foundryvtt-devMode) module to determine if passed parameter(s) should be written to the console log.  All messages are prefaced with the module name (jez-lib) and a vertical bar symbol.  
+
+**prefix** is used to tag the line of output with, you know, a prefix.
+
+If only a single parameter is passed to **...parms**, the function simply echos that parameter to the console.
+
+This function does the work for:
+
+* **[log(...parms)](#logparms)**
+* **[trc(level, ...parms)](#trclevel-parms)**
+
+Following describes the use of log with this function.  This one should not typically be used outside the above two functions. 
+
+~~~javascript
+> jez.log("hello world")
+jez-lib | hello world
+> jez.log(_token)
+jez-lib | ▸ Token5e {_events: i, _eventsCount: 2, …}
+~~~
+
+Objects, arrays, and other compound data elements display with a *clickable* arrow indicating. they can be expanded to show more content.
+
+If two parameters are passed, they are written to a single line on the console separated by a colon. 
+
+~~~javascript
+> jez.log("My token of interest", _token)
+jez-lib | ▸ My token of interest : Token5e {_events: i, _eventsCount: 2, …}
+~~~
+	
+It also provides limited formatting of the output if more than one a parameter is passed. With more than two parameters, the first (for odd counts of parameters) or first two (even counts) are written to the console followed by numbered pairs on additional lines. 
+
+~~~javascript
+> jez.log("------------- BREAK ---------------","Selected Token",_token,"Selected Token Name",_token.name)
+jez-lib | ------------- BREAK ---------------
+jez-lib |  (1) Selected Token : ▸ Token5e {_events: i, _eventsCount: 2, …}
+jez-lib |  (2) Selected Token Name : Meat Bag, Medium
+~~~
+
+<details>
+<summary>Hidden Image: Enabled Console Messages Setting Dialog</summary>
+
+![Linker](images/log_debug_mode.png)
+</details>
+
+<!--![Linker](images/jez.log_debug_mode.png)-->
 
 [*Back to Functions list*](#functions-in-this-module)
 
