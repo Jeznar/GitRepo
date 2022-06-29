@@ -69,8 +69,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
-* **[wait(ms)](#wait)** -- Waits for specified milliseconds.
-* **[writeTrcLog(prefix, ...parms)](writetrclogprefix-parms*)** -- Worker function for **trc** and **log**.
+* **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
+* **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms*)** -- Worker function for **trc** and **log**.
                                      
 More about each of these in the following sections. 
 
@@ -505,7 +505,7 @@ jez-lib |  (2) Selected Token Name : Meat Bag, Medium
 
 <!--![Linker](images/jez.log_debug_mode.png)-->
 
-6/29/22: The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](writetrclogprefix-parms*)]
+6/29/22: The actual work of this function is now handled by: **[jez.writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -980,7 +980,8 @@ jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
 
 This function checks level against the potentially defined global variable **traceLevel**.  If traceLevel is not declared in the code, then a **2** is assumed. If level is less than or equal to traceLevel, then **writeTrcLog** is called with a prefix of "* TRACE *"
 
-The actual work of this function is now handled by: [jez.writeTrcLog(prefix, ...parms)](writetrclogprefix-parms*)]
+The actual work of this function is now handled by: **[jez.writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)**
+
 
 [*Back to Functions list*](#functions-in-this-module)
 
