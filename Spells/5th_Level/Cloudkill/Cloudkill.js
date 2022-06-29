@@ -1,4 +1,4 @@
-const MACRONAME = "Cloudkill.js"
+const MACRONAME = "Cloudkill.0.3.js"
 /*****************************************************************************************
  * Cloudkill!
  * 
@@ -20,10 +20,13 @@ const MACRONAME = "Cloudkill.js"
  * 
  * 03/28/22 0.1 Creation of Macro
  * 05/03/22 0.2 Update for FoundryVTT 9.x (Tile.create)
+ * 06/29/22 0.3 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
+ *              canvas.scene.deleteEmbeddedDocuments
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+let trcLvl = 1;
+jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
+for (let i = 0; i < args.length; i++) jez.trc(3, trcLvl,`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
@@ -74,7 +77,9 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     jez.log(TILE_ID.length)
     if (TILE_ID.length != 16) return
     jez.log(`Delete the VFX tile`, TILE_ID)
-    await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
+    // Following line throws a permission error for non-GM acountnts running this code.
+    // await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
+    await jez.deleteEmbeddedDocs("Tile", [TILE_ID])  
     //----------------------------------------------------------------------------------------------
     // Delete the temporary item
     //
@@ -131,6 +136,10 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  * Perform the code that runs when this macro is invoked each round by DAE
  ***************************************************************************************************/
 async function placeTile(TEMPLATE_ID, templateCenter) {
+    const FUNCNAME = "placeTile(TEMPLATE_ID, templateCenter)";
+    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID,"templateCenter",templateCenter)
+
     canvas.templates.get(TEMPLATE_ID).document.delete();
     let tileProps = {        
         x: templateCenter.x,
@@ -140,9 +149,31 @@ async function placeTile(TEMPLATE_ID, templateCenter) {
         height: GRID_SIZE * 8   // 20 foot tall 
     }
     // let newTile = await Tile.create(tileProps)   // Depricated 
-    let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
-    jez.log("newTile", newTile);
-    return(newTile[0].data._id);
+    // Following line throws a permission error for non-GM acountnts running this code.
+    // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
+    let existingTiles = game.scenes.current.tiles.contents
+    let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])
+    jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
+    if (newTile) {
+        let returnValue = newTile[0].data._id
+        jez.trc(2,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Generated:`,returnValue);
+        return returnValue; // If newTile is defined, return the id.
+    }
+    else {   // newTile will be undefined for players, so need to fish for a tile ID
+        let gameTiles = i = null
+        let delay = 5
+        for (i = 1; i < 20; i++) {
+            await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
+            jez.trc(3,trcLvl,`Seeking new tile, try ${i} at ${delay*i} ms after return`)
+            gameTiles = game.scenes.current.tiles.contents
+            if (gameTiles.length > existingTiles.length) break
+        }
+        if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
+        jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
+        let returnValue = gameTiles[gameTiles.length - 1].id
+        jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
+        return returnValue
+    }   
 }
 /***************************************************************************************************
  * Modify existing effect to include a midi-qol overtime saving throw element
@@ -216,7 +247,7 @@ async function copyEditItem(token5e) {
         'name': NEW_ITEM_NAME,              // Change to actor specific name for temp item
         'data.description.value': content,  // Drop in altered description
         'data.level': LAST_ARG.spellLevel,  // Change spell level of temp item 
-        'data.damage.parts' : [[`${LAST_ARG.spellLevel}d6`, "poison"]]
+        'data.damage.parts' : [[`${LAST_ARG.spellLevel}d8`, "poison"]]
     }
     jez.log("itemUpdate",itemUpdate)
     await aActorItem.update(itemUpdate)
