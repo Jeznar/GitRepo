@@ -472,39 +472,6 @@ This function utilizes the [Developer Mode](https://github.com/League-of-Foundry
 
 If only a single parameter is passed, the function simply echos that parameter to the console.
 
-~~~javascript
-> jez.log("hello world")
-jez-lib | hello world
-> jez.log(_token)
-jez-lib | ▸ Token5e {_events: i, _eventsCount: 2, …}
-~~~
-
-Objects, arrays, and other compound data elements display with a *clickable* arrow indicating. they can be expanded to show more content.
-
-If two parameters are passed, they are written to a single line on the console separated by a colon. 
-
-~~~javascript
-> jez.log("My token of interest", _token)
-jez-lib | ▸ My token of interest : Token5e {_events: i, _eventsCount: 2, …}
-~~~
-	
-It also provides limited formatting of the output if more than one a parameter is passed. With more than two parameters, the first (for odd counts of parameters) or first two (even counts) are written to the console followed by numbered pairs on additional lines. 
-
-~~~javascript
-> jez.log("------------- BREAK ---------------","Selected Token",_token,"Selected Token Name",_token.name)
-jez-lib | ------------- BREAK ---------------
-jez-lib |  (1) Selected Token : ▸ Token5e {_events: i, _eventsCount: 2, …}
-jez-lib |  (2) Selected Token Name : Meat Bag, Medium
-~~~
-
-<details>
-<summary>Hidden Image: Enabled Console Messages Setting Dialog</summary>
-
-![Linker](images/log_debug_mode.png)
-</details>
-
-<!--![Linker](images/jez.log_debug_mode.png)-->
-
 6/29/22: The actual work of this function is now handled by: **[jez.writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)**
 
 [*Back to Functions list*](#functions-in-this-module)
