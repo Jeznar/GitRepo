@@ -23,10 +23,10 @@ const MACRONAME = "Black_Tentacles.0.4.js"
  * 06/29/22 0.4 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
  *              canvas.scene.deleteEmbeddedDocuments
  *****************************************************************************************/
- const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
- let trcLvl = 1;
- jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
- for (let i = 0; i < args.length; i++) jez.trc(3, trcLvl,`  args[${i}]`, args[i]);
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+let trcLvl = 1;
+jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
+for (let i = 0; i < args.length; i++) jez.trc(3, trcLvl,`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
