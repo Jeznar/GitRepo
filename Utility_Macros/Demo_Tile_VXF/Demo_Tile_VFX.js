@@ -58,6 +58,10 @@ return;
  * Pop a VFX Tile where the template was
  ***************************************************************************************************/
 async function placeTileVFX(TEMPLATE_ID) {
+    const FUNCNAME = "placeTile(TEMPLATE_ID)";
+    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID)
+
     // Grab the size of grid in pixels per square
     const GRID_SIZE = canvas.scene.data.grid;   
     // Search for the MeasuredTemplate that should have been created by the calling item
