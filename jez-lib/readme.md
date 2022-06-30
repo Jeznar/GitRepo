@@ -66,6 +66,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring)** -- Returns updated string and count of replacements in an object.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
+* **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
+* **[tileCreate(tileDelete)](#tiledeletetileid)** -- Deletes a tile with specified ID
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
 * **[trc(level, ...parms)](#trclevel-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
@@ -1009,6 +1011,56 @@ async function workHorse(dataObj) {
    //
    for (let line of dataObj.idArray) await pushUpdate(line, dataObj.itemName, dataObj.itemType);
 }
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### tileCreate(tileProps) 
+
+This function creates a tile in the current scene with the specified properties.  This is intended to hide the niggling details of needing GM level permissions to make a tile.  It hides a RunAsGM macro and a bit of fishing for the created tile id when run by a non-GM account.
+
+The argument needs to be an object that is ultimately useable by `game.scenes.current.createEmbeddedDocuments(args[0], args[1])` as args[1]. The first argument passed to that function will be 'Tile' and is hidden by this function. 
+
+Following is an example object:
+
+~~~javascript
+const GRID_SIZE = canvas.scene.data.grid;     // Stash the grid size
+
+let tileProps = {
+    x: template.center.x - GRID_SIZE / 2,     // X coordinate is center of the template
+    y: template.center.y - GRID_SIZE / 2,     // Y coordinate is center of the template
+    img: "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_03_Regular_Orange_600x600.webm",
+    width: GRID_SIZE * 3,                     // VFX should occupy 3 tiles horizontally
+    height: GRID_SIZE * 3                     // VFX should occupy 3 tiles vertically
+    alpha: 0.5                                // Opacity of our placed tile 0 to 1.0  
+};
+~~~
+
+* **x** and **y** properties define the location of the tile and may need some finagling. 
+* **img** names the graphic file to be placed in the tile
+* **width** and height define exactly what they sound like.
+* **alpha** is opacity of the tile, is very much optional, defaults to 1.0
+
+The return value will be the id of the tile just created.  This may well be needed for subsequent deletion. Here is an example call:
+
+~~~javascript
+let tileId = await jez.tileCreate(tileProps)
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### tileDelete(tileId) 
+
+This function deletes a tile with the specified tile ID.  This is intended to hide the niggling details of needing GM level permissions to make a tile.  It hides a RunAsGM macro and a bit of fishing for the created tile id when run by a non-GM account.
+
+Here is an example call:
+
+~~~javascript
+jez.tileDelete(tileId)
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

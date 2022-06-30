@@ -18,7 +18,7 @@ const MACRONAME = "Earth_Tremor.0.3.js"
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let trcLvl = 1;
-jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
+jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
 
 const CONDITION = `Prone`;
 const ICON = `modules/combat-utility-belt/icons/prone.svg`;
@@ -27,7 +27,6 @@ let xtraMsg = `<br><br>
     If the ground in that area is loose earth or stone, it becomes difficult terrain
     until cleared. <i><b>FoundryVTT:</b> Effect represented by a tile, that can be
     manually removed.</i>`
-jez.trc(1, trcLvl, `************ Executing ${MACRONAME} ****************`)
 for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
 // ---------------------------------------------------------------------------------------
 // Place a nifty tile...
@@ -96,7 +95,7 @@ for (let i = 0; i < failCount; i++) {
 msg = `Creatures that failed their saving have been knocked @JournalEntry[FBPUaHRxNyNXAOeh]{prone}.` + xtraMsg;
 await postResults(msg);
 jez.trc(2, trcLvl, ` ${msg}`);
-jez.trc(1, trcLvl, `************ Terminating ${MACRONAME} ****************`)
+jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`);
 /***************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY

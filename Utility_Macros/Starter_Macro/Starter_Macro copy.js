@@ -3,12 +3,10 @@ const MACRONAME = "Starter_Macro"
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
- * 06/29/22 0.2 Update to use jez.trc
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 1;
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
+jez.log(`============== Starting === ${MACRONAME} =================`);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let msg = "";
 //
@@ -39,7 +37,7 @@ if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE everyround
 // DamageBonus must return a function to the caller
 if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
+jez.log(`============== Finishing === ${MACRONAME} =================`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -71,24 +69,21 @@ async function preCheck() {
  * Post results to the chat card
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  function postResults(msg) {
-    const FUNCNAME = "postResults(msg)";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(2,trcLvl,"postResults Parameters","msg",msg)
+    //jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set Off
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOff() {
     const FUNCNAME = "doOff()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.log("Something could have been here")
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -96,55 +91,53 @@ async function preCheck() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function doOn() {
     const FUNCNAME = "doOn()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
-    return true;
+    jez.log("A place for things to be done");
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
     if (!await preCheck()) return(false);
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
+    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-
     msg = `Maybe say something useful...`
     postResults(msg)
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
-    return true;
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return (true);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked each round by DAE
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doEach() {
     const FUNCNAME = "doEach()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
-    return true;
+    jez.log("The do Each code")
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return (true);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    //-----------------------------------------------------------------------------------------------
-    // Comments, perhaps
-    //
-
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
-    return true;
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    jez.log("The do On Use code")
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return (true);
 }

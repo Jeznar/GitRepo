@@ -1626,7 +1626,7 @@ class jez {
          *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
         async function typeCallBack(itemType) {
             const FUNCNAME = "typeCallBack(itemType)";
-            // jez.log(`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`,"itemType",itemType);
+            // jez.log(`--- Starting --- ${FUNCNAME} ---`,"itemType",itemType);
             let msg = `typeCallBack: Type "${itemType}" was selected in the dialog`;
             console.log(msg);
             let itemsFound = [];
@@ -1660,7 +1660,7 @@ class jez {
             const Q_TEXT = prompts.text2 ?? `Pick one item from list of "${itemType}" item(s)`;
             if (itemsFound.length > 9) await jez.pickFromListArray(Q_TITLE, Q_TEXT, itemCallBack, itemsFound.sort());
             else await jez.pickRadioListArray(Q_TITLE, Q_TEXT, itemCallBack, itemsFound.sort());
-            // jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+            // jez.log(`--- Finished --- ${FUNCNAME} ---`);
             /*********1*********2*********3*********4*********5*********6*********7*********8*********9******
              * itemCallBack
              *********1*********2*********3*********4*********5*********6*********7*********8*********9*****/
@@ -1696,7 +1696,7 @@ class jez {
                 const Q_TITLE = prompts.title3 ?? "Select Actor(s) to have their item acted upon.";
                 const Q_TEXT = prompts.text3 ?? `Choose the actor(s) to have their ${itemSelected} of type ${itemType} acted upon.`;
                 jez.pickCheckListArray(Q_TITLE, Q_TEXT, pickCheckCallBack, actorFullWithItem);
-            // jez.log(`*** Ending pickCheckListArray ${MACRONAME}`);
+            // jez.log(`*** Ending pickCheckListArray`);
             /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
              * pickCheckCallBack
              *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
@@ -2020,6 +2020,65 @@ class jez {
         if (!ACTOR_UPDATE) return false
         await ACTOR_UPDATE.execute(tokenId, updates);
         return true
+    }
+
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Create a tile in the current scene with properties defined by tileProps object. 
+     * 
+     * Example
+     * -------
+     * let tileProps = {
+     *     x: template.center.x - GRID_SIZE / 2,    // X coordinate is center of the template
+     *     y: template.center.y - GRID_SIZE / 2,    // Y coordinate is center of the template
+     *     img: "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_03_Regular_Orange_600x600.webm",
+     *     width: GRID_SIZE * 3,                   // VFX should occupy 2 tiles across
+     *     height: GRID_SIZE * 3                   // ditto
+     * };
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async tileCreate(tileProps) {
+        const FUNCNAME = "jez.tileCreate(tileProps)";
+        const TRACE_LEVEL = 0
+        jez.trc(3, TRACE_LEVEL, `--- Starting --- ${FUNCNAME} ---`);
+        jez.trc(4, TRACE_LEVEL, "Parameters", "tileProps", tileProps)
+        // let newTile = await Tile.create(tileProps)   // Depricated
+        // Following line throws a permission error for non-GM acountnts running this code.
+        // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x
+        let existingTiles = game.scenes.current.tiles.contents
+        let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])
+        jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
+        if (newTile) {
+            let returnValue = newTile[0].data._id
+            jez.trc(2, `--- Finished --- ${FUNCNAME} --- Generated:`, returnValue);
+            return returnValue; // If newTile is defined, return the id.
+        }
+        else {   // newTile will be undefined for players, so need to fish for a tile ID
+            let gameTiles = null
+            let i = 1
+            let delay = 2
+            await jez.wait(3)           // wait for a very short time and see if a new tile has appeared
+            for (i = 1; i < 40; i++) {
+                jez.trc(3, TRACE_LEVEL, `Seeking new tile, try ${i} at ${delay * i} ms after return`)
+                gameTiles = game.scenes.current.tiles.contents
+                if (gameTiles.length > existingTiles.length) break
+                await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
+            }
+            if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`, "warn")
+            jez.trc(3, TRACE_LEVEL, "Seemingly, the new tile has id", gameTiles[gameTiles.length - 1].id)
+            let returnValue = gameTiles[gameTiles.length - 1].id
+            jez.trc(2, TRACE_LEVEL, `--- Finished --- ${FUNCNAME} --- Found:`, returnValue);
+            return returnValue
+        }
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Delete a tile identified by tileId
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async tileDelete(tileId) {
+        const FUNCNAME = "jez.tileDelete(tileId)";
+        const TRACE_LEVEL = 0
+        jez.trc(3, TRACE_LEVEL, `--- Starting --- ${FUNCNAME} ---`);
+        jez.trc(4, TRACE_LEVEL, "Parameters", "tileId", tileId)
+        jez.trc(3, TRACE_LEVEL, `--- Calling  jez.deleteEmbeddedDocs("Tile", [${tileId}])--- ${FUNCNAME} ---`);
+        return await jez.deleteEmbeddedDocs("Tile", [tileId])
     }
 
 } // END OF class jez

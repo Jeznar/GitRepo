@@ -157,6 +157,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.29 Addressed player permission issue for game.scenes.current.createEmbeddedDocuments("Tile"... and canvas.scene.deleteEmbeddedDocuments("Tile"... calls in **Gust_of_Wind**, **Black_Tentacles**, **Ice_Storm**, **Cloudkill**
 
+22.06.30 Added jez.tileCreate and jez.tileDelete to the jez-lib.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
