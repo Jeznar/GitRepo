@@ -43,8 +43,9 @@ async function doOnUse() {
         x: template.center.x - GRID_SIZE / 2,     // X coordinate is center of the template
         y: template.center.y - GRID_SIZE / 2,     // Y coordinate is center of the template
         img: "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_03_Regular_Orange_600x600.webm",
-        width: GRID_SIZE * 3,                   // VFX should occupy 2 tiles across
-        height: GRID_SIZE * 3                   // ditto
+        width: GRID_SIZE * 3,                     // VFX should occupy 2 tiles across
+        height: GRID_SIZE * 3,                    // ditto
+        alpha: 0.5                                // Opacity of our placed tile 0 to 1.0  
     };
     //-----------------------------------------------------------------------------------------------
     // Call library function to create the new tile, catching the id returned
