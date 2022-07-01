@@ -25,7 +25,7 @@ The small bundle of files that make up this module need to be paced on the serve
 The functions currently included in this module are (all need to be proceeded by **jez.** when called):
 
 * **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
-* **[badNews(message, <badness>)](#badNewsmessage-badness)** -- Displays warning message on console and ui then returns false
+* **[badNews(message, \<badness\>)](#badNewsmessage-badness)** -- Displays warning message on console and ui then returns false
 * **[createEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Creates an embedded document, wraps a RunAsGM function
 * **[deleteEmbeddedDocs(type, ids)](#embeddeddoc-functions)** -- Deletes an embedded document, wraps a RunAsGM function
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
@@ -121,7 +121,7 @@ The above, will generate a message such as the following:
 
 ---
 
-### badNews(message, <badness>)
+### badNews(message, \<badness\>)
 
 Pop the passed string (message) onto the console and as ui notification and return false.
 

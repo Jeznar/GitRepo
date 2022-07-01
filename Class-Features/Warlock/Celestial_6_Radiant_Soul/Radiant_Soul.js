@@ -1,16 +1,18 @@
-const MACRONAME = "Celestial_6th:Radiant_Soul.js"
+const MACRONAME = "Celestial_6th:Radiant_Soul.0.2.js"
 /*****************************************************************************************
  * Wildfire Druid 6th Level Ability,  based very much on my rewrite of Hex, which 
  * borrowed heavily from Crymic's code
  * 
  * 03/15/22 Creation of Macro
+ * 07/01/22 Chasing "<Warlock> is not a Celestial" bug caused by FoundryVTT 9.x
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const ABILITY_NAME = "Radiant Soul"
 const FLAG = MACRO                      // Name of the DAE Flag  
 const MIN_LVL = 6    
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+let trcLvl = 4;
+jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} !!!`);
+for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
@@ -22,7 +24,6 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item;
     else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
-
 //------------------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
@@ -30,9 +31,11 @@ let msg = "";
 //------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0]?.tag === "DamageBonus") return (doBonusDamage());    // DAE Damage Bonus
-jez.log(`============== Finishing === ${MACRONAME} =================`);
-return;
+if (args[0]?.tag === "DamageBonus") {
+    let damFunc = doBonusDamage()
+    jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`,damFunc);
+    return damFunc    // DAE Damage Bonus
+}
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -53,19 +56,32 @@ async function doBonusDamage() {
     const NUM_DICE = 1
     const DIE_TYPE = "d8"
     let dmgType = "";
-    jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);
+    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
     //---------------------------------------------------------------------------------------------
     // Make sure the user is at least a level ${MIN_LVL} warlock of subclass celestial
     //
-    if (aToken.actor.data.data.classes?.warlock?.levels < MIN_LVL) {
-        msg = `<b>${aToken.name}</b> is a level "${aToken.actor.data.data.classes?.warlock?.levels}" 
+    // ----------------------------------------------------------------------------------------------
+    // As of FoundryVTT 9.x the location of levels moved
+    //   FROM: aToken.actor.data.data.classes?.warlock?.levels
+    //   TO:   aToken.actor.data.document?._classes?.warlock?.data?.data?.levels
+    let warlockLevel = aToken.actor.data.document?._classes?.warlock?.data?.data?.levels
+    jez.trc(3,trcLvl,`${aToken.name} is warlock level ${warlockLevel}`,warlockLevel)
+    if ((warlockLevel < MIN_LVL || !warlockLevel)) {
+        msg = `<b>${aToken.name}</b> is a level "${warlockLevel}" 
         warlock, must be at least level ${MIN_LVL} for <b>${ABILITY_NAME}</b> to be used.`
         jez.postMessage({color: "dodgerblue", fSize: 14, icon: aToken.data.img, msg: msg, 
                 title: `${aToken.name} is not a Lvl ${MIN_LVL}+ Warlock`, token: aToken})
         return {}
-    }
-    if (aToken.actor.data.data.classes?.warlock?.subclass.toLowerCase() !== "celestial") {
-        msg = `<b>${aToken.name}</b> is subclass "${aToken.actor.data.data.classes?.warlock?.subclass}", 
+    } else jez.trc(4,trcLvl,`Passed text of warlockLevel ${warlockLevel}`)
+
+    // ----------------------------------------------------------------------------------------------
+    // As of FoundryVTT 9.x the location of subclass moved
+    //   FROM: aToken.actor.data.data.classes?.warlock?.subclass
+    //   TO:   aToken.actor.data.document._classes?.warlock?.data?.data?.subclass
+    let subClass = aToken.actor.data.document._classes?.warlock?.data?.data?.subclass
+    jez.trc(3,trcLvl,`${aToken.name} is subclass ${subClass}`)
+    if (subClass.toLowerCase() !== "celestial") {
+        msg = `<b>${aToken.name}</b> is subclass "${subClass}", 
         must be "Celestial" for <b>${ABILITY_NAME}</b> to be used.`
         jez.postMessage({color: "dodgerblue", fSize: 14, icon: aToken.data.img, msg: msg, 
                 title: `${aToken.name} is not a Celestial`, token: aToken})
@@ -105,6 +121,7 @@ async function doBonusDamage() {
     if (dmgType !== "fire" && dmgType !== "radiant") return {}
     let chrMod = jez.getStatMod(aToken,"cha")
     runVFX(dmgType, tToken) 
+    jez.trc(2,trcLvl,`--- Finishing --- ${MACRONAME} ${FUNCNAME} ---`);
     return {
         //damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,
         damageRoll: `${chrMod}[${dmgType}]`,
@@ -116,6 +133,9 @@ async function doBonusDamage() {
  * Play the VFX for the fire effect, type is "heal" or "fire" and nothing else
  ***************************************************************************************************/
  async function runVFX(type, token5e) {
+    const FUNCNAME = "runVFX(type, token5e)"
+    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.trc(3,trcLvl,"Parameters","type",type,"token5e",token5e)
     let vfxEffect = ""
     switch (type) {
         case "radiant": vfxEffect = "jb2a.template_circle.out_pulse.02.burst.tealyellow"; break
@@ -131,4 +151,5 @@ async function doBonusDamage() {
         .scale(0.3)
         .opacity(1)
     .play();
+    jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
  }
