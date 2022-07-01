@@ -1,4 +1,4 @@
-const MACRONAME = "Black_Tentacles.0.4.js"
+const MACRONAME = "Black_Tentacles.0.5.js"
 /*****************************************************************************************
  * Black Tentacles!
  * 
@@ -22,6 +22,7 @@ const MACRONAME = "Black_Tentacles.0.4.js"
  * 06/03/22 0.3 Fixed bug introduced by using external macro (ItemMacro fixed it)
  * 06/29/22 0.4 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
  *              canvas.scene.deleteEmbeddedDocuments
+ * 07/01/22 0.5 Swap in calls to jez.tileCreate and jez.tileDelete
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let trcLvl = 1;
@@ -72,11 +73,10 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     const TILE_ID = args[1];    // Must be a 12 character string:  chN3vMQvayMx6kWQ
     jez.log(TILE_ID.length)
     if (TILE_ID.length != 16) return
-
-    jez.log(`Delete the VFX tile`, TILE_ID)
-    // Following line throws a permission error for non-GM acountnts running this code.
-    // await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
-    await jez.deleteEmbeddedDocs("Tile", [TILE_ID])  
+    //-----------------------------------------------------------------------------------------------
+    // Delete the tile we just built with library function. 
+    //
+    jez.tileDelete(TILE_ID)
     //----------------------------------------------------------------------------------------------
     // Delete the temporary item
     //
@@ -149,32 +149,7 @@ async function placeTile(TEMPLATE_ID, templateCenter) {
         width: GRID_SIZE * 5,
         height: GRID_SIZE * 5 // ditto
     }
-    // let newTile = await Tile.create(tileProps)   // Depricated 
-    // Following line throws a permission error for non-GM acountnts running this code.
-    // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
-    let existingTiles = game.scenes.current.tiles.contents
-    let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])
-    jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
-    if (newTile) {
-        let returnValue = newTile[0].data._id
-        jez.trc(2,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Generated:`,returnValue);
-        return returnValue; // If newTile is defined, return the id.
-    }
-    else {   // newTile will be undefined for players, so need to fish for a tile ID
-        let gameTiles = i = null
-        let delay = 5
-        for (i = 1; i < 20; i++) {
-            await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
-            jez.trc(3,trcLvl,`Seeking new tile, try ${i} at ${delay*i} ms after return`)
-            gameTiles = game.scenes.current.tiles.contents
-            if (gameTiles.length > existingTiles.length) break
-        }
-        if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
-        jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
-        let returnValue = gameTiles[gameTiles.length - 1].id
-        jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
-        return returnValue
-    }   
+    return await jez.tileCreate(tileProps)
 }
 /***************************************************************************************************
  * Each round, ask the GM if the afflicted actor wants to use its action to attemot to break out 

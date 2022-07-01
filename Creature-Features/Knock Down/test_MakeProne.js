@@ -64,6 +64,7 @@ async function doOnUse() {
     //-----------------------------------------------------------------------------------------------
     // Basic MidiQOL application of effect
     //
+    jez.log("aItem", aItem)
     await jezcon.addProne(tToken.actor.uuid, aItem);
     //-----------------------------------------------------------------------------------------------
     // CUB Application of Prone

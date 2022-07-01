@@ -1,8 +1,9 @@
-const MACRONAME = "Gust_of_Wind.0.2.js"
+const MACRONAME = "Gust_of_Wind.0.3.js"
 /*****************************************************************************************
  * 05/31/22 0.1 Creation of Macro
  * 06/29/22 0.2 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
  *              canvas.scene.deleteEmbeddedDocuments
+ * 07/01/22 0.3 Swap in calls to jez.tileCreate and jez.tileDelete
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let trcLvl = 1;
@@ -45,11 +46,7 @@ async function doOff() {
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     if (args[1] === "Tile") {
         const TILE_ID = args[2]
-        jez.log(`Delete the VFX tile`, TILE_ID)
-        // Following line throws a permission error for non-GM acountnts running this code.
-        // await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
-        await jez.deleteEmbeddedDocs("Tile", [TILE_ID])  
-        jez.log(`Deleted Tile ${TILE_ID}`)
+        jez.tileDelete(TILE_ID)
     } 
     else if (args[1] === "Effect") {
         let existingEffect = await aToken.actor.effects.find(i => i.data.label === args[2]);
@@ -137,32 +134,7 @@ async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
         width: GRID_SIZE * tilesWide,   // VFX should occupy 2 tiles across
         height: GRID_SIZE * tilesHigh   // ditto
     };
-    // let newTile = await Tile.create(tileProps)   // Depricated 
-    // Following line throws a permission error for non-GM acountnts running this code.
-    // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
-    let existingTiles = game.scenes.current.tiles.contents
-    let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])
-    jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
-    if (newTile) {
-        let returnValue = newTile[0].data._id
-        jez.trc(2,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Generated:`,returnValue);
-        return returnValue; // If newTile is defined, return the id.
-    }
-    else {   // newTile will be undefined for players, so need to fish for a tile ID
-        let gameTiles = i = null
-        let delay = 5
-        for (i = 1; i < 20; i++) {
-            await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
-            jez.trc(3,trcLvl,`Seeking new tile, try ${i} at ${delay*i} ms after return`)
-            gameTiles = game.scenes.current.tiles.contents
-            if (gameTiles.length > existingTiles.length) break
-        }
-        if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
-        jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
-        let returnValue = gameTiles[gameTiles.length - 1].id
-        jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
-        return returnValue
-    }   
+    return await jez.tileCreate(tileProps)
 }
 /***************************************************************************************************
  * Modify existing concentration effect to trigger removal of the associated DAE effect on caster

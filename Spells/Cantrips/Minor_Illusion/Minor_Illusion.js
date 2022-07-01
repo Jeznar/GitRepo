@@ -1,9 +1,10 @@
-const MACRONAME = "Minor_Illusion.0.1.js"
+const MACRONAME = "Minor_Illusion.0.2.js"
 /*****************************************************************************************
  * Run a three staget Illusion rune VFX in the 5' square tile created when the spell was targeted. 
  * Delete that VFX on spell completion or removal. 
  * 
  * 06/01/22 0.1 Creation of Macro
+ * 07/01/22 0.2 Swap in calls to jez.tileCreate and jez.tileDelete
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let trcLvl = 1;
@@ -45,13 +46,10 @@ async function doOff() {
     const FUNCNAME = "doOff()";
     jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
     if (args[1] === "Tile") {
-        const TILE_ID = args[2]
-        jez.trc(3,trcLvl,`Delete the VFX tile`, TILE_ID)
-        // Following line throws a permission error for non-GM acountnts running this code.
-        //   Error: User Jon M. lacks permission to delete Tile [<an ID>] in parent Scene [<an ID>]
-        // await canvas.scene.deleteEmbeddedDocuments("Tile", [TILE_ID])
-        await jez.deleteEmbeddedDocs("Tile", [TILE_ID])  
-        jez.trc(3,trcLvl,`Deleted Tile ${TILE_ID}`)
+        //-----------------------------------------------------------------------------------------------
+        // Delete the tile we just built with library function. 
+        //
+        jez.tileDelete(args[2])
     } 
     else if (args[1] === "Effect") {
         let existingEffect = await aToken.actor.effects.find(i => i.data.label === args[2]);
@@ -125,8 +123,8 @@ async function doOnUse() {
  ***************************************************************************************************/
 async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
     const FUNCNAME = "placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh)";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID,"vfxFile",vfxFile,"tilesWide",tilesWide,"tilesHigh",tilesHigh)
+    jez.trc(2, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.trc(3, trcLvl, "Parameters", "TEMPLATE_ID", TEMPLATE_ID, "vfxFile", vfxFile, "tilesWide", tilesWide, "tilesHigh", tilesHigh)
     // Grab the size of grid in pixels per square
     const GRID_SIZE = canvas.scene.data.grid;
     // Search for the MeasuredTemplate that should have been created by the calling item
@@ -135,122 +133,15 @@ async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
     canvas.templates.get(TEMPLATE_ID).document.delete();
     // Place the tile with an embedded VFX
     let tileProps = {
-        _id: game.scenes.current.id,                        // ID of current scene to hold tile
-        x: template.center.x, //- GRID_SIZE * tilesWide / 2,   // X coordinate is poorly understood
-        y: template.center.y, //- GRID_SIZE * tilesHigh / 2,   // Y coordinate is center of the template
+        _id: game.scenes.current.id,    // ID of current scene to hold tile
+        x: template.center.x,           // X coordinate is poorly understood
+        y: template.center.y,           // Y coordinate is center of the template
         img: vfxFile,
-        width: GRID_SIZE * tilesWide,   // VFX should occupy 2 tiles across
-        height: GRID_SIZE * tilesHigh   // ditto
+        width: GRID_SIZE * tilesWide,   // 
+        height: GRID_SIZE * tilesHigh   // 
     };
     //-----------------------------------------------------------------------------------------------
-    // Build an array of tile ids in the current scene so we can figure out what tile was just added
+    // Call library function to create the new tile, returning the id. 
     //
-    let existingTiles = []
-    for (tile of game.scenes.current.tiles.contents) {
-        jez.trc(4,trcLvl,"tile ID", tile.id)
-        existingTiles.push(tile.id)
-    }
-    jez.trc(3,trcLvl,"Value of existingTiles",existingTiles)
-    // let newTile = await Tile.create(tileProps)   // Depricated 
-    // Following line throws a permission error for non-GM acountnts running this code.
-    //   Uncaught (in promise) Error: User Jon M. lacks permission to create Tile [v0VARMGmr4fCaTLr] in parent Scene [MzEyYTVkOTQ4NmZk]
-    // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x 
-    let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])  
-    jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
-    if (newTile) {
-        let returnValue = newTile[0].data._id
-        jez.trc(2,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Generated:`,returnValue);
-        return returnValue; // If newTile is defined, return the id.
-    }
-    else {   // newTile will be undefined for players, so need to fish for a tile ID
-        let gameTiles = null
-        let i
-        for (i = 1; i < 20; i++) {
-            let delay = 5
-            await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
-            jez.trc(3,trcLvl,`Seeking new tile, try ${i} at ${delay*i} ms after return`)
-            gameTiles = game.scenes.current.tiles.contents
-            if (gameTiles.length > existingTiles.length) break
-        }
-        if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
-        jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
-        let returnValue = gameTiles[gameTiles.length - 1].id
-        jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
-        return returnValue
-    }
-// }
-// /***************************************************************************************************
-//  * Run a 3 part spell rune VFX on indicated token  with indicated rune, Color, scale, and opacity
-//  * may be optionally specified.
-//  * 
-//  * If called with an array of target tokens, it will recursively apply the VFX to each token 
-//  * 
-//  * Typical calls: 
-//  *  jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))
-//  *  jez.runRuneVFX(args[0].targets, jez.getSpellSchool(aItem), jez.getRandomRuneColor())
-//  ***************************************************************************************************/
-//  function runRuneVFX(target, school, color, scale, opacity) {
-//     school = school || "illusion"               // default school is illusion \_(ツ)_/
-//     color = color || jez.getRandomRuneColor()   // If color not provided get a random one
-//     scale = scale || 1.0                        // If scale not provided use 1.0
-//     opacity = opacity || 1.0                    // If opacity not provided use 1.0
-
-    
-//     jez.trc(4,trcLvl,"runRuneVFX(target, school, color, scale, opacity)","target",target,"school",school,"scale",scale,"opacity",opacity)
-//     if (Array.isArray(target)) {                // If function called with array, do recursive calls
-//         for (let i = 0; i < target.length; i++) jez.runRuneVFX(target[i], school, color, scale, opacity);
-//         return (true)                           // Stop this invocation after recursive calls
-//     }
-//     //-----------------------------------------------------------------------------------------------
-//     // Build names of video files needed
-//     // 
-//     const INTRO = `jb2a.magic_signs.rune.${school}.intro.${color}`
-//     const BODY = `jb2a.magic_signs.rune.${school}.loop.${color}`
-//     const OUTRO = `jb2a.magic_signs.rune.${school}.outro.${color}`
-//     //-----------------------------------------------------------------------------------------------
-//     // Play the VFX
-//     // 
-//     new Sequence()
-//         .effect()
-//         .file(INTRO)
-//         .atLocation(target)
-//         .scaleToObject(scale)
-//         .opacity(opacity)
-//         .waitUntilFinished(-500)
-//         .effect()
-//         .file(BODY)
-//         .atLocation(target)
-//         .scaleToObject(scale)
-//         .opacity(opacity)
-//         //.duration(3000)
-//         .persist()
-//         .waitUntilFinished(-500)
-//         .effect()
-//         .file(OUTRO)
-//         .atLocation(target)
-//         .scaleToObject(scale)
-//         .opacity(opacity)
-//         .play();
-// }
-/***************************************************************************************************
- * Modify existing concentration effect to trigger removal of the associated DAE effect on caster
- ***************************************************************************************************/
-// async function modConcentratingEffect(tToken, label) {
-//     const EFFECT = "Concentrating"
-//     //----------------------------------------------------------------------------------------------
-//     // Seach the token to find the just added effect
-//     //
-//     await jez.wait(100)
-//     let effect = await tToken.actor.effects.find(i => i.data.label === EFFECT);
-//     //----------------------------------------------------------------------------------------------
-//     // Define the desired modification to existing effect. In this case, a world macro that will be
-//     // given arguments: VFX_Name and Token.id for all affected tokens
-//     //    
-//     effect.data.changes.push({ key: `macro.itemMacro`, mode: jez.CUSTOM, value: `Effect '${label}'`, priority: 20 })
-//     jez.log(`effect.data.changes`, effect.data.changes)
-//     //----------------------------------------------------------------------------------------------
-//     // Apply the modification to existing effect
-//     //
-//     const result = await effect.update({ 'changes': effect.data.changes });
-//     if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
+    return await jez.tileCreate(tileProps)
 }

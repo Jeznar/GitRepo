@@ -37,11 +37,11 @@ class jezcon {
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
      static async addProne(targetUuid, aItem) {
         const CONDITION = "Prone"
-        console.log("====> targetUuid",targetUuid)
-        console.log("====> aItem     ",aItem)
+        console.log("====> targetUuid", targetUuid)
+        console.log("====> aItem     ", aItem)
 
         let tokenDoc5e = await fromUuid(targetUuid)
-        console.log("====> tokenDoc5e",tokenDoc5e)
+        console.log("====> tokenDoc5e", tokenDoc5e)
         if (!tokenDoc5e) return badNews(`Could not find token data corresponding to ${targetUuid}`, "warn")
         if (tokenDoc5e.data.actorData?.effects)
             if (tokenDoc5e.data.actorData.effects.find(ef => ef?.label === CONDITION))

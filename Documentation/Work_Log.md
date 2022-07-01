@@ -157,9 +157,11 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.29 Addressed player permission issue for game.scenes.current.createEmbeddedDocuments("Tile"... and canvas.scene.deleteEmbeddedDocuments("Tile"... calls in **Gust_of_Wind**, **Black_Tentacles**, **Ice_Storm**, **Cloudkill**
 
-22.06.30 Added jez.tileCreate and jez.tileDelete to the jez-lib.
+22.06.30 Added **jez.tileCreate** and **jez.tileDelete** to the jez-lib.
 
-22.06.30 Converted **Earth_Tremor** to use new ***Jaz-Con** function to avoid CUB runAsGM issue driven by CUB
+22.06.30 Converted **Earth_Tremor** to use new ***Jez-Con** function to avoid CUB runAsGM issue driven by CUB
+
+22.07.01 Converted several macros to use library calls to **jez.tileCreate** and **jez.tileDelete**: Gust_of_Wind, Black_Tentacles, Ice_Storm, Cloudkill, Minor_Illusion
 
 [Link back to my Documentation Listing](README.md) 
 
