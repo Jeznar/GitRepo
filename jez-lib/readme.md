@@ -69,7 +69,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
 * **[tileCreate(tileId)](#tiledeletetileid)** -- Deletes a tile with specified ID
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
-* **[trc(level, ...parms)](#trclevel-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
+* **[trc(level, threshold, ...parms)](#trclevel-threshold-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
 * **[updateEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Updates an embedded document, wraps a RunAsGM function
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
@@ -1084,12 +1084,23 @@ jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
 
 ---
 
-### trc(level, ...parms) 
+### trc(level, threshold, ...parms) 
 
-This function checks level against the potentially defined global variable **traceLevel**.  If traceLevel is not declared in the code, then a **2** is assumed. If level is less than or equal to traceLevel, then **writeTrcLog** is called with a prefix of "* TRACE *"
+This function checks **level** against **traceLevel** (which is likely a global value).  If traceLevel is not declared in the code, then a **2** is assumed. If level is less than or equal to traceLevel, then **writeTrcLog** is called with a prefix of "* TRACE *"
 
 The actual work of this function is now handled by: **[jez.writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)**
 
+~~~javascript
+let trcLvl = 2;
+jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
+for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
+
+jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID)
+...
+jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
