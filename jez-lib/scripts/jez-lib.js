@@ -768,7 +768,7 @@ class jez {
      * Obtain and return the character level of the passed token, actor or token.id
      ***************************************************************************************************/
     static getCharLevel(subject) {
-        let trcLvl = 0
+        let trcLvl = 4
         //----------------------------------------------------------------------------------------------
         // Convert the passed parameter to Actor5e
         //
@@ -778,7 +778,7 @@ class jez {
             else if (subject.constructor.name === "Actor5e") actor5e = subject
             else {
                 let msg = `Object passed to jez.getCharacterLevel(subject) is type '${typeof (subject)}' 
-        must be a Token5e or Actor5e`
+            must be a Token5e or Actor5e`
                 ui.notifications.error(msg)
                 console.log(msg)
                 return (false)
@@ -787,7 +787,7 @@ class jez {
             actor5e = jez.getTokenById(subject).actor
         else {
             let msg = `Parameter passed to jez.getCharacterLevel(subject) is not a Token5e, Actor5e, or 
-                       Token.id: ${subject}`
+        Token.id: ${subject}`
             ui.notifications.error(msg)
             console.log(msg)
             return (false)
@@ -795,14 +795,31 @@ class jez {
         //----------------------------------------------------------------------------------------------
         // Find the Actor5e's character level.
         //
-        // tToken.actor.data.data.classes) -- Deprecated 9.x
-        // tToken.actor.data.document?._classes -- as of 9.x
+        // actor.data.data.classes -- Deprecated 9.x
+        // actor.data.document?._classes -- as of 9.x
         //
         let charLevel = 0
         // PC's can have multiple classes, add them all up
-        jez.trc(3,trcLvl,actor5e.data.document?._classes)
-        for (const CLASS in actor5e.data.document?._classes) 
-            charLevel += parseInt(actor5e.data.document._classes?.[CLASS]?.data?.data?.levels)
+        jez.trc(3, trcLvl, "*** actor5e.data.document", actor5e.data.document)
+        jez.trc(3, trcLvl, "*** actor5e.data.document?._classes", actor5e.data.document?._classes)
+        if (actor5e.data.document?._classes) {
+            jez.trc(3, trcLvl, "==> Found data in actor5e.data.document?._classes", actor5e.data.document?._classes)
+            for (const CLASS in actor5e.data.document?._classes) {
+                jez.trc(4, trcLvl, "Type of levels", jez.typeOf(actor5e.data.document._classes?.[CLASS]?.data?.data?.levels))
+                let level = parseInt(actor5e.data.document._classes?.[CLASS]?.data?.data?.levels)
+                jez.trc(4, trcLvl, "level", level)
+                charLevel += level
+            }
+        }
+        else {
+            jez.trc(0, trcLvl, "==> Trying for classes actor5e.classes", actor5e.classes)
+            for (const CLASS in actor5e.classes) {
+                jez.trc(4, trcLvl, "Type of levels", jez.typeOf(actor5e.classes?.[CLASS]?.data?.data?.levels))
+                let level = parseInt(actor5e.classes?.[CLASS]?.data?.data?.levels)
+                jez.trc(4, trcLvl, "level", level)
+                charLevel += level
+            }
+        }
         // NPC's don't have classes, use CR instead
         if (!charLevel) charLevel = actor5e.data.data.details.cr
         return (charLevel)

@@ -11,6 +11,9 @@ const ABILITY_NAME = "Radiant Soul"
 const FLAG = MACRO                      // Name of the DAE Flag  
 const MIN_LVL = 6    
 let trcLvl = 4;
+jez.log("")
+jez.log("")
+jez.log("")
 jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} !!!`);
 for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
@@ -34,6 +37,9 @@ let msg = "";
 if (args[0]?.tag === "DamageBonus") {
     let damFunc = doBonusDamage()
     jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`,damFunc);
+    jez.log("")
+    jez.log("")
+    jez.log("")
     return damFunc    // DAE Damage Bonus
 }
 /***************************************************************************************************

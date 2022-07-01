@@ -1,10 +1,11 @@
-const MACRONAME = "Hex.0.4.js"
+const MACRONAME = "Hex.0.5.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * My rewrite of Hex, borrowing heavily from Crymic's code
  * 
  * 03/22/22 0.2 HOMEBREW: If Celestial then Radiant damage
  * 05/05/22 0.3 Change createEmbeddedEntity to createEmbeddedDocuments for 9.x
  * 06/08/22 0.4 Modified to use library functions to manage temp item
+ * 07/01/22 0.5 FoundryVTT 9.x Change: subclass changed location 
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const FLAG = MACRO                      // Name of the DAE Flag       
@@ -218,8 +219,8 @@ async function doBonusDamage() {
     const tToken = canvas.tokens.get(args[0].targets[0].id);
     let dmgType = "necrotic";
     // HOMEBREW: If actor is a Celestial, damage from hex is radiant 
-    if (aToken.actor.data.data.classes?.warlock?.subclass === "Celestial") dmgType = "radiant";
-
+    let subClass = aToken.actor.data.document._classes?.warlock?.data?.data?.subclass
+    if (subClass === "Celestial")  dmgType = "radiant";
     if (tToken.id !== getProperty(aToken.actor.data.flags, "midi-qol.hexMark")) return {};
     if (!["ak"].some(actionType => (aItem.data.actionType || "").includes(actionType))) return {};
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);

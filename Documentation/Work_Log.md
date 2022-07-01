@@ -163,6 +163,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.01 Converted several macros to use library calls to **jez.tileCreate** and **jez.tileDelete**: Gust_of_Wind, Black_Tentacles, Ice_Storm, Cloudkill, Minor_Illusion
 
+22.07.01 Changes to **Hex**, **Radiant_Soul**, and **jez-lib** to resolve issues created on FoundryVTT 9.x upgrade with the location of subclass and levels moving within the data structures.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
