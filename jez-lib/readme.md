@@ -1094,6 +1094,9 @@ The actual work of this function is now handled by: **[jez.writeTrcLog(prefix, .
 let trcLvl = 2;
 jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
 for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
+...
+jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`);
+
 
 jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
 jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID)
