@@ -1,4 +1,4 @@
-const MACRONAME = "Earth_Tremor.0.3.js"
+const MACRONAME = "Earth_Tremor.0.4.js"
 /*****************************************************************************************
  * Slap a text message on the item card indicating Who and What should be moved by the
  * spell.
@@ -15,9 +15,10 @@ const MACRONAME = "Earth_Tremor.0.3.js"
  * 12/11/21 0.1 Creation of Macro
  * 05/17/22 0.2 Convert to place a tile instead of just a sequencer video
  * 06/29/22 0.3 Fix for permission issue on game.scenes.current.createEmbeddedDocuments
+ * 06/30/22 0.4 Swap to jez.tileCreate and jez.tileDelete calls
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 1;
+let trcLvl = 2;
 jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
 
 const CONDITION = `Prone`;
@@ -61,8 +62,8 @@ if (failCount === 0) {
 let failures = [];
 for (let i = 0; i < failCount; i++) {
     const FAILED = args[0].failedSaves[i];
-    jez.trc(3, trcLvl, ` ${i} --> ${FAILED.data.actorId}`, FAILED);
-    jez.trc(3, trcLvl, ` ${i} Adding chump: `, FAILED)
+    jez.trc(3, trcLvl, ` Target ${i+1} --> ${FAILED.data.actorId}`, FAILED);
+    jez.trc(3, trcLvl, ` Target ${i+1} Adding chump: `, FAILED)
     failures.push(FAILED);
     // await game.cub.addCondition(CONDITION, FAILED, {allowDuplicates:true, replaceExisting:true, warn:true});
 }
@@ -82,11 +83,22 @@ for (let i = 0; i < failCount; i++) {
         //----------------------------------------------------------------------------------------
         // add CUB Condition this is either/or with manual add in section following
         //
-        game.cub.addCondition(["Prone"], failures[i], {
+        let options = {
             allowDuplicates: false,
             replaceExisting: false,
             warn: true
-        });
+        }
+        const CUB_ADD_CONDITION_MACRO = jez.getMacroRunAsGM("cubAddCondition")
+        if (!CUB_ADD_CONDITION_MACRO) return false
+        await CUB_ADD_CONDITION_MACRO.execute(["Prone"], failures[i], options)
+
+        // await game.cub.addCondition(["Prone"], failures[i], {
+        //     allowDuplicates: false,
+        //     replaceExisting: false,
+        //     warn: true
+        // });
+        jez.log("Ran game.cub.addCondition(...) ")
+        await jez.wait(1000)
     }
 }
 // ---------------------------------------------------------------------------------------
@@ -125,35 +137,10 @@ jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`);
     let tileProps = {
         x: template.center.x - GRID_SIZE/2,   // X coordinate is center of the template
         y: template.center.y - GRID_SIZE/2,   // Y coordinate is center of the template
-        //img: "modules/jb2a_patreon/Library/4th_Level/Black_Tentacles/BlackTentacles_01_Dark_Purple_600x600.webm",
         img: "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_03_Regular_Orange_600x600.webm",
-        width: GRID_SIZE * 3,   // VFX should occupy 2 tiles across
-        height: GRID_SIZE * 3   // ditto
+        width: GRID_SIZE * 3,                 // VFX should occupy 3 tiles across
+        height: GRID_SIZE * 3,                // ditto
+        alpha: 0.5                            // Opacity of the tile
     };
-    // let newTile = await Tile.create(tileProps)   // Depricated
-    // Following line throws a permission error for non-GM acountnts running this code.
-    // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x
-    let existingTiles = game.scenes.current.tiles.contents
-    let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])
-    jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
-    if (newTile) {
-        let returnValue = newTile[0].data._id
-        jez.trc(2,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Generated:`,returnValue);
-        return returnValue; // If newTile is defined, return the id.
-    }
-    else {   // newTile will be undefined for players, so need to fish for a tile ID
-        let gameTiles = i = null
-        let delay = 5
-        for (i = 1; i < 20; i++) {
-            await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
-            jez.trc(3,trcLvl,`Seeking new tile, try ${i} at ${delay*i} ms after return`)
-            gameTiles = game.scenes.current.tiles.contents
-            if (gameTiles.length > existingTiles.length) break
-        }
-        if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`,"warn")
-        jez.trc(3,trcLvl,"Seemingly, the new tile has id",gameTiles[gameTiles.length - 1].id)
-        let returnValue = gameTiles[gameTiles.length - 1].id
-        jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} --- Scraped:`,returnValue);
-        return returnValue
-    }
-}
+    return await jez.tileCreate(tileProps)
+ }

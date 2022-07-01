@@ -48,7 +48,8 @@ async function doOnUse() {
         alpha: 0.5                                // Opacity of our placed tile 0 to 1.0  
     };
     //-----------------------------------------------------------------------------------------------
-    // Call library function to create the new tile, catching the id returned
+    // Call library function to create the new tile, catching the id returned.  This replaces a bunch 
+    // of code including jez.createEmbeddedDocs("Tile", [tileProps])
     //
     let tileId = await jez.tileCreate(tileProps)
     //-----------------------------------------------------------------------------------------------
@@ -56,7 +57,7 @@ async function doOnUse() {
     //
     for (let i = 1; i <= 5; i++) { console.log(`Waited ${i*0.5} seconds`); await jez.wait(500) }
     //-----------------------------------------------------------------------------------------------
-    // Delete the tile we just built with library function
+    // Delete the tile we just built with library function. 
     //
     jez.tileDelete(tileId)
     //-----------------------------------------------------------------------------------------------

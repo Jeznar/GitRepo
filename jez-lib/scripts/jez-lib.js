@@ -2080,6 +2080,5 @@ class jez {
         jez.trc(3, TRACE_LEVEL, `--- Calling  jez.deleteEmbeddedDocs("Tile", [${tileId}])--- ${FUNCNAME} ---`);
         return await jez.deleteEmbeddedDocs("Tile", [tileId])
     }
-
 } // END OF class jez
 Object.freeze(jez);

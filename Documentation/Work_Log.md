@@ -159,6 +159,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.06.30 Added jez.tileCreate and jez.tileDelete to the jez-lib.
 
+22.06.30 Converted **Earth_Tremor** to use new ***Jaz-Con** function to avoid CUB runAsGM issue driven by CUB
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

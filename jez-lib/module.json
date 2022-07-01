@@ -8,7 +8,8 @@
   "minimumCoreVersion": "0.8.8",
   "name": "jez-lib",
   "scripts": [
-    "scripts/jez-lib.js"
+    "scripts/jez-lib.js",
+    "scripts/jez-con.js"
   ],
   "title": "Jez Library",
   "version": "0.0"
