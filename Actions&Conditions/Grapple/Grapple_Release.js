@@ -2,6 +2,8 @@ const MACRONAME = "Grapple_Release_0.3"
 /*****************************************************************************************
  * Macro that releases an existing grapple (ad restraint)
  * 
+ * This is now OBSOLETE -- Convenient Effects makes it pointess
+ * 
  * 12/06/21 0.1 Creation of Macro
  * 12/12/21 0.3 Eliminate cubCondition calls
  *****************************************************************************************/

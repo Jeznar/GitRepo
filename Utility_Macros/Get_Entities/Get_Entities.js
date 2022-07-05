@@ -33,6 +33,14 @@ let journalID = game.journal.contents[0]?.id
 let journalName = game.journal.contents[0]?.name
 console.log(`Journal 0 (${journalName}), ID ${journalID}`, game.journal.contents[0])
 //----------------------------------------------------------------------------------------
+// Get document info from a UUID
+//
+let uuid = sToken.document.uuid
+let aTokenDocument5e = await fromUuid(uuid)     // Retrieves document for the UUID
+let aToken = aTokenDocument5e._object           // Nabs the Token5e out of a aTokenDocument5e
+jez.log("aTokenDocument5e", aTokenDocument5e)
+jez.log("aToken", aToken)
+//----------------------------------------------------------------------------------------
 // Get token / actor / item / journal etc by ID
 //
 console.log('')

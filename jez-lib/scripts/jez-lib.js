@@ -901,6 +901,7 @@ class jez {
      static get UPDATE_EMBEDDED_MACRO() { return "UpdateEmbeddedDocuments"}
      static get CREATE_EMBEDDED_MACRO() { return "CreateEmbeddedDocuments"}
      static get DELETE_EMBEDDED_MACRO() { return "DeleteEmbeddedDocuments"}
+     static get GRAPPLE_ESCAPE_MACRO() { return "GrappleEscape"}
      /***************************************************************************************************
       * Set the Familiar name into the DAE Flag
       ***************************************************************************************************/
@@ -1307,24 +1308,24 @@ class jez {
         let pairingMacro = game.macros.find(i => i.name === "Remove_Paired_Effect");
         if (!pairingMacro) return ui.notifications.error("REQUIRED: Remove_Paired_Effect macro is missing.");
         //---------------------------------------------------------------------------------------------------------
-        // Grab the effect data from the first token
+        // Grab the effect data from the first token if we were handed a naem and not a data object
         //
-        let effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
-        if (!effectData1) {
-            msg = `Sadly "${effectName1}" effect not found on ${actor1.name}.  Effects not paired.`
-            // jez.log(msg)
-            ui.notifications.warn(msg)
-            return (false)
+        jez.log("effectName1", effectName1)
+        let effectData1 = effectName1
+        if (effectName1?.constructor.name !== "ActiveEffect5e") {
+            let effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
+            if (!effectData1)
+                return jez.badNews(`${effectName1} not found on ${actor1.name}.  Effects not paired.`, "warn")
         }
         //---------------------------------------------------------------------------------------------------------
         // Grab the effect data from the second token
         //
-        let effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
-        if (!effectData2) {
-            msg = `Sadly "${effectName2}" effect not found on ${actor2.name}.  Effects not paired.`
-            // jez.log(msg)
-            ui.notifications.warn(msg)
-            return (false)
+        jez.log("effectName2", effectName2)
+        let effectData2 = effectName2
+        if (effectName2?.constructor.name !== "ActiveEffect5e") {
+            let effectData2 = await actor1.effects.find(i => i.data.label === effectName2);
+            if (!effectData2)
+                return jez.badNews(`${effectName2} not found on ${actor2.name}.  Effects not paired.`, "warn")
         }
         //---------------------------------------------------------------------------------------------------------
         // Add the actual pairings
