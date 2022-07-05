@@ -22,7 +22,7 @@ The small bundle of files that make up this module need to be paced on the serve
 
 ## Jezcon (Condition) Functions
 
-A second set of functions is located in jez-con.js.  These are all focused on managing conditions and effects.  It is documented [separately](#jez-con.md).
+A second set of functions is located in jez-con.js.  These are all focused on managing conditions and effects.  It is documented [separately](jez-con.md).
 
 ## Functions in this Module
 
