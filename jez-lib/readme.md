@@ -20,6 +20,10 @@ I ran into a few challenges following the tutorial.  The most notable being:
 
 The small bundle of files that make up this module need to be paced on the server in the `data/modules/jez-lib` subdirectory.  FoundryVTT must be restarted after placing the files.  The module should then appear and be able to be activated in whatever world.  Of course, it doesn't do anything by itself, as it is just a set of functions that I like to leverage. 
 
+## Jezcon (Condition) Functions
+
+A second set of functions is located in jez-con.js.  These are all focused on managing conditions and effects.  It is documented [separately](#jez-con.md).
+
 ## Functions in this Module
 
 The functions currently included in this module are (all need to be proceeded by **jez.** when called):
