@@ -77,19 +77,19 @@ function preCheck() {
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
         ui.notifications.warn(msg)
         jez.log(msg)
-        return(false);
+        return (false);
     }
     if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
         msg = `Target was missed.`
         // ui.notifications.info(msg)
-        return(false);
+        return (false);
     }
     return (true)
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
- async function doOnUse() {
+async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
@@ -104,8 +104,8 @@ function preCheck() {
     jez.log(`${tToken.name} size ${tTokenSize.value}, ${tTokenSize.String}`, tTokenSize)
     if (tTokenSize.value > LARGE_VALUE) {
         msg = `${tToken.name} is size ${tTokenSize.String} which is too large to be ${aItem.name}.`
-        jez.addMessage(chatMsg, {color:"purple", fSize:15, msg:msg, tag:"saves" })
-        return(false)
+        jez.addMessage(chatMsg, { color: "purple", fSize: 15, msg: msg, tag: "saves" })
+        return (false)
     }
     //----------------------------------------------------------------------------------
     // Check to see if the aActor is currently GRAPPLING_COND
@@ -113,111 +113,98 @@ function preCheck() {
     let constricting = aToken.actor.effects.find(i => i.data.label === GRAPPLING_COND);
     if (constricting) {
         msg = `${aToken.name} is already ${GRAPPLING_JRNL} can not do this twice, simultaneously.`
-        jez.addMessage(chatMsg, {color:"purple", fSize:15, msg:msg, tag:"saves" })
-        return(false)
+        jez.addMessage(chatMsg, { color: "purple", fSize: 15, msg: msg, tag: "saves" })
+        return (false)
     }
     //----------------------------------------------------------------------------------
-    // Perform saving throw
+    // Run the VFX
     //
-    /*
-    let save = (await tToken.actor.rollAbilitySave(SAVE_TYPE, { flavor:FLAVOR, chatMessage: true, fastforward: true }));
-    if (save.total < SAVE_DC) {
-        jez.log(`${tToken.name} failed ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)
-    } else {
-        jez.log(`${tToken.name} saved ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)
-        msg = `${tToken.name} saved versus ${aToken.name} ${aItem.name} and is not restrained.`
-        return(false)
-    }
-    */
     runVFX(tToken)
     //----------------------------------------------------------------------------------
-    // Apply the GRAPPLED_COND effect to the target.
+    // Apply the GRAPPLED and GRAPPLING Cconditions
     //
-    let restrainedEffect = [{
-        label: GRAPPLED_COND,
-        icon: GRAPPLED_ICON,
-        // origin: aActor.uuid,
-        origin: LAST_ARG.uuid,
-        disabled: false,
-        duration: { rounds: 99, startRound: GAME_RND }, 
-        changes: [
-            { key: `flags.VariantEncumbrance.speed`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.walk`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.swim`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.fly`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.climb`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.burrow`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `flags.midi-qol.disadvantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },
-            { key: `flags.midi-qol.grants.advantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },
-            { key: `flags.midi-qol.disadvantage.ability.save.dex`, mode: OVERRIDE, value: 1, priority: 20 },
-            // The value needs to have the id of the partner token and the name of the effect
-            { key: `macro.itemMacro`, mode: CUSTOM, value: `${aToken.id} ${GRAPPLING_COND}`, priority: 20 },
-        ]
-    }]
-    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tToken.actor.uuid, effects: restrainedEffect });
+    jezcon.add({ effectName: 'Grappled', uuid: tToken.actor.uuid, origin: aActor.uuid })
+    jezcon.add({ effectName: 'Grappling', uuid: aToken.actor.uuid, origin: aActor.uuid })
     //----------------------------------------------------------------------------------
-    // Apply the GRAPPLING_COND effect to the actor.
+    // Find the two just added effect data objects so they can be paired, to expire 
+    // together.
     //
-    // COOL-THING: Stashes info in itemMacro parameters to enable removal of partner effect
-    let constrictingEffect = [{
-        label: GRAPPLING_COND,
-        icon: GRAPPLING_ICON,
-        //origin: tActor.uuid,
-        origin: LAST_ARG.uuid,
-        disabled: false,
-        duration: { rounds: 99, startRound: GAME_RND }, 
-        changes: [
-            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Can only constrict one target at a time", priority: 20 },
-            { key: `macro.itemMacro`, mode: CUSTOM, value: `${tToken.id} ${GRAPPLED_COND}`, priority: 20 },
-        ]
-    }]
-    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:aToken.actor.uuid, effects: constrictingEffect });
+    await jez.wait(100)
+    let tEffect = tToken.actor.effects.find(ef => ef.data.label === "Grappled" && ef.data.origin === aActor.uuid)
+    if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
+    let oEffect = aToken.actor.effects.find(ef => ef.data.label === "Grappling")
+    if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${aToken.name}.`, "warn")
+    const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
+    if (!GM_PAIR_EFFECTS) { return false }
+    await jez.wait(100)
+    await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    //----------------------------------------------------------------------------------
+    // Pile onto the target with a Restrained effect
+    //
+    await jez.wait(100)
+    jezcon.add({ effectName: 'Restrained', uuid: tToken.actor.uuid, origin: aActor.uuid })
+    //----------------------------------------------------------------------------------
+    // Pair the target's grappled and restrained effects
+    //
+    await jez.wait(100)
+    tEffect = tToken.actor.effects.find(ef => ef.data.label === "Grappled" && ef.data.origin === aActor.uuid)
+    if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
+    oEffect = tToken.actor.effects.find(ef => ef.data.label === "Restrained")
+    if (!oEffect) return jez.badNews(`Sadly, there was no Restrained effect from ${aToken.name}.`, "warn")
+    await jez.wait(100)
+    await GM_PAIR_EFFECTS.execute(tToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    //-------------------------------------------------------------------------------
+    // Create an Action Item to allow the target to attempt escape
+    //
+    const GM_ESCAPE = jez.getMacroRunAsGM(jez.GRAPPLE_ESCAPE_MACRO)
+    if (!GM_ESCAPE) { return false }
+    await GM_ESCAPE.execute("create", aToken.document.uuid, tToken.document.uuid, aToken.actor.uuid)
     //----------------------------------------------------------------------------------
     // Post completion message
     //
     // https://www.w3schools.com/tags/ref_colornames.asp
     msg = `${tToken.name} has been ${GRAPPLED_JRNL} and ${RESTRAINED_JRNL} by ${aToken.name} who is 
         ${GRAPPLING_JRNL}.<br><br>${tToken.name} may attempt to end the grapple per standard grapple rules.`
-    jez.addMessage(chatMsg, {color:"purple", fSize:15, msg:msg, tag:"saves" })
+    jez.addMessage(chatMsg, { color: "purple", fSize: 15, msg: msg, tag: "saves" })
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
  ***************************************************************************************************/
- async function doOff() {
+async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    let pairedId     = args[1];
+    let pairedId = args[1];
     let pairedEffect = args[2];
-    let pairedToken  = canvas.tokens.placeables.find(ef => ef.id === pairedId)
-// COOL-THING: Remove a "paired" effect when either of the partner effects is deleted
+    let pairedToken = canvas.tokens.placeables.find(ef => ef.id === pairedId)
+    // COOL-THING: Remove a "paired" effect when either of the partner effects is deleted
     jez.log(`Attempt to remove ${pairedEffect} from ${pairedToken.name} as well.`)
     let pairedEffectObj = pairedToken.actor.effects.find(i => i.data.label === pairedEffect);
     if (pairedEffectObj) {
         jez.log(`Attempting to remove ${pairedEffectObj.id} from ${pairedToken.actor.uuid}`)
-        MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
+        MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
     }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
-  }
+}
 /***************************************************************************************************
  * Launch the VFX effects
  ***************************************************************************************************/
- async function runVFX(token) {
-    jez.log("***Execute VFX***",token,"VFX_LOOP",VFX_LOOP,"VFX_SCALE",VFX_SCALE,
-           "VFX_OPACITY",VFX_OPACITY,"VFX_NAME",VFX_NAME)
+async function runVFX(token) {
+    jez.log("***Execute VFX***", token, "VFX_LOOP", VFX_LOOP, "VFX_SCALE", VFX_SCALE,
+        "VFX_OPACITY", VFX_OPACITY, "VFX_NAME", VFX_NAME)
     new Sequence()
-       .effect()
-       .file(VFX_LOOP)
-       .attachTo(token)
-       .scale(VFX_SCALE)
-       .opacity(VFX_OPACITY)
-       .duration(5000)
-       .name(VFX_NAME)         // Give the effect a uniqueish name
-       .fadeIn(10)             // Fade in for specified time in milliseconds
-       .fadeOut(1000)          // Fade out for specified time in milliseconds
-       .extraEndDuration(1200) // Time padding on exit to connect to Outro effect
-       .play();
-   jez.log("VFX Launched")
+        .effect()
+        .file(VFX_LOOP)
+        .attachTo(token)
+        .scale(VFX_SCALE)
+        .opacity(VFX_OPACITY)
+        .duration(5000)
+        .name(VFX_NAME)         // Give the effect a uniqueish name
+        .fadeIn(10)             // Fade in for specified time in milliseconds
+        .fadeOut(1000)          // Fade out for specified time in milliseconds
+        .extraEndDuration(1200) // Time padding on exit to connect to Outro effect
+        .play();
+    jez.log("VFX Launched")
 }

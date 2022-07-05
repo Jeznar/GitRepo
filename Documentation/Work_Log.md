@@ -167,6 +167,15 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.04 Created **jezcon.toggle** to toggle a convenient effect (CE) and rolled it into several macros, replacing cub calls: flanking, Dodge, Cover 3/4, Cover 1/2, Help, Hinder, Grapple, Escape and library functions for jezcon.
 
+22.07.05 Working toward getting all of the "Grappling" condition macros to add an escape action.  Following is the list of identified issues:
+
+* Constrict -- updated 7.5
+* Crocodile_Bite 
+* Grasping_Hand
+* Grasping_Root
+* Vampire_Claw
+
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
