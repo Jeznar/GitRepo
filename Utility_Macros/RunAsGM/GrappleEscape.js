@@ -71,11 +71,6 @@ async function main() {
     let tToken = canvas.tokens.placeables.find(ef => ef.id === tTokenId)
     if (!tToken) return badNews(`tToken with id ${tTokenId} not found, tToken not set, aborting.`, "warn")
     jez.trc(2, trcLvl, `aToken ${tToken.name} with uuid ${tTokenId}, found!`, tToken)
-    //
-    jez.log("")
-    jez.log("aActorUuid",aActorUuid)
-    jez.log("")
-
     //-------------------------------------------------------------------------------------------
     // Proceed with create or delete
     //
@@ -139,12 +134,17 @@ async function main() {
         //
         await jez.itemUpdateOnActor(tToken, CUSTOM_MACRO, itemUpdate, "feat")
         //-------------------------------------------------------------------------------------------
+        // Modify the effect to cleanup the item when it is removed
+        //
+        // modifyEffect(token, item, effectName) {
+        modifyEffect(tToken, getItem)
+        //-------------------------------------------------------------------------------------------
         // Pop Creation notification
         //
         ui.notifications.info(`Created Action on ${tToken.name}: "${CUSTOM_MACRO}"`);
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-     * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
+     * 
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
     async function deleteItem() {
         //-------------------------------------------------------------------------------------------
@@ -153,4 +153,12 @@ async function main() {
         await jez.deleteItems(CUSTOM_MACRO, "feat", tToken.actor);
     }
 }
-
+/************************************************************************
+ * Modify an existing effect
+*************************************************************************/
+async function modifyEffect(token, item) {
+    await jez.wait(100)
+    let effect = token.actor.effects.find(ef => ef.data.label === "Grappled" && ef.data.origin === aActorUuid)
+    effect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: `CleanUpItem ${item.uuid}`, priority: 20 })
+    effect.update({ 'changes': effect.data.changes });
+}

@@ -1295,6 +1295,7 @@ class jez {
      * effectName1 & effectName2 are strings that name effects on their respective token actors.
      **************************************************************************************************************/
     static async pairEffects(subject1, effectName1, subject2, effectName2) {
+        let trcLvl = 0
         //---------------------------------------------------------------------------------------------------------
         // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
         //
@@ -1308,12 +1309,14 @@ class jez {
         let pairingMacro = game.macros.find(i => i.name === "Remove_Paired_Effect");
         if (!pairingMacro) return ui.notifications.error("REQUIRED: Remove_Paired_Effect macro is missing.");
         //---------------------------------------------------------------------------------------------------------
-        // Grab the effect data from the first token if we were handed a naem and not a data object
+        // Grab the effect data from the first token if we were handed a name and not a data object
         //
         jez.log("effectName1", effectName1)
         let effectData1 = effectName1
         if (effectName1?.constructor.name !== "ActiveEffect5e") {
-            let effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
+            jez.trc(3,trcLvl,`Seeking ${effectName1} on actor1`,actor1)
+            effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
+            jez.trc(3,trcLvl,`effectData1`,effectData1)
             if (!effectData1)
                 return jez.badNews(`${effectName1} not found on ${actor1.name}.  Effects not paired.`, "warn")
         }
@@ -1323,13 +1326,16 @@ class jez {
         jez.log("effectName2", effectName2)
         let effectData2 = effectName2
         if (effectName2?.constructor.name !== "ActiveEffect5e") {
-            let effectData2 = await actor1.effects.find(i => i.data.label === effectName2);
+            jez.trc(3,trcLvl,`Seeking ${effectName2} on actor2`,actor2)
+            effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
+            jez.trc(3,trcLvl,`effectData2`,effectData2)
             if (!effectData2)
                 return jez.badNews(`${effectName2} not found on ${actor2.name}.  Effects not paired.`, "warn")
         }
         //---------------------------------------------------------------------------------------------------------
         // Add the actual pairings
         //
+        jez.trc(4,trcLvl,"*************",'actor1',actor1,'actor2',actor2,'effectData1',effectData1,'effectData2',effectData2)
         await addPairing(effectData2, actor1, effectData1)
         await addPairing(effectData1, actor2, effectData2)
         //---------------------------------------------------------------------------------------------------------

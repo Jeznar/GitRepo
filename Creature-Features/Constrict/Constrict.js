@@ -158,7 +158,7 @@ function preCheck() {
     //----------------------------------------------------------------------------------
     // Apply the GRAPPLING_COND effect to the actor.
     //
-// COOL-THING: Stashes info in itemMacro parameters to enable removal of partner effect
+    // COOL-THING: Stashes info in itemMacro parameters to enable removal of partner effect
     let constrictingEffect = [{
         label: GRAPPLING_COND,
         icon: GRAPPLING_ICON,

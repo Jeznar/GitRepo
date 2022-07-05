@@ -123,13 +123,17 @@ async function main() {
         if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
         let oEffect = aToken.actor.effects.find(ef => ef.data.label === "Grappling")
         if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${aToken.name}.`, "warn")
-        jez.pairEffects(aToken.actor, oEffect, tToken.actor, tEffect)
+        const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
+        if (!GM_PAIR_EFFECTS) { return false }
+        await jez.wait(500)
+        await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+        //jez.pairEffects(aToken.actor, oEffect, tToken.actor, tEffect)
         //-------------------------------------------------------------------------------
         // Create an Action Item to allow the target to attempt escape
         //
         const GM_MACRO = jez.getMacroRunAsGM(jez.GRAPPLE_ESCAPE_MACRO)
         if (!GM_MACRO) { return false }
-        GM_MACRO.execute("create", aToken.document.uuid, tToken.document.uuid, aToken.actor.uuid)
+        await GM_MACRO.execute("create", aToken.document.uuid, tToken.document.uuid, aToken.actor.uuid)
     }
     await jez.wait(250)
     updateChatCard()
@@ -137,7 +141,6 @@ async function main() {
      *  Build and Display dialog
      *************************************************************************/
     async function updateChatCard() {
-        jez.log("updateChatCard()")
         let damage_results = `
  <div class="flexrow 2">
  <div><div style="text-align:center">${aToken.name}</div></div><div><div style="text-align:center">${tToken.name}</div></div>
