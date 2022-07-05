@@ -1,4 +1,4 @@
-# Jez-Con -- Functions Used by My Macros to Deal with Conditions / Effects
+# Jez-Con -- Functions to Deal with Conditions / Effects
 
 This module contains common functions that focus on managaging conditions and effects.  This is an extension of my [jez-lib module](#jez-lib) and is located in within it.  
 
@@ -22,7 +22,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[add(...args)](#addargs)** -- Calls CE addEffect to add an effect
 * **[hasCE(effectName, uuid)](#hasceeffectname-uuid)** -- Checks for presence of a CE effect
 * **[remove(effectName, uuid)](#removeeffectname-uuid)** -- Calls CE to remove an effect
-* **[toggle(effectName, { overlay, uuids = [] } = {})](#toggleeffectname-overlay-uuids)** -- Uses CE to toggle an effect
+* **[toggle(effectName, { overlay, uuids = [] } = {})](#toggleeffectname--overlay-uuids-----)** -- Uses CE to toggle an effect
                                      
 More about each of these in the following sections. 
 
