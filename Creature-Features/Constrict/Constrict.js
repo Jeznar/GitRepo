@@ -1,4 +1,4 @@
-const MACRONAME = "Constrict"
+const MACRONAME = "Constrict.0.3.js"
 /*****************************************************************************************
  * Vine Blight's Constrict Attack
  * 
@@ -11,7 +11,8 @@ const MACRONAME = "Constrict"
  * 
  * 02/11/22 0.1 Creation of Macro
  * 05/03/22 0.2 JGB Updated for FoundryVTT 9.x
- *****************************************************************************************/
+ * 07/05/22 0.3 JGB Changed to use CE 
+ ******************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
@@ -23,18 +24,18 @@ if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else a
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 jez.log("aItem", aItem)
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 let errorMsg = "";
 const GRAPPLED_ICON = "Icons_JGB/Conditions/grappling.svg"
 const GRAPPLING_ICON = "Icons_JGB/Conditions/grappling.png"
 const GRAPPLED_COND = "Grappled"
 const GRAPPLING_COND = "Grappling"
+const RESTRAINED_COND = "Restrained"
 const LARGE_VALUE = 4
 // COOL-THING: Journal entries looked up by name and formatted as links for chat cards
-const GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName("Grappled").id}]{Grappled}`
-const GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName("Grappling").id}]{Grappling}`
-const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName("Restrained").id}]{Restrained}`
+const GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLED_COND).id}]{Grappled}`
+const GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLING_COND).id}]{Grappling}`
+const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName(RESTRAINED_COND).id}]{Restrained}`
 const GAME_RND = game.combat ? game.combat.round : 0;
 const VFX_LOOP = "modules/jb2a_patreon/Library/1st_Level/Entangle/Entangle_01_Regular_Green02_400x400.webm"
 const VFX_NAME = `${MACRO}`
@@ -130,9 +131,9 @@ async function doOnUse() {
     // together.
     //
     await jez.wait(100)
-    let tEffect = tToken.actor.effects.find(ef => ef.data.label === "Grappled" && ef.data.origin === aActor.uuid)
+    let tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)
     if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
-    let oEffect = aToken.actor.effects.find(ef => ef.data.label === "Grappling")
+    let oEffect = aToken.actor.effects.find(ef => ef.data.label === GRAPPLING_COND)
     if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${aToken.name}.`, "warn")
     const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
     if (!GM_PAIR_EFFECTS) { return false }
@@ -147,9 +148,9 @@ async function doOnUse() {
     // Pair the target's grappled and restrained effects
     //
     await jez.wait(100)
-    tEffect = tToken.actor.effects.find(ef => ef.data.label === "Grappled" && ef.data.origin === aActor.uuid)
+    tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)
     if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
-    oEffect = tToken.actor.effects.find(ef => ef.data.label === "Restrained")
+    oEffect = tToken.actor.effects.find(ef => ef.data.label === RESTRAINED_COND)
     if (!oEffect) return jez.badNews(`Sadly, there was no Restrained effect from ${aToken.name}.`, "warn")
     await jez.wait(100)
     await GM_PAIR_EFFECTS.execute(tToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
