@@ -1,4 +1,4 @@
-const MACRONAME = "Grasping_Hand.0.2.js"
+const MACRONAME = "Grasping_Hand.0.3.js"
 /*****************************************************************************************
  * Initiate a Grasping Hand grapple or squeeze if already grappling
  * 
@@ -11,49 +11,57 @@ const MACRONAME = "Grasping_Hand.0.2.js"
  *   Spellcasting ability modifier.
  * 
  * 06/03/22 0.1 JGB Creation
+ * 07/05/22 0.3 JGB Changed to use CE and add Temporary ability to Crush grappled target
  *****************************************************************************************/
- const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
- jez.log(`============== Starting === ${MACRONAME} =================`);
- for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
- const LAST_ARG = args[args.length - 1];
- let aActor;         // Acting actor, creature that invoked the macro
- if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
- else aActor = game.actors.get(LAST_ARG.actorId);
- let aToken;         // Acting token, token for creature that invoked the macro
- if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
- else aToken = game.actors.get(LAST_ARG.tokenId);
- let aItem;          // Active Item information, item invoking this macro
- if (args[0]?.item) aItem = args[0]?.item; 
- else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
- let msg = "";
- //----------------------------------------------------------------------------------
- // Run the main procedures, choosing based on how the macro was invoked
- //
- if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
- jez.log(`============== Finishing === ${MACRONAME} =================`);
- /***************************************************************************************************
-  *    END_OF_MAIN_MACRO_BODY
-  *                                END_OF_MAIN_MACRO_BODY
-  *                                                             END_OF_MAIN_MACRO_BODY
-  ***************************************************************************************************
-  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
-  ***************************************************************************************************/
- async function preCheck() {
-     if (args[0].targets.length !== 1) {     // If not exactly one target, return
-         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-         postResults(msg);
-         return (false);
-     }
-     return(true)
- }
- /***************************************************************************************************
-  * Post results to the chat card
-  ***************************************************************************************************/
-  function postResults(msg) {
-     jez.log(msg);
-     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
- }
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+jez.log(`============== Starting === ${MACRONAME} =================`);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const LAST_ARG = args[args.length - 1];
+let aActor;         // Acting actor, creature that invoked the macro
+if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
+else aActor = game.actors.get(LAST_ARG.actorId);
+let aToken;         // Acting token, token for creature that invoked the macro
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aItem;          // Active Item information, item invoking this macro
+if (args[0]?.item) aItem = args[0]?.item;
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+let msg = "";
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
+const GRAPPLED_COND = "Grappled"
+const GRAPPLING_COND = "Grappling"
+const GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLED_COND).id}]{Grappled}`
+const GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLING_COND).id}]{Grappling}`
+//----------------------------------------------------------------------------------
+// Run the main procedures, choosing based on how the macro was invoked
+//
+if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
+jez.log(`============== Finishing === ${MACRONAME} =================`);
+/***************************************************************************************************
+ *    END_OF_MAIN_MACRO_BODY
+ *                                END_OF_MAIN_MACRO_BODY
+ *                                                             END_OF_MAIN_MACRO_BODY
+ ***************************************************************************************************
+ * Check the setup of things.  Setting the global errorMsg and returning true for ok!
+ ***************************************************************************************************/
+async function preCheck() {
+    if (args[0].targets.length !== 1) {     // If not exactly one target, return
+        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
+        postResults(msg);
+        return (false);
+    }
+    return (true)
+}
+/***************************************************************************************************
+ * Post results to the chat card
+ ***************************************************************************************************/
+function postResults(msg) {
+    jez.log(msg);
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+}
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
@@ -103,26 +111,26 @@ async function doOnUse() {
     if (tSizeObj.value >= 6) {
         msg = `${tToken.name} is too large for ${aToken.name} to grasp, no effect.`
         postResults(msg)
-        return(false)
+        return (false)
     }
     let advan = null
     if (tSizeObj.value <= 3) advan = true
     //----------------------------------------------------------------------------------------------
     // Roll strength check for the active actor
     //
-    let aActorRoll = await aActor.rollAbilityTest('str', 
+    let aActorRoll = await aActor.rollAbilityTest('str',
         { chatMessage: false, fastforward: true, advantage: advan });
-    jez.log("aActorRoll",aActorRoll)
-    let rollType = aActorRoll.terms[0].modifiers[0] === "kh" ? " (Advantage)" : 
+    jez.log("aActorRoll", aActorRoll)
+    let rollType = aActorRoll.terms[0].modifiers[0] === "kh" ? " (Advantage)" :
         aActorRoll.terms[0].modifiers[0] === "kl" ? " (Disadvantage)" : "";
-    jez.log("rollType",rollType)
+    jez.log("rollType", rollType)
     game.dice3d?.showForRoll(aActorRoll);
     jez.log(` Player's str check: ${aActorRoll.total}`);
     //----------------------------------------------------------------------------------------------
     // Determing the target's check result (roll dialog)
     //
     let tSkill = "ath"; // Assume it will be Ath then check to see if right
-    if (tActor.data.data.skills.acr.total >= tActor.data.data.skills.ath.total) {tSkill = "acr"}
+    if (tActor.data.data.skills.acr.total >= tActor.data.data.skills.ath.total) { tSkill = "acr" }
     // Set long form of skill
     let targetSkill = tSkill == "ath" ? "Atheletics" : "Acrobatics";
     let tActorRoll = await tActor.rollSkill(tSkill, { chatMessage: false, fastForward: true });
@@ -144,7 +152,7 @@ async function doOnUse() {
     //
     if (playerWin) {
         await game.cub.addCondition("Grappling", aToken)
-        await game.cub.addCondition("Grappled",  tToken)
+        await game.cub.addCondition("Grappled", tToken)
         await jez.wait(500) // Let things settle a bit
         // Find the Grappling and Grappled effects to access their Id's
         let aEffect = await aActor.effects.find(i => i.data.label === "Grappling");
@@ -155,22 +163,22 @@ async function doOnUse() {
         // Modify the grapple effect on the aActor to remove the associated effect on the tActor
         let aValue = `Remove_Paired_Effect ${tToken.id} ${tEffect.id}`
         jez.log('aValue', aValue)
-        aEffect.data.changes.push({ key:`macro.execute`, mode:jez.CUSTOM, value:aValue, priority: 20 })
-        let aResult = await aEffect.update({'changes': aEffect.data.changes});
+        aEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: aValue, priority: 20 })
+        let aResult = await aEffect.update({ 'changes': aEffect.data.changes });
         if (aResult) jez.log(`Active Effect "Grappling" updated!`, aResult);
         //
         // Modify the grapple effect on the tActor to remove the associated effect on the aActor
         let tValue = `Remove_Paired_Effect ${aEffect.id} ${aToken.id}`
         jez.log('tValue', tValue)
-        tEffect.data.changes.push({ key:`macro.execute`, mode:jez.CUSTOM, value:tValue, priority: 20 })
-        let tResult = await tEffect.update({'changes': tEffect.data.changes});
+        tEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: tValue, priority: 20 })
+        let tResult = await tEffect.update({ 'changes': tEffect.data.changes });
         if (tResult) jez.log(`Active Effect "Grappling" updated!`, tResult);
     }
     //----------------------------------------------------------------------------------------------
     // Post results card 
     //
     if (playerWin) {
-        let distance = 5 + Math.max(0,jez.getCastMod(aToken))*5
+        let distance = 5 + Math.max(0, jez.getCastMod(aToken)) * 5
         msg = `<b>${tToken.name}</b> is grappled by <b>${aToken.name}</b>.`
         jez.postMessage({
             color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,

@@ -70,7 +70,7 @@ if (sizeDelta > -2) {
 //--------------------------------------------------------------------------------------
 // Make sure the actor is not already grappling
 //
-if (jezcon.hasCE("GRAPPLING_COND", aToken.actor.uuid))
+if (jezcon.hasCE(GRAPPLING_COND, aToken.actor.uuid))
     return postResults(`<b>${aToken.name}</b> is already grappling, may not grapple a second time.<br>`)
 //----------------------------------------------------------------------------------
 // Apply the GRAPPLED and GRAPPLING Cconditions
