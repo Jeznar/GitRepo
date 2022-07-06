@@ -21,6 +21,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[addProne(targetUuid, aItem)](#addpronetargetUuid-aitem))** -- Adds a Prone effect. Hopefully the last of the generalized midid created effects.
 * **[add(...args)](#addargs)** -- Calls CE addEffect to add an effect
 * **[hasCE(effectName, uuid)](#hasceeffectname-uuid)** -- Checks for presence of a CE effect
+* **[modAdd](#modadd)** -- Example of modifying and adding an effect
 * **[remove(effectName, uuid)](#removeeffectname-uuid)** -- Calls CE to remove an effect
 * **[toggle(effectName, { overlay, uuids = [] } = {})](#toggleeffectname--overlay-uuids-----)** -- Uses CE to toggle an effect
                                      
@@ -87,22 +88,38 @@ if (jezcon.hasCE("Hindered", targetD.actor.uuid))
 
 --- 
 
-### remove(effectName, uuid)
+### hasCE(effectName, uuid)
 
-This function is not super necessary, popping a .delete on the end of the effect data gets the job just as well. But it can be useful for more generic types of things.
-
-Removes the effect from the provided actor UUID as the GM via sockets.
-     
-* @param {object} **params** - the effect params
-* @param {string} **params.effectName** - the name of the effect to remove
-* @param {string} **params.uuid** - the UUID of the actor to remove the effect from
-* @returns {Promise} a promise that resolves when the GM socket function completes
+Checks to see if any of the current active effects applied to the actor with the given UUID match the effect name and are a convenient effect
+ 
+* @param {string} **effectName** - the name of the effect to check
+* @param {string} **uuid** - the uuid of the actor to see if the effect is applied to
+* @returns {boolean} **true** if the effect is applied, false otherwise
 
 ~~~javascript
-let uuids = await game.dfreds.effectInterface._foundryHelpers.getActorUuids()
-if (uuids.length === 0) return jez.badNews(`Please select at least one token`, "warning")
+if (jezcon.hasCE("Hindered", targetD.actor.uuid))
+    postResults(`${targetD.name} has already been hindered, no additional effect.`)
+~~~
 
-for (const UUID of uuids) await jezcon.remove("Cover (Three-Quarters)", UUID)
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### modAdd
+
+No function for this one, as I don't see an obvious pattern to automate, but examples from my code.
+
+Example from Grasping Root a Creature Feature:
+
+~~~javascript
+//----------------------------------------------------------------------------------
+// Modify the GRAPPLING condition to include an Overtime DoT element and apply
+//
+let statMod = jez.getStatMod(aToken,"str")
+let effectData = game.dfreds.effectInterface.findEffectByName(GRAPPLED_COND).convertToObject();
+let overTimeVal=`turn=start,label="Grasping Root",damageRoll=1d6+${statMod},saveMagic=true,damageType=bludgeoning`
+effectData.changes.push( { key: 'flags.midi-qol.OverTime', mode: jez.OVERRIDE, value:overTimeVal , priority: 20 })
+game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tToken.actor.uuid, origin: sToken.actor.uuid });
 ~~~
 
 
