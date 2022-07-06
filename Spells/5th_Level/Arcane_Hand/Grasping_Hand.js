@@ -11,7 +11,7 @@ const MACRONAME = "Grasping_Hand.0.3.js"
  *   Spellcasting ability modifier.
  * 
  * 06/03/22 0.1 JGB Creation
- * 07/05/22 0.3 JGB Changed to use CE and add Temporary ability to Crush grappled target
+ * 07/05/22 0.3 JGB Changed to use CE
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -74,14 +74,15 @@ async function doOnUse() {
     //----------------------------------------------------------------------------------------------
     // Is the hand already grappling?  If so, it needs to damage its grappled target, if targeted, 
     // or drop the grapple and try to grapple the new target.
-    //
-    let grapplingEffect = await aActor.effects.find(i => i.data.label === "Grappling");
+    let grapplingEffect = await aActor.effects.find(i => i.data.label === GRAPPLING_COND);
     if (grapplingEffect) {
-        jez.log(`Already grappling, determine if current target is what we are grappling`)
+        jez.log(`Already grappling, determine if current target is what we are grappling`,grapplingEffect)
         let grappledTokenId = null
         let found = false
+        jez.log("grapplingEffect.data.changes",grapplingEffect.data.changes)
         for (const ELEMENT of grapplingEffect.data.changes) {
             if (ELEMENT.key === "macro.execute") {
+                jez.log("MacroExecute entry",ELEMENT)
                 grappledTokenId = ELEMENT.value.split(" ")[1]   // First arg is grappled's ID
                 found = true
                 break
@@ -93,7 +94,9 @@ async function doOnUse() {
             postResults(msg)
             return
         }
-        if (tToken.id === grappledTokenId) { // Targeting currently grappled target, damage it!
+        jez.log(`Comparing ${grappledTokenId} to ${tToken.id}`,tToken)
+        jez.log(`Maybe we want ${tToken.actor.id}?`,tToken.actor)
+        if (tToken.actor.id === grappledTokenId) { // Targeting currently grappled target, damage it!
             jez.log(`Need to do ${aItem.data.damage.versatile} force damage here!!!`)
             let damageRoll = new Roll(`${aItem.data.damage.versatile}`).evaluate({ async: false });
             let flavor = "Squeezes its grappled target"
@@ -151,28 +154,46 @@ async function doOnUse() {
     // If grapple succeeded add apropriate conditions so they are mutually dependent.
     //
     if (playerWin) {
-        await game.cub.addCondition("Grappling", aToken)
-        await game.cub.addCondition("Grappled", tToken)
-        await jez.wait(500) // Let things settle a bit
+        //----------------------------------------------------------------------------------
+        // Apply the GRAPPLED and GRAPPLING Cconditions
+        //
+        await jezcon.add({ effectName: GRAPPLED_COND, uuid: tToken.actor.uuid, origin: aActor.uuid })
+        await jezcon.add({ effectName: GRAPPLING_COND, uuid: aToken.actor.uuid, origin: aActor.uuid })
+        //----------------------------------------------------------------------------------
+        // Find the two just added effect data objects so they can be paired, to expire 
+        // together.
+        //
+        await jez.wait(100)
+        let tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)
+        if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
+        let oEffect = aToken.actor.effects.find(ef => ef.data.label === GRAPPLING_COND)
+        if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${aToken.name}.`, "warn")
+        const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
+        if (!GM_PAIR_EFFECTS) { return false }
+        await jez.wait(100)
+        await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+        // await game.cub.addCondition("Grappling", aToken)
+        // await game.cub.addCondition("Grappled", tToken)
+        // await jez.wait(100) // Let things settle a bit
         // Find the Grappling and Grappled effects to access their Id's
-        let aEffect = await aActor.effects.find(i => i.data.label === "Grappling");
-        jez.log("aEffect", aEffect)
-        let tEffect = await tActor.effects.find(i => i.data.label === "Grappled");
-        jez.log("tEffect", tEffect)
-        //
-        // Modify the grapple effect on the aActor to remove the associated effect on the tActor
-        let aValue = `Remove_Paired_Effect ${tToken.id} ${tEffect.id}`
-        jez.log('aValue', aValue)
-        aEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: aValue, priority: 20 })
-        let aResult = await aEffect.update({ 'changes': aEffect.data.changes });
-        if (aResult) jez.log(`Active Effect "Grappling" updated!`, aResult);
-        //
-        // Modify the grapple effect on the tActor to remove the associated effect on the aActor
-        let tValue = `Remove_Paired_Effect ${aEffect.id} ${aToken.id}`
-        jez.log('tValue', tValue)
-        tEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: tValue, priority: 20 })
-        let tResult = await tEffect.update({ 'changes': tEffect.data.changes });
-        if (tResult) jez.log(`Active Effect "Grappling" updated!`, tResult);
+        // let aEffect = await aActor.effects.find(i => i.data.label === "Grappling");
+        // jez.log("aEffect", aEffect)
+        // let tEffect = await tActor.effects.find(i => i.data.label === "Grappled");
+        // jez.log("tEffect", tEffect)
+        // //
+        // // Modify the grapple effect on the aActor to remove the associated effect on the tActor
+        // let aValue = `Remove_Paired_Effect ${tToken.id} ${tEffect.id}`
+        // jez.log('aValue', aValue)
+        // aEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: aValue, priority: 20 })
+        // let aResult = await aEffect.update({ 'changes': aEffect.data.changes });
+        // if (aResult) jez.log(`Active Effect "Grappling" updated!`, aResult);
+        // //
+        // // Modify the grapple effect on the tActor to remove the associated effect on the aActor
+        // let tValue = `Remove_Paired_Effect ${aEffect.id} ${aToken.id}`
+        // jez.log('tValue', tValue)
+        // tEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: tValue, priority: 20 })
+        // let tResult = await tEffect.update({ 'changes': tEffect.data.changes });
+        // if (tResult) jez.log(`Active Effect "Grappling" updated!`, tResult);
     }
     //----------------------------------------------------------------------------------------------
     // Post results card 

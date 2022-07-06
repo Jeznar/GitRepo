@@ -1,0 +1,126 @@
+{
+  "name": "Grasping Hand",
+  "type": "feat",
+  "img": "modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_Rock01_Thumb.webp",
+  "data": {
+    "description": {
+      "value": "<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><span style=\"font-weight: 400;\">The hand attempts to grapple a Huge or smaller creature within 5 feet of it. You use the hand&rsquo;s Strength score to resolve the grapple. If the target is Medium or smaller, you have advantage on the check. </span></strong></p>\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><span style=\"font-weight: 400;\">While the hand is Grappling the target, you can use a <strong>Bonus Action </strong>to have the hand crush it. When you do so, the target takes bludgeoning damage equal to <strong>2d6 + your Spellcasting ability modifier.</strong></span></strong></p>\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">At Higher Levels.</strong><span style=\"color: #191813; font-size: 13px;\">&nbsp;When you cast this spell using a spell slot of 6th level or higher, the damage from the clenched fist option increases by 2d8 and the damage from the grasping hand increases by 2d6 for each slot level above 5th.</span></p>\n<hr />\n<p><strong>FoundryVTT</strong>: Using this ability on an already grappled target will inflict the damage element. Using it on a different target than one already grappled, will drop the grapple and attempt to establish another.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": 1,
+      "condition": "Caster uses its bonus action to command Arcane Hand"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "2d6 + 3"
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Grasping Hand",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Grasping_Hand.0.3.js\"\n/*****************************************************************************************\n * Initiate a Grasping Hand grapple or squeeze if already grappling\n * \n *   The hand attempts to grapple a Huge or smaller creature within 5 feet of it. You use \n *   the hand's Strength score to resolve the grapple. If the target is Medium or smaller, \n *   you have advantage on the check.\n * \n *   While the hand is Grappling the target, you can use a Bonus Action to have the hand \n *   crush it. When you do so, the target takes bludgeoning damage equal to 2d6 + your \n *   Spellcasting ability modifier.\n * \n * 06/03/22 0.1 JGB Creation\n * 07/05/22 0.3 JGB Changed to use CE\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst GRAPPLED_COND = \"Grappled\"\nconst GRAPPLING_COND = \"Grappling\"\nconst GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLED_COND).id}]{Grappled}`\nconst GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLING_COND).id}]{Grappling}`\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        postResults(msg);\n        return (false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    if (!await preCheck()) return (false);\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    //----------------------------------------------------------------------------------------------\n    // Is the hand already grappling?  If so, it needs to damage its grappled target, if targeted, \n    // or drop the grapple and try to grapple the new target.\n    let grapplingEffect = await aActor.effects.find(i => i.data.label === GRAPPLING_COND);\n    if (grapplingEffect) {\n        jez.log(`Already grappling, determine if current target is what we are grappling`,grapplingEffect)\n        let grappledTokenId = null\n        let found = false\n        jez.log(\"grapplingEffect.data.changes\",grapplingEffect.data.changes)\n        for (const ELEMENT of grapplingEffect.data.changes) {\n            if (ELEMENT.key === \"macro.execute\") {\n                jez.log(\"MacroExecute entry\",ELEMENT)\n                grappledTokenId = ELEMENT.value.split(\" \")[1]   // First arg is grappled's ID\n                found = true\n                break\n            }\n        }\n        if (!found) {\n            msg = `The grappling effect lacked macro.execute.  This is odd.  Need Help.  Quiting.`\n            ui.notifications.error(msg)\n            postResults(msg)\n            return\n        }\n        jez.log(`Comparing ${grappledTokenId} to ${tToken.id}`,tToken)\n        jez.log(`Maybe we want ${tToken.actor.id}?`,tToken.actor)\n        if (tToken.actor.id === grappledTokenId) { // Targeting currently grappled target, damage it!\n            jez.log(`Need to do ${aItem.data.damage.versatile} force damage here!!!`)\n            let damageRoll = new Roll(`${aItem.data.damage.versatile}`).evaluate({ async: false });\n            let flavor = \"Squeezes its grappled target\"\n            await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total, \"force\", [tToken],\n                damageRoll, { flavor: flavor, itemCardId: LAST_ARG.itemCardId });\n            game.dice3d?.showForRoll(damageRoll);\n            return\n        }\n        else await grapplingEffect.delete()  // Targeting a new token, clear current grappling\n    }\n    //----------------------------------------------------------------------------------------------\n    // Get size of target and set advantage appropriately\n    //\n    let tSizeObj = await jez.getSize(tToken)\n    if (tSizeObj.value >= 6) {\n        msg = `${tToken.name} is too large for ${aToken.name} to grasp, no effect.`\n        postResults(msg)\n        return (false)\n    }\n    let advan = null\n    if (tSizeObj.value <= 3) advan = true\n    //----------------------------------------------------------------------------------------------\n    // Roll strength check for the active actor\n    //\n    let aActorRoll = await aActor.rollAbilityTest('str',\n        { chatMessage: false, fastforward: true, advantage: advan });\n    jez.log(\"aActorRoll\", aActorRoll)\n    let rollType = aActorRoll.terms[0].modifiers[0] === \"kh\" ? \" (Advantage)\" :\n        aActorRoll.terms[0].modifiers[0] === \"kl\" ? \" (Disadvantage)\" : \"\";\n    jez.log(\"rollType\", rollType)\n    game.dice3d?.showForRoll(aActorRoll);\n    jez.log(` Player's str check: ${aActorRoll.total}`);\n    //----------------------------------------------------------------------------------------------\n    // Determing the target's check result (roll dialog)\n    //\n    let tSkill = \"ath\"; // Assume it will be Ath then check to see if right\n    if (tActor.data.data.skills.acr.total >= tActor.data.data.skills.ath.total) { tSkill = \"acr\" }\n    // Set long form of skill\n    let targetSkill = tSkill == \"ath\" ? \"Atheletics\" : \"Acrobatics\";\n    let tActorRoll = await tActor.rollSkill(tSkill, { chatMessage: false, fastForward: true });\n    game.dice3d?.showForRoll(tActorRoll);\n    jez.log(` Target's check result: ${tActorRoll.total}`);\n    //----------------------------------------------------------------------------------------------\n    // Determine who won the contest (used in ugly dialog)\n    //\n    let playerWin = \"\";\n    let targetWin = \"\";\n    aActorRoll.total >= tActorRoll.total ? playerWin = `success` : targetWin = `success`;\n    //----------------------------------------------------------------------------------------------\n    // Build and post complex chat message reporting contested results\n    //\n    await postChatCard()\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // If grapple succeeded add apropriate conditions so they are mutually dependent.\n    //\n    if (playerWin) {\n        //----------------------------------------------------------------------------------\n        // Apply the GRAPPLED and GRAPPLING Cconditions\n        //\n        await jezcon.add({ effectName: GRAPPLED_COND, uuid: tToken.actor.uuid, origin: aActor.uuid })\n        await jezcon.add({ effectName: GRAPPLING_COND, uuid: aToken.actor.uuid, origin: aActor.uuid })\n        //----------------------------------------------------------------------------------\n        // Find the two just added effect data objects so they can be paired, to expire \n        // together.\n        //\n        await jez.wait(100)\n        let tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)\n        if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, \"warn\")\n        let oEffect = aToken.actor.effects.find(ef => ef.data.label === GRAPPLING_COND)\n        if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${aToken.name}.`, \"warn\")\n        const GM_PAIR_EFFECTS = jez.getMacroRunAsGM(\"PairEffects\")\n        if (!GM_PAIR_EFFECTS) { return false }\n        await jez.wait(100)\n        await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)\n        // await game.cub.addCondition(\"Grappling\", aToken)\n        // await game.cub.addCondition(\"Grappled\", tToken)\n        // await jez.wait(100) // Let things settle a bit\n        // Find the Grappling and Grappled effects to access their Id's\n        // let aEffect = await aActor.effects.find(i => i.data.label === \"Grappling\");\n        // jez.log(\"aEffect\", aEffect)\n        // let tEffect = await tActor.effects.find(i => i.data.label === \"Grappled\");\n        // jez.log(\"tEffect\", tEffect)\n        // //\n        // // Modify the grapple effect on the aActor to remove the associated effect on the tActor\n        // let aValue = `Remove_Paired_Effect ${tToken.id} ${tEffect.id}`\n        // jez.log('aValue', aValue)\n        // aEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: aValue, priority: 20 })\n        // let aResult = await aEffect.update({ 'changes': aEffect.data.changes });\n        // if (aResult) jez.log(`Active Effect \"Grappling\" updated!`, aResult);\n        // //\n        // // Modify the grapple effect on the tActor to remove the associated effect on the aActor\n        // let tValue = `Remove_Paired_Effect ${aEffect.id} ${aToken.id}`\n        // jez.log('tValue', tValue)\n        // tEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: tValue, priority: 20 })\n        // let tResult = await tEffect.update({ 'changes': tEffect.data.changes });\n        // if (tResult) jez.log(`Active Effect \"Grappling\" updated!`, tResult);\n    }\n    //----------------------------------------------------------------------------------------------\n    // Post results card \n    //\n    if (playerWin) {\n        let distance = 5 + Math.max(0, jez.getCastMod(aToken)) * 5\n        msg = `<b>${tToken.name}</b> is grappled by <b>${aToken.name}</b>.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n            msg: msg, title: `${tToken.name} is Grappled`, token: aToken\n        })\n    }\n    else {\n        msg = `<b>${tToken.name}</b> avoids <b>${aToken.name}</b>'s grapple attempt.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,\n            msg: msg, title: `${tToken.name} remains free`, token: aToken\n        })\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    /****************************************************************************************\n     * Build godawful messy format for a chat card reporting results\n     ***************************************************************************************/\n    async function postChatCard() {\n        (async () => {\n            let damage_results = `\n <div class=\"flexrow 2\">\n <div><div style=\"text-align:center\">${aToken.name}</div></div><div><div style=\"text-align:center\">${tToken.name}</div></div>\n </div>\n <div class=\"flexrow 2\">\n     <div>\n         <div style=\"text-align:center\">Strength${rollType}</div>\n         <div class=\"dice-roll\">\n             <div class=\"dice-result\">\n                 <div class=\"dice-formula\">${aActorRoll.formula}</div>\n                 <div class=\"dice-tooltip\">\n                     <div class=\"dice\">\n                         <header class=\"part-header flexrow\">\n                             <span class=\"part-formula\">${aActorRoll.formula}</span>\n                             <span class=\"part-total\">${aActorRoll.total}</span>\n                         </header>\n                     </div>\n                 </div>\n                 <h4 class=\"dice-total ${playerWin}\">${aActorRoll.total}</h4>\n             </div>\n         </div>\n     </div>\n     <div>\n         <div style=\"text-align:center\">${targetSkill}</div>\n         <div class=\"dice-roll\">\n             <div class=\"dice-result\">\n                 <div class=\"dice-formula\">${tActorRoll.formula}</div>\n                 <div class=\"dice-tooltip\">\n                     <div class=\"dice\">\n                         <header class=\"part-header flexrow\">\n                             <span class=\"part-formula\">${tActorRoll.formula}</span>\n                             <span class=\"part-total\">${tActorRoll.total}</span>\n                         </header>\n                     </div>\n                 </div>\n                 <h4 class=\"dice-total ${targetWin}\">${tActorRoll.total}</h4>\n             </div>\n         </div>\n     </div>\n     \n </div>`;\n            jez.log(\" Built damage results string\");\n            const chatMessage = game.messages.get(args[0].itemCardId);\n            let content = duplicate(chatMessage.data.content);\n            const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n            const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${damage_results}`;\n            content = content.replace(searchString, replaceString);\n            await chatMessage.update({ content: content });\n            await ui.chat.scrollBottom();\n        })();\n    }\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.iZl2AO5BY5xuD5L4"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
