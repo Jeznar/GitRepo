@@ -509,10 +509,10 @@ class jez {
     static async pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions) {
         const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
         // jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
-            // `queryTitle`, queryTitle,
-            // `queryText`, queryText,
-            // `pickCallBack`, pickCallBack,
-            // `queryOptions`, queryOptions);
+        // `queryTitle`, queryTitle,
+        // `queryText`, queryText,
+        // `pickCallBack`, pickCallBack,
+        // `queryOptions`, queryOptions);
         let msg = ""
         if (typeof (pickCallBack) != "function") {
             msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
@@ -603,7 +603,7 @@ class jez {
         if (!token1Size) {
             let message = `Size of ${token1.name}, ${token1SizeString} failed to parse.<br>`;
             jez.// jez.log(message);
-            ui.notifications.error(message);
+                ui.notifications.error(message);
             return (false);
         }
         // jez.log(` Token1: ${token1SizeString} ${token1Size}`)
@@ -631,7 +631,7 @@ class jez {
     /***************************************************************************************************
      * Get token5e object based on ID passed
      ***************************************************************************************************/
-     static getTokenById(tokenId) {
+    static getTokenById(tokenId) {
         if ((typeof (tokenId) != "string") || (tokenId.length !== 16)) {
             let msg = `Parameter passed to jez.getTokenById(tokenId) is not an ID: ${tokenId}`
             ui.notifications.error(msg)
@@ -666,26 +666,26 @@ class jez {
     /***************************************************************************************************
      * Return spell save DC string based on input: Token5e, TokenID, Actor5e
      ***************************************************************************************************/
-         static getSpellDC(subject) {
-            let actor5e = null
-            if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
-                if (subject.constructor.name === "Token5e") actor5e = subject.actor
-                else if (subject.constructor.name === "Actor5e") actor5e = subject
-                else {
-                    let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
-                    ui.notifications.error(msg)
-                    // jez.log(msg)
-                    return (false)
-                }
-            } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
+    static getSpellDC(subject) {
+        let actor5e = null
+        if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
+            if (subject.constructor.name === "Token5e") actor5e = subject.actor
+            else if (subject.constructor.name === "Actor5e") actor5e = subject
             else {
-                let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
+                let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
                 ui.notifications.error(msg)
                 // jez.log(msg)
                 return (false)
             }
-            return (actor5e.data.data.attributes.spelldc)
+        } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
+        else {
+            let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
+            ui.notifications.error(msg)
+            // jez.log(msg)
+            return (false)
         }
+        return (actor5e.data.data.attributes.spelldc)
+    }
     /***************************************************************************************************
     * Return casting stat mod integer based on input: Token5e, TokenID, Actor5e and stat string
     ***************************************************************************************************/
@@ -889,37 +889,37 @@ class jez {
      * 
      * console.log(jez.ADD + jez.OVERRIDE) // 7
      ***************************************************************************************************/
-     static get CUSTOM()     { return 0 }
-     static get MULTIPLY()   { return 1 }
-     static get ADD()        { return 2 }
-     static get DOWNGRADE()  { return 3 }
-     static get UPGRADE()    { return 4 }
-     static get OVERRIDE()   { return 5 }
-     static get DAEFLAG_FAMILIAR_NAME() { return "familiar_name" }
-     static get ACTOR_UPDATE_MACRO() { return "ActorUpdate"}
-     static get TOKEN_REFRESH_MACRO() { return "TokenRefresh"}
-     static get UPDATE_EMBEDDED_MACRO() { return "UpdateEmbeddedDocuments"}
-     static get CREATE_EMBEDDED_MACRO() { return "CreateEmbeddedDocuments"}
-     static get DELETE_EMBEDDED_MACRO() { return "DeleteEmbeddedDocuments"}
-     static get GRAPPLE_ESCAPE_MACRO() { return "GrappleEscape"}
-     /***************************************************************************************************
-      * Set the Familiar name into the DAE Flag
-      ***************************************************************************************************/
-     static async familiarNameSet(actor5e, name) {
-         return (await DAE.setFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME, name));
-     }
-     /***************************************************************************************************
-      * Get the Familiar name from the DAE Flag, return empty string if not found
-      ***************************************************************************************************/
-     static async familiarNameGet(actor5e) {
-         let currentName = await DAE.getFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME);
-         // jez.log("currentName", currentName)
-         if (!currentName) currentName = ""
-         return (currentName)
-     }
-     /***************************************************************************************************
-      * Get the Familiar name from the DAE Flag, return empty string if not found
-      ***************************************************************************************************/
+    static get CUSTOM() { return 0 }
+    static get MULTIPLY() { return 1 }
+    static get ADD() { return 2 }
+    static get DOWNGRADE() { return 3 }
+    static get UPGRADE() { return 4 }
+    static get OVERRIDE() { return 5 }
+    static get DAEFLAG_FAMILIAR_NAME() { return "familiar_name" }
+    static get ACTOR_UPDATE_MACRO() { return "ActorUpdate" }
+    static get TOKEN_REFRESH_MACRO() { return "TokenRefresh" }
+    static get UPDATE_EMBEDDED_MACRO() { return "UpdateEmbeddedDocuments" }
+    static get CREATE_EMBEDDED_MACRO() { return "CreateEmbeddedDocuments" }
+    static get DELETE_EMBEDDED_MACRO() { return "DeleteEmbeddedDocuments" }
+    static get GRAPPLE_ESCAPE_MACRO() { return "GrappleEscape" }
+    /***************************************************************************************************
+     * Set the Familiar name into the DAE Flag
+     ***************************************************************************************************/
+    static async familiarNameSet(actor5e, name) {
+        return (await DAE.setFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME, name));
+    }
+    /***************************************************************************************************
+     * Get the Familiar name from the DAE Flag, return empty string if not found
+     ***************************************************************************************************/
+    static async familiarNameGet(actor5e) {
+        let currentName = await DAE.getFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME);
+        // jez.log("currentName", currentName)
+        if (!currentName) currentName = ""
+        return (currentName)
+    }
+    /***************************************************************************************************
+     * Get the Familiar name from the DAE Flag, return empty string if not found
+     ***************************************************************************************************/
     static async familiarNameUnset(actor5e) {
         return (await DAE.unsetFlag(actor5e, jez.DAEFLAG_FAMILIAR_NAME));
     }
@@ -1314,9 +1314,9 @@ class jez {
         jez.log("effectName1", effectName1)
         let effectData1 = effectName1
         if (effectName1?.constructor.name !== "ActiveEffect5e") {
-            jez.trc(3,trcLvl,`Seeking ${effectName1} on actor1`,actor1)
+            jez.trc(3, trcLvl, `Seeking ${effectName1} on actor1`, actor1)
             effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
-            jez.trc(3,trcLvl,`effectData1`,effectData1)
+            jez.trc(3, trcLvl, `effectData1`, effectData1)
             if (!effectData1)
                 return jez.badNews(`${effectName1} not found on ${actor1.name}.  Effects not paired.`, "warn")
         }
@@ -1326,16 +1326,16 @@ class jez {
         jez.log("effectName2", effectName2)
         let effectData2 = effectName2
         if (effectName2?.constructor.name !== "ActiveEffect5e") {
-            jez.trc(3,trcLvl,`Seeking ${effectName2} on actor2`,actor2)
+            jez.trc(3, trcLvl, `Seeking ${effectName2} on actor2`, actor2)
             effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
-            jez.trc(3,trcLvl,`effectData2`,effectData2)
+            jez.trc(3, trcLvl, `effectData2`, effectData2)
             if (!effectData2)
                 return jez.badNews(`${effectName2} not found on ${actor2.name}.  Effects not paired.`, "warn")
         }
         //---------------------------------------------------------------------------------------------------------
         // Add the actual pairings
         //
-        jez.trc(4,trcLvl,"*************",'actor1',actor1,'actor2',actor2,'effectData1',effectData1,'effectData2',effectData2)
+        jez.trc(4, trcLvl, "*************", 'actor1', actor1, 'actor2', actor2, 'effectData1', effectData1, 'effectData2', effectData2)
         await addPairing(effectData2, actor1, effectData1)
         await addPairing(effectData1, actor2, effectData2)
         //---------------------------------------------------------------------------------------------------------
@@ -1857,13 +1857,13 @@ class jez {
         const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_*_${color}_400x400.webm`
 
         new Sequence()
-          .effect()
+            .effect()
             .file(VFX_FILE)
             .atLocation(template)
             .center()
             .scale(SCALE)
             .opacity(OPACITY)
-          .play()
+            .play()
     }
 
     /***************************************************************************************************
@@ -2110,5 +2110,30 @@ class jez {
         jez.trc(3, TRACE_LEVEL, `--- Calling  jez.deleteEmbeddedDocs("Tile", [${tileId}])--- ${FUNCNAME} ---`);
         return await jez.deleteEmbeddedDocs("Tile", [tileId])
     }
-} // END OF class jez
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * If the token-mold module is active, check to see if renaming is enabled.  If it is, turn it off 
+     * for a bit and then turn it back on. The bit is determined f=by the optional argument.
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async suppressTokenMoldRenaming(delay = 500) {
+        const FUNCNAME = `jez.suppressTokenMoldRenaming()`
+        if (game.modules.get("token-mold")) {
+            jez.log(`${FUNCNAME} | Found token-mold, checking renaming`)
+            // Grab the current Tokenmold settings
+            let tokenMoldSettings = game.settings.get("Token-Mold", "everyone");
+            if (tokenMoldSettings.name.use === true) {
+                // Toggle renaming off
+                tokenMoldSettings.name.use = false
+                await game.settings.set("Token-Mold", "everyone", tokenMoldSettings)
+                jez.log(`${FUNCNAME} | Renaming was enabled, suppressing for ${delay / 1000} seconds.`)
+                // Wait for passed amount of time before restoring
+                await jez.wait(delay)
+                // Toggle renaming on
+                tokenMoldSettings.name.use = true
+                await game.settings.set("Token-Mold", "everyone", tokenMoldSettings)
+                jez.log(`${FUNCNAME} | Renaming has been re-enabled.`)
+            }
+            else jez.log(`${FUNCNAME} | Renaming was already diaabled, did nothing.`)
+        }
+    } // END OF class jez
+}
 Object.freeze(jez);

@@ -70,6 +70,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring)** -- Returns updated string and count of replacements in an object.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
+* **[suppressTokenMoldRenaming(\<delay = 500\>)](#suppresstokenmoldrenamingdelay--500)** -- Suppresses token-mold renaming for specified number of milliseconds
 * **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
 * **[tileCreate(tileId)](#tiledeletetileid)** -- Deletes a tile with specified ID
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
@@ -1016,6 +1017,16 @@ async function workHorse(dataObj) {
    for (let line of dataObj.idArray) await pushUpdate(line, dataObj.itemName, dataObj.itemType);
 }
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### suppressTokenMoldRenaming(delay = 500) 
+
+If the token-mold module is active, check to see if renaming is enabled.  If it is, turn it off for a bit and then turn it back on. The bit is determined by the optional argument, which defaults to a half second.
+
+This is one that should not have "await" applied...
 
 [*Back to Functions list*](#functions-in-this-module)
 
