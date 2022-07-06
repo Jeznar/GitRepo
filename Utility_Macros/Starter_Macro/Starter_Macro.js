@@ -11,16 +11,12 @@ jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
 for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 let msg = "";
-//
-// Set the value for the Active Actor (aActor)
-let aActor;         
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-else aActor = game.actors.get(LAST_ARG.actorId);
-//
+//---------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
 let aToken;         
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
 else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor; 
 //
 // Set the value for the Active Item (aItem)
 let aItem;         

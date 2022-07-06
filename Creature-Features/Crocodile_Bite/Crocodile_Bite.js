@@ -1,4 +1,4 @@
-const MACRONAME = "Crocodile_Bite_0.6.js"
+const MACRONAME = "Crocodile_Bite.0.7.js"
 /*****************************************************************************************
  * Macro that applies on hit:
  *  - Grappled and Restrained conditions to the target
@@ -10,203 +10,146 @@ const MACRONAME = "Crocodile_Bite_0.6.js"
  * 12/06/21 0.4 Seeking bug causing grappling not to be fully applied
  * 12/12/21 0.5 Eliminate cubCondition calls
  * 05/04/22 0.6 JGB Update for Foundry 9.x
+ * 07/06/22 0.7 JGB Changed to use CE 
  *****************************************************************************************/
 const DEBUG = true;
-const CUSTOM=0, MULTIPLY=1, ADD=2, DOWNGRADE=3, UPGRADE=4, OVERRIDE=5; 
-
-actor = canvas.tokens.get(args[0].tokenId).actor;
-let tokenName = token.data.name; 
-let message = "";       // string to be appended to the itemCard reporting results
-let actorID = canvas.tokens.get(args[0].tokenId);
-let gameRound = game.combat ? game.combat.round : 0;
-let effectData = [];
-
-if (DEBUG) {
-    console.log(`Starting: ${MACRONAME}`);
-    console.log(`   Actor: ${actor.name}`);
-    console.log(` tokenName: ${tokenName}`);
-}
-
+let trcLvl = 1;
+let msg = "";       // string to be appended to the itemCard reporting results
+const LAST_ARG = args[args.length - 1];
+//---------------------------------------------------------------------------------------------------
+// Set the value for the Active Token (aToken)
+let aToken;         
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor; 
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
+const GRAPPLED_COND = "Grappled"
+const GRAPPLING_COND = "Grappling"
+const RESTRAINED_COND = "Restrained"
+const GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLED_COND).id}]{Grappled}`
+const GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLING_COND).id}]{Grappling}`
+const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName(RESTRAINED_COND).id}]{Restrained}`
 //--------------------------------------------------------------------------------------
 // Make sure the invoking item actually reported a hit
 if (wasHit()) {
     if (DEBUG) console.log(` a hit was reported`);
 } else {
-    if (DEBUG) console.log(` ${message}`);
-    await postResults(message);
+    if (DEBUG) console.log(` ${msg}`);
+    await postResults(msg);
     if (DEBUG) console.log(`Ending ${MACRONAME}`);
     return;
 }
-
 //--------------------------------------------------------------------------------------
 // Make sure one and only one token is targeted
 //
 if (oneTarget()) {
     if (DEBUG) console.log(` one target is targeted (a good thing)`);
 } else {
-    if (DEBUG) console.log(` exception on number of targets selected: ${message}`);
-    await postResults(message);
+    if (DEBUG) console.log(` exception on number of targets selected: ${msg}`);
+    await postResults(msg);
     if (DEBUG) console.log(`Ending ${MACRONAME}`);
     return;
 }
-let targetID = canvas.tokens.get(args[0].targets[0].id);
-
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
 //--------------------------------------------------------------------------------------
 // Make sure the target is no more than one size category larger than the actor
 //
-let sizeDelta = sizesLarger(actorID, targetID)
+let sizeDelta = sizesLarger(aToken, tToken)
 if (DEBUG) console.log(` sizeDelta: ${sizeDelta}`);
 if (sizeDelta > -2) {
     if (DEBUG) console.log(` Size delta ok`);
 } else {
-    message += `${targetID.name} is too large for ${tokenName} to grapple.`
+    msg += `${tToken.name} is too large for ${tToken.name} to grapple.`
     if (DEBUG) console.log(` Target is too large`);
-    await postResults(message);
+    await postResults(msg);
     if (DEBUG) console.log(`Ending ${MACRONAME}`);
     return;
 }
-
 //--------------------------------------------------------------------------------------
 // Make sure the actor is not already grappling
 //
-let grappling = game.cub.hasCondition("Grappling", actorID, {warn:true});
-if (DEBUG) console.log(` Already grappling: `, grappling);
-if (grappling) {
-    message += `<b>${actorID.name}</b> is already grappling, may not grapple a second time.<br>`
-    await postResults(message);
-    if (DEBUG) console.log(`Ending ${MACRONAME}`);
-    return;
-} else {
-    if (DEBUG) console.log(`Ending ${MACRONAME}`);
-}
-
-//--------------------------------------------------------------------------------------
-// Apply Grappled & Restrained condition to the target
+if (jezcon.hasCE("GRAPPLING_COND", aToken.actor.uuid))
+    return postResults(`<b>${aToken.name}</b> is already grappling, may not grapple a second time.<br>`)
+//----------------------------------------------------------------------------------
+// Apply the GRAPPLED and GRAPPLING Cconditions
 //
-if (DEBUG) {
-    console.log(" Apply grappled & restrained conditions");
-    console.log(` actorID.uuid  `, actorID.uiid);
-    console.log(` targetID.uuid `,targetID.uuid);
-}
-
-effectData = [{
-    label: "Grappled",
-    icon: "modules/combat-utility-belt/icons/grappled.svg",
-    origin: actorID.uuid,
-    disabled: false,
-    duration: { rounds: 99, startRound: gameRound }, 
-    changes: [
-        { key: `flags.VariantEncumbrance.speed`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.walk`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.swim`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.fly`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.climb`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.burrow`, mode: OVERRIDE, value: 1, priority: 20 },
-        // { key: ``, mode: OVERRIDE, value: 1, priority: 20 },
-    ]
-},{
-    label: "Restrained",
-    icon: "modules/combat-utility-belt/icons/restrained.svg",
-    origin: actorID.uuid,
-    disabled: false,
-    duration: { rounds: 99, startRound: gameRound }, 
-    changes: [
-        { key: `flags.VariantEncumbrance.speed`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.walk`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.swim`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.fly`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.climb`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `data.attributes.movement.burrow`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `flags.midi-qol.disadvantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `flags.midi-qol.grants.advantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },
-        { key: `flags.midi-qol.disadvantage.ability.save.dex`, mode: OVERRIDE, value: 1, priority: 20 },
-        // { key: ``, mode: OVERRIDE, value: 1, priority: 20 },
-    ]
-}]
-await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:targetID.actor.uuid, effects: effectData });
-
-/* game.cub.addCondition(["Grappled", "Restrained"], targetID, {
-    allowDuplicates: true,
-    replaceExisting: false,
-    warn: true
-}); */
-
-message += `<b>${tokenName}</b> is now @JournalEntry[KmWFRyfFImaXM7O9]{Grappling}<br>
-            <b>${targetID.name}</b> has been <b>@JournalEntry[QAwq9CcEg3fh3qZ3]{Grappled}</b> 
-            and <b>@JournalEntry[CZWEqV2uG9aDWJnD]{Restrained}</b><br>`
-
-
-//--------------------------------------------------------------------------------------
-// Apply Grappling condition to the actor
+jezcon.add({ effectName: GRAPPLED_COND, uuid: tToken.actor.uuid, origin: aActor.uuid })
+jezcon.add({ effectName: GRAPPLING_COND, uuid: aToken.actor.uuid, origin: aActor.uuid })
+//----------------------------------------------------------------------------------
+// Pile onto the target with a Restrained effect
 //
-
-effectData = [{
-    label: "Grappling",
-    icon: "Icons_JGB/Conditions/grappling.png",
-    origin: actorID.uuid,
-    disabled: false,
-    duration: { rounds: 99, startRound: gameRound },
-    changes: [
-        { key: `flags.VariantEncumbrance.speed`, mode: MULTIPLY, value: 0.5, priority: 20 },
-        { key: `data.attributes.movement.walk`, mode: MULTIPLY, value: 0.5, priority: 20 },
-        { key: `data.attributes.movement.swim`, mode: MULTIPLY, value: 0.5, priority: 20 },
-        { key: `data.attributes.movement.fly`, mode: MULTIPLY, value: 0.5, priority: 20 },
-        { key: `data.attributes.movement.climb`, mode: MULTIPLY, value: 0.5, priority: 20 },
-        { key: `data.attributes.movement.burrow`, mode: MULTIPLY, value: 0.5, priority: 20 },
-        // { key: ``, mode: OVERRIDE, value: 1, priority: 20 },
-    ]
-}]
-await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:actorID.uuid, effects: effectData });
-
-/* game.cub.addCondition(["Grappling"], token, {
-    allowDuplicates: true,
-    replaceExisting: false,
-    warn: true
-}); */
-
-//--------------------------------------------------------------------------------------
-// Post the results
+await jez.wait(100)
+jezcon.add({ effectName: 'Restrained', uuid: tToken.actor.uuid, origin: aActor.uuid })
+//----------------------------------------------------------------------------------
+// Find the two just added effect data objects so they can be paired, to expire 
+// together.
 //
-await postResults(message);
-if (DEBUG) console.log(`Ending ${MACRONAME}`);
-
+await jez.wait(100)
+let tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)
+if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
+let oEffect = aToken.actor.effects.find(ef => ef.data.label === GRAPPLING_COND)
+if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${aToken.name}.`, "warn")
+const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
+if (!GM_PAIR_EFFECTS) { return false }
+await jez.wait(100)
+await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+//----------------------------------------------------------------------------------
+// Pair the target's grappled and restrained effects
+//
+await jez.wait(100)
+tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)
+if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
+oEffect = tToken.actor.effects.find(ef => ef.data.label === RESTRAINED_COND)
+if (!oEffect) return jez.badNews(`Sadly, there was no Restrained effect from ${aToken.name}.`, "warn")
+await jez.wait(100)
+await GM_PAIR_EFFECTS.execute(tToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+//-------------------------------------------------------------------------------
+// Create an Action Item to allow the target to attempt escape
+//
+const GM_ESCAPE = jez.getMacroRunAsGM(jez.GRAPPLE_ESCAPE_MACRO)
+if (!GM_ESCAPE) { return false }
+await GM_ESCAPE.execute("create", aToken.document.uuid, tToken.document.uuid, aToken.actor.uuid)
+//--------------------------------------------------------------------------------------
+// Post results
+//
+msg = `${tToken.name} has been ${GRAPPLED_JRNL} and ${RESTRAINED_JRNL} by ${aToken.name} who is 
+       ${GRAPPLING_JRNL}.<br><br>${tToken.name} may attempt to end the grapple per standard grapple rules.`
+ postResults(msg);
 /***************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************/
-
-/****************************************************************************************
-* Check to see if at least one target was hit, Return false if missed.
+ ****************************************************************************************
+ * Check to see if at least one target was hit, Return false if missed.
  ***************************************************************************************/
 function wasHit() {
     let DEBUG = false;
 
     if (args[0].hitTargets.length === 0) {
-        message = ` Missed ${targetID.name}, will not check for effects`;
-        if (DEBUG) console.log(message);
+        msg = ` Missed ${tToken.name}, will not check for effects`;
+        if (DEBUG) console.log(msg);
         return(false);
     } else {
         return(true);
     }
 }
-
 /****************************************************************************************
  * Verify exactly one target selected, boolean return
  ***************************************************************************************/
 function oneTarget() {
     let DEBUG = false;
-
     if (!game.user.targets) {
-        message = `Targeted nothing, must target single token to be acted upon`;
-        // ui.notifications.warn(message);
-        if (DEBUG) console.log(message);
+        msg = `Targeted nothing, must target single token to be acted upon`;
+        // ui.notifications.warn(msg);
+        if (DEBUG) console.log(msg);
         return (false);
     }
     if (game.user.targets.ids.length != 1) {
-        message = `Please target a single token to be acted upon. <br>Targeted ${game.user.targets.ids.length} tokens`;
-        // ui.notifications.warn(message);
-        if (DEBUG) console.log(message);
+        msg = `Please target a single token to be acted upon. <br>Targeted ${game.user.targets.ids.length} tokens`;
+        // ui.notifications.warn(msg);
+        if (DEBUG) console.log(msg);
         return (false);
     }
     if (DEBUG) console.log(` targeting one target`);
@@ -236,15 +179,13 @@ function sizesLarger(token1, token2) {
             }
         }
     }
-
-    // token1 = canvas.tokens.get(args[0].tokenId);
     let token1SizeString = token1.document._actor.data.data.traits.size;
     let token1SizeObject = new CreatureSizes(token1SizeString);
     let token1Size = token1SizeObject.SizeInt;  // Returns 0 on failure to match size string
     if (!token1Size) {
-        let message = `Size of ${token1.name}, ${token1SizeString} failed to parse. End ${macroName}<br>`;
-        if (debug) console.log(message);
-        ui.notifications.error(message);
+        let msg = `Size of ${token1.name}, ${token1SizeString} failed to parse. End ${macroName}<br>`;
+        if (debug) console.log(msg);
+        ui.notifications.error(msg);
         return(99);
     }
     if (DEBUG) console.log(` Token1: ${token1SizeString} ${token1Size}`)
@@ -254,9 +195,9 @@ function sizesLarger(token1, token2) {
      let token2SizeObject = new CreatureSizes(token2SizeString);
      let token2Size = token2SizeObject.SizeInt;  // Returns 0 on failure to match size string
      if (!token2Size) {
-         message = `Size of ${token2.name}, ${token2SizeString} failed to parse. End ${macroName}<br>`;
-         if (debug) console.log(message);
-         ui.notifications.error(message);
+         msg = `Size of ${token2.name}, ${token2SizeString} failed to parse. End ${macroName}<br>`;
+         if (debug) console.log(msg);
+         ui.notifications.error(msg);
          return(99);
      }
      if (DEBUG) console.log(` Token2: ${token2SizeString} ${token2Size}`)
@@ -265,21 +206,14 @@ function sizesLarger(token1, token2) {
      if (DEBUG) console.log(` sizeDelta ${sizeDelta}`)
      return(sizeDelta);
 }
-
 /****************************************************************************************
  * Post the results to chat card
  ***************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
-
-    if(DEBUG) console.log(`postResults: ${resultsString}`);
-  
-    let chatMessage = await game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
-    const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
-    return;
-  }
+ function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    jez.trc(2,trcLvl,"postResults Parameters","msg",msg)
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+}

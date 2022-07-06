@@ -170,7 +170,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 22.07.05 Working toward getting all of the "Grappling" condition macros to add an escape action.  Following is the list of identified issues:
 
 * Constrict -- updated 7.5
-* Crocodile_Bite 
+* Crocodile_Bite -- updated 7.6
 * Grasping_Hand
 * Grasping_Root
 * Vampire_Claw
