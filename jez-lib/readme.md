@@ -1022,7 +1022,7 @@ async function workHorse(dataObj) {
 
 ---
 
-### suppressTokenMoldRenaming(delay = 500) 
+### suppressTokenMoldRenaming(\<delay = 500\>) 
 
 If the token-mold module is active, check to see if renaming is enabled.  If it is, turn it off for a bit and then turn it back on. The bit is determined by the optional argument, which defaults to a half second.
 
