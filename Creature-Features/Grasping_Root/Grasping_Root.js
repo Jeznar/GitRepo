@@ -19,55 +19,55 @@ const MACRONAME = "Grasping_Root"
  * 
  * 02/16/22 0.1 Creation of Macro
  * 05/02/22 0.2 Update for Foundry 9.x
+ * 07/06/22 0.3 Replace native calls with warpgate to spawn in the roots
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
-if (!aActor) {
-    msg = `[${MACRONAME}] Principal actor not found on scene.`;
-    console.log(msg);
-    ui.notifications.error(msg)
-    return (false);
-}
-jez.log("Actor/Token/Item",`${aActor.name}`,aActor,`${aToken.name}`,aToken,`${aItem.name}`,aItem)
+//---------------------------------------------------------------------------------------------------
+// Set the value for the Active Token (aToken)
+let aToken;
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor;
+//
+// Set the value for the Active Item (aItem)
+let aItem;
+if (args[0]?.item) aItem = args[0]?.item;
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
+const GRAPPLED_COND = "Grappled"
+const GRAPPLING_COND = "Grappling"
+const RESTRAINED_COND = "Restrained"
+const GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLED_COND).id}]{Grappled}`
+const GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLING_COND).id}]{Grappling}`
+const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName(RESTRAINED_COND).id}]{Restrained}`
+
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 const GAME_RND = game.combat ? game.combat.round : 0;
 const MINION = "Grasping Root"
 const MINION_NAME = `${aToken.name}'s ${MINION} - ${GAME_RND}`
 let tCoord = {}     // Will contain coordinate of summoned token
 const GRAPPLED_ICON = "Icons_JGB/Conditions/grappling.svg"
-const GRAPPLED_COND = "Grappled"
-const GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName("Grappled").id}]{Grappled}`
 const GRAPPLING_ICON = "Icons_JGB/Conditions/grappling.png"
-const GRAPPLING_COND = "Grappling"
-const GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName("Grappling").id}]{Grappling}`
 let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 // Only for the OnUse execution case.
 //
-if ((args[0]?.tag==="OnUse") && (!preCheck())) return;
+if ((args[0]?.tag === "OnUse") && (!preCheck())) return;
 //-------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 jez.log(`Call the apppriate main function based on mode. ${args[0]}  ${args[0]?.tag}`)
 if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-//if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 jez.log("")
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -100,7 +100,7 @@ function preCheck() {
     // Is the target already being afflicted by this ability?  It can only have one root on it.
     //
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    jez.log('tToken.actor.effects',tToken.actor.effects)
+    jez.log('tToken.actor.effects', tToken.actor.effects)
     let alreadyGrappled = tToken.actor.effects.find(i => i.data.label === GRAPPLED_COND &&
         i.sourceName === aItem.name);
     if (alreadyGrappled) {
@@ -109,9 +109,9 @@ function preCheck() {
         ui.notifications.info(msg)
         jez.log(msg)
 
-        jez.addMessage(chatMsg, {color:"darkblue", fSize:15, msg:msg, tag:"saves" })
+        jez.addMessage(chatMsg, { color: "darkblue", fSize: 15, msg: msg, tag: "saves" })
 
-        return(false)
+        return (false)
     } jez.log("all clear to continue.")
     return (true)
 }
@@ -121,30 +121,19 @@ function preCheck() {
  * 
  * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects
  ***************************************************************************************************/
- async function doOff() {
+async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    let pairedId     = args[1];
+    let pairedId = args[1];
     let pairedEffect = args[2];
-    let pairedToken  = canvas.tokens.placeables.find(ef => ef.id === pairedId)
+    let pairedToken = canvas.tokens.placeables.find(ef => ef.id === pairedId)
     // Remove a "paired" effect when either of the partner effects is deleted
     jez.log(`Attempt to remove ${pairedEffect} from ${pairedToken.name} as well.`)
     let pairedEffectObj = pairedToken.actor.effects.find(i => i.data.label === pairedEffect);
     if (pairedEffectObj) {
         jez.log(`Attempting to remove ${pairedEffectObj.id} from ${pairedToken.actor.uuid}`)
-        MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
+        MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: pairedToken.actor.uuid, effects: [pairedEffectObj.id] });
     }
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-  }
-  
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("A place for things to be done");
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
 }
@@ -165,56 +154,73 @@ async function doOnUse() {
     //----------------------------------------------------------------------------------------------
     // Summon the the new actor to the scene
     //
-// COOL-THING: Summon an existing actor to the scene
-    await executeSummon(MINION, tCoord.x, tCoord.y, null)
-    await jez.wait(500)
-    //----------------------------------------------------------------------------------------------
-    // Find the just summoned token and rename it to our "uniquish" name
+    let sToken = await executeSummon(MINION, tCoord.x, tCoord.y, MINION_NAME)
+    //----------------------------------------------------------------------------------
+    // Modify the GRAPPLING condition to include an Overtime DoT element and apply
     //
-// COOL-THING: Renaming a token in the scene
-    let mToken = await findTokenByName(MINION)  // minion token
-    const updates = { _id: mToken.id, name: MINION_NAME };
-    await mToken.document.update(updates);  // Added ".document." for FoundryVTT 9.x compatibility
-    //----------------------------------------------------------------------------------------------
-    // Apply Grappled & Grappling Conditions 
+    let statMod = jez.getStatMod(aToken,"str")
+    let effectData = game.dfreds.effectInterface.findEffectByName(GRAPPLED_COND).convertToObject();
+    let overTimeVal=`turn=start,label="Grasping Root",damageRoll=1d6+${statMod},saveMagic=true,damageType=bludgeoning`
+    effectData.changes.push( { key: 'flags.midi-qol.OverTime', mode: jez.OVERRIDE, value:overTimeVal , priority: 20 })
+    game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tToken.actor.uuid, origin: sToken.actor.uuid });
+    //----------------------------------------------------------------------------------
+    // Apply the GRAPPLING Condition
     //
-    await applyGrappling(mToken, tToken);
-    await applyGrappled(tToken, mToken);
-    // https://www.w3schools.com/tags/ref_colornames.asp
-    msg = `<p style="color:blue;font-size:14px;">
-    Maybe say something useful...</p>`
-    //postResults(msg);
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-}
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- ***************************************************************************************************/
- async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("The do On Use code")
+    jezcon.add({ effectName: GRAPPLING_COND, uuid: sToken.actor.uuid, origin: sToken.actor.uuid })
+    //----------------------------------------------------------------------------------
+    // Find the two just added effect data objects so they can be paired, to expire 
+    // together.
+    //
+    await jez.wait(100)
+    let tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === sToken.actor.uuid)
+    if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${sToken.name} found on ${tToken.name}.`, "warn")
+    let oEffect = sToken.actor.effects.find(ef => ef.data.label === GRAPPLING_COND)
+    if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${sToken.name}.`, "warn")
+    const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
+    if (!GM_PAIR_EFFECTS) { return false }
+    await jez.wait(100)
+    await GM_PAIR_EFFECTS.execute(sToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    //-------------------------------------------------------------------------------
+    // Create an Action Item to allow the target to attempt escape
+    //
+    const GM_MACRO = jez.getMacroRunAsGM("GrappleEscapeFixedDC")
+    jez.log("GM_MACRO",GM_MACRO)
+    if (!GM_MACRO) { return false }
+    await GM_MACRO.execute("create", sToken.document.uuid, tToken.document.uuid, sToken.actor.uuid, 15)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /*****************************************************************************************
  *  executeSummon call the runAsGM macro to place the summoned root creature * 
  *****************************************************************************************/
- async function executeSummon(minion, x, y, update) {
-    const FUNCNAME = "executeSummon";
-    const RUNASGMMACRO = "SummonCreatureMacro";
-    // Make sure the RUNASGMMACRO exists and is configured correctly
-    const SummonFunc = game.macros.getName(RUNASGMMACRO);
-    if (!SummonFunc) { ui.notifications.error(`Cannot locate ${RUNASGMMACRO} run as GM Macro`); return;}
-    if (!SummonFunc.data.flags["advanced-macros"].runAsGM) {ui.notifications.error(`${RUNASGMMACRO} "Execute as GM" needs to be checked.`); return; }
-    jez.log(` Found ${RUNASGMMACRO}, verified Execute as GM is checked`);
-    // Invoke the RunAsGM Macro to do the job
-    SummonFunc.execute(minion, x, y, update);
+async function executeSummon(minion, x, y, newname) {
+    let updates = {
+        token: { name: newname },
+        actor: { name: newname },
+    }
+    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
+    const CALLBACKS = {
+        pre: async (template) => {
+            jez.vfxPreSummonEffects(template, { color: "*", scale: 1, opacity: 1 });
+            await warpgate.wait(500);
+        },
+        post: async (template) => {
+            jez.vfxPostSummonEffects(template, { color: "*", scale: 1, opacity: 1 });
+            await warpgate.wait(500);
+        }
+    };
+    jez.log("About to call Warpgate.spawnAt")
+    jez.suppressTokenMoldRenaming()
+    let returned = await warpgate.spawnAt({ x: x, y: y }, minion, updates, CALLBACKS, OPTIONS);
+    jez.log("returned", returned)
+    summonedID = returned[0] // The token ID of the summoned sphere
+    summonedToken = canvas.tokens.placeables.find(ef => ef.id === summonedID)
+    return summonedToken
 }
 /***************************************************************************************************
  * Find an owned token by name on current scene.  Return the token or null if not found
  ***************************************************************************************************/
- async function findTokenByName(name) {
+async function findTokenByName(name) {
     const FUNCNAME = "findTokenByName(name)";
     jez.log(`---- Starting ${FUNCNAME} -----`)
     let targetToken = null
@@ -243,48 +249,3 @@ async function doOnUse() {
     jez.log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return (foundToken);
 }
-/***************************************************************************************************
- * Apply the Grappling Condition to the initiating Root
- ***************************************************************************************************/
-async function applyGrappling(token1, token2) {
-    let constrictingEffect = [{
-        label: GRAPPLING_COND,
-        icon: GRAPPLING_ICON,
-        origin: LAST_ARG.uuid,
-        disabled: false,
-        duration: { rounds: 99, startRound: GAME_RND }, 
-        // Sadly, DAE triggers the following even if zero damage gets through to the target
-        // flags: { dae: { itemData: aItem, specialDuration: ["isDamaged"] } },
-        changes: [
-            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Can only constrict one target at a time", priority: 20 },
-            { key: `macro.itemMacro`, mode: CUSTOM, value: `${token2.id} ${GRAPPLED_COND}`, priority: 20 },
-        ]
-    }]
-    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:token1.actor.uuid, effects: constrictingEffect });
-}
-/***************************************************************************************************
- * Apply the Grappled Condition to the target token
- ***************************************************************************************************/
-// COOL-THING: Midi Overtime used to apply a DoT effect
- async function applyGrappled(token1, token2) {
-    let overTimeValue = `turn=start,label=${aItem.name},damageRoll=1d6+6,damageType=bludgeoning`
-    let restrainedEffect = [{
-        label: GRAPPLED_COND,
-        icon: GRAPPLED_ICON,
-        // origin: aActor.uuid,
-        origin: LAST_ARG.uuid,
-        disabled: false,
-        duration: { rounds: 99, startRound: GAME_RND }, 
-        changes: [
-            { key: `flags.VariantEncumbrance.speed`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.walk`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.swim`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.fly`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.climb`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.burrow`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `macro.itemMacro`, mode: CUSTOM, value: `${token2.id} ${GRAPPLING_COND}`, priority: 20 },
-            { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: `${overTimeValue}`, priority: 20 }
-        ]
-    }]
-    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:token1.actor.uuid, effects: restrainedEffect });
- }

@@ -1028,6 +1028,10 @@ If the token-mold module is active, check to see if renaming is enabled.  If it 
 
 This is one that should not have "await" applied...
 
+~~~javascript
+jez.suppressTokenMoldRenaming()
+~~~
+
 [*Back to Functions list*](#functions-in-this-module)
 
 ---

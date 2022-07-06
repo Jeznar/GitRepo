@@ -1,0 +1,140 @@
+{
+  "name": "%%Escape%%",
+  "type": "feat",
+  "img": "Icons_JGB/Actions/Grapple_Escape.png",
+  "data": {
+    "description": {
+      "value": "<p>%TOKENNAME% can use its action to attempt to escape from %GRAPPLERNAME%'s grasp.</p>\n<p>To do so, you must succeed on a Strength (<a href=\"https://www.dndbeyond.com/compendium/rules/basic-rules/using-ability-scores#Athletics\" data-tooltip-href=\"//www.dndbeyond.com/skills/2-tooltip?disable-webm=1&amp;disable-webm=1\">Athletics</a>) or Dexterity (<a href=\"https://www.dndbeyond.com/compendium/rules/basic-rules/using-ability-scores#Acrobatics\" data-tooltip-href=\"//www.dndbeyond.com/skills/3-tooltip?disable-webm=1&amp;disable-webm=1\">Acrobatics</a>) check contested by its Strength (<a href=\"https://www.dndbeyond.com/compendium/rules/basic-rules/using-ability-scores#Athletics\" data-tooltip-href=\"//www.dndbeyond.com/skills/2-tooltip?disable-webm=1&amp;disable-webm=1\">Athletics</a>) check.</p>\n<hr />\n<p><strong>FVTT</strong>. This action requires the actor to be grappled. The grappler does not need to be targeted.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "%%Escape%%",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Grapple_Escape_0.8.js\"\nconst GRAPPLER_ACTOR_UUID = \"%GRAPPLER_ACTOR_UUID%\" // Actor.8D0C9nOodjwHDGQT\nconst GRAPPLER_TOKEN_UUID = \"%GRAPPLER_TOKEN_UUID%\" // Scene.MzEyYTVkOTQ4NmZk.Token.cBMsqVwfwf1MxRxV\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Attempt to escape grapple from actor defined by GRAPPLER_UUID as an action \n * \n *  Steps:\n *  - Set needed variables\n *  - Determine initiator's atheletics or acrobatics roll\n *  - Obtain grapplers (targeted_ atheletics roll\n *  - Determine success/failure\n *  - Post results\n *\n * 10/29/21 0.1 JGB created from vampire unarmed strike\n * 11/06/21 0.2 JGB Major rewrite from the grapple macro\n * 11/06/21 0.3 JGB Some minor cleanups\n * 11/07/21 0.4 JGB Add codeto remove effects asGM (Crymic)\n * 12/05/21 0.5 JGB Add line to force scroll to bottom of chat\n * 12/06/21 0.6 JGB Cleanup existing Restrained if any\n * 07/04/22 0.7 JGB Convert to CE for effect management\n * 07/05/22 0.8 Major Shakeup to work as a pre-defined escape\n **********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nlet msg = \"\"\nlet trcLvl = 4\njez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);\nfor (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Actor (aActor)\n//\nlet aActor;\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\n//\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData\njez.trc(3,trcLvl,\"----------------\",\"aActor\",aActor,\"aToken\",aToken,\"aItem\",aItem)\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nmain()\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Do the real stuff\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function main() {\n    let tTokenDocument5e = await fromUuid(GRAPPLER_TOKEN_UUID)     // Retrieves document for the UUID\n    let aEffect = await aToken?.actor?.effects?.find(ef => ef?.data?.label === \"Grappled\" && \n                        ef?.data?.origin === GRAPPLER_ACTOR_UUID)\n    jez.trc(3, trcLvl,\"Active Effect\",aEffect)\n    //-----------------------------------------------------------------------------------------------\n    // Obtain the origin Token data object from the UUID\n    //\n    if (!tTokenDocument5e) {    // Grappling actor not found, clear effect and delete escape item\n        jez.trc(3, trcLvl,\"tTokenDocument5e\",tTokenDocument5e)\n        msg = `<b>${aToken.name}</b>'s grappler seems to have left the field, removing the effect and\n        temporary item.  This did not require an action.`\n        await aEffect?.delete();\n        await jez.deleteItems(aItem.name, \"feat\", aToken.actor);\n        jez.trc(2, trcLvl, msg);\n        postResults(msg);\n        return\n    }\n    let tToken = tTokenDocument5e._object                   // Nab Token5e out of a aTokenDocument5e\n    jez.trc(3,trcLvl,\"tTokenDocument5e._actor.uuid\", tTokenDocument5e?._actor?.uuid)\n    //-----------------------------------------------------------------------------------------------\n    // Find the Grappled effect on active token that corresponds with this item\n    //\n    jez.log(\"aToken.actor.effects\",aToken.actor.effects)\n    if (!aEffect) {         // Grappled effect not found on aToken, delete this macro\n        msg = `<b>${aToken?.name}</b> lacks the grappled by <b>${tToken?.name}</b> effect, removing the\n        temporary item.  This did not require an action.`\n        jez.trc(2, trcLvl, msg);\n        await jez.deleteItems(aItem.name, \"feat\", aToken.actor);\n        postResults(msg);\n        return\n    }\n    jez.trc(3,trcLvl,\"Current Grappled effect\", aEffect)\n    //-----------------------------------------------------------------------------------------------\n    // If the tToken is not grappling, delete grappled effect and this macro\n    //\n    if (!tToken.actor.effects.find(ef => ef.data.label === \"Grappling\")) {\n        await aEffect.delete();\n        await jez.deleteItems(aItem.name, \"feat\", aToken.actor);\n        msg = `<b>${aToken.name}</b> was not being grappled by <b>${tToken.name}</b>, removed the effect and\n        temporary item.  This did not require an action.`\n        jez.trc(2, trcLvl, msg);\n        postResults(msg);\n        return;\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Determing the escapee's check result (roll dialog)\n    //\n    let skill = \"ath\";\n    if (aToken.actor.data.data.skills.acr.total >= aToken.actor.data.data.skills.ath.total) { skill = \"acr\" }\n    let aTokenRoll = await aToken.actor.rollSkill(skill, { chatMessage: false });\n    if (!aTokenRoll) return; // terminate this macro if dialog fails to return a roll\n    jez.trc(3, trcLvl, \"aTokenRoll\", aTokenRoll)\n    let rollType = aTokenRoll.terms[0].modifiers[0] === \"kh\" ? \" (Advantage)\" : aTokenRoll.terms[0].modifiers[0] === \"kl\" ? \" (Disadvantage)\" : \"\";\n    game.dice3d?.showForRoll(aTokenRoll);\n    let aTokenSkill = skill == \"ath\" ? \"Atheletics\" : \"Acrobatics\"; // Set long form of skill\n    /************************************************************************\n    * Determing the grapplers's check result (roll dialog)\n    *************************************************************************/\n    let targetRoll = await tToken.actor.rollSkill('ath', { chatMessage: false, fastForward: true });\n    if (!targetRoll) return; // terminate this macro if dialog fails to return a roll\n    jez.trc(3, trcLvl, \"targetRoll\", targetRoll)\n    game.dice3d?.showForRoll(targetRoll);\n    /**************************************************************************\n     * Determine if escape succeeded \n     *************************************************************************/\n    let aTokenWin = \"\";\n    let targetWin = \"\";\n    aTokenRoll.total >= targetRoll.total ? aTokenWin = `success` : targetWin = `success`;\n    if (aTokenWin) jez.trc(2, trcLvl, `${aToken.name} escaped from ${tToken.name}'s grapple`)\n    else jez.trc(2, trcLvl, `${aToken.name} remains grappled by ${tToken.name}`)\n    /**************************************************************************\n     *  Remove grappled and grappling condition if aToken won the contest\n     **************************************************************************/\n    if (aTokenWin) {\n        // aToken should always have authority to alter effects in their own token\n        let aTokenExistingEffect = await aToken.actor.effects.find(ef => ef.data.label === \"Grappled\");\n        if (aTokenExistingEffect) await aTokenExistingEffect.delete();\n\n        // let targetExistingEffect = await tToken.actor.effects.find(ef => ef.data.label === \"Grappling\");\n        // Following line fails with permission error when run against a non-owned token\n        // await targetExistingEffect.delete();\n        // Crymic posted a snippet that includes essentially the preceding line and the following\n        //if (targetExistingEffect) await MidiQOL.socket().executeAsGM(\"removeEffects\",\n        //    { actorUuid: tToken.actor.uuid, effects: [targetExistingEffect.id] });\n\n        let message = `<b>${aToken.name}</b> has escapped the grapple from <b>${tToken.name}</b>`\n        jez.trc(2, trcLvl, message);\n        postResults(message);\n        await jez.wait(100)\n    }\n    else {\n        let message = `<b>${aToken.name}</b> remains grappled by <b>${tToken.name}</b>`\n        jez.trc(2, trcLvl, message);\n        await postResults(message);\n        await jez.wait(100)\n    }\n    await jez.wait(250)\n    updateChatCard()\n    /**************************************************************************\n     *  Build and Display dialog\n     *************************************************************************/\n    async function updateChatCard() {\n        let damage_results = `\n  <div class=\"flexrow 2\">\n  <div><div style=\"text-align:center\">${aToken.name}</div></div><div><div style=\"text-align:center\">${tToken.name}</div></div>\n  </div>\n  <div class=\"flexrow 2\">\n      <div>\n          <div style=\"text-align:center\">${aTokenSkill}${rollType}</div>\n          <div class=\"dice-roll\">\n              <div class=\"dice-result\">\n                  <div class=\"dice-formula\">${aTokenRoll.formula}</div>\n                  <div class=\"dice-tooltip\">\n                      <div class=\"dice\">\n                          <header class=\"part-header flexrow\">\n                              <span class=\"part-formula\">${aTokenRoll.formula}</span>\n                              <span class=\"part-total\">${aTokenRoll.total}</span>\n                          </header>\n                      </div>\n                  </div>\n                  <h4 class=\"dice-total ${aTokenWin}\">${aTokenRoll.total}</h4>\n              </div>\n          </div>\n      </div>\n      <div>\n          <div style=\"text-align:center\">Atheletics</div>\n          <div class=\"dice-roll\">\n              <div class=\"dice-result\">\n                  <div class=\"dice-formula\">${targetRoll.formula}</div>\n                  <div class=\"dice-tooltip\">\n                      <div class=\"dice\">\n                          <header class=\"part-header flexrow\">\n                              <span class=\"part-formula\">${targetRoll.formula}</span>\n                              <span class=\"part-total\">${targetRoll.total}</span>\n                          </header>\n                      </div>\n                  </div>\n                  <h4 class=\"dice-total ${targetWin}\">${targetRoll.total}</h4>\n              </div>\n          </div>\n      </div>\n      \n  </div>`;\n        const chatMessage = game.messages.get(args[0].itemCardId);\n        let content = duplicate(chatMessage.data.content);\n        const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n        const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${damage_results}`;\n        content = content.replace(searchString, replaceString);\n        await chatMessage.update({ content: content });\n        await ui.chat.scrollBottom();\n    }\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);\n    jez.trc(2, trcLvl, \"postResults Parameters\", \"msg\", msg)\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    jez.trc(1, trcLvl, `--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "core": {
+      "sourceId": "Item.NbsdUnnQ1OBiPOnB"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

@@ -172,7 +172,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 * Constrict -- updated 7.5
 * Crocodile_Bite -- updated 7.6
 * Grasping_Hand -- updated 7.6
-* Grasping_Root
+* Grasping_Root -- updated 7.6
 * Vampire_Claw
 
 

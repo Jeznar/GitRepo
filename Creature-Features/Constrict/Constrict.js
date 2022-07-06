@@ -124,8 +124,8 @@ async function doOnUse() {
     //----------------------------------------------------------------------------------
     // Apply the GRAPPLED and GRAPPLING Cconditions
     //
-    jezcon.add({ effectName: 'Grappled', uuid: tToken.actor.uuid, origin: aActor.uuid })
-    jezcon.add({ effectName: 'Grappling', uuid: aToken.actor.uuid, origin: aActor.uuid })
+    jezcon.add({ effectName: GRAPPLED_COND, uuid: tToken.actor.uuid, origin: aActor.uuid })
+    jezcon.add({ effectName: GRAPPLING_COND, uuid: aToken.actor.uuid, origin: aActor.uuid })
     //----------------------------------------------------------------------------------
     // Find the two just added effect data objects so they can be paired, to expire 
     // together.
