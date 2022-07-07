@@ -1,0 +1,193 @@
+{
+  "name": "Vampire Claw",
+  "type": "weapon",
+  "img": "Icons_JGB/Monster_Features/Vampire_Claws.png",
+  "data": {
+    "description": {
+      "value": "<p>%TOKENNAME% slashes out with claws.  On a hit, inflicting damage or beginning a grapple. </p>\n<hr />\n<p><strong>FoundryVTT</strong>: This item will display a dialog asking if it is a normal attack or a grapple.  A grapple can be terminated normally.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Basic Rules pg 352",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "simpleM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ada": false,
+      "mgc": false,
+      "sil": false,
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "critOther": false
+    },
+    "proficient": true,
+    "recharge": {
+      "value": null,
+      "charged": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "monsterMunch": {
+      "titleHTML": "<strong>Unarmed Strike (Vampire Form Only).</strong>",
+      "fullName": "Unarmed Strike (Vampire Form Only)."
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "fumbleThreshold": null,
+      "effectActivation": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Vampire Claw",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Vampire_Claw.1.3.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Allows option to autograpple or do damage on a hit.  I've \n * added paramaeters at the top to make it easier to adjust\n * power of particular vamp. Based on Crymic's macro.\n * \n * Eliminated the save vs being grappled.\n * \n * 10/29/21 1.0 JGB Updated starting from Cyrmic's code\n * 11/06/21 1.1 JGB Add Grappling condition parallel as done\n *                  in grapple/escape macros\n * 05/04/22 1.2 JGB Update for Foundry 9.x\n * 07/06/22 1.3 JGB Converting to CE for conditions\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nlet trcLvl = 5;\njez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);\nfor (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet msg = \"\";\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst GRAPPLED_COND = \"Grappled\"\nconst GRAPPLING_COND = \"Grappling\"\nconst GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLED_COND).id}]{Grappled}`\nconst GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLING_COND).id}]{Grappling}`\n//\nconst numDice =   2;     // Number of dice to roll for damage\nconst typeDice = \"d4\"; // Type of dice to roll for damage\nconst atckStat = \"str\";// Stat to add, typically str or dex\nconst damageType = \"slashing\";\n/*********************************************************/\njez.trc(1, trcLvl, \"Starting: \" + MACRONAME);\n\njez.log(\"aItem\",aItem)\njez.log(\"aItem\",aItem)\n\nmain()\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function preCheck() {\n    if (LAST_ARG.hitTargets.length === 0) return jez.badNews(\"No targets were hit\", \"info\");\n    return (true)\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);\n    jez.trc(2, trcLvl, \"postResults Parameters\", \"msg\", msg)\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    jez.trc(1, trcLvl, `--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * main\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function main() {\n    if (!await preCheck()) return (false);\n    let tToken = canvas.tokens.get(LAST_ARG.hitTargets[0].id);\n    jez.trc(2, trcLvl, ` tToken ${tToken?.name}`, tToken);\n    //----------------------------------------------------------------------------------------------\n    // Check to see if target is already Grappled by the active token\n    //\n    const EFFECT = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && \n        ef.data.origin === aActor.uuid)\n    jez.trc(3, trcLvl, ` EFFECT:`, EFFECT);\n    //----------------------------------------------------------------------------------------------\n    // If target is not already grappled ask if this is an attack or a grapple in a dialog\n    //\n    if (!EFFECT) {\n        new Dialog({\n            title: aItem.name,\n            content: `Pick an attack`,\n            buttons: {\n                attack: {\n                    label: \"Attack\", callback: async () => {\n                        doAttack(aToken, tToken)\n                    }\n                },\n                grapple: {\n                    label: GRAPPLED_COND, callback: async () => {\n                        doGrapple(aToken, tToken)\n                    }\n                }\n            },\n            default: \"attack\"\n        }).render(true);\n    } else doAttack(aToken, tToken)\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * \n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doAttack(aToken, tToken) {\n    const FUNCNAME = \"doAttack(aToken, tToken)\";\n    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);\n    jez.trc(2, trcLvl, `---   Args   ---`, `${aToken.name}`, aToken, `${tToken.name}`, tToken);\n    //----------------------------------------------------------------------------------------------\n    // Roll up the damage\n    //\n    const damageRoll = new Roll(`${numDice}${typeDice} + @abilities.${atckStat}.mod`,\n        aActor.getRollData()).evaluate({ async: false });\n    jez.trc(3, trcLvl, ` Damage: ${damageRoll.total}`, damageRoll);\n    game.dice3d?.showForRoll(damageRoll);\n    //----------------------------------------------------------------------------------------------\n    // Apply the damage\n    //\n    await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total,\n        damageType, [tToken], damageRoll,\n        {\n            flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`,\n            itemCardId: LAST_ARG.itemCardId, useOther: false\n        });\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * \n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doGrapple(aToken, tToken) {\n    const FUNCNAME = \"doGrapple(aToken, tToken)\";\n    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);\n    jez.trc(2, trcLvl, `---   Args   ---`, `${aToken.name}`, aToken, `${tToken.name}`, tToken);\n    //-----------------------------------------------------------------------------------------------\n    // Apply Grappled Effect\n    //\n    jez.trc(2, trcLvl, \" Apply grappled condition\");\n    jezcon.add({ effectName: 'Grappled', uuid: tToken.actor.uuid, origin: aActor.uuid })\n    //-----------------------------------------------------------------------------------------------\n    // Add GRAPPLING_COND effect to originating token \n    //\n    jezcon.add({ effectName: 'Grappling', uuid: aToken.actor.uuid })\n    //-----------------------------------------------------------------------------------------------\n    // Find the two just added effect data objects so they can be paired, to expire \n    // together.\n    //\n    await jez.wait(250)\n    let tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND &&\n        ef.data.origin === aToken.actor.uuid)\n    jez.trc(3,trcLvl,`===> tEffect ${tEffect?.uuid}`, tEffect)\n    if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found \n        on ${tToken.name}.`, \"warn\")\n    let aEffect = aToken.actor.effects.find(ef => ef.data.label === GRAPPLING_COND)\n    jez.trc(3,trcLvl,`===> aEffect ${aEffect?.uuid}`, aEffect)\n    if (!aEffect) return jez.badNews(`Sadly, there was no Grappling effect found on ${aToken.name}.`\n        , \"warn\")\n    const GM_PAIR_EFFECTS = jez.getMacroRunAsGM(\"PairEffects\")\n    if (!GM_PAIR_EFFECTS) { return false }\n    await jez.wait(100)\n    // await GM_PAIR_EFFECTS.execute(aToken.id, aEffect.data.label, tToken.id, tEffect.data.label)\n    await GM_PAIR_EFFECTS.execute(aEffect.uuid, tEffect.uuid)\n    //-----------------------------------------------------------------------------------------------\n    // Create an Action Item to allow the target to attempt escape\n    //\n    await jez.wait(500)\n    const GM_ESCAPE = jez.getMacroRunAsGM(jez.GRAPPLE_ESCAPE_MACRO)\n    if (!GM_ESCAPE) { return false }\n    await GM_ESCAPE.execute(\"create\", aToken.document.uuid, tToken.document.uuid, aToken.actor.uuid)\n    //------------------------------------------------------------------------------------------------\n    // Post completion message\n    //\n    msg = `<b>${tToken.name}</b> has been ${GRAPPLED_JRNL} by <b>${aToken.name}</b> who is now\n       ${GRAPPLING_JRNL}.<br><br>${tToken.name} may attempt to end the grapple per standard \n       grapple rules.`\n    postResults(msg)\n    jez.trc(1, trcLvl, `--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);\n    return true;\n}\n\n\n\n\n\n\n\n// /**************************************************************************************************************\n//      * Add a macro execute line calling the macro \"Remove_Paired_Effect\" which must exist in the macro folder to \n//      * named effect on the pair of tokens supplied.  \n//      * \n//      * Note: This operates on effect by name which can result in unexpected results if multiple effects on a an\n//      * actor have the same name.  Not generally an issue, but it might be.\n//      * \n//      * subject1 & subject2 are types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)\n//      * effectName1 & effectName2 are strings that idntify effects on their respective token actors. They can be \n//      * uuid, data object, or string name.  Data object is recommended to avoid potential mismatches. \n//      **************************************************************************************************************/\n//   async function pairEffects(subject1, effectName1, subject2, effectName2) {\n//     let trcLvl = 0\n//     //---------------------------------------------------------------------------------------------------------\n//     // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails\n//     //\n//     let actor1 = jez.getActor5eDataObj(subject1)\n//     if (!actor1) return (ui.notfications.error(\"First subject not a token, actor, tokenId or actorId\"))\n//     let actor2 = jez.getActor5eDataObj(subject2)\n//     if (!actor2) return (ui.notfications.error(\"Second subject not a token, actor, tokenId or actorId\"))\n//     //---------------------------------------------------------------------------------------------------------\n//     // Make sure the macro that will be called later exists.  Throw an error and return if not\n//     //\n//     let pairingMacro = game.macros.find(i => i.name === \"Remove_Paired_Effect\");\n//     if (!pairingMacro) return ui.notifications.error(\"REQUIRED: Remove_Paired_Effect macro is missing.\");\n//     //---------------------------------------------------------------------------------------------------------\n//     // Grab the effect data from the first token if we were handed a name and not a data object\n//     // UUID will be of the form: Scene.MzEyYTVkOTQ4NmZk.Token.pcAVMUbbnGZ1lz4h.ActiveEffect.1u3e6c1os77qhwha\n//     jez.log(\"effectName1\", effectName1)\n//     let effectData1 = effectName1\n//     if (jez.isEffectUUID(effectName1)) {\n//         effectData1 = await fromUuid(effectName1)\n//         jez.trc(3, trcLvl, `effectData1 from UUID`, effectData1)\n//     }\n//     else {\n//         if (effectName1?.constructor.name !== \"ActiveEffect5e\") {\n//             jez.trc(3, trcLvl, `Seeking ${effectName1} on actor1`, actor1)\n//             effectData1 = await actor1.effects.find(i => i.data.label === effectName1);\n//             jez.trc(3, trcLvl, `effectData1`, effectData1)\n//             if (!effectData1)\n//                 return jez.badNews(`${effectName1} not found on ${actor1.name}.  Effects not paired.`, \"warn\")\n//         }\n//     }\n//     //---------------------------------------------------------------------------------------------------------\n//     // Grab the effect data from the second token\n//     //\n//     jez.log(\"effectName2\", effectName2)\n//     let effectData2 = effectName2\n//     if (jez.isEffectUUID(effectName2)) {\n//         effectData2 = await fromUuid(effectName2)\n//         jez.trc(3, trcLvl, `effectData2 from UUID`, effectData2)\n//     }\n//     else {\n//         if (effectName2?.constructor.name !== \"ActiveEffect5e\") {\n//             jez.trc(3, trcLvl, `Seeking ${effectName2} on actor1`, actor2)\n//             effectData1 = await actor1.effects.find(i => i.data.label === effectName2);\n//             jez.trc(3, trcLvl, `effectData2`, effectData2)\n//             if (!effectData2)\n//                 return jez.badNews(`${effectName2} not found on ${actor2.name}.  Effects not paired.`, \"warn\")\n//         }\n//     }\n//     //---------------------------------------------------------------------------------------------------------\n//     // Add the actual pairings\n//     //\n//     jez.log(\"...\")\n//     jez.log(\"*************\", 'actor1', actor1, 'actor2', actor2, 'effectData1', effectData1, 'effectData2', effectData2)\n//     jez.log(\"......\")\n//     await addPairing(effectData2, actor1, effectData1)\n//     await addPairing(effectData1, actor2, effectData2)\n//     //---------------------------------------------------------------------------------------------------------\n//     // Define a function to do the actual pairing\n//     //\n//     async function addPairing(effectChanged, tokenPaired, effectPaired) {\n//         jez.trc(3, trcLvl,`addPairing(effectChanged, tokenPaired, effectPaired)`)\n//         jez.trc(4, trcLvl,\"------------\",\"effectChanged\",effectChanged,\"tokenPaired\",tokenPaired,\"effectPaired\",effectPaired)\n//         let value = `Remove_Paired_Effect ${tokenPaired.id} ${effectPaired.id}`\n//         effectChanged.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: value, priority: 20 })\n//         return (await effectChanged.update({ changes: effectChanged.data.changes }))\n//     }\n//     return (true)\n//     //---------------------------------------------------------------------------------------------------------\n//     // Define a function to do the actual pairing\n//     //\n//     function isEffectUUID(string) {\n//         // effectUUID will be like: Scene.MzEyYTVkOTQ4NmZk.Token.pcAVMUbbnGZ1lz4h.ActiveEffect.1u3e6c1os77qhwha\n//         if (typeof string !== \"string\") return false            // Must be a string\n//         if (string.length !== 75) return false                  // Must be 75 characters long\n//         stringArray = string.split(\".\")                         // Must be delimited by period characters\n//         if (stringArray.length !== 6) return false              // Must contain 6 parts\n//         if (!stringArray[0] !== \"Scene\") return false           // First part must be \"Scene\"\n//         if (!stringArray[1].length !== 16) return false         // Second part must be 16 characters\n//         if (!stringArray[2] !== \"Token\") return false           // Third part must be \"Token\"\n//         if (!stringArray[3].length !== 16) return false         // Forth part must be 16 characters\n//         if (!stringArray[4] !== \"ActiveEffect\") return false    // Fifth part must be \"ActiveEffect\"\n//         if (!stringArray[5].length !== 16) return false         // Sixth part must be 16 characters\n//         return true\n//     }\n// }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "favtab": {
+      "isFavorite": true
+    },
+    "core": {
+      "sourceId": "Item.WCPuzIrBzJ8pczQT"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false,
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "fulldam": false,
+      "halfdam": false,
+      "nodam": false,
+      "critOther": false,
+      "rollOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    }
+  }
+}

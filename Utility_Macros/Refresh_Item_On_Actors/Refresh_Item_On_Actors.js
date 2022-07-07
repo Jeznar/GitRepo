@@ -244,6 +244,9 @@ async function findDifferences(actorIdArray, nameOfItem, typeOfItem) {
             if (fieldArray.length === 1)
                 if (!jez.isEqual(itemTarget.data.data[field], itemOrigin.data.data[field]))
                     protectFieldsObj[label] = protectFieldsDefaultObj[label]
+                // if (label === "damage") {
+                //     jez.log(`Damage entry itemOrigin.data.data.${field}`, itemOrigin.data.data[field])
+                // }
             if (fieldArray.length === 2)
                 if (!jez.isEqual(itemTarget.data.data?.[fieldArray[0]]?.[fieldArray[1]], itemOrigin.data.data?.[fieldArray[0]]?.[fieldArray[1]]))
                     protectFieldsObj[label] = protectFieldsDefaultObj[label]

@@ -1,4 +1,4 @@
-const MACRONAME = "Grasping_Root"
+const MACRONAME = "Grasping_Root.0.4.js"
 /*****************************************************************************************
  * Grasping Root is a special ability of the Tree Blight defined in CoS
  * 
@@ -20,6 +20,7 @@ const MACRONAME = "Grasping_Root"
  * 02/16/22 0.1 Creation of Macro
  * 05/02/22 0.2 Update for Foundry 9.x
  * 07/06/22 0.3 Replace native calls with warpgate to spawn in the roots
+ * 07/07/22 0.4 JGB Update to use uuid for pair effects call 
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -47,7 +48,7 @@ const GRAPPLED_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLED_COND).id}]{
 const GRAPPLING_JRNL = `@JournalEntry[${game.journal.getName(GRAPPLING_COND).id}]{Grappling}`
 const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName(RESTRAINED_COND).id}]{Restrained}`
 
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 const GAME_RND = game.combat ? game.combat.round : 0;
 const MINION = "Grasping Root"
 const MINION_NAME = `${aToken.name}'s ${MINION} - ${GAME_RND}`
@@ -179,7 +180,8 @@ async function doOnUse() {
     const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
     if (!GM_PAIR_EFFECTS) { return false }
     await jez.wait(100)
-    await GM_PAIR_EFFECTS.execute(sToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    // await GM_PAIR_EFFECTS.execute(sToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    await GM_PAIR_EFFECTS.execute(oEffect.uuid, tEffect.uuid)
     //-------------------------------------------------------------------------------
     // Create an Action Item to allow the target to attempt escape
     //

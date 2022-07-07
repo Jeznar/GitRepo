@@ -1,4 +1,4 @@
-const MACRONAME = "Grasping_Hand.0.3.js"
+const MACRONAME = "Grasping_Hand.0.4.js"
 /*****************************************************************************************
  * Initiate a Grasping Hand grapple or squeeze if already grappling
  * 
@@ -12,6 +12,7 @@ const MACRONAME = "Grasping_Hand.0.3.js"
  * 
  * 06/03/22 0.1 JGB Creation
  * 07/05/22 0.3 JGB Changed to use CE
+ * 07/07/22 0.4 JGB Update to use uuid for pair effects call 
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -171,29 +172,8 @@ async function doOnUse() {
         const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
         if (!GM_PAIR_EFFECTS) { return false }
         await jez.wait(100)
-        await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
-        // await game.cub.addCondition("Grappling", aToken)
-        // await game.cub.addCondition("Grappled", tToken)
-        // await jez.wait(100) // Let things settle a bit
-        // Find the Grappling and Grappled effects to access their Id's
-        // let aEffect = await aActor.effects.find(i => i.data.label === "Grappling");
-        // jez.log("aEffect", aEffect)
-        // let tEffect = await tActor.effects.find(i => i.data.label === "Grappled");
-        // jez.log("tEffect", tEffect)
-        // //
-        // // Modify the grapple effect on the aActor to remove the associated effect on the tActor
-        // let aValue = `Remove_Paired_Effect ${tToken.id} ${tEffect.id}`
-        // jez.log('aValue', aValue)
-        // aEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: aValue, priority: 20 })
-        // let aResult = await aEffect.update({ 'changes': aEffect.data.changes });
-        // if (aResult) jez.log(`Active Effect "Grappling" updated!`, aResult);
-        // //
-        // // Modify the grapple effect on the tActor to remove the associated effect on the aActor
-        // let tValue = `Remove_Paired_Effect ${aEffect.id} ${aToken.id}`
-        // jez.log('tValue', tValue)
-        // tEffect.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: tValue, priority: 20 })
-        // let tResult = await tEffect.update({ 'changes': tEffect.data.changes });
-        // if (tResult) jez.log(`Active Effect "Grappling" updated!`, tResult);
+        // await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+        await GM_PAIR_EFFECTS.execute(oEffect.uuid, tEffect.uuid)
     }
     //----------------------------------------------------------------------------------------------
     // Post results card 

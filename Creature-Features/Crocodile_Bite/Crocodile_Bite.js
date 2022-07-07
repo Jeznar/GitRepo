@@ -1,4 +1,4 @@
-const MACRONAME = "Crocodile_Bite.0.7.js"
+const MACRONAME = "Crocodile_Bite.0.8.js"
 /*****************************************************************************************
  * Macro that applies on hit:
  *  - Grappled and Restrained conditions to the target
@@ -10,7 +10,8 @@ const MACRONAME = "Crocodile_Bite.0.7.js"
  * 12/06/21 0.4 Seeking bug causing grappling not to be fully applied
  * 12/12/21 0.5 Eliminate cubCondition calls
  * 05/04/22 0.6 JGB Update for Foundry 9.x
- * 07/06/22 0.7 JGB Changed to use CE 
+ * 07/06/22 0.7 JGB Changed to use CE
+ * 07/07/22 0.8 JGB Update to use uuid for pair effects call 
  *****************************************************************************************/
 const DEBUG = true;
 let trcLvl = 1;
@@ -94,17 +95,19 @@ if (!oEffect) return jez.badNews(`Sadly, there was no Grappling effect found on 
 const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
 if (!GM_PAIR_EFFECTS) { return false }
 await jez.wait(100)
-await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+// await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+await GM_PAIR_EFFECTS.execute(oEffect.uuid, tEffect.uuid)
 //----------------------------------------------------------------------------------
 // Pair the target's grappled and restrained effects
 //
 await jez.wait(100)
 tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)
 if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
-oEffect = tToken.actor.effects.find(ef => ef.data.label === RESTRAINED_COND)
+oEffect = tToken.actor.effects.find(ef => ef.data.label === RESTRAINED_COND && ef.data.origin === aActor.uuid)
 if (!oEffect) return jez.badNews(`Sadly, there was no Restrained effect from ${aToken.name}.`, "warn")
 await jez.wait(100)
-await GM_PAIR_EFFECTS.execute(tToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+// await GM_PAIR_EFFECTS.execute(tToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+await GM_PAIR_EFFECTS.execute(oEffect.uuid, tEffect.uuid)
 //-------------------------------------------------------------------------------
 // Create an Action Item to allow the target to attempt escape
 //

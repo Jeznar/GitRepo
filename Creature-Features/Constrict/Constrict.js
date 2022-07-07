@@ -1,4 +1,4 @@
-const MACRONAME = "Constrict.0.3.js"
+const MACRONAME = "Constrict.0.4.js"
 /*****************************************************************************************
  * Vine Blight's Constrict Attack
  * 
@@ -12,6 +12,7 @@ const MACRONAME = "Constrict.0.3.js"
  * 02/11/22 0.1 Creation of Macro
  * 05/03/22 0.2 JGB Updated for FoundryVTT 9.x
  * 07/05/22 0.3 JGB Changed to use CE 
+ * 07/07/22 0.4 JGB Update to use UUID for pair tokens
  ******************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -41,10 +42,6 @@ const VFX_LOOP = "modules/jb2a_patreon/Library/1st_Level/Entangle/Entangle_01_Re
 const VFX_NAME = `${MACRO}`
 const VFX_OPACITY = 1.0;
 const VFX_SCALE = 0.4;
-// const SAVE_TYPE = "wis"
-// const SAVE_DC = aActor.data.data.attributes.spelldc;
-// const FLAVOR = `${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to avoid <b>${aToken.name}'s ${aItem.name}</b>`;
-
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
@@ -53,21 +50,13 @@ if (args[0]?.tag === "OnUse" && !preCheck()) return
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                       // DAE removal
-// if (args[0] === "on") await doOn();                      // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();              // Midi ItemMacro On Use
-// if (args[0] === "each") doEach();					    // DAE removal
-// if (args[0]?.tag === "DamageBonus") doBonusDamage();     // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-jez.log("")
-return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Check the setup of things. 
  ***************************************************************************************************/
 function preCheck() {
@@ -138,7 +127,8 @@ async function doOnUse() {
     const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
     if (!GM_PAIR_EFFECTS) { return false }
     await jez.wait(100)
-    await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    // await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    await GM_PAIR_EFFECTS.execute(oEffect.uuid, tEffect.uuid)
     //----------------------------------------------------------------------------------
     // Pile onto the target with a Restrained effect
     //
@@ -150,10 +140,11 @@ async function doOnUse() {
     await jez.wait(100)
     tEffect = tToken.actor.effects.find(ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid)
     if (!tEffect) return jez.badNews(`Sadly, there was no Grappled effect from ${aToken.name} found on ${tToken.name}.`, "warn")
-    oEffect = tToken.actor.effects.find(ef => ef.data.label === RESTRAINED_COND)
+    oEffect = tToken.actor.effects.find(ef => ef.data.label === RESTRAINED_COND && ef.data.origin === aActor.uuid)
     if (!oEffect) return jez.badNews(`Sadly, there was no Restrained effect from ${aToken.name}.`, "warn")
     await jez.wait(100)
-    await GM_PAIR_EFFECTS.execute(tToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    // await GM_PAIR_EFFECTS.execute(tToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
+    await GM_PAIR_EFFECTS.execute(oEffect.uuid, tEffect.uuid)
     //-------------------------------------------------------------------------------
     // Create an Action Item to allow the target to attempt escape
     //

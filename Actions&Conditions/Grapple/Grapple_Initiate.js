@@ -1,4 +1,4 @@
-const MACRONAME = "Grapple_Initiate_1.2.js"
+const MACRONAME = "Grapple_Initiate_1.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Initiate a grapple as an action, if already grappling, drop the grapple
  * 
@@ -22,6 +22,7 @@ const MACRONAME = "Grapple_Initiate_1.2.js"
  * 12/06/21 1.0 JGB Add scroll to bottom and results message
  * 05/04/22 1.1 JGB Update for Foundry 9.x
  * 07/04/22 1.2 JGB Convert to CE for effect management
+ * 07//7/22 1.3 JGB Updated to use UUID for the paired effect call
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 let msg = ""
 let trcLvl = 4
@@ -126,8 +127,7 @@ async function main() {
         const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
         if (!GM_PAIR_EFFECTS) { return false }
         await jez.wait(500)
-        await GM_PAIR_EFFECTS.execute(aToken.id, oEffect.data.label, tToken.id, tEffect.data.label)
-        //jez.pairEffects(aToken.actor, oEffect, tToken.actor, tEffect)
+        await GM_PAIR_EFFECTS.execute(oEffect.uuid, tEffect.uuid)
         //-------------------------------------------------------------------------------
         // Create an Action Item to allow the target to attempt escape
         //
