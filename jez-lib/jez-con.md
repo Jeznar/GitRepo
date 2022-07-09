@@ -84,7 +84,7 @@ This function wraps the CE add function, providing options that come close to du
 * **options** -- an object that can have several fields, table below shows those defined in this function
 
 | Property  | Type       | Default | Description                                      |
-|-----------+:----------:+:-------:+--------------------------------------------------|
+|-----------|:----------:|:-------:|--------------------------------------------------|
 | allowDups | boolean    | false   | Should this effect can be duplicated on target?  |
 | replaceEx | boolean    | false   | Does this effect replace existing on target?     |
 | origin    | actor.uuid | null    | Origin of the effect                             |
