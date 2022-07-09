@@ -138,6 +138,19 @@ effectData.changes.push( { key: 'flags.midi-qol.OverTime', mode: jez.OVERRIDE, v
 game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tToken.actor.uuid, origin: sToken.actor.uuid });
 ~~~
 
+Example from Electrify, 1st level Occultist's spell that only applies effect till start of target's next turn.
+
+~~~javascript
+//-------------------------------------------------------------------------------------------------------------
+// Apply Stunned condition with CV, modified to last until start of target's next turn
+//   
+let effectData = game.dfreds.effectInterface.findEffectByName(COND_APPLIED).convertToObject();
+if (TL>3) jez.trace(`${FNAME} | effectData >`, effectData)  
+// Conviently effectData.flags.dae.specialDuration already exists, just need to push data into it.
+effectData.flags.dae.specialDuration.push("turnStart")
+if (TL>3) jez.trace(`${FNAME} | updated ===>`, effectData)  
+game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tActor.uuid, origin: aActor.uuid });
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 

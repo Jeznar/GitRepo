@@ -1,7 +1,8 @@
-const MACRONAME = "Hideous_Laughter.0.1.js"
+const MACRONAME = "Hideous_Laughter.0.2.js"
 /*****************************************************************************************
  * 
  * 06/02/22 0.1 Creation of Macro
+ * 07/09/22 0.2 Replace CUB.addCondition with CE
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -197,7 +198,7 @@ async function damageCheck(workflow) {
         msg = `<b>${tToken.name}</b> failed save and is affected by ${aItem.name}, incapacitated
         and falling prone.`
         await jez.wait(100) // Allow earlier effects to complete 
-        await game.cub.addCondition("Prone", tToken);
+        await jezcon.add({ effectName: 'Prone', uuid: tToken.actor.uuid, traceLvl: 0 });
         jez.log(`Knock ${tToken.name} Prone`)
     }
     else {                                              // target failed save

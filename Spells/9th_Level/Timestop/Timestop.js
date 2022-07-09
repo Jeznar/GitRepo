@@ -3,6 +3,7 @@ const MACRONAME = "Timestop"
  * This macro implments VFX and a widespread DAE effect for timestop. 
  * 
  * 04/13/22 0.1 Creation of Macro
+ * 07/09/22 Replace CUB.addCondition with CE
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -54,10 +55,8 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     let tokenArrayOff = await getTokenArray(aToken)
     for (const element of tokenArrayOff) {
         jez.log("element", element)
-        if (game.cub.hasCondition("No_Actions", element)) 
-            await game.cub.removeCondition("No_Actions", element);
+        await jezcon.remove("No_Actions", element, {traceLvl: 5});    
         await jez.wait(100)    
-        element._object.refresh()
     }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
@@ -69,8 +68,15 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
 async function doOn() {
     const FUNCNAME = "doOn()";
     runVFX(aToken)
-    let tokenArrayOn = await getTokenArray(aToken)
-    game.cub.addCondition("No_Actions", tokenArrayOn);
+    let actorUuidArrayOn = await getTokenArray(aToken)
+    let options = {
+        allowDups: false, 
+        replaceEx: true, 
+        origin: aActor.uuid, 
+        overlay: true, 
+        traveLvl: 4
+    }
+    await jezcon.addCondition("No_Actions", actorUuidArrayOn ,options)
     return;
 }
 /***************************************************************************************************
@@ -133,16 +139,17 @@ async function doOnUse() {
     return (Math.floor(Math.random() * max) + 1);
 }
 /***************************************************************************************************
- * Build and return an array of all in scene tokens that are not the passed token
+ * Build and return an array of all in scene tokens that are not the passed token.  Returning an 
+ * array of actor.uuid's.
  ***************************************************************************************************/
 async function getTokenArray(aToken) {
     let tokenArray = []
     for (const element of game.scenes.viewed.data.tokens) {
         if (aToken.id === element.id) {
-            jez.log(`==========> ${element.name}`, element)
+            jez.log(`===> ${element.name}`, element)
         } else {
             jez.log(`==> ${element.name}`, element)
-            tokenArray.push(element)
+            tokenArray.push(element.actor.uuid)
         }
     }
     return (tokenArray);

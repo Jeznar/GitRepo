@@ -1,4 +1,4 @@
-const MACRONAME = "Nausinating Poison"
+const MACRONAME = "Nausinating Poison.0.2.js"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Homebrew Spell from Occultist list
@@ -12,7 +12,8 @@ jez.log(MACRONAME)
  *  The spell ends after dealing damage, or at the start of your next turn, whichever 
  *  occurs first.
  * 
- * 03/12/22 Creation of Macro
+ * 03/12/22 0.1 Creation of Macro
+ * 07/09/22 0.2 Replace CUB.addCondition with CE
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -155,7 +156,8 @@ async function doBonusDamage() {
         let tToken = canvas.tokens.get(LAST_ARG.hitTargets[0].id);
         jez.log("tToken", tToken)
         let itemUuid = getProperty(LAST_ARG.actor.flags, "midi-qol.itemDetails");
-        let itemN = await fromUuid(itemUuid);
+        // let itemN = await fromUuid(itemUuid);
+        let itemN = MACRO
         jez.log("itemN =====>", itemN)
         let numDice = LAST_ARG.isCritical ? 2 : 1;
         await jez.wait(500);
@@ -186,7 +188,7 @@ async function doBonusDamage() {
         const FLAVOR = `${CONFIG.DND5E.abilities[SAVE_TYPE]} DC${SAVE_DC} to avoid ${MACRO}'s ${COND_APPLIED}`;
         let saveRoll = (await tToken.actor.rollAbilitySave("con", { flavor:FLAVOR }))
         jez.log("saveRoll", saveRoll)
-        if (saveRoll.total < SAVE_DC) game.cub.addCondition(COND_APPLIED, tToken);
+        if (saveRoll.total < SAVE_DC) await jezcon.add({ effectName: COND_APPLIED, uuid: tToken.actor.uuid, traceLvl: 0 });
         //-------------------------------------------------------------------------------------------------------------
         // Modify the effects to have a proper termination time
         //
@@ -202,9 +204,9 @@ async function doBonusDamage() {
         //-------------------------------------------------------------------------------------------------------------
         // Return Extra Damage function
         //
-        jez.log(`-------------- Finishing(Extra Damage))--- ${MACRONAME} ${FUNCNAME} -----------------`,
-            "numDice", numDice, "DAM_TYPE", DAM_TYPE, "itemN.name", itemN.name);
-        return { damageRoll: `${numDice}${DICE_TYPE}[${DAM_TYPE}]`, flavor: `(${itemN.name} (${CONFIG.DND5E.damageTypes[DAM_TYPE]}))` };
+        jez.log(`--- Finishing(Extra Damage))--- ${MACRONAME} ${FUNCNAME} ---`,
+            "numDice", numDice, "DAM_TYPE", DAM_TYPE, "itemN", itemN);
+        return { damageRoll: `${numDice}${DICE_TYPE}[${DAM_TYPE}]`, flavor: `(${itemN} (${CONFIG.DND5E.damageTypes[DAM_TYPE]}))` };
     //}
     jez.log(`-------------- Finished(Bottom)--- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);

@@ -102,7 +102,7 @@ class jezcon {
         const FNAME = FUNCNAME.split("(")[0]
         const TL = param?.traceLvl ?? 1
         if (TL > 0) jez.trace(`${FUNCNAME} called with`, param)
-        if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`${FNAME} | Argument args[${i}]`, args[i]);
+        if (TL > 2) for (let i = 0; i < param.length; i++) jez.trace(`${FNAME} | Argument param[${i}]`, param[i]);
         game.dfreds.effectInterface.addEffect(param)
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0

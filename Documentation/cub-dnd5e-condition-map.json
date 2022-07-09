@@ -1,0 +1,2292 @@
+{
+  "system": "dnd5e",
+  "map": [
+    {
+      "id": "blinded",
+      "name": "Blinded",
+      "icon": "Icons_JGB/Conditions/Blind.png",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.oScVqOHJt5SQszVl]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Blinded",
+        "icon": "modules/combat-utility-belt/icons/blinded.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": 1
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "blinded"
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"oScVqOHJt5SQszVl\"><i class=\"fas fa-book-open\"></i> Blinded</a>",
+      "isChanged": false
+    },
+    {
+      "id": "bloodied",
+      "name": "Bloodied",
+      "icon": "modules/combat-utility-belt/icons/wounded.svg",
+      "referenceId": "@JournalEntry[DAcsXsTBdsamE8S5]{Bloodied}",
+      "applyTrigger": "1xgat2pxc13v5nps",
+      "removeTrigger": "k2cct5wrqfue3nq3",
+      "activeEffect": {
+        "label": "Bloodied",
+        "icon": "Custom%20Graphics%20for%20Foundry%20symlink/blood2.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "bloodied"
+          }
+        },
+        "changes": []
+      },
+      "options": {
+        "overlay": true,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"DAcsXsTBdsamE8S5\"><i class=\"fas fa-book-open\"></i> Bloodied</a>",
+      "isChanged": false
+    },
+    {
+      "id": "newcondition1",
+      "name": "Border_Ethereal",
+      "icon": "Icons_JGB/Effects/invisible.jpg",
+      "referenceId": "@JournalEntry[L6hDTgXyGS80zbsy]{Border Ethereal}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"L6hDTgXyGS80zbsy\"><i class=\"fas fa-book-open\"></i> Border Ethereal</a>",
+      "isChanged": false
+    },
+    {
+      "id": "charmed",
+      "name": "Charmed",
+      "icon": "modules/combat-utility-belt/icons/charmed.svg",
+      "referenceId": "@JournalEntry[i3AsMG5XwVIvE8TK]{Charmed}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Charmed",
+        "icon": "modules/combat-utility-belt/icons/charmed.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": []
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"i3AsMG5XwVIvE8TK\"><i class=\"fas fa-book-open\"></i> Charmed</a>",
+      "isChanged": false
+    },
+    {
+      "id": "concentrating",
+      "name": "Concentrating",
+      "icon": "modules/combat-utility-belt/icons/concentrating.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.nSoKejZfahbxfggp]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Concentrating",
+        "icon": "modules/combat-utility-belt/icons/concentrating.svg",
+        "tint": "#000000",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "concentrating"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"nSoKejZfahbxfggp\"><i class=\"fas fa-book-open\"></i> Concentrating</a>",
+      "isChanged": false
+    },
+    {
+      "id": "half-cover",
+      "name": "Cover, Half",
+      "icon": "Icons_JGB/Conditions/Cover_Half.png",
+      "referenceId": "@JournalEntry[JuuLecdeTNGitbOz]{Cover, Half}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Half cover",
+        "icon": "Icons_JGB/Conditions/Cover_Half.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": 1,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "data.attributes.ac.value",
+            "mode": 2,
+            "value": "2"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "half-cover"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"JuuLecdeTNGitbOz\"><i class=\"fas fa-book-open\"></i> Cover, Half</a>",
+      "isChanged": false
+    },
+    {
+      "id": "three-quarters-cover",
+      "name": "Cover, Three-Quarters",
+      "icon": "Icons_JGB/Conditions/Cover_Three_Quarters.png",
+      "referenceId": "@JournalEntry[GvlOnIdRF1UptXxK]{Cover, Three-Quarters}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Three-Quarters cover",
+        "icon": "Icons_JGB/Conditions/Cover_Three_Quarters.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": 1,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "three-quarters-cover"
+          }
+        },
+        "changes": [
+          {
+            "key": "data.attributes.ac.value",
+            "mode": 2,
+            "value": "5"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"GvlOnIdRF1UptXxK\"><i class=\"fas fa-book-open\"></i> Cover, Three-Quarters</a>",
+      "isChanged": false
+    },
+    {
+      "id": "in-darkness",
+      "name": "In Darkness",
+      "icon": "modules/conditional-visibility/icons/moon.svg",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "deafened",
+      "name": "Deafened",
+      "icon": "modules/combat-utility-belt/icons/deafened.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.p9CQYqWS7s4Abwqk]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"p9CQYqWS7s4Abwqk\"><i class=\"fas fa-book-open\"></i> Deafened</a>",
+      "isChanged": false
+    },
+    {
+      "id": "defeated",
+      "name": "Defeated",
+      "icon": "modules/combat-utility-belt/icons/dead.svg",
+      "referenceId": "",
+      "applyTrigger": "kqcsfdf74jxrl22e",
+      "removeTrigger": "bj1uxu8508vf9k2v",
+      "activeEffect": null,
+      "options": {
+        "overlay": true,
+        "removeOthers": true,
+        "outputChat": true,
+        "markDefeated": true
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "disarmed",
+      "name": "Disarmed",
+      "icon": "Icons_JGB/Conditions/Disarmed1.png",
+      "referenceId": "@Compendium[world.custom-conditions.c3nb8XA5rAh1RlhN]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Disarmed",
+        "icon": "Icons_JGB/Conditions/unconscious.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "disarmed"
+          }
+        },
+        "changes": []
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link broken\" draggable=\"true\"><i class=\"fas fa-unlink\"></i> undefined</a>",
+      "isChanged": false
+    },
+    {
+      "id": "diseased",
+      "name": "Diseased",
+      "icon": "modules/combat-utility-belt/icons/diseased.svg",
+      "referenceId": "@JournalEntry[b0DPVXexReBJmXkh]{Diseased}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"b0DPVXexReBJmXkh\"><i class=\"fas fa-book-open\"></i> Diseased</a>",
+      "isChanged": false
+    },
+    {
+      "id": "dodge",
+      "name": "Dodge",
+      "icon": "Icons_JGB/Misc/Dodge.png",
+      "referenceId": "@JournalEntry[N6QY1xs1xkYYSRma]{Dodge}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Dodge",
+        "icon": "Icons_JGB/Misc/Dodge.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": 1,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.grants.disadvantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.advantage.ability.save.dex",
+            "mode": 2,
+            "value": "1"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"N6QY1xs1xkYYSRma\"><i class=\"fas fa-book-open\"></i> Dodge</a>",
+      "isChanged": false
+    },
+    {
+      "id": "downed",
+      "name": "Downed",
+      "icon": "icons/svg/stoned.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.S499QUmXTVx81wk8]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": true,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"S499QUmXTVx81wk8\"><i class=\"fas fa-book-open\"></i> Unconscious</a>",
+      "isChanged": false
+    },
+    {
+      "id": "exhaustion-1",
+      "name": "Exhaustion 1",
+      "icon": "modules/combat-utility-belt/icons/exhaustion1.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.4Z1Ins4wHUAWJal2]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Exhaustion 1",
+        "icon": "modules/combat-utility-belt/icons/exhaustion1.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "data.attributes.exhaustion",
+            "mode": 5,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 5,
+            "value": 1
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"4Z1Ins4wHUAWJal2\"><i class=\"fas fa-book-open\"></i> Exhaustion</a>",
+      "isChanged": false
+    },
+    {
+      "id": "exhaustion-2",
+      "name": "Exhaustion 2",
+      "icon": "modules/combat-utility-belt/icons/exhaustion2.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.4Z1Ins4wHUAWJal2]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Exhaustion 2",
+        "icon": "modules/combat-utility-belt/icons/exhaustion2.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "data.attributes.exhaustion",
+            "mode": 5,
+            "value": 2
+          },
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 2,
+            "value": 1
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"4Z1Ins4wHUAWJal2\"><i class=\"fas fa-book-open\"></i> Exhaustion</a>",
+      "isChanged": false
+    },
+    {
+      "id": "exhaustion-3",
+      "name": "Exhaustion 3",
+      "icon": "modules/combat-utility-belt/icons/exhaustion3.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.4Z1Ins4wHUAWJal2]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Exhaustion 3",
+        "icon": "modules/combat-utility-belt/icons/exhaustion3.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "data.attributes.exhaustion",
+            "mode": 5,
+            "value": 3
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.save.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 2,
+            "value": 1
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"4Z1Ins4wHUAWJal2\"><i class=\"fas fa-book-open\"></i> Exhaustion</a>",
+      "isChanged": false
+    },
+    {
+      "id": "exhaustion-4",
+      "name": "Exhaustion 4",
+      "icon": "modules/combat-utility-belt/icons/exhaustion4.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.4Z1Ins4wHUAWJal2]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Exhaustion 4",
+        "icon": "modules/combat-utility-belt/icons/exhaustion4.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "data.attributes.exhaustion",
+            "mode": 5,
+            "value": 4
+          },
+          {
+            "key": "data.attributes.hp.max",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.save.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": 1
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"4Z1Ins4wHUAWJal2\"><i class=\"fas fa-book-open\"></i> Exhaustion</a>",
+      "isChanged": false
+    },
+    {
+      "id": "exhaustion-5",
+      "name": "Exhaustion 5",
+      "icon": "modules/combat-utility-belt/icons/exhaustion5.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.4Z1Ins4wHUAWJal2]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Exhaustion 5",
+        "icon": "modules/combat-utility-belt/icons/exhaustion5.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "data.attributes.exhaustion",
+            "mode": 5,
+            "value": 5
+          },
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.hp.max",
+            "mode": 1,
+            "value": 0.5
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.save.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": 1
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"4Z1Ins4wHUAWJal2\"><i class=\"fas fa-book-open\"></i> Exhaustion</a>",
+      "isChanged": false
+    },
+    {
+      "id": "exhaustion-6",
+      "name": "Exhaustion 6",
+      "icon": "icons/svg/blind.svg",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Exhaustion 6",
+        "icon": "icons/svg/blind.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "macro.CUB",
+            "mode": 2,
+            "value": "Defeated"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "flanking",
+      "name": "Flanking",
+      "icon": "Icons_JGB/Conditions/flanking.png",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Flanking",
+        "icon": "Icons_JGB/Conditions/flanking.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "flanking"
+          }
+        },
+        "changes": [
+          {
+            "key": "data.bonuses.mwak.attack",
+            "mode": 2,
+            "value": "+2+"
+          },
+          {
+            "key": "data.bonuses.msak.attack",
+            "mode": 2,
+            "value": "+2+"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "frightened",
+      "name": "Frightened",
+      "icon": "Icons_JGB/Monster_Features/Frighten.png",
+      "referenceId": "@JournalEntry[tjg0x0jXlwvbdI9h]{Frightened}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Frightened",
+        "icon": "Icons_JGB/Monster_Features/Frighten.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.skill.check.all",
+            "mode": 2,
+            "value": "1"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "frightened"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"tjg0x0jXlwvbdI9h\"><i class=\"fas fa-book-open\"></i> Frightened</a>",
+      "isChanged": false
+    },
+    {
+      "id": "grappled",
+      "name": "Grappled",
+      "icon": "modules/combat-utility-belt/icons/grappled.svg",
+      "referenceId": "@JournalEntry[QAwq9CcEg3fh3qZ3]{Grappled}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Grappled",
+        "icon": "modules/combat-utility-belt/icons/grappled.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 3,
+            "value": "0"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "grappled"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"QAwq9CcEg3fh3qZ3\"><i class=\"fas fa-book-open\"></i> Grappled</a>",
+      "isChanged": false
+    },
+    {
+      "id": "grappling",
+      "name": "Grappling",
+      "icon": "Icons_JGB/Conditions/grappling.png",
+      "referenceId": "@JournalEntry[KmWFRyfFImaXM7O9]{Grappling}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Grappling",
+        "icon": "Icons_JGB/Conditions/grappling.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "grappling"
+          }
+        },
+        "changes": [
+          {
+            "key": "flags.VariantEncumberance.speed",
+            "mode": 1,
+            "value": "0.5"
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 1,
+            "value": "0.5"
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 1,
+            "value": "0.5"
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 1,
+            "value": "0.5"
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 1,
+            "value": "0.5"
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 1,
+            "value": "0.5"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"KmWFRyfFImaXM7O9\"><i class=\"fas fa-book-open\"></i> Grappling</a>",
+      "isChanged": false
+    },
+    {
+      "id": "hidden",
+      "name": "Hidden",
+      "icon": "modules/conditional-visibility/icons/newspaper.svg",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "incapacitated",
+      "name": "Incapacitated",
+      "icon": "modules/combat-utility-belt/icons/incapacitated.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.hWk0QM9u7SUpd4BX]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"hWk0QM9u7SUpd4BX\"><i class=\"fas fa-book-open\"></i> Incapacitated</a>",
+      "isChanged": false
+    },
+    {
+      "id": "insane",
+      "name": "Insane",
+      "icon": "Icons_JGB/Conditions/insane.png",
+      "referenceId": "@JournalEntry[a02diwyCB2sx4LH3]{Insane}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Insane",
+        "icon": "Icons_JGB/Conditions/insane.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "insane"
+          }
+        },
+        "changes": [
+          {
+            "key": "flags.gm-notes.notes",
+            "mode": 0,
+            "value": "See Effect Description"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"a02diwyCB2sx4LH3\"><i class=\"fas fa-book-open\"></i> Insane</a>",
+      "isChanged": false
+    },
+    {
+      "id": "invisible",
+      "name": "Invisible",
+      "icon": "Icons_JGB/Conditions/Invisibility.png",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.pSvtps6WHVAuWh9l]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Invisible",
+        "icon": "Icons_JGB/Conditions/Invisibility.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.grants.disadvantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.advantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "invisible"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"pSvtps6WHVAuWh9l\"><i class=\"fas fa-book-open\"></i> Invisible</a>",
+      "isChanged": false
+    },
+    {
+      "id": "no_actions",
+      "name": "No_Actions",
+      "icon": "Icons_JGB/Misc/Stop_Sign.png",
+      "referenceId": "@JournalEntry[VGOznMHXmGTon811]{No Actions}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"VGOznMHXmGTon811\"><i class=\"fas fa-book-open\"></i> No Actions</a>",
+      "isChanged": false
+    },
+    {
+      "id": "obscured",
+      "name": "Obscured",
+      "icon": "modules/conditional-visibility/icons/foggy.svg",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "paralyzed",
+      "name": "Paralyzed",
+      "icon": "Icons_JGB/Conditions/paralyzed.png",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.o5oZVdHSWmceeFyx]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Paralyzed",
+        "icon": "Icons_JGB/Conditions/paralyzed.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.fail.ability.save.str",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.fail.ability.save.dex",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 5,
+            "value": "1"
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 5,
+            "value": "1"
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 5,
+            "value": "1"
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 5,
+            "value": "1"
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 5,
+            "value": "1"
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 5,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.critical.mwak",
+            "mode": 2,
+            "value": "1"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "paralyzed"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"o5oZVdHSWmceeFyx\"><i class=\"fas fa-book-open\"></i> Paralyzed</a>",
+      "isChanged": false
+    },
+    {
+      "id": "petrified",
+      "name": "Petrified",
+      "icon": "modules/combat-utility-belt/icons/petrified.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.KaKNDyLeWRGqpBlc]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Petrified",
+        "icon": "modules/combat-utility-belt/icons/petrified.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.fail.ability.save.str",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.fail.ability.save.dex",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.DR.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "data.traits.ci.value",
+            "mode": 2,
+            "value": "poisoned"
+          },
+          {
+            "key": "data.traits.ci.value",
+            "mode": 2,
+            "value": "diseased"
+          },
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 5,
+            "value": 0
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"KaKNDyLeWRGqpBlc\"><i class=\"fas fa-book-open\"></i> Petrified</a>",
+      "isChanged": false
+    },
+    {
+      "id": "physical-resistance",
+      "name": "Physical Resistance",
+      "icon": "icons/svg/combat.svg",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "poisoned",
+      "name": "Poisoned",
+      "icon": "modules/combat-utility-belt/icons/poisoned.svg",
+      "referenceId": "@JournalEntry[45AvudXYEJYpj1L8]{Poisoned}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Poisoned",
+        "icon": "modules/combat-utility-belt/icons/poisoned.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.skill.check.all",
+            "mode": 2,
+            "value": 1
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"45AvudXYEJYpj1L8\"><i class=\"fas fa-book-open\"></i> Poisoned</a>",
+      "isChanged": false
+    },
+    {
+      "id": "prone",
+      "name": "Prone",
+      "icon": "modules/combat-utility-belt/icons/prone.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.ekm4TUHKT3QUPdPv]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Prone",
+        "icon": "modules/combat-utility-belt/icons/prone.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.mwak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.msak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.disadvantage.attack.rwak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.disadvantage.attack.rsak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 1,
+            "value": "0.5"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "prone"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"ekm4TUHKT3QUPdPv\"><i class=\"fas fa-book-open\"></i> Prone</a>",
+      "isChanged": false
+    },
+    {
+      "id": "reactions-none",
+      "name": "Reactions - None",
+      "icon": "Icons_JGB/Conditions/Reactions-No.png",
+      "referenceId": "@JournalEntry[f9M86bYcWXS2R00u]{Reactions - None}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Reactions - None",
+        "icon": "Icons_JGB/Conditions/Reactions-No.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        },
+        "changes": [
+          {
+            "key": "",
+            "mode": 2,
+            "value": ""
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"f9M86bYcWXS2R00u\"><i class=\"fas fa-book-open\"></i> Reactions - None</a>",
+      "isChanged": false
+    },
+    {
+      "id": "reckless",
+      "name": "Reckless",
+      "icon": "Icons_JGB/Actions/Reckless_Attack.png",
+      "referenceId": "",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Reckless",
+        "icon": "Icons_JGB/Actions/Reckless_Attack.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": 1,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "reckless"
+          }
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.advantage.attack.mwak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.mwak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.rwak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.msak",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.rsak",
+            "mode": 2,
+            "value": "1"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "",
+      "isChanged": false
+    },
+    {
+      "id": "restrained",
+      "name": "Restrained",
+      "icon": "modules/combat-utility-belt/icons/restrained.svg",
+      "referenceId": "@JournalEntry[CZWEqV2uG9aDWJnD]{Restrained}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Restrained",
+        "icon": "modules/combat-utility-belt/icons/restrained.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.save.dex",
+            "mode": 2,
+            "value": "1"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "restrained"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"CZWEqV2uG9aDWJnD\"><i class=\"fas fa-book-open\"></i> Restrained</a>",
+      "isChanged": false
+    },
+    {
+      "id": "slammed",
+      "name": "Slammed",
+      "icon": "Icons_JGB/Conditions/slammed.png",
+      "referenceId": "@Compendium[world.custom-conditions.RW7JIdxUM8Eow1v6]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link broken\" draggable=\"true\"><i class=\"fas fa-unlink\"></i> undefined</a>",
+      "isChanged": false
+    },
+    {
+      "id": "squeezing",
+      "name": "Squeezing",
+      "icon": "Icons_JGB/Conditions/Squeezing.png",
+      "referenceId": "@JournalEntry[tlYBhoc563uyu848]{Squeezing}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Squeezing",
+        "icon": "Icons_JGB/Conditions/Squeezing.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          },
+          "combat-utility-belt": {
+            "conditionId": "squeezing"
+          }
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 1,
+            "value": "0.5"
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.save.dex",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": false,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"tlYBhoc563uyu848\"><i class=\"fas fa-book-open\"></i> Squeezing</a>",
+      "isChanged": false
+    },
+    {
+      "id": "stunned",
+      "name": "Stunned",
+      "icon": "Icons_JGB/Conditions/Stun_Icon.png",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.IDLJEkgkdcnljtEW]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Stunned",
+        "icon": "Icons_JGB/Conditions/Stun_Icon.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.all",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.fail.ability.save.str",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.midi-qol.fail.ability.save.dex",
+            "mode": 2,
+            "value": "1"
+          },
+          {
+            "key": "flags.VariantEncumbrance.speed",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 3,
+            "value": "0"
+          },
+          {
+            "key": "macro.CUB",
+            "mode": 5,
+            "value": "Incapacitated"
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "stunned"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"IDLJEkgkdcnljtEW\"><i class=\"fas fa-book-open\"></i> Stunned</a>",
+      "isChanged": false
+    },
+    {
+      "id": "turned",
+      "name": "Turned",
+      "icon": "Icons_JGB/Misc/Turned.png",
+      "referenceId": "@JournalEntry[MVitPJtF1rOrVVwA]{Turned}",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": {
+        "label": "Turned",
+        "icon": "Icons_JGB/Misc/Turned.png",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "radius": null,
+            "alignment": "",
+            "type": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "hostile": false,
+            "onlyOnce": false
+          }
+        },
+        "changes": [
+          {
+            "key": "",
+            "mode": 2,
+            "value": ""
+          }
+        ]
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-type=\"JournalEntry\" data-entity=\"JournalEntry\" data-id=\"MVitPJtF1rOrVVwA\"><i class=\"fas fa-book-open\"></i> Turned</a>",
+      "isChanged": false
+    },
+    {
+      "id": "unconscious",
+      "name": "Unconscious",
+      "icon": "icons/svg/sleep.svg",
+      "referenceId": "@Compendium[combat-utility-belt.conditionsdnd5e.S499QUmXTVx81wk8]",
+      "applyTrigger": "pj9r3s3zz2f8e4h1",
+      "removeTrigger": "bj1uxu8508vf9k2v",
+      "activeEffect": {
+        "label": "Unconscious",
+        "icon": "icons/svg/sleep.svg",
+        "tint": "",
+        "disabled": false,
+        "duration": {
+          "seconds": null,
+          "startTime": null,
+          "rounds": null,
+          "turns": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "changes": [
+          {
+            "key": "flags.midi-qol.grants.critical.mwak",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.grants.advantage.attack.all",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.fail.ability.save.str",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "flags.midi-qol.fail.ability.save.dex",
+            "mode": 2,
+            "value": 1
+          },
+          {
+            "key": "data.attributes.movement.walk",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.swim",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.fly",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.climb",
+            "mode": 5,
+            "value": 0
+          },
+          {
+            "key": "data.attributes.movement.burrow",
+            "mode": 5,
+            "value": 0
+          }
+        ],
+        "flags": {
+          "combat-utility-belt": {
+            "conditionId": "unconscious"
+          }
+        }
+      },
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link\" draggable=\"true\" data-pack=\"combat-utility-belt.conditionsdnd5e\" data-id=\"S499QUmXTVx81wk8\"><i class=\"fas fa-book-open\"></i> Unconscious</a>",
+      "isChanged": false
+    },
+    {
+      "id": "vulnerable",
+      "name": "Vulnerable",
+      "icon": "Icons_JGB/Conditions/vulnerable.png",
+      "referenceId": "@Compendium[world.custom-conditions.mfu65RHJcxHNtihN]",
+      "applyTrigger": "",
+      "removeTrigger": "",
+      "activeEffect": null,
+      "options": {
+        "overlay": false,
+        "removeOthers": false,
+        "outputChat": true,
+        "markDefeated": false
+      },
+      "isNew": false,
+      "enrichedReference": "<a class=\"entity-link content-link broken\" draggable=\"true\"><i class=\"fas fa-unlink\"></i> undefined</a>",
+      "isChanged": false
+    }
+  ]
+}

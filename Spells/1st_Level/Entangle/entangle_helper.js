@@ -1,4 +1,4 @@
-const MACRONAME = "entangle_helper.js"
+const MACRONAME = "entangle_helper.0.2.js"
 /*****************************************************************************************
  * This is a helper macro for the main entangle script.  It is intended to be invoked to 
  * clean up things when concentration drops.  Rather a technology experiment at this point.
@@ -9,6 +9,7 @@ const MACRONAME = "entangle_helper.js"
  *   args[N]: Standard passed argument array (N is number of arguments)
  * 
  * 02/23/22 0.1 Creation of Macro
+ * 07/09/22 0.2 Change to remoive tile not VFX
  *****************************************************************************************/
 // COOL-THING: Removes effects and template triggered by dropping concentration
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -27,17 +28,13 @@ return;
 async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    const VFX_NAME = args[1]
-    jez.log("Graphic should be terminated", VFX_NAME)
-    Sequencer.EffectManager.endEffects({ name: VFX_NAME });
+    // const VFX_NAME = args[1]
+    jez.log("Graphic should be terminated", args[1])
+    // Sequencer.EffectManager.endEffects({ name: VFX_NAME });
+    jez.tileDelete(args[1])
     for (let i = 2; i < args.length - 1; i++) {
-        jez.log(`starting  ${i}`)
         let fetchedToken = canvas.tokens.placeables.find(ef => ef.id === args[i])
-        jez.log(`Remove Restrained effect from ${args[i]} ${fetchedToken.name}, if present`)
-        let effect = await fetchedToken.actor.effects.find(ef => ef.data.label === "Restrained");
-        jez.log("effect", effect)
-        if (effect) await effect.delete();
-        jez.log(`finished  ${i}`)
+        await jezcon.remove("Restrained", fetchedToken.actor.uuid, {traceLvl: 4});
     }
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
