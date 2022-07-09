@@ -22,7 +22,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[add(...args)](#addargs)** -- Calls CE addEffect to add an effect
 * **[hasCE(effectName, uuid)](#hasceeffectname-uuid)** -- Checks for presence of a CE effect
 * **[modAdd](#modadd)** -- Example of modifying and adding an effect
-* **[remove(effectName, uuid)](#removeeffectname-uuid)** -- Calls CE to remove an effect
+* **[remove(effectName, uuid)](#removeeffectname-uuid-options--)** -- Calls CE to remove an effect by name
 * **[toggle(effectName, { overlay, uuids = [] } = {})](#toggleeffectname--overlay-uuids-----)** -- Uses CE to toggle an effect
                                      
 More about each of these in the following sections. 
@@ -48,6 +48,7 @@ Adds the effect to the provided actor UUID as the GM via sockets
 * @param {string} params.origin - the origin of the effect
 * @param {boolean} params.overlay - if the effect is an overlay or not
 * @param {object} params.metadata - additional contextual data for the application of the effect (likely provided by midi-qol) -- Seemingly unused in code
+* @param {integer} traceLvl - Trace level
 * @returns {Promise} a promise that resolves when the GM socket function completes
  
 #### Example 1
@@ -57,7 +58,7 @@ const uuid = canvas.tokens.controlled[0].actor.uuid;
 const hasEffectApplied = await jezcon.hasCE('Bane', uuid);
  
 if (!hasEffectApplied) {
-    jezcon.add({ effectName: 'Bane', uuid });
+    jezcon.add({ effectName: 'Bane', uuid, traceLvl: 2 });
 }
 ~~~
 
@@ -71,39 +72,53 @@ jezcon.add({ effectName: 'Grappled', uuid: tToken.actor.uuid, origin: aActor.uui
 
 --- 
 
+### addCondition(effectName, targets, options)
+
+This function wraps the CE add function, providing options that come close to duplicating game.cub.addCondition().  It does not allow application of an array of effects, that would need to be done with a call to this function for each effect.
+
+#### Arguments expected
+
+* **effectName** -- string naming an existant CE effect
+* **targets** -- an array or single UUID of actor(s) (e.g. Scene.MzEyYTVkOTQ4NmZk.Token.pcAVMUbbnGZ1lz4h)
+* **options** -- an object that can have several fields, table below shows those defined in this function
+
+| Property  | Type       | Default | Description                                      |
+|-----------+:----------:+:-------:+--------------------------------------------------|
+| allowDups | boolean    | false   | Should this effect can be duplicated on target?  |
+| replaceEx | boolean    | false   | Does this effect replace existing on target?     |
+| origin    | actor.uuid | null    | Origin of the effect                             |
+| overlay   | boolean    | false   | boolean, if true effect will be overlay on token |
+| traceLvl  | integer    |  0      | Trace level to be used                           |
+
+**Example Call**
+
+~~~javascript
+const TL = 4
+await jezcon.addCondition("Prone", LAST_ARG.targetUuids, 
+   {allowDups: false, replaceEx: true, origin: aActor.uuid, overlay: false, traveLvl: TL }) 
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---  
+
 ### hasCE(effectName, uuid)
 
 Checks to see if any of the current active effects applied to the actor with the given UUID match the effect name and are a convenient effect
  
 * @param {string} **effectName** - the name of the effect to check
 * @param {string} **uuid** - the uuid of the actor to see if the effect is applied to
+* @param {object} options - may define the traceLvl
 * @returns {boolean} **true** if the effect is applied, false otherwise
 
 ~~~javascript
-if (jezcon.hasCE("Hindered", targetD.actor.uuid))
+if (jezcon.hasCE( "Hindered", targetD.actor.uuid), {traceLvl: 2} )
     postResults(`${targetD.name} has already been hindered, no additional effect.`)
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
 --- 
-
-### hasCE(effectName, uuid)
-
-Checks to see if any of the current active effects applied to the actor with the given UUID match the effect name and are a convenient effect
- 
-* @param {string} **effectName** - the name of the effect to check
-* @param {string} **uuid** - the uuid of the actor to see if the effect is applied to
-* @returns {boolean} **true** if the effect is applied, false otherwise
-
-~~~javascript
-if (jezcon.hasCE("Hindered", targetD.actor.uuid))
-    postResults(`${targetD.name} has already been hindered, no additional effect.`)
-~~~
-
-[*Back to Functions list*](#functions-in-this-module)
-
----
 
 ### modAdd
 
@@ -125,7 +140,30 @@ game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tToken
 
 [*Back to Functions list*](#functions-in-this-module)
 
---- 
+---  
+
+### remove(effectName, uuid, options = {})
+
+Removes the effect from the provided actor UUID as the GM via sockets
+
+@param {object} params - the effect params
+@param {string} params.effectName - the name of the effect to remove
+@param {string} params.uuid - the UUID of the actor to remove the effect from
+@param {object} params.options - an object that can contain the property traceLvl
+@returns {Promise} a promise that resolves when the GM socket function completes
+
+~~~javascript
+const TL = 2
+for (const UUID of uuids) {
+    if (jezcon.hasCE("Cover (Half)", UUID, {traceLvl: TL})) {
+        await jezcon.remove("Cover (Half)", UUID, {traceLvl: TL);
+    }
+}
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---  
 
 ### toggle(effectName, { overlay, uuids = [] } = {})
 

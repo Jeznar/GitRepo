@@ -50,6 +50,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
 * **[getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
+* **[isActorUUID((string, options={})](#isactoruuidstring-options)**
 * **isEffectUUID(string)** -- Determines if string looks like an ActiveEffect's UUID, returning a boolean.
 * **isActor5e(obj)** -- Returns true if obj is an Actor5e object, otherwise false.
 * **[isEqual(obj1, obj2)](#isEqualobj1-obj2)** -- Somewhat simple minded object comparison function based on one found online.
@@ -413,6 +414,28 @@ if(!jez.inRange(aToken, tToken, maxRange)) {
     ui.notifications.warn(msg);
     return(false);
 }
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### isActorUUID(string, options={})
+
+Determines if the passed argument "looks like" an actor's UUID, returning a boolean result. An Actor UUID should be one of the following general formats
+
+| Actor Type | Example Value                                 |
+|-----------:|-----------------------------------------------|
+| Linked     | Actor.8D0C9nOodjwHDGQT                        |
+| Unlinked   | Scene.MzEyYTVkOTQ4NmZk.Token.Snu5Wo5FRsogPmGO |
+
+Example Call
+
+~~~javascript
+const TL = 2
+let targetUuid = args[args.length - 1].targetUuids[0]
+
+if (!isActorUUID(targetUuid, {traceLvl:TL})) return false
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

@@ -10,16 +10,16 @@ const MACRONAME = "Toggle_Cover_Three-Quarters.1.2.js"
  *               2. Makes the right click CUB menu useful for the condition.
  * 07/04/22 1.2 Convert to use Convenient Effects via jezcon library functions
  **********************************************************************************************/
-jez.log(MACRONAME)
-let trcLvl = 0
+const TL = 0
+if (TL > 0) jez.log(MACRONAME)
 let uuids = await game.dfreds.effectInterface._foundryHelpers.getActorUuids()
-jez.trc(4, trcLvl, "uuids", uuids)
+if (TL > 1) jez.trace(`${MACRONAME} uuids`, uuids)
 if (uuids.length === 0) return jez.badNews(`Please select at least one token`, "warning")
 
 for (const UUID of uuids) {
-    if (jezcon.hasCE("Cover (Half)", UUID)) {
-        await jezcon.remove("Cover (Half)", UUID);
+    if (jezcon.hasCE("Cover (Half)", UUID, {traceLvl: TL})) {
+        await jezcon.remove("Cover (Half)", UUID, {traceLvl: TL});
     }
 }
 await jez.wait(150)     // Allow the removals to settle before 
-for (const UUID of uuids) jezcon.toggle("Cover (Three-Quarters)",{uuids: [UUID]})
+for (const UUID of uuids) jezcon.toggle("Cover (Three-Quarters)",{uuids: [UUID], traceLvl: TL})

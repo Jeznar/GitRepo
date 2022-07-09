@@ -33,16 +33,33 @@ class jez {
     }
 
     /***************************************************************************************************
-     * Trace
+     * TRC
+     * 
+     * DEPRICATED 7/2022 -- Use trace instead
      * 
      * This is a variation on the log function that requires the first parameter to be an integer that
      * will be compared to the second parameter, presumably a global in the calling macro.  
      * 
-     * Ex: jez.trc(1, "Post this message to the console", variable)
+     * jez.trc(1, trcLvl, "Post this message to the console", variable)
      ***************************************************************************************************/
     static trc(level, threshold, ...parms) {
         if (level > threshold) return false
-        return jez.writeTrcLog(" TRACE ", ...parms)
+        return jez.writeTrcLog(" T R C ", ...parms)
+    }
+    /***************************************************************************************************
+     * Trace
+     * 
+     * This is a variation on the log function that requires the first parameter to be an integer that
+     * will be compared to the second parameter, presumably a global in the calling macro.  
+     *
+     * Example 
+     * const FUNCNAME = 'addCondition(effectName, targets, options)'
+     * const FNAME = FUNCNAME.split("(")[0] 
+     * ...
+     * if (TL>2) jez.trace(`${FNAME} | Post this message to the console`, variable)
+     ***************************************************************************************************/
+    static trace(...parms) {
+            return jez.writeTrcLog(" Trace ", ...parms)
     }
     /***************************************************************************************************
      * Log
@@ -2240,7 +2257,70 @@ class jez {
              if (stringArray[5].length !== 16) return false         // Sixth part must be 16 characters
              jez.trc(2, trcLvl, "Token UUID | Length 3 - Ok")
              return true
-         }
+        }
     }
+
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Determines if the passed argument "looks like" an actor's UUID, returning a boolean result.
+     * An Actor UUID should be one of the following general formats
+     * 
+     * | Actor Type | Example Value                                 |
+     * |-----------:|-----------------------------------------------|
+     * | Linked     | Actor.8D0C9nOodjwHDGQT                        |
+     * | Unlinked   | Scene.MzEyYTVkOTQ4NmZk.Token.Snu5Wo5FRsogPmGO |
+     * 
+     * Example Call
+     *  const TL = 2
+     *  let targetUuid = args[args.length - 1].targetUuids[0]
+     *  if (!isActorUUID(targetUuid, {traceLvl:TL})) return false
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static isActorUUID(string, options = {}) {
+        const FUNCNAME = 'jez.isActorUUID(string, options={})'
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 1
+
+        if (TL > 1) jez.trace(`${FNAME} | Is passed string an Actor UUID?`, string)
+        if (typeof string !== "string") return false            // Must be a string
+        if (TL > 2) jez.trace(`${FNAME} | Argument passed in is a string`, string)
+        // ---------------------------------------------------------------------------------------------
+        // If we have an actor's UUID, process it, returning result
+        //
+        if (string.includes("Actor")) {
+            if (TL > 2) jez.trace(`${FNAME} | Processing ${string} as an Actor`)
+            if (string.length !== 22) return false                  // Must be 75 characters long
+            if (TL > 2) jez.trace(`${FNAME} | Length of ${string} - Ok`)
+            let stringArray = string.split(".")                     // Must be delimited by period characters
+            if (stringArray.length !== 2) return false              // Must contain 4 parts
+            if (TL > 2) jez.trace(`${FNAME} | Count of tokens, ${stringArray.length} - Ok`)
+            if (stringArray[0] !== "Actor") return false           // First part must be "Actor"
+            if (TL > 2) jez.trace(`${FNAME} | First token is "Actor" - Ok`)
+            if (stringArray[1].length !== 16) return false         // Second part must be 16 characters
+            if (TL > 2) jez.trace(`${FNAME} | ID token length (${stringArray[1].length}) - Ok`)
+            if (TL > 1) jez.trace(`${FNAME} | linked Actor UUID confirmed!`)
+            return true
+        }
+        if (string.includes("Token")) {
+            if (TL > 2) jez.trace(`${FNAME} | Processing ${string} as a Token actor`)
+            if (string.length !== 45) return false                  // Must be 75 characters long
+            if (TL > 2) jez.trace(`${FNAME} | Length of ${string} - Ok`)
+            let stringArray = string.split(".")                     // Must be delimited by period characters
+            if (stringArray.length !== 4) return false              // Must contain 4 parts
+            if (TL > 2) jez.trace(`${FNAME} | Count of tokens, ${stringArray.length} - Ok`)
+            if (stringArray[0] !== "Scene") return false           // First part must be "Scene"
+            if (TL > 2) jez.trace(`${FNAME} | First token is "Scene" - Ok`)
+            if (stringArray[1].length !== 16) return false         // Second part must be 16 characters
+            if (TL > 2) jez.trace(`${FNAME} | Second token length ${stringArray[1].length} - Ok`)
+            if (stringArray[2] !== "Token") return false           // First part must be "Token"
+            if (TL > 2) jez.trace(`${FNAME} | Third token is "Token" - Ok`)
+            if (stringArray[3].length !== 16) return false         // Second part must be 16 characters
+            if (TL > 2) jez.trace(`${FNAME} | Forth token length (${stringArray[1].length}) - Ok`)
+            if (TL > 1) jez.trace(`${FNAME} | Token actor UUID confirmed!`)
+            return true
+        }
+        if (TL > 0) jez.trace(`${FNAME} | Argument "${string}" lacks keyword "Actor" or "Token`)
+        return (false)
+    }
+
+
 } // END OF class jez
 Object.freeze(jez);

@@ -1,16 +1,18 @@
-const MACRONAME = "Starter_Macro"
+const MACRONAME = "Starter_Macro.0.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
  * 06/29/22 0.2 Update to use jez.trc
+ * 07/08/22 0.3 Update to use jez.trace
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 1;
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
+const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
+const TL = 1;                               // Trace Level for this macro
+let msg = "";                               // Global message string
+//---------------------------------------------------------------------------------------------------
+if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
+if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
-let msg = "";
 //---------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
 let aToken;         
@@ -35,7 +37,7 @@ if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE everyround
 // DamageBonus must return a function to the caller
 if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
+if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -44,8 +46,13 @@ jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
  * Check the setup of things.  Post bad message and return false fr bad, true for ok!
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function preCheck() {
+    const FUNCNAME = "preCheck()";
+    const FNAME = FUNCNAME.split("(")[0] 
+
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
-        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
+        msg = `Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`
+        if (TL>3) jez.trace(`${FNAME} | ${msg}`)
+
         ui.notifications.warn(msg)
         postResults(msg);
         return (false);
@@ -68,23 +75,28 @@ async function preCheck() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  function postResults(msg) {
     const FUNCNAME = "postResults(msg)";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(2,trcLvl,"postResults Parameters","msg",msg)
+    const FNAME = FUNCNAME.split("(")[0] 
+
+    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    if (TL>2) jez.trace("postResults Parameters","msg",msg)
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set Off
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOff() {
     const FUNCNAME = "doOff()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    const FNAME = FUNCNAME.split("(")[0] 
+
+    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
+    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
 
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
     return;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -92,12 +104,15 @@ async function preCheck() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function doOn() {
     const FUNCNAME = "doOn()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    const FNAME = FUNCNAME.split("(")[0] 
+
+    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
+    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
 
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -105,17 +120,21 @@ async function doOn() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    const FNAME = FUNCNAME.split("(")[0] 
+
+    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
     if (!await preCheck()) return(false);
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
+    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
+
 
     msg = `Maybe say something useful...`
     postResults(msg)
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -123,12 +142,15 @@ async function doOn() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doEach() {
     const FUNCNAME = "doEach()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    const FNAME = FUNCNAME.split("(")[0] 
+
+    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
+    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
 
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -136,11 +158,15 @@ async function doOn() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    const FNAME = FUNCNAME.split("(")[0] 
+
+    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
+    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
 
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+
+    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
     return true;
 }

@@ -91,7 +91,6 @@ for (let i = 0; i < failCount; i++) {
         const CUB_ADD_CONDITION_MACRO = jez.getMacroRunAsGM("cubAddCondition")
         if (!CUB_ADD_CONDITION_MACRO) return false
         await CUB_ADD_CONDITION_MACRO.execute(["Prone"], failures[i], options)
-
         // await game.cub.addCondition(["Prone"], failures[i], {
         //     allowDuplicates: false,
         //     replaceExisting: false,
