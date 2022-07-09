@@ -1,4 +1,4 @@
-const MACRONAME = "Earth_Tremor.0.4.js"
+const MACRONAME = "Earth_Tremor.0.5.js"
 /*****************************************************************************************
  * Slap a text message on the item card indicating Who and What should be moved by the
  * spell.
@@ -16,6 +16,7 @@ const MACRONAME = "Earth_Tremor.0.4.js"
  * 05/17/22 0.2 Convert to place a tile instead of just a sequencer video
  * 06/29/22 0.3 Fix for permission issue on game.scenes.current.createEmbeddedDocuments
  * 06/30/22 0.4 Swap to jez.tileCreate and jez.tileDelete calls
+ * 07/09/22 0.5 Replace CUB add for an array of targets with jezcon.addConditions()
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let trcLvl = 2;
@@ -60,11 +61,13 @@ if (failCount === 0) {
 // Build an array of the ID's of the chumps that failed.
 //
 let failures = [];
+let failureUuids = []; 
 for (let i = 0; i < failCount; i++) {
     const FAILED = args[0].failedSaves[i];
     jez.trc(3, trcLvl, ` Target ${i+1} --> ${FAILED.data.actorId}`, FAILED);
     jez.trc(3, trcLvl, ` Target ${i+1} Adding chump: `, FAILED)
     failures.push(FAILED);
+    failureUuids.push(FAILED.uuid);
     // await game.cub.addCondition(CONDITION, FAILED, {allowDuplicates:true, replaceExisting:true, warn:true});
 }
 // ---------------------------------------------------------------------------------------
@@ -83,20 +86,25 @@ for (let i = 0; i < failCount; i++) {
         //----------------------------------------------------------------------------------------
         // add CUB Condition this is either/or with manual add in section following
         //
-        let options = {
-            allowDuplicates: false,
-            replaceExisting: false,
-            warn: true
-        }
-        const CUB_ADD_CONDITION_MACRO = jez.getMacroRunAsGM("cubAddCondition")
-        if (!CUB_ADD_CONDITION_MACRO) return false
-        await CUB_ADD_CONDITION_MACRO.execute(["Prone"], failures[i], options)
-        // await game.cub.addCondition(["Prone"], failures[i], {
+        // let options = {
         //     allowDuplicates: false,
         //     replaceExisting: false,
         //     warn: true
-        // });
-        jez.log("Ran game.cub.addCondition(...) ")
+        // }
+        // const CUB_ADD_CONDITION_MACRO = jez.getMacroRunAsGM("cubAddCondition")
+        // if (!CUB_ADD_CONDITION_MACRO) return false
+        // await CUB_ADD_CONDITION_MACRO.execute(["Prone"], failures[i], options)
+        // jez.log("Ran game.cub.addCondition(...) ")
+        //----------------------------------------------------------------------------------------
+        // add CE Condition to array of targets
+        //
+        let options = {
+            allowDups: false,
+            replaceEx: false,
+            traceLvl: 0
+        }
+        await jezcon.addCondition("Prone", failureUuids, options)
+        jez.log("Ran jezcon.addCondition(...) ")
         await jez.wait(1000)
     }
 }

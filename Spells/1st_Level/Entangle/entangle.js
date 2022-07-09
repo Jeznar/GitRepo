@@ -1,4 +1,4 @@
-const MACRONAME = "Entangle.0.4.js"
+const MACRONAME = "Entangle.0.5.js"
 /*****************************************************************************************
  * Apply the REstrained effect with cub to the tokens that fail their saves. 
  *
@@ -6,6 +6,7 @@ const MACRONAME = "Entangle.0.4.js"
  * 01/01/22 0.2 Delayed further efforts...
  * 02/23/22 0.3 Partial rewrite to my current style
  * 02/24/22 0.4 Changes to enable a doEach checkng of saves on afflicted tokens
+ * 07/09/22 0.5 Replace CUB add for an array of targets with jezcon.addConditions()
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -58,7 +59,6 @@ async function preCheck() {
     if (args[0].failedSaves.length === 0) {
         msg = `No (${args[0].failedSaves.length}) targets are affected by ${EFFECT}`
         jez.log(` ${msg}`, args[0].saves);
-        jez.addMessage(chatMessage, msgParm) 
         //await postResults(msg);
         return(false);
     } else {
@@ -86,7 +86,14 @@ async function doOnUse() {
     //
     jez.log(`failues array:`, failures);
     // await game.cub.addCondition(EFFECT, failures, {allowDuplicates:true, replaceExisting:true, warn:true});
-    await game.cub.addCondition(EFFECT, args[0].failedSaves, { allowDuplicates: true, replaceExisting: true, warn: true });
+    // await game.cub.addCondition(EFFECT, args[0].failedSaves, { allowDuplicates: true, replaceExisting: true, warn: true });
+    let options = {
+        allowDups: true,
+        replaceEx: false,
+        traceLvl: 0
+    } 
+    await jezcon.addCondition(EFFECT, LAST_ARG.failedSaveUuids, options)
+
     // ---------------------------------------------------------------------------------------
     // Loop through those just debuffed and add a midi overtime element to each to roll saves.
     // Also build a string of comma delimited token.ids for later use.

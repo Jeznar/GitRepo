@@ -175,6 +175,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 * Grasping_Root -- updated 7.6 and again 7.7
 * Vampire_Claw -- updated 7.7 
 
+22.07.09 Replaced CUB with CE calls in: Earth_Tremor
+
 
 [Link back to my Documentation Listing](README.md) 
 

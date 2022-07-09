@@ -193,6 +193,44 @@ class jezcon {
         return true
     }
 
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Checks to see if any of the current active effects applied to the actor
+     * with the given UUID match the effect name and are a convenient effect
+     *
+     * @param {string} effectName - the name of the effect to check
+     * @param {string} uuid - the uuid of the actor to see if the effect is applied to
+     * @param {object} options - may define the traceLvl
+     * @returns {boolean} true if the effect is applied, false otherwise
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static hasCE(effectName, uuid, options = {}) {
+        const FUNCNAME = 'jezcon.hasCE(effectName, uuid, options = {})'
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 1
+        if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName} on ${uuid}`)
+        if (TL > 2) jez.trace(`${FNAME} | effectName`, effectName);
+        if (TL > 2) jez.trace(`${FNAME} | uuid`, uuid);
+        if (TL > 2) jez.trace(`${FNAME} | options`, options);
+        return game.dfreds.effectInterface.hasEffectApplied(effectName, uuid)
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Removes the effect from the provided actor UUID as the GM via sockets
+     *
+     * @param {object} params - the effect params
+     * @param {string} params.effectName - the name of the effect to remove
+     * @param {string} params.uuid - the UUID of the actor to remove the effect from
+     * @param {object} params.options - an object that can contain the property traceLvl
+     * @returns {Promise} a promise that resolves when the GM socket function completes
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async remove(effectName, uuid, options = {}) {
+        const FUNCNAME = 'jezcon.remove(effectName, uuid, options = {})'
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 1
+        if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName} on ${uuid}`)
+        if (TL > 2) jez.trace(`${FNAME} | effectName`, effectName);
+        if (TL > 2) jez.trace(`${FNAME} | uuid`, uuid);
+        if (TL > 2) jez.trace(`${FNAME} | options`, options);
+        game.dfreds.effectInterface.removeEffect({ effectName, uuid })
+    }
 
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * Toggles the effect on the provided actor UUIDS as the GM via sockets. If no actor
@@ -222,43 +260,7 @@ class jezcon {
         if (TL > 2) jez.trace(`${FNAME} | TL`, TL);
         await game.dfreds.effectInterface.toggleEffect(effectName, { overlay: overlay, uuids: uuids })
     }
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-     * Checks to see if any of the current active effects applied to the actor
-     * with the given UUID match the effect name and are a convenient effect
-     *
-     * @param {string} effectName - the name of the effect to check
-     * @param {string} uuid - the uuid of the actor to see if the effect is applied to
-     * @param {object} options - may define the traceLvl
-     * @returns {boolean} true if the effect is applied, false otherwise
-     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static hasCE(effectName, uuid, options = {}) {
-        const FUNCNAME = 'jezcon.hasCE(effectName, uuid, options = {})'
-        const FNAME = FUNCNAME.split("(")[0]
-        const TL = options?.traceLvl ?? 1
-        if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName} on ${uuid}`)
-        if (TL > 2) jez.trace(`${FNAME} | effectName`, effectName);
-        if (TL > 2) jez.trace(`${FNAME} | uuid`, uuid);
-        if (TL > 2) jez.trace(`${FNAME} | options`, options);
-        return game.dfreds.effectInterface.hasEffectApplied(effectName, uuid)
-    }
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-     * Removes the effect from the provided actor UUID as the GM via sockets
-     *
-     * @param {object} params - the effect params
-     * @param {string} params.effectName - the name of the effect to remove
-     * @param {string} params.uuid - the UUID of the actor to remove the effect from
-     * @returns {Promise} a promise that resolves when the GM socket function completes
-     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async remove(effectName, uuid, options = {}) {
-        const FUNCNAME = 'jezcon.remove(effectName, uuid, options = {})'
-        const FNAME = FUNCNAME.split("(")[0]
-        const TL = options?.traceLvl ?? 1
-        if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName} on ${uuid}`)
-        if (TL > 2) jez.trace(`${FNAME} | effectName`, effectName);
-        if (TL > 2) jez.trace(`${FNAME} | uuid`, uuid);
-        if (TL > 2) jez.trace(`${FNAME} | options`, options);
-        game.dfreds.effectInterface.removeEffect({ effectName, uuid })
-    }
+
 
 } // END OF class jezcon
 Object.freeze(jezcon);
