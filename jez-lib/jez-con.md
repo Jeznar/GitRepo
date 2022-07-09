@@ -20,6 +20,7 @@ The functions currently included in this module are (all need to be proceeded by
 
 * **[addProne(targetUuid, aItem)](#addpronetargetUuid-aitem))** -- Adds a Prone effect. Hopefully the last of the generalized midid created effects.
 * **[add(...args)](#addargs)** -- Calls CE addEffect to add an effect
+* **[addCondition(effectName, targets, options)](#addconditioneffectname-targets-options)**
 * **[hasCE(effectName, uuid)](#hasceeffectname-uuid)** -- Checks for presence of a CE effect
 * **[modAdd](#modadd)** -- Example of modifying and adding an effect
 * **[remove(effectName, uuid)](#removeeffectname-uuid-options--)** -- Calls CE to remove an effect by name
