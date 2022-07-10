@@ -206,6 +206,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 * **Tidal Wave** effect Tidal Wave: **Prone** -- July 10
 * **Vengeful Glare** effect Vengeful Glare: **Paralyzed** -- July 10
 
+22.07.10 Updated Hex_Move to pop a dialog and ask if a previous target that can't be found is actually dead. (Pretty sweet dialog actually).
 
 [Link back to my Documentation Listing](README.md) 
 

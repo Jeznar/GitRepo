@@ -37,8 +37,10 @@ for (const element of game.items.contents) {
     if (element.data?.effects?.contents.length > 0) {
         for (const ACTIVE_EFFECT of element.data.effects.contents) {
             for (const changes of ACTIVE_EFFECT.data?.changes) {
-                if (changes.key.includes(EFFECT))
-                    jez.log(`Item "${element.name}" effect "${ACTIVE_EFFECT.data.label}" has "${changes.key}"`)
+                if (changes.key.includes(EFFECT)) {
+                    console.log(`**${element.name}** effect ${ACTIVE_EFFECT.data.label}: **${changes.value}**`)
+                    // console.log(changes.value)
+                }
             }
         }
     }

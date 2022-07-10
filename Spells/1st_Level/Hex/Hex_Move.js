@@ -1,8 +1,9 @@
-const MACRONAME = "Hex-Move.js"
+const MACRONAME = "Hex-Move.0.2.js"
 /*****************************************************************************************
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
+ * 07/10/22 0.2 Move the hex if the taregt is missing and confirmed in a dialog
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const MAC = MACRONAME.split("-")[0]     // Extra short form of the MACRONAME
@@ -41,12 +42,12 @@ function preCheck() {
         postResults();
         return (false);
     }
-    return(true)
+    return (true)
 }
 /***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults() {
+function postResults() {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
@@ -71,22 +72,35 @@ async function doOnUse() {
     //
     let oToken = canvas.tokens.placeables.find(ef => ef.id === oldHexMark)
     if (!oToken) {
-        msg = `The token that had the old hex was not found.  Sorry, can not automatically move hex.`
-        ui.notifications.warn(msg);
-        postResults(msg);
-        return (false);
+        let content = `<p style="color:DarkRed;">Your previously hex'ed target appears to be missing 
+                       from the current scene. Your hex can be moved only if that creature is now 
+                       dead.</p>
+                       <p style="color:DarkSlateBlue;">Is that target actually dead?</p>`
+        let targetDead = await Dialog.confirm({
+            title: 'Previous Hex Target is Missing!',
+            content: content,
+        });
+        console.log("***** targetDead", targetDead)
+        if (!targetDead) {
+            msg = `The token that had the old hex is still alive.  Sorry, can not move hex.`
+            ui.notifications.warn(msg);
+            postResults(msg);
+            return (false);
+        }
     }
-    jez.log(`${oToken.name} was the old hex target`,oToken)
     //----------------------------------------------------------------------------------------------
     // Verify the old hex mark is actually, you know, dead
     //
-    jez.log("oToken.actor.data.data.attributes.hp.value", oToken.actor.data.data.attributes.hp.value)
-    if (oToken.actor.data.data.attributes.hp.value !== 0) {
-        msg = `Perhaps sadly, ${oToken.name} is alive!  The hex may not be moved.`
-        ui.notifications.warn(msg);
-        postResults(msg);
-        return (false);
-    } else jez.log(`Yea? ${oToken.name} is dead and can have hex moved`)
+    if (oToken) {
+        jez.log(`${oToken.name} was the old hex target`, oToken)
+        jez.log("oToken.actor.data.data.attributes.hp.value", oToken.actor.data.data.attributes.hp.value)
+        if (oToken.actor.data.data.attributes.hp.value !== 0) {
+            msg = `Perhaps sadly, ${oToken.name} is alive!  The hex may not be moved.`
+            ui.notifications.warn(msg);
+            postResults(msg);
+            return (false);
+        } else jez.log(`Yea? ${oToken.name} is dead and can have hex moved`)
+    }
     //----------------------------------------------------------------------------------------------
     // Stash the token ID of the new target into the DAE Flag
     //
@@ -104,32 +118,35 @@ async function doOnUse() {
      * @return {boolean}        Whether the value was changed from its previous value
      */
     setProperty(aToken.actor.data.flags, "midi-qol.hexMark", newHexMark)
- 
+
     //----------------------------------------------------------------------------------------------
     // Get the data of the original hex on the target, then delete it.
     //
-    let oldEffect = await oToken.actor.effects.find(i => i.data.label === FLAG);
-    jez.log(`**** ${FLAG} found?`, oldEffect)
-    if (!oldEffect) {
-        msg = `${FLAG} sadly not found on ${oToken.name}.`
-        ui.notifications.error(msg);
-        postResults(msg);
-        return (false);
+    let oldEffect = null
+    if (oToken) {
+        oldEffect = await oToken.actor.effects.find(i => i.data.label === FLAG);
+        jez.log(`**** ${FLAG} found?`, oldEffect)
+        if (!oldEffect) {
+            msg = `${FLAG} sadly not found on ${oToken.name}.`
+            ui.notifications.error(msg);
+            postResults(msg);
+            return (false);
+        }
     }
     //let icon = aItem.img
-    let origin = oldEffect.data.origin ? oldEffect.data.origin : args[0].uuid;
+    let origin = oldEffect?.data?.origin ? oldEffect?.data?.origin : args[0].uuid;
     const LEVEL = args[0].spellLevel;
     const RNDS = LEVEL === 3 ? 480 : LEVEL === 4 ? 480 : LEVEL >= 5 ? 1440 : 60;
-    let rounds = oldEffect.data.duration.rounds ? oldEffect.data.duration.rounds : RNDS
+    let rounds = oldEffect?.data?.duration?.rounds ? oldEffect?.data?.duration?.rounds : RNDS
     let seconds = 6 * rounds
     const GAME_RND = game.combat ? game.combat.round : 0;
-    let startRound = oldEffect.data.duration.startRound ? oldEffect.data.duration.startRound : GAME_RND
-    let startTime = oldEffect.data.duration.startTime ? oldEffect.data.duration.startTime : game.time.worldTime
-    let itemData = oldEffect.data.flags.dae.itemData ? oldEffect.data.flags.dae.itemData : aItem
-    let spellLevel = oldEffect.data.flags.dae.spellLevel ? oldEffect.data.flags.dae.spellLevel : args[0].spellLevel
+    let startRound = oldEffect?.data?.duration?.startRound ? oldEffect?.data?.duration?.startRound : GAME_RND
+    let startTime = oldEffect?.data?.duration?.startTime ? oldEffect?.data?.duration?.startTime : game.time.worldTime
+    let itemData = oldEffect?.data?.flags?.dae?.itemData ? oldEffect?.data?.flags?.dae?.itemData : aItem
+    let spellLevel = oldEffect?.data?.flags?.dae?.spellLevel ? oldEffect?.data?.flags?.dae?.spellLevel : args[0].spellLevel
     const hexEffect = await aToken.actor.effects.find(i => i.data.label === "Hex");
     const concEffect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
-    let concId = oldEffect.data.flags.dae.concId ? oldEffect.data.flags.dae.concId : concEffect.id
+    let concId = oldEffect?.data?.flags?.dae?.concId ? oldEffect?.data?.flags?.dae?.concId : concEffect.id
     let ability = ""
     //-----------------------------------------------------------------------------------------------
     // Build up ability list for following dialog
@@ -180,8 +197,8 @@ async function doOnUse() {
     //----------------------------------------------------------------------------------------------
     // Delete the old effect
     //
-    oldEffect.delete();
-
+    if (oldEffect) oldEffect.delete();
+    vfxPlayHex(tToken, { color: "*" })
     /***************************************************************************************************
      * Apply the hex debuff to the target
     ***************************************************************************************************/
@@ -199,11 +216,50 @@ async function doOnUse() {
         //----------------------------------------------------------------------------------------------
         // Post the results message
         //
-        msg = `Hex removed from corpse of ${oToken.name}. ${tToken.name}'s ${ability.toUpperCase()} is now hexed,
+        msg = `Hex removed from corpse of ${oToken?.name}. ${tToken.name}'s ${ability.toUpperCase()} is now hexed,
     and will make stat checks at disadvantage. ${aToken.name} will do additional damage on each hit to 
     ${tToken.name}`
         postResults(msg)
         jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
         return (true);
     }
+}
+/***************************************************************************************************
+ * Function to play a VFX hex on a specified target.  
+ * 
+ * Supported colors: "Blue", "Green", "Red", "*"
+ * 
+ * @typedef  {Object} optionObj
+ * @property {string} color - one of the supported colors
+ * @property {number} opactity - real number defining opacity, defaults to 1.0
+ * @property {number} scale - real number defining scale, defaults to 1.0
+***************************************************************************************************/
+async function vfxPlayHex(token, optionObj) {
+    //-------------------------------------------------------------------------------------------------
+    // Anticipated VFX files include
+    // modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_Green_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_Blue_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_Red_400x400.webm
+    //
+    // Sequencer Docs: https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Effects
+    //
+    const colors = ["Blue", "Green", "Red", "*"]
+    let color // = optionObj.color ?? "Green"
+    if (colors.includes(optionObj?.color)) color = optionObj?.color
+    else color = "*"
+    const SCALE = optionObj?.scale ?? 1.4
+    const OPACITY = optionObj?.opacity ?? 1.0
+    //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
+    const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_${color}_400x400.webm`
+    jez.log("VFX_FILE", VFX_FILE)
+    new Sequence()
+        .effect()
+        .file(VFX_FILE)
+        .atLocation(token)
+        .center()
+        // .scale(SCALE)
+        .scaleToObject(SCALE)
+        .repeats(8,2000,3000)
+        .opacity(OPACITY)
+        .play()
 }

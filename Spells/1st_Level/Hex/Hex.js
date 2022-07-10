@@ -1,4 +1,4 @@
-const MACRONAME = "Hex.0.5.js"
+const MACRONAME = "Hex.0.6.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * My rewrite of Hex, borrowing heavily from Crymic's code
  * 
@@ -6,6 +6,7 @@ const MACRONAME = "Hex.0.5.js"
  * 05/05/22 0.3 Change createEmbeddedEntity to createEmbeddedDocuments for 9.x
  * 06/08/22 0.4 Modified to use library functions to manage temp item
  * 07/01/22 0.5 FoundryVTT 9.x Change: subclass changed location 
+ * 07/10/22 0.6 Added Hex VFX
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const FLAG = MACRO                      // Name of the DAE Flag       
@@ -258,6 +259,10 @@ async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECON
     // Modify the concentrating effect to make this macro an ItemMacro
     //
     modConcEffect(aToken)
+    //-----------------------------------------------------------------------------------------------
+    // Run cutsy VFX on the target
+    //
+    vfxPlayHex(tToken, { color: "*" })
     //------------------------------------------------------------------------------------------
     // Copy the item from the item directory to the spell book
     //
@@ -286,4 +291,43 @@ async function modConcEffect(token5e) {
     effect.data.changes.push({ key: `macro.itemMacro`, mode: CUSTOM, value: `arbitrary_arg`, priority: 20 })
     const result = await effect.update({ 'changes': effect.data.changes });
     if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
+}
+/***************************************************************************************************
+ * Function to play a VFX hex on a specified target.  
+ * 
+ * Supported colors: "Blue", "Green", "Red", "*"
+ * 
+ * @typedef  {Object} optionObj
+ * @property {string} color - one of the supported colors
+ * @property {number} opactity - real number defining opacity, defaults to 1.0
+ * @property {number} scale - real number defining scale, defaults to 1.0
+***************************************************************************************************/
+async function vfxPlayHex(token, optionObj) {
+    //-------------------------------------------------------------------------------------------------
+    // Anticipated VFX files include
+    // modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_Green_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_Blue_400x400.webm
+    // modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_Red_400x400.webm
+    //
+    // Sequencer Docs: https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Effects
+    //
+    const colors = ["Blue", "Green", "Red", "*"]
+    let color // = optionObj.color ?? "Green"
+    if (colors.includes(optionObj?.color)) color = optionObj?.color
+    else color = "*"
+    const SCALE = optionObj?.scale ?? 1.4
+    const OPACITY = optionObj?.opacity ?? 1.0
+    //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
+    const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_${color}_400x400.webm`
+    jez.log("VFX_FILE", VFX_FILE)
+    new Sequence()
+        .effect()
+        .file(VFX_FILE)
+        .atLocation(token)
+        .center()
+        // .scale(SCALE)
+        .scaleToObject(SCALE)
+        .repeats(8,2000,3000)
+        .opacity(OPACITY)
+        .play()
 }
