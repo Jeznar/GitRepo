@@ -1,0 +1,199 @@
+{
+  "name": "Stunning Screech (Vrock)",
+  "type": "feat",
+  "img": "Tokens/Monsters/Vrock/vrock_avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>The vrock emits a horrific screech.</p>\n<p>Each creature within 20 feet of it that can hear it and that isn't a demon must succeed on a <strong>DC 14 CON Save</strong> or be @JournalEntry[Ch02WiipJvf69EDN]{Stunned} until the end of the vrock's next turn .</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Creatures in range that can not hear or that are demons, will need to have an applied stun removed manually. Place the targeting circle on the middle of the Vrock.</p>\n<p> </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": 25,
+      "width": null,
+      "units": "ft",
+      "type": "sphere"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "con",
+      "dc": 14,
+      "scaling": "str"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    },
+    "attunement": 0
+  },
+  "effects": [
+    {
+      "_id": "wr539fviiubymylr",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Stunned",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 2
+      },
+      "icon": "Tokens/Monsters/Vrock/vrock_avatar.png",
+      "label": "Stunning Screech (Vrock)",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnEndSource"
+          ],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "macro.CE"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.p7JAJkLoYMiBX1zD"
+    },
+    "autoanimations": {
+      "version": 4,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "menuType": "circle",
+        "variant": "01",
+        "enableCustom": false,
+        "repeat": null,
+        "delay": null,
+        "scaleX": null,
+        "scaleY": null,
+        "opacity": null,
+        "removeTemplate": true,
+        "persistent": false
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "template",
+      "animation": "musicnote",
+      "color": "darkred",
+      "audio": {
+        "a01": {
+          "enable": false
+        }
+      },
+      "preview": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
