@@ -4,6 +4,7 @@ const MACRONAME = "eyebite_frightened_helper.js"
  * enough, the debuff is cleared.
  * 
  * 02/22/22 0.1 Creation of Macro
+ * 07/09/22 Replace CUB with CE
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -69,7 +70,7 @@ if (!goodLoS && inRange) {
 //-----------------------------------------------------------------------------------------
 // Tokens lack LoS and are out of range, time to remove the fear effect.
 // 
-game.cub.removeCondition("Frightened", aToken)
+await jezcon.remove("Frightened", aToken.actor.uuid, {traceLvl: 1});
 msg = `<b>${aToken.name}</b> can not see <b>${oToken.name}</b> and is far enough away to 
     rally. <b>${aToken.name}</b> is no longer ${FRIGHTENED_JRNL}.`
 jez.postMessage({color:"dodgerblue", fSize:14, icon:FRIGHTENED_ICON, 

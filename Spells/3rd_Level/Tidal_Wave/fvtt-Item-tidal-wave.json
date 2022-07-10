@@ -1,14 +1,14 @@
 {
-  "name": "Shocking Grasp",
+  "name": "Tidal Wave",
   "type": "spell",
-  "img": "/systems/dnd5e/icons/spells/lightning-blue-1.jpg",
+  "img": "icons/magic/water/pseudopod-teal.webp",
   "data": {
     "description": {
-      "value": "<p>Lightning springs from your hand to deliver a shock to a creature you try to touch. Make a melee spell attack against the target. You have advantage on the attack roll if the target is wearing armor made of metal. On a hit, the target takes 1d8 lightning damage, and it can't take reactions until the start of its next turn.</p>\n<p>The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).</p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>This spell is automated</p>",
-      "chat": "<p>Lightning springs from your hand to deliver a shock to a creature you try to touch. Make a melee spell attack against the target. You have advantage on the attack roll if the target is wearing armor made of metal. On a hit, the target takes 1d8 lightning damage, and it can't take reactions until the start of its next turn.</p>\n<p>The spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).</p>",
+      "value": "<p>You conjure up a wave of water that crashes down on an area within range. The area can be up to<strong> 30 feet long,</strong> up to <strong>10 feet wide</strong>, and up to 10 feet tall.</p>\n<p>Each creature in that area must make a <strong>Dexterity saving</strong> throw. On a failed save, a creature takes<strong> 4d8 bludgeoning </strong>damage and is knocked prone. On a successful save, a creature takes <span style=\"text-decoration:underline\">half as much damage and isn’t knocked prone.</span> The water then spreads out across the ground in all directions, extinguishing unprotected flames in its area and within 30 feet of it, and then it vanishes.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>This spell needs to have its target area, expressed as distance in feet in a line from <span style=\"text-decoration:underline\">5 to 30</span> on the <strong>Details</strong> page.  It also should have its line width set to either <span style=\"text-decoration:underline\">5 or 10</span> feet <em><span style=\"text-decoration:underline\"><strong>before</strong></span></em><em> </em>casting the spell and placing the targeting template.</p>",
+      "chat": "<p>You conjure up a wave of water that crashes down on an area within range. The area can be up to 30 feet long, up to 10 feet wide, and up to 10 feet tall. Each creature in that area must make a Dexterity saving throw. On a failed save, a creature takes 4d8 bludgeoning damage and is knocked prone. On a successful save, a creature takes half as much damage and isn’t knocked prone. The water then spreads out across the ground in all directions, extinguishing unprotected flames in its area and within 30 feet of it, and then it vanishes.</p>",
       "unidentified": ""
     },
-    "source": "Basic Rules, Player's Handbook pg 275",
+    "source": "Elemental Evil Player's Companion pg 168",
     "activation": {
       "type": "action",
       "cost": 1,
@@ -19,15 +19,15 @@
       "units": "inst"
     },
     "target": {
-      "value": null,
-      "width": null,
-      "units": "touch",
-      "type": "creature"
+      "value": 30,
+      "width": 10,
+      "units": "ft",
+      "type": "line"
     },
     "range": {
-      "value": null,
+      "value": 120,
       "long": null,
-      "units": "touch"
+      "units": "ft"
     },
     "uses": {
       "value": 0,
@@ -40,40 +40,40 @@
       "amount": null
     },
     "ability": "",
-    "actionType": "msak",
-    "attackBonus": "0",
+    "actionType": "save",
+    "attackBonus": 0,
     "chatFlavor": "",
     "critical": {
       "threshold": null,
-      "damage": ""
+      "damage": null
     },
     "damage": {
       "parts": [
         [
-          "1d8",
-          "lightning"
+          "4d8[bludgeoning]",
+          "bludgeoning"
         ]
       ],
       "versatile": ""
     },
     "formula": "",
     "save": {
-      "ability": "",
+      "ability": "dex",
       "dc": null,
       "scaling": "spell"
     },
-    "level": 0,
-    "school": "evo",
+    "level": 3,
+    "school": "con",
     "components": {
-      "value": "",
+      "value": "a drop of water",
       "vocal": true,
       "somatic": true,
-      "material": false,
+      "material": true,
       "ritual": false,
       "concentration": false
     },
     "materials": {
-      "value": "",
+      "value": "a drop of water",
       "consumed": false,
       "cost": 0,
       "supply": 0
@@ -83,37 +83,34 @@
       "prepared": false
     },
     "scaling": {
-      "mode": "cantrip",
-      "formula": "1d8"
+      "mode": "none",
+      "formula": ""
     },
-    "attunement": 0
+    "attunement": null
   },
   "effects": [
     {
-      "_id": "fKc5t25DAAJc9EzY",
+      "_id": "k80nlHbOW03GrBiH",
       "changes": [
         {
           "key": "macro.CE",
           "mode": 0,
-          "value": "Reactions - None",
+          "value": "Prone",
           "priority": "20"
         }
       ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "rounds": 1
+        "startTime": null
       },
-      "icon": "/systems/dnd5e/icons/spells/lightning-blue-1.jpg",
-      "label": "Shocking Grasp",
+      "icon": "systems/dnd5e/icons/skills/emerald_08.jpg",
+      "label": "Tidal Wave",
       "transfer": false,
       "flags": {
         "dae": {
           "stackable": "none",
           "macroRepeat": "none",
-          "specialDuration": [
-            "turnStart"
-          ],
+          "specialDuration": [],
           "transfer": false,
           "durationExpression": ""
         },
@@ -137,14 +134,14 @@
           "statusId": ""
         }
       },
-      "tint": null,
+      "tint": "",
       "selectedKey": "macro.CE"
     }
   ],
   "flags": {
     "ddbimporter": {
-      "id": 138709,
-      "definitionId": 2250,
+      "id": 138270,
+      "definitionId": 2402,
       "entityTypeId": 435869154,
       "dndbeyond": {
         "lookup": "generic",
@@ -154,18 +151,14 @@
       },
       "sources": [
         {
-          "sourceId": 1,
-          "pageNumber": null,
-          "sourceType": 2
-        },
-        {
-          "sourceId": 2,
-          "pageNumber": 275,
+          "sourceId": 4,
+          "pageNumber": 168,
           "sourceType": 1
         }
       ],
       "tags": [
-        "Damage"
+        "Damage",
+        "Control"
       ]
     },
     "betterRolls5e": {
@@ -184,15 +177,13 @@
       }
     },
     "cf": {
-      "id": "temp_68b6mer7s0n"
+      "id": "temp_edz3xuutj1n"
     },
     "core": {
-      "sourceId": "Compendium.My-Shared-DDB.spells.dH1Z0FzPSzxN7e4d"
+      "sourceId": "Compendium.My-Shared-DDB.spells.YuVIvQ4BKgEkeoBh"
     },
     "midi-qol": {
-      "criticalThreshold": "20",
       "onUseMacroName": "",
-      "fumbleThreshold": null,
       "effectActivation": false
     },
     "midiProperties": {

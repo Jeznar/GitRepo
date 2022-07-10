@@ -13,7 +13,7 @@
     "weight": 1,
     "price": 6000,
     "attunement": 0,
-    "equipped": true,
+    "equipped": false,
     "rarity": "uncommon",
     "identified": true,
     "activation": {
@@ -37,7 +37,7 @@
       "units": "ft"
     },
     "uses": {
-      "value": 2,
+      "value": 3,
       "max": "3",
       "per": "day",
       "autoDestroy": false,
@@ -76,7 +76,7 @@
       "_id": "9q19xgzmj4ac44i3",
       "changes": [
         {
-          "key": "macro.CUB",
+          "key": "macro.CE",
           "mode": 0,
           "value": "Frightened",
           "priority": "20"
@@ -125,9 +125,9 @@
           "onlyOnce": false
         }
       },
-      "tint": null,
+      "tint": "",
       "selectedKey": [
-        "macro.CUB",
+        "macro.CE",
         "flags.midi-qol.OverTime"
       ]
     }
@@ -165,10 +165,10 @@
       "sorting": "l"
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
       "coreVersion": "9.269",
-      "systemVersion": "1.6.0"
+      "systemVersion": "1.6.2"
     }
   }
 }

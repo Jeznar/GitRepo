@@ -4,7 +4,7 @@
   "img": "Tokens/CoS_NPC/Sangzor/Sangzor_Avatar.png",
   "data": {
     "description": {
-      "value": "<p style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">If Sangzor moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes<strong style=\"box-sizing:border-box;user-select:text\"> </strong><span style=\"box-sizing:border-box;user-select:text;font-family:var(--font-primary)\"><strong style=\"box-sizing:border-box;user-select:text\">8 (2d4 + 3) bludgeoning damage</strong> from the Ram and </span><span style=\"box-sizing:border-box;user-select:text;font-family:var(--font-primary);font-size:var(--font-size-14)\">an </span><strong style=\"box-sizing:border-box;user-select:text;font-family:var(--font-primary);font-size:var(--font-size-14)\">extra 5 (2d4) bludgeoning damage</strong><span style=\"box-sizing:border-box;user-select:text;font-family:var(--font-primary);font-size:var(--font-size-14)\">.</span></p>\n<p style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\">If the target is a creature, it must succeed on a <strong style=\"box-sizing:border-box;user-select:text\">DC 13 Strength</strong> saving throw or be knocked prone.</p>",
+      "value": "<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">If %TOKENNAME% moves at least 20 ft. straight toward a target and then hits it with a ram attack on the same turn, the target takes<strong style=\"box-sizing: border-box; user-select: text;\">&nbsp;</strong><span style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary);\"><strong style=\"box-sizing: border-box; user-select: text;\">8 (2d4 + 3) bludgeoning damage</strong>&nbsp;from the Ram and&nbsp;</span><span style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary); font-size: var(--font-size-14);\">an&nbsp;</span><strong style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary); font-size: var(--font-size-14);\">extra 5 (2d4) bludgeoning damage</strong><span style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary); font-size: var(--font-size-14);\">.</span></p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">If the target is a creature, it must succeed on a&nbsp;<strong style=\"box-sizing: border-box; user-select: text;\">DC 13 Strength</strong> saving throw or be knocked @JournalEntry[FBPUaHRxNyNXAOeh]{Prone}.</p>\n<hr />\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><strong>FoundryVTT</strong>: The saving throw will be rolled on all attacks, if target is not a&nbsp;<em>creature</em> the prone effect may need to be removed.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -110,7 +110,7 @@
       "_id": "wwhwuuu1vnvib16o",
       "changes": [
         {
-          "key": "macro.CUB",
+          "key": "macro.CE",
           "mode": 0,
           "value": "Prone",
           "priority": "20"
@@ -151,17 +151,18 @@
           "onlyOnce": false
         }
       },
-      "tint": null,
-      "selectedKey": "macro.CUB"
+      "tint": "",
+      "selectedKey": "macro.CE"
     }
   ],
   "flags": {
     "midi-qol": {
-      "effectActivation": false
+      "effectActivation": false,
+      "fumbleThreshold": null
     },
     "midiProperties": {
       "nodam": false,
-      "fulldam": false,
+      "fulldam": true,
       "halfdam": false,
       "rollOther": false,
       "critOther": false,
@@ -188,10 +189,10 @@
       "sourceId": "Item.XyysL7BOVgcUKHg9"
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
       "coreVersion": "9.269",
-      "systemVersion": "1.6.0"
+      "systemVersion": "1.6.2"
     }
   }
 }

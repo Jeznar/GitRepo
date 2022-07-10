@@ -66,7 +66,8 @@
     "recharge": {
       "value": null,
       "charged": false
-    }
+    },
+    "attunement": null
   },
   "effects": [
     {
@@ -79,7 +80,7 @@
           "priority": "20"
         },
         {
-          "key": "macro.CUB",
+          "key": "macro.CE",
           "mode": 0,
           "value": "Poisoned",
           "priority": "20"
@@ -103,7 +104,8 @@
           "stackable": "none",
           "macroRepeat": "none",
           "specialDuration": [],
-          "transfer": false
+          "transfer": false,
+          "durationExpression": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -118,18 +120,21 @@
           "height": false,
           "hidden": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
         }
       },
-      "tint": null,
+      "tint": "",
       "selectedKey": [
         "flags.midi-qol.OverTime",
-        "macro.CUB",
+        "macro.CE",
         "flags.midi-qol.OverTime"
       ]
     }
   ],
-  "sort": 0,
   "flags": {
     "magicitems": {
       "enabled": false,
@@ -147,16 +152,29 @@
     },
     "midi-qol": {
       "criticalThreshold": "20",
-      "onUseMacroName": ""
+      "onUseMacroName": "",
+      "effectActivation": false,
+      "fumbleThreshold": null
     },
     "core": {
       "sourceId": "Item.d14xgQWfMr14PPMW"
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

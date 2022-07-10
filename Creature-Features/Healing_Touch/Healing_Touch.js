@@ -5,6 +5,7 @@ const MACRONAME = "Healing_Touch"
  * may need to manually remove additional conditions.
  * 
  * 02/23/22 0.1 Creation of Macro
+ * 07/09/22 Replace CUB.remove with CE
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -16,7 +17,7 @@ let aItem;          // Active Item information, item invoking this macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
@@ -56,12 +57,13 @@ async function doOnUse() {
     jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
     jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
 
-    let badCubConditions = ["Blinded", "Diseased", "Poisoned", "Deafened"]  // No CUB Cursed, 
-    jez.log("badCubConditions", badCubConditions)
-    for (let i = 0; i < badCubConditions.length; i++) {
-        jez.log("Condition:", badCubConditions[i])
-        let effect = tToken.actor.effects.find(ef => ef.data.label === badCubConditions[i]) ?? null;
-        if (effect) await game.cub.removeCondition(badCubConditions[i], tToken)
+    let badConditions = ["Blinded", "Diseased", "Poisoned", "Deafened"]  // No Cursed, 
+    jez.log("badConditions", badConditions)
+    for (let i = 0; i < badConditions.length; i++) {
+        jez.log("Condition:", badConditions[i])
+        await jezcon.remove(badConditions[i], tToken.actor.uuid, {traceLvl: 5});
+        await jez.wait(100)
+
     }
     let effect = tToken.actor.effects.find(ef => ef.data.label === "Cursed") ?? null;
     if (effect) await effect.delete();

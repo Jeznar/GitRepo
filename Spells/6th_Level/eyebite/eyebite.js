@@ -1,4 +1,4 @@
-const MACRONAME = "eyebite"
+const MACRONAME = "eyebite.0.3.js"
 /*****************************************************************************************
  * For the spell’s Duration, your eyes become an inky void imbued with dread power. One 
  * creature of your choice within 60 feet of you that you can see must succeed on a Wisdom 
@@ -28,6 +28,7 @@ const MACRONAME = "eyebite"
  * 
  * 02/21/22 0.1 Creation of Macro
  * 05/03/22 0.2 Updated for FoundryVTT 9.x
+ * 07/09/22 Replace CUB with CE
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -42,7 +43,7 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken 
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let spellDC = aActor.data.data.attributes.spelldc;
 jez.log("spellDC", spellDC)
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 const IMMUNE_COND = `Eyebite Immune ${LAST_ARG.actorUuid}`
 jez.log('IMMUNE_COND', IMMUNE_COND)
 const EYEBITE_ICON = "Icons_JGB/Conditions/evil-eye-red-3.png"
@@ -53,12 +54,6 @@ let msg = "";
 // Run the preCheck function to make sure things are setup as best I can check them
 //
 if ((args[0]?.tag === "OnUse") && !preCheck())return;
-//----------------------------------------------------------------------------------
-// Alternative method for finding CUB Condition macro -JGB for Kandashi's macro
-//
-const CUBControl = game.macros?.getName("CUB Condition");
-if (!CUBControl) return ui.notifications.error(`Cannot locate CUB Condition Macro`);
-jez.log("CUBControl",CUBControl)
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -75,7 +70,7 @@ return;
  ***************************************************************************************************/
 function preCheck() {
     if(!game.modules.get("advanced-macros")?.active) {ui.notifications.error("Please enable the Advanced Macros module") ;return;}
-    if(!game.modules.get("combat-utility-belt")?.active) {ui.notifications.error("Please enable the CUB module"); return;}
+    if(!game.modules.get("dfreds-convenient-effects")?.active) {ui.notifications.error("Please enable dfreds-convenient-effects module"); return;}
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
         ui.notifications.warn(msg)
@@ -208,8 +203,7 @@ async function checkTokenSave(selectedEffect) {
     const flavor = `${CONFIG.DND5E.abilities["wis"]} DC${spellDC} ${DAEItem?.name || ""}`;
     let saveRoll = (await tToken.actor.rollAbilitySave("wis", { flavor })).total;
     if (saveRoll < spellDC) {
-        //ChatMessage.create({ content: `${tToken.name} failed the save with a ${saveRoll}` });
-        await CUBControl.execute("apply", selectedEffect, tToken);
+        await jezcon.add({ effectName: selectedEffect, uuid: tToken.actor.uuid, traceLvl: 5 });
         msg = `<b>${tToken.name}</b> failed save (with a ${saveRoll}) and is subject to 
             <b>${aToken.name}</b>'s eyebite effect.`
         jez.postMessage({color:"dodgerblue", fSize:14, icon:EYEBITE_ICON, 
@@ -243,7 +237,7 @@ async function checkTokenSave(selectedEffect) {
         //    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects
         //
         let overTimeVal = `turn=end,label=${selectedEffect},saveDC=${spellDC},saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save`
-        effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: overTimeVal, priority: 20 })
+        effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal, priority: 20 })
         jez.log(`effect.data.changes 2`, effect.data.changes)
         //----------------------------------------------------------------------------------
         // Apply the modification to existing effect
@@ -268,7 +262,7 @@ async function checkTokenSave(selectedEffect) {
         //    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects
         //
         let overTimeVal = `turn=end,label=${selectedEffect},macro=eyebite_frightened_helper`
-        effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: overTimeVal, priority: 20 })
+        effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal, priority: 20 })
         //----------------------------------------------------------------------------------
         // Apply the modification to existing effect
         //
@@ -297,7 +291,7 @@ async function checkTokenSave(selectedEffect) {
         flags: { dae: { itemData: aItem, specialDuration: ["newDay", "longRest", "shortRest"] } },
         duration: { rounds: 10, startRound: GAME_RND, seconds: 60, startTime: game.time.worldTime }, 
         changes: [
-            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Immune to Eyebite from this source", priority: 20 },
+            { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Immune to Eyebite from this source", priority: 20 },
         ]
     }]
     await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:token1.actor.uuid, effects: immuneEffect });

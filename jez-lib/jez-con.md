@@ -170,7 +170,7 @@ Removes the effect from the provided actor UUID as the GM via sockets
 const TL = 2
 for (const UUID of uuids) {
     if (jezcon.hasCE("Cover (Half)", UUID, {traceLvl: TL})) {
-        await jezcon.remove("Cover (Half)", UUID, {traceLvl: TL);
+        await jezcon.remove("Cover (Half)", UUID, {traceLvl: TL});
     }
 }
 ~~~

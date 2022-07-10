@@ -1,7 +1,7 @@
 {
   "name": "Geas",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/air-burst-air-3.jpg",
+  "img": "icons/magic/air/air-burst-spiral-large-yellow.webp",
   "data": {
     "description": {
       "value": "<p>You place a magical command on a creature that you can see within range, forcing it to carry out some service or refrain from some action or course of activity as you decide.  A creature that can't understand you is unaffected by the spell.</p>\n<p>If the creature can understand you, it must succeed on a <strong>Wisdom saving throw or become charmed </strong>by you for the duration. While the creature is charmed by you, it takes <strong>5d10 psychic damage</strong> each time it acts in a manner directly counter to your instructions, but <strong>no more than once each day.</strong> </p>\n<p>You can issue any command you choose, short of an activity that would result in certain death. Should you issue a suicidal command, the spell ends.</p>\n<p>You can end the spell early by using an action to dismiss it. A remove curse, greater restoration, or wish spell also ends it.</p>\n<p><strong>Higher Level. </strong>When you cast this spell using a spell slot of 7th or 8th level, the duration is 1 year. When you cast this spell using a spell slot of 9th level, the spell lasts until it is ended by one of the spells mentioned above.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>This item will place a <em>charmed</em> condition on the target on failure, but it does not handle the damage element or eventual removal.</p>",
@@ -80,14 +80,15 @@
     "scaling": {
       "mode": "level",
       "formula": ""
-    }
+    },
+    "attunement": null
   },
   "effects": [
     {
       "_id": "bJ2NqAKPYaFYihpD",
       "changes": [
         {
-          "key": "macro.CUB",
+          "key": "macro.CE",
           "mode": 0,
           "value": "Charmed",
           "priority": "20"
@@ -105,7 +106,8 @@
           "stackable": "none",
           "macroRepeat": "none",
           "specialDuration": [],
-          "transfer": false
+          "transfer": false,
+          "durationExpression": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -120,26 +122,41 @@
           "height": false,
           "hidden": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
         }
       },
-      "tint": null,
-      "selectedKey": "macro.CUB"
+      "tint": "",
+      "selectedKey": "macro.CE"
     }
   ],
-  "sort": 0,
   "flags": {
     "midi-qol": {
-      "onUseMacroName": ""
+      "onUseMacroName": "",
+      "effectActivation": false
     },
     "core": {
       "sourceId": "Item.YWNmNmM2OGVlMTY3"
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

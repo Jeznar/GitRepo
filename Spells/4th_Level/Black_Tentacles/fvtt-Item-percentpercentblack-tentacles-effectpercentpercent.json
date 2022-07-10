@@ -1,10 +1,10 @@
 {
   "name": "%%Black Tentacles Effect%%",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/vines-eerie-3.jpg",
+  "img": "icons/magic/nature/vines-thorned-entwined-glow-teal-purple.webp",
   "data": {
     "description": {
-      "value": "<p><strong>%%This item is used by the Jez's Black Tentacles Macro don't casually mess with it, please%%</strong></p>\n<p>This ability is to be used on each token, that doesn't already have the&nbsp;<strong>Black Tentacle Effect,</strong> if it starts its turn in the black tentacle area and when each token enters the area for the first time on each turn.</p>\n<p>On failure the target will take 3d6 Bludgeoning damage,<span style=\"color: #191813; font-size: 13px;\">&nbsp;no damage on save,</span><span style=\"color: #191813; font-size: 13px;\">&nbsp;and become @JournalEntry[CZWEqV2uG9aDWJnD]{Restrained}.</span></p>\n<p><strong>%%MORE STUFF TO DELETE%%</strong></p>",
+      "value": "<p><strong>%%This item is used by the Jez's Black Tentacles Macro don't casually mess with it, please%%</strong></p>\n<p>This ability is to be used on each token, that doesn't already have the <strong>Black Tentacle Effect,</strong> if it starts its turn in the black tentacle area and when each token enters the area for the first time on each turn.</p>\n<p>On failure the target will take 3d6 Bludgeoning damage,<span style=\"color:#191813;font-size:13px\"> no damage on save,</span><span style=\"color:#191813;font-size:13px\"> and become @JournalEntry[CZWEqV2uG9aDWJnD]{Restrained}.</span></p>\n<p><strong>%%MORE STUFF TO DELETE%%</strong></p>",
       "chat": "",
       "unidentified": ""
     },
@@ -98,7 +98,7 @@
           "priority": "20"
         },
         {
-          "key": "macro.CUB",
+          "key": "macro.CE",
           "mode": 0,
           "value": "Restrained",
           "priority": "20"
@@ -124,7 +124,8 @@
           "stackable": "none",
           "macroRepeat": "startEveryTurn",
           "specialDuration": [],
-          "transfer": false
+          "transfer": false,
+          "durationExpression": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -139,21 +140,25 @@
           "height": false,
           "hidden": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
         }
       },
       "tint": "",
       "selectedKey": [
         "macro.itemMacro",
-        "macro.CUB",
+        "macro.CE",
         "flags.midi-qol.OverTime"
       ]
     }
   ],
-  "sort": 0,
   "flags": {
     "midi-qol": {
-      "onUseMacroName": "ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "itemacro": {
       "macro": {
@@ -174,11 +179,22 @@
         }
       }
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

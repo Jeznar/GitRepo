@@ -177,6 +177,35 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.09 Replaced CUB.addCondition with CE calls in: Earth_Tremor, Entangle, Hideous_Laughter, Nauseating Poison, Timestop
 
+22.07.09 Replaced CUB.remove with CE for: Healing_Touch (The Abbot) & Eyebite Helper
+
+22.07.09 Update items that have CUB configured into DAE Effects
+
+* **%%Black Tentacles Effect%%** effect Black Tentacles Effect: **Restrained** -- July 9
+* **Black Tentacles** effect Black Tentacles: **Restrained** -- July 9
+* **Charge (Sangzor)** effect Charge (Sangzor): **Prone** -- July 10
+* **Contact Other Plane** effect Contact Other Plane: **Insane** -- July 10
+* **Darkness (Active Auras)** effect Darkness: **Blinded** -- July 10
+* **Falling....** effect Falling....: **Prone** -- July 10
+* **Frightening Gaze (Lich)** effect Frightening Gaze (lich): **Frightened** -- July 10
+* **Geas** effect Geas: **Charmed** -- July 10
+* **Hideous Laughter** effect Hideous Laughter: **Incapacitated** -- July 8
+* **Hold Person** effect Hold Person: **Paralyzed** -- July 10
+* **Hold Person (Midi) 21.11.21** effect Hold Person: **Paralyzed** -- July 10
+* **Howl of Death** effect Howl of Death: **Stunned** -- July 10
+* **Hypnotic Pattern** effect Hypnotic Pattern: **Charmed** -- July 10
+* **Hypnotic Pattern** effect Hypnotic Pattern: **Incapacitated** -- July 10
+* **Modify Memory** effect Modify Memory: **Charmed** -- July 10
+* **Paralyzing Touch (Lich)** effect Paralyzing Touch (Lich): **Paralyzed** -- July 10
+* **Pipes of Haunting** effect Pipes of Haunting: **Frightened** -- July 10
+* **Shocking Grasp** effect Shocking Grasp: **Reactions - None** -- July 10
+* **Silence (Active Auras)** effect Silence: **Deafened** -- July 10
+* **Spore Cloud** effect Spore Cloud: **Poisoned** -- July 10
+* **Spores (Vrock)** effect Spores (Vrock): **Poisoned** -- July 10
+* **Stunning Screech (Vrock)** effect Stunning Screech (Vrock): **Stunned** -- July 10
+* **Tidal Wave** effect Tidal Wave: **Prone** -- July 10
+* **Vengeful Glare** effect Vengeful Glare: **Paralyzed** -- July 10
+
 
 [Link back to my Documentation Listing](README.md) 
 

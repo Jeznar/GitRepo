@@ -1,0 +1,146 @@
+{
+  "name": "Healing Touch",
+  "type": "feat",
+  "img": "Icons_JGB/Monster_Features/Healing_Touch.jpg",
+  "data": {
+    "description": {
+      "value": "<p>As an action, touch another creature. The target magically regains 20 (4d8 + @mod) hit points and is freed from any curse, disease, poison, blindness, or deafness.</p>\n<p><strong>FoundryVTT: </strong>This may require manual GM cleanup.</p>\n<p> </p>\n<p> </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": 3,
+      "max": "3",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [
+        [
+          "4d8+@mod",
+          "healing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Healing Touch",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Healing_Touch\"\n/*****************************************************************************************\n * Implement The Abbot's healing touch ability, specifically, remove the CUB conditions:\n * curse, disease, poison, blindness, and deafness.  Also post a message suggesting the GM\n * may need to manually remove additional conditions.\n * \n * 02/23/22 0.1 Creation of Macro\n * 07/09/22 Replace CUB.remove with CE\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif ((args[0]?.tag === \"OnUse\") && !preCheck())return;\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\njez.log(\"\")\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        ui.notifications.warn(msg)\n        jez.log(msg)\n        return(false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);\n    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)\n\n    let badCubConditions = [\"Blinded\", \"Diseased\", \"Poisoned\", \"Deafened\"]  // No CUB Cursed, \n    jez.log(\"badCubConditions\", badCubConditions)\n    for (let i = 0; i < badCubConditions.length; i++) {\n        jez.log(\"Condition:\", badCubConditions[i])\n        // let effect = tToken.actor.effects.find(ef => ef.data.label === badCubConditions[i]) ?? null;\n        // if (effect) await game.cub.removeCondition(badCubConditions[i], tToken)\n        await jezcon.remove(badCubConditions[i], tToken.actor.uuid, {traceLvl: 5});\n        await jez.wait(100)\n\n    }\n    let effect = tToken.actor.effects.find(ef => ef.data.label === \"Cursed\") ?? null;\n    if (effect) await effect.delete();\n    //---------------------------------------------------------------------------------------------\n    // Add a message to the chat window\n    //\n    let chatMessage = game.messages.get(LAST_ARG.itemCardId);\n    let msg = `Most curse, disease, poison, blindness, and deafness conditions have been cleansed \n               from ${tToken.name}.<br><br><b>FoundryVTT:</b> This may require manual GM cleanup.`\n    jez.addMessage(chatMessage, {color:\"purple\", fSize:14, msg:msg, tag:\"saves\" })\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.ODA0N2RmZjE4NzFl"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
