@@ -1,0 +1,61 @@
+{
+  "name": "Jez-Compendia",
+  "title": "Jez'a Shared Compendia",
+  "description": "Sharing data across worlds via Compendia",
+  "author": "Joe Barrett",
+  "version": "1.1.0",
+  "minimumCoreVersion": "9.0",
+  "compatibleCoreVersion": "9.269",
+  "packs": [
+    {
+      "name": "actors",
+      "label": "Jez Actors",
+      "path": "packs/jezActors.db",
+      "module": "Jez-Compendia",
+      "entity": "Actor"
+    },
+    {
+      "name": "items",
+      "label": "Jez Items",
+      "path": "packs/jezItems.db",
+      "module": "Jez-Compendia",
+      "entity": "Item"
+    },
+    {
+      "name": "JournalEntrys",
+      "label": "My Journal Entrys",
+      "path": "packs/jezJournal.db",
+      "module": "Jez-Compendia",
+      "entity": "JournalEntry"
+    },
+    {
+      "name": "macros",
+      "label": "My Macros",
+      "path": "packs/jezMacro.db",
+      "module": "Jez-Compendia",
+      "entity": "Macro"
+    },
+    {
+      "name": "playlist",
+      "label": "My Playlists",
+      "path": "packs/jezPlaylist.db",
+      "module": "Jez-Compendia",
+      "entity": "Playlist"
+    },
+    {
+      "name": "rolltable",
+      "label": "My Roll Tables",
+      "path": "packs/jezRolltable.db",
+      "module": "Jez-Compendia",
+      "entity": "RollTable"
+    },
+    {
+      "name": "scenes",
+      "label": "My Scenes",
+      "path": "packs/jezScenes.db",
+      "module": "Jez-Compendia",
+      "entity": "Scene"
+    }
+  ],
+  "url": "https://github.com/Jeznar/GitRepo/blob/main/Documentation/ShareContent.md#try-two-module-to-share-content"
+}
