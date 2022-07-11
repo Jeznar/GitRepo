@@ -1,0 +1,61 @@
+{
+  "name": "TiB-Compendia",
+  "title": "TiB Shared Compendia",
+  "description": "Compendia to Contain the TiB Data",
+  "author": "Joe Barrett",
+  "version": "1.0.0",
+  "minimumCoreVersion": "9.0",
+  "compatibleCoreVersion": "9.269",
+  "packs": [
+    {
+      "name": "actors",
+      "label": "TiB Actors",
+      "path": "packs/TiBActors.db",
+      "module": "TiB-Compendia",
+      "entity": "Actor"
+    },
+    {
+      "name": "items",
+      "label": "TiB Items",
+      "path": "packs/TiBItems.db",
+      "module": "TiB-Compendia",
+      "entity": "Item"
+    },
+    {
+      "name": "JournalEntrys",
+      "label": "TiB Journal",
+      "path": "packs/TiBJournal.db",
+      "module": "TiB-Compendia",
+      "entity": "JournalEntry"
+    },
+    {
+      "name": "macros",
+      "label": "TiB Macros",
+      "path": "packs/TiBMacro.db",
+      "module": "TiB-Compendia",
+      "entity": "Macro"
+    },
+    {
+      "name": "playlist",
+      "label": "TiB Playlists",
+      "path": "packs/TiBPlaylist.db",
+      "module": "TiB-Compendia",
+      "entity": "Playlist"
+    },
+    {
+      "name": "rolltable",
+      "label": "TiB Roll Tables",
+      "path": "packs/TiBRolltable.db",
+      "module": "TiB-Compendia",
+      "entity": "RollTable"
+    },
+    {
+      "name": "scenes",
+      "label": "TiB Scenes",
+      "path": "packs/TiBScenes.db",
+      "module": "TiB-Compendia",
+      "entity": "Scene"
+    }
+  ],
+  "url": "https://github.com/Jeznar/GitRepo/blob/main/Documentation/ShareContent.md#try-two-module-to-share-content"
+}

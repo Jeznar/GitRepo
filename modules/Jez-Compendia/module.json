@@ -1,6 +1,6 @@
 {
   "name": "Jez-Compendia",
-  "title": "Jez'a Shared Compendia",
+  "title": "Jez Shared Compendia",
   "description": "Sharing data across worlds via Compendia",
   "author": "Joe Barrett",
   "version": "1.1.0",
@@ -23,35 +23,35 @@
     },
     {
       "name": "JournalEntrys",
-      "label": "My Journal Entrys",
+      "label": "Jez Journal",
       "path": "packs/jezJournal.db",
       "module": "Jez-Compendia",
       "entity": "JournalEntry"
     },
     {
       "name": "macros",
-      "label": "My Macros",
+      "label": "Jez Macros",
       "path": "packs/jezMacro.db",
       "module": "Jez-Compendia",
       "entity": "Macro"
     },
     {
       "name": "playlist",
-      "label": "My Playlists",
+      "label": "Jez Playlists",
       "path": "packs/jezPlaylist.db",
       "module": "Jez-Compendia",
       "entity": "Playlist"
     },
     {
       "name": "rolltable",
-      "label": "My Roll Tables",
+      "label": "Jez Roll Tables",
       "path": "packs/jezRolltable.db",
       "module": "Jez-Compendia",
       "entity": "RollTable"
     },
     {
       "name": "scenes",
-      "label": "My Scenes",
+      "label": "Jez Scenes",
       "path": "packs/jezScenes.db",
       "module": "Jez-Compendia",
       "entity": "Scene"

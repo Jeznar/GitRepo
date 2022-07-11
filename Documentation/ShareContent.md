@@ -197,8 +197,90 @@ This lead me to the following set of compendia:
 | Jez Tables    | RollTable    | All shared Roll Tables.                  |
 | Jez Scenes    | Scene        | All shared scenes.                       |
 
+<details>
+  <summary>JSON to Implement Try Two's Compendia.</summary>
+  
+~~~json
+{
+  "name": "Jez-Compendia",
+  "title": "Jez Shared Compendia",
+  "description": "Sharing data across worlds via Compendia",
+  "author": "Joe Barrett",
+  "version": "1.1.0",
+  "minimumCoreVersion": "9.0",
+  "compatibleCoreVersion": "9.269",
+  "packs": [
+    {
+      "name": "actors",
+      "label": "Jez Actors",
+      "path": "packs/jezActors.db",
+      "module": "Jez-Compendia",
+      "entity": "Actor"
+    },
+    {
+      "name": "items",
+      "label": "Jez Items",
+      "path": "packs/jezItems.db",
+      "module": "Jez-Compendia",
+      "entity": "Item"
+    },
+    {
+      "name": "JournalEntrys",
+      "label": "Jez Journal",
+      "path": "packs/jezJournal.db",
+      "module": "Jez-Compendia",
+      "entity": "JournalEntry"
+    },
+    {
+      "name": "macros",
+      "label": "Jez Macros",
+      "path": "packs/jezMacro.db",
+      "module": "Jez-Compendia",
+      "entity": "Macro"
+    },
+    {
+      "name": "playlist",
+      "label": "Jez Playlists",
+      "path": "packs/jezPlaylist.db",
+      "module": "Jez-Compendia",
+      "entity": "Playlist"
+    },
+    {
+      "name": "rolltable",
+      "label": "Jez Roll Tables",
+      "path": "packs/jezRolltable.db",
+      "module": "Jez-Compendia",
+      "entity": "RollTable"
+    },
+    {
+      "name": "scenes",
+      "label": "Jez Scenes",
+      "path": "packs/jezScenes.db",
+      "module": "Jez-Compendia",
+      "entity": "Scene"
+    }
+  ],
+  "url": "https://github.com/Jeznar/GitRepo/blob/main/Documentation/ShareContent.md#try-two-module-to-share-content"
+}
+~~~
+</details>
+
+### Implementing This Thing
+
+I followed the same basic steps, most significantly creating the JSON (shown once again, in a spoiler).  After creating the files:
+
+1. Restart (not reload) FoundryVTT to force it to read the new JSON
+1. FoundryVTT will create the **db** files defined in the JSON
+1. Activate the module in **Settings / Manage Modules** (side bar)
+1. View the new compendia in **Compendium** (side bar); search for that prefix (Jez)
+1. Move the new compendia under a heading using **Create Folder** within **Compendium** (side bar)
+1. Profit
 
 
+
+## Implementing a Compendium Module for TiB
+
+The game I am running, **Travelers in Barovia (TiB)** should also have a compendium.  I can whip that up by repeating try two, substituting TiB for Jez and viola!
 
 [Link back to my Documentation Listing](README.md) 
 
