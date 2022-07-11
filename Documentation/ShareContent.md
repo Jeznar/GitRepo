@@ -282,6 +282,8 @@ I followed the same basic steps, most significantly creating the JSON (shown onc
 
 The game I am running, **Travelers in Barovia (TiB)** should also have a compendium.  I can whip that up by repeating try two, substituting TiB for Jez and viola!
 
+REMINDER: [__Compendium Folders__](https://github.com/earlSt1/vtt-compendium-folders) does a great job of enabling organization within compendia.  I highly recommend using this one.  While I am at it, the [__MoarFolders__](https://foundryvtt.com/packages/moar-folders/) module makes it even better allowing more depth in the folder structure. My TiB data organization assumes both are installed and active.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
