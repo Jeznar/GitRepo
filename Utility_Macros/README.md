@@ -499,9 +499,14 @@ The **DnD 5e Helpers module** looks for a string that looks like "X hit points" 
 
 ### Validate Sidebar Images
 
-Macro for the GM to run with output to the console.  It reads through all of the actors and items in their respective directories (sidebar) looking for broken links to image files.  It collects them and writes a report to the console so the GM can address broken image links as desired.
+Macro for the GM to run with output to the console.  It reads through all of the actors, items, and journal entries in their respective directories (sidebar) looking for broken links to image files.  It collects them and writes a report to the console so the GM can address broken image links as desired.
 
-Specifically, the codes scans Items for the following:
+First the code scans all of the journal entries, checking:
+
+1. Main image 
+2. Reads the text (if any) looking for links to images and validating any that are found.
+
+The codes scans Items for the following:
 
 1. Base image validity (item.img)
 2. Images attached to DAE effects (looping through all effects present on the item)

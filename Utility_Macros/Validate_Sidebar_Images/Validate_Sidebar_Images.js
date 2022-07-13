@@ -13,8 +13,24 @@ let goodImageFiles = []
 let badImageFiles = []
 let brokenItem = []
 let brokenActor = []
+let brokenJournal = []
 let actorItemCnt = 0
 
+//----------------------------------------------------------------------------------------
+// Search for borked image links in items located in item directory (sidebar)
+//
+jez.log("")
+jez.log(`Searching Journal Entries for Bad Image links`)
+jez.log("--------------------------------------------")
+let journalCnt = 0
+for (const element of game.journal.contents) {
+    //if (element.name === "Test Dagger") { // Remove to check all items
+    //---------------------------------------------------------------------------------
+    // Check the image for the item
+    //
+    await checkJournal(element, ++journalCnt, "JOURNAL");
+}
+jez.log(`Checked ${journalCnt} Journal entries`)
 //----------------------------------------------------------------------------------------
 // Search for borked image links in items located in item directory (sidebar)
 //
@@ -33,6 +49,9 @@ jez.log(`Checked ${i-1} ITEMS in the Item Directory`)
 //----------------------------------------------------------------------------------------
 // Search for borked image links in actors located in actor directory (sidebar)
 //
+jez.log("")
+jez.log(`Searching Actors for Bad Image links`)
+jez.log("------------------------------------")
 let j = 0
 for (const element of game.actors.contents) {
     await checkActor(element, ++j, "ACTOR")
@@ -44,7 +63,8 @@ jez.log(`Checked ${j} ACTORS in the Actor Directory with ${actorItemCnt} Items`)
 //
 // jez.log("")
 // for (let i = 0; i < goodImageFiles.length; i++) jez.log(` goodImageFiles[${i}]`, goodImageFiles[i]);
-console.log("")
+jez.log("")
+jez.log("")
 for (let i = 0; i < badImageFiles.length; i++) console.log(` badImageFiles[${i}]`, badImageFiles[i]);
 console.log("")
 console.log(`${brokenItem.length} Broken Image Links within Items`)
@@ -54,7 +74,10 @@ console.log("")
 console.log(`${brokenActor.length} Broken Image Links within Actors`)
 console.log("- ---------------------------- -")
 for (let i = 0; i < brokenActor.length; i++) console.log(` ${i + 1})`, brokenActor[i]);
-
+console.log("")
+console.log(`${brokenJournal.length} Broken Image Links within Journal entries`)
+console.log("- ---------------------------- -")
+for (let i = 0; i < brokenJournal.length; i++) console.log(` ${i + 1})`, brokenJournal[i]);
 
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
@@ -198,6 +221,51 @@ async function checkItem(element, iteration, label) {
                         // jez.log(`"${element.name}" GM Notes: ${fileName}`)
                         brokenItem.push(`${label} "${element.name}" in GM Notes of ${fileName}`);
                     }
+                }
+            }
+        }
+    }
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Check an Item for bad image loinks
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function checkJournal(element, iteration, label) {
+    if (iteration % 100 === 0) jez.log(`${iteration} Journal Entries so far...`)  // Print progress message
+    if (element.data.img) {                                             // Image defined 
+        // jez.log(`${iteration} ${element.name}`, element)
+        let image = element.data.img
+        let findIt = await fetch(image);
+        if (findIt.ok) {
+            if (!goodImageFiles.includes(image)) goodImageFiles.push(image);
+        }
+        else {
+            if (!badImageFiles.includes(image)) badImageFiles.push(image);
+            // jez.log(`${element.name} item.img ${image}`)
+            brokenJournal.push(`${label} "${element.name}" item.img ${image}`);
+        }
+    }
+    // ----------------------------------------------------------------------------------------------
+    // Search the text description, if any, for iamges to validate, e.g. <img src="icons/vtt-512.png"
+    //
+    if (element.data.content) {
+        let str = element.data.content
+        const REGEX1 = new RegExp('<img src=\"[^"]+\"', 'g');
+        let result = str.match(REGEX1);
+        if (result) {
+            for (const MATCH of result) {
+                let fileName = MATCH.substring(10, MATCH.length - 1);
+                let findIt = await fetch(fileName);
+                if (findIt.ok) {
+                    // jez.log(`${fileName} exists`)
+                    if (!goodImageFiles.includes(fileName))
+                        goodImageFiles.push(fileName);
+                }
+                else {
+                    // jez.log(`${fileName} does not exist`);
+                    if (!badImageFiles.includes(fileName))
+                        badImageFiles.push(fileName);
+                    // jez.log(`"${element.name}" Description: ${fileName}`)
+                    brokenJournal.push(`${label} "${element.name}" in Description: ${fileName}`);
                 }
             }
         }
