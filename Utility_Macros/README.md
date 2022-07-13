@@ -34,6 +34,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Swap Hidden Tokens](#swap-hidden-tokens)** swaps the visibility state of all or selected npc tokens.
 * **[Swap Map](#swap-map)** swaps the current background image for the next or base. A naming convention must be followed.
 * **[Update Item on Actors](#update-item-on-actors)** Updates sidebar and selected tokens to match a reference item
+* **[Validate Sidebar Images](#validate-sidebar-images)** Scan through sidebar actors and items looking for bad images
 * **[World Macros](world-macros)** Special world macros like: BubblesForAll
 
 ## Notes on Functions
@@ -491,6 +492,32 @@ Items with the names `Regeneration` or `Self-Repair` receive special treatment b
 The **DnD 5e Helpers module** looks for a string that looks like "X hit points" where X can be a static value or a dice formula, or so the author claims.  In reality the RegEx he uses allows X too basically be an integer or a die expression of the form XdY where X is any number of digits and Y is 1 to 9 followed by any number of digits.  Notice that no + or - is included, so rolling dice and adding a modifier is unsupported.
 
 6/22/22 Updated to use **[selectItemOnActor(sToken, prompts, nextFunc)](../jez-lib#selectitemonactorstoken-prompts-nextfunc))** and provide description of macro with a cancel option on launch.
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Validate Sidebar Images
+
+Macro for the GM to run with output to the console.  It reads through all of the actors and items in their respective directories (sidebar) looking for broken links to image files.  It collects them and writes a report to the console so the GM can address broken image links as desired.
+
+Specifically, the codes scans Items for the following:
+
+1. Base image validity (item.img)
+2. Images attached to DAE effects (looping through all effects present on the item)
+3. Read the spell description looking for embedded images and checking them. The follow RegEx is used: `\<img src=\"[^"]+\"/g`.
+4. Read the GM notes in the same manner as the description. 
+
+Then Actors are scanned
+
+1. Actor's image (actor.img)
+2. Token's image (token.img) using `game.actors.get(actor.id).getTokenImages()` to handle possible wildcarding.
+3. Each item contained on the actor in same manner as the sidebar items.
+
+<details>
+  <summary>Click to show example output</summary>
+  ![Validate_Sidebar_Images.png](Validate_Sidebar_Images/Validate_Sidebar_Images.png)
+</details>
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

@@ -1,0 +1,92 @@
+{
+  "name": "Berserk",
+  "type": "feat",
+  "img": "/systems/dnd5e/icons/skills/red_10.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Whenever %TOKENNAME% starts its turn with <strong>40 hit points or fewer</strong>, <span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">[[/r 1d6]]{roll a d6, on a 6 %TOKENNAME%&nbsp;goes berserk}</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">. On a 6, the golem goes berserk. </span></p>\n<p><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">On each of its turns <strong>while berserk</strong>, the golem attacks the nearest creature it can see. If no creature is near enough to move to and attack, the golem attacks an object, with preference for an object smaller than itself. Once the golem goes berserk, it continues to do so until it is destroyed or regains all its hit points.</span></p>\n<p>The golem's creator, if within 60 feet of the berserk golem, can<strong> try to calm</strong> it by speaking firmly and persuasively. The golem must be able to hear its creator, who must take an action to make a DC 15 Charisma (Persuasion) check. If the check succeeds, the golem ceases being berserk. If it takes damage while still at 40 hit points or fewer, the golem might go berserk again.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:&nbsp;</strong><span style=\"color: #191813; font-size: 13px;\">This is not automanted.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.oNlLcC2ji6YmECD1"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
