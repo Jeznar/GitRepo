@@ -1,0 +1,187 @@
+{
+  "name": "Sword Burst",
+  "type": "spell",
+  "img": "icons/skills/melee/weapons-crossed-swords-white-blue.webp",
+  "data": {
+    "description": {
+      "value": "<p>You create a momentary circle of spectral blades that sweep around you. All other creatures within <strong>5 feet </strong>of you must succeed on a <strong>Dexterity saving throw</strong> or take <strong>1d6 force</strong> damage.</p>\n<p>This spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).</p>\n<hr />\n<p><strong>FoundryVTT:</strong> This spell is automated.</p>",
+      "chat": "<p>You create a momentary circle of spectral blades that sweep around you. All other creatures within 5 feet of you must succeed on a Dexterity saving throw or take 1d6 force damage.</p>\n<p>This spell’s damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).</p>",
+      "unidentified": ""
+    },
+    "source": "Sword Coast Adventurer's Guide pg 143",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "cantrip",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 34235,
+      "definitionId": 2413,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 13,
+          "pageNumber": 143,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Control",
+        "Combat"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_68b6mer7s0n"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.yduV77KDCOdCebPO"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Sword Burst",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Sword_Burst.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * You create a momentary circle of spectral blades that sweep around you. All other creatures within \n * 5 feet of you must succeed on a Dexterity saving throw or take 1d6 force damage.\n * \n * This spells damage increases by 1d6 when you reach 5th level (2d6), 11th level (3d6), and 17th \n * level (4d6).\n * \n * 07/13/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim of the version number and extension\nconst TL = 5;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nlet failSaves = []  // Array to contain the tokens that failed their saving throws\nlet madeSaves = []  // Array to contain the tokens that made their saving throws\nlet madeNames = \"\"\nlet failNames = \"\"\nconst SAVE_TYPE = \"dex\"\nconst SAVE_DC = aActor.data.data.attributes.spelldc;\nconst DAMAGE_TYPE = \"force\"\nconst DAMAGE_DICE = \"d6\"\nlet tTokenCnt = 0\n//---------------------------------------------------------------------------------------------------\n// Scale the damage dice based on the level of the caster\n//\nlet casterLevel = jez.getCharLevel(aToken)\njez.log(\"casterLevel\", casterLevel)\nlet numDice = 1\nif (casterLevel >= 5) numDice++\nif (casterLevel >= 11) numDice++\nif (casterLevel >= 17) numDice++\nconst NUM_DICE = numDice\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);\n    //-----------------------------------------------------------------------------------------------\n    // Figure out our maximum range (it should likely be 5 feet, but will read item card)\n    //\n    const ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS)\n    if (!MAX_RANGE) return jez.badNews(`Range is 0 or incorrect units on ${aItem.name}`, \"error\")\n    if (TL > 2) jez.trace(`Maximum range is ${MAX_RANGE} feet`)\n    //-----------------------------------------------------------------------------------------------\n    // Find targets that are within MAX_RANGE by checking all tokens on the map and build target list \n    //\n    let tTokens = []\n    let allTokens = canvas.tokens.placeables\n    for (let i = 0; i < allTokens.length; i++) {\n        if (jez.inRange(aToken, allTokens[i], MAX_RANGE)) {\n            if (aToken != allTokens[i]) {\n                tTokenCnt++\n                tTokens.push(allTokens[i])\n            }\n            if (TL > 2) jez.trace(`${allTokens[i].name} is in range`);\n\n        }\n        else if (TL > 2) jez.trace(`${allTokens[i].name} is not in range`);\n    }\n    if (tTokens.length === 0) return jez.badNews(\"No targets within range\", \"info\")\n    //---------------------------------------------------------------------------------------------\n    // Proceed with the in range tokens -- roll saves\n    //\n    const FLAVOR = \"Not Shown\"\n    for (let i = 0; i < tTokens.length; i++) {\n        if (TL > 2) jez.trace(`${i}) Roll a save for ${tTokens[i].name}`)\n        let save = (await tTokens[i].actor.rollAbilitySave(SAVE_TYPE, { FLAVOR, chatMessage: false, fastforward: true }));\n        if (TL > 3) jez.trace(`${tTokens[i].name} saving throw ${save.total}`, save)\n        if (save.total < SAVE_DC) {\n            if (TL > 2) jez.trace(`${tTokens[i].name} failed: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            failSaves.push(tTokens[i])\n            failNames += `<b>${tTokens[i].name}</b>: ${save.total} (${save._formula})<br>`\n        } else {\n            if (TL > 2) jez.trace(`${tTokens[i].name} saved: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)\n            madeSaves.push(tTokens[i])\n            madeNames += `<b>${tTokens[i].name}</b>: ${save.total} (${save._formula})<br>`\n        }\n    }\n    //---------------------------------------------------------------------------------------------\n    // Roll up some damage \n    //\n    jez.log(`${failSaves.length} Tokens failed saves, need damage applied`)\n    let damageRoll = new Roll(`${NUM_DICE}${DAMAGE_DICE}`).evaluate({ async: false });\n    game.dice3d?.showForRoll(damageRoll);\n    if (TL > 2) jez.trace(\"damageRoll\", damageRoll)\n    //---------------------------------------------------------------------------------------------\n    // If one or more target failed its save Apply damage to Tokens that failed saves. \n    //\n    // Freeze suggested an alternitive damage function on discord. \n    // https://discord.com/channels/170995199584108546/699750150674972743/986703175279079485\n    //\n    let targets = new Set();\n    for (let i = 0; i < failSaves.length; i++) targets.add(failSaves[i]);\n    if (TL > 3) jez.trace(\"targets set\", targets)\n    await MidiQOL.applyTokenDamage([{ damage: damageRoll.total, type: DAMAGE_TYPE }], damageRoll.total, targets)\n    //---------------------------------------------------------------------------------------------\n    // Launch a VFX onto each of the targets that failed their saves. \n    //\n    for (let i = 0; i < failSaves.length; i++) {\n        runVFX(failSaves[i]);\n        await jez.wait(500+Math.floor(Math.random() * 500))\n    }\n    //---------------------------------------------------------------------------------------------\n    // Craft results message and post it.\n    //\n    let chatMessage = await game.messages.get(args[args.length - 1].itemCardId);\n    await jez.wait(50)\n    //    \n    if (madeNames) {\n        msg = `<b><u>Successful ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${madeNames}`\n        await jez.wait(50)\n        jez.addMessage(chatMessage, { color: \"darkgreen\", fSize: 14, msg: msg, tag: \"damage\" })\n    }\n    //\n    if (failNames) {\n        msg = `<b><u>Failed ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${failNames}`\n        await jez.wait(50)\n        jez.addMessage(chatMessage, { color: \"darkred\", fSize: 14, msg: msg, tag: \"damage\" })\n    }\n    await jez.wait(50)\n    //\n    msg = `Total of ${tTokenCnt} target(s) within ${MAX_RANGE} feet of ${aToken.name}.  Those that \n    failed saves take ${damageRoll.total} ${DAMAGE_TYPE} damage from ${NUM_DICE}${DAMAGE_DICE}.<br>`\n    jez.addMessage(chatMessage, { color: \"darkblue\", fSize: 14, msg: msg, tag: \"damage\" })\n    await jez.wait(50)\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);\n    return true;\n}\n/***************************************************************************************************\n * Perform the VFX code that runs when the mace hits a special target\n ***************************************************************************************************/\n async function runVFX(token1) {\n    const VFX_NAME = `${MACRO}`\n    const VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Melee/Sword01_*_Regular_Yellow_800x600.webm\"\n    const VFX_OPACITY = 1.0;\n    const VFX_SCALE = 0.4;\n    new Sequence()\n    .effect()\n        .file(VFX_LOOP)\n        .atLocation(token1)     // Effect will appear at  template, center\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .name(VFX_NAME)         // Give the effect a uniqueish name\n    .play();\n    await jez.wait(100)         // Don't delete till VFX established\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

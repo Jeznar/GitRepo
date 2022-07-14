@@ -41,6 +41,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Produce Flame](Cantrips#produce-flame)
 * [Shillelagh](Cantrips#shillelagh)
 * [Shocking Grasp](Cantrips#shocking-grasp)
+* [Sword Burst](Cantrips#sword-burst)
 * [Thaumaturgy](Cantrips#thaumaturgy)
 * [Thorn Whip](Cantrips#thorn-whip)
 * [Vicious Mockery](Cantrips#vicious-mockery)

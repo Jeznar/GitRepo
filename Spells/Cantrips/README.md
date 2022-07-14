@@ -24,6 +24,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Produce Flame](#produce-flame)
 * [Shillelagh](#shillelagh)
 * [Shocking Grasp](#shocking-grasp)
+* [Sword Burst](#sword-burst)
 * [Thaumaturgy](#thaumaturgy)
 * [Thorn Whip](#thorn-whip)
 * [Vicious Mockery](#vicious-mockery)
@@ -248,6 +249,16 @@ Imported from previous work, no documentation at this time.
 Implements the Cantrip using a VFX from Automated Animations and an effect from DAE.  The no reactions effect was added to CUB's condition lab.
 
 ![Shocking_Grasp.gif](Shocking_Grasp/Shocking_Grasp.gif)
+
+[*Back to Cantrips List*](#cantrips)
+
+---
+
+### Sword Burst
+
+This item forces all tokens within 5 feet to make a save or take the described damage.
+
+![Sword_Burst.gif](Sword_Burst/Sword_Burst.gif)
 
 [*Back to Cantrips List*](#cantrips)
 

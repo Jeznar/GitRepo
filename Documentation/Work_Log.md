@@ -210,6 +210,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.13 Created Validate_Sidebar_Utility macro.  It contains an interesting call to: `game.actors.get(element.id).getTokenImages()` to resolve the tokens including handling wildcarding.
 
+22.07.13 Created a Sword_Burst cantrip
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
