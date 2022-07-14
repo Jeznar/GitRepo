@@ -1,0 +1,107 @@
+{
+  "name": "Invocation: Chains of Carceri",
+  "type": "feat",
+  "img": "icons/skills/melee/strike-flail-spiked-pink.webp",
+  "data": {
+    "description": {
+      "value": "<p><em>Prerequisite: 15th level, Pact of the Chain feature</em></p>\n<p>You can cast @Compendium[dnd5e.spells.l9Ju5KE7bbn3WpTm]{Hold Monster} at will - targeting a <strong>celestial</strong>, <strong>fiend</strong>, or <strong>elemental</strong> - without expending a spell slot or material components.</p>\n<p>You must finish a long rest before you can use this invocation on the same creature again.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 110",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 90,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "cha",
+      "value": ""
+    },
+    "requirements": "Warlock 15",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.Phy02H5x0TKHd7T3"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

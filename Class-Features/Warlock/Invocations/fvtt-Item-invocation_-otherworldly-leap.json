@@ -1,0 +1,92 @@
+{
+  "name": "Invocation: Otherworldly Leap",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/wind-grasp-sky-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You can cast&nbsp;<a href=\"https://www.dndbeyond.com/spells/jump\" data-tooltip-href=\"//www.dndbeyond.com/spells/2161-tooltip?disable-webm=1&amp;disable-webm=1\">jump</a>&nbsp;on yourself at will, without expending a spell slot or material components.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:</strong><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">&nbsp;Add the spell to character sheet, change the targeting to self and make it an at-will spell</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 111",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Warlock 9",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.MhJfdBl1B7PdU4oZ"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

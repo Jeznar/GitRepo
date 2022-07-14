@@ -1,0 +1,138 @@
+{
+  "name": "Invocation: Eyes of the Rune Keeper",
+  "type": "feat",
+  "img": "icons/sundries/documents/document-torn-diagram-tan.webp",
+  "data": {
+    "description": {
+      "value": "<p>You can read all writing.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: places a DAE effect that grants all languages, it does not note that it is for reading only.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 111",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "target": {
+      "value": "",
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": "",
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "type": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "requirements": "Warlock 2",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "h1tyzjh2bcyUUe2c",
+      "flags": {
+        "dae": {
+          "transfer": true
+        }
+      },
+      "changes": [
+        {
+          "key": "data.traits.languages.all",
+          "value": "",
+          "mode": 0,
+          "priority": 0
+        }
+      ],
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/skills/yellow_41.jpg",
+      "label": "Invocation: Eyes of the Rune Keeper",
+      "transfer": true,
+      "disabled": false
+    }
+  ],
+  "flags": {
+    "entityorder": {
+      "order": 9
+    },
+    "dynamiceffects": {
+      "alwaysActive": true,
+      "equipActive": false,
+      "effects": [
+        {
+          "modSpecKey": "data.traits.languages.all",
+          "value": "0",
+          "mode": "+",
+          "targetSpecific": false,
+          "id": 1,
+          "itemId": "GDOddk7l2JqCKz0r",
+          "active": false,
+          "_targets": []
+        }
+      ]
+    },
+    "core": {
+      "sourceId": "Compendium.Dynamic-Effects-SRD.DAE SRD Feats.xJZaNHa9xfbWd8P1"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

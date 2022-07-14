@@ -1,0 +1,121 @@
+{
+  "name": "Invocation: Sculptor of Flesh",
+  "type": "feat",
+  "img": "icons/creatures/mammals/wolf-howl-moon-forest-blue.webp",
+  "data": {
+    "description": {
+      "value": "<p>You can cast @Item[OWFlYjA0ODRiOGRh]{Polymorph} once using a warlock spell slot. You can't do so again until you finish a long rest.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:</strong><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"> Add the spell to character sheet.&nbsp; Either track the usage manually, or click this ability to drain the once per day ability.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 111",
+    "activation": {
+      "type": "special",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "lr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "cha",
+      "value": ""
+    },
+    "requirements": "Warlock 7",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.Xa2MLUJGCReJ28B7"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "OWFlYjA0ODRiOGRh",
+          "name": "Polymorph",
+          "pack": "world",
+          "img": "icons/magic/control/energy-stream-link-large-teal.webp",
+          "baseLevel": "4",
+          "level": "4",
+          "consumption": "4",
+          "upcast": "4",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

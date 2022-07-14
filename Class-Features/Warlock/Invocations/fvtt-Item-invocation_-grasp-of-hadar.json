@@ -1,0 +1,107 @@
+{
+  "name": "Invocation: Grasp of Hadar",
+  "type": "feat",
+  "img": "icons/magic/nature/vines-thorned-curled-glow-teal-purple.webp",
+  "data": {
+    "description": {
+      "value": "<p><em>Prerequisite:&nbsp;eldritch blast&nbsp;cantrip</em></p>\n<p>Once on each of your turns when you hit a creature with your&nbsp;<a href=\"https://www.dndbeyond.com/spells/eldritch-blast\" data-tooltip-href=\"//www.dndbeyond.com/spells/2082-tooltip?disable-webm=1&amp;disable-webm=1\">eldritch blast</a>, you can move that creature in a straight line 10 feet closer to you.</p>\n<hr style=\"box-sizing: border-box; user-select: text; border-top: 1px solid var(--color-border-light-primary); border-bottom: 1px solid var(--color-border-light-highlight); color: #191813; font-size: 13px;\" />\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><strong style=\"box-sizing: border-box; user-select: text;\">FoundryVTT</strong>: This is not automated</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 110",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "lr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "cha",
+      "value": ""
+    },
+    "requirements": "Warlock",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.QBk1RsuTIEF4GEBC"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

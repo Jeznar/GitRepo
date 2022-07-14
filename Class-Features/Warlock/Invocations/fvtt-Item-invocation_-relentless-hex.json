@@ -1,0 +1,92 @@
+{
+  "name": "Invocation: Relentless Hex",
+  "type": "feat",
+  "img": "icons/magic/sonic/bell-alarm-red-purple.webp",
+  "data": {
+    "description": {
+      "value": "<p><em>Prerequisite: Hex&nbsp;spell or a warlock feature that curses</em></p>\n<p>Your curse creates a temporary bond between you and your target. As a bonus action, you can magically teleport up to 30 feet to an unoccupied space you can see within 5 feet of the target cursed by your&nbsp;<a href=\"https://www.dndbeyond.com/spells/hex\" data-tooltip-href=\"//www.dndbeyond.com/spells/2317-tooltip?disable-webm=1&amp;disable-webm=1\">hex</a> spell or by a warlock feature of yours, such as Hexblade&rsquo;s Curse or Sign of Ill Omen. To teleport in this way, you must be able to see the cursed target.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT</strong><span style=\"color: #191813; font-size: 13px;\">: This is not automated</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 111",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Warlock 7",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.MhJfdBl1B7PdU4oZ"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

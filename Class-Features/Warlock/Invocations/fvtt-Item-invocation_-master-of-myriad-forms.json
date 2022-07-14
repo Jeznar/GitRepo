@@ -1,0 +1,106 @@
+{
+  "name": "Invocation: Master of Myriad Forms",
+  "type": "feat",
+  "img": "icons/creatures/abilities/cougar-pounce-stalk-black.webp",
+  "data": {
+    "description": {
+      "value": "<p>You can cast @Item[6TrenOq08V1lTng8]{Alter Self} at will, without expending a spell slot.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:</strong><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">&nbsp;Add the spell to character sheet, change the targeting to self and make it an at-will spell.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 111",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Warlock 15",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.lxfdjLer3uKjyZqU"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "6TrenOq08V1lTng8",
+          "name": "Alter Self",
+          "pack": "world",
+          "img": "Icons_JGB/Spells/2nd_Level/Alter_Self.png",
+          "baseLevel": "2",
+          "level": "2",
+          "consumption": "2",
+          "upcast": "2",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

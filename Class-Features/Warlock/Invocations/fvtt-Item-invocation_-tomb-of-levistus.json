@@ -1,0 +1,121 @@
+{
+  "name": "Invocation: Tomb of Levistus",
+  "type": "feat",
+  "img": "icons/magic/symbols/ring-circle-smoke-blue.webp",
+  "data": {
+    "description": {
+      "value": "<p>As a <strong>reaction</strong> when you take damage, you can entomb yourself in ice, which melts away at the end of your next turn.</p>\n<ul>\n<li>You gain 10 temporary hit points per warlock level, which take as much of the triggering damage as possible.</li>\n<li>Immediately after you take the damage, you gain vulnerability to fire damage,</li>\n<li>your speed is reduced to 0, and</li>\n<li>you are <a href=\"https://www.dndbeyond.com/compendium/rules/basic-rules/appendix-a-conditions#Incapacitated\" data-tooltip-href=\"//www.dndbeyond.com/conditions/7-tooltip?disable-webm=1&amp;disable-webm=1\">incapacitated</a>.</li>\n</ul>\n<p>These effects, including any remaining temporary hit points, all end when the ice melts.</p>\n<p>Once you use this invocation, you can&rsquo;t use it again until you finish a short or long rest.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:</strong><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"> This is not automated.&nbsp; Either track the usage manually, or click this ability to drain the once per day ability.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 111",
+    "activation": {
+      "type": "reactiondamage",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "lr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "cha",
+      "value": ""
+    },
+    "requirements": "Warlock 5",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.dTSV0xZMpY5CxkRk"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "hG78w6ED8dNFXFkS",
+          "name": "Bestow Curse",
+          "pack": "world",
+          "img": "Icons_JGB/Misc/curse.png",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "3",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

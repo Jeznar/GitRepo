@@ -1,0 +1,183 @@
+{
+  "name": "Invocation: Beguiling Influence",
+  "type": "feat",
+  "img": "icons/commodities/currency/coin-engraved-sun-smile-copper.webp",
+  "data": {
+    "description": {
+      "value": "<p>You gain proficiency in the <strong>Deception</strong> and <strong>Persuasion</strong> skills.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This item places a DAE effect on the posessor that grants the named proficiencies.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 110",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": "",
+      "units": ""
+    },
+    "target": {
+      "value": "",
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": "",
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null,
+      "type": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "requirements": "Warlock 2",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "DsEnqfHQY3tc60At",
+      "flags": {
+        "dae": {
+          "transfer": true,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": []
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "changes": [
+        {
+          "key": "data.skills.dec.value",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        },
+        {
+          "key": "data.skills.per.value",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/skills/light_07.jpg",
+      "label": "Invocation: Beguiling Influence",
+      "transfer": true,
+      "disabled": false,
+      "tint": "",
+      "selectedKey": [
+        "data.skills.dec.value",
+        "data.skills.per.value"
+      ]
+    }
+  ],
+  "flags": {
+    "entityorder": {
+      "order": 25
+    },
+    "dynamiceffects": {
+      "alwaysActive": true,
+      "equipActive": false,
+      "effects": [
+        {
+          "modSpecKey": "data.skills.dec.value",
+          "value": "1",
+          "mode": "+",
+          "targetSpecific": false,
+          "id": 1,
+          "itemId": "8gAZKgq7egFT8rM8",
+          "active": false,
+          "_targets": [],
+          "label": "Skills Deception"
+        },
+        {
+          "modSpecKey": "data.skills.per.value",
+          "value": "1",
+          "mode": "+",
+          "targetSpecific": false,
+          "id": 2,
+          "itemId": "8gAZKgq7egFT8rM8",
+          "active": false,
+          "_targets": []
+        }
+      ]
+    },
+    "core": {
+      "sourceId": "Compendium.Dynamic-Effects-SRD.DAE SRD Feats.CptwkBTojzAlg12v"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
