@@ -32,7 +32,7 @@ There are (as of today, 7/14/22) sixty-two different token magic effects availab
 <img src="TMV/37-Color-Field.gif" width="500" />      |  <img src="TMV/38-Sunburst.gif" width="500" />        |  <img src="TMV/39-Clover-Field.gif" width="500" />   
 | 40. Scan                                            | 41. Blue Rays                                         | 42. Spectral Body                                  
 <img src="TMV/40-Scan.gif" width="500" />             |  <img src="TMV/41-Blue-Rays.gif" width="500" />       |  <img src="TMV/42-Spectral-Body.gif" width="500" />   
-| 43. Mantle of <adness                               | 44. Drift in Plains                                   | 45. Fire Aura                                  
+| 43. Mantle of Madness                               | 44. Drift in Plains                                   | 45. Fire Aura                                  
 <img src="TMV/43-Mantle-of-Madness.gif" width="500" />|  <img src="TMV/44-Drift-in-Plains.gif" width="500" /> |  <img src="TMV/45-Fire-Aura.gif" width="500" />   
 | 46. Glacial Aura                                    | 47. Anti Aura                                         | 48. Pure Fire Aura                                  
 <img src="TMV/46-Glacial-Aura.gif" width="500" />     |  <img src="TMV/47-Anti-Aura.gif" width="500" />       |  <img src="TMV/48-Pure-Fire-Aura.gif" width="500" />   
