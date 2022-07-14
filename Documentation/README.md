@@ -14,3 +14,5 @@ Documents that I have Found and/or created that I like to refer to.
 [Work Log](Work_Log.md)
 
 [World Macro Installs](World_Macro_Install.md)
+
+[Token Magic Token Effects Previews](TokenMagicFX.md)
