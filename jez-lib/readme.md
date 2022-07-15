@@ -1056,6 +1056,7 @@ This is one that should not have "await" applied...
 
 ~~~javascript
 jez.suppressTokenMoldRenaming()
+jez.suppressTokenMoldRenaming(500,{traceLvl:TL}) 
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

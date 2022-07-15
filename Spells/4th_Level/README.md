@@ -3,6 +3,7 @@ This repository will contain my automated 4th level spells as I create new or up
 
 Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Arcane Eye](#arcane-eye)
 * [Banishment](#banishment)
 * [Black Tentacles](#black-tentacles)
 * [Blight](#blight)
@@ -41,6 +42,20 @@ On interesting element of the sample macro is its use of on/off executions and p
 
 ---
 
+### Arcane Eye
+
+This one summons an arcane eye to the scene and provides the caster with dark-vision from it.  The eye can be moved as per RAW.  It disappears at spell duration or concentration drop.
+
+The nifty part of this spell is that the placement cursor reads out distance from the caster while being used.  Something that should be retrofit to a lot of my summoning items.
+
+<details> <summary>Arcane Eye in use.</summary>
+![Arcane_Eye.gif](Arcane_Eye/Arcane_Eye.gif)
+</details>
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
 ### Black Tentacles
 
 This one is a whopper!
@@ -74,7 +89,9 @@ Afflicted tokens take damage and present a dialog that allows a skill check to r
 
 I am sure I have left a fair bit out.  It is quite the spell.
 
+<details> <summary>Black Tentacles in use.</summary>
 ![Black_Tentacles.gif](Black_Tentacles/Black_Tentacles.gif)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
@@ -106,7 +123,9 @@ The spell does not manage the barking at 30 feet or de-spawn if separated by mor
 
 The summoned hound will be visible to all the players, please remind them that it can only be seen by the summoner.
 
+<details> <summary>Faithful Hound in use.</summary>
 ![Faithful_Hound.gif](Faithful_Hound/Faithful_Hound.gif)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
@@ -132,7 +151,9 @@ When the macro is executed as an **DAE Off** it does the following:
 
 The temporary inventory item is to be used manually to inflict the reflected damage.
 
+<details> <summary>Fire Shield in use.</summary>
 ![Fire_Shield.gif](Fire_Shield/Fire_Shield.gif)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
@@ -162,7 +183,9 @@ This spell places runs a simple macro that shows a RuneVFX on the caster and pop
 
 I configured it to use this VFX file: `modules/jb2a_patreon/Library/Generic/Template/Square/TemplateRunesSquare_01_Regular_Blue_600x600.webm`
 
+<details> <summary>Hypnotic Pattern in use.</summary>
 ![Hypnotic_Pattern.gif](Hypnotic_Pattern/Hypnotic_Pattern.gif)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
@@ -190,11 +213,15 @@ This spell places a DoT on the target which is allowed a save at the end of each
 
 This spell uses the ability to drop a sheet from Actor's directory onto a token's sheet to transform the *victim* of the spell.  On the pop-up window that appears, ignore all the check boxes and just click the Polymorph button.
 
+<details> <summary>Polymorph transform usage.</summary>
 ![Polymorph/Polymorph_Transform.png](Polymorph/Polymorph_Transform.png)
+</details>
 
 Reversing the transform is done with a button that appears at the top of the transformed token's sheet.
 
+<details> <summary>Polymorph restoration.</summary>
 ![Polymorph/Polymorph_Restore.png](Polymorph/Polymorph_Restore.png)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
@@ -218,7 +245,9 @@ This implementation:
 * plays a rune VFX via an ItemMacro call to the world macro: **Run_RuneVFX_onTargets**,
 * Consumes 4 stacks of diamond dust valued at 25 gp each (assuming it is configured after adding it to a character's sheet. 
 
+<details> <summary>Stoneskin Details.</summary>
 ![Stoneskin_Details.png](Stoneskin/Stoneskin_Details.png)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

@@ -216,6 +216,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.15 jez.suppressTokenMoldRenaming added check to skip suppression if not GM and support for options argument with traceLvl
 
+22.07.15 Arcane Eye created using new jez-lib function jez.warpCrosshairs which gives distance from caster while summoning.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

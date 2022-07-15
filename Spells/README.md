@@ -147,6 +147,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [4th Level Spells](4th_Level)
 
+* [Arcane Eye](4th_Level#arcane-eye)
 * [Banishment](4th_Level#banishment)
 * [Black Tentacles](4th_Level#black-tentacles)
 * [Blight](4th_Level#blight)
