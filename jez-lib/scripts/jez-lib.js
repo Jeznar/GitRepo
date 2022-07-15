@@ -59,7 +59,7 @@ class jez {
      * if (TL>2) jez.trace(`${FNAME} | Post this message to the console`, variable)
      ***************************************************************************************************/
     static trace(...parms) {
-            return jez.writeTrcLog(" Trace ", ...parms)
+        return jez.writeTrcLog(" Trace ", ...parms)
     }
     /***************************************************************************************************
      * Log
@@ -249,7 +249,7 @@ class jez {
             let msg = `Unit ${unit} not in allowed units`
             // jez.log(msg, allowedUnits);
             ui.notifications.warn(msg);
-            return (0);
+            return (null);
         }
         return (range);
     }
@@ -1245,7 +1245,7 @@ class jez {
         // Random wait mitigates a race error caused by a DAE bug that executes each macro.execute for
         // each line in an effect.  I have opened an issue on gitlab.
         // https://gitlab.com/tposney/dae/-/issues/319
-        await jez.wait(Math.floor(Math.random() * 500)) 
+        await jez.wait(Math.floor(Math.random() * 500))
         // Back to our normally scheduled program.
         let getItem = await jez.itemFindOnActor(token5e, itemName, itemType);
         if (!getItem) return (false);
@@ -1321,7 +1321,7 @@ class jez {
     static async pairEffects(...args) {
         const FUNCNAME = "jez.pairEffects(...args)"
         let trcLvl = 5;
-        jez.trc(3,trcLvl,`=== Called ${FUNCNAME} ===`)
+        jez.trc(3, trcLvl, `=== Called ${FUNCNAME} ===`)
         for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `jez.pairEffects | args[${i}]`, args[i]);
         if (args.length !== 2 && args.length !== 4)
             return jez.badNews(`Bad Argument count (${args.length}) provided to ${FUNCNAME}`)
@@ -2182,26 +2182,41 @@ class jez {
      * If the token-mold module is active, check to see if renaming is enabled.  If it is, turn it off 
      * for a bit and then turn it back on. The bit is determined f=by the optional argument.
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async suppressTokenMoldRenaming(delay = 500) {
-        const FUNCNAME = `jez.suppressTokenMoldRenaming()`
+    static async suppressTokenMoldRenaming(delay = 500, options = {}) {
+        const FUNCNAME = `jez.suppressTokenMoldRenaming(delay = 500, options = {})`
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 1
+        // --------------------------------------------------------------------------------------------
+        // Log call, dependent on traceLvl setting in options
+        //
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1)   jez.trace(`--- Called --- ${FNAME} ---`, "delay", delay, "options", options);
+        // --------------------------------------------------------------------------------------------
+        // Proceed
+        //
         if (game.modules.get("token-mold")) {
-            jez.log(`${FUNCNAME} | Found token-mold, checking renaming`)
+            if (TL>0) jez.trace(`${FNAME} | Found token-mold, checking renaming`)
+            if (!game.users.find(ef => ef.id === game.userId).isGM) {              // Bailout if not GM
+                if (TL>0) jez.trace(`${FNAME} | Current player is not GM, skipping supression`)
+                return
+            }
             // Grab the current Tokenmold settings
             let tokenMoldSettings = game.settings.get("Token-Mold", "everyone");
             if (tokenMoldSettings.name.use === true) {
                 // Toggle renaming off
                 tokenMoldSettings.name.use = false
                 await game.settings.set("Token-Mold", "everyone", tokenMoldSettings)
-                jez.log(`${FUNCNAME} | Renaming was enabled, suppressing for ${delay / 1000} seconds.`)
+                if (TL>1) jez.trace(`${FNAME} | Renaming was enabled, suppressing for ${delay/1000} seconds.`)
                 // Wait for passed amount of time before restoring
                 await jez.wait(delay)
                 // Toggle renaming on
                 tokenMoldSettings.name.use = true
                 await game.settings.set("Token-Mold", "everyone", tokenMoldSettings)
-                jez.log(`${FUNCNAME} | Renaming has been re-enabled.`)
+                if (TL>1) jez.trace(`${FNAME} | Renaming has been re-enabled.`)
             }
-            else jez.log(`${FUNCNAME} | Renaming was already diaabled, did nothing.`)
+            else if (TL>1) jez.trace(`${FNAME} | Renaming was already diaabled, did nothing.`)
         }
+        else if (TL>0) jez.trace(`${FNAME} | token-mold module not found`)
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * Determines if the passed argument "looks like" an effect's UUID, returning a boolean result.
@@ -2210,7 +2225,7 @@ class jez {
      *          or 
      *     Actor.NWUxMzMyNjVkYmM4.ActiveEffect.LigDCCx3Ud4LavLV
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-     static isEffectUUID(string) {
+    static isEffectUUID(string) {
         let trcLvl = 4
         if (typeof string !== "string") return false            // Must be a string
         jez.trc(2, trcLvl, "Type - Ok")
@@ -2234,29 +2249,29 @@ class jez {
             if (stringArray[3].length !== 16) return false         // Second part must be 16 characters
             jez.trc(2, trcLvl, "Actor UUID | Length 2 - Ok")
             return true
-         }
-         if (string.includes("Token")) {
+        }
+        if (string.includes("Token")) {
             jez.trc(2, trcLvl, `Token | Processing ${string} as an Actor`)
-             if (string.length !== 75) return false                  // Must be 75 characters long
-             jez.trc(2, trcLvl, "Token UUID | Length - Ok")
-             let stringArray = string.split(".")                     // Must be delimited by period characters
-             jez.trc(2, trcLvl, "Token UUID | Token count", stringArray.length)
-             // for (let i = 0; i < stringArray.length; i++) jez.trc(2, trcLvl, `stringArray[${i}]`, stringArray[i]);
-             if (stringArray.length !== 6) return false              // Must contain 6 parts
-             jez.trc(2, trcLvl, "Token UUID | Count of tokens - Ok")
-             if (stringArray[0] !== "Scene") return false           // First part must be "Scene"
-             jez.trc(2, trcLvl, "Token UUID | Scene - Ok")
-             if (stringArray[1].length !== 16) return false         // Second part must be 16 characters
-             jez.trc(2, trcLvl, "Token UUID | Length 1 - Ok")
-             if (stringArray[2] !== "Token") return false           // Third part must be "Token"
-             jez.trc(2, trcLvl, "Token UUID | Token - Ok")
-             if (stringArray[3].length !== 16) return false         // Forth part must be 16 characters
-             jez.trc(2, trcLvl, "Token UUID | Length 2 - Ok")
-             if (stringArray[4] !== "ActiveEffect") return false    // Fifth part must be "ActiveEffect"
-             jez.trc(2, trcLvl, "Token UUID | ActiveEffect - Ok")
-             if (stringArray[5].length !== 16) return false         // Sixth part must be 16 characters
-             jez.trc(2, trcLvl, "Token UUID | Length 3 - Ok")
-             return true
+            if (string.length !== 75) return false                  // Must be 75 characters long
+            jez.trc(2, trcLvl, "Token UUID | Length - Ok")
+            let stringArray = string.split(".")                     // Must be delimited by period characters
+            jez.trc(2, trcLvl, "Token UUID | Token count", stringArray.length)
+            // for (let i = 0; i < stringArray.length; i++) jez.trc(2, trcLvl, `stringArray[${i}]`, stringArray[i]);
+            if (stringArray.length !== 6) return false              // Must contain 6 parts
+            jez.trc(2, trcLvl, "Token UUID | Count of tokens - Ok")
+            if (stringArray[0] !== "Scene") return false           // First part must be "Scene"
+            jez.trc(2, trcLvl, "Token UUID | Scene - Ok")
+            if (stringArray[1].length !== 16) return false         // Second part must be 16 characters
+            jez.trc(2, trcLvl, "Token UUID | Length 1 - Ok")
+            if (stringArray[2] !== "Token") return false           // Third part must be "Token"
+            jez.trc(2, trcLvl, "Token UUID | Token - Ok")
+            if (stringArray[3].length !== 16) return false         // Forth part must be 16 characters
+            jez.trc(2, trcLvl, "Token UUID | Length 2 - Ok")
+            if (stringArray[4] !== "ActiveEffect") return false    // Fifth part must be "ActiveEffect"
+            jez.trc(2, trcLvl, "Token UUID | ActiveEffect - Ok")
+            if (stringArray[5].length !== 16) return false         // Sixth part must be 16 characters
+            jez.trc(2, trcLvl, "Token UUID | Length 3 - Ok")
+            return true
         }
     }
 
@@ -2321,6 +2336,81 @@ class jez {
         return (false)
     }
 
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Lifted from the MidiSRD module, just adding some documentation upon adding to jezlib
+ * 
+ * @param {Token} source Source of range distance (usually)
+ * @param {Number} maxRange range of crosshairs
+ * @param {String} icon Crosshairs Icon
+ * @param {String} name Name to use for out of range error message
+ * @param {Object} tokenData {width} -- Optional
+ * @param {Number} snap - Optional snap position:  
+ *                      2: half grid intersections, 
+ *                      1: on grid intersections, 
+ *                      0: no snap, 
+ *                     -1: grid centers (default), 
+ *                     -2: half grid centers
+ * @param {Object} options {traceLvl: 0} -- Optional to specify trace level, if used preceding args
+ *                                          all must be specified
+ * @returns 
+ * 
+ * Example Calls
+ *  const TEXTURE = texture || sourceItem.img
+ *  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 30
+ *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1,{traceLvl: 5})
+ *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1)
+ *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE)
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async warpCrosshairs(source, maxRange, icon, name = "Spell", tokenData = {}, snap = -1, options = {}) {
+        const sourceCenter = source.center;
+        let cachedDistance = 0;
+        const FUNCNAME = 'warpCrosshairs(source, maxRange, icon, name, tokenData, snap, options={})'
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 0
+        // --------------------------------------------------------------------------------------------
+        // Log call, dependent on traceLvl setting in options
+        //
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FNAME} ---`, "source", source, "maxRange", maxRange,
+            "icon", icon, "name", name, "tokenData", tokenData, "snap", snap, "options", options);
+        // --------------------------------------------------------------------------------------------
+        // Define checkDistance function
+        //
+        const checkDistance = async (crosshairs) => {
+            while (crosshairs.inFlight) {
+                //wait for initial render
+                await jez.wait(100);
+                const ray = new Ray(sourceCenter, crosshairs);
+                const distance = canvas.grid.measureDistances([{ ray }], { gridSpaces: true })[0]
+
+                //only update if the distance has changed
+                if (cachedDistance !== distance) {
+                    cachedDistance = distance;
+                    if (distance > maxRange) crosshairs.icon = 'icons/svg/hazard.svg'
+                    else crosshairs.icon = icon
+                    crosshairs.draw()
+                    crosshairs.label = `${distance}/${maxRange} ft`
+                }
+            }
+        }
+        // --------------------------------------------------------------------------------------------
+        // Perform the actual task
+        //
+        const location = await warpgate.crosshairs.show(
+            { size: tokenData.width, icon: source.data.img, label: '0 ft.', interval: snap },
+            { show: checkDistance })
+        if (TL > 1) jez.trace(`${FNAME} | Location`, location)
+        // --------------------------------------------------------------------------------------------
+        // Return our results
+        //
+        if (location.cancelled) {
+            if (TL > 0) jez.trace(`${FNAME} | Cancelled`)
+            return false;
+        }
+        if (cachedDistance > maxRange) return jez.badNews(`${name} maximum range is ${maxRange} ft.`, 'warn')
+        if (TL > 0) jez.trace(`${FNAME} | Returning`, location)
+        return location
+    }
 
 } // END OF class jez
 Object.freeze(jez);
