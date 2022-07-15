@@ -220,6 +220,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.15 Fix to Faithful_Hound to suppress tokenmold and to limit summoning distance with warpgate.spawnAt
 
+22.07.15 Update more warpgate macros: Animate_Objects, 
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

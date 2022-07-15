@@ -141,8 +141,8 @@ async function summonHound() {
     //-----------------------------------------------------------------------------------------------
     // Suppress Token Mold for a wee bit
     //
-    jez.suppressTokenMoldRenaming() 
-    await jez.wait(50) 
+    jez.suppressTokenMoldRenaming(1000) 
+    await jez.wait(100) 
     //-----------------------------------------------------------------------------------------------
     // Return while executing the summon
     //

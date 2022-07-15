@@ -81,6 +81,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[updateEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Updates an embedded document, wraps a RunAsGM function
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
+* **[warpCrossHairs(...)](warpcrosshairs)** -- Put a range display on warpgate summons 
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
 * **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
                                      
@@ -1232,6 +1233,49 @@ Runs a VFX smoke useful to warpgate summons as a post-effect.  It is called with
 * scale - real number defining scale, defaults to 1.0
 
 See **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)]** for an example usage.
+
+---
+
+### warpCrosshairs(...) 
+
+Lifted from the MidiSRD module, just adding some documentation upon adding to jez-lib
+
+Declaration
+
+~~~javascript
+static async warpCrosshairs(source, maxRange, icon, name = "Spell", tokenData = {}, snap = -1, options = {}) {
+~~~
+
+Arguments
+
+~~~javascript
+@param {Token} source Source of range distance (usually)
+@param {Number} maxRange range of crosshairs
+@param {String} icon Crosshairs Icon
+@param {String} name Name to use for out of range error message
+@param {Object} tokenData {width} -- Optional
+@param {Number} snap - Optional snap position:  
+                     2: half grid intersections, 
+                     1: on grid intersections, 
+                     0: no snap, 
+                    -1: grid centers (default), 
+                    -2: half grid centers
+@param {Object} options {traceLvl: 0} -- Optional to specify trace level, if used preceding args
+                                         all must be specified
+@returns 
+~~~
+
+Example Calls
+
+~~~javascript
+const TEXTURE = texture || sourceItem.img
+const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 30
+let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1,{traceLvl: 5})
+let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1)
+let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE)
+~~~
+
+[*Back to Functions list*](#functions-in-this-module)
 
 ---
 

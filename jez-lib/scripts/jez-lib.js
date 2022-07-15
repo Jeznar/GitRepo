@@ -2386,7 +2386,7 @@ class jez {
                 //only update if the distance has changed
                 if (cachedDistance !== distance) {
                     cachedDistance = distance;
-                    if (distance > maxRange) crosshairs.icon = 'icons/svg/hazard.svg'
+                    if (distance > maxRange) crosshairs.icon = 'Icons_JGB/Misc/Warning.webm'
                     else crosshairs.icon = icon
                     crosshairs.draw()
                     crosshairs.label = `${distance}/${maxRange} ft`
