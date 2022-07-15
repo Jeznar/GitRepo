@@ -81,7 +81,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[updateEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Updates an embedded document, wraps a RunAsGM function
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
 * **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
-* **[warpCrossHairs(...)](warpcrosshairs)** -- Put a range display on warpgate summons 
+* **[warpCrossHairs(...)](#warpcrosshairs)** -- Put a range display on warpgate summons 
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
 * **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
                                      
