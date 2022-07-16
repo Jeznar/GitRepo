@@ -1,4 +1,4 @@
-const MACRONAME = "Arcane_Hand.0.1.js"
+const MACRONAME = "Arcane_Hand.0.2.js"
 /*****************************************************************************************
  * Summon aand customize an Arcane Hound to the scene
  *  
@@ -7,6 +7,7 @@ const MACRONAME = "Arcane_Hand.0.1.js"
  * - Delete summon when effect on original caster is removed (or expires)
  * 
  * 02/11/22 0.1 Creation of Macro
+ * 07/15/22 0.2 Update to use warpgate.spawnAt with range limitation
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -22,10 +23,12 @@ let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
+const TL = 0;
+
 //----------------------------------------------------------------------------------
 // Setup some specific global values
 //
-const MINION_TEMPLATE = `%Arcane Hand%`;
+const MINION = `%Arcane Hand%`;
 let colorArray = ["Blue", "Green", "Purple", "Rainbow", "Red", "Grey"];
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -41,10 +44,10 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
 async function preCheck() {
-    jez.log(`Checking for creature: "${MINION_TEMPLATE}"`)
-    let critter = game.actors.getName(MINION_TEMPLATE)
+    jez.log(`Checking for creature: "${MINION}"`)
+    let critter = game.actors.getName(MINION)
     if (!critter) {
-        msg = `Configuration problem: <b>${MINION_TEMPLATE}</b> was not found in the actor's directory.`
+        msg = `Configuration problem: <b>${MINION}</b> was not found in the actor's directory.`
         ui.notifications.error(msg)
         postResults(msg)
         return (false)
@@ -168,7 +171,30 @@ async function summonHound(color) {
       await warpgate.wait(500);
     }
   };
-  return (await warpgate.spawn(MINION_TEMPLATE, updates, CALLBACKS, OPTIONS));
+  //-----------------------------------------------------------------------------------------------
+  // Get and set maximum sumoning range
+  //
+  const ALLOWED_UNITS = ["", "ft", "any"];
+  if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
+  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
+  //-----------------------------------------------------------------------------------------------
+  // Obtan location for spawn
+  //
+  let summonData = game.actors.getName(MINION)
+  if (TL > 1) jez.trace("summonData", summonData);
+  // let { x, y } = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1, { traceLvl: TL })
+  let { x, y } = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {width:2},
+     1, { traceLvl: TL })
+  //-----------------------------------------------------------------------------------------------
+  // Suppress Token Mold for a wee bit
+  //
+  jez.suppressTokenMoldRenaming(1000)
+  await jez.wait(75)
+  //-----------------------------------------------------------------------------------------------
+  // Return while executing the summon
+  //
+  return (await warpgate.spawnAt({ x, y }, MINION, updates, CALLBACKS, OPTIONS));
+  //return (await warpgate.spawn(MINION, updates, CALLBACKS, OPTIONS));
 }
   /***************************************************************************************************
    * 

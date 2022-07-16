@@ -1,4 +1,4 @@
-const MACRONAME = "Create_Bonfire.0.1.js"
+const MACRONAME = "Create_Bonfire.0.2.js"
 /*****************************************************************************************
  * Create Bonfire.
  * 
@@ -16,6 +16,7 @@ const MACRONAME = "Create_Bonfire.0.1.js"
  *   and 17th level (4d8).
  * 
  * 05/05/22 0.1 Creation of Macro
+ * 07/15/22 0.2 Convert to use jez.warpCrosshairs
   *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`-------------------Starting ${MACRONAME}----------------------------------`)
@@ -31,13 +32,13 @@ if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; 
     else aItem = lastArg.efData?.flags?.dae?.itemData;
 let msg = "";
-const BONFIRE_ORIG_NAME = "%Bonfire%"
+const TL = 0;
+const MINION = "%Bonfire%"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "off") await doOff();             // DAE removal
-//if (args[0] === "each") doEach();			      // DAE removal
 jez.log(`-------------------Finishing ${MACRONAME}----------------------------------`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -48,15 +49,14 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
  ***************************************************************************************************/
  async function doOnUse() {
      const FUNCNAME = "doOnUse()";
-     const SQ_WID = game.scenes.viewed.data.grid;
      const SAVE_DC = aItem.data.save.dc;
      jez.log(`---------Starting ${MACRONAME} ${FUNCNAME}----------------------`)
      //-----------------------------------------------------------------------------------------
      // Get the TEMPLATE object and delete the template.
      //
-     const templateID = args[0].templateId
-     const TEMPLATE = canvas.templates.get(templateID).data
-     canvas.templates.get(templateID).document.delete()
+    //  const templateID = args[0].templateId
+    //  const TEMPLATE = canvas.templates.get(templateID).data
+    //  canvas.templates.get(templateID).document.delete()
     //--------------------------------------------------------------------------------------
     // Grab our character level and figure out what the damage dice should be
     //
@@ -69,10 +69,9 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
     //--------------------------------------------------------------------------------------
     // Spawn in the Bonfire, catch its token.id, exit on failure to spawn
     //
-    const BONFIRE_ID = await spawnBonfire({x:TEMPLATE.x+SQ_WID/2,y:TEMPLATE.y+SQ_WID/2}, 
-        `${aToken.name}'s Bonfire`,damageDice)
+    const BONFIRE_ID = await spawnBonfire(`${aToken.name}'s Bonfire`,damageDice)
     if (!BONFIRE_ID) {
-        msg = `Bonfire could not be spawned.   ${BONFIRE_ORIG_NAME} must be available in <b>Actors 
+        msg = `Bonfire could not be spawned.   ${MINION} must be available in <b>Actors 
         Directory</b>.<br><br>
         Can not complete the ${aItem.name} action.`;
         postResults(msg);
@@ -86,9 +85,7 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
     // Modify the existing on the bonfire to do appropriate damage
     //
     await jez.wait(100)
-    jez.log("BONFIRE_ID --->", BONFIRE_ID)
     let bonfireToken = canvas.tokens.placeables.find(ef => ef.id === BONFIRE_ID[0])
-    jez.log("bonfire token", bonfireToken)
     modExistingEffect(bonfireToken, damageDice, SAVE_DC)
     //--------------------------------------------------------------------------------------
     // 
@@ -125,13 +122,15 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
 }
 /***************************************************************************************************
  * Spawn the Bonfire into existance returning the UUID or null on failure
- ***************************************************************************************************/
-async function spawnBonfire(center, newName, damageDice) {
+ **************************************************************************************************/
+async function spawnBonfire(newName) {
+    if (TL > 1) jez.trace("spawnBonfire(newName)",
+        "newName",newName);
     //--------------------------------------------------------------------------------------
-    // Verify the Actor named BONFIRE_ORIG_NAME exists in Anctor Directory
+    // Verify the Actor named MINION exists in Anctor Directory
     //
-    if (!game.actors.getName(BONFIRE_ORIG_NAME)) {   // If bonfire not found, that's all folks
-        msg = `Could not find "<b>${BONFIRE_ORIG_NAME}</b>" in the <b>Actors Directory</b>. 
+    if (!game.actors.getName(MINION)) {   // If bonfire not found, that's all folks
+        msg = `Could not find "<b>${MINION}</b>" in the <b>Actors Directory</b>. 
         <br><br>Can not complete the ${aItem.name} action.`;
         postResults(msg);
         return (null);
@@ -142,48 +141,40 @@ async function spawnBonfire(center, newName, damageDice) {
     let updates = {
         actor: {name: newName},    
         token: {name: newName},
-        /*embedded: { // This didn't quite work for reasons unknown
-            ActiveEffect: {
-                "Bonfire Damage Aura": {
-                    flags: {
-                        ActiveAuras: {
-                            aura: "All",
-                            isAura: true,
-                            onlyOnce: true,
-                            radius: 2,
-                        },
-                    },
-                    label: 'Bonfire Damage Aura',
-                    icon: 'Icons_JGB/Misc/campfire.svg',
-                    changes: [{
-                        "key": "macro.tokenMagic",
-                        "mode": jez.CUSTOM,
-                        "value": "Fire v2 (sparks)",
-                        "priority": 30
-                    }, {
-                        "key": "macro.execute",
-                        "value": `Bonfire_Helper ${damageDice}`,
-                        "mode": jez.CUSTOM,
-                        "priority": 30
-                    }],
-                }
-            }
-        }*/
     }
     const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
     const CALLBACKS = {
         pre: async (template) => {
             preEffects(template);
-            await jez.wait(2000)
+            await jez.wait(500)
         },
         post: async (template) => {
             postEffects(template);
         }
     };
-    //--------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
+    // Get and set maximum sumoning range
+    //
+    const ALLOWED_UNITS = ["", "ft", "any"];
+    if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
+    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 60
+    //-----------------------------------------------------------------------------------------------
+    // Obtan location for spawn
+    //
+    let summonData = game.actors.getName(MINION)
+    if (TL > 1) jez.trace("==> summonData", summonData);
+    let {x,y}=await jez.warpCrosshairs(aToken,MAX_RANGE,summonData.img,aItem.name,{},-1,{traceLvl:TL})
+    //-----------------------------------------------------------------------------------------------
+    // Suppress Token Mold for a wee bit
+    //
+    jez.suppressTokenMoldRenaming(2000)
+    await jez.wait(75)
+    //-----------------------------------------------------------------------------------------------
     // Fire off warpgate 
     //
-    let bonfireId = await warpgate.spawnAt(center, BONFIRE_ORIG_NAME, updates, CALLBACKS, OPTIONS);
+    let bonfireId = await warpgate.spawnAt({ x, y }, MINION, updates, CALLBACKS, OPTIONS);
+    //--------------------------------------------------------------------------------------
+    //
     jez.log("bonfireId", bonfireId)
     return(bonfireId)
 }
@@ -220,15 +211,6 @@ async function postEffects(template) { return }
 async function modConcentratingEffect(aToken, bonfireId) {
     // Modify concentrating to delete the bonfire on concentration drop
     //----------------------------------------------------------------------------------------------
-    // Make sure the world macro that is used to remove effect exists
-    //
-    const REMOVE_MACRO = "IMSC_Create_Bonfire"
-    const removeFunc = game.macros.getName(REMOVE_MACRO);
-    if (!removeFunc) {
-        ui.notifications.error(`Cannot locate ${REMOVE_MACRO} run as World Macro`);
-        return;
-    }
-    //----------------------------------------------------------------------------------------------
     // Seach the casting token to find the just added concentration effect
     //
     await jez.wait(200)
@@ -237,7 +219,7 @@ async function modConcentratingEffect(aToken, bonfireId) {
     // Define the desired modification to concentration effect. In this case, a macro that will be
     // given argument: bonfireId
     //    
-    effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`${REMOVE_MACRO} ${bonfireId}`, priority: 20})
+    effect.data.changes.push({key:`macro.itemMacro`,mode:jez.CUSTOM,value:bonfireId,priority:20})
     jez.log(`effect.data.changes`, effect.data.changes)
     //----------------------------------------------------------------------------------------------
     // Apply the modification to existing effect

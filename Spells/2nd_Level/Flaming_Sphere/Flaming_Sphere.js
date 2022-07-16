@@ -1,10 +1,11 @@
-const MACRONAME = "Flaming_Sphere.0.5.js"
+const MACRONAME = "Flaming_Sphere.0.6.js"
 /*****************************************************************************************
  * Implements Flaming Sphere, based on Moonbeam.0.8 and its Helper_DAE script
  * 
  * 01/01/22 0.1 Creation of Macro
  * 03/16/22 0.2 Move into GitRepo chasing what appears to be permissions issue
  * 05/16/22 0.5 Update for FoundryVTT 9.x
+ * 07/15/22 0.6 Update to use warpgate.spawnAt with range limitation
  *****************************************************************************************/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
  jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -17,6 +18,7 @@ const MACRONAME = "Flaming_Sphere.0.5.js"
  if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
  if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
  let msg = "";
+ const TL = 0;
 
 const ATTACK_ITEM = "Flaming Sphere Attack";
 const MINION_NAME = "*Flaming_Sphere*"
@@ -178,15 +180,15 @@ function preCheck() {
      //jez.log("Extract information from template and then delete the template")
      //jez.log("TEMPLATE_ID", TEMPLATE_ID)
      //jez.log(`canvas.templates.get(TEMPLATE_ID)`, canvas.templates.get(TEMPLATE_ID))
-     let x = canvas.templates.get(TEMPLATE_ID).data.x //- SQUARE_WIDTH / 2;
-     let y = canvas.templates.get(TEMPLATE_ID).data.y //- SQUARE_WIDTH / 2;
-     await canvas.templates.get(TEMPLATE_ID).document.delete()
+    //  let x = canvas.templates.get(TEMPLATE_ID).data.x //- SQUARE_WIDTH / 2;
+    //  let y = canvas.templates.get(TEMPLATE_ID).data.y //- SQUARE_WIDTH / 2;
+    //  await canvas.templates.get(TEMPLATE_ID).document.delete()
      //-------------------------------------------------------------------------------
      // Summon the rolling ball o'fire, which includes setting the token.id of the 
      // summoned sphere into the global variable: sphereID
      //
-     jez.log(`OnUse ==> Summon the ${MINION_NAME} at ${x},${y}`)
-     jez.log(await summonCritter(x, y, MINION_NAME, 50))
+     //  jez.log(`OnUse ==> Summon the ${MINION_NAME} at ${x},${y}`)
+     await summonCritter(MINION_NAME)
      //await game.macros.getName(SummonAsGM_MACRO).execute(MINION_NAME, x, y); // Summon occurs here!  Gosh Durnit
      //await jez.wait(100);   // Wait a bit to allow the summoned token to be fully completed
 
@@ -333,37 +335,57 @@ async function startVFX(minion) {
     return (targetToken);
 }*/
 /***************************************************************************************************
- * Summon the minion and update HP
+ * Summon the minion
  * 
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
- async function summonCritter(x,y,summons,MAX_HP) {
-    jez.log("function summonCritter(x,y,summons, number, updates)","x",x,"y",y,"summons",summons,"MAX_HP",MAX_HP);
-    //let updates = { actor: { "data.attributes.hp": { value: MAX_HP, max: MAX_HP } } }
+async function summonCritter(summons) {
+    jez.log("function summonCritter(summons)", "summons", summons);
 
     //let name = `${summons}-${aToken.name}`
     let name = MINION_UNIQUE_NAME
-    let updates = { token : {name: name} }
+    let updates = { token: { name: name } }
 
     const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
     const CALLBACKS = {
-      pre: async (template) => {
-        preEffects(template);
-        await warpgate.wait(500);
-      },
-      post: async (template, token) => {
-        postEffects(template);
-        await warpgate.wait(500);
-      }
+        pre: async (template) => {
+            preEffects(template);
+            await warpgate.wait(500);
+        },
+        post: async (template, token) => {
+            postEffects(template);
+            await warpgate.wait(500);
+        }
     };
-    jez.log("About to call Warpgate.spawnAt")
-    let returned = await warpgate.spawnAt({x:x,y:y},summons, updates, CALLBACKS, OPTIONS);
-    jez.log("returned", returned)
+
+    const MINION = summons
+    //-----------------------------------------------------------------------------------------------
+    // Get and set maximum sumoning range
+    //
+    const ALLOWED_UNITS = ["", "ft", "any"];
+    if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
+    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
+    //-----------------------------------------------------------------------------------------------
+    // Obtan location for spawn
+    //
+    let summonData = game.actors.getName(MINION)
+    if (TL > 1) jez.trace("summonData", summonData);
+    let {x,y}=await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1)
+    //-----------------------------------------------------------------------------------------------
+    // Suppress Token Mold for a wee bit
+    //
+    jez.suppressTokenMoldRenaming(1000)
+    await jez.wait(75)
+    //-----------------------------------------------------------------------------------------------
+    // Return while executing the summon
+    //
+    let returned = await warpgate.spawnAt({x,y}, MINION, updates, CALLBACKS, OPTIONS);
+    jez.log("==> returned", returned)
     sphereID = returned[0] // The token ID of the summoned sphere
     jez.log("sphereID", sphereID)
     sphereToken = canvas.tokens.placeables.find(ef => ef.id === sphereID)
     jez.log("sphereToken", sphereToken)
-  }
+}
   /***************************************************************************************************
    * 
    ***************************************************************************************************/

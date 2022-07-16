@@ -1,4 +1,4 @@
-const MACRONAME = "Danse_Macabre.0.2.js"
+const MACRONAME = "Danse_Macabre.0.3.js"
 /*****************************************************************************************
  * Implement the amazing Danse Macabre spell
  * 
@@ -12,6 +12,7 @@ const MACRONAME = "Danse_Macabre.0.2.js"
  * 
  * 06/24/22 0.1 Creation of Macro
  * 06/25/22 0.2 Cleanup and polish
+ * 07/15/22 0.3 Convert to use jez.warpCrosshairs
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -24,6 +25,8 @@ if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else a
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
+const TL = 0;
+
 const SKELETON_NAME = "Skeleton"  // Name of skeleton to call as base item
 const ZOMBIE_NAME   = "Zombie"    // Name of zombie to call as base item
 const CAST_MOD = jez.getCastMod(aActor)
@@ -268,7 +271,28 @@ async function summonCritter(summons, number) {
       await warpgate.wait(500);
     }
   };
-  return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))
+  const MINION = summons
+  //-----------------------------------------------------------------------------------------------
+  // Get and set maximum sumoning range
+  //
+  const ALLOWED_UNITS = ["", "ft", "any"];
+  if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
+  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
+  //-----------------------------------------------------------------------------------------------
+  // Obtan location for spawn
+  //
+  let summonData = game.actors.getName(MINION)
+  if (TL > 1) jez.trace("summonData", summonData);
+  let {x,y} = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1)
+  //-----------------------------------------------------------------------------------------------
+  // Suppress Token Mold for a wee bit
+  //
+  jez.suppressTokenMoldRenaming(1000)
+  await jez.wait(75)
+  //-----------------------------------------------------------------------------------------------
+  // Return while executing the summon
+  //
+  return (await warpgate.spawnAt({ x, y }, MINION, updates, CALLBACKS, OPTIONS));
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Post results to the chat card

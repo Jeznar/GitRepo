@@ -1,10 +1,11 @@
-const MACRONAME = "Dancing_Lights.0.2.js"
+const MACRONAME = "Dancing_Lights.0.3.js"
 /*****************************************************************************************
  * Summon 4 dancing lights with WarpGate
  * 
  * 05/13/22 0.1 Creation of Macro
  * 06/06/22 0.2 Chasing player can't summon with warpgate issue.  Fix was granting players
  *              permission to browse files in the player permissions within FoundryVTT.
+ * 07/15/22 0.3 Convert to use jez.warpCrosshairs
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -17,6 +18,7 @@ if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else a
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
+const TL = 0;
 const SUMMON_PREFIX = "%Dancing_Light_"
 const SUMMON_POSTFIX = "%"
 //----------------------------------------------------------------------------------
@@ -84,8 +86,31 @@ async function summonCritter(summons, number, color) {
       //greetings(template, token);
     }
   };
-  jez.log(`await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS)`,"summons",summons,"updates",updates,"CALLBACKS",CALLBACKS,"OPTIONS",OPTIONS)
-  return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))
+  const MINION = summons
+  //-----------------------------------------------------------------------------------------------
+  // Get and set maximum sumoning range
+  //
+  const ALLOWED_UNITS = ["", "ft", "any"];
+  if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
+  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
+  //-----------------------------------------------------------------------------------------------
+  // Obtan location for spawn
+  //
+  let summonData = game.actors.getName(MINION)
+  if (TL > 1) jez.trace("summonData", summonData);
+  let {x,y} = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1)
+  // let {x,y} = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {width:2},1, { traceLvl: TL })
+  //-----------------------------------------------------------------------------------------------
+  // Suppress Token Mold for a wee bit
+  //
+  jez.suppressTokenMoldRenaming(1000)
+  await jez.wait(75)
+  //-----------------------------------------------------------------------------------------------
+  // Return while executing the summon
+  //
+  return (await warpgate.spawnAt({x,y}, MINION, updates, CALLBACKS, OPTIONS));
+  // jez.log(`await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS)`,"summons",summons,"updates",updates,"CALLBACKS",CALLBACKS,"OPTIONS",OPTIONS)
+  // return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))
 }
 /***************************************************************************************************
  * Randomly pick a color for the next dancing light

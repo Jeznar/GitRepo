@@ -25,6 +25,8 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+const TL = 0;
+
 jez.log(`Beginning ${MACRONAME}`);
 doIt()
 async function doIt() {
@@ -74,7 +76,7 @@ async function doIt() {
     const CALLBACKS = {
         pre: async (template) => {
             preEffects(template);
-            await warpgate.wait(3000);
+            await warpgate.wait(2000);
         },
         post: async (template, token) => {
             postEffects(template);
@@ -84,8 +86,33 @@ async function doIt() {
     //--------------------------------------------------------------------------------------
     // 4. Fire off warpgate 
     //
+    const MINION = summonedSteedName
+    //-----------------------------------------------------------------------------------------------
+    // Get and set maximum sumoning range
+    //
+    const ALLOWED_UNITS = ["", "ft", "any"];
+    if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
+    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
+    //-----------------------------------------------------------------------------------------------
+    // Obtan location for spawn
+    //
+    let summonData = game.actors.getName(MINION)
+    if (TL > 1) jez.trace("summonData", summonData);
+    // let { x, y } = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1, { traceLvl: TL })
+    let { x, y } = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, { width: 2 },
+        1, { traceLvl: TL })
+    //-----------------------------------------------------------------------------------------------
+    // Suppress Token Mold for a wee bit
+    //
+    jez.suppressTokenMoldRenaming(2500)
+    await jez.wait(75)
+    //-----------------------------------------------------------------------------------------------
+    // Return while executing the summon
+    //
+    let returned = await warpgate.spawnAt({x,y}, MINION, updates, CALLBACKS, OPTIONS);
+
     //let returned = await warpgate.spawnAt({x:x,y:y},summons, updates, CALLBACKS, OPTIONS);
-    let returned = await warpgate.spawn(summonedSteedName, updates, CALLBACKS, OPTIONS);
+    // let returned = await warpgate.spawn(summonedSteedName, updates, CALLBACKS, OPTIONS);
     jez.log("returned", returned)
     //--------------------------------------------------------------------------------------
     // 5. Post a completion message

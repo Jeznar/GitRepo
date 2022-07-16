@@ -1,4 +1,4 @@
-const MACRONAME = "Create_Specter.js"
+const MACRONAME = "Create_Specter.0.3.js"
 /*****************************************************************************************
  * Spawn a Specter into the scene at the location of a targeted (dead) token.  Name it 
  * in sequence and make sure there are only 7 or less specters for this actor.
@@ -10,6 +10,7 @@ const MACRONAME = "Create_Specter.js"
  * 
  * 04/23/22 0.1 Creation of Macro
  * 05/02/22 0.2 Update for Foundry 9.x
+ * 07/15/22 0.2 Update to suppress token-mold renaming 
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -163,7 +164,10 @@ async function getSpecterName(activeToken) {
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
  async function summonCritter(summons, name, TARGET_TOKEN) {
-    let updates = { token : {name: name} }
+    let updates = { 
+        actor: {name: name},    
+        token: {name: name} 
+    }
     const OPTIONS = { controllingActor: aActor };
     // COOL-THING: Plays VFX before and after the warpgate summon.
     const CALLBACKS = {
@@ -178,8 +182,9 @@ async function getSpecterName(activeToken) {
     };
     //updates = mergeObject(updates, choice);
     //await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS);
+    jez.suppressTokenMoldRenaming(1000)
+    await jez.wait(75)
     await warpgate.spawnAt(TARGET_TOKEN.center, summons, updates, CALLBACKS, OPTIONS);
-
   }
   /***************************************************************************************************
    * 
