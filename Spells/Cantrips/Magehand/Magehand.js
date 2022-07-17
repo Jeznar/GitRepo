@@ -15,39 +15,6 @@ const MACRONAME = "Magehand.0.6.js"
 let msg = "";
 const TL = 5;
 const LAST_ARG = args[args.length - 1];
-
-// const {files} = await FilePicker.browse("public", "icons/commodities/treasure");
-// console.log(files)
-
-// console.log(await FilePicker.browse("data", ""))
-// console.log(await FilePicker.browse("data", "modules"))
-
-const AVG_DUR = await avgDuration("modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_*_400x400.webm")
-async function avgDuration(path) {
-    let dirMatches = await FilePicker.browse("data", path, { wildcard: true })
-    let min, max
-    let total = 0
-    for (let i = 0; i < dirMatches.files.length; i++) {
-        const TEXTURE = await loadTexture(dirMatches.files[i]);
-        const DURATION = TEXTURE.baseTexture.resource.source.duration;
-        if (!min) min = DURATION; else if (min > DURATION) min = DURATION
-        if (!max) max = DURATION; else if (max < DURATION) max = DURATION
-        total = total + DURATION
-        if (TL > 5) jez.trace(`${i} ${DURATION} second duration for ${dirMatches.files[i]}`)
-    }
-    let average = (total / dirMatches.files.length).toFixed(2)
-    if (TL > 0) jez.trace(`${average} sec avg duration, ${min} min, ${max} max for ${dirMatches.files.length} files
-          matching ${path}`)
-    return (average)
-}
-
-
-
-
-return
-
-
-
 //---------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
 let aToken;
@@ -91,9 +58,10 @@ let argObj = {
 }
 //-------------------------------------------------------------------------------------------------
 // Set up one of the three spawn effects tested: (1) Explosion, (2) Portal, (3) Firework
-// modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Black_400x400.webm
-// modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_*_400x400.webm could not be loaded
-const EFFECT = 3
+// modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Black_400x400.webm and pick one
+// at psuedo Random
+//
+const EFFECT = Math.floor(Math.random() * 3) + 1
 switch (EFFECT) {
     case 1:
         argObj.duration = 1000
@@ -109,7 +77,7 @@ switch (EFFECT) {
         break;
     case 3:
         argObj.duration = 3000
-        argObj.introTime = 250
+        argObj.introTime = 1000
         argObj.introVFX = '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm'
         argObj.outroVFX = '~Fireworks/Firework*_02_Regular_${color}_600x600.webm'
         break;
@@ -119,23 +87,6 @@ switch (EFFECT) {
 if (TL > 2) 
     for (let key in argObj) jez.trace(`${MACRO} | argObj.${key}`, argObj[key])
 //-------------------------------------------------------------------------------------------------
-// Sets of values tested:
-//
-// duration:  1000
-// introTime: 1000
-// introVFX: '~Explosion/Explosion_01_${color}_400x400.webm'
-// outroVFX: '~Smoke/SmokePuff01_01_${color}_400x400.webm'
-//
-// duration:  4000
-// introTime: 250
-// introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`
-// outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`
-//
-// duration:  3000
-// introTime: 250
-// introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm'
-// outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm'
-
 jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
 //-------------------------------------------------------------------------------------
 // Post message

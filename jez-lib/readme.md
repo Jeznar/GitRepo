@@ -203,6 +203,7 @@ let argObj = {
     introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
     name: aItem.name,                   // Name of action (message only), typically aItem.name
     outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
     source: aToken,                     // Coords for source (with a center), typically aToken
     width: 1,                           // Width of token to be summoned, 1 is the default
     traceLvl: TL                        // Trace level, matching calling function decent choice
@@ -224,15 +225,17 @@ let argObj = {
     defaultRange: 30,
     duration: 3000,                     // Duration of the intro VFX
     img: aItem.img,                     // Image to use on the summon location cursor
-    introTime: 250,                     // Amount of time to wait for Intro VFX
+    introTime: 1000,                    // Amount of time to wait for Intro VFX
     introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
     name: aItem.name,                   // Name of action (message only), typically aItem.name
     outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
     source: aToken,                     // Coords for source (with a center), typically aToken
     templateName: `%${MINION}%`,        // Name of the actor in the actor directory
     width: 1,                           // Width of token to be summoned
     traceLvl: TL
 }
+jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
 ~~~
 </details>
 
@@ -265,6 +268,7 @@ let argObj = {
     introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file
     name: aItem.name,                   // Name of action (message only), typically aItem.name
     outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
     source: aToken,                     // Coords for source (with a center), typically aToken
     width: 1,                           // Width of token to be summoned, 1 is the default
     traceLvl: TL                        // Trace level, matching calling function decent choice
