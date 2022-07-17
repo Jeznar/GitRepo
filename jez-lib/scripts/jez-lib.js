@@ -1867,73 +1867,175 @@ class jez {
     * @property {string} color - one of the supported colors
     * @property {number} opactity - real number defining opacity, defaults to 1.0
     * @property {number} scale - real number defining scale, defaults to 1.0
+    * 
+    * Anticipated VFX files include
+    * 
+    * All of them start their fike path with: modules/jb2a_patreon/Library/Generic/  this will be 
+    * prepended to the string passed in for VFX file to make that easier, if string starts with a "~"
+    *
+    * ~Explosion colors = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"]; 
+    * ~Explosion/Explosion_01_Blue_400x400.webm etc...
+    * Use: ~Explosion/Explosion_01_${color}_400x400.webm
+    *
+    * Portal colors = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red", 
+    *                 "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange", 
+    *                 "Bright_Purple", "Bright_Red", "Bright_Yellow" ]
+    * ~Portals/Portal_Bright_Blue_H_400x400.webm
+    * Example: ~Portals/Portal_${color}_H_400x400.webm
+    *
+    * Energy colors = ["Blue", "BluePink", "GreenOrange", "OrangePurple", "*"]
+    * ~Energy/SwirlingSparkles_01_Regular_Blue_400x400.webm
+    * Use: ~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm
     ***************************************************************************************************/
-    static async vfxPreSummonEffects(template, optionObj) {
-        //-------------------------------------------------------------------------------------------------
-        // Anticipated VFX files include
-        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Blue_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Green_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Orange_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Purple_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Explosion/Explosion_01_Yellow_400x400.webm
+    static async vfxPreSummonEffects(location, optionObj) {
+        const FUNCNAME = "jez.vfxPreSummonEffects(location, optionObj)";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = optionObj?.traceLvl ?? 0
+        const REQUIRED_MODULE = "sequencer"
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "location", location, "optionObj", optionObj);
+        //-----------------------------------------------------------------------------------------------
+        // Make sure that sequencer module is active
         //
-        const colors = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
+        if (!game.modules.get(REQUIRED_MODULE))
+            return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
+        else if (TL > 2) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
+        //-------------------------------------------------------------------------------------------------
+        // Do some color validation for well supported types of effects
+        //
+        const EXPLOSION_COLORS = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
+        const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
+            "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
+            "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"]
+        const SPARKLE_COLORS = ["Blue", "BluePink", "GreenOrange", "OrangePurple", "*"]
+        let colors = null
+        let introVFX = optionObj?.introVFX ?? '~Explosion/Explosion_*_${color}_400x400.webm'
+        if (TL > 3) jez.trace("optionObj?.introVFX", optionObj?.introVFX)
+        if (introVFX.includes("Explosion")) colors = EXPLOSION_COLORS
+        else if (introVFX.includes("Portal")) colors = PORTAL_COLORS
+        else if (introVFX.includes("SwirlingSparkles")) colors = SPARKLE_COLORS
         let color
-        if (colors.includes(optionObj?.color)) color = optionObj?.color
-        else color = "*"
+        if (colors) {
+            if (TL > 3) jez.trace("colors", colors)
+            if (colors.includes(optionObj?.color)) color = optionObj?.color
+            else color = "*"
+        }
+        else color = optionObj?.color ?? "*"
+        if (TL > 3) jez.trace("Color selected", color)
+        //-------------------------------------------------------------------------------------------------
+        // Build the VFX file name
+        //
+        const VFX_DIR = 'modules/jb2a_patreon/Library/Generic'
+        if (introVFX.charAt(0) === '~') introVFX = `${VFX_DIR}/${introVFX.substring(1)}`
+        if (TL > 3) jez.trace("VFX with prefix", introVFX)
+        introVFX = introVFX.replace("${color}", color)
+        if (TL > 3) jez.trace("VFX with color ", introVFX)
+        //-------------------------------------------------------------------------------------------------
+        // Set the other adjustable values
+        //
         const SCALE = optionObj?.scale ?? 1.0
         const OPACITY = optionObj?.opacity ?? 1.0
-        const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
+        const DURATION = optionObj?.duration ?? 1000
 
         new Sequence()
             .effect()
-            .file(VFX_FILE)
-            .atLocation(template)
+            .file(introVFX)
+            .atLocation(location)
             .center()
             .scale(SCALE)
             .opacity(OPACITY)
+            .duration(DURATION)
             .play()
     }
     /***************************************************************************************************
-     * Function to play a VFX smoke at the specified location.  Built for summoning with warpgate
-     * 
+     * Function to play a VFX effect at the specified location.  Built for summoning with warpgate
      * Template can be coordinates (e.g. {x: 875, y: 805}) or anything else accepted by sequencer
-     * 
+     *
      * Supported colors: "Blue", "Black", "Green", "Purple", "Grey", "*"
-     * 
+     *
      * @typedef  {Object} optionObj
      * @property {string} color - one of the supported colors
      * @property {number} opactity - real number defining opacity, defaults to 1.0
      * @property {number} scale - real number defining scale, defaults to 1.0
-   ***************************************************************************************************/
+     * 
+     * Anticipated VFX files include
+     * 
+     * All of them start their fike path with: modules/jb2a_patreon/Library/Generic/  this will be 
+     * prepended to the string passed in for VFX file to make that easier, if string starts with a "~"
+     *
+     * ~Smoke colors = ["Blue", "Black", "Green", "Purple", "Grey", "*"]; 
+     * ~Smoke/SmokePuff01_01_Regular_Blue_400x400.webm etc...
+     *  Example: ~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm
+     *
+     * Portal colors = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red", 
+     *                  "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange", 
+     *                  "Bright_Purple", "Bright_Red", "Bright_Yellow" ]
+     * ~Portals/Portal_Bright_Blue_H_NoBG_400x400.webm etc...
+     * Example: ~Portals/Portal_${color}_H_400x400.webm
+     *
+     * Firework colors = [ "BluePink", "Green", "GreenOrange", "GreenRed", "Orange", "OrangeYellow", 
+     *  "Yellow", "*"]
+     * ~Fireworks/Firework01_02_Regular_GreenOrange_600x600.webm
+     * Example: ~Fireworks/Firework*_02_Regular_$color}_600x600.webm
+     ***************************************************************************************************/
     static async vfxPostSummonEffects(template, optionObj) {
-        //-------------------------------------------------------------------------------------------------
-        // Anticipated VFX files include
-        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Blue_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Black_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Green_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Dark_Purple_400x400.webm
-        // modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_01_Regular_Grey_400x400.webm
+        const FUNCNAME = "jez.vfxPostSummonEffects(location, optionObj)";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = optionObj?.traceLvl ?? 0
+        const REQUIRED_MODULE = "sequencer"
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "location", location, "optionObj", optionObj);
+        //-----------------------------------------------------------------------------------------------
+        // Make sure that sequencer module is active
         //
-        const colors = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
-        let color // = optionObj.color ?? "Green"
-        if (colors.includes(optionObj?.color)) color = optionObj?.color
-        else color = "*"
+        if (!game.modules.get(REQUIRED_MODULE))
+            return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
+        else if (TL > 2) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
+        //-------------------------------------------------------------------------------------------------
+        // Do some color validation for well supported types of effects
+        //
+        const SMOKE_COLORS = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
+        const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
+            "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
+            "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"]
+        const FIREWORK_COLORS = ["BluePink", "Green", "GreenOrange", "GreenRed", "Orange", "OrangeYellow",
+            "Yellow", "*"]
+        let colors = null
+        let outroVFX = optionObj?.outroVFX ?? '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm'
+        if (TL > 3) jez.trace("optionObj?.outroVFX", optionObj?.outroVFX)
+        if (outroVFX.includes("Smoke")) colors = SMOKE_COLORS
+        else if (outroVFX.includes("Portal")) colors = PORTAL_COLORS
+        else if (outroVFX.includes("Fireworks")) colors = FIREWORK_COLORS
+        let color
+        if (colors) {
+            if (TL > 3) jez.trace("colors", colors)
+            if (colors.includes(optionObj?.color)) color = optionObj?.color
+            else color = "*"
+        }
+        else color = optionObj?.color ?? "*"
+        if (TL > 3) jez.trace("Color selected", color)
+        //-------------------------------------------------------------------------------------------------
+        // Build the VFX file name
+        //
+        const VFX_DIR = 'modules/jb2a_patreon/Library/Generic'
+        if (outroVFX.charAt(0) === '~') outroVFX = `${VFX_DIR}/${outroVFX.substring(1)}`
+        if (TL > 3) jez.trace("VFX with prefix", outroVFX)
+        outroVFX = outroVFX.replace("${color}", color)
+        if (TL > 3) jez.trace("VFX with color ", outroVFX)
+        //-------------------------------------------------------------------------------------------------
+        // Set the other adjustable values
+        //
         const SCALE = optionObj?.scale ?? 1.0
         const OPACITY = optionObj?.opacity ?? 1.0
-        //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
-        const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_*_${color}_400x400.webm`
-
         new Sequence()
             .effect()
-            .file(VFX_FILE)
+            .file(outroVFX)
             .atLocation(template)
             .center()
             .scale(SCALE)
             .opacity(OPACITY)
             .play()
     }
-
     /***************************************************************************************************
      * Modify an existing concentrating effect to contain a DAE effect line of the form:
      *   macro.execute custom <macroName> <argument[1]> <argument[2]> ...
@@ -2185,19 +2287,19 @@ class jez {
     static async suppressTokenMoldRenaming(delay = 500, options = {}) {
         const FUNCNAME = `jez.suppressTokenMoldRenaming(delay = 500, options = {})`
         const FNAME = FUNCNAME.split("(")[0]
-        const TL = options?.traceLvl ?? 1
+        const TL = options?.traceLvl ?? 0
         // --------------------------------------------------------------------------------------------
         // Log call, dependent on traceLvl setting in options
         //
         if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
-        if (TL > 1)   jez.trace(`--- Called --- ${FNAME} ---`, "delay", delay, "options", options);
+        if (TL > 1) jez.trace(`--- Called --- ${FNAME} ---`, "delay", delay, "options", options);
         // --------------------------------------------------------------------------------------------
         // Proceed
         //
         if (game.modules.get("token-mold")) {
-            if (TL>0) jez.trace(`${FNAME} | Found token-mold, checking renaming`)
+            if (TL > 0) jez.trace(`${FNAME} | Found token-mold, checking renaming`)
             if (!game.users.find(ef => ef.id === game.userId).isGM) {              // Bailout if not GM
-                if (TL>0) jez.trace(`${FNAME} | Current player is not GM, skipping supression`)
+                if (TL > 0) jez.trace(`${FNAME} | Current player is not GM, skipping supression`)
                 return
             }
             // Grab the current Tokenmold settings
@@ -2206,17 +2308,17 @@ class jez {
                 // Toggle renaming off
                 tokenMoldSettings.name.use = false
                 await game.settings.set("Token-Mold", "everyone", tokenMoldSettings)
-                if (TL>1) jez.trace(`${FNAME} | Renaming was enabled, suppressing for ${delay/1000} seconds.`)
+                if (TL > 1) jez.trace(`${FNAME} | Renaming was enabled, suppressing for ${delay / 1000} seconds.`)
                 // Wait for passed amount of time before restoring
                 await jez.wait(delay)
                 // Toggle renaming on
                 tokenMoldSettings.name.use = true
                 await game.settings.set("Token-Mold", "everyone", tokenMoldSettings)
-                if (TL>1) jez.trace(`${FNAME} | Renaming has been re-enabled.`)
+                if (TL > 1) jez.trace(`${FNAME} | Renaming has been re-enabled.`)
             }
-            else if (TL>1) jez.trace(`${FNAME} | Renaming was already diaabled, did nothing.`)
+            else if (TL > 1) jez.trace(`${FNAME} | Renaming was already diaabled, did nothing.`)
         }
-        else if (TL>0) jez.trace(`${FNAME} | token-mold module not found`)
+        else if (TL > 0) jez.trace(`${FNAME} | token-mold module not found`)
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * Determines if the passed argument "looks like" an effect's UUID, returning a boolean result.
@@ -2397,7 +2499,8 @@ class jez {
         // Perform the actual task
         //
         const location = await warpgate.crosshairs.show(
-            { size: tokenData.width, icon: source.data.img, label: '0 ft.', interval: snap },
+            // { size: tokenData.width, icon: source.data.img, label: '0 ft.', interval: snap },
+            { size: tokenData.width, icon: icon, label: '0 ft.', interval: snap },
             { show: checkDistance })
         if (TL > 1) jez.trace(`${FNAME} | Location`, location)
         // --------------------------------------------------------------------------------------------
@@ -2411,6 +2514,163 @@ class jez {
         if (TL > 0) jez.trace(`${FNAME} | Returning`, location)
         return location
     }
+
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Function to spawn in a token at a position to be selected within this function.  Key calls are
+ * made to: 
+ *  (1) jez.warpCrosshairs() which rides on warpgate.crosshairs.show()
+ *  (2) jez.suppressTokenMoldRenaming which does what its name suggests
+ *  (3) warpgate.spawnAt() to perform the actual summon
+ * 
+ * This funcion will return the id of the summoned token or false if an error occurs.
+ * 
+ * MINION is a string defining the name of the MINION
+ * aToken token5e data object for the reference token (from which range is measured)
+ * ARGUMENTS is a whopper of an object that can contain multiple values, read code or README
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ static async spawnAt(MINION, aToken, aActor, aItem, ARGUMENTS) {
+    const FUNCNAME = "jez.spawnAt(MINION, ARGUMENTS)";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TL = ARGUMENTS?.traceLvl ?? 0
+    const REQUIRED_MODULE = "warpgate"
+    if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+    if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "MINION", MINION, "ARGUMENTS", ARGUMENTS);
+    if (TL > 2) {
+        jez.trace(`${FNAME} * |`)
+        for (let key in ARGUMENTS) jez.trace(`${FNAME} * | ARGUMENTS.${key}`, ARGUMENTS[key])
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Create the defaultValues object 
+    //
+    let defaultValues = {
+        allowedUnits: ["", "ft", "any"],
+        color: "*",
+        defaultRange: 30,
+        duration: 1000,                     // Duration of the introVFX
+        img: "icons/svg/mystery-man.svg",   // Image to use on the summon location cursor
+        introTime: 1000,                    // Amount of time to wait for Intro VFX
+        introVFX: null,                     // default introVFX file
+        minionName: `${aToken.name}'s ${MINION}`,
+        name: "Summoning",                  // Name of action (message only), typically aItem.name
+        opacity: 1,                         // Opacity for the VFX
+        options: {controllingActor:aActor}, // Aledgedly hides an open character sheet
+        outroVFX: null,                     // default outroVFX file
+        scale: 0.7,                         // Scale for the VFX
+        snap: -1,                           // Snap value passed to jez.warpCrosshairs
+        source: { center: {x:315,y:385} },  // Coords for source (within center), typically aToken
+        suppressTokenMold: 2000,            // Time (in ms) to suppress TokenMold's renaming setting
+        templateName: `%${MINION}%`,
+        updates: {
+            actor: { name: `${aToken.name}'s ${MINION}` },
+            token: { name: `${aToken.name}'s ${MINION}` },
+        },
+        waitForSuppress: 100,               // Time (in ms) to wait of for Suppression to being
+        width: 1                            // Width of token to be summoned
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Create dataObj (data object) from the passed ARGUMENTS and the defaultValues object 
+    //
+    let dataObj = {
+        allowedUnits: ARGUMENTS.allowedUnits ?? defaultValues.allowedUnits,
+        color: ARGUMENTS.color ?? defaultValues.color,
+        defaultRange: ARGUMENTS.defaultRange ?? defaultValues.defaultRange,
+        img: ARGUMENTS.img ?? defaultValues.img,
+        duration: ARGUMENTS.duration ?? defaultValues.duration,
+        img: ARGUMENTS.img ?? defaultValues.img,
+        introTime: ARGUMENTS.introTime ?? defaultValues.introTime,
+        introVFX: ARGUMENTS.introVFX ?? defaultValues.introVFX,
+        minionName: ARGUMENTS.minionName ?? defaultValues.minionName,
+        name: ARGUMENTS.name ?? defaultValues.name,
+        opacity: ARGUMENTS.opacity ?? defaultValues.opacity,
+        options: ARGUMENTS.options ?? defaultValues.options,
+        outroVFX: ARGUMENTS.outroVFX ?? defaultValues.outroVFX,
+        scale: ARGUMENTS.scale ?? defaultValues.scale,
+        snap: ARGUMENTS.snap ?? defaultValues.snap, // This may be changed later based on width
+        source: ARGUMENTS.source ?? defaultValues.source,
+        suppressTokenMold: ARGUMENTS.suppressTokenMold ?? defaultValues.suppressTokenMold,
+        templateName: ARGUMENTS.templateName ?? defaultValues.templateName,
+        updates: ARGUMENTS.updates ?? defaultValues.updates,
+        waitForSuppress: ARGUMENTS.waitForSuppress ?? defaultValues.waitForSuppress,
+        width: ARGUMENTS.width ?? defaultValues.width,
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Second Pass on defaults, using inputs that may have been passed into our function. 
+    // The callbacks need to be recomputed based on varous inputs now established.
+    //
+    defaultValues.callbacks = {
+        pre: async (template) => {
+           jez.vfxPreSummonEffects(template, {
+                color: dataObj.color, 
+                introVFX: dataObj.introVFX,
+                opacity: dataObj.opacity, 
+                scale: dataObj.scale,
+            });
+            await jez.wait(dataObj.introTime);
+        },
+        post: async (template) => {
+            jez.vfxPostSummonEffects(template, {
+                color: dataObj.color, 
+                opacity: dataObj.opacity, 
+                outroVFX: dataObj.outroVFX,
+                scale: dataObj.scale
+            });
+            // await jez.wait(dataObj.outroVFX);
+        }
+    }
+    if (TL > 3) {
+        jez.trace(`${FNAME} |`)
+        for (let key in defaultValues) jez.trace(`${FNAME} | defaultValues.${key}`, defaultValues[key])
+    }
+    //-----------------------------------------------------------------------------------------------
+    // If ARGUMENTS.snap is null, set snap to appropriate value based on width. Odd width should have 
+    // snap = -1 to center the summon in a square, even width should be 1 to place on an intersection
+    //
+    if (!ARGUMENTS.snap) dataObj.snap = (dataObj.width % 2 === 0) ? 1 : -1
+    //-----------------------------------------------------------------------------------------------
+    // Second Pass on dataObj.  Update callbacks to reflect new default and make sure token mold is
+    // suppressed for longed than the introVFX 
+    //
+    dataObj.callbacks = ARGUMENTS.callbacks ?? defaultValues.callbacks
+    dataObj.suppressTokenMold = Math.max(dataObj.introTime + 500, dataObj.suppressTokenMold)
+    if (TL > 2) {
+        jez.trace(`${FNAME} |`)
+        for (let key in dataObj) jez.trace(`${FNAME} | dataObj.${key}`, dataObj[key])
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Make sure that warpgate module is active
+    //
+    if (!game.modules.get(REQUIRED_MODULE))
+        return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
+    else if (TL > 1) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
+    //-----------------------------------------------------------------------------------------------
+    // Make sure that dataObj.templateName exists in actor directory and stash its data object
+    //
+    let summonData = await game.actors.getName(dataObj.templateName)
+    if (!summonData) return jez.badNews(`${FNAME} | Could not find ${dataObj.templateName} in Actor
+        directory (sidebar), please fix`, "error")
+    else if (TL > 1) jez.trace(`${FNAME} | Found ${summonData} continuing...`, summonData)
+    //-----------------------------------------------------------------------------------------------
+    // Get and set maximum sumoning range
+    //
+    const MAX_RANGE = jez.getRange(aItem, dataObj.allowedUnits) ?? dataObj.defaultRange
+    if (TL > 1) jez.trace(`${FNAME} | Set MAX_RANGE`, MAX_RANGE);
+    //-----------------------------------------------------------------------------------------------
+    // Obtain location for spawn
+    //
+    let { x, y } = await jez.warpCrosshairs(dataObj.source, MAX_RANGE, dataObj.img, dataObj.name,
+        { width: dataObj.width }, dataObj.snap, { traceLvl: TL })
+    if (TL > 1) jez.trace(`${FNAME} | Set location for spawn to ${x}, ${y}`);
+    //-----------------------------------------------------------------------------------------------
+    // Suppress Token Mold for a wee bit
+    //
+    jez.suppressTokenMoldRenaming(dataObj.suppressTokenMold)
+    await jez.wait(dataObj.waitForSuppress)
+    //-----------------------------------------------------------------------------------------------
+    // Execute the summon
+    //
+    return (await warpgate.spawnAt({ x, y }, dataObj.templateName, dataObj.updates, dataObj.callbacks,
+        dataObj.options));
+}
 
 } // END OF class jez
 Object.freeze(jez);

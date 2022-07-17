@@ -27,6 +27,8 @@ const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and exte
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 let msg = "";
+const TL = 5;                               // Trace Level for this macro
+
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
@@ -64,6 +66,8 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function doOnUse() {
+  const FUNCNAME = "doOnUse()";
+  const FNAME = FUNCNAME.split("(")[0] 
     //-------------------------------------------------------------------------------------
     // 1. Setup variables. Mount to be summoned will be name ${aToken.name}'s Phantom Steed
     //
@@ -83,13 +87,15 @@ async function doOnUse() {
     // If actor currently has a watchdog effect for this spell, delete it. 
     //
     let existingEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);
-    await existingEffect.delete();
+    if (TL>1) jez.trace(`${FNAME} | existingEffect`,existingEffect)
+    if (existingEffect) await existingEffect.delete();
     await jez.wait(100) // Let the deletion of the effect despawn the summoned token
     //--------------------------------------------------------------------------------------
     // If summoned token or tokens exist in the scene, dismiss, delete, despawn it. 
     //
     let existToken = null
     let sceneId = game.scenes.viewed.id
+    if (TL>1) jez.trace(`${FNAME} | sceneId`,sceneId)
     while (existToken = await canvas.tokens.placeables.find(ef => ef.name === STEED_NAME)) {
         warpgate.dismiss(existToken.id, sceneId)
         await jez.wait(100)
@@ -101,6 +107,7 @@ async function doOnUse() {
         token: { name: STEED_NAME },
         actor: { name: STEED_NAME }
     }
+    if (TL>1) jez.trace(`${FNAME} | updates`,updates)
     const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
     const CALLBACKS = {
         pre: async (template) => {
