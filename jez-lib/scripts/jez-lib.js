@@ -2587,23 +2587,23 @@ class jez {
      * 
      * MINION is a string defining the name of the MINION
      * aToken token5e data object for the reference token (from which range is measured)
-     * ARGUMENTS is a whopper of an object that can contain multiple values, read code or README
+     * ARGS is a whopper of an object that can contain multiple values, read code or README
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async spawnAt(MINION, aToken, aActor, aItem, ARGUMENTS) {
-        const FUNCNAME = "jez.spawnAt(MINION, ARGUMENTS)";
+    static async spawnAt(MINION, aToken, aActor, aItem, ARGS) {
+        const FUNCNAME = "jez.spawnAt(MINION, ARGS)";
         const FNAME = FUNCNAME.split("(")[0]
-        const TL = ARGUMENTS?.traceLvl ?? 0
+        const TL = ARGS?.traceLvl ?? 0
         const REQUIRED_MODULE = "warpgate"
         if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
-        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "MINION", MINION, "ARGUMENTS", ARGUMENTS);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "MINION", MINION, "ARGS", ARGS);
         if (TL > 3) {
             jez.trace(`${FNAME} |`)
-            for (let key in ARGUMENTS) jez.trace(`${FNAME} | ARGUMENTS.${key}`, ARGUMENTS[key])
+            for (let key in ARGS) jez.trace(`${FNAME} | ARGS.${key}`, ARGS[key])
         }
         //-----------------------------------------------------------------------------------------------
-        // Create the defaultValues object 
+        // Create the defVal object 
         //
-        let defaultValues = {
+        let defVal = {
             allowedColorsIntro: null,
             allowedColorsOutro: null,
             allowedUnits: ["", "ft", "any"],
@@ -2625,48 +2625,48 @@ class jez {
             suppressTokenMold: 2000,            // Time (in ms) to suppress TokenMold's renaming setting
             templateName: `%${MINION}%`,
             traceLvl: 0,
-            updates: {
-                actor: { name: `${aToken.name}'s ${MINION}` },
-                token: { name: `${aToken.name}'s ${MINION}` },
-            },
+            // updates: {
+            //     actor: { name: `${aToken.name}'s ${MINION}` },
+            //     token: { name: `${aToken.name}'s ${MINION}` },
+            // },
             waitForSuppress: 100,               // Time (in ms) to wait of for Suppression to being
             width: 1                            // Width of token to be summoned
         }
         //-----------------------------------------------------------------------------------------------
-        // Create dataObj (data object) from the passed ARGUMENTS and the defaultValues object 
+        // Create dataObj (data object) from the passed ARGS and the defVal object 
         //
         let dataObj = {
-            allowedColorsIntro: ARGUMENTS.allowedColorsIntro ?? defaultValues.allowedColorsIntro,
-            allowedColorsOutro: ARGUMENTS.allowedColorsOutro ?? defaultValues.allowedColorsOutro,
-            allowedUnits: ARGUMENTS.allowedUnits ?? defaultValues.allowedUnits,
-            colorIntro: ARGUMENTS.colorIntro ?? defaultValues.colorIntro,
-            colorOutro: ARGUMENTS.colorOutro ?? defaultValues.colorOutro,
-            defaultRange: ARGUMENTS.defaultRange ?? defaultValues.defaultRange,
-            img: ARGUMENTS.img ?? defaultValues.img,
-            duration: ARGUMENTS.duration ?? defaultValues.duration,
-            img: ARGUMENTS.img ?? defaultValues.img,
-            introTime: ARGUMENTS.introTime ?? defaultValues.introTime,
-            introVFX: ARGUMENTS.introVFX ?? defaultValues.introVFX,
-            minionName: ARGUMENTS.minionName ?? defaultValues.minionName,
-            name: ARGUMENTS.name ?? defaultValues.name,
-            opacity: ARGUMENTS.opacity ?? defaultValues.opacity,
-            options: ARGUMENTS.options ?? defaultValues.options,
-            outroVFX: ARGUMENTS.outroVFX ?? defaultValues.outroVFX,
-            scale: ARGUMENTS.scale ?? defaultValues.scale,
-            snap: ARGUMENTS.snap ?? defaultValues.snap, // This may be changed later based on width
-            source: ARGUMENTS.source ?? defaultValues.source,
-            suppressTokenMold: ARGUMENTS.suppressTokenMold ?? defaultValues.suppressTokenMold,
-            templateName: ARGUMENTS.templateName ?? defaultValues.templateName,
-            traceLvl: ARGUMENTS.traceLvl ?? defaultValues.templateName,
-            updates: ARGUMENTS.updates ?? defaultValues.updates,
-            waitForSuppress: ARGUMENTS.waitForSuppress ?? defaultValues.waitForSuppress,
-            width: ARGUMENTS.width ?? defaultValues.width,
+            allowedColorsIntro: ARGS.allowedColorsIntro ?? defVal.allowedColorsIntro,
+            allowedColorsOutro: ARGS.allowedColorsOutro ?? defVal.allowedColorsOutro,
+            allowedUnits: ARGS.allowedUnits ?? defVal.allowedUnits,
+            colorIntro: ARGS.colorIntro ?? defVal.colorIntro,
+            colorOutro: ARGS.colorOutro ?? defVal.colorOutro,
+            defaultRange: ARGS.defaultRange ?? defVal.defaultRange,
+            img: ARGS.img ?? defVal.img,
+            duration: ARGS.duration ?? defVal.duration,
+            img: ARGS.img ?? defVal.img,
+            introTime: ARGS.introTime ?? defVal.introTime,
+            introVFX: ARGS.introVFX ?? defVal.introVFX,
+            minionName: ARGS.minionName ?? defVal.minionName,
+            name: ARGS.name ?? defVal.name,
+            opacity: ARGS.opacity ?? defVal.opacity,
+            options: ARGS.options ?? defVal.options,
+            outroVFX: ARGS.outroVFX ?? defVal.outroVFX,
+            scale: ARGS.scale ?? defVal.scale,
+            snap: ARGS.snap ?? defVal.snap, // This may be changed later based on width
+            source: ARGS.source ?? defVal.source,
+            suppressTokenMold: ARGS.suppressTokenMold ?? defVal.suppressTokenMold,
+            templateName: ARGS.templateName ?? defVal.templateName,
+            traceLvl: ARGS.traceLvl ?? defVal.templateName,
+            updates: 'updates' in ARGS ? ARGS.updates : defVal.updates,
+            waitForSuppress: ARGS.waitForSuppress ?? defVal.waitForSuppress,
+            width: ARGS.width ?? defVal.width,
         }
         //-----------------------------------------------------------------------------------------------
         // Second Pass on defaults, using inputs that may have been passed into our function. 
         // The callbacks need to be recomputed based on varous inputs now established.
         //
-        defaultValues.callbacks = {
+        defVal.callbacks = {
             pre: async (template) => {
                 jez.vfxPreSummonEffects(template, {
                     allowedColors: dataObj.allowedColorsIntro,
@@ -2690,12 +2690,16 @@ class jez {
                 // await jez.wait(dataObj.outroVFX);
             }
         }
+        defVal.updates = {
+            actor: { name: dataObj.minionName },
+            token: { name: dataObj.minionName },
+        }
         if (TL > 3) {
             jez.trace(`${FNAME} |`)
-            for (let key in defaultValues) jez.trace(`${FNAME} | defaultValues.${key}`, defaultValues[key])
+            for (let key in defVal) jez.trace(`${FNAME} | defVal.${key}`, defVal[key])
         }
         //-----------------------------------------------------------------------------------------------
-        // If not provided with ARGUMENTS.allowedColors, build the array of allowed color values based on
+        // If not provided with ARGS.allowedColors, build the array of allowed color values based on
         // the introVFX / outroVFX names with special treatment for known types defaulting to a "*"
         //
         if (!dataObj.allowedColorsIntro) {
@@ -2722,15 +2726,16 @@ class jez {
             else dataObj.allowedColorsOutro = ["*"];
         }
         //-----------------------------------------------------------------------------------------------
-        // If ARGUMENTS.snap is null, set snap to appropriate value based on width. Odd width should have 
+        // If ARGS.snap is null, set snap to appropriate value based on width. Odd width should have 
         // snap = -1 to center the summon in a square, even width should be 1 to place on an intersection
         //
-        if (!ARGUMENTS.snap) dataObj.snap = (dataObj.width % 2 === 0) ? 1 : -1
+        if (!ARGS.snap) dataObj.snap = (dataObj.width % 2 === 0) ? 1 : -1
         //-----------------------------------------------------------------------------------------------
         // Second Pass on dataObj.  Update callbacks to reflect new default and make sure token mold is
         // suppressed for longed than the introVFX 
         //
-        dataObj.callbacks = ARGUMENTS.callbacks ?? defaultValues.callbacks
+        dataObj.callbacks = ARGS.callbacks ?? defVal.callbacks
+        dataObj.updates = ARGS.updates ?? defVal.updates
         dataObj.suppressTokenMold = Math.max(dataObj.introTime + 500, dataObj.suppressTokenMold)
         //-----------------------------------------------------------------------------------------------
         // Depending on TL print out the dataObj to the console

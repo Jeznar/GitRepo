@@ -1,4 +1,4 @@
-const MACRONAME = "Summon_Demons.0.1.js"
+const MACRONAME = "Summon_Demons.0.2.js"
 /*****************************************************************************************
  * Implement a Vrock's summon ability,
  * 
@@ -9,6 +9,7 @@ const MACRONAME = "Summon_Demons.0.1.js"
  *   until it or its summoner dies, or until its summoner dismisses it as an action.
  * 
  * 05/21/22 0.1 Creation of Macro
+ * 07/17/22 0.2 Update to use jez.spawnAt for summoning
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -21,11 +22,13 @@ if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else a
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
+const TL = 5;                               // Trace Level for this macro
+
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "off") await doOff();                   // DAE removal
+// if (args[0] === "off") await doOff();                   // DAE removal
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -36,8 +39,11 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
 async function doOnUse() {
   const FUNCNAME = "doOnUse()";
+  const FNAME = FUNCNAME.split("(")[0] 
+  if (TL===1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);
+  if (TL > 1) jez.trace(`--- Starting --- ${MACRO} ${FUNCNAME} ---`);
+  //-------------------------------------------------------------------------------------------
   let tokenIdArray = [];
-  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
   //------------------------------------------------------------------------------------------------
   // Run a runeVFX on the summoning token
   //
@@ -48,7 +54,7 @@ async function doOnUse() {
   let summonAttempt = new Roll(`1d100`).evaluate({ async: false });
   game.dice3d?.showForRoll(summonAttempt);
   jez.log("Roll result", summonAttempt.total)
-  if (summonAttempt.total <= 70) {  // 70 gets 70% failure rate
+  if (summonAttempt.total <= 01) {  // 70 gets 70% failure rate
     msg = `<b>${token.name}</b>'s summon attempt has failed!  It wasted its turn.`
     jez.log(msg)
     postResults(msg)
@@ -68,7 +74,11 @@ async function doOnUse() {
   return (true);
   //---------------------------------------------------------------------------------------------
   async function summonCallBack(selection) {
-    jez.log("pickRadioCallBack", selection)
+    const FUNCNAME = "summonCallBack(selection)";
+    const FNAME = FUNCNAME.split("(")[0] 
+    if (TL===1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);
+    if (TL > 1) jez.trace(`--- Starting --- ${MACRO} ${FUNCNAME} ---`,"selection",selection);
+    //-------------------------------------------------------------------------------------------
 
     const demonType = selection.split(" ")[0]
     if (demonType === "Dretches") {
@@ -86,6 +96,10 @@ async function doOnUse() {
   }
   //---------------------------------------------------------------------------------------------
   async function summonDretches() {
+    const FUNCNAME = "summonDretches()";
+    const FNAME = FUNCNAME.split("(")[0] 
+    if (TL>1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);
+    //-------------------------------------------------------------------------------------------
     const CREATURE_NAME = "Dretch"
     let rc = null
     let dretches = new Roll(`2d4`).evaluate({ async: false });
@@ -101,6 +115,10 @@ async function doOnUse() {
   }
   //---------------------------------------------------------------------------------------------
   async function summonVrock() {
+    const FUNCNAME = "summonVrock()";
+    const FNAME = FUNCNAME.split("(")[0] 
+    if (TL>1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);
+    //-------------------------------------------------------------------------------------------
     let rc = null
     const CREATURE_NAME = "Vrock"
     rc = await summonCritter(CREATURE_NAME, 1)
@@ -117,50 +135,41 @@ async function doOnUse() {
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
 async function summonCritter(summons, number) {
-  let name = `${aToken.name}'s ${summons} ${number}`
-  let updates = { token: {name: name},
-                  actor: {name: name},
-                }
-  const OPTIONS = { controllingActor: aActor };
-  const CALLBACKS = {
-    pre: async (template) => {
-      preEffects(template);
-      await warpgate.wait(500);
-    },
-    post: async (template, token) => {
-      postEffects(template);
-      await warpgate.wait(500);
-      //greetings(template, token);
-    }
-  };
-  //updates = mergeObject(updates, choice);
-  return (await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS));
-}
-/***************************************************************************************************
- * 
- ***************************************************************************************************/
- async function preEffects(template) {
-  const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_Green_400x400.webm"
-  new Sequence()
-    .effect()
-    .file(VFX_FILE)
-    .atLocation(template)
-    .center()
-    .scale(1.0)
-    .play()
-}
-/***************************************************************************************************
- * 
- ***************************************************************************************************/
- async function postEffects(template) {
-  const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm"
-  new Sequence()
-    .effect()
-      .file(VFX_FILE)
-      .atLocation(template)
-      .center()
-      .scale(1.0)
-    .play()
+  const FUNCNAME = "summonCritter(summons, number)";
+  const FNAME = FUNCNAME.split("(")[0] 
+  if (TL===1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);
+  if (TL > 1) jez.trace(`--- Starting --- ${MACRO} ${FUNCNAME} ---`,"summons",summons,"number",number);
+  //--------------------------------------------------------------------------------------
+  // Build data object for the spawnAt call 
+  //
+  let argObj = {
+    defaultRange: 60,
+    duration: 1000,                     // Duration of the intro VFX
+    img: aItem.img,                     // Image to use on the summon location cursor
+    introTime: 750,                    // Amount of time to wait for Intro VFX
+    introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Smoke/SmokePuff01_*_${color}_400x400.webm', // default outroVFX file
+    scale: 1.0,
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    suppressTokenMold: 1250,
+    templateName: `%${summons}%`,        // Name of the actor in the actor directory
+    width: 2,                           // Width of token to be summoned
+    traceLvl: TL
+  }
+  //--------------------------------------------------------------------------------------
+  // If we are summoning a Dretch, the argObj needs to be revised
+  //
+  if (summons === "Dretch") {
+    argObj.minionName = `${aToken.name}'s ${summons} ${number}`
+    if (TL > 2) jez.trace(`${FNAME} | Updated minionName`, argObj.minionName)
+    argObj.width = 1
+  }
+  //--------------------------------------------------------------------------------------
+  // Call spawnAt to do the deed 
+  //
+  let returned = await jez.spawnAt(summons, aToken, aActor, aItem, argObj)
+  return returned
 }
 /***************************************************************************************************
  * Post results to the chat card
@@ -171,31 +180,21 @@ async function summonCritter(summons, number) {
   jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set Off
- ***************************************************************************************************/
- async function doOff() {
-  const FUNCNAME = "doOff()";
-  const SCENE_ID = game.scenes.viewed.id
-
-  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-  jez.log("Something could have been here")
-  for (let i = 1; i < args.length - 1; i++) {
-    jez.log(`  args[${i}]`, args[i]);
-    await jez.wait(250)
-    warpgate.dismiss(args[i], SCENE_ID)
-  }
-  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-  return;
-}
-/***************************************************************************************************
  * 
  ***************************************************************************************************/
  async function addWatchdogEffect(tokenIdArray) {
+  const FUNCNAME = "addWatchdogEffect(tokenIdArray)";
+  const FNAME = FUNCNAME.split("(")[0] 
+  if (TL===1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);
+  if (TL > 1) jez.trace(`--- Starting --- ${MACRO} ${FUNCNAME} ---`,"tokenIdArray",tokenIdArray);
+  //------------------------------------------------------------------------------------------------
   let tokenIds = ""
   const EXPIRE = ["newDay", "longRest", "shortRest"];
   const GAME_RND = game.combat ? game.combat.round : 0;
   // Build list of token IDs seperated by spaces
   for (let i = 0; i < tokenIdArray.length; i++) tokenIds+= `${tokenIdArray[i]} ` 
+  if (TL > 1) jez.trace(`${FNAME} | tokenIdArray`,tokenIdArray);
+
   let effectData = {
     label: aItem.name,
     icon: aItem.img,
@@ -204,8 +203,12 @@ async function summonCritter(summons, number) {
     duration: { rounds: 10, startRound: GAME_RND, startTime: game.time.worldTime },
     flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
     changes: [
-      { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },
+         { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenIds}`, priority: 20 },
     ]
   };
-  await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });
+  if (TL > 1) jez.trace(`${FNAME} | effectData`,effectData);
+  if (TL > 3) jez.trace(`${FNAME} | MidiQOL.socket().executeAsGM("createEffects"`,"aToken.actor.uuid",
+  aToken.actor.uuid,"effectData",effectData);
+  await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });  
+  if (TL > 0 ) jez.trace(`---  Finished --- ${MACRO} ${FNAME} ---`);
 }

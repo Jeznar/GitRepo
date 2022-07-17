@@ -138,7 +138,7 @@ Those two functions manage the VFX that is run immediately before the summoning 
 | img          | String (filepath)| icons/svg/mystery-man.svg | Image to use on the summon location cursor (while in range)                                   
 | introTime    | Integer          | 1000 ms                   | Amount of time to wait for intro VFX before continuing                
 | introVFX     | String (filepath)| '~Explosion/Explosion_*_${color}_400x400.webm' | VFX to play before the summon, the pre or intro VFX                
-| minionName   | String           | ${aToken.name}'s ${MINION}| Name that will be placed on the summoned token                
+| minionName   | String           | \${aToken.name}'s \${MINION}| Name that will be placed on the summoned token                
 | name         | String           | Summoning                 | Name of action (for a message only), typically aItem.name                
 | opacity      | Real Number      | 1                         | Opacity for the VFX's that will be played                
 | options      | Object           | {controllingActor:aActor} | Allegedly hides an open character sheet, didn't work for me                

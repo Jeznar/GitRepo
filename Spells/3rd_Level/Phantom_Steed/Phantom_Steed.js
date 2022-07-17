@@ -1,6 +1,6 @@
-const MACRONAME = "Phantom_Steed.0.1.js"
+const MACRONAME = "Phantom_Steed.0.2.js"
 /*****************************************************************************************
- * This macro implmenets Phantom Steed.
+ * This macro implements Phantom Steed.
  * 
  *   A Large quasi-real, horse-like creature appears on the ground in an unoccupied space 
  *   of your choice within range. You decide the creature's appearance, but it is equipped 
@@ -22,23 +22,24 @@ const MACRONAME = "Phantom_Steed.0.1.js"
  * 6. Post a completion message
  * 
  * 05/31/22 0.1 Creation from Find Steed Specific
+ * 07/17/22 0.2 Update to use jez.spawnAt for summoning
  ******************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 let msg = "";
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-   else aActor = game.actors.get(LAST_ARG.actorId);
+if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
+else aActor = game.actors.get(LAST_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-   else aToken = game.actors.get(LAST_ARG.tokenId);
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
-if (args[0]?.item) aItem = args[0]?.item; 
-   else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+if (args[0]?.item) aItem = args[0]?.item;
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 jez.log(`Beginning ${MACRONAME}`);
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -57,143 +58,140 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults(msg) {
-    jez.log(msg);
-    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+function postResults(msg) {
+  jez.log(msg);
+  let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+  jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function doOnUse() {
   const FUNCNAME = "doOnUse()";
-  const FNAME = FUNCNAME.split("(")[0] 
-    //-------------------------------------------------------------------------------------
-    // 1. Setup variables. Mount to be summoned will be name ${aToken.name}'s Phantom Steed
-    //
-    const STEED_TEMPLATE = '%Phantom Steed%'
-    const STEED_NAME = `${aToken.name}'s Phantom Steed`
-    jez.log(`STEED_NAME: "${STEED_NAME}"`)
-    //--------------------------------------------------------------------------------------
-    // 2. Verify the Actor named in the aItem.name exists
-    //
-    if (!game.actors.getName(STEED_TEMPLATE)) {   // If steed not found, that's all folks
-        msg = `Could not find "<b>${STEED_TEMPLATE}</b>" in the <b>Actors Directory</b>. 
+  const FNAME = FUNCNAME.split("(")[0]
+  //-------------------------------------------------------------------------------------
+  // 1. Setup variables. Mount to be summoned will be name ${aToken.name}'s Phantom Steed
+  //
+  const MINION = "Phantom Steed"
+  const STEED_TEMPLATE = '%Phantom Steed%'
+  const STEED_NAME = `${aToken.name}'s Phantom Steed`
+  jez.log(`STEED_NAME: "${STEED_NAME}"`)
+  //--------------------------------------------------------------------------------------
+  // 2. Verify the Actor named in the aItem.name exists
+  //
+  if (!game.actors.getName(STEED_TEMPLATE)) {   // If steed not found, that's all folks
+    msg = `Could not find "<b>${STEED_TEMPLATE}</b>" in the <b>Actors Directory</b>. 
         <br><br>Can not complete the ${aItem.name} action.`;
-        postResults(msg);
-        return (false);
-    }
-    //--------------------------------------------------------------------------------------
-    // If actor currently has a watchdog effect for this spell, delete it. 
-    //
-    let existingEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);
-    if (TL>1) jez.trace(`${FNAME} | existingEffect`,existingEffect)
-    if (existingEffect) await existingEffect.delete();
-    await jez.wait(100) // Let the deletion of the effect despawn the summoned token
-    //--------------------------------------------------------------------------------------
-    // If summoned token or tokens exist in the scene, dismiss, delete, despawn it. 
-    //
-    let existToken = null
-    let sceneId = game.scenes.viewed.id
-    if (TL>1) jez.trace(`${FNAME} | sceneId`,sceneId)
-    while (existToken = await canvas.tokens.placeables.find(ef => ef.name === STEED_NAME)) {
-        warpgate.dismiss(existToken.id, sceneId)
-        await jez.wait(100)
-    }
-    //--------------------------------------------------------------------------------------
-    // 3. Define warpgate updates, options and callbacks 
-    //
-    let updates = {
-        token: { name: STEED_NAME },
-        actor: { name: STEED_NAME }
-    }
-    if (TL>1) jez.trace(`${FNAME} | updates`,updates)
-    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
-    const CALLBACKS = {
-        pre: async (template) => {
-            preEffects(template);
-            await warpgate.wait(2000);
-        },
-        post: async (template, token) => {
-            postEffects(template);
-            await warpgate.wait(500);
-        }
-    };
-    //--------------------------------------------------------------------------------------
-    // 4. Fire off warpgate 
-    //
-    //let returned = await warpgate.spawnAt({x:x,y:y},summons, updates, CALLBACKS, OPTIONS);
-    let returned = await warpgate.spawn(STEED_TEMPLATE, updates, CALLBACKS, OPTIONS);
-    jez.log("returned", returned)
-    //--------------------------------------------------------------------------------------
-    // 5. Add watchdog effect to despawn summoned token at expiration (1 hour) via doOff 
-    //
-    const EXPIRE = ["newDay", "longRest", "shortRest"];
-    const GAME_RND = game.combat ? game.combat.round : 0;
-    let effectData = {
-      label: aItem.name,
-      icon: aItem.img,
-      origin: LAST_ARG.uuid,
-      disabled: false,
-      duration: { 
-          rounds: 600, startRound: GAME_RND, 
-          seconds: 3600,  startTime: game.time.worldTime, 
-          token: aToken.uuid, stackable: false 
-        },
-      flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
-      changes: [
-        { key: `macro.itemMacro`, mode: jez.ADD, value: returned, priority: 20 },
-      ]
-    };
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });
-    //--------------------------------------------------------------------------------------
-    // 6. Post a completion message
-    //
-    msg = `<b>${aToken.name}</b> has summoned <b>${STEED_NAME}</b>`
     postResults(msg);
-    return;
+    return (false);
+  }
+  //--------------------------------------------------------------------------------------
+  // If actor currently has a watchdog effect for this spell, delete it. 
+  //
+  let existingEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);
+  if (TL > 1) jez.trace(`${FNAME} | existingEffect`, existingEffect)
+  if (existingEffect) await existingEffect.delete();
+  await jez.wait(100) // Let the deletion of the effect despawn the summoned token
+  //--------------------------------------------------------------------------------------
+  // If summoned token or tokens exist in the scene, dismiss, delete, despawn it. 
+  //
+  let existToken = null
+  let sceneId = game.scenes.viewed.id
+  if (TL > 1) jez.trace(`${FNAME} | sceneId`, sceneId)
+  while (existToken = await canvas.tokens.placeables.find(ef => ef.name === STEED_NAME)) {
+    warpgate.dismiss(existToken.id, sceneId)
+    await jez.wait(100)
+  }
+  //--------------------------------------------------------------------------------------
+  // Build data object for the spawnAt call 
+  //
+  let argObj = {
+    defaultRange: 30,
+    duration: 3000,                     // Duration of the intro VFX
+    img: aItem.img,                     // Image to use on the summon location cursor
+    introTime: 1000,                    // Amount of time to wait for Intro VFX
+    introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
+    scale: 1.0,
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    templateName: `%${MINION}%`,        // Name of the actor in the actor directory
+    width: 2,                           // Width of token to be summoned
+    traceLvl: TL
+  }
+  //--------------------------------------------------------------------------------------
+  // Call spawnAt to do the deed 
+  //
+  let returned = await jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
+  //--------------------------------------------------------------------------------------
+  // 5. Add watchdog effect to despawn summoned token at expiration (1 hour) via doOff 
+  //
+  const EXPIRE = ["newDay", "longRest", "shortRest"];
+  const GAME_RND = game.combat ? game.combat.round : 0;
+  let effectData = {
+    label: aItem.name,
+    icon: aItem.img,
+    origin: LAST_ARG.uuid,
+    disabled: false,
+    duration: {
+      rounds: 600, startRound: GAME_RND,
+      seconds: 3600, startTime: game.time.worldTime,
+      token: aToken.uuid, stackable: false
+    },
+    flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+    changes: [
+      { key: `macro.itemMacro`, mode: jez.ADD, value: returned, priority: 20 },
+    ]
+  };
+  await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });
+  //--------------------------------------------------------------------------------------
+  // 6. Post a completion message
+  //
+  msg = `<b>${aToken.name}</b> has summoned <b>${STEED_NAME}</b>`
+  postResults(msg);
+  return;
 }
 /***************************************************************************************************
  * 
  ***************************************************************************************************/
 async function preEffects(template) {
-    //const VFX_FILE = "jb2a.explosion.orange.0"
-    const VFX_FILE = "jb2a.swirling_sparkles.01.bluepink"
-    new Sequence()
-        .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .opacity(1.0)
-        .scale(1.0)
-        .play()
-}
-  /***************************************************************************************************
-   * 
-   ***************************************************************************************************/
-   async function postEffects(template) {
-    const VFX_OPACITY = 1.0
-    const VFX_SCALE = 0.8
-    const VFX_FILE = "jb2a.firework.02.bluepink.03"
-    new Sequence()
-      .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scale(VFX_SCALE)
-        .opacity(VFX_OPACITY)
-        //.waitUntilFinished(-1000) 
+  //const VFX_FILE = "jb2a.explosion.orange.0"
+  const VFX_FILE = "jb2a.swirling_sparkles.01.bluepink"
+  new Sequence()
+    .effect()
+    .file(VFX_FILE)
+    .atLocation(template)
+    .center()
+    .opacity(1.0)
+    .scale(1.0)
     .play()
-  }
+}
+/***************************************************************************************************
+ * 
+ ***************************************************************************************************/
+async function postEffects(template) {
+  const VFX_OPACITY = 1.0
+  const VFX_SCALE = 0.8
+  const VFX_FILE = "jb2a.firework.02.bluepink.03"
+  new Sequence()
+    .effect()
+    .file(VFX_FILE)
+    .atLocation(template)
+    .center()
+    .scale(VFX_SCALE)
+    .opacity(VFX_OPACITY)
+    //.waitUntilFinished(-1000) 
+    .play()
+}
 /***************************************************************************************************
  * Delete the summoned token,defined as args[1]
  ***************************************************************************************************/
- async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("Token to dismiss", args[1])
-    let sceneId = game.scenes.viewed.id
-    warpgate.dismiss(args[1], sceneId)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
+async function doOff() {
+  const FUNCNAME = "doOff()";
+  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+  jez.log("Token to dismiss", args[1])
+  let sceneId = game.scenes.viewed.id
+  warpgate.dismiss(args[1], sceneId)
+  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+  return;
 }
