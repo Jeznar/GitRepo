@@ -1892,8 +1892,16 @@ class jez {
         const FNAME = FUNCNAME.split("(")[0]
         const TL = optionObj?.traceLvl ?? 0
         const REQUIRED_MODULE = "sequencer"
+        let color
         if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
         if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "location", location, "optionObj", optionObj);
+        //-----------------------------------------------------------------------------------------------
+        // Depending on TL print out the dataObj to the console
+        //
+        if (TL > 2) {
+            jez.trace(`${FNAME} |`)
+            for (let key in optionObj) jez.trace(`${FNAME} | optionObj.${key}`, optionObj[key])
+        }
         //-----------------------------------------------------------------------------------------------
         // Make sure that sequencer module is active
         //
@@ -1901,50 +1909,62 @@ class jez {
             return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
         else if (TL > 2) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
         //-------------------------------------------------------------------------------------------------
-        // Do some color validation for well supported types of effects
+        // Do some color validation (New Method -- implied by optionObj.allowedColors being set
         //
-        const EXPLOSION_COLORS = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
-        const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
-            "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
-            "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"]
-        const SPARKLE_COLORS = ["Blue", "BluePink", "GreenOrange", "OrangePurple", "*"]
-        let colors = null
-        let introVFX = optionObj?.introVFX ?? '~Explosion/Explosion_*_${color}_400x400.webm'
-        if (TL > 3) jez.trace("optionObj?.introVFX", optionObj?.introVFX)
-        if (introVFX.includes("Explosion")) colors = EXPLOSION_COLORS
-        else if (introVFX.includes("Portal")) colors = PORTAL_COLORS
-        else if (introVFX.includes("SwirlingSparkles")) colors = SPARKLE_COLORS
-        let color
-        if (colors) {
-            if (TL > 3) jez.trace("colors", colors)
-            if (colors.includes(optionObj?.color)) color = optionObj?.color
+        if (optionObj.allowedColors) {
+            if (TL > 3) jez.trace("optionObj.allowedColors", optionObj.allowedColors)
+            if (optionObj.allowedColors.includes(optionObj?.color)) color = optionObj?.color
             else color = "*"
+            if (TL > 3) jez.trace("Color selected", color)
         }
-        else color = optionObj?.color ?? "*"
-        if (TL > 3) jez.trace("Color selected", color)
+        //-------------------------------------------------------------------------------------------------
+        // Do some color validation (Old Method -- implied by optionObj.allowedColors not being set
+        //
+        if (!optionObj.allowedColors) {
+            const EXPLOSION_COLORS = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
+            const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
+                "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
+                "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"]
+            const SPARKLE_COLORS = ["Blue", "BluePink", "GreenOrange", "OrangePurple", "*"]
+            let colors = null
+            let introVFX = optionObj?.introVFX ?? '~Explosion/Explosion_*_${color}_400x400.webm'
+            if (TL > 3) jez.trace("optionObj?.introVFX", optionObj?.introVFX)
+            if (introVFX.includes("Explosion")) colors = EXPLOSION_COLORS
+            else if (introVFX.includes("Portal")) colors = PORTAL_COLORS
+            else if (introVFX.includes("SwirlingSparkles")) colors = SPARKLE_COLORS
+            let color
+            if (colors) {
+                if (TL > 3) jez.trace("colors", colors)
+                if (colors.includes(optionObj?.color)) color = optionObj?.color
+                else color = "*"
+            }
+            else color = optionObj?.color ?? "*"
+            if (TL > 3) jez.trace("Color selected", color)
+        }
         //-------------------------------------------------------------------------------------------------
         // Build the VFX file name
         //
+        let vfxFile = optionObj?.vfxFile
         const VFX_DIR = 'modules/jb2a_patreon/Library/Generic'
-        if (introVFX.charAt(0) === '~') introVFX = `${VFX_DIR}/${introVFX.substring(1)}`
-        if (TL > 3) jez.trace("VFX with prefix", introVFX)
-        introVFX = introVFX.replace("${color}", color)
-        if (TL > 3) jez.trace("VFX with color ", introVFX)
+        if (vfxFile.charAt(0) === '~') vfxFile = `${VFX_DIR}/${vfxFile.substring(1)}`
+        if (TL > 3) jez.trace("VFX with prefix", vfxFile)
+        vfxFile = vfxFile.replace("${color}", color)
+        if (TL > 3) jez.trace("VFX with color ", vfxFile)
         //-------------------------------------------------------------------------------------------------
         // Set the other adjustable values
         //
         const SCALE = optionObj?.scale ?? 1.0
         const OPACITY = optionObj?.opacity ?? 1.0
         const DURATION = optionObj?.duration ?? 1000
-
         new Sequence()
             .effect()
-            .file(introVFX)
+            .file(vfxFile)
             .atLocation(location)
             .center()
             .scale(SCALE)
             .opacity(OPACITY)
             .duration(DURATION)
+            .fadeIn(DURATION / 3)
             .play()
     }
     /***************************************************************************************************
@@ -1983,8 +2003,16 @@ class jez {
         const FNAME = FUNCNAME.split("(")[0]
         const TL = optionObj?.traceLvl ?? 0
         const REQUIRED_MODULE = "sequencer"
+        let color
         if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
         if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "location", location, "optionObj", optionObj);
+        //-----------------------------------------------------------------------------------------------
+        // Depending on TL print out the dataObj to the console
+        //
+        if (TL > 2) {
+            jez.trace(`${FNAME} |`)
+            for (let key in optionObj) jez.trace(`${FNAME} | optionObj.${key}`, optionObj[key])
+        }
         //-----------------------------------------------------------------------------------------------
         // Make sure that sequencer module is active
         //
@@ -1992,36 +2020,68 @@ class jez {
             return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
         else if (TL > 2) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
         //-------------------------------------------------------------------------------------------------
-        // Do some color validation for well supported types of effects
+        // Do some color validation (Old Method -- implied by optionObj.allowedColors not being set
         //
-        const SMOKE_COLORS = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
-        const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
-            "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
-            "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"]
-        const FIREWORK_COLORS = ["BluePink", "Green", "GreenOrange", "GreenRed", "Orange", "OrangeYellow",
-            "Yellow", "*"]
-        let colors = null
-        let outroVFX = optionObj?.outroVFX ?? '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm'
-        if (TL > 3) jez.trace("optionObj?.outroVFX", optionObj?.outroVFX)
-        if (outroVFX.includes("Smoke")) colors = SMOKE_COLORS
-        else if (outroVFX.includes("Portal")) colors = PORTAL_COLORS
-        else if (outroVFX.includes("Fireworks")) colors = FIREWORK_COLORS
-        let color
-        if (colors) {
-            if (TL > 3) jez.trace("colors", colors)
-            if (colors.includes(optionObj?.color)) color = optionObj?.color
+        if (optionObj.allowedColors) {
+            if (TL > 3) jez.trace("optionObj.allowedColors", optionObj.allowedColors)
+            if (optionObj.allowedColors.includes(optionObj?.color)) color = optionObj?.color
             else color = "*"
+            if (TL > 3) jez.trace("Color selected", color)
         }
-        else color = optionObj?.color ?? "*"
-        if (TL > 3) jez.trace("Color selected", color)
+        //-------------------------------------------------------------------------------------------------
+        // Do some color validation (Old Method -- implied by optionObj.allowedColors not being set
+        //
+        if (!optionObj.allowedColors) {
+            const SMOKE_COLORS = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
+            const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
+                "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
+                "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"]
+            const FIREWORK_COLORS = ["BluePink", "Green", "GreenOrange", "GreenRed", "Orange", "OrangeYellow",
+                "Yellow", "*"]
+            let colors = null
+            let outroVFX = optionObj?.outroVFX ?? '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm'
+            if (TL > 3) jez.trace("optionObj?.outroVFX", optionObj?.outroVFX)
+            if (outroVFX.includes("Smoke")) colors = SMOKE_COLORS
+            else if (outroVFX.includes("Portal")) colors = PORTAL_COLORS
+            else if (outroVFX.includes("Fireworks")) colors = FIREWORK_COLORS
+            let color
+            if (colors) {
+                if (TL > 3) jez.trace("colors", colors)
+                if (colors.includes(optionObj?.color)) color = optionObj?.color
+                else color = "*"
+            }
+            else color = optionObj?.color ?? "*"
+            if (TL > 3) jez.trace("Color selected", color)
+        }
         //-------------------------------------------------------------------------------------------------
         // Build the VFX file name
         //
+        let vfxFile = optionObj?.vfxFile
         const VFX_DIR = 'modules/jb2a_patreon/Library/Generic'
-        if (outroVFX.charAt(0) === '~') outroVFX = `${VFX_DIR}/${outroVFX.substring(1)}`
-        if (TL > 3) jez.trace("VFX with prefix", outroVFX)
-        outroVFX = outroVFX.replace("${color}", color)
-        if (TL > 3) jez.trace("VFX with color ", outroVFX)
+        if (vfxFile.charAt(0) === '~') vfxFile = `${VFX_DIR}/${vfxFile.substring(1)}`
+        if (TL > 3) jez.trace("VFX with prefix", vfxFile)
+        vfxFile = vfxFile.replace("${color}", color)
+        if (TL > 3) jez.trace("VFX with color ", vfxFile)
+        //-------------------------------------------------------------------------------------------------
+        // Evaluate the vfxFile name which may have a wildcard down to a single file so duration can be
+        // accurately fetched.
+        //
+        const FILE_NAME = await fetchFileName(vfxFile)
+        async function fetchFileName(path) {
+            let matches = await FilePicker.browse("data", path, { wildcard: true })
+            let files = matches.files
+            // Returns a random integer from 0 to files.length-1:
+            let sel = Math.floor(Math.random() * files.length);
+            if (TL > 2) jez.trace(`fetchFileName | ${sel} of ${files.length}: ${files[sel]}`)
+            return(files[sel])
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Get the duration of the VFX we are going to play so the last 1/3 can be faded.
+        // COOL-THING: Obtains the duration of a VFX file.
+        //
+        const TEXTURE = await loadTexture(FILE_NAME);
+        const DURATION = TEXTURE.baseTexture.resource.source.duration;
+        if (TL > 2) jez.trace(`${DURATION} second duration for ${FILE_NAME}`)
         //-------------------------------------------------------------------------------------------------
         // Set the other adjustable values
         //
@@ -2029,11 +2089,12 @@ class jez {
         const OPACITY = optionObj?.opacity ?? 1.0
         new Sequence()
             .effect()
-            .file(outroVFX)
+            .file(FILE_NAME)
             .atLocation(template)
             .center()
             .scale(SCALE)
             .opacity(OPACITY)
+            .fadeOut(DURATION * 1000 / 3)   // Fade the image for 1/3 of its duration
             .play()
     }
     /***************************************************************************************************
@@ -2515,162 +2576,207 @@ class jez {
         return location
     }
 
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Function to spawn in a token at a position to be selected within this function.  Key calls are
- * made to: 
- *  (1) jez.warpCrosshairs() which rides on warpgate.crosshairs.show()
- *  (2) jez.suppressTokenMoldRenaming which does what its name suggests
- *  (3) warpgate.spawnAt() to perform the actual summon
- * 
- * This funcion will return the id of the summoned token or false if an error occurs.
- * 
- * MINION is a string defining the name of the MINION
- * aToken token5e data object for the reference token (from which range is measured)
- * ARGUMENTS is a whopper of an object that can contain multiple values, read code or README
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- static async spawnAt(MINION, aToken, aActor, aItem, ARGUMENTS) {
-    const FUNCNAME = "jez.spawnAt(MINION, ARGUMENTS)";
-    const FNAME = FUNCNAME.split("(")[0]
-    const TL = ARGUMENTS?.traceLvl ?? 0
-    const REQUIRED_MODULE = "warpgate"
-    if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
-    if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "MINION", MINION, "ARGUMENTS", ARGUMENTS);
-    if (TL > 2) {
-        jez.trace(`${FNAME} * |`)
-        for (let key in ARGUMENTS) jez.trace(`${FNAME} * | ARGUMENTS.${key}`, ARGUMENTS[key])
-    }
-    //-----------------------------------------------------------------------------------------------
-    // Create the defaultValues object 
-    //
-    let defaultValues = {
-        allowedUnits: ["", "ft", "any"],
-        color: "*",
-        defaultRange: 30,
-        duration: 1000,                     // Duration of the introVFX
-        img: "icons/svg/mystery-man.svg",   // Image to use on the summon location cursor
-        introTime: 1000,                    // Amount of time to wait for Intro VFX
-        introVFX: null,                     // default introVFX file
-        minionName: `${aToken.name}'s ${MINION}`,
-        name: "Summoning",                  // Name of action (message only), typically aItem.name
-        opacity: 1,                         // Opacity for the VFX
-        options: {controllingActor:aActor}, // Aledgedly hides an open character sheet
-        outroVFX: null,                     // default outroVFX file
-        scale: 0.7,                         // Scale for the VFX
-        snap: -1,                           // Snap value passed to jez.warpCrosshairs
-        source: { center: {x:315,y:385} },  // Coords for source (within center), typically aToken
-        suppressTokenMold: 2000,            // Time (in ms) to suppress TokenMold's renaming setting
-        templateName: `%${MINION}%`,
-        updates: {
-            actor: { name: `${aToken.name}'s ${MINION}` },
-            token: { name: `${aToken.name}'s ${MINION}` },
-        },
-        waitForSuppress: 100,               // Time (in ms) to wait of for Suppression to being
-        width: 1                            // Width of token to be summoned
-    }
-    //-----------------------------------------------------------------------------------------------
-    // Create dataObj (data object) from the passed ARGUMENTS and the defaultValues object 
-    //
-    let dataObj = {
-        allowedUnits: ARGUMENTS.allowedUnits ?? defaultValues.allowedUnits,
-        color: ARGUMENTS.color ?? defaultValues.color,
-        defaultRange: ARGUMENTS.defaultRange ?? defaultValues.defaultRange,
-        img: ARGUMENTS.img ?? defaultValues.img,
-        duration: ARGUMENTS.duration ?? defaultValues.duration,
-        img: ARGUMENTS.img ?? defaultValues.img,
-        introTime: ARGUMENTS.introTime ?? defaultValues.introTime,
-        introVFX: ARGUMENTS.introVFX ?? defaultValues.introVFX,
-        minionName: ARGUMENTS.minionName ?? defaultValues.minionName,
-        name: ARGUMENTS.name ?? defaultValues.name,
-        opacity: ARGUMENTS.opacity ?? defaultValues.opacity,
-        options: ARGUMENTS.options ?? defaultValues.options,
-        outroVFX: ARGUMENTS.outroVFX ?? defaultValues.outroVFX,
-        scale: ARGUMENTS.scale ?? defaultValues.scale,
-        snap: ARGUMENTS.snap ?? defaultValues.snap, // This may be changed later based on width
-        source: ARGUMENTS.source ?? defaultValues.source,
-        suppressTokenMold: ARGUMENTS.suppressTokenMold ?? defaultValues.suppressTokenMold,
-        templateName: ARGUMENTS.templateName ?? defaultValues.templateName,
-        updates: ARGUMENTS.updates ?? defaultValues.updates,
-        waitForSuppress: ARGUMENTS.waitForSuppress ?? defaultValues.waitForSuppress,
-        width: ARGUMENTS.width ?? defaultValues.width,
-    }
-    //-----------------------------------------------------------------------------------------------
-    // Second Pass on defaults, using inputs that may have been passed into our function. 
-    // The callbacks need to be recomputed based on varous inputs now established.
-    //
-    defaultValues.callbacks = {
-        pre: async (template) => {
-           jez.vfxPreSummonEffects(template, {
-                color: dataObj.color, 
-                introVFX: dataObj.introVFX,
-                opacity: dataObj.opacity, 
-                scale: dataObj.scale,
-            });
-            await jez.wait(dataObj.introTime);
-        },
-        post: async (template) => {
-            jez.vfxPostSummonEffects(template, {
-                color: dataObj.color, 
-                opacity: dataObj.opacity, 
-                outroVFX: dataObj.outroVFX,
-                scale: dataObj.scale
-            });
-            // await jez.wait(dataObj.outroVFX);
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Function to spawn in a token at a position to be selected within this function.  Key calls are
+     * made to: 
+     *  (1) jez.warpCrosshairs() which rides on warpgate.crosshairs.show()
+     *  (2) jez.suppressTokenMoldRenaming which does what its name suggests
+     *  (3) warpgate.spawnAt() to perform the actual summon
+     * 
+     * This funcion will return the id of the summoned token or false if an error occurs.
+     * 
+     * MINION is a string defining the name of the MINION
+     * aToken token5e data object for the reference token (from which range is measured)
+     * ARGUMENTS is a whopper of an object that can contain multiple values, read code or README
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async spawnAt(MINION, aToken, aActor, aItem, ARGUMENTS) {
+        const FUNCNAME = "jez.spawnAt(MINION, ARGUMENTS)";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = ARGUMENTS?.traceLvl ?? 0
+        const REQUIRED_MODULE = "warpgate"
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "MINION", MINION, "ARGUMENTS", ARGUMENTS);
+        if (TL > 3) {
+            jez.trace(`${FNAME} |`)
+            for (let key in ARGUMENTS) jez.trace(`${FNAME} | ARGUMENTS.${key}`, ARGUMENTS[key])
         }
-    }
-    if (TL > 3) {
-        jez.trace(`${FNAME} |`)
-        for (let key in defaultValues) jez.trace(`${FNAME} | defaultValues.${key}`, defaultValues[key])
-    }
-    //-----------------------------------------------------------------------------------------------
-    // If ARGUMENTS.snap is null, set snap to appropriate value based on width. Odd width should have 
-    // snap = -1 to center the summon in a square, even width should be 1 to place on an intersection
-    //
-    if (!ARGUMENTS.snap) dataObj.snap = (dataObj.width % 2 === 0) ? 1 : -1
-    //-----------------------------------------------------------------------------------------------
-    // Second Pass on dataObj.  Update callbacks to reflect new default and make sure token mold is
-    // suppressed for longed than the introVFX 
-    //
-    dataObj.callbacks = ARGUMENTS.callbacks ?? defaultValues.callbacks
-    dataObj.suppressTokenMold = Math.max(dataObj.introTime + 500, dataObj.suppressTokenMold)
-    if (TL > 2) {
-        jez.trace(`${FNAME} |`)
-        for (let key in dataObj) jez.trace(`${FNAME} | dataObj.${key}`, dataObj[key])
-    }
-    //-----------------------------------------------------------------------------------------------
-    // Make sure that warpgate module is active
-    //
-    if (!game.modules.get(REQUIRED_MODULE))
-        return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
-    else if (TL > 1) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
-    //-----------------------------------------------------------------------------------------------
-    // Make sure that dataObj.templateName exists in actor directory and stash its data object
-    //
-    let summonData = await game.actors.getName(dataObj.templateName)
-    if (!summonData) return jez.badNews(`${FNAME} | Could not find ${dataObj.templateName} in Actor
+        //-----------------------------------------------------------------------------------------------
+        // Create the defaultValues object 
+        //
+        let defaultValues = {
+            allowedColorsIntro: null,
+            allowedColorsOutro: null,
+            allowedUnits: ["", "ft", "any"],
+            colorIntro: "*",
+            colorOutro: "*",
+            defaultRange: 30,
+            duration: 1000,                     // Duration of the introVFX
+            img: "icons/svg/mystery-man.svg",   // Image to use on the summon location cursor
+            introTime: 1000,                    // Amount of time to wait for Intro VFX
+            introVFX: '~Explosion/Explosion_*_${color}_400x400.webm', // default introVFX file
+            minionName: `${aToken.name}'s ${MINION}`,
+            name: "Summoning",                  // Name of action (message only), typically aItem.name
+            opacity: 1,                         // Opacity for the VFX
+            options: { controllingActor: aActor }, // Aledgedly hides an open character sheet
+            outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+            scale: 0.7,                         // Scale for the VFX
+            snap: -1,                           // Snap value passed to jez.warpCrosshairs
+            source: { center: { x: 315, y: 385 } },  // Coords for source (within center), typically aToken
+            suppressTokenMold: 2000,            // Time (in ms) to suppress TokenMold's renaming setting
+            templateName: `%${MINION}%`,
+            traceLvl: 0,
+            updates: {
+                actor: { name: `${aToken.name}'s ${MINION}` },
+                token: { name: `${aToken.name}'s ${MINION}` },
+            },
+            waitForSuppress: 100,               // Time (in ms) to wait of for Suppression to being
+            width: 1                            // Width of token to be summoned
+        }
+        //-----------------------------------------------------------------------------------------------
+        // Create dataObj (data object) from the passed ARGUMENTS and the defaultValues object 
+        //
+        let dataObj = {
+            allowedColorsIntro: ARGUMENTS.allowedColorsIntro ?? defaultValues.allowedColorsIntro,
+            allowedColorsOutro: ARGUMENTS.allowedColorsOutro ?? defaultValues.allowedColorsOutro,
+            allowedUnits: ARGUMENTS.allowedUnits ?? defaultValues.allowedUnits,
+            colorIntro: ARGUMENTS.colorIntro ?? defaultValues.colorIntro,
+            colorOutro: ARGUMENTS.colorOutro ?? defaultValues.colorOutro,
+            defaultRange: ARGUMENTS.defaultRange ?? defaultValues.defaultRange,
+            img: ARGUMENTS.img ?? defaultValues.img,
+            duration: ARGUMENTS.duration ?? defaultValues.duration,
+            img: ARGUMENTS.img ?? defaultValues.img,
+            introTime: ARGUMENTS.introTime ?? defaultValues.introTime,
+            introVFX: ARGUMENTS.introVFX ?? defaultValues.introVFX,
+            minionName: ARGUMENTS.minionName ?? defaultValues.minionName,
+            name: ARGUMENTS.name ?? defaultValues.name,
+            opacity: ARGUMENTS.opacity ?? defaultValues.opacity,
+            options: ARGUMENTS.options ?? defaultValues.options,
+            outroVFX: ARGUMENTS.outroVFX ?? defaultValues.outroVFX,
+            scale: ARGUMENTS.scale ?? defaultValues.scale,
+            snap: ARGUMENTS.snap ?? defaultValues.snap, // This may be changed later based on width
+            source: ARGUMENTS.source ?? defaultValues.source,
+            suppressTokenMold: ARGUMENTS.suppressTokenMold ?? defaultValues.suppressTokenMold,
+            templateName: ARGUMENTS.templateName ?? defaultValues.templateName,
+            traceLvl: ARGUMENTS.traceLvl ?? defaultValues.templateName,
+            updates: ARGUMENTS.updates ?? defaultValues.updates,
+            waitForSuppress: ARGUMENTS.waitForSuppress ?? defaultValues.waitForSuppress,
+            width: ARGUMENTS.width ?? defaultValues.width,
+        }
+        //-----------------------------------------------------------------------------------------------
+        // Second Pass on defaults, using inputs that may have been passed into our function. 
+        // The callbacks need to be recomputed based on varous inputs now established.
+        //
+        defaultValues.callbacks = {
+            pre: async (template) => {
+                jez.vfxPreSummonEffects(template, {
+                    allowedColors: dataObj.allowedColorsIntro,
+                    color: dataObj.colorIntro,
+                    opacity: dataObj.opacity,
+                    scale: dataObj.scale,
+                    traceLvl: dataObj.traceLvl,
+                    vfxFile: dataObj.introVFX
+                });
+                await jez.wait(dataObj.introTime);
+            },
+            post: async (template) => {
+                jez.vfxPostSummonEffects(template, {
+                    allowedColors: dataObj.allowedColorsOutro,
+                    color: dataObj.colorOutro,
+                    opacity: dataObj.opacity,
+                    scale: dataObj.scale,
+                    traceLvl: dataObj.traceLvl,
+                    vfxFile: dataObj.outroVFX
+                });
+                // await jez.wait(dataObj.outroVFX);
+            }
+        }
+        if (TL > 3) {
+            jez.trace(`${FNAME} |`)
+            for (let key in defaultValues) jez.trace(`${FNAME} | defaultValues.${key}`, defaultValues[key])
+        }
+        //-----------------------------------------------------------------------------------------------
+        // If not provided with ARGUMENTS.allowedColors, build the array of allowed color values based on
+        // the introVFX / outroVFX names with special treatment for known types defaulting to a "*"
+        //
+        if (!dataObj.allowedColorsIntro) {
+            if (dataObj.introVFX.startsWith("~Explosion/Explosion_"))
+                dataObj.allowedColorsIntro = ["Blue", "Green", "Orange", "Purple", "Yellow", "*"];
+            else if (dataObj.introVFX.startsWith("~Portals/Portal_"))
+                dataObj.allowedColorsIntro = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple",
+                    "Dark_Red", "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
+                    "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"];
+            else if (dataObj.introVFX.startsWith("~Energy/SwirlingSparkles"))
+                dataObj.allowedColorsIntro = ["Blue", "BluePink", "GreenOrange", "OrangePurple", "*"];
+            else dataObj.allowedColorsIntro = ["*"];
+        }
+        if (!dataObj.allowedColorsOutro) {
+            if (dataObj.introVFX.startsWith("~Smoke/SmokePuff"))
+                dataObj.allowedColorsOutro = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
+            else if (dataObj.introVFX.startsWith("~Portals/Portal_"))
+                dataObj.allowedColorsOutro = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple",
+                    "Dark_Red", "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
+                    "Bright_Purple", "Bright_Red", "Bright_Yellow", "*"];
+            else if (dataObj.introVFX.startsWith("~Fireworks/Firework"))
+                dataObj.allowedColorsOutro = ["BluePink", "Green", "GreenOrange", "GreenRed", "Orange",
+                    "OrangeYellow", "Yellow", "*"];
+            else dataObj.allowedColorsOutro = ["*"];
+        }
+        //-----------------------------------------------------------------------------------------------
+        // If ARGUMENTS.snap is null, set snap to appropriate value based on width. Odd width should have 
+        // snap = -1 to center the summon in a square, even width should be 1 to place on an intersection
+        //
+        if (!ARGUMENTS.snap) dataObj.snap = (dataObj.width % 2 === 0) ? 1 : -1
+        //-----------------------------------------------------------------------------------------------
+        // Second Pass on dataObj.  Update callbacks to reflect new default and make sure token mold is
+        // suppressed for longed than the introVFX 
+        //
+        dataObj.callbacks = ARGUMENTS.callbacks ?? defaultValues.callbacks
+        dataObj.suppressTokenMold = Math.max(dataObj.introTime + 500, dataObj.suppressTokenMold)
+        //-----------------------------------------------------------------------------------------------
+        // Depending on TL print out the dataObj to the console
+        //
+        if (TL > 2) {
+            jez.trace(`${FNAME} |`)
+            for (let key in dataObj) jez.trace(`${FNAME} | dataObj.${key}`, dataObj[key])
+        }
+        //-----------------------------------------------------------------------------------------------
+        // Make sure that warpgate module is active
+        //
+        if (!game.modules.get(REQUIRED_MODULE))
+            return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
+        else if (TL > 1) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
+        //-----------------------------------------------------------------------------------------------
+        // Make sure that dataObj.templateName exists in actor directory and stash its data object
+        //
+        let summonData = await game.actors.getName(dataObj.templateName)
+        if (!summonData) return jez.badNews(`${FNAME} | Could not find ${dataObj.templateName} in Actor
         directory (sidebar), please fix`, "error")
-    else if (TL > 1) jez.trace(`${FNAME} | Found ${summonData} continuing...`, summonData)
-    //-----------------------------------------------------------------------------------------------
-    // Get and set maximum sumoning range
-    //
-    const MAX_RANGE = jez.getRange(aItem, dataObj.allowedUnits) ?? dataObj.defaultRange
-    if (TL > 1) jez.trace(`${FNAME} | Set MAX_RANGE`, MAX_RANGE);
-    //-----------------------------------------------------------------------------------------------
-    // Obtain location for spawn
-    //
-    let { x, y } = await jez.warpCrosshairs(dataObj.source, MAX_RANGE, dataObj.img, dataObj.name,
-        { width: dataObj.width }, dataObj.snap, { traceLvl: TL })
-    if (TL > 1) jez.trace(`${FNAME} | Set location for spawn to ${x}, ${y}`);
-    //-----------------------------------------------------------------------------------------------
-    // Suppress Token Mold for a wee bit
-    //
-    jez.suppressTokenMoldRenaming(dataObj.suppressTokenMold)
-    await jez.wait(dataObj.waitForSuppress)
-    //-----------------------------------------------------------------------------------------------
-    // Execute the summon
-    //
-    return (await warpgate.spawnAt({ x, y }, dataObj.templateName, dataObj.updates, dataObj.callbacks,
-        dataObj.options));
-}
+        else if (TL > 1) jez.trace(`${FNAME} | Found ${summonData} continuing...`, summonData)
+        //-----------------------------------------------------------------------------------------------
+        // Get and set maximum sumoning range
+        //
+        const MAX_RANGE = jez.getRange(aItem, dataObj.allowedUnits) ?? dataObj.defaultRange
+        if (TL > 1) jez.trace(`${FNAME} | Set MAX_RANGE`, MAX_RANGE);
+        //-----------------------------------------------------------------------------------------------
+        // Obtain location for spawn
+        //
+        let { x, y } = await jez.warpCrosshairs(dataObj.source, MAX_RANGE, dataObj.img, dataObj.name,
+            { width: dataObj.width }, dataObj.snap, { traceLvl: TL })
+        if (TL > 1) jez.trace(`${FNAME} | Set location for spawn to ${x}, ${y}`);
+        //-----------------------------------------------------------------------------------------------
+        // Suppress Token Mold for a wee bit
+        //
+        jez.suppressTokenMoldRenaming(dataObj.suppressTokenMold)
+        await jez.wait(dataObj.waitForSuppress)
+        //-----------------------------------------------------------------------------------------------
+        // Execute the summon
+        //
+        if (TL > 3) jez.trace("Calling warpgate.spawnAt(...)", "x", x, "y", y,
+            "dataObj.templateName", dataObj.templateName, "dataObj.updates", dataObj.updates,
+            "dataObj.callbacks", dataObj.callbacks, "dataObj.options", dataObj.options)
+        return (await warpgate.spawnAt({ x, y }, dataObj.templateName, dataObj.updates, dataObj.callbacks,
+            dataObj.options));
+    }
 
 } // END OF class jez
 Object.freeze(jez);

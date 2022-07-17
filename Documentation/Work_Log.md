@@ -222,6 +222,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.15 Update more warpgate macros: Animate_Objects, Arcane_Hand, Create_Bonfre, Create_Specter, Dancing_Lights, Danse_Macabre, Find_Steed_Specific, Flaming_Sphere, Magehand
 
+22.07.17 Updated jez-lib calls for summoning to make it a one function affair (with a bunch of support functions being hidden)
+
 Future Warpgate.spawn possible fixes: Phantom_Steed, Sacrificial_Summon, Summon_Demons, Summon_Swarm_of_Insects, Unseen-Servant 
 
 [Link back to my Documentation Listing](README.md) 

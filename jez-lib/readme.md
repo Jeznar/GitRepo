@@ -91,7 +91,7 @@ More about many of these in the following sections.
 
 ### spawnAt(minion, aToken, aActor, aItem, argObj)
 
-While most of the functions in this library perform relatively simple or atomic functions, this one is a lot more ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.
+While most of the functions in this library perform relatively simple, atomic functions, this one is a lot more ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.
 
 <details> <summary>**Highlights of the tasks it performs**</summary>
 
@@ -127,9 +127,12 @@ Those two functions manage the VFX that is run immediately before the summoning 
 
  Property      | Type             | Default Value             | Purpose                                                    |
 |--------------|------------------|:-------------------------:|------------------------------------------------------------|
+| allowedColorsIntro | Array of Strings | complex             | Array of allowed colors for introVFX default depends on introVFX, not needed for the basic types. 
+| allowedColorsOutro | Array of Strings | complex             | Array of allowed colors for OutroVFX default depends on outroVFX, not needed for the basic types.
 | allowedUnits | Array of Strings | ["", "ft", "any"]         | Strings naming allowed units for range on item card 
 | callbacks    | Object           | See Callbacks Object below| Callback functions to run the VFX (and maybe other things)
-| color        | String           | *                         | Name of a color or wildcard for the effect(s)
+| colorIntro   | String           | *                         | Name of a color or wildcard for the Intro effect
+| colorOutro   | String           | *                         | Name of a color or wildcard for the Outro effect
 | defaultRange | Integer			 | 30 feet                   | Default range for item in feet 
 | duration     | Integer          | 1000 ms                   | Duration of the intro VFX played just before the summons               
 | img          | String (filepath)| icons/svg/mystery-man.svg | Image to use on the summon location cursor (while in range)                                   
@@ -158,14 +161,15 @@ Those two functions manage the VFX that is run immediately before the summoning 
 | pre          | Function         | Complex see below         | Function called immediately before spawn
 | post         | Function         | Complex see below         | Function called immediately before spawn
 
-By default each of these functions calls another function, jez.vfxPreSummonEffects -or- jez.vfxPostSummonEffects with a number of properties from the above:
+By default each of these functions calls another function, jez.vfxPreSummonEffects / jez.vfxPostSummonEffects with a number of properties from the above:
 
-* **color**
-* **introVFX** or **outroVFX** 
-* **opacity**
-* **scale**
+* **allowedColors** -- Array of color names, typically from allowedColorsIntro / allowedColorsOutro
+* **color** -- color choice from colorIntro or colorOutro
+* **opacity** -- Real number between 0 and 1 inclusive that controls the opacity of the effect
+* **scale** -- Real number between 0 and 1 inclusive that controls the scale of the effect
+* **vfxFile** -- the introVFX or outroVFX file path, often including wildcard asterisks.
 
-The pre function also waits for **introTime** which allows the introVFX some time to play before the token appears.
+The pre function also waits for **introTime** which allows the introVFX some time to play before the token appears.  This can be fiddly to get good enough.
 </details>
 
 <details> <summary>**Updates Object**</summary>
