@@ -149,7 +149,7 @@ Those two functions manage the VFX that is run immediately before the summoning 
 | suppressTokenMold | Integer     | 2000 or introTime + 500   | Time (in ms) to suppress TokenMold's renaming setting must be longer than **introTime**             
 | templateName | String           | `${%MINION%}`             | Name of actor in sidebar, the MINION argument wrapped in percentage symbols 
 | traceLvl     | Integer          | null                      | Level of code tracing to console log, 0 turns it off               
-| updates      | Object           | See Updates Object below  | Updates to be applied to the summoned token                
+| updates      | Object           | See Updates Object below  | Updates to be applied to the summoned token, this will often want to be {} for linked tokens.                
 | waitForSuppress | Integer       | 100 ms                    | Time (in ms) to wait of for Suppression to begin                
 | width        | Integer          | 1                         | Width of token being summoned (assumed square)                
 </details>

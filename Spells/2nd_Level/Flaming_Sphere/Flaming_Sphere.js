@@ -1,4 +1,4 @@
-const MACRONAME = "Flaming_Sphere.0.6.js"
+const MACRONAME = "Flaming_Sphere.0.7.js"
 /*****************************************************************************************
  * Implements Flaming Sphere, based on Moonbeam.0.8 and its Helper_DAE script
  * 
@@ -6,6 +6,7 @@ const MACRONAME = "Flaming_Sphere.0.6.js"
  * 03/16/22 0.2 Move into GitRepo chasing what appears to be permissions issue
  * 05/16/22 0.5 Update for FoundryVTT 9.x
  * 07/15/22 0.6 Update to use warpgate.spawnAt with range limitation
+ * 07/17/22 0.7 Update to use jez.spawnAt (v2) for summoning
  *****************************************************************************************/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
  jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -21,18 +22,18 @@ const MACRONAME = "Flaming_Sphere.0.6.js"
  const TL = 0;
 
 const ATTACK_ITEM = "Flaming Sphere Attack";
-const MINION_NAME = "*Flaming_Sphere*"
+const MINION = "Flaming_Sphere"
 const MINION_UNIQUE_NAME = `${aToken.name}'s Sphere`
 const MACRO_HELPER = `${MACRO}_Helper_DAE`;
 const VFX_NAME = `${MACRO}-${aToken.id}`
-const VFX_LOOP = "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/FlamingSphere_02_Orange_200x200.webm";
+// const VFX_LOOP = "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/FlamingSphere_02_Orange_200x200.webm";
 const VFX_OPACITY = 0.7;
 const VFX_SCALE = 0.6;   
-const DeleteAsGM_MACRO = "DeleteTokenMacro";
-const SummonAsGM_MACRO = "SummonCreatureMacro";
-const VIEWED_SCENE = game.scenes.viewed;
-const SQUARE_WIDTH = VIEWED_SCENE.data.grid;
-const TEMPLATE_ID = args[0]?.templateId
+// const DeleteAsGM_MACRO = "DeleteTokenMacro";
+// const SummonAsGM_MACRO = "SummonCreatureMacro";
+// const VIEWED_SCENE = game.scenes.viewed;
+// const SQUARE_WIDTH = VIEWED_SCENE.data.grid;
+// const TEMPLATE_ID = args[0]?.templateId
 let sphereID = null     // The token.id of the summoned fire sphere
 let sphereToken = null  // Variable to hold the token5e for the Sphere
 jez.log("------- Obtained Global Values -------",
@@ -41,7 +42,6 @@ jez.log("------- Obtained Global Values -------",
     `Active Item (aItem) ${aItem?.name}`, aItem,
     "ATTACK_ITEM", ATTACK_ITEM,
     "MINION_UNIQUE_NAME", MINION_UNIQUE_NAME);
-
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
@@ -90,8 +90,8 @@ function preCheck() {
         msg = "Please enable the Advanced Macros module"
         return (false)
     }
-    if (!runAsGM_Check(SummonAsGM_MACRO)) return (false);
-    if (!runAsGM_Check(DeleteAsGM_MACRO)) return (false);
+    // if (!runAsGM_Check(SummonAsGM_MACRO)) return (false);
+    // if (!runAsGM_Check(DeleteAsGM_MACRO)) return (false);
     if (!game.macros.getName(MACRO_HELPER)) {
         msg = `Could not locate required macro: ${MACRO_HELPER}`
         return (false)
@@ -130,7 +130,7 @@ function preCheck() {
     jez.log(` spellDC ${spellDC}`);
     jez.log(` args[0].item.img ${args[0].item.img}`)
      //-------------------------------------------------------------------------------
-     // Build the item data for the action to be creater
+     // Build the item data for the action to be created
      //
      let value = 
       `Use this attack to attempt to damage any creature that ends its turn within 5 
@@ -174,29 +174,9 @@ function preCheck() {
 
     }];
      await aActor.createEmbeddedDocuments("Item", itemData);
-     //-------------------------------------------------------------------------------
-     // Extract coordinates from the template and delete it
-     //
-     //jez.log("Extract information from template and then delete the template")
-     //jez.log("TEMPLATE_ID", TEMPLATE_ID)
-     //jez.log(`canvas.templates.get(TEMPLATE_ID)`, canvas.templates.get(TEMPLATE_ID))
-    //  let x = canvas.templates.get(TEMPLATE_ID).data.x //- SQUARE_WIDTH / 2;
-    //  let y = canvas.templates.get(TEMPLATE_ID).data.y //- SQUARE_WIDTH / 2;
-    //  await canvas.templates.get(TEMPLATE_ID).document.delete()
-     //-------------------------------------------------------------------------------
-     // Summon the rolling ball o'fire, which includes setting the token.id of the 
-     // summoned sphere into the global variable: sphereID
-     //
-     //  jez.log(`OnUse ==> Summon the ${MINION_NAME} at ${x},${y}`)
-     await summonCritter(MINION_NAME)
-     //await game.macros.getName(SummonAsGM_MACRO).execute(MINION_NAME, x, y); // Summon occurs here!  Gosh Durnit
-     //await jez.wait(100);   // Wait a bit to allow the summoned token to be fully completed
-
-     //jez.log(`OnUse ==> Obtain the token information from the just summoned ${MINION_NAME}`)
-     //let tToken = await findTokenByName(MINION_NAME)
-
+     await summonCritter(MINION)
      jez.log(`OnUse ==> Start the VFX sequence on ${MINION_UNIQUE_NAME}`)
-     await startVFX(MINION_UNIQUE_NAME);
+     await startVFX();
      //-------------------------------------------------------------------------------
      // Create an effect on the caster to trigger the doOn / doOff actions
      //
@@ -220,79 +200,12 @@ function preCheck() {
      jez.log("--------------OnUse---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
-/***************************************************************************************
- * Function to delete an item from actor
- *
- * Parameters
- *  - itemName: A string naming the item to be found in actor's inventory
- *  - actor: Optional actor to be searched, defaults to actor launching this macro
- ***************************************************************************************/
- /*async function deleteItem(itemName, actor) {
-    const FUNCNAME = "deleteItem(itemName, actor)";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    // If actor was not passed, pick up the actor invoking this macro
-    actor = actor ? actor : canvas.tokens.get(args[0].tokenId).actor;
-    let item = actor.items.find(item => item.data.name === itemName && item.type === "spell")
-    jez.log("*** Item to be deleted:", item);
-    if (item == null || item == undefined) {
-        jez.log(`${actor.name} does not have ${itemName}`);
-        jez.log(`${FUNCNAME} returning false`);
-        return (false);
-    }
-    jez.log(`${actor.name} had ${item.name}`, item);
-    // await aActor.deleteOwnedItem(item._id);                 // Obsoletes as of Foundry 9.x
-    await aActor.deleteEmbeddedDocuments("Item", [item._id])   // Format as of Foundry 9.x 
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-}*/
-/***************************************************************************************************
- * Summon a token of minion on the template and delete the template
- ***************************************************************************************************/
-/*async function executeSummonAtTemplate(minion) {
-    const FUNCNAME = "executeSummon(minion)";
-  
-    //---------------------------------------------------------------------------------
-    // Extract information from template and then delete it
-    //
-    let x = canvas.templates.get(TEMPLATE_ID).data.x + SQUARE_WIDTH/2; // Because, reasons
-    let y = canvas.templates.get(TEMPLATE_ID).data.y + SQUARE_WIDTH/2;
-    await canvas.templates.get(TEMPLATE_ID).document.delete() 
-
-    jez.log("-----------------------------------", 
-        "Starting", `${MACRONAME} ${FUNCNAME}`,
-        "minion", minion,
-        "coords (x,y)", `${x},${y}`,
-        "SummonAsGM_MACRO", SummonAsGM_MACRO,
-        "VIEWED_SCENE", VIEWED_SCENE, 
-        "SQUARE_WIDTH", SQUARE_WIDTH);
-
-    // Invoke the RunAsGM Macro to do the job
-    // SummonFunc.execute(minion, x, y);
-    game.macros.getName(SummonAsGM_MACRO).execute(minion, x, y);
-
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-
-    return (true);
-}
-*/
 /***************************************************************************************************
  * Start the Visual Special Effects (VFX) on specified token
  ***************************************************************************************************/
-async function startVFX(minion) {
-    const FUNCNAME = "startVFX(minion)";
+async function startVFX() {
+    const FUNCNAME = "startVFX()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} ----------------`);
-    jez.log("==> minion", minion);
-    //----------------------------------------------------------------------------------------------
-    // Search for minion in the current scene 
-    //
-    /*
-    let eToken = await findTokenByName(minion)
-    if (!eToken) {
-        jez.log("Found only tears")
-        ui.notifications.error(`${MACRO} failed, ${minion} not found.`);
-        jez.log("------------------------------ ", "Premature End", `${MACRONAME} ${FUNCNAME}`);
-        return (false);
-    } else jez.log("eToken =====> ", eToken)*/
     new Sequence()
       .effect()
         .file("jb2a.smoke.puff.centered.dark_black.2")
@@ -309,132 +222,42 @@ async function startVFX(minion) {
     return (true);
 }
 /***************************************************************************************************
- * Find an owned token by name on current scene.  Return the token or null if not found
- ***************************************************************************************************/
- /*async function findTokenByName(name) {
-    const FUNCNAME = "findTokenByName(name)";
-    jez.log("-----------------------------------",
-        "Starting", `${MACRONAME} ${FUNCNAME}`,
-        "name", name)
-    let targetToken = ""
-    //----------------------------------------------------------------------------------------------
-    // Loop through tokens on the canvas looking for the one we seek
-    //
-    let ownedTokens = canvas.tokens.ownedTokens
-    for (let i = 0; i < ownedTokens.length; i++) {
-        jez.log(`  ${i}) ${ownedTokens[i].name}`, ownedTokens[i]);
-        if (name === ownedTokens[i].name) {
-            // jez.log("Eureka I found it!")
-            targetToken = ownedTokens[i]
-            break;
-        }
-    }
-    if (targetToken) jez.log(`${name}'s token has been found`, targetToken)
-    else jez.log(`${name}'s token was not found :-(`)
-    jez.log("-----------------------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return (targetToken);
-}*/
-/***************************************************************************************************
  * Summon the minion
  * 
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
-async function summonCritter(summons) {
-    jez.log("function summonCritter(summons)", "summons", summons);
-
-    //let name = `${summons}-${aToken.name}`
-    let name = MINION_UNIQUE_NAME
-    let updates = { token: { name: name } }
-
-    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
-    const CALLBACKS = {
-        pre: async (template) => {
-            preEffects(template);
-            await warpgate.wait(500);
-        },
-        post: async (template, token) => {
-            postEffects(template);
-            await warpgate.wait(500);
-        }
-    };
-
-    const MINION = summons
-    //-----------------------------------------------------------------------------------------------
-    // Get and set maximum sumoning range
+async function summonCritter(MINION) {
+    jez.log("function summonCritter(MINION)", "MINION", MINION);
+    //--------------------------------------------------------------------------------------------------
+    // Build the dataObject for our summon call
     //
-    const ALLOWED_UNITS = ["", "ft", "any"];
-    if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
-    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
-    //-----------------------------------------------------------------------------------------------
-    // Obtan location for spawn
+    let argObj = {
+        defaultRange: 60,                   // Defaults to 30, but this varies per spell
+        duration: 1000,                     // Duration of the intro VFX
+        introTime: 1000,                     // Amount of time to wait for Intro VFX
+        introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+        minionName: `${aToken.name}'s ${MINION}`,
+        minionName: MINION_UNIQUE_NAME,
+        name: aItem.name,                   // Name of action (message only), typically aItem.name
+        outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+        scale: 0.7,								// Default value but needs tuning at times
+        source: aToken,                     // Coords for source (with a center), typically aToken
+        width: 1,                           // Width of token to be summoned, 1 is the default
+        traceLvl: TL                        // Trace level, matching calling function decent choice
+    }
+    //--------------------------------------------------------------------------------------------------
+    // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+    // to update the img attribute or set basic image to match this item
     //
-    let summonData = game.actors.getName(MINION)
-    if (TL > 1) jez.trace("summonData", summonData);
-    let {x,y}=await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1)
-    //-----------------------------------------------------------------------------------------------
-    // Suppress Token Mold for a wee bit
+    let summonData = await game.actors.getName(MINION)
+    argObj.img = summonData ? summonData.img : aItem.img
+    //--------------------------------------------------------------------------------------------------
+    // Do the actual summon
     //
-    jez.suppressTokenMoldRenaming(1000)
-    await jez.wait(75)
-    //-----------------------------------------------------------------------------------------------
-    // Return while executing the summon
+    let returned = await jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
+    //--------------------------------------------------------------------------------------------------
+    // Fnish up
     //
-    let returned = await warpgate.spawnAt({x,y}, MINION, updates, CALLBACKS, OPTIONS);
-    jez.log("==> returned", returned)
-    sphereID = returned[0] // The token ID of the summoned sphere
-    jez.log("sphereID", sphereID)
-    sphereToken = canvas.tokens.placeables.find(ef => ef.id === sphereID)
-    jez.log("sphereToken", sphereToken)
+    // sphereID = returned[0] // The token ID of the summoned sphere
+    sphereToken = canvas.tokens.placeables.find(ef => ef.id === returned[0])
 }
-  /***************************************************************************************************
-   * 
-   ***************************************************************************************************/
-   async function preEffects(template) {
-    const VFX_FILE = "jb2a.explosion.orange.0"
-    new Sequence()
-      .effect()
-      .file(VFX_FILE)
-      .atLocation(template)
-      .center()
-      .opacity(0.8)
-      .scale(0.5)
-      .play()
-  }
-  /***************************************************************************************************
-   * 
-   ***************************************************************************************************/
-   async function postEffects(template) {
-    const VFX_OPACITY = 1.0
-    const VFX_SCALE = 1.0
-    const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_Grey_400x400.webm"
-    new Sequence()
-      .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scale(VFX_SCALE/2)
-        .opacity(VFX_OPACITY)
-        .waitUntilFinished(-1000) 
-    .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scale(VFX_SCALE*0.75)
-        .opacity(VFX_OPACITY*0.75)
-        .waitUntilFinished(-1000) 
-    .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scale(VFX_SCALE*1.25)
-        .opacity(VFX_OPACITY*0.5)
-        .waitUntilFinished(-1000) 
-    .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scale(VFX_SCALE*1.5)
-        .opacity(VFX_OPACITY*0.25)
-        .waitUntilFinished(-1000) 
-    .play()
-  }

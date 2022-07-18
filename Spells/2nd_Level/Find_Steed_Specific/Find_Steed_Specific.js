@@ -1,4 +1,4 @@
-const MACRONAME = "Find_Steed_Specific.js"
+const MACRONAME = "Find_Steed_Specific.0.2.js"
 /*****************************************************************************************
  * This macro implmenets Find Steed in a manor rquested by our friendly Paladin.  It does
  * the following.
@@ -12,6 +12,7 @@ const MACRONAME = "Find_Steed_Specific.js"
  * 5. Post a completion message
  * 
  * 03/23/22 0.1 Creation from Flaming_spehere.0.4.js
+ * 07/17/22 0.2 Update to use jez.spawnAt (v2) for summoning
  ******************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let msg = "";
@@ -59,60 +60,34 @@ async function doIt() {
         return (false);
     }
     jez.log(`specificSteedName: "${specificSteedName}"`,)
-    //--------------------------------------------------------------------------------------
-    // 2. Verify the Actor named in the aItem.name exists
-    //
-    if (!game.actors.getName(summonedSteedName)) {   // If steed not found, that's all folks
-        msg = `Could not find "<b>${summonedSteedName}</b>" in the <b>Actors Directory</b>. 
-    <br><br>Can not complete the ${aItem.name} action.`;
-        postResults(msg);
-        return (false);
-    }
-    //--------------------------------------------------------------------------------------
-    // 3. Define warpgate updates, options and callbacks 
-    //
-    let updates = { token: { name: specificSteedName } }
-    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
-    const CALLBACKS = {
-        pre: async (template) => {
-            preEffects(template);
-            await warpgate.wait(2000);
-        },
-        post: async (template, token) => {
-            postEffects(template);
-            await warpgate.wait(500);
-        }
-    };
-    //--------------------------------------------------------------------------------------
-    // 4. Fire off warpgate 
-    //
     const MINION = summonedSteedName
     //-----------------------------------------------------------------------------------------------
-    // Get and set maximum sumoning range
+    // Build our data object
+    let argObj = {
+        defaultRange: 30,
+        duration: 3000,                     // Duration of the intro VFX
+        introTime: 1000,                    // Amount of time to wait for Intro VFX
+        introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
+        minionName: MINION,
+        name: aItem.name,                   // Name of action (message only), typically aItem.name
+        outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
+        scale: 0.9,							// Default value but needs tuning at times
+        source: aToken,                     // Coords for source (with a center), typically aToken
+        templateName: MINION,               // Name of the actor in the actor directory
+        updates: {},
+        width: 2,                           // Width of token to be summoned
+        traceLvl: TL
+    }
+    //--------------------------------------------------------------------------------------------------
+    // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+    // to update the img attribute or set basic image to match this item
     //
-    const ALLOWED_UNITS = ["", "ft", "any"];
-    if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
-    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
-    //-----------------------------------------------------------------------------------------------
-    // Obtan location for spawn
+    let summonData = await game.actors.getName(MINION)
+    argObj.img = summonData ? summonData.img : aItem.img
+    //--------------------------------------------------------------------------------------------------
+    // Do the actual summon
     //
-    let summonData = game.actors.getName(MINION)
-    if (TL > 1) jez.trace("summonData", summonData);
-    // let { x, y } = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1, { traceLvl: TL })
-    let { x, y } = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, { width: 2 },
-        1, { traceLvl: TL })
-    //-----------------------------------------------------------------------------------------------
-    // Suppress Token Mold for a wee bit
-    //
-    jez.suppressTokenMoldRenaming(2500)
-    await jez.wait(75)
-    //-----------------------------------------------------------------------------------------------
-    // Return while executing the summon
-    //
-    let returned = await warpgate.spawnAt({x,y}, MINION, updates, CALLBACKS, OPTIONS);
-
-    //let returned = await warpgate.spawnAt({x:x,y:y},summons, updates, CALLBACKS, OPTIONS);
-    // let returned = await warpgate.spawn(summonedSteedName, updates, CALLBACKS, OPTIONS);
+    let returned = await jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
     jez.log("returned", returned)
     //--------------------------------------------------------------------------------------
     // 5. Post a completion message
@@ -133,35 +108,3 @@ async function doIt() {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
-/***************************************************************************************************
-   * 
-   ***************************************************************************************************/
- async function preEffects(template) {
-    //const VFX_FILE = "jb2a.explosion.orange.0"
-    const VFX_FILE = "jb2a.swirling_sparkles.01.bluepink"
-    new Sequence()
-      .effect()
-      .file(VFX_FILE)
-      .atLocation(template)
-      .center()
-      .opacity(1.0)
-      .scale(1.0)
-      .play()
-  }
-  /***************************************************************************************************
-   * 
-   ***************************************************************************************************/
-   async function postEffects(template) {
-    const VFX_OPACITY = 1.0
-    const VFX_SCALE = 0.8
-    const VFX_FILE = "jb2a.firework.02.bluepink.03"
-    new Sequence()
-      .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scale(VFX_SCALE)
-        .opacity(VFX_OPACITY)
-        //.waitUntilFinished(-1000) 
-    .play()
-  }

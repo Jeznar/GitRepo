@@ -81,7 +81,7 @@
         "value": 19,
         "min": 0,
         "max": 19,
-        "temp": 0,
+        "temp": null,
         "tempmax": 0,
         "formula": "3d10 + 3"
       },
@@ -100,6 +100,9 @@
         "walk": 60,
         "units": "ft",
         "hover": false
+      },
+      "attunement": {
+        "max": 3
       },
       "senses": {
         "darkvision": 0,
@@ -500,6 +503,10 @@
       },
       "tagger": {
         "tags": ""
+      },
+      "monks-little-details": {
+        "token-combat-animation": "",
+        "token-highlight": ""
       }
     },
     "name": "Rogue",
@@ -526,7 +533,7 @@
     "actorId": "ZmJjMDBkNzJkYTJk",
     "actorLink": false,
     "disposition": 1,
-    "displayBars": 40,
+    "displayBars": 30,
     "bar1": {
       "attribute": "attributes.hp"
     },
@@ -555,7 +562,72 @@
     "lockCamera": false,
     "x": null,
     "y": null,
-    "elevation": null
+    "elevation": null,
+    "light": {
+      "alpha": 0.5,
+      "angle": 0,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "gradual": true,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "color": null
+    },
+    "actor": {
+      "data": {
+        "flags": {
+          "conditional-visibility": {
+            "blindsight": {
+              "visionLevelValue": 0
+            },
+            "blinded": {
+              "visionLevelValue": 0
+            },
+            "darkvision": {
+              "visionLevelValue": 0
+            },
+            "devilssight": {
+              "visionLevelValue": 0
+            },
+            "seeinvisible": {
+              "visionLevelValue": 0
+            },
+            "tremorsense": {
+              "visionLevelValue": 0
+            },
+            "truesight": {
+              "visionLevelValue": 0
+            },
+            "dataforcevisible": false,
+            "datausestealthpassive": false,
+            "hidden": {
+              "visionLevelValue": 0
+            },
+            "indarkness": {
+              "visionLevelValue": 0
+            },
+            "invisible": {
+              "visionLevelValue": 0
+            },
+            "obscured": {
+              "visionLevelValue": 0
+            }
+          }
+        }
+      }
+    }
   },
   "items": [
     {
@@ -870,16 +942,12 @@
     }
   ],
   "effects": [],
-  "sort": 0,
   "flags": {
-    "core": {
-      "sourceId": "Actor.0hQkTpgafj0bAdRW"
-    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }
