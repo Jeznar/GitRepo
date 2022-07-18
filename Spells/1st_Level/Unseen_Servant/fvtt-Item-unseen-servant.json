@@ -43,7 +43,10 @@
     "actionType": "other",
     "attackBonus": 0,
     "chatFlavor": "",
-    "critical": null,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
     "damage": {
       "parts": [],
       "versatile": ""
@@ -77,10 +80,10 @@
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "attunement": null
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "ddbimporter": {
       "id": 138901,
@@ -130,7 +133,8 @@
       "sourceId": "Compendium.My-Shared-DDB.spells.yvxE3vXZh0bZ9rrz"
     },
     "midi-qol": {
-      "onUseMacroName": "ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "itemacro": {
       "macro": {
@@ -141,7 +145,7 @@
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "const MACRONAME = \"Unseen_Servant.js\"\n/*****************************************************************************************\n * This macro implements Unseen Servant...Summoning a mostly transparent actor to the \n * field\n * \n * 1. Parse the aItem.name to find the name of the creature to be summoned.  Presumably \n *    this will be \"Unseen Servant\" but it could be something else\n * 2. Verify the Actor named in the aItem.name exists \n * 3. Define warpgate updates, options and callbacks \n * 4. Fire off warpgate\n * 5. Post a completion message\n * \n * 03/23/22 0.1 Creation from Find_Steed_Specific.js\n ******************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nlet msg = \"\";\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; \n   else aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \n   else aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\njez.log(`Beginning ${MACRONAME}`);\ndoIt()\n/******************************************************************************************/\nasync function doIt() {\n    //-------------------------------------------------------------------------------------\n    // 1. Parse the aItem.name to find the name of the creature to be summoned. \n    //\n    let summonedAct = aItem.name\n    // If name includes white space, get just the last token to use as the name\n    if ((aItem.name.match(/ /g) || []).length >= 1) {\n        let nameTokenArray = aItem.name.split(\" \");\n        summonedAct = nameTokenArray[nameTokenArray.length - 1];\n    }\n    jez.log(`summonedAct: \"${summonedAct}\"`)\n    let specificActorName = `${aToken.name}'s ${summonedAct}`\n    jez.log(`specificActorName: \"${specificActorName}\"`,)\n    //--------------------------------------------------------------------------------------\n    // 2. Verify the Actor named in the aItem.name exists\n    //\n    if (!game.actors.getName(aItem.name)) {   // If critter not found, that's all folks\n        msg = `Could not find \"<b>${aItem.name}</b>\" in the <b>Actors Directory</b>. \n        <br><br>Can not complete the ${aItem.name} action.`;\n        postResults(msg);\n        return (false);\n    }\n    //--------------------------------------------------------------------------------------\n    // 3. Define warpgate updates, options and callbacks \n    //\n    let updates = { token: { name: specificActorName } }\n    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet\n    const CALLBACKS = {\n        pre: async (template) => {\n            preEffects(template);\n            await warpgate.wait(3000);\n        },\n        post: async (template, token) => {\n            postEffects(template);\n            await warpgate.wait(500);\n        }\n    };\n    //--------------------------------------------------------------------------------------\n    // 4. Fire off warpgate \n    //\n    let returned = await warpgate.spawn(aItem.name, updates, CALLBACKS, OPTIONS);\n    jez.log(\"returned\", returned)\n    //--------------------------------------------------------------------------------------\n    // 5. Post a completion message\n    //\n    msg = `<b>${aToken.name}</b> has summoned <b>${specificActorName}</b>`\n    postResults(msg);\n    return;\n}\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n   * \n   ***************************************************************************************************/\n async function preEffects(template) {\n    const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Portals/Masked/Portal_Vortex_*_H_NoBG_400x400.webm\"\n    new Sequence()\n      .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .opacity(1.0)\n      .scaleIn(0.3, 2000)\n      //.scale(0.5)\n      .scaleToObject(2.0)\n      .fadeOut(2000)\n      .waitUntilFinished(-3000) \n      .play()\n  }\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function postEffects(template) {\n    const VFX_OPACITY = 1.0\n    const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Fireworks/Firework03_02_Regular_*_600x600.webm\"\n    new Sequence()\n      .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scaleToObject(2.0)\n        //.scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n    .play()\n  }",
+          "command": "const MACRONAME = \"Unseen_Servant.0.2.js\"\n/*****************************************************************************************\n * This macro implements Unseen Servant...Summoning a mostly transparent actor to the \n * field\n * \n * 1. Parse the aItem.name to find the name of the creature to be summoned.  Presumably \n *    this will be \"Unseen Servant\" but it could be something else\n * 2. Verify the Actor named in the aItem.name exists \n * 3. Define warpgate updates, options and callbacks \n * 4. Fire off warpgate\n * 5. Post a completion message\n * \n * 03/23/22 0.1 Creation from Find_Steed_Specific.js\n * 07/18/22 0.2 Update to use jez.spawnAt for summoning\n ******************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nlet msg = \"\";\nconst TL = 0;\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst MINION = \"Unseen Servant\"\ndoIt()\n/******************************************************************************************/\nasync function doIt() {\n    //--------------------------------------------------------------------------------------------------\n    // Portals need the same color for pre and post effects, so get that set here. Even though only used\n    // when we are doing portals\n    //\n    const PORTAL_COLORS = [\"Bright_Blue\", \"Dark_Blue\", \"Dark_Green\", \"Dark_Purple\", \"Dark_Red\",\n        \"Dark_RedYellow\", \"Dark_Yellow\", \"Bright_Green\", \"Bright_Orange\", \"Bright_Purple\", \"Bright_Red\",\n        \"Bright_Yellow\"]\n    let index = Math.floor((Math.random() * PORTAL_COLORS.length))\n    let portalColor = PORTAL_COLORS[index]\n    //--------------------------------------------------------------------------------------------------\n    // Build the dataObject for our summon call\n    //\n    let argObj = {\n        defaultRange: 60,                   // Defaults to 30, but this varies per spell\n        duration: 4000,                     // Duration of the intro VFX\n        img: aItem.img,                     // Image to use on the summon location cursor\n        introTime: 250,                     // Amount of time to wait for Intro VFX\n        introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file\n        minionName: `${aToken.name}'s Servant`,\n        name: aItem.name,                   // Name of action (message only), typically aItem.name\n        outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file\n        scale: 0.7,\t\t\t\t\t\t\t\t// Default value but needs tuning at times\n        source: aToken,                     // Coords for source (with a center), typically aToken\n        width: 1,                           // Width of token to be summoned, 1 is the default\n        traceLvl: TL                        // Trace level, matching calling function decent choice\n    }\n    jez.spawnAt(MINION, aToken, aActor, aItem, argObj)\n    //--------------------------------------------------------------------------------------\n    // 5. Post a completion message\n    //\n    msg = `<b>${aToken.name}</b> has summoned <b>${aToken.name}'s Servant}</b>`\n    postResults(msg);\n    return;\n}\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -151,11 +155,22 @@
         }
       }
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

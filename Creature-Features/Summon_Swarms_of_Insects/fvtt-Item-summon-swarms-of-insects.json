@@ -25,9 +25,9 @@
       "type": ""
     },
     "range": {
-      "value": null,
+      "value": 60,
       "long": null,
-      "units": ""
+      "units": "ft"
     },
     "uses": {
       "value": 0,
@@ -61,10 +61,10 @@
     "recharge": {
       "value": 0,
       "charged": false
-    }
+    },
+    "attunement": null
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "itemacro": {
       "macro": {
@@ -75,7 +75,7 @@
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "const MACRONAME = \"Summon_Swarms_of_Insects\"\n/*****************************************************************************************\n * Basic Structure for a rather complete macro\n * \n * 02/11/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlet msg = \"\";\nconst CREATURE_NAME = \"Swarm of Insects\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n  const FUNCNAME = \"doOnUse()\";\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  let swarms = new Roll(`1d4`).evaluate({ async: false });\n  game.dice3d?.showForRoll(swarms);\n\n  for (let i = 1; i <= swarms.total; i++) {\n    await summonCritter(CREATURE_NAME, i)\n  }\n  let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n  msg = `<b>${aToken.name}</b> summons ${swarms.total} ${CREATURE_NAME}`\n\n  await jez.addMessage(chatMessage, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" })\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return (true);\n}\n/***************************************************************************************************\n * Summon the actor and rename with a numeric suffix\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\nasync function summonCritter(summons, number) {\n  let name = `${summons} ${number}`\n  // COL-THING: Updates the name of the summoned token via warpgate call\n  let updates = { token : {name: name} }\n  const OPTIONS = { controllingActor: aActor };\n  // COOL-THING: Plays VFX before and after the warpgate summon.\n  const CALLBACKS = {\n    pre: async (template) => {\n      preEffects(template);\n      await warpgate.wait(500);\n    },\n    post: async (template, token) => {\n      postEffects(template);\n      await warpgate.wait(500);\n      //greetings(template, token);\n    }\n  };\n  //updates = mergeObject(updates, choice);\n  await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS);\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function preEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n    .file(VFX_FILE)\n    .atLocation(template)\n    .center()\n    .scale(1.0)\n    .play()\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function postEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .scale(1.0)\n    .play()\n}",
+          "command": "const MACRONAME = \"Summon_Swarms_of_Insects.0.2.js\"\n/*****************************************************************************************\n * Summon swarms of insects, like the name says\n * \n * 02/11/22 0.1 Creation of Macro\n * 07/18/22 0.2 Update to use jez.spawnAt for summoning\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nlet msg = \"\";\nconst TL = 0;\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nconst CREATURE_NAME = \"Swarm of Insects\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n  const FUNCNAME = \"doOnUse()\";\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  let swarms = new Roll(`1d4`).evaluate({ async: false });\n  game.dice3d?.showForRoll(swarms);\n\n  for (let i = 1; i <= swarms.total; i++) {\n    await summonCritter(CREATURE_NAME, i)\n  }\n  let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n  msg = `<b>${aToken.name}</b> summons ${swarms.total} ${CREATURE_NAME}`\n\n  await jez.addMessage(chatMessage, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" })\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return (true);\n}\n/***************************************************************************************************\n * Summon the actor and rename with a numeric suffix\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\nasync function summonCritter(summons, number) {\n  //--------------------------------------------------------------------------------------\n  // Build data object for the spawnAt call \n  //\n  let argObj = {\n    defaultRange: 60,                   // Defaults to 30, but this varies per spell\n    duration: 1000,                     // Duration of the intro VFX\n    img: aItem.img,                     // Image to use on the summon location cursor\n    introTime: 1000,                     // Amount of time to wait for Intro VFX\n    introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file\n    minionName: `${aToken.name}'s ${summons} ${number}`,\n    name: aItem.name,                   // Name of action (message only), typically aItem.name\n    outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file\n    source: aToken,                     // Coords for source (with a center), typically aToken\n    width: 1,                           // Width of token to be summoned, 1 is the default\n    traceLvl: TL                        // Trace level, matching calling function decent choice\n}\n  //--------------------------------------------------------------------------------------\n  // Call spawnAt to do the deed \n  //\n  return await jez.spawnAt(summons, aToken, aActor, aItem, argObj)\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\nasync function preEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n    .file(VFX_FILE)\n    .atLocation(template)\n    .center()\n    .scale(1.0)\n    .play()\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\nasync function postEffects(template) {\n  const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm\"\n  new Sequence()\n    .effect()\n    .file(VFX_FILE)\n    .atLocation(template)\n    .center()\n    .scale(1.0)\n    .play()\n}",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -105,16 +105,28 @@
       "set3p": false
     },
     "midi-qol": {
-      "onUseMacroName": "ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     },
     "core": {
       "sourceId": "Item.pRytUt3NkSClUHmq"
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

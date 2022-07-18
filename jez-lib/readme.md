@@ -201,6 +201,7 @@ let argObj = {
     img: aItem.img,                     // Image to use on the summon location cursor
     introTime: 1000,                     // Amount of time to wait for Intro VFX
     introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+    minionName: `${aToken.name}'s ${summons}`,
     name: aItem.name,                   // Name of action (message only), typically aItem.name
     outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
     scale: 0.7,								// Default value but needs tuning at times
@@ -227,6 +228,7 @@ let argObj = {
     img: aItem.img,                     // Image to use on the summon location cursor
     introTime: 1000,                    // Amount of time to wait for Intro VFX
     introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
+    minionName: `${aToken.name}'s ${summons}`,
     name: aItem.name,                   // Name of action (message only), typically aItem.name
     outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
     scale: 0.7,								// Default value but needs tuning at times
@@ -255,7 +257,7 @@ jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
 const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
 "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange", "Bright_Purple", "Bright_Red", 
 "Bright_Yellow"]
-let index = Math.floor((Math.random() * PORTAL_COLORS.length) + 1)
+let index = Math.floor((Math.random() * PORTAL_COLORS.length))
 let portalColor = PORTAL_COLORS[index]
 //--------------------------------------------------------------------------------------------------
 // Build the dataObject for our summon call
@@ -266,6 +268,7 @@ let argObj = {
     img: aItem.img,                     // Image to use on the summon location cursor
     introTime: 250,                     // Amount of time to wait for Intro VFX
     introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file
+    minionName: `${aToken.name}'s ${summons}`,
     name: aItem.name,                   // Name of action (message only), typically aItem.name
     outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file
     scale: 0.7,								// Default value but needs tuning at times

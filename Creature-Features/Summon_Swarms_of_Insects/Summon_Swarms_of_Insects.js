@@ -1,12 +1,15 @@
-const MACRONAME = "Summon_Swarms_of_Insects"
+const MACRONAME = "Summon_Swarms_of_Insects.0.2.js"
 /*****************************************************************************************
- * Basic Structure for a rather complete macro
+ * Summon swarms of insects, like the name says
  * 
  * 02/11/22 0.1 Creation of Macro
+ * 07/18/22 0.2 Update to use jez.spawnAt for summoning
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+let msg = "";
+const TL = 0;
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
 let aToken;         // Acting token, token for creature that invoked the macro
@@ -15,7 +18,6 @@ if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else a
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
-let msg = "";
 const CREATURE_NAME = "Swarm of Insects"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -52,29 +54,31 @@ async function doOnUse() {
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
 async function summonCritter(summons, number) {
-  let name = `${summons} ${number}`
-  // COOL-THING: Updates the name of the summoned token via warpgate call
-  let updates = { token : {name: name} }
-  const OPTIONS = { controllingActor: aActor };
-  // COOL-THING: Plays VFX before and after the warpgate summon.
-  const CALLBACKS = {
-    pre: async (template) => {
-      preEffects(template);
-      await warpgate.wait(500);
-    },
-    post: async (template, token) => {
-      postEffects(template);
-      await warpgate.wait(500);
-      //greetings(template, token);
-    }
-  };
-  //updates = mergeObject(updates, choice);
-  await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS);
+  //--------------------------------------------------------------------------------------
+  // Build data object for the spawnAt call 
+  //
+  let argObj = {
+    defaultRange: 60,                   // Defaults to 30, but this varies per spell
+    duration: 1000,                     // Duration of the intro VFX
+    img: aItem.img,                     // Image to use on the summon location cursor
+    introTime: 1000,                     // Amount of time to wait for Intro VFX
+    introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+    minionName: `${aToken.name}'s ${summons} ${number}`,
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    width: 1,                           // Width of token to be summoned, 1 is the default
+    traceLvl: TL                        // Trace level, matching calling function decent choice
+}
+  //--------------------------------------------------------------------------------------
+  // Call spawnAt to do the deed 
+  //
+  return await jez.spawnAt(summons, aToken, aActor, aItem, argObj)
 }
 /***************************************************************************************************
  * 
  ***************************************************************************************************/
- async function preEffects(template) {
+async function preEffects(template) {
   const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_Green_400x400.webm"
   new Sequence()
     .effect()
@@ -87,13 +91,13 @@ async function summonCritter(summons, number) {
 /***************************************************************************************************
  * 
  ***************************************************************************************************/
- async function postEffects(template) {
+async function postEffects(template) {
   const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm"
   new Sequence()
     .effect()
-      .file(VFX_FILE)
-      .atLocation(template)
-      .center()
-      .scale(1.0)
+    .file(VFX_FILE)
+    .atLocation(template)
+    .center()
+    .scale(1.0)
     .play()
 }

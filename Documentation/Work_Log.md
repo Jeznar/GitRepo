@@ -226,7 +226,9 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.17 Updating to warpgate.spawnAt (v2): Phantom_Steed, Sacrificial_Summon, Summon_Demons
 
-Future Warpgate.spawn possible fixes: Summon_Swarm_of_Insects, Unseen-Servant 
+22.07.18 Updating to warpgate.spawnAt (v2): Summon_Swarm_of_Insects, Unseen_Servant
+
+ 
 
 [Link back to my Documentation Listing](README.md) 
 

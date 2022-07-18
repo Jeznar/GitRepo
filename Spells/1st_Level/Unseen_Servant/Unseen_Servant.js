@@ -13,66 +13,60 @@ const MACRONAME = "Unseen_Servant.js"
  * 03/23/22 0.1 Creation from Find_Steed_Specific.js
  ******************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+jez.log(`============== Starting === ${MACRONAME} =================`);
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 let msg = "";
+const TL = 0;
 const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-   else aActor = game.actors.get(LAST_ARG.actorId);
-let aToken;         // Acting token, token for creature that invoked the macro
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-   else aToken = game.actors.get(LAST_ARG.tokenId);
-let aItem;          // Active Item information, item invoking this macro
+//---------------------------------------------------------------------------------------------------
+// Set the value for the Active Token (aToken)
+let aToken;
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor;
+//
+// Set the value for the Active Item (aItem)
+let aItem;
 if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-jez.log(`Beginning ${MACRONAME}`);
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
+const MINION = "Unseen Servant"
 doIt()
 /******************************************************************************************/
 async function doIt() {
-    //-------------------------------------------------------------------------------------
-    // 1. Parse the aItem.name to find the name of the creature to be summoned. 
+    //--------------------------------------------------------------------------------------------------
+    // Portals need the same color for pre and post effects, so get that set here. Even though only used
+    // when we are doing portals
     //
-    let summonedAct = aItem.name
-    // If name includes white space, get just the last token to use as the name
-    if ((aItem.name.match(/ /g) || []).length >= 1) {
-        let nameTokenArray = aItem.name.split(" ");
-        summonedAct = nameTokenArray[nameTokenArray.length - 1];
+    const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
+        "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange", "Bright_Purple", "Bright_Red",
+        "Bright_Yellow"]
+    let index = Math.floor((Math.random() * PORTAL_COLORS.length))
+    let portalColor = PORTAL_COLORS[index]
+    //--------------------------------------------------------------------------------------------------
+    // Build the dataObject for our summon call
+    //
+    let argObj = {
+        defaultRange: 60,                   // Defaults to 30, but this varies per spell
+        duration: 4000,                     // Duration of the intro VFX
+        img: aItem.img,                     // Image to use on the summon location cursor
+        introTime: 250,                     // Amount of time to wait for Intro VFX
+        introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file
+        minionName: `${aToken.name}'s Servant`,
+        name: aItem.name,                   // Name of action (message only), typically aItem.name
+        outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file
+        scale: 0.7,								// Default value but needs tuning at times
+        source: aToken,                     // Coords for source (with a center), typically aToken
+        width: 1,                           // Width of token to be summoned, 1 is the default
+        traceLvl: TL                        // Trace level, matching calling function decent choice
     }
-    jez.log(`summonedAct: "${summonedAct}"`)
-    let specificActorName = `${aToken.name}'s ${summonedAct}`
-    jez.log(`specificActorName: "${specificActorName}"`,)
-    //--------------------------------------------------------------------------------------
-    // 2. Verify the Actor named in the aItem.name exists
-    //
-    if (!game.actors.getName(aItem.name)) {   // If critter not found, that's all folks
-        msg = `Could not find "<b>${aItem.name}</b>" in the <b>Actors Directory</b>. 
-        <br><br>Can not complete the ${aItem.name} action.`;
-        postResults(msg);
-        return (false);
-    }
-    //--------------------------------------------------------------------------------------
-    // 3. Define warpgate updates, options and callbacks 
-    //
-    let updates = { token: { name: specificActorName } }
-    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
-    const CALLBACKS = {
-        pre: async (template) => {
-            preEffects(template);
-            await warpgate.wait(3000);
-        },
-        post: async (template, token) => {
-            postEffects(template);
-            await warpgate.wait(500);
-        }
-    };
-    //--------------------------------------------------------------------------------------
-    // 4. Fire off warpgate 
-    //
-    let returned = await warpgate.spawn(aItem.name, updates, CALLBACKS, OPTIONS);
-    jez.log("returned", returned)
+    jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
     //--------------------------------------------------------------------------------------
     // 5. Post a completion message
     //
-    msg = `<b>${aToken.name}</b> has summoned <b>${specificActorName}</b>`
+    msg = `<b>${aToken.name}</b> has summoned <b>${aToken.name}'s Servant}</b>`
     postResults(msg);
     return;
 }
@@ -83,42 +77,8 @@ async function doIt() {
  ***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults(msg) {
+function postResults(msg) {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
-/***************************************************************************************************
-   * 
-   ***************************************************************************************************/
- async function preEffects(template) {
-    const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Portals/Masked/Portal_Vortex_*_H_NoBG_400x400.webm"
-    new Sequence()
-      .effect()
-      .file(VFX_FILE)
-      .atLocation(template)
-      .center()
-      .opacity(1.0)
-      .scaleIn(0.3, 2000)
-      //.scale(0.5)
-      .scaleToObject(2.0)
-      .fadeOut(2000)
-      .waitUntilFinished(-3000) 
-      .play()
-  }
-  /***************************************************************************************************
-   * 
-   ***************************************************************************************************/
-   async function postEffects(template) {
-    const VFX_OPACITY = 1.0
-    const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Fireworks/Firework03_02_Regular_*_600x600.webm"
-    new Sequence()
-      .effect()
-        .file(VFX_FILE)
-        .atLocation(template)
-        .center()
-        .scaleToObject(2.0)
-        //.scale(VFX_SCALE)
-        .opacity(VFX_OPACITY)
-    .play()
-  }
