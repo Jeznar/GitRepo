@@ -1,4 +1,4 @@
-const MACRONAME = "Dancing_Lights.0.3.js"
+const MACRONAME = "Dancing_Lights.0.4.js"
 /*****************************************************************************************
  * Summon 4 dancing lights with WarpGate
  * 
@@ -6,6 +6,7 @@ const MACRONAME = "Dancing_Lights.0.3.js"
  * 06/06/22 0.2 Chasing player can't summon with warpgate issue.  Fix was granting players
  *              permission to browse files in the player permissions within FoundryVTT.
  * 07/15/22 0.3 Convert to use jez.warpCrosshairs
+ * 07/17/22 0.4 Update to use jez.spawnAt (v2) for summoning
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -19,8 +20,6 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken 
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 const TL = 0;
-const SUMMON_PREFIX = "%Dancing_Light_"
-const SUMMON_POSTFIX = "%"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -41,8 +40,7 @@ async function doOnUse() {
     for (let i = 1; i <= 4; i++) {
         const COLOR = pickColor();
         jez.log(`${i} Color`, COLOR)
-        const SIDEBAR_NAME = `${SUMMON_PREFIX}${COLOR}${SUMMON_POSTFIX}`
-        lightIdArray.push(await summonCritter(SIDEBAR_NAME, i, COLOR))
+        lightIdArray.push(await summonCritter(`Dancing_Light_${COLOR}`, i, COLOR))
     }
     jez.log("LightID", lightIdArray)
     //--------------------------------------------------------------------------------------
@@ -65,52 +63,28 @@ async function doOnUse() {
  * 
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
-async function summonCritter(summons, number, color) {
-  jez.log(`summonCritter(${summons}, ${number}, ${color})`)
+async function summonCritter(MINION, number, color) {
+  jez.log(`summonCritter(${MINION}, ${number}, ${color})`)
   let name = `${aToken.name}'s Dancing Light ${number}`
-  let updates = { 
-      actor: {name: name},    
-      token: {name: name},
+  //--------------------------------------------------------------------------------------------------
+  // Build the dataObject for our summon call
+  //
+  let argObj = {
+    defaultRange: 30,                   // Defaults to 30, but this varies per spell
+    duration: 1000,                     // Duration of the intro VFX
+    img: aItem.img,                     // Image to use on the summon location cursor
+    introTime: 750,                     // Amount of time to wait for Intro VFX
+    introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+    minionName: name,
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+    scale: 0.5,								// Default value but needs tuning at times
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    suppressTokenMold: 500,
+    width: 1,                           // Width of token to be summoned, 1 is the default
+    traceLvl: TL                        // Trace level, matching calling function decent choice
   }
-  const OPTIONS = { controllingActor: aActor };
-  const CALLBACKS = {
-    pre: async (template) => {
-      jez.log(`Calling preEffects(template, color)`,"template",template,"color")
-      preEffects(template, color);
-      await warpgate.wait(500);
-    },
-    post: async (template, token) => {
-      jez.log(`Calling postEffects(template, color)`,"template",template,"color")
-      postEffects(template, color);
-      await warpgate.wait(500);
-      //greetings(template, token);
-    }
-  };
-  const MINION = summons
-  //-----------------------------------------------------------------------------------------------
-  // Get and set maximum sumoning range
-  //
-  const ALLOWED_UNITS = ["", "ft", "any"];
-  if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
-  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
-  //-----------------------------------------------------------------------------------------------
-  // Obtan location for spawn
-  //
-  let summonData = game.actors.getName(MINION)
-  if (TL > 1) jez.trace("summonData", summonData);
-  let {x,y} = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1)
-  // let {x,y} = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {width:2},1, { traceLvl: TL })
-  //-----------------------------------------------------------------------------------------------
-  // Suppress Token Mold for a wee bit
-  //
-  jez.suppressTokenMoldRenaming(1000)
-  await jez.wait(75)
-  //-----------------------------------------------------------------------------------------------
-  // Return while executing the summon
-  //
-  return (await warpgate.spawnAt({x,y}, MINION, updates, CALLBACKS, OPTIONS));
-  // jez.log(`await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS)`,"summons",summons,"updates",updates,"CALLBACKS",CALLBACKS,"OPTIONS",OPTIONS)
-  // return(await warpgate.spawn(summons, updates, CALLBACKS, OPTIONS))
+  return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 }
 /***************************************************************************************************
  * Randomly pick a color for the next dancing light

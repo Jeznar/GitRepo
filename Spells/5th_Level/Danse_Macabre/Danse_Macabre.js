@@ -1,4 +1,4 @@
-const MACRONAME = "Danse_Macabre.0.3.js"
+const MACRONAME = "Danse_Macabre.0.4.js"
 /*****************************************************************************************
  * Implement the amazing Danse Macabre spell
  * 
@@ -13,6 +13,7 @@ const MACRONAME = "Danse_Macabre.0.3.js"
  * 06/24/22 0.1 Creation of Macro
  * 06/25/22 0.2 Cleanup and polish
  * 07/15/22 0.3 Convert to use jez.warpCrosshairs
+ * 07/17/22 0.4 Update to use jez.spawnAt (v2) for summoning
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -28,7 +29,7 @@ let msg = "";
 const TL = 0;
 
 const SKELETON_NAME = "Skeleton"  // Name of skeleton to call as base item
-const ZOMBIE_NAME   = "Zombie"    // Name of zombie to call as base item
+const ZOMBIE_NAME = "Zombie"    // Name of zombie to call as base item
 const CAST_MOD = jez.getCastMod(aActor)
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -46,18 +47,18 @@ async function doOnUse() {
   //---------------------------------------------------------------------------------------------------
   // Make sure actors that may be summoned exist and are unique before continuing
   //
-  if (!game.actors.getName(SKELETON_NAME))    
-    return jez.badNews(`Could not find "<b>${SKELETON_NAME}</b>" in the <b>Actors Directory</b>. Quitiing`) 
-  if (!game.actors.getName(ZOMBIE_NAME))    
-    return jez.badNews(`Could not find "<b>${ZOMBIE_NAME}</b>" in the <b>Actors Directory</b>. Quitiing`) 
+  if (!game.actors.getName(SKELETON_NAME))
+    return jez.badNews(`Could not find "<b>${SKELETON_NAME}</b>" in the <b>Actors Directory</b>. Quitiing`)
+  if (!game.actors.getName(ZOMBIE_NAME))
+    return jez.badNews(`Could not find "<b>${ZOMBIE_NAME}</b>" in the <b>Actors Directory</b>. Quitiing`)
   //---------------------------------------------------------------------------------------------------
   // Determine how many critters can be summoned 
   //
-  let summonMax = 5 + (LAST_ARG?.spellLevel - 5)*2
+  let summonMax = 5 + (LAST_ARG?.spellLevel - 5) * 2
   //---------------------------------------------------------------------------------------------------
   // Proceed with the dialog
   //
-  dialogSummonUndeads({maxSummons: summonMax})
+  dialogSummonUndeads({ maxSummons: summonMax })
   return (true);
 }
 /***************************************************************************************************
@@ -121,7 +122,7 @@ async function doIt(args) {
  * @property {integer} maxSummons - maximum number of summons allowed
  * @property {string} tryAgain - Message to display on subsequent attempts
  ***************************************************************************************************/
- async function dialogSummonUndeads(args) {
+async function dialogSummonUndeads(args) {
   //---------------------------------------------------------------------------------------------------
   // Set function specific variables
   //
@@ -159,82 +160,81 @@ async function doIt(args) {
   // Define the dialog to be displayed
   //
   let d = await new Dialog({
-      title: 'Danse Macabre Summoning',
-      content: content,
-      buttons: {
-          //------------------------------------------------------------------------------------------
-          // Define the "yes" button, the button on the left
+    title: 'Danse Macabre Summoning',
+    content: content,
+    buttons: {
+      //------------------------------------------------------------------------------------------
+      // Define the "yes" button, the button on the left
+      //
+      yes: {
+        icon: '<i class="fas fa-check"></i>',
+        label: 'Continue',
+        callback: (html) => {
+          numSkeletons = parseInt(html.find('[name="numSkeletons"]').val());
+          numZombies = parseInt(html.find('[name="numZombies"]').val());
+          jez.log("Summons Counts Entered", "numSkeletons", numSkeletons, "numZombies  ", numZombies)
+          //-----------------------------------------------------------------------------------
+          // Build the object that will be passed to recursive call if required
           //
-          yes: {
-              icon: '<i class="fas fa-check"></i>',
-              label: 'Continue',
-              callback: (html) => {
-                  numSkeletons = parseInt(html.find('[name="numSkeletons"]').val());
-                  numZombies = parseInt(html.find('[name="numZombies"]').val());
-                  jez.log("Summons Counts Entered","numSkeletons", numSkeletons, "numZombies  ", numZombies)
-                  //-----------------------------------------------------------------------------------
-                  // Build the object that will be passed to recursive call if required
-                  //
-                  let newArgs = {
-                      numSkeletons: numSkeletons,
-                      numZombies: numZombies,
-                      maxSummons: maxSummons, 
-                      tryAgain: "Please enter valid integers."
-                  }
-                  //-----------------------------------------------------------------------------------
-                  // Validate the input calling this function recursively if it was bad
-                  //
-                  if (isNaN(numSkeletons) || isNaN(numZombies)) {
-                      jez.log("Try again, entries were not parseable as integers")
-                      newArgs.tryAgain = "Please enter valid integers in the quantity fields."
-                      dialogSummonUndeads(newArgs)
-                  } else if (numSkeletons === 0 && numZombies === 0) {
-                          jez.log("Try again, since zero was entered for the total")
-                          newArgs.tryAgain = `Did you really want to summon zero undeads?<br>If so 
+          let newArgs = {
+            numSkeletons: numSkeletons,
+            numZombies: numZombies,
+            maxSummons: maxSummons,
+            tryAgain: "Please enter valid integers."
+          }
+          //-----------------------------------------------------------------------------------
+          // Validate the input calling this function recursively if it was bad
+          //
+          if (isNaN(numSkeletons) || isNaN(numZombies)) {
+            jez.log("Try again, entries were not parseable as integers")
+            newArgs.tryAgain = "Please enter valid integers in the quantity fields."
+            dialogSummonUndeads(newArgs)
+          } else if (numSkeletons === 0 && numZombies === 0) {
+            jez.log("Try again, since zero was entered for the total")
+            newArgs.tryAgain = `Did you really want to summon zero undeads?<br>If so 
                           Cancel this dialog.`
-                          dialogSummonUndeads(newArgs)
-                      } else if (numSkeletons < 0 || numZombies < 0) {
-                          jez.log("Try again, a negative number of summons was entered")
-                          newArgs.tryAgain = `Ok, really?  You can't summon a negative quantity of critters.
+            dialogSummonUndeads(newArgs)
+          } else if (numSkeletons < 0 || numZombies < 0) {
+            jez.log("Try again, a negative number of summons was entered")
+            newArgs.tryAgain = `Ok, really?  You can't summon a negative quantity of critters.
                           <br>Try again.`
-                          dialogSummonUndeads(newArgs)
-                      } else if (numSkeletons + numZombies > maxSummons) {
-                          jez.log(`Try again, attempted to summon ${numSkeletons + numZombies}, max of 
+            dialogSummonUndeads(newArgs)
+          } else if (numSkeletons + numZombies > maxSummons) {
+            jez.log(`Try again, attempted to summon ${numSkeletons + numZombies}, max of 
                           ${maxSummons} allowed`)
-                          newArgs.tryAgain = `Ambition is one thing, but that was too much. You attempted to 
+            newArgs.tryAgain = `Ambition is one thing, but that was too much. You attempted to 
                           summon ${numSkeletons + numZombies}, max of ${maxSummons} allowed.  Try again.`
-                          dialogSummonUndeads(newArgs)
-                      }                      
-                      else {
-                      // jez.log("Call the next function as we have a valid input.")
-                      doIt(newArgs)
-                  }
-              }
-          },
-          //------------------------------------------------------------------------------------------
-          // Define the "no" button, the button on the right
-          //
-          no: {
-              icon: '<i class="fas fa-times"></i>',
-              label: 'Cancel',
-              callback: (html) => {
-                  console.log('Dialog Cancelled');
-              }
-          },
+            dialogSummonUndeads(newArgs)
+          }
+          else {
+            // jez.log("Call the next function as we have a valid input.")
+            doIt(newArgs)
+          }
+        }
       },
-      default: 'yes',
-      close: () => {
-          console.log('Dialog Closed');
-      }
+      //------------------------------------------------------------------------------------------
+      // Define the "no" button, the button on the right
+      //
+      no: {
+        icon: '<i class="fas fa-times"></i>',
+        label: 'Cancel',
+        callback: (html) => {
+          console.log('Dialog Cancelled');
+        }
+      },
+    },
+    default: 'yes',
+    close: () => {
+      console.log('Dialog Closed');
+    }
   }).render(true)
 }
 /***************************************************************************************************
  * Summon the actor and rename with a numeric suffix also add the caster's stat mod to attack and 
  * damage rolls
  ***************************************************************************************************/
-async function summonCritter(summons, number) {
-  let name = `${aToken.name}'s ${summons} ${number}`
-  const OPTIONS = { controllingActor: aActor };
+async function summonCritter(MINION, number) {
+  let name = `${aToken.name}'s ${MINION} ${number}`
   let updates = {
     token: { name: name },
     actor: {
@@ -261,43 +261,38 @@ async function summonCritter(summons, number) {
       }
     }
   }
-  const CALLBACKS = {
-    pre: async (template) => {
-      jez.vfxPreSummonEffects(template, { color: "*", scale: 1, opacity: 1 });
-      await warpgate.wait(500);
-    },
-    post: async (template) => {
-      jez.vfxPostSummonEffects(template, { color: "*", scale: 1, opacity: 1 });
-      await warpgate.wait(500);
-    }
-  };
-  const MINION = summons
-  //-----------------------------------------------------------------------------------------------
-  // Get and set maximum sumoning range
+  //--------------------------------------------------------------------------------------------------
+  // Build the dataObject for our summon call
   //
-  const ALLOWED_UNITS = ["", "ft", "any"];
-  if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
-  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
-  //-----------------------------------------------------------------------------------------------
-  // Obtan location for spawn
+  let argObj = {
+    defaultRange: 120,                   // Defaults to 30, but this varies per spell
+    duration: 1000,                     // Duration of the intro VFX
+    introTime: 1000,                     // Amount of time to wait for Intro VFX
+    introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+    minionName: name,
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    updates: updates,
+    width: 1,                           // Width of token to be summoned, 1 is the default
+    traceLvl: TL                        // Trace level, matching calling function decent choice
+  }
+  //--------------------------------------------------------------------------------------------------
+  // Nab the data for our soon to be summoned critter so we can have the right image (img) and ues it
+  // to update the img attribute or set basic image to match this item
   //
-  let summonData = game.actors.getName(MINION)
-  if (TL > 1) jez.trace("summonData", summonData);
-  let {x,y} = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1)
-  //-----------------------------------------------------------------------------------------------
-  // Suppress Token Mold for a wee bit
+  let summonData = await game.actors.getName(MINION)
+  argObj.img = summonData ? summonData.img : aItem.img
+  //--------------------------------------------------------------------------------------------------
+  // Do the actual summon
   //
-  jez.suppressTokenMoldRenaming(1000)
-  await jez.wait(75)
-  //-----------------------------------------------------------------------------------------------
-  // Return while executing the summon
-  //
-  return (await warpgate.spawnAt({ x, y }, MINION, updates, CALLBACKS, OPTIONS));
+  return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Post results to the chat card
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
- function postResults(msg) {
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+function postResults(msg) {
   let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
   jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }

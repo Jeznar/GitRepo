@@ -1,4 +1,4 @@
-const MACRONAME = "Animate_Objects.0.2.js"
+const MACRONAME = "Animate_Objects.0.3.js"
 /*****************************************************************************************
  * Implement Animate Objects which is a rather complicated spell.  This macro assumes
  * enoiugh of the appropriate type of objects are in range.  The general flow of this 
@@ -14,6 +14,7 @@ const MACRONAME = "Animate_Objects.0.2.js"
  * 
  * 06/01/22 0.1 Creation of Macro
  * 07/15/22 0.2 Update to use warpgate.spawnAt with range limitation
+ * 07/17/22 0.3 Update to use jez.spawnAt (v2) for summoning
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -27,8 +28,8 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken 
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 const TL = 0;
-let summonableCreatures = ["%Animated Tiny%", "%Animated Small%", "%Animated Medium%",
-  "%Animated Large%", "%Animated Huge%"]
+let summonableCreatures = ["Animated Tiny", "Animated Small", "Animated Medium",
+  "Animated Large", "Animated Huge"]
 let summonCosts = [1, 1, 2, 4, 8]
 let menuCreatures = ["Tiny, cost:1", "Small, cost:1", "Medium, cost:2",
   "Large, cost:4", "Huge, cost:8"]
@@ -54,7 +55,8 @@ async function doOnUse() {
   //------------------------------------------------------------------------------------------------
   // Make sure all 5 potentially needed actors exist in the actor's directory.
   //
-  for (const CRITTER of summonableCreatures) {
+  for (const CRIT of summonableCreatures) {
+    const CRITTER = `%${CRIT}%`
     jez.log(`Checking for creature: "${CRITTER}"`)
     let critter = game.actors.getName(CRITTER)
     jez.log("critter", critter)
@@ -72,17 +74,19 @@ async function doOnUse() {
   //------------------------------------------------------------------------------------------------
   // Call the function that will begin the recursive process of asking for summon type and placing.
   //
-  animate();
+  await animate();
   //------------------------------------------------------------------------------------------------
   // That's all folks
   //
+  jez.log("")
   jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+  jez.log("")
 }
 /***************************************************************************************************
  * Build dialog to ask what size to animate next, perform summon and call this function again until 
  * budget is exhausted.
  ***************************************************************************************************/
-function animate() {
+async function animate() {
   const FUNCNAME = 'animate()'
   jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
   const queryTitle = "What size object should be animated next?";
@@ -91,7 +95,7 @@ function animate() {
   if (summonBudget >= summonCosts[2]) summonList.push(menuCreatures[2]);
   if (summonBudget >= summonCosts[3]) summonList.push(menuCreatures[3]);
   if (summonBudget >= summonCosts[4]) summonList.push(menuCreatures[4]);
-  jez.pickRadioListArray(queryTitle, queryText, summonCallBack, summonList);
+  await jez.pickRadioListArray(queryTitle, queryText, summonCallBack, summonList);
   jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
   return (true);
   //---------------------------------------------------------------------------------------------
@@ -112,7 +116,8 @@ function animate() {
       summonBudget -= summonCosts[index]
       if (summonBudget > 0) {
         jez.log(`Remaining budget is ${summonBudget}`)
-        animate()
+        await animate()
+        return  // Prevents multple watchdog effects
       }
     }
     msg = `<b>${aToken.name}</b> animates ${count} objects. They will serve 
@@ -123,7 +128,7 @@ function animate() {
     async function summonObject(index) {
       let rc = null;
       const CREATURE_NAME = summonableCreatures[index];
-      rc = await summonCritter(CREATURE_NAME);
+      rc = await summonCritter(CREATURE_NAME, summonableCreatures[index]);
       tokenIdArray.push(rc);
     }
   }
@@ -133,75 +138,33 @@ function animate() {
  * 
  * https://github.com/trioderegion/warpgate
  ***************************************************************************************************/
-async function summonCritter(summons) {
-  let name = `${aToken.name}'s Object ${++count}`
-  let updates = {
-    token: { name: name },
-    actor: { name: name },
+async function summonCritter(MINION, SIZE) {
+  //--------------------------------------------------------------------------------------
+  // Build data object for the spawnAt call 
+  //
+  let argObj = {
+    defaultRange: 30,
+    duration: 3000,                     // Duration of the intro VFX
+    img: aItem.img,                     // Image to use on the summon location cursor
+    introTime: 1000,                    // Amount of time to wait for Intro VFX
+    introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
+    minionName: `${aToken.name}'s Object ${++count}`,
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    templateName: `%${MINION}%`,        // Name of the actor in the actor directory
+    width: 1,                           // Width of token to be summoned
+    traceLvl: TL
   }
-  const OPTIONS = { controllingActor: aActor };
-  const CALLBACKS = {
-    pre: async (template) => {
-      preEffects(template);
-      await warpgate.wait(500);
-    },
-    post: async (template, token) => {
-      postEffects(template);
-      await warpgate.wait(500);
-      //greetings(template, token);
-    }
-  };
-  //-----------------------------------------------------------------------------------------------
-  // Now is the time to handle a summons
+  //--------------------------------------------------------------------------------------
+  // Adjust argObj if this needs to be on a grid intersection
   //
-  const MINION = summons
-  //-----------------------------------------------------------------------------------------------
-  // Get and set maximum sumoning range
+  if (SIZE.includes("Large")) argObj.width = 2
+  //--------------------------------------------------------------------------------------
+  // Perform the summon
   //
-  const ALLOWED_UNITS = ["", "ft", "any"];
-  if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
-  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 120
-  //-----------------------------------------------------------------------------------------------
-  // Obtan location for spawn
-  //
-  let summonData = game.actors.getName(MINION)
-  if (TL > 1) jez.trace("summonData", summonData);
-  let { x, y } = await jez.warpCrosshairs(aToken, MAX_RANGE, summonData.img, aItem.name, {}, -1, { traceLvl: TL })
-  //-----------------------------------------------------------------------------------------------
-  // Suppress Token Mold for a wee bit
-  //
-  jez.suppressTokenMoldRenaming(1000)
-  await jez.wait(75)
-  //-----------------------------------------------------------------------------------------------
-  // Return while executing the summon
-  //
-  return (await warpgate.spawnAt({ x, y }, MINION, updates, CALLBACKS, OPTIONS));
-}
-/***************************************************************************************************
- * 
- ***************************************************************************************************/
-async function preEffects(template) {
-  const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_Green_400x400.webm"
-  new Sequence()
-    .effect()
-    .file(VFX_FILE)
-    .atLocation(template)
-    .center()
-    .scale(1.0)
-    .play()
-}
-/***************************************************************************************************
- * 
- ***************************************************************************************************/
-async function postEffects(template) {
-  const VFX_FILE = "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Dark_Green_400x400.webm"
-  new Sequence()
-    .effect()
-    .file(VFX_FILE)
-    .atLocation(template)
-    .center()
-    .scale(1.0)
-    .play()
+  return await(jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 }
 /***************************************************************************************************
  * Post results to the chat card
@@ -231,6 +194,9 @@ async function doOff() {
  * 
  ***************************************************************************************************/
 async function addWatchdogEffect(tokenIdArray) {
+  //-----------------------------------------------------------------------------------------------
+  // Define new watchdog effect
+  //
   let tokenIds = ""
   const EXPIRE = ["newDay", "longRest", "shortRest"];
   const GAME_RND = game.combat ? game.combat.round : 0;
@@ -247,5 +213,13 @@ async function addWatchdogEffect(tokenIdArray) {
       { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },
     ]
   };
+  //-----------------------------------------------------------------------------------------------
+  // Remove (delete) existing watchdog Effect
+  //
+  // let existingEffect = aActor.effects.find(ef => ef.data.label === aItem.name) ?? null;
+  // if (existingEffect) await existingEffect.delete();
+  //-----------------------------------------------------------------------------------------------
+  // Apply new watchdog effect
+  //
   await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });
 }

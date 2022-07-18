@@ -1,4 +1,4 @@
-const MACRONAME = "Unseen_Servant.js"
+const MACRONAME = "Unseen_Servant.0.2.js"
 /*****************************************************************************************
  * This macro implements Unseen Servant...Summoning a mostly transparent actor to the 
  * field
@@ -11,6 +11,7 @@ const MACRONAME = "Unseen_Servant.js"
  * 5. Post a completion message
  * 
  * 03/23/22 0.1 Creation from Find_Steed_Specific.js
+ * 07/18/22 0.2 Update to use jez.spawnAt for summoning
  ******************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);

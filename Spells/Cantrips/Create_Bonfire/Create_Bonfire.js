@@ -1,4 +1,4 @@
-const MACRONAME = "Create_Bonfire.0.2.js"
+const MACRONAME = "Create_Bonfire.0.3.js"
 /*****************************************************************************************
  * Create Bonfire.
  * 
@@ -17,7 +17,8 @@ const MACRONAME = "Create_Bonfire.0.2.js"
  * 
  * 05/05/22 0.1 Creation of Macro
  * 07/15/22 0.2 Convert to use jez.warpCrosshairs
-  *****************************************************************************************/
+ * 07/17/22 0.3 Update to use jez.spawnAt (v2) for summoning
+ *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`-------------------Starting ${MACRONAME}----------------------------------`)
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
@@ -33,7 +34,7 @@ if (args[0]?.item) aItem = args[0]?.item;
     else aItem = lastArg.efData?.flags?.dae?.itemData;
 let msg = "";
 const TL = 0;
-const MINION = "%Bonfire%"
+const MINION = "Bonfire"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -51,12 +52,6 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
      const FUNCNAME = "doOnUse()";
      const SAVE_DC = aItem.data.save.dc;
      jez.log(`---------Starting ${MACRONAME} ${FUNCNAME}----------------------`)
-     //-----------------------------------------------------------------------------------------
-     // Get the TEMPLATE object and delete the template.
-     //
-    //  const templateID = args[0].templateId
-    //  const TEMPLATE = canvas.templates.get(templateID).data
-    //  canvas.templates.get(templateID).document.delete()
     //--------------------------------------------------------------------------------------
     // Grab our character level and figure out what the damage dice should be
     //
@@ -71,7 +66,7 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
     //
     const BONFIRE_ID = await spawnBonfire(`${aToken.name}'s Bonfire`,damageDice)
     if (!BONFIRE_ID) {
-        msg = `Bonfire could not be spawned.   ${MINION} must be available in <b>Actors 
+        msg = `Bonfire could not be spawned.   %${MINION}% must be available in <b>Actors 
         Directory</b>.<br><br>
         Can not complete the ${aItem.name} action.`;
         postResults(msg);
@@ -124,86 +119,29 @@ jez.log(`-------------------Finishing ${MACRONAME}------------------------------
  * Spawn the Bonfire into existance returning the UUID or null on failure
  **************************************************************************************************/
 async function spawnBonfire(newName) {
-    if (TL > 1) jez.trace("spawnBonfire(newName)",
-        "newName",newName);
-    //--------------------------------------------------------------------------------------
-    // Verify the Actor named MINION exists in Anctor Directory
+    if (TL > 1) jez.trace("spawnBonfire(newName)", "newName",newName);
+    jez.runRuneVFX(aToken, jez.getSpellSchool(aItem)) 
+    //--------------------------------------------------------------------------------------------------
+    // Build the dataObject for our summon call
     //
-    if (!game.actors.getName(MINION)) {   // If bonfire not found, that's all folks
-        msg = `Could not find "<b>${MINION}</b>" in the <b>Actors Directory</b>. 
-        <br><br>Can not complete the ${aItem.name} action.`;
-        postResults(msg);
-        return (null);
+    let argObj = {
+        defaultRange: 30,                   // Defaults to 30, but this varies per spell
+        duration: 1000,                     // Duration of the intro VFX
+        img: aItem.img,                     // Image to use on the summon location cursor
+        introTime: 1000,                     // Amount of time to wait for Intro VFX
+        introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+        name: aItem.name,                   // Name of action (message only), typically aItem.name
+        outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+        scale: 0.5,								// Default value but needs tuning at times
+        source: aToken,                     // Coords for source (with a center), typically aToken
+        width: 1,                           // Width of token to be summoned, 1 is the default
+        traceLvl: TL                        // Trace level, matching calling function decent choice
     }
-    //--------------------------------------------------------------------------------------
-    // Define warpgate updates, options and callbacks 
-    //
-    let updates = {
-        actor: {name: newName},    
-        token: {name: newName},
-    }
-    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
-    const CALLBACKS = {
-        pre: async (template) => {
-            preEffects(template);
-            await jez.wait(500)
-        },
-        post: async (template) => {
-            postEffects(template);
-        }
-    };
-    //-----------------------------------------------------------------------------------------------
-    // Get and set maximum sumoning range
-    //
-    const ALLOWED_UNITS = ["", "ft", "any"];
-    if (TL > 1) jez.trace("ALLOWED_UNITS", ALLOWED_UNITS);
-    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 60
-    //-----------------------------------------------------------------------------------------------
-    // Obtan location for spawn
-    //
-    let summonData = game.actors.getName(MINION)
-    if (TL > 1) jez.trace("==> summonData", summonData);
-    let {x,y}=await jez.warpCrosshairs(aToken,MAX_RANGE,summonData.img,aItem.name,{},-1,{traceLvl:TL})
-    //-----------------------------------------------------------------------------------------------
-    // Suppress Token Mold for a wee bit
-    //
-    jez.suppressTokenMoldRenaming(2000)
-    await jez.wait(75)
-    //-----------------------------------------------------------------------------------------------
-    // Fire off warpgate 
-    //
-    let bonfireId = await warpgate.spawnAt({ x, y }, MINION, updates, CALLBACKS, OPTIONS);
+    let bonfireId = await jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
     //--------------------------------------------------------------------------------------
     //
     jez.log("bonfireId", bonfireId)
-    return(bonfireId)
-}
-/***************************************************************************************************
- * Pre-Spawn VFX
- ***************************************************************************************************/
-async function preEffects(template) {
-    jez.runRuneVFX(template, jez.getSpellSchool(aItem)) 
-    return
-}
-/***************************************************************************************************
- * Post-Spawn VFX
- ***************************************************************************************************/
-async function postEffects(template) { return }
-/***************************************************************************************************
- * Line connecting token to bonfire VFX
- ***************************************************************************************************/
- async function chainEffect(token1, token2) {
-    new Sequence()
-        .effect()
-        .file("jb2a.energy_beam.normal.blue.01")
-        .atLocation(token1)
-        .stretchTo(token2)
-        .fadeIn(500)
-        .fadeOut(500)
-        .duration(2000)
-        .scale(1.0)
-        .opacity(1.0)
-    .play()
+    return (bonfireId)
 }
 /***************************************************************************************************
  * Modify existing concentration effect to call Remove_Effect_doOff on removal

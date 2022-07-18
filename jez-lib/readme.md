@@ -198,7 +198,6 @@ I've tried to craft this to allow for a lot of customization on the summons whil
 let argObj = {
     defaultRange: 30,                   // Defaults to 30, but this varies per spell
     duration: 1000,                     // Duration of the intro VFX
-    img: aItem.img,                     // Image to use on the summon location cursor
     introTime: 1000,                     // Amount of time to wait for Intro VFX
     introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
     minionName: `${aToken.name}'s ${summons}`,
@@ -209,7 +208,16 @@ let argObj = {
     width: 1,                           // Width of token to be summoned, 1 is the default
     traceLvl: TL                        // Trace level, matching calling function decent choice
 }
-jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
+//--------------------------------------------------------------------------------------------------
+// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+// to update the img attribute or set basic image to match this item
+//
+let summonData = await game.actors.getName(MINION)
+argObj.img = summonData ? summonData.img : aItem.img
+//--------------------------------------------------------------------------------------------------
+// Do the actual summon
+//
+return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 ~~~
 </details>
 
@@ -225,7 +233,6 @@ jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
 let argObj = {
     defaultRange: 30,
     duration: 3000,                     // Duration of the intro VFX
-    img: aItem.img,                     // Image to use on the summon location cursor
     introTime: 1000,                    // Amount of time to wait for Intro VFX
     introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
     minionName: `${aToken.name}'s ${summons}`,
@@ -237,7 +244,17 @@ let argObj = {
     width: 1,                           // Width of token to be summoned
     traceLvl: TL
 }
-jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
+//--------------------------------------------------------------------------------------------------
+// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+// to update the img attribute or set basic image to match this item
+//
+let summonData = await game.actors.getName(MINION)
+argObj.img = summonData ? summonData.img : aItem.img
+//--------------------------------------------------------------------------------------------------
+// Do the actual summon
+//
+return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
+
 ~~~
 </details>
 
@@ -265,7 +282,6 @@ let portalColor = PORTAL_COLORS[index]
 let argObj = {
     defaultRange: 30,                   // Defaults to 30, but this varies per spell
     duration: 4000,                     // Duration of the intro VFX
-    img: aItem.img,                     // Image to use on the summon location cursor
     introTime: 250,                     // Amount of time to wait for Intro VFX
     introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file
     minionName: `${aToken.name}'s ${summons}`,
@@ -276,7 +292,17 @@ let argObj = {
     width: 1,                           // Width of token to be summoned, 1 is the default
     traceLvl: TL                        // Trace level, matching calling function decent choice
 }
-jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
+//--------------------------------------------------------------------------------------------------
+// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+// to update the img attribute or set basic image to match this item
+//
+let summonData = await game.actors.getName(MINION)
+argObj.img = summonData ? summonData.img : aItem.img
+//--------------------------------------------------------------------------------------------------
+// Do the actual summon
+//
+return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
+
 ~~~
 </details>
 

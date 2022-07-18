@@ -22,7 +22,7 @@ if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else a
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
