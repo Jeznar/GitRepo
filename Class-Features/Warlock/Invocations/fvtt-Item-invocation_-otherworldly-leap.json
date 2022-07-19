@@ -4,7 +4,7 @@
   "img": "systems/dnd5e/icons/spells/wind-grasp-sky-2.jpg",
   "data": {
     "description": {
-      "value": "<p>You can cast&nbsp;<a href=\"https://www.dndbeyond.com/spells/jump\" data-tooltip-href=\"//www.dndbeyond.com/spells/2161-tooltip?disable-webm=1&amp;disable-webm=1\">jump</a>&nbsp;on yourself at will, without expending a spell slot or material components.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:</strong><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">&nbsp;Add the spell to character sheet, change the targeting to self and make it an at-will spell</span></p>",
+      "value": "<p>You can cast @Item[gE7XVx2h4kQ5kSnC]{Jump}&nbsp;on yourself at will, without expending a spell slot or material components.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:</strong><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">&nbsp;Add the spell to character sheet, change the targeting to self and make it an at-will spell</span></p>",
       "chat": "",
       "unidentified": ""
     },
@@ -80,7 +80,21 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "gE7XVx2h4kQ5kSnC",
+          "name": "Jump",
+          "pack": "world",
+          "img": "Icons_JGB/Actions/Jump.png",
+          "baseLevel": "1",
+          "level": "1",
+          "consumption": "1",
+          "upcast": "1",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
     },
     "exportSource": {
       "world": "travels-in-barovia-ce",

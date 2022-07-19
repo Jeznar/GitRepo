@@ -228,7 +228,9 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.18 Updating to warpgate.spawnAt (v2): Summon_Swarm_of_Insects, Unseen_Servant
 
-22.07.18 Updating to warpgate.spawnAt (v2): Animate_Objects, Arcane_Hand, Create_Bonfire, Dancing_Lights, Danse_Macabre, Find_Steed_Specific, Flaming_Sphere
+22.07.18 Updating to warpgate.spawnAt (v2): Animate_Objects, Arcane_Hand, Create_Bonfire, Dancing_Lights, Danse_Macabre, Find_Steed_Specific, Flaming_Sphere (skipped Create_Specter as it is special and Magehand as it already has new calls)
+
+22.07.19 Created Jump spell and action that provide links to outside web page.  Jump spell conveniently applies a convenient effect. Updated Invocation: Otherworldly Leap to link to the new spell.
 
 [Link back to my Documentation Listing](README.md) 
 

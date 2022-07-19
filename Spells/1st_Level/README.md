@@ -19,6 +19,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Guiding Bolt](#guiding-bolt)
 * [Hex](#hex)
 * [Hideous Laughter](#hideous-laughter)
+* [Jump](#jump)
 * [Longstrider](#longstrider)
 * [Mage Armor](#mage-armor)
 * [Magic Missle](#magic-missile) (ASE)
@@ -259,6 +260,14 @@ This one uses a hook to take action on damage received.  It is a bit messy still
 ![Hideous_laughter.gif](Hideous_Laughter/Hideous_laughter.gif)
 
 ![Hideous_Laughter.png](Hideous_Laughter/Hideous_Laughter.png)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Jump
+
+Applies a Jump Convenient Effect (CE) to the target and displays the item description, containing a link to a Jump Calculator on an external web page (pretty nifty) by calling my utility macro **DisplayDescription**.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

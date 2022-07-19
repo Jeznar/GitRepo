@@ -13,6 +13,7 @@ Abilities that are aimed at automating aactions and/or condition management.
 * [Grapple](#grapple)
 * [Help](#help)
 * [Hinder](#hinder)
+* [Jump](#jump)
 
 ---
 
@@ -99,6 +100,14 @@ Imported from earlier work and could definitely be cleaned up and documented.
 ## Hinder 
 
 Imported from earlier work and could definitely be cleaned up and documented.
+
+[*Back to Listing of Items*](#listing-of-items)
+
+---
+
+## Jump 
+
+Displays the item description, containing a link to a Jump Calculator on an external web page (pretty nifty) by calling my utility macro **DisplayDescription**.
 
 [*Back to Listing of Items*](#listing-of-items)
 

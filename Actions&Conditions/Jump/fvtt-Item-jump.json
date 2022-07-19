@@ -1,0 +1,143 @@
+{
+  "name": "Jump",
+  "type": "feat",
+  "img": "Icons_JGB/Actions/Jump.png",
+  "data": {
+    "description": {
+      "value": "<p>Creature can make a&nbsp;<strong>Long Jump</strong> or&nbsp;<strong>High Jump&nbsp;</strong>as described in&nbsp;<a title=\"Special Types of Movement in the PHB on D&amp;D Beyond\" href=\"https://www.dndbeyond.com/sources/phb/adventuring#Jumping\" target=\"_blank\" rel=\"noopener\">Special Types of Movement in the PHB on D&amp;D Beyond</a>. The distance can be calculated using an <a href=\"https://fexlabs.com/5ejump/\" target=\"_blank\" rel=\"noopener\">outside jump calculator</a>.&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": 0
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.9HHIzgmgsxSamGul"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Hinder",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Hinder.0.3.js\"\n/*********************************************************************************************\n * Implement the \"hurtful\" half of the RAW Help Axtion in a somewhat approximate way.\n * \n * \"Alternatively, you can aid a friendly creature in attacking a creature within 5 feet of \n * you. You feint, distract the target, or in some other way team up to make your ally's \n * attack more effective. If your ally attacks the target before your next turn, the first \n * attack roll is made with advantage.\"\n * \n * This macro ammends that rule slightly, making the attack \n * benefited the next one against that target regardless of \n * source.\n * \n * Midi-QoL Documentation: https://gitlab.com/tposney/midi-qol\n * \n * List of Midi-QoL Flags:\n * https://docs.google.com/spreadsheets/u/0/d/1Vze_sJhhMwLZDj1IKI5w1pvfuynUO8wxE2j8AwNbnHE/htmlview\n * \n * 11/17/21 0.1 JGB created from Help_0.1\n * 11/17/21 0.2 JGB Code Cleaning\n * 07/04/22 0.7 JGB Convert to CE for effect management\n **********************************************************************************************/\nlet trcLvl = 1\nconst debug = 0;\nif (debug) console.log(`Starting: ${MACRONAME} arguments passed: ${args.length}`);\nif (debug > 2) { let i = 0; for (let arg in args) { console.log(` ${i++}: ${arg}`) }; }\n/************************************************************************\n* Set Variables for execution\n*************************************************************************/\nlet targetD = canvas.tokens.get(args[0].targets[0].id);\nlet itemD = args[0].item;\nlet player = canvas.tokens.get(args[0].tokenId);\n/************************************************************************\n* Check Initial Conditions\n*************************************************************************/\n// Need to have exactly one target selected\nif (game.user.targets.ids.length != 1) {\n    let message = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n    ui.notifications.warn(message);\n    if (debug) console.log(message);\n    return;\n} else if (debug) console.log(` targeting one target`);\n// Target needs to be in range\nlet range = 5; range += 2.5;    // Add a half square buffer for diagonal adjacancy \nlet distance = canvas.grid.measureDistance(player, targetD);\ndistance = distance.toFixed(1);             // Chop the extra decimals, if any\nif (debug) console.log(` Considering ${targetD.name} at ${distance} distance`);\nif (distance > range) {\n    let message = ` ${targetD.name} is not in range (${distance}), end ${MACRONAME}`;\n    ui.notifications.warn(message);\n    if (debug) console.log(message);\n    return;\n}\nif (jezcon.hasCE(\"Hindered\", targetD.actor.uuid))\n    postResults(`${targetD.name} has already been hindered, no additional effect.`)\nelse {\n    jezcon.add({ effectName: 'Hindered', uuid: targetD.actor.uuid })\n    postResults(`${targetD.name} is hindered by the actions of ${player.name}, \n        granting advantage to next attacker within 1 turn.`)\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);\n    jez.trc(2, trcLvl, \"postResults Parameters\", \"msg\", msg)\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    jez.trc(1, trcLvl, `--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]DisplayDescription",
+      "effectActivation": false,
+      "forceCEOn": false
+    },
+    "gm-notes": {},
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
