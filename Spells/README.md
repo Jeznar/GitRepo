@@ -74,6 +74,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Ray of Sickness](1st_Level#ray-of-sickness)
 * [Sanctuary](1st_Level#sanctuary)
 * [Searing Smite](1st_Level#searing-smite)
+* [Silent Image](1st_Level#searing-smite)
 * [Sleep](1st_Level#sleep)
 * [Shield](1st_Level#shield)
 * [Tasha's Caustic Brew](1st_Level#tasha-caustic-brew)

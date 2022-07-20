@@ -27,7 +27,8 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Protection from Evil and Good](#protection-from-evil-and-good)
 * [Ray of Sickness](#ray-of-sickness)
 * [Sanctuary](#sanctuary)
-* [Searing Smite](1st_Level#searing-smite)
+* [Searing Smite](#searing-smite)
+* [Silent Image](#searing-smite)
 * [Sleep](#sleep)
 * [Shield](#shield)
 * [Tasha's Caustic Brew](#tasha-caustic-brew)
@@ -392,6 +393,14 @@ One of my initial spells, so style wise the macro leaves a bit too be desired.  
 Imported from older work.  No new documentation.
 
 ![Searing_Smite.gif](Searing_Smite/Searing_Smite.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Silent Image
+
+Use warpgate to place a 15x15 token of the generic illusion and provides a link to D&DBeyond for spell description.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

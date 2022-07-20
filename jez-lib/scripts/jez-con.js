@@ -225,11 +225,52 @@ class jezcon {
         const FUNCNAME = 'jezcon.remove(effectName, uuid, options = {})'
         const FNAME = FUNCNAME.split("(")[0]
         const TL = options?.traceLvl ?? 1
+        let actor5e = null
         if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName} on ${uuid}`)
-        if (TL > 2) jez.trace(`${FNAME} | effectName`, effectName);
-        if (TL > 2) jez.trace(`${FNAME} | uuid`, uuid);
-        if (TL > 2) jez.trace(`${FNAME} | options`, options);
-        game.dfreds.effectInterface.removeEffect({ effectName, uuid })
+        if (TL > 2) {
+            jez.trace(`${FNAME} | effectName`, effectName);
+            jez.trace(`${FNAME} | uuid`, uuid);
+            jez.trace(`${FNAME} | options`, options);
+        }
+        //------------------------------------------------------------------------------------------------
+        // Proceed with removal for a CE effect, if that's what we have
+        //
+        if (jezcon.hasCE(effectName, uuid, { traceLvl: TL })) // A CE effect is clean to handle
+            return game.dfreds.effectInterface.removeEffect({ effectName, uuid })
+        else {                                                  // Non-CE effect requires more logic
+            if (TL > 1) jez.trace(`${FNAME} | Trying direct removal of ${effectName}`)
+            //----------------------------------------------------------------------------------------------
+            // Grab the actor data from the UUID, could be an Actor5r or TokenDocument5e which are different
+            //
+            let fActor = await fromUuid(uuid)                     // Retrieve document for the UUID
+            if (TL > 2) jez.trace(`${FNAME} | fActor`, fActor)
+            //----------------------------------------------------------------------------------------------
+            // If we have an Actor5e object point effects at effects 
+            //
+            if (jez.isActor5e(fActor)) {
+                if (TL > 2) jez.trace(`${FNAME} | Handling effects from an Actor5e`)
+                actor5e = fActor
+            }
+            //----------------------------------------------------------------------------------------------
+            // If we have a TokenDocument5e object point effects at effects 
+            //
+            else if (fActor?.constructor.name === "TokenDocument5e") {
+                if (TL > 2) jez.trace(`${FNAME} | Handling effects from a TokenDocument5e`)
+                actor5e = fActor._object.actor
+            }
+            //----------------------------------------------------------------------------------------------
+            // Haven't figured out where effects are, so give up 
+            //
+            else return jez.badNews(`${FNAME} | Unsupported data type, ${fActor?.constructor.name}`, "e")
+            //------------------------------------------------------------------------------------------------
+            // Try that olde removal
+            //
+            if (TL > 3) jez.trace(`${FNAME} | actor5e`, actor5e)
+            let targetEffect = actor5e.data.effects.find(ef => ef.data.label === effectName);
+            if (TL > 3) jez.trace(`${FNAME} | targetEffect`, targetEffect)
+            if (targetEffect) return await targetEffect.delete();
+        }
+        return null
     }
 
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0

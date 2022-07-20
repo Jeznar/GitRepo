@@ -232,6 +232,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.19 Created Jump spell and action that provide links to outside web page.  Jump spell conveniently applies a convenient effect. Updated Invocation: Otherworldly Leap to link to the new spell.
 
+22.07.20 Created silent image which pops a link to D&DBeyond for description.  Generalized jezcon.remove to handle non-CE effects as well. 
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -121,6 +121,7 @@ async function doOn() {
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     const FNAME = FUNCNAME.split("(")[0] 
+    await jez.wait(100)
 
     if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
     if (!await preCheck()) return(false);
