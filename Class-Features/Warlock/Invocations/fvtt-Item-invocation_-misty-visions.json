@@ -4,7 +4,7 @@
   "img": "icons/creatures/webs/web-spider-glowing-purple.webp",
   "data": {
     "description": {
-      "value": "<p>You can cast @Compendium[dnd5e.spells.BrBZdCCrJRIVg7YX]{Silent Image} at will, without expending a spell slot or material components.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT</strong><span style=\"color: #191813; font-size: 13px;\">: This is not automated</span></p>",
+      "value": "<p>You can cast @Item[ryO29pjFBCT1AqOn]{Silent Image} at will, without expending a spell slot or material components.</p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT:</strong><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">&nbsp;Add the spell to character sheet and make it an at-will spell.</span></p>",
       "chat": "",
       "unidentified": ""
     },
