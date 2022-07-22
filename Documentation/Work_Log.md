@@ -238,6 +238,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.22 Created Water Breathing as a really simple CE spell.
 
+22.07.22 Updated Sending spell and Invocation: Far Scribe
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
