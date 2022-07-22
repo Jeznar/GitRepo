@@ -1,0 +1,155 @@
+{
+  "name": "Water Breathing",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/skills/blue_36.jpg",
+  "data": {
+    "description": {
+      "value": "<p>This spell grants up to ten willing creatures you can see within range the ability to breathe underwater until the spell ends.</p>\n<p>Affected creatures also retain their normal mode of respiration.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>Target tokens before casting this spell. </p>",
+      "chat": "<p>This spell grants up to ten willing creatures you can see within range the ability to breathe underwater until the spell ends. Affected creatures also retain their normal mode of respiration.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 287",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 24,
+      "units": "hour"
+    },
+    "target": {
+      "value": 10,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "trs",
+    "components": {
+      "value": "a short reed or piece of straw",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": true,
+      "concentration": false
+    },
+    "materials": {
+      "value": "a short reed or piece of straw",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 138932,
+      "definitionId": 2297,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 287,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Buff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_edz3xuutj1n"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.RfTBsBiqBx0EECYF"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "forceCEOn": true,
+      "onUseMacroName": "[postActiveEffects]Run_RuneVFX_onTargets"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
