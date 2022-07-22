@@ -41,6 +41,7 @@ This spell has been converted to use the [Advanced Spell Effects (ASE) Module](h
 This spell **does require** an adequate number of corpses within 10 feet to operate and doesn't make the summoned undead uniquely named, which is disappointing to me, but it's done, so there is that.
 
 <details> <summary>Spell in use.</summary>
+
 ![animate-dead](Animate_Dead/Animate_Undead.gif)
 </details>
 
@@ -67,6 +68,7 @@ Imported older versions and updated for 9.x.  This needs attention.
 Imported older versions.
 
 <details> <summary>Spell in use.</summary>
+
 ![Blinding_Smite.gif](Blinding_Smite/Blinding_Smite.gif)
 </details>
 
@@ -81,6 +83,7 @@ This spell is nifty as built in the [Advanced Spell Effects Module](https://gith
 It first places a large storm cloud and then provides the token with a temporary at-will ability to call down a lightning strike.
 
 <details> <summary>Spell in use.</summary>
+
 ![call-lightning](https://user-images.githubusercontent.com/32877348/137196373-48868d28-e341-4c9d-83e0-71b786c7b58a.gif)
 </details>
 
@@ -133,6 +136,7 @@ This spell is not automated.  It simply has a VFX implemented with [Automated An
 When used, it simply plays a visual on the target.  Any saves or removal of effects is left for manual attention. 
 
 <details> <summary>Spell in use.</summary>
+
 ![dispel-magic](Dispel_Magic/Dispel_Magic.gif)
 </details>
 
@@ -156,6 +160,7 @@ Probably most interestingly, it reads the name of the icon that represents the s
     acid   ==> purple
 
 <details> <summary>Spell in use.</summary>
+
 ![Fireball.gif](Fireball/Fireball.gif)
 </details>
 
@@ -170,6 +175,7 @@ NOTE: I needed to disable Automated Animations global match to fireball to avoid
 This spell applies a DAE effect that upgrades flight speed to 60.  It also makes a call to the world macro, **[Run RuneVFX onTargets](../../Utility_Macros#run-runevfx-ontargets)**, to play a VFX on the target(s), which are assumed to be willing.
 
 <details> <summary>Spell in use.</summary>
+
 ![Fly_DAE_Effects.png](Fly/Fly_DAE_Effects.png)
 </details>
 
@@ -182,10 +188,12 @@ This spell applies a DAE effect that upgrades flight speed to 60.  It also makes
 This spell applies a DAE effect that adds the haste automatable benefits to the target.  It also runs an every-turn function that reminds the players of the extra action.  When the effect drops it tags the token with a CUB condition for *no_actions*
 
 <details> <summary>Spell in use.</summary>
+
 ![Haste.gif](Haste/Haste.gif)
 </details>
 
 <details> <summary>Chat cards</summary>
+
 ![Haste_Chat.png](Haste/Haste_Chat.png)
 </details>
 
@@ -198,6 +206,7 @@ This spell applies a DAE effect that adds the haste automatable benefits to the 
 For some reason this worked great on my initial testing, but the Automated Animations config *broke* (specifically, it went to just empty fields for an unknown reason).  Setting Automated Animations configuration (globally) fixed this.
 
 <details> <summary>Spell in use.</summary>
+
 ![Lightning_Bolt_Animations.png](Lightningbolt/Lightning_Bolt_Animations.png)
 </details>
 
@@ -212,18 +221,21 @@ This spell places a graphic and names it to indicate the type of creature warded
 When cast, it pops a dialog asking for the type of creatures being warded and the direction of warding that looks like this:
 
 <details> <summary>Dialog to select type of circle</summary>
+
 ![Magic_Circle_Dialog.png](Magic_Circle/Magic_Circle_Dialog.png)
 </details>
 
 It will then render the graphic where the targeting template had been placed.  When the spell is completed, the GM will need to use the **Show Sequencer Effects Viewer** button (left hand menus, near bottom, looks like a film strip) and remove the effect with a menu that looks like the following (that popup also has info on the selections made for reference):
 
 <details> <summary>Popup Dialog</summary>
+
 ![Magic_Circle_Sequencer.png](Magic_Circle/Magic_Circle_Sequencer.png)
 </details>
 
 Here's what the spell looks like on the random battle map.
 
 <details> <summary>Spell in use.</summary>
+
 ![Magic_Circle.gif](Magic_Circle/Magic_Circle.gif)
 </details>
 
@@ -252,6 +264,7 @@ Types allowed:
 * thunder.
 
 <details> <summary>Spell in use.</summary>
+
 ![Protection_from_Energy.gif](Protection_from_Energy/Protection_from_Energy.gif)
 </details>
 
@@ -272,6 +285,7 @@ Spell plays a RuneVFX on the target effects (if any) are left to the GM.
 Fairly generic spell implementation.  A minor Automated Animations effect applied and a new spell component, [Diamond](../../Items#components), added to the spell components inventory.  This requires that the spell be adjusted after it is added to the character sheet to use the Diamond component.
 
 <details> <summary>Spell in use.</summary>
+
 ![Revivify_Description.png](Revivify/Revivify_Description.png)
 </details>
 
@@ -315,6 +329,7 @@ This spell does a couple of interesting things.
 4. The damage type is set (radiant/necrotic) as appropriate for the caster.
 
 <details> <summary>Spell in use.</summary>
+
 ![Spirit_Guradians.gif](Spirit_Guardians/Spirit_Guradians.gif)
 </details>
 
@@ -327,6 +342,7 @@ This spell does a couple of interesting things.
 Spell imported from earlier automation, does a bunch of things I have forgotten -- so no useful info here.
 
 <details> <summary>Spell in use.</summary>
+
 ![Fuming.gif](Summon_Fey/Summon_Fey-Fuming.gif)
 
 ![Mirthful.gif](Summon_Fey/Summon_Fey-Mirthful.gif)
@@ -349,6 +365,7 @@ This one operates as two, sometimes three part execution.
 All of the above is done without a macro, just **Automated Animations** and standard FoundryVTT settings.
 
 <details> <summary>Spell in use.</summary>
+
 ![Thunder_Step.gif](Thunder_Step/Thunder_Step.gif)
 https://github.com/Jeznar/GitRepo/blob/main/Spells/3rd_Level/Thunder_Step/Thunder_Step.gif
 </details>
@@ -366,12 +383,14 @@ This spell is implemented without a custom macro. It does make use of [DAE](http
 This spell is unusual in that the area of effect is stated as *up to* in three dimensions.  Since my world is largely two dimensional (for effects anyway -- z-axis is handled with theater of mind) I'm only worried about height and width of the effect area.  I've opted to ask the caster to adjust these two dimensions on the details page as appropriate.  That's a bit kludgy, but it seems little worse than a pop up menu asking for those dimensions and it is easier to implement.  Below is a screen shot of the two numbers that can be set to desired dimensions (with the maximum values shown as initial values).
 
 <details> <summary>Screen Shot</summary>
+
 ![Tidal_wave_Details.png](Tidal_Wave/Tidal_wave_Details.png)
 </details>
 
 Below is a screen grab video showing the spell.  The graphic is actually a blue acid splash, so a bit off but better than nothing, I suppose.  Notice tokens that failed their saves are marked as prone after the spell is cast. 
 
 <details> <summary>Spell in use.</summary>
+
 ![Tidal_wave.gif](Tidal_Wave/Tidal_wave.gif)
 </details>
 
@@ -386,6 +405,7 @@ This spell is nifty as built in the [Advanced Spell Effects Module](https://gith
 It heals the using token and creates an at-will ability on that token for subsequent rounds.  Exactly what I'd like to see it do.  
 
 <details> <summary>Spell in use.</summary>
+
 ![vampiric-touch](https://user-images.githubusercontent.com/32877348/138579473-f5dcefd9-4a90-4108-ab53-f8dfa0a2a940.gif)
 </details>
 

@@ -39,6 +39,7 @@ Some spell highlights:
 * Renames summons to mark the summoner and make unique.
 
 <details> <summary>Animate Objects in use.</summary>
+
 ![Animate_Objects.gif](Animate_Objects/Animate_Objects.gif)
 </details>
 
@@ -69,10 +70,12 @@ All of the above requires 4 macros and a configured actor in the actor's directo
 One more thing, a utility macro has been crafted so that the grappled/grappling effects can remove their paired effect.  This macro **Remove_Paired_Effect** needs to be placed in the macro folder and is called when effects are removed to cleanse their partner from the scene.
 
 <details> <summary>Arcane Hand in use.</summary>
+
 ![Arcane_hand.gif](Arcane_Hand/Arcane_Hand.gif)
 </details>
 
 <details> <summary>Some of the chat cards this can produce.</summary>
+
 ![Arcane_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Arcane_Hand_Chat.png)
 
 ![Clenched_Fist_Chat.png](Arcane_Hand/Chat_Snaps/Clenched_Fist_Chat.png)
@@ -95,6 +98,7 @@ This spell creates a Tile with a VFX of an angry yellow-green cloud that represe
 I had trouble with the Active Auras implementation for this spell, so I fell back to my familiar approach of creating a temporary item that can be **manually** used to inflict the effect of the spell.
 
 <details> <summary>Cloudkill in use.</summary>
+
 ![Cloudkill.gif](Cloudkill/Cloudkill.gif)
 </details>
 
@@ -107,6 +111,7 @@ I had trouble with the Active Auras implementation for this spell, so I fell bac
 This spell is a standard setup with an Automated Animation added, which is I must say, pretty cool! (Get it!!!)
 
 <details> <summary>Spell in use.</summary>
+
 ![Cone_of_Cold.gif](Cone_of_Cold/Cone_of_Cold.gif)
 </details>
 
@@ -129,11 +134,13 @@ This one was, as they might say, interesting to create.  It does the following n
 9. Modify concentration effect on the caster so that if concentration drops, the summoned creature flips disposition, the player loses control of it, and a message goes to chat.
 
 <details> <summary>Conjure Elemental in use.</summary>
+
 Notice the border color of the summoned elemental initially (cyan) and after losing control (red).
 ![Conjure_Elemental.gif](Conjure_Elemental/Conjure_Elemental.gif)
 </details>
 
 <details> <summary>Conjure Elemental chat cards.</summary>
+
 ![Conjure_Elementals_Chat.png](Conjure_Elemental/Conjure_Elementals_Chat.png)
 </details>
 
@@ -154,6 +161,7 @@ A few key elements:
 The spell description must contain the *magic* phrase ***no damage on save*** to cause a save to do zero damage to the caster.
 
 <details> <summary>Spell setup screen grab</summary>
+
 ![Contact_Other_Plane_Condition_Lab.png](Contact_Other_Plane/Contact_Other_Plane_Condition_Lab.png)
 </details>
 
@@ -175,10 +183,12 @@ This macro does quite a few things.  Here are the highlights:
 * Trigger Dismiss_Tokens when concentrating effect removed to delete summons
 
 <details> <summary>Spell in use.</summary>
+
 ![Danse_Macabre.gif](Danse_Macabre/Danse_Macabre.gif)
 </details>
 
 <details> <summary>Example chat card</summary>
+
 ![Danse_Macabre.png](Danse_Macabre/Danse_Macabre.png)
 </details>
 
@@ -240,6 +250,7 @@ This implementation does a few things:
 5. Displays the result.
 
 <details> <summary>Spell Dialog screen grab.</summary>
+
 ![Scrying/Scrying_Dialog.png](Scrying/Scrying_Dialog.png)
 </details>
 
@@ -256,6 +267,7 @@ When this spell is used, it is essential that the targets be pre-selected before
 Side Note: This spell can leave the active token unfortunately rotated.  This can be fixed, on a mac, by selecting the token and rotating it with cmd-mouse wheel.
 
 <details> <summary>Spell in use.</summary>
+
 ![Steel_Wind_Strike.gif](Steel_Wind_Strike/Steel_Wind_Strike.gif)
 </details>
 
@@ -268,6 +280,7 @@ Side Note: This spell can leave the active token unfortunately rotated.  This ca
 This spell looks intersecting as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#wall-of-force).
 
 <details> <summary>Spell in use.</summary>
+
 ![steelwind-strike](https://user-images.githubusercontent.com/32877348/151714360-7656a4bc-fcbf-4c81-8d8b-b98b2f532a03.gif)
 </details>
 
