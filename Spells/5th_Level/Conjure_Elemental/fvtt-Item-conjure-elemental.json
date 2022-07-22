@@ -1,0 +1,173 @@
+{
+  "name": "Conjure Elemental",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/runes-orange-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You call forth an elemental servant. Choose an area of air, earth, fire, or water that fills a 10-foot cube within range.</p>\n<p><span style=\"color: #191813; font-size: 13px;\">See:&nbsp;</span><a style=\"box-sizing: border-box; user-select: text; font-size: 13px;\" href=\"https://www.dndbeyond.com/spells/conjure-elemental\" target=\"_blank\" rel=\"noopener\">D&amp;D Beyond Description.</a></p>",
+      "chat": "<p>You call forth an elemental servant. Choose an area of air, earth, fire, or water that fills a 10-foot cube within range. An elemental of challenge rating 5 or lower appropriate to the area you chose appears in an unoccupied space within 10 feet of it. For example, a fire elemental emerges from a bonfire, and an earth elemental rises up from the ground. The elemental disappears when it drops to 0 hit points or when the spell ends.</p>\n<p>The elemental is friendly to you and your companions for the duration. Roll initiative for the elemental, which has its own turns. It obeys any verbal commands that you issue to it (no action required by you). If you don't issue any commands to the elemental, it defends itself from hostile creatures but otherwise takes no actions.</p>\n<p>If your concentration is broken, the elemental doesn't disappear. Instead, you lose control of the elemental, it becomes hostile toward you and your companions, and it might attack. An uncontrolled elemental can't be dismissed by you, and it disappears 1 hour after you summoned it.</p>\n<p>The GM has the elemental's statistics. Sample elementals can be found below.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 6th level or higher, the challenge rating increases by 1 for each slot level above 5th.<br /><br /></p>\n<p><strong>Sample Elementals</strong></p>\n<table class=\"summoning-creatures-table\">\n<thead>\n<tr>\n<th><strong>CR</strong></th>\n<th><strong>Creature Name</strong></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>1/4</strong></td>\n<td>Steam Mephit</td>\n</tr>\n<tr>\n<td><strong>1/2</strong></td>\n<td>Dust Mephit, Ice Mephit, Magma Mephit, Magmin</td>\n</tr>\n<tr>\n<td><strong>2</strong></td>\n<td>Azer, Gargoyle</td>\n</tr>\n<tr>\n<td><strong>5</strong></td>\n<td>Air Elemental, Earth Elemental, Fire Elemental, Salamander, Water Elemental, Xorn</td>\n</tr>\n<tr>\n<td><strong>6</strong></td>\n<td>Invisible Stalker</td>\n</tr>\n</tbody>\n</table>\n<p> </p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 225",
+    "activation": {
+      "type": "minute",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 60,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 90,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 5,
+    "school": "con",
+    "components": {
+      "value": "burning incense for air, soft clay for earth, sulfur and phosphorus for fire, or water and sand for water",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "burning incense for air, soft clay for earth, sulfur and phosphorus for fire, or water and sand for water",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 136275,
+      "definitionId": 2041,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 225,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Summoning"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_gn79wuzqjq6"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.vmZHF7qGoqCXZRU1"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Conjure Elemental",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Conjure_Elemental.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Automate Conjure Elemental\n * \n * - Build list of available summons, verifying existence of each template creature\n * - Dialog to select creature to summon\n * - Place summoned creature, including making creature \"friendly\" (same disposition as caster)\n * - Mod concentration to flip creature to opposite attitude on concentration break\n * - Place timer effect on summoned elemental to delete itself at end of spell duration. Dismiss_Token perhaps?\n * \n * 07/21/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim of the version number and extension\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst MAX_CR = args[0]?.spellLevel || 5\nif (TL > 2) jez.trace(\"MAX_CR\", MAX_CR)\nlet fractialCRs = [0.5, 0.25, 0.125]\nlet allowedSubTypes = [\"air\", \"earth\", \"fire\", \"water\"]\nlet elList                                              // Elemental list array\nconst VFX_FILE = \"Icons_JGB/Misc/Angry.gif\"\nconst CLOCK_IMG = \"Icons_JGB/Misc/alarm_clock.png\"\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\nif (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    await jez.wait(100)\n    if (TL === 1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRO} ${FUNCNAME} ---`);\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // Items searched for are coded below\n    //\n    elList = buildElementalList([\"Spiritual Weapon\"])\n    const ELEMENTALS = Object.keys(elList);\n    let elementalArray = []\n    //------------------------------------------------------------------------------------------------\n    // Step down in integer CRs looking for matches at each value\n    //\n    for (let i = MAX_CR; i > 0; i--)\n        for (let element of ELEMENTALS)\n            if (i === elList[element].cr)\n                elementalArray.push(`${element} (${elList[element].st})`)\n    //------------------------------------------------------------------------------------------------\n    // Step through fractional CRs looking for matches at each value\n    //\n    for (let i of fractialCRs)\n        for (let element of ELEMENTALS)\n            if (i === elList[element].cr)\n                elementalArray.push(`${element} (${elList[element].st})`)\n    //------------------------------------------------------------------------------------------------\n    // Build and pop selection dialog\n    //\n    let title = `Select Desired Elemental to Conjure`\n    msg = `Elemental must be summoned within 10 feet of a source (10-foot cube) of its elemental \n    component (air, earth, fire, or water).<br><br>\n    See: </span><a style=\"box-sizing: border-box; user-select: text; font-size: 13px;\" \n    href=\"https://www.dndbeyond.com/spells/conjure-elemental\" target=\"_blank\" rel=\"noopener\">\n    D&amp;D Beyond Description</a> for spell details.<br><br>\n    Options listed below are all unlinked NPC Elementals in the Actor Directory.  Others are available\n    at the GM's discretion.`\n    jez.pickRadioListArray(title, msg, pickEleCallBack, elementalArray);\n    //-----------------------------------------------------------------------------------------------\n    // That's all folks\n    //\n    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Call back function called after elemental is selected and then proceeds with execution.  \n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function pickEleCallBack(selection) {\n    const FUNCNAME = \"pickEleCallBack(selection)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    if (TL === 1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRO} ${FUNCNAME} ---`, \"selection\", selection);\n    //----------------------------------------------------------------------------------------------\n    if (!selection) return false;\n    const SEL_ELE = selection.split(\" \")[0]\n    if (TL > 2) jez.trace(`${SEL_ELE}: ${elList[SEL_ELE].name} SubType ${elList[SEL_ELE].st}  \n        CR ${elList[SEL_ELE].cr}`, elList[SEL_ELE].data)\n    //--------------------------------------------------------------------------------------------------\n    // Set handy variables\n    //\n    let summons = elList[SEL_ELE].name\n    let width = elList[SEL_ELE].data.data.token.width\n    let summonData = elList[SEL_ELE].data\n    //--------------------------------------------------------------------------------------------------\n    // Build the dataObject for our summon call\n    //\n    let argObj = {\n        defaultRange: 90,                   // Defaults to 30, but this varies per spell\n        duration: 1000,                     // Duration of the intro VFX\n        introTime: 1000,                     // Amount of time to wait for Intro VFX\n        introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file\n        minionName: `${aToken.name}'s ${summons}`,\n        name: aItem.name,                   // Name of action (message only), typically aItem.name\n        outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file\n        scale: 0.7,\t\t\t\t\t\t\t\t// Default value but needs tuning at times\n        source: aToken,                     // Coords for source (with a center), typically aToken\n        templateName: summons,\n        width: width,                       // Width of token to be summoned, 1 is the default\n        traceLvl: TL                        // Trace level, matching calling function decent choice\n    }\n    //--------------------------------------------------------------------------------------------------\n    // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it\n    // to update the img attribute or set basic image to match this item\n    //\n    // let summonData = await game.actors.getName(MINION)\n    argObj.img = summonData ? summonData.img : aItem.img\n    //--------------------------------------------------------------------------------------------------\n    // Do the actual summon\n    //\n    let elementalId = await jez.spawnAt(summons, aToken, aActor, aItem, argObj)\n    //--------------------------------------------------------------------------------------------------\n    // Build a UUID that will be slapped on the concentrating effect for doOff call.  Should look like:\n    //   Scene.MzEyYTVkOTQ4NmZk.Token.cBMsqVwfwf1MxRxV\n    let elemementalUuid = `Scene.${game.scenes.viewed.id}.Token.${elementalId}`\n    modConcentratingEffect(aToken, elemementalUuid)\n    //--------------------------------------------------------------------------------------------------\n    // Convert Item Card's duration into seconds, if supported units, otherwise go with 3600\n    //\n    let duration = 3600\n    if (aItem.data.duration.units === \"turn\") duration = aItem.data.duration.value * 6\n    if (aItem.data.duration.units === \"round\") duration = aItem.data.duration.value * 6\n    if (aItem.data.duration.units === \"minute\") duration = aItem.data.duration.value * 60\n    if (aItem.data.duration.units === \"hour\") duration = aItem.data.duration.value * 3600\n    //--------------------------------------------------------------------------------------------------\n    // Add an effect to our recently summoned elemental to delete itself at the end of the spell duration\n    //\n    const EXPIRE = [\"newDay\", \"longRest\", \"shortRest\"];\n    const GAME_RND = game.combat ? game.combat.round : 0;\n    let effectData = {\n        label: aItem.name,\n        icon: CLOCK_IMG,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        duration: {\n            rounds: duration / 6, startRound: GAME_RND,\n            seconds: duration, startTime: game.time.worldTime,\n            token: aToken.uuid, stackable: false\n        },\n        flags: { dae: { macroRepeat: \"none\", specialDuration: EXPIRE } },\n        changes: [\n            { key: `macro.execute`, mode: jez.CUSTOM, value: `Dismiss_Tokens ${elemementalUuid}`, priority: 20 },\n        ]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: elemementalUuid, effects: [effectData] });\n    //--------------------------------------------------------------------------------------------------\n    // Post completion message to item card\n    //\n    msg = `${aToken.name} has summoned a ${summons} which will serve for the spell duration.`\n    postResults(msg)\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Build Object of elemenatals that are NPCs whose name doesn't start with a % and isn't excluded\n * \n * Returned Object will have a property for each elemental that met the criteria, it will contain\n * \n * key: String - Name of the actor with underscrores in place of spaces\n * cr: Real - Challenge Rating\n * st: String - Subtype, hopefully: air, earth, fire, or water otherwise will be forced to unknown\n * name: String - Name of the actor\n * data: Object - Actor's data object\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction buildElementalList(exclusions) {\n    const FUNCNAME = \"buildElementalList(exclusions)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    if (TL === 1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`);\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRO} ${FNAME} ---`, \"exclusions\", exclusions);\n    //-----------------------------------------------------------------------------------------------\n    let elementalObj = {}\n    for (const element of game.actors.contents) {\n        let ed = element.data\n        if (ed.type !== \"npc\") continue;\n        let type = ed.data.details.type.value\n        if (type !== \"elemental\") continue;\n        let name = element.name\n        if (name[0] === \"%\") continue;\n        if (exclusions.includes(name)) continue;\n        //-------------------------------------------------------------------------------------------\n        if (TL > 3) jez.trace(`${FNAME} | ${element.name}`, element);\n        if (type === \"elemental\" && name[0] !== \"%\") {\n            if (!ed.token.actorLink) {\n                const CR = jez.getCharLevel(element)                    // Challenge Rating\n                let st = ed.data.details.type.subtype/*.toLowerCase()*/     // Sub Type\n                // if (!allowedSubTypes.includes(st)) st = \"unknown\"\n                if (!st) st = \"Unknown\"\n                const ST = st\n                if (TL > 1) jez.trace(`${FNAME} | Elemental ${name} is CR ${CR} of subtype ${ST}`)\n                const KEY = name.replace(/ /g, \"_\");\n                elementalObj[KEY] = { cr: CR, st: ST, name: name, data: element }\n            }\n        }\n    }\n    return (elementalObj)\n}\n/***************************************************************************************************\n * Modify existing concentration effect to call this macro as an ItemMacro that can use doOff\n * function can be used to clean accumulated effects.  \n ***************************************************************************************************/\nasync function modConcentratingEffect(token5e, arg) {\n    const EFFECT = \"Concentrating\"\n    //----------------------------------------------------------------------------------------------\n    // Seach the token to find the just added concentrating effect\n    //\n    await jez.wait(100)\n    let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);\n    //----------------------------------------------------------------------------------------------\n    // Define the desired modification to existing effect. \n    //    \n    effect.data.changes.push({\n        key: `macro.itemMacro`, mode: jez.CUSTOM, value:\n            `${arg} \"${aToken.name}\"`, priority: 20\n    })\n    //----------------------------------------------------------------------------------------------\n    // Apply the modification to existing effect\n    //\n    const result = await effect.update({ 'changes': effect.data.changes });\n    if (result && TL > 1) jez.trace(`${MACRO} | Active Effect ${EFFECT} updated!`, result);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is removed by DAE, set Off\n * \n * Typical Parms: Scene.MzEyYTVkOTQ4NmZk.Token.RjB0uStEVMzKDwUE \"Lizzie McWizardress\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);\n    let uuid = args[1]\n    let summoner = args[2]\n    let aTokenDocument5e = await fromUuid(uuid)     // Retrieves document for the UUID\n    if (!aTokenDocument5e) return\n    let aToken = aTokenDocument5e._object           // Nabs the Token5e out of a aTokenDocument5e\n    //-----------------------------------------------------------------------------------------------\n    // Build New Name\n    //\n    let uncontrolledName = aToken.name.replace(`${summoner}'s`, 'Uncontrolled')\n    //-----------------------------------------------------------------------------------------------\n    // Display the permissions set in the game for this token.\n    //\n    // if (TL > 1) for (let property in aToken.actor.data.permission) \n    //     if (property !== \"default\") jez.trace(`${FNAME} | Permission for ${property}`, \n    //         aToken.actor.data.permission[property])\n    //-----------------------------------------------------------------------------------------------\n    // Define the updates to be defined, rename, default to 0 (no access), flip disposition \n    //\n    let updates = {\n        actor: {\n            permission: {\n                default: 0,\n            }\n        },\n        token: {\n            name: uncontrolledName,\n            disposition: aToken.data.disposition * -1,\n        },\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Force any player access defined for the token to 0.  This should find only the one match \n    // created earlier by warpgate.\n    //\n    for (let pId in aToken.actor.data.permission) {\n        if (pId === \"default\") continue         // don't mess with the permissions for default\n        let playerData = game.users.get(pId)    // Stash player data object\n        if (TL > 0) jez.trace(`${FNAME} | playerData for ${pId}`,playerData)\n        if (playerData.isGM) continue           // don't mess with the permissions for GM\n        msg = `Set permission for ${playerData.name} to 0 from ${aToken.actor.data.permission[pId]}`\n        if (TL > 0) jez.trace(`${FNAME} | ${msg}`)\n        updates.actor.permission[pId] = 0       // Set player to no permissions\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Display the permissions set in the game for this token.\n    //\n    await warpgate.mutate(aToken.document, updates);\n    //-----------------------------------------------------------------------------------------------\n    // Run simple video on the token with the attitude change\n    //\n    new Sequence()\n        .effect()\n        .file(VFX_FILE)\n        .atLocation(aToken)\n        .center()\n        .scale(.2)\n        .opacity(1)\n        .fadeIn(1500)\n        .duration(5000)\n        .fadeOut(1500)\n        .play()\n    //-----------------------------------------------------------------------------------------------\n    // Display message about released token\n    //\n    game.users.current.name\n    jez.postMessage({\n        color: \"dodgerblue\",\n        fSize: 14,\n        icon: aToken.data.img,\n        msg: `${aToken.name} may well want vengence upon ${summoner}.<br><br>\n        <b>${game.users.current.name}</b> has lost control of elemental.`,\n        title: `Control of Elemental Lost`,\n        token: aToken\n    })\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    if (TL > 1) jez.trace(`${FNAME} | --- Finished --- ${MACRONAME} ---`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

@@ -1887,7 +1887,7 @@ class jez {
     * ~Energy/SwirlingSparkles_01_Regular_Blue_400x400.webm
     * Use: ~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm
     ***************************************************************************************************/
-    static async vfxPreSummonEffects(location, optionObj) {
+    static async vfxPreSummonEffects(location, optionObj={}) {
         const FUNCNAME = "jez.vfxPreSummonEffects(location, optionObj)";
         const FNAME = FUNCNAME.split("(")[0]
         const TL = optionObj?.traceLvl ?? 0
@@ -1932,7 +1932,6 @@ class jez {
             if (introVFX.includes("Explosion")) colors = EXPLOSION_COLORS
             else if (introVFX.includes("Portal")) colors = PORTAL_COLORS
             else if (introVFX.includes("SwirlingSparkles")) colors = SPARKLE_COLORS
-            let color
             if (colors) {
                 if (TL > 3) jez.trace("colors", colors)
                 if (colors.includes(optionObj?.color)) color = optionObj?.color
@@ -1941,7 +1940,12 @@ class jez {
             else color = optionObj?.color ?? "*"
             if (TL > 3) jez.trace("Color selected", color)
         }
-        //-------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------
+        // Set Default values if not already done
+        //
+        if (!optionObj.vfxFile)
+            optionObj.vfxFile = '~Explosion/Explosion_*_${color}_400x400.webm' // default VFX file
+         //-------------------------------------------------------------------------------------------------
         // Build the VFX file name
         //
         let vfxFile = optionObj?.vfxFile
@@ -1998,7 +2002,7 @@ class jez {
      * ~Fireworks/Firework01_02_Regular_GreenOrange_600x600.webm
      * Example: ~Fireworks/Firework*_02_Regular_$color}_600x600.webm
      ***************************************************************************************************/
-    static async vfxPostSummonEffects(template, optionObj) {
+    static async vfxPostSummonEffects(template, optionObj={}) {
         const FUNCNAME = "jez.vfxPostSummonEffects(location, optionObj)";
         const FNAME = FUNCNAME.split("(")[0]
         const TL = optionObj?.traceLvl ?? 0
@@ -2032,6 +2036,7 @@ class jez {
         // Do some color validation (Old Method -- implied by optionObj.allowedColors not being set
         //
         if (!optionObj.allowedColors) {
+            if (TL > 3) jez.trace("optionObj.allowedColors not being set, tryimg old method")
             const SMOKE_COLORS = ["Blue", "Black", "Green", "Purple", "Grey", "*"];
             const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
                 "Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange",
@@ -2044,7 +2049,6 @@ class jez {
             if (outroVFX.includes("Smoke")) colors = SMOKE_COLORS
             else if (outroVFX.includes("Portal")) colors = PORTAL_COLORS
             else if (outroVFX.includes("Fireworks")) colors = FIREWORK_COLORS
-            let color
             if (colors) {
                 if (TL > 3) jez.trace("colors", colors)
                 if (colors.includes(optionObj?.color)) color = optionObj?.color
@@ -2053,19 +2057,28 @@ class jez {
             else color = optionObj?.color ?? "*"
             if (TL > 3) jez.trace("Color selected", color)
         }
+        //------------------------------------------------------------------------------------------------
+        // Set Default values if not already done
+        //
+        if (!optionObj.vfxFile)
+            optionObj.vfxFile = '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm' // default VFX file
         //-------------------------------------------------------------------------------------------------
         // Build the VFX file name
         //
+        if (TL > 3) jez.trace("Build the VFX file")
         let vfxFile = optionObj?.vfxFile
+        if (TL > 4) jez.trace("vfxFile",vfxFile)
         const VFX_DIR = 'modules/jb2a_patreon/Library/Generic'
+        if (TL > 4) jez.trace("VFX_DIR",VFX_DIR)
         if (vfxFile.charAt(0) === '~') vfxFile = `${VFX_DIR}/${vfxFile.substring(1)}`
-        if (TL > 3) jez.trace("VFX with prefix", vfxFile)
+        if (TL > 3) jez.trace("VFX with prefix", vfxFile,"color",color)
         vfxFile = vfxFile.replace("${color}", color)
         if (TL > 3) jez.trace("VFX with color ", vfxFile)
         //-------------------------------------------------------------------------------------------------
         // Evaluate the vfxFile name which may have a wildcard down to a single file so duration can be
         // accurately fetched.
         //
+        if (TL > 3) jez.trace("Evaluate the vfxFile", vfxFile)
         const FILE_NAME = await fetchFileName(vfxFile)
         async function fetchFileName(path) {
             let matches = await FilePicker.browse("data", path, { wildcard: true })
@@ -2692,7 +2705,7 @@ class jez {
         }
         defVal.updates = {
             actor: { name: dataObj.minionName },
-            token: { name: dataObj.minionName },
+            token: { name: dataObj.minionName, disposition: aToken.data.disposition },
         }
         if (TL > 3) {
             jez.trace(`${FNAME} |`)

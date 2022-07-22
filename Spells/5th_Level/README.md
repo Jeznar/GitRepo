@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Arcane Hand](#arcane-hand)
 * [Cloudkill](#cloudkill)
 * [Cone of Cold](#cone-of-cold)
+* [Conjure Elemental](#conjure-elemental)
 * [Contact Other Plane](#contact-other-plane)
 * [Danse Macabre](#danse-macabre)
 * [Dispel Evil and Good](#dispel-evil-and-good)
@@ -37,7 +38,9 @@ Some spell highlights:
 * Deletes all of the summons at end of spell
 * Renames summons to mark the summoner and make unique.
 
+<details> <summary>Animate Objects in use.</summary>
 ![Animate_Objects.gif](Animate_Objects/Animate_Objects.gif)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
@@ -65,10 +68,11 @@ All of the above requires 4 macros and a configured actor in the actor's directo
 
 One more thing, a utility macro has been crafted so that the grappled/grappling effects can remove their paired effect.  This macro **Remove_Paired_Effect** needs to be placed in the macro folder and is called when effects are removed to cleanse their partner from the scene.
 
+<details> <summary>Arcane Hand in use.</summary>
 ![Arcane_hand.gif](Arcane_Hand/Arcane_Hand.gif)
+</details>
 
-Following are some of the chat cards this can produce:
-
+<details> <summary>Some of the chat cards this can produce.</summary>
 ![Arcane_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Arcane_Hand_Chat.png)
 
 ![Clenched_Fist_Chat.png](Arcane_Hand/Chat_Snaps/Clenched_Fist_Chat.png)
@@ -78,6 +82,7 @@ Following are some of the chat cards this can produce:
 ![Grasping_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Grasping_Hand_Chat.png)
 
 ![Interposing_Hand_Chat.png](Arcane_Hand/Chat_Snaps/Interposing_Hand_Chat.png)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
@@ -89,7 +94,9 @@ This spell creates a Tile with a VFX of an angry yellow-green cloud that represe
 
 I had trouble with the Active Auras implementation for this spell, so I fell back to my familiar approach of creating a temporary item that can be **manually** used to inflict the effect of the spell.
 
+<details> <summary>Cloudkill in use.</summary>
 ![Cloudkill.gif](Cloudkill/Cloudkill.gif)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
@@ -99,7 +106,36 @@ I had trouble with the Active Auras implementation for this spell, so I fell bac
 
 This spell is a standard setup with an Automated Animation added, which is I must say, pretty cool! (Get it!!!)
 
+<details> <summary>Spell in use.</summary>
 ![Cone_of_Cold.gif](Cone_of_Cold/Cone_of_Cold.gif)
+</details>
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Conjure Elemental
+
+This one was, as they might say, interesting to create.  It does the following noteworthy things:
+
+1. Sets the maximum CR of elemental to be summoned (args[0]?.spellLevel || 5)
+2. Scans through the actor directory looking for all unlinked NPC elementals, excluding those on an exclusion list (e.g. Spritual Weapon) and those that start with a % character.
+3. Sorts the results by CR so that the highest will be presented first in the selection dialog, excluding those that are above maximum CR.
+4. Display a selection dialog asking the player to select the desired creature
+5. Use a warpgate crosshair to allow placement of the spawn point
+6. Run a VFX on the summon event
+7. Set control of the new creature to the player
+8. Place a timer effect on the summoned creature so it will despawn at end of spell duration (extracted from the item card) with exit VFX.
+9. Modify concentration effect on the caster so that if concentration drops, the summoned creature flips disposition, the player loses control of it, and a message goes to chat.
+
+<details> <summary>Conjure Elemental in use.</summary>
+Notice the border color of the summoned elemental initially (cyan) and after losing control (red).
+![Conjure_Elemental.gif](Conjure_Elemental/Conjure_Elemental.gif)
+</details>
+
+<details> <summary>Conjure Elemental chat cards.</summary>
+![Conjure_Elementals_Chat.png](Conjure_Elemental/Conjure_Elementals_Chat.png)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
@@ -117,7 +153,9 @@ A few key elements:
 
 The spell description must contain the *magic* phrase ***no damage on save*** to cause a save to do zero damage to the caster.
 
+<details> <summary>Spell setup screen grab</summary>
 ![Contact_Other_Plane_Condition_Lab.png](Contact_Other_Plane/Contact_Other_Plane_Condition_Lab.png)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
@@ -136,9 +174,13 @@ This macro does quite a few things.  Here are the highlights:
 * Modify concentrating effect to remove the tokens on completion
 * Trigger Dismiss_Tokens when concentrating effect removed to delete summons
 
+<details> <summary>Spell in use.</summary>
 ![Danse_Macabre.gif](Danse_Macabre/Danse_Macabre.gif)
+</details>
 
+<details> <summary>Example chat card</summary>
 ![Danse_Macabre.png](Danse_Macabre/Danse_Macabre.png)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
@@ -197,7 +239,9 @@ This implementation does a few things:
 4. Performs the saving throw,
 5. Displays the result.
 
+<details> <summary>Spell Dialog screen grab.</summary>
 ![Scrying/Scrying_Dialog.png](Scrying/Scrying_Dialog.png)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
@@ -211,7 +255,9 @@ When this spell is used, it is essential that the targets be pre-selected before
 
 Side Note: This spell can leave the active token unfortunately rotated.  This can be fixed, on a mac, by selecting the token and rotating it with cmd-mouse wheel.
 
+<details> <summary>Spell in use.</summary>
 ![Steel_Wind_Strike.gif](Steel_Wind_Strike/Steel_Wind_Strike.gif)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
@@ -221,7 +267,9 @@ Side Note: This spell can leave the active token unfortunately rotated.  This ca
 
 This spell looks intersecting as built in the [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#wall-of-force).
 
+<details> <summary>Spell in use.</summary>
 ![steelwind-strike](https://user-images.githubusercontent.com/32877348/151714360-7656a4bc-fcbf-4c81-8d8b-b98b2f532a03.gif)
+</details>
 
 In my testing, some manual cleanup was needed when the spell completes, but on balance, it seems like a very useful implementation.
 
