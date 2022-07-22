@@ -36,7 +36,10 @@ Well, it does those things now.  It calls *jez.runRuneVFX(element, school, color
 
 On interesting element of the sample macro is its use of on/off executions and passing the targeted token to the macro as a parameter driven by the DAE effect configuration.
 
+<details> <summary>Fire Shield in use.</summary>
+
 ![Banishment_DAE_Effects.png](Banishment/Banishment_DAE_Effects.png)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
@@ -49,6 +52,7 @@ This one summons an arcane eye to the scene and provides the caster with dark-vi
 The nifty part of this spell is that the placement cursor reads out distance from the caster while being used.  Something that should be retrofit to a lot of my summoning items.
 
 <details> <summary>Arcane Eye in use.</summary>
+
 ![Arcane_Eye.gif](Arcane_Eye/Arcane_Eye.gif)
 </details>
 
@@ -90,6 +94,7 @@ Afflicted tokens take damage and present a dialog that allows a skill check to r
 I am sure I have left a fair bit out.  It is quite the spell.
 
 <details> <summary>Black Tentacles in use.</summary>
+
 ![Black_Tentacles.gif](Black_Tentacles/Black_Tentacles.gif)
 </details>
 
@@ -124,6 +129,7 @@ The spell does not manage the barking at 30 feet or de-spawn if separated by mor
 The summoned hound will be visible to all the players, please remind them that it can only be seen by the summoner.
 
 <details> <summary>Faithful Hound in use.</summary>
+
 ![Faithful_Hound.gif](Faithful_Hound/Faithful_Hound.gif)
 </details>
 
@@ -152,6 +158,7 @@ When the macro is executed as an **DAE Off** it does the following:
 The temporary inventory item is to be used manually to inflict the reflected damage.
 
 <details> <summary>Fire Shield in use.</summary>
+
 ![Fire_Shield.gif](Fire_Shield/Fire_Shield.gif)
 </details>
 
@@ -215,12 +222,14 @@ This spell places a DoT on the target which is allowed a save at the end of each
 This spell uses the ability to drop a sheet from Actor's directory onto a token's sheet to transform the *victim* of the spell.  On the pop-up window that appears, ignore all the check boxes and just click the Polymorph button.
 
 <details> <summary>Polymorph transform usage.</summary>
+
 ![Polymorph/Polymorph_Transform.png](Polymorph/Polymorph_Transform.png)
 </details>
 
 Reversing the transform is done with a button that appears at the top of the transformed token's sheet.
 
 <details> <summary>Polymorph restoration.</summary>
+
 ![Polymorph/Polymorph_Restore.png](Polymorph/Polymorph_Restore.png)
 </details>
 
@@ -247,6 +256,7 @@ This implementation:
 * Consumes 4 stacks of diamond dust valued at 25 gp each (assuming it is configured after adding it to a character's sheet. 
 
 <details> <summary>Stoneskin Details.</summary>
+
 ![Stoneskin_Details.png](Stoneskin/Stoneskin_Details.png)
 </details>
 
