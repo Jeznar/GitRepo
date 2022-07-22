@@ -12,7 +12,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Fire Shield](#fire-shield)
 * [Freedom of Movement](#freedom-of-movement)
 * [Greater Invisibility](#greater-invisibility)
-* [Hypnotic Pattern](hypnotic-pattern)
+* [Hypnotic Pattern](#hypnotic-pattern)
 * [Ice Storm](#ice-storm)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
@@ -184,6 +184,7 @@ This spell places runs a simple macro that shows a RuneVFX on the caster and pop
 I configured it to use this VFX file: `modules/jb2a_patreon/Library/Generic/Template/Square/TemplateRunesSquare_01_Regular_Blue_600x600.webm`
 
 <details> <summary>Hypnotic Pattern in use.</summary>
+
 ![Hypnotic_Pattern.gif](Hypnotic_Pattern/Hypnotic_Pattern.gif)
 </details>
 
