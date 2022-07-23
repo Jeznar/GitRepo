@@ -224,12 +224,22 @@ This spell simply places a DAE effect that places a CUB condition of charmed on 
 
 ### Hold Monster
 
-The undead immunity element of this spell is accomplished by checking the box next to **Activation Condition true required for effect activation** and putting the right bit of code in the free text box labeled **Activation Condition**.
+This item is implemented without a specific macro.  It utilizes a few tricksy moves to accomplish this.
 
-A macro call to **Run_RuneVFX_onTargets** is included to play a rune on targeted creatures. 
-
-A DAE effect for midi OverTime (*flags.midi-qol.OverTime*) is used to setup the save every turn aspect of this spell. 
+1. Undead immunity element of this spell is accomplished by checking the box next to **Activation Condition true required for effect activation** and putting the right bit of code in the free text box labeled **Activation Condition**.
+2. A macro call to **Run_RuneVFX_bySaves** is a rune on targeted creatures differentiating for made/failed.
+3. DAE effect for midi OverTime (*flags.midi-qol.OverTime*) is used to setup the save every turn aspect of this spell. 
 `turn=end, saveAbility=wis, saveDC=@attributes.spelldc,label="Save vs Hold Monster"`
+
+<details> <summary>Hold Monster Details Menu</summary>
+
+![Hold_Monster_Details.png](Hold_Monster/Hold_Monster_Details.png)
+</details>
+
+<details> <summary>Hold Monster DAE Effects Setting Menu</summary>
+
+![Hold_Monster_Details.png](Hold_Monster/Hold_Monster_DAE_Effects_Settings.png)
+</details>
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 

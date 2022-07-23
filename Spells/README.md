@@ -180,6 +180,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Dispel Evil and Good](5th_Level#dispel-evil-and-good)
 * [Dream](5th_Level#dream)
 * [Geas](5th_Level#geas)
+* [Hold Monster](5th_Level#hold-monster)
 * [Mass Cure Wounds](5th_Level#mass-cure-wounds)
 * [Raise Dead](5th_Level#raise-dead)
 * [Scrying](5th_Level#scrying)

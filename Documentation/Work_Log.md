@@ -244,6 +244,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.23 Created utility macro Run_RuneVFX_bySaves
 
+22.07.23 Created Hold Monster spell using DAE and configuration not a custom macro
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
