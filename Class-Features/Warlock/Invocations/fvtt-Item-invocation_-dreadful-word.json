@@ -4,7 +4,7 @@
   "img": "icons/magic/air/wind-vortex-swirl-blue.webp",
   "data": {
     "description": {
-      "value": "<p>You can cast @Compendium[dnd5e.spells.9hQXdMSmerkTsHDe]{Confusion} once using a warlock spell slot. You can't do so again until you finish a long rest.</p>\n<hr style=\"box-sizing: border-box; user-select: text; border-top: 1px solid var(--color-border-light-primary); border-bottom: 1px solid var(--color-border-light-highlight); color: #191813; font-size: 13px;\" />\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><strong style=\"box-sizing: border-box; user-select: text;\">FoundryVTT</strong>: This is not automated</p>",
+      "value": "<p>You can cast @Item[mPQToH0vNE9bKmcm]{Confusion} once using a warlock spell slot. You can't do so again until you finish a long rest.</p>\n<hr style=\"box-sizing: border-box; user-select: text; border-top: 1px solid var(--color-border-light-primary); border-bottom: 1px solid var(--color-border-light-highlight); color: #191813; font-size: 13px;\" />\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><strong style=\"box-sizing: border-box; user-select: text;\">FoundryVTT</strong>: Add this spell to the posessor's spell list, make it an at-will spell, and make it a limited 1 per long rest ability.</p>",
       "chat": "",
       "unidentified": ""
     },
