@@ -24,6 +24,7 @@ This readme contains a summary of the functions and for at least some of them a 
 * **[Open Actor Sheets With...](#open-actor-sheets-with...)** fetches a list of items from an actor allowing the user to pick one and then opens al of the actor's sheets that contain that item.
 * **[Refresh Item on Actors](#refresh-item-on-actors)** Refreshes (replaces) sidebar and selected tokens to match a reference item, retaining very specific fields.
 * **[Remove Paired Effect](#remove-paired-effect)** Removes effect identified by id from actor also specified by id
+* **[Run RuneVFX bySaves](#run-runevfx-bysaves)** Fires the RuneVFX on tokens with a shorter version on saves.
 * **[Run RuneVFX onSelf](#run-runevfx-onself)** Fires the runRuneVFX on the using token for the using item.
 * **[Run RuneVFX onTargets](#run-runevfx-ontargets)** Fires the runRuneVFX on targeted token(s) for the using item.
 * **[RunAsGM](#runasgm)** Series of functions that have their runasgm flag turned on.
@@ -313,6 +314,20 @@ macro.execute CUSTOM Remove_Paired_Effect i9vqeZXzvIcdZ3BU All2XSeYJ1swpBIN
 ~~~
 
 ![Remove_Paired_Effect.png](Remove_Paired_Effect/Remove_Paired_Effect.png)
+
+[*Back to Utility Macros List*](#functions-in-this-repo)
+
+---
+
+### Run RuneVFX bySaves
+
+Macro to be used as an OnUse macro from an item sheet.  It runs [jez.runRuneVFX(...)](../jez-lib/#runRuneVFX) on token(s) that failed their saving throw and an abbreviated effect on token(s) that made their saving throw, making sure the color is the same random selection on each.
+
+Used by adding the following to the OnUse Macro field at the bottom of the **Item Details** page:
+
+~~~ javascript
+Run_RuneVFX_bySaves
+~~~
 
 [*Back to Utility Macros List*](#functions-in-this-repo)
 

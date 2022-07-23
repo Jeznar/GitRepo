@@ -13,6 +13,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Dispel Evil and Good](#dispel-evil-and-good)
 * [Dream](#dream)
 * [Geas](#geas)
+* [Hold Monster](#hold-monster)
 * [Mass Cure Wounds](#mass-cure-wounds)
 * [Raise Dead](#raise-dead)
 * [Scrying](#scrying)
@@ -216,6 +217,19 @@ This spell simply runs a runeVFX on the caster and target.  The description note
 ### Geas
 
 This spell simply places a DAE effect that places a CUB condition of charmed on the target, if it fails its save.  It does not handle the damage element or ultimate removal of the effect as that is very much up to GM judgement.
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
+
+---
+
+### Hold Monster
+
+The undead immunity element of this spell is accomplished by checking the box next to **Activation Condition true required for effect activation** and putting the right bit of code in the free text box labeled **Activation Condition**.
+
+A macro call to **Run_RuneVFX_onTargets** is included to play a rune on targeted creatures. 
+
+A DAE effect for midi OverTime (*flags.midi-qol.OverTime*) is used to setup the save every turn aspect of this spell. 
+`turn=end, saveAbility=wis, saveDC=@attributes.spelldc,label="Save vs Hold Monster"`
 
 [*Back to 5th Level Spell List*](#5th-level-spells)
 
