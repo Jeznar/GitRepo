@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Banishment](#banishment)
 * [Black Tentacles](#black-tentacles)
 * [Blight](#blight)
+* [Confusion](#confusion)
 * [Death Ward](#death-ward)
 * [Faithful Hound](#faithful-hound)
 * [Fire Shield](#fire-shield)
@@ -107,6 +108,16 @@ I am sure I have left a fair bit out.  It is quite the spell.
 Fairly simple macro that checks the target type giving immunity to undead and constructs; vulnerability to plants, and otherwise just rolling damage.  
 
 The macro also plays a simple rune VFX on the target.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Confusion
+
+This one is built on a DAE SRD macro (checkout *MidiMacros.confusion* from the console) or in that modules compendium. The macro as offered was a bit plain Jane and includes substantial cruft code that isn't used.  My implementation cleans that up and uses Automated Animations to play a VFX in place of the targeting template.
+
+**Note**: *The spell does not upcast in an automated way.  Up casting can be done by manually changing the target area of affect.  This might be automated by using a crafty macro that runs before targeting (if that is possible) to modify the spell and then a corresponding macro to put the range back to normal.*
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

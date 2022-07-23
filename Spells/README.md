@@ -153,6 +153,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Banishment](4th_Level#banishment)
 * [Black Tentacles](4th_Level#black-tentacles)
 * [Blight](4th_Level#blight)
+* [Confusion](4th_Level#confusion)
 * [Death Ward](4th_Level#death-ward)
 * [Faithful Hound](4th_Level#faithful-hound)
 * [Fire Shield](4th_Level#fire-shield)

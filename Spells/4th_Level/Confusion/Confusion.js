@@ -29,6 +29,11 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const VFX_FACE_CONFUSED = 'Icons_JGB/Misc/Confusion_Befuddled.png'  // Move in random direction
 const VFX_FACE_DRUNK = 'Icons_JGB/Misc/Confusion_Drunk.png'         // No actions
 const VFX_FACE_ANGRY = 'Icons_JGB/Misc/Confusion_Angry.png'         // Attack random target
+const DIRECTION = [ 
+    "East (Right)", "South East (Down/Right)",
+    "South (Down)", "South West (Down/Left)",
+    "West (Left)", "North West (Up/Left)",
+    "North (Up)", "North East (Up/Right)"];
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -86,17 +91,23 @@ async function doEach() {
     if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
 
 
-    let tactor = canvas.tokens.get(lastArg.tokenId);
-    let r = await new Roll(`1d10`).roll();
-    let message;
-    if (r._total == 1) {
-        message = "The creature uses all its Movement to move in a random direction. To determine the direction, roll a [[1d8]] and assign a direction to each die face. The creature doesn't take an action this turn.";
-    } else if (r._total < 7 && r._total > 1) {
-        message = "The creature doesn't move or take Actions this turn.";
-    } else if (r._total == 7 || r._total == 8) {
-        message = "The creature uses its action to make a melee Attack against a randomly determined creature within its reach. If there is no creature within its reach, the creature does nothing this turn."
-    } else if (r._total > 8) {
-        message = "The creature can act and move normally.";
+    let roll = await new Roll(`1d10`).roll();   // Roll a d10 to decide what the actor can/will do
+    console.log("ROLL", roll)
+    if (roll.result === 1) {
+        let dRoll = await new Roll(`1d8`).roll();   // Roll a d8 to pick a direction
+        msg = `<b>${aToken.name}</b> must use all its Movement to move ${DIRECTION[dRoll.result]}. 
+        ${aToken.name} can take no action this turn.`;
+        runVFX(VFX_FACE_CONFUSED)
+    } else if (roll.result >= 2 && roll.result <= 6 ) {
+        msg = `<b>${aToken.name}</b> can not move or take Actions this turn.`;
+        runVFX(VFX_FACE_DRUNK)
+    } else if (roll.result >= 7 || roll.result <= 8) {
+        msg = `<b>${aToken.name}</b> must use its action to make a melee Attack against a randomly determined 
+        creature within its reach. If there is no creature within its reach, ${aToken.name} does nothing this 
+        turn.`
+        runVFX(VFX_FACE_ANGRY)
+    } else if (roll.result >= 9) {
+        msg = `<b>${aToken.name}</b> can act and move normally this turn.`;
     }
     let cont = `<div class="dnd5e chat-card item-card midi-qol-item-card">
         <header class="card-header flexrow">
@@ -104,11 +115,11 @@ async function doEach() {
         <h3 class="item-name">Confusion</h3>
       </header></div>
       <div class="dice-roll">
-        <div class="dice-result">${message}
-          <h4 class="dice-total">${r._total}</h4>
+        <div class="dice-result">
+          <p style="color:${jez.randomDarkColor()};font-size:14px">${msg}</p>
+          <h4 class="dice-total">${roll.result}</h4>
           </div>`;
-    ChatMessage.create({ roll: r, speaker: { alias: tactor.name }, content: cont });
-
+    ChatMessage.create({ roll: roll, speaker: { alias: aToken.name }, content: cont });
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
@@ -116,6 +127,24 @@ async function doEach() {
 
     if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
     return true;
+
+    function runVFX(fileName) {
+        //-----------------------------------------------------------------------------------------------
+        // Run simple video on the token with the attitude change
+        //
+        new Sequence()
+            .effect()
+            .file(fileName)
+            .atLocation(aToken)
+            .center()
+            // .scale(.2)
+            .scaleToObject(1)
+            .opacity(1)
+            .fadeIn(1500)
+            .duration(7000)
+            .fadeOut(1500)
+            .play()
+    }
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set Off
