@@ -4,7 +4,7 @@
   "img": "icons/skills/melee/strike-flail-spiked-pink.webp",
   "data": {
     "description": {
-      "value": "<p><em>Prerequisite: 15th level, Pact of the Chain feature</em></p>\n<p>You can cast @Compendium[dnd5e.spells.l9Ju5KE7bbn3WpTm]{Hold Monster} at will - targeting a <strong>celestial</strong>, <strong>fiend</strong>, or <strong>elemental</strong> - without expending a spell slot or material components.</p>\n<p>You must finish a long rest before you can use this invocation on the same creature again.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated</p>",
+      "value": "<p><em>Prerequisite: 15th level, Pact of the Chain feature</em></p>\n<p>You can cast @Item[YjFiMTVmNGY3M2Nl]{Hold Monster} at will - targeting a <strong>celestial</strong>, <strong>fiend</strong>, or <strong>elemental</strong> - without expending a spell slot or material components.</p>\n<p>You must finish a long rest before you can use this invocation on the same creature again.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This needs to be manually setup on the Warlock's sheet:</p>\n<ol>\n<li>Spell copied to posessor's spell list</li>\n<li>Modify spell to be preperation:&nbsp;<strong>at-will</strong></li>\n<li>Modify the spell to be a 1 per day resource</li>\n<li>Modify the spell details&nbsp;<strong>Activation Condition&nbsp;</strong> to be: ['celestial', \"fiend\", \"elemental\"].includes('@raceOrType')</li>\n</ol>",
       "chat": "",
       "unidentified": ""
     },
@@ -95,7 +95,21 @@
       "recharge": "0",
       "rechargeType": "t1",
       "rechargeUnit": "r1",
-      "sorting": "l"
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "YjFiMTVmNGY3M2Nl",
+          "name": "Hold Monster",
+          "pack": "world",
+          "img": "systems/dnd5e/icons/spells/shielding-fire-2.jpg",
+          "baseLevel": "5",
+          "level": "5",
+          "consumption": "5",
+          "upcast": "5",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
     },
     "exportSource": {
       "world": "travels-in-barovia-ce",
