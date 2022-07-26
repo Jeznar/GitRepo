@@ -2512,7 +2512,7 @@ class jez {
         return (false)
     }
 
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Lifted from the MidiSRD module, just adding some documentation upon adding to jezlib
  * 
  * @param {Token} source Source of range distance (usually)
@@ -2797,7 +2797,7 @@ class jez {
     }
 
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********
-     * Obtain and return Token5e or PrototypeTokenData object asociated with the uuid passed into this 
+     * Obtain and return Token5e or PrototypeTokenData object associated with the uuid passed into this 
      * function. UUID is assumed to look like one of the following:
      * 
      *   Linked Actor Item  : Actor.lZ487ouiBiQs3lql.Item.fyhrudodjr8ooucb
@@ -2864,6 +2864,158 @@ class jez {
         if (TL > 2) jez.trace(`${FNAME} | sToken.name`, sToken.name)
         return (sToken)
     }
+
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Find all the tokens in range of the origin following exclusion rules described in the options
+     * object.  The return is either an object containing Token5e objects that met the criteria or 
+     * false if none did.
+     * 
+     * Arguments
+     * ---------
+     * origin : Token5e object defining the origin of the effect.
+     * RANGE  : Distance, usually in feet, defining maximum range for this list.
+     * opts   : optional Object that can have multiple attributes as described below.
+     * 
+     * Options Attributes (first value is  default)
+     * exclude  : string  - self, friendly, none 
+     * direction: string  - t2o, o2t  (target to origin or vice versa for 1-way obstuctions)
+     * chkMove  : boolean - false, true (check for wall blocking movement)
+     * chkSight : boolean - false, true (check for wall blocking light)
+     * chkHear  : boolean - false, true (check for wall blocking sound)
+     * chkSpeed : boolean - false, true (does the target have any movement?)
+     * chkBlind : boolean - false, true (does the target have blinded condition?)
+     * chkDeaf  : boolean - false, true (does the target have deafened condition?)
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async inRangeTargets(origin, RANGE, opts = {}) {
+        const FUNCNAME = "jez.inRangeTargets(origin, RANGE, opts = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = opts?.traceLvl ?? 0
+        let potTargs = []
+        let potTargNames = []
+        const TAG = `${FNAME} |`
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "origin", origin, "RANGE", RANGE,
+            "opts", opts);
+        if (TL > 3) for (let key in opts) jez.trace(`${FNAME} | opts.${key}`, opts[key])
+        //-----------------------------------------------------------------------------------------------
+        // Setup option values to use, invalid input results in default quietly being used 
+        //
+        const EV = ["self", "friendly", "none"]
+        const DV = ["t2o", "o2t"]
+        let optVal = {
+            exclude: (EV.includes(opts?.exclude?.toLowerCase())) ? opts?.exclude.toLowerCase() : "self",
+            direction: (DV.includes(opts?.direction?.toLowerCase())) ? opts?.direction.toLowerCase() : "t2o",
+            chkMove: (opts?.chkMove === true) ? true : false,
+            chkSight: (opts?.chkSight === true) ? true : false,
+            chkHear: (opts?.chkHear === true) ? true : false,
+            chkSpeed: (opts?.chkSpeed === true) ? true : false,
+            chkBlind: (opts?.chkBlind === true) ? true : false,
+            chkDeaf: (opts?.chkDeaf === true) ? true : false,
+        }
+        if (TL > 3) for (let key in optVal) jez.trace(`${FNAME} | optVal.${key}`, optVal[key])
+        //-----------------------------------------------------------------------------------------------
+        //
+        //
+        // Following is from the checkCollision code, providing a modicum of documentation
+        //
+        /** Test whether movement along a given Ray collides with a Wall.
+         * @param {Ray} ray                        The attempted movement
+         * @param {object} [options={}]            Options which customize how collision is tested
+         * @param {string} [options.type=movement] Which collision type to check: movement, sight, sound
+         * @param {string} [options.mode=any]      Which type of collisions are returned: any, closest, all
+         * @returns {boolean|object[]|object}      False if there are no Walls
+         *                                         True if the Ray is outside the Canvas
+         *                                         Whether any collision occurred if mode is "any"
+         *                                         An array of collisions, if mode is "all"
+         *                                         The closest collision, if mode is "closest"
+         *
+         * checkCollision(ray, { type="move", mode="any" } = {}) {...}
+         **/
+        canvas.tokens.placeables.forEach(token => {
+            if (!(optVal.exclude === "none") && (origin.name === token.name)) return;   // Active token 
+            if (jez.getDistance5e(origin, token) > RANGE) return;                   // Out of range 
+            //-------------------------------------------------------------------------------------------
+            // Maybe check if the target token has same disposition as the caster
+            //
+            if (optVal.exclude === "friendly") {
+                if (origin.data.disposition === token.data.disposition) {
+                    if (TL > 2)
+                        jez.trace(`${TAG} ${token.name} same disposition as the origin (${origin.data.disposition}), skipping.`)
+                    return  // Line of Movement
+                }
+            }
+            //-------------------------------------------------------------------------------------------
+            // Define the ray between the two locations
+            //
+            let ray = null
+            if (optVal.direction === "t2o") ray = new Ray(token.center, origin.center)
+            else ray = new Ray(origin.center, token.center)
+            //-------------------------------------------------------------------------------------------
+            // Maybe check if the target token can move to other, that is does a wall block path?
+            //
+            if (optVal.chkMove) {
+                let badLoM = canvas.walls.checkCollision(ray)
+                if (TL > 2 && badLoM)
+                    jez.trace(`${TAG} ${token.name} movement path blocked (${optVal.direction}), skipping.`)
+                if (badLoM) return  // Line of Movement
+            }
+            //-------------------------------------------------------------------------------------------
+            // Maybe check if the target token can see to other, that is does a wall block sight?
+            //
+            if (optVal.chkSight) {
+                let badLoS = canvas.walls.checkCollision(ray, { type: "sound", mode: "any" })
+                if (TL > 2 && badLoS)
+                    jez.trace(`${TAG} ${token.name} vision path blocked (${optVal.direction}), skipping.`)
+                if (badLoS) return  // Line of Sight
+            }
+            //-------------------------------------------------------------------------------------------
+            // Maybe check if the target token can hear to other location, does a wall block sound?
+            //
+            if (optVal.chkHear) {
+                let badLoS = canvas.walls.checkCollision(ray, { type: "sight", mode: "any" })
+                if (TL > 2 && badLoS)
+                    jez.trace(`${TAG} ${token.name} sound path blocked (${optVal.direction}), skipping.`)
+                if (badLoS) return  // Line of Sound
+            }
+            //-------------------------------------------------------------------------------------------
+            // Maybe check if the target token has any movement, is its movement speed zero?
+            //
+            if (optVal.chkSpeed) {
+                let mObj = token.actor.data.data.attributes.movement
+                if (!(mObj.burrow > 0 || mObj.climb > 0 || mObj.fly > 0 || mObj.swim > 0 || mObj.walk > 0)) {
+                    if (TL > 2) jez.trace(`${TAG} ${token.name} has no movement, skipping.`)
+                    return
+                }
+            }
+            //-------------------------------------------------------------------------------------------
+            // Maybe check if the target token is binded, has that effect
+            //
+            if (optVal.chkBlind)
+                if (jezcon.hasCE("Blinded", token.actor.uuid, { traceLvl: 0 })) {
+                    if (TL > 2) jez.trace(`${TAG} ${token.name} is blind, skipping.`)
+                    return
+                }
+            //-------------------------------------------------------------------------------------------
+            // Maybe check if the target token is deafened, has that effect 
+            //
+            if (optVal.chkDeaf)
+                if (jezcon.hasCE("Deafened", token.actor.uuid, { traceLvl: 0 })) {
+                    if (TL > 2) jez.trace(`${TAG} ${token.name} is deaf, skipping.`)
+                    return
+                }
+            //-------------------------------------------------------------------------------------------
+            // Populate our results arrays
+            //
+            potTargs.push(token)                    // Add this token to potential targets array
+            potTargNames.push(`${token.name} {${token.id}}`)
+        });
+        if (TL > 0) jez.trace(`${TAG} potTargs`, potTargs)
+        for (let i = 0; i < potTargs.length; i++)
+            if (TL > 1) jez.trace(`${TAG} ${i + 1}) ${potTargNames[i]} is a potential victim.`)
+        if (TL > 2) jez.trace(`--- Finished --- ${FNAME} ---`);
+        return potTargs;
+    }
+
 
 } // END OF class jez
 Object.freeze(jez);

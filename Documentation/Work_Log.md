@@ -248,6 +248,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.26 Added getTokenObjFromUuid to jez.log and progress on compulsion
 
+22.07.26 Created jez.inRangeTargets and associated demo function.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

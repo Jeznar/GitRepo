@@ -51,6 +51,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
 * **[getTokenObjFromUuid(uuid, optionObj = {})](#gettokenobjfromuuiduuid-optionobj--)** Get a Token object from a appropriate UUID
 * **[inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
+* **[inRangeTargets(origin, RANGE, opts = {})](#inrangetargetsorigin-range-opts--)** -- Return array of range tokens after apply exclusion rules
 * **[isActorUUID((string, options={})](#isactoruuidstring-options)**
 * **isEffectUUID(string)** -- Determines if string looks like an ActiveEffect's UUID, returning a boolean.
 * **isActor5e(obj)** -- Returns true if obj is an Actor5e object, otherwise false.
@@ -666,6 +667,53 @@ if(!jez.inRange(aToken, tToken, maxRange)) {
     return(false);
 }
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### inRangeTargets(origin, RANGE, opts = {})
+
+Find all the tokens in range of the origin following exclusion rules described in the options object.  The return is either an object containing Token5e objects that met the criteria or false if none did.
+
+_Arguments_
+
+* **origin** : Token5e object defining the origin of the effect.
+* **RANGE**  : Distance, usually in feet, defining maximum range for this list.
+* **opts**   : optional Object that can have multiple attributes as described below.
+ 
+_Options Attributes (first value is  default)_
+
+* **exclude**  : string  - self, friendly, none 
+* **direction**: string  - t2o, o2t  (target to origin or vice versa for 1-way obstuctions)
+* **chkMove**  : boolean - false, true (check for wall blocking movement)
+* **chkSight** : boolean - false, true (check for wall blocking light)
+* **chkHear**  : boolean - false, true (check for wall blocking sound)
+* **chkSpeed** : boolean - false, true (does the target have any movement?)
+* **chkBlind** : boolean - false, true (does the target have blinded condition?)
+* **chkDeaf**  : boolean - false, true (does the target have deafened condition?)
+
+Following is a sample call, with a bunch of options set, rarely if ever would all of these options need to be set
+
+~~~javascript
+let options = {
+    exclude: "Friendly",    // self, friendly, or none (self is default)
+    direction: "t2o",       // t2o or o2t (Origin to Target) (t2o is default) 
+    chkMove: true,          // Boolean (false is default)
+    chkSight: true,         // Boolean (false is default)
+    chkHear: false,         // Boolean (false is default)
+    chkSpeed: true,         // Boolean (false is default)
+    chkBlind: true,         // Boolean (false is default)
+    chkDeaf: true,          // Boolean (false is default)
+    traceLvl: TL,           // Trace level, integer typically 0 to 5
+}
+let returned = await jez.inRangeTargets(aToken, 30, options);
+if (returned.length === 0) return jez.badNews(`No effectable targets in range`, "i")
+if (TL>1) for (let i = 0; i < returned.length; i++) jez.trace(`${FNAME} | Targeting: ${returned[i].name}`)
+~~~
+
+Some of the exclusion rules are a tad bit tortured.  They do as described in the comment very specifically, e.g. being blind is defined by having the blinded condition, or not.
+
 
 [*Back to Functions list*](#functions-in-this-module)
 
