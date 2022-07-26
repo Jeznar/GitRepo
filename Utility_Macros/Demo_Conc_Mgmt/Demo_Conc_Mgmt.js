@@ -52,7 +52,7 @@ async function doOff() {
 }
   
 /***************************************************************************************************
- * Modify existing concentration effect to call a this macro as an ItemMacro that can use doOff
+ * Modify existing concentration effect to call this macro as an ItemMacro that can use doOff
  * function can be used to clean accumulated effects.  
  ***************************************************************************************************/
 // COOL-THING: Modify existing concentrating effect to enable cleanup of dependent items

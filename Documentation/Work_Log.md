@@ -246,6 +246,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.23 Created Hold Monster spell using DAE and configuration not a custom macro
 
+22.07.26 Added getTokenObjFromUuid to jez.log and progress on compulsion
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

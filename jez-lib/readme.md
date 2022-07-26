@@ -49,6 +49,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getProfMod(subject)](#get-functions)** -- Returns the subject's proficiency modifier
 * **[getRace(entity)](#getraceentity)** -- Returns a string containing the race of the entity
 * **[getTokenById(subjectId)](#get-functions)** -- Returns the Token5e associated with the passed ID
+* **[getTokenObjFromUuid(uuid, optionObj = {})](#gettokenobjfromuuiduuid-optionobj--)** Get a Token object from a appropriate UUID
 * **[inRange(token1, token2, maxRange)](#inrangetoken1-token2-maxrange)** -- Returns a boolean, true if distance between tokens is less than or equal to maximum range specified.
 * **[isActorUUID((string, options={})](#isactoruuidstring-options)**
 * **isEffectUUID(string)** -- Determines if string looks like an ActiveEffect's UUID, returning a boolean.
@@ -621,6 +622,30 @@ This function obtains the spell school from the passed parameter.  The school wi
 * necromancy
 * transmutation
 * and FALSE (if no valid school found)
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getTokenObjFromUuid(uuid, optionObj = {})
+
+This function obtains and return a Token5e or PrototypeTokenData object associated with the uuid passed into this function. UUID is assumed to look like one of the following:
+
+* **Linked Actor Item**  : Actor.lZ487ouiBiQs3lql.Item.fyhrudodjr8ooucb
+* **Unlinked Actor Item**: Scene.MzEyYTVkOTQ4NmZk.Token.lZ487ouiBiQs3lql.Item.fyhrudodjr8ooucb
+
+This function works by starting on the left and processing the UUID until a result is found so shorter UUIDs like these, also work:
+      
+* **Linked Actor**  : Actor.lZ487ouiBiQs3lql
+* **Unlinked Actor**: Scene.MzEyYTVkOTQ4NmZk.Token.lZ487ouiBiQs3lql
+
+Returns a **Token5e** or **PrototypeTokenData** object.  If function fails, return false
+
+Following is a sample call.
+
+~~~javascript
+let oToken = await jez.getTokenObjFromUuid(LAST_ARG.origin, { traceLvl: TL })
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
