@@ -4,7 +4,7 @@
   "img": "icons/magic/air/wind-vortex-swirl-purple.webp",
   "data": {
     "description": {
-      "value": "<p>You can cast @Compendium[dnd5e.spells.P6f1PPKPd9BCb742]{Compulsion} once using a warlock spell slot. You can't do so again until you finish a long rest.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> The spell needs to be manually added and cast normally with the player responsible for knowing it has been used.</p>",
+      "value": "<p>You can cast @Item[ompCFV8dtHm9nrTq]{Compulsion} once using a warlock spell slot. You can't do so again until you finish a long rest.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> The spell needs to be added to a character's spell list and set to a 1 per long rest limited usage.</p>",
       "chat": "",
       "unidentified": ""
     },

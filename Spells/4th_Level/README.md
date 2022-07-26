@@ -7,6 +7,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Banishment](#banishment)
 * [Black Tentacles](#black-tentacles)
 * [Blight](#blight)
+* [Compulsion](#compulsion)
 * [Confusion](#confusion)
 * [Death Ward](#death-ward)
 * [Faithful Hound](#faithful-hound)
@@ -108,6 +109,38 @@ I am sure I have left a fair bit out.  It is quite the spell.
 Fairly simple macro that checks the target type giving immunity to undead and constructs; vulnerability to plants, and otherwise just rolling damage.  
 
 The macro also plays a simple rune VFX on the target.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Compulsion
+
+This one is a bit of a whopper.  
+
+Upon Casting the following things happen:
+
+1. It calls a library function, *jez.inRangeTargets()* that finds all of the tokens in range, that can hear the caster, i.e. not deaf and unobstructed line of sound (I kind of made that up),
+2. Those tokens are presented in a selection dialog so the desired targets can be selected,
+3. Saves are rolled for all of the targets, 
+4. Debuff effect is placed on each failed token along with a VFX,
+5. Summary is posted to a chat card,
+6. Caster's concentration effect is modified so that it will remove any of the placed effects upon its removal,
+7. The caster's do each turn step is invoked.
+
+The caster at the start of each turn will see a pop up dialog that asks if they want to spend their bonus action to issue an order to move in a specific direction.  A direction can be picked and OK clicked to force movement (handled manually) or the CANCEL button can be used to skip the order for this turn.
+
+Each afflicted, at the beginning of their turn will say in a chat bubble and in the chat log that they are compelled to move in a specific direction, if the caster spent their bonus action to issue such an order.  At the end of each turn they will repeat their saving throw.
+
+<details> <summary>Spell in use.</summary>
+
+![Compulsion.gif](Compulsion/Compulsion.gif)
+</details>
+
+<details> <summary>Spell's chat card samples.</summary>
+
+![Compulsion_Chat.png](Compulsion/Compulsion_Chat.png)
+</details>
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

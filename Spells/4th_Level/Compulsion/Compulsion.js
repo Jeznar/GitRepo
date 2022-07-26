@@ -1,11 +1,11 @@
 const MACRONAME = "Compulsion.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * This macro is on Confusion
+ * This is a complex macro to implement Compulsion.
  * 
  * 07/22/22 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
@@ -70,8 +70,9 @@ async function doEachOrigin() {
     // move
     //
     const Q_TITLE = `What Direction for ${aToken.name}'s Minions?`
-    const Q_TEXT = `Pick a direction you will order your compulsion victims to move`
-
+    const Q_TEXT = `If you want to use your bonus action this round on this spell, pick a 
+    direction you will order your compulsion victims to move and click the OK button.  Otherwise, 
+    click the Cancel button to save Bonus action for something else.`
     jez.pickRadioListArray(Q_TITLE, Q_TEXT, dirCallBack, DIRECTIONS);
     /********************************************************************************************
      * Callback function to handle menu choice.
@@ -83,13 +84,15 @@ async function doEachOrigin() {
         if (TL > 1) jez.trace(`${MACRO} ${FNAME} | Menu choice`, choice);
         if (!choice) {
             if (TL > 1) jez.trace("${MACRO} ${FNAME} | Falsy choice made", choice)
-            doEachOrigin()
+            await DAE.unsetFlag(aToken.actor, MACRO);
+            // doEachOrigin()
             return null;
         }
         if (TL > 1) jez.trace(`${MACRO} ${FNAME} | Choice made: ${choice}`)
         // Generate a chat bubble on the scene, using a World script!
         msg = `I do declare, my minions must move <b>${choice}</b>!`
         bubbleForAll(aToken.id, msg, true, true)
+        msg = msg + `<br><br>I spent my BONUS ACTION to issue that command.`
         jez.postMessage({
             color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,
             msg: msg, title: `${aToken.name} says...`, token: aToken
@@ -130,9 +133,6 @@ async function doEachTarget() {
     //
     let oToken = await jez.getTokenObjFromUuid(LAST_ARG.origin, { traceLvl: TL })
     if (!oToken) return
-    jez.log("oToken", oToken)
-    jez.log("oToken.name", oToken.name)
-    jez.log("oToken.actor", oToken.actor)
     //-----------------------------------------------------------------------------------------------
     // Obtain the dirction of movement from the flag set within the originator
     // oToken is likely a PrototypeTokenData in which case actor5e is hiding under document
@@ -142,6 +142,9 @@ async function doEachTarget() {
     else if (oToken?.constructor.name === "PrototypeTokenData") actorObj = oToken.document
     else return jez.badNews(`Failed to find actor for ${oToken.name}`, "e")
     let direction = await DAE.getFlag(actorObj, MACRO);
+    if (!direction) {
+        return
+    }
     if (TL > 2) jez.trace("Value of flag obtained from oToken.actor", direction)
     //-----------------------------------------------------------------------------------------------
     // Call out direction of movement.
@@ -210,39 +213,27 @@ async function doOnUse() {
  * 10. Run the each turn function for the initial time on the caster.
  ***************************************************************************************************/
 async function pickProcessTargets(RANGE=30, optionObj = {}) {
-    const FUNCNAME = "doIt()";
+    const FUNCNAME = "pickProcessTargets(RANGE=30, optionObj = {})";
     const FNAME = FUNCNAME.split("(")[0]
     const TL = optionObj?.traceLvl ?? 0
     if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
     if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`);
-    let potTargs = []
     let potTargNames = []
     //-------------------------------------------------------------------------------------------------------
     // Step 1. Build list of all tokens in range that are not deafened and have unblocked LoS
     //
-    canvas.tokens.placeables.forEach(token => {
-        if (aToken.name === token.name) return; // Skip caster token 
-        //---------------------------------------------------------------------------------------------------
-        // Is the current token in range?
-        //
-        const DISTANCE = jez.getDistance5e(aToken, token)
-        if (DISTANCE > RANGE) return            // Skip out of range token
-        //---------------------------------------------------------------------------------------------------
-        // Does the potentally afflicted have the Deafened affect?
-        //
-        if (jezcon.hasCE("Deafened", token.actor.uuid, { traceLvl: 0 })) return   // Skip deafened tokens
-        //---------------------------------------------------------------------------------------------------
-        // Does the potentally afflicted have a clear LoS (that is Line of Sound) to the originator?
-        //
-        let badLoS = canvas.walls.checkCollision(new Ray(aToken.center, token.center), { type: "sound", mode: "any" })
-        if (badLoS) return                      // Skip token with blocked line of sound (LoS)
-        potTargs.push(token)                    // Add this token to potential targets array
-        potTargNames.push(`${token.name} {${token.id}}`)
-    });
+    let options = {
+        chkHear: true,          // Boolean (false is default)
+        chkDeaf: true,          // Boolean (false is default)
+        traceLvl: TL,           // Trace level, integer typically 0 to 5
+    }
+    let potTargs = await jez.inRangeTargets(aToken, RANGE, options);
     if (TL > 0) jez.trace(`${MACRO} ${FNAME} | potTargs`, potTargs)
-    for (let i = 0; i < potTargs.length; i++)
-        if (TL > 0) jez.trace(`${MACRO} ${FNAME} | ${i}) ${potTargNames[i]} is a potential victim.`)
-    if (potTargs.length === 0) return jez.badNews(`No affectable targets in range`, "i")
+    if (!potTargs) return jez.badNews(`No effectable targets in range`, "i")  
+    for (let i = 0; i < potTargs.length; i++) {
+        if (TL > 0) jez.trace(`${MACRO} ${FNAME} | ${i+1}) ${potTargs[i].name} is a potential victim.`)
+        potTargNames.push(`${potTargs[i].name} {${potTargs[i].id}}`)
+    }
     //-------------------------------------------------------------------------------------------------------
     // Step 2. Build and pop dialog to pick targets, passing control onto callback function.
     //
@@ -287,15 +278,19 @@ async function pickProcessTargets(RANGE=30, optionObj = {}) {
         }
         //---------------------------------------------------------------------------------------------
         // Step 6. Process the tokens that might be affected, rolling saves and making lists of results
+        //         Also, run a RuneVFX on each targeted token, saves get shorter duration.
         //
+        const COLOR = jez.getRandomRuneColor()
+        const SCHOOL = jez.getSpellSchool(aItem)      
         for (let i = 0; i < tObjs.length; i++) {
-            console.log(tObjs[i].name)
             let save = (await tObjs[i].actor.rollAbilitySave(SAVE_TYPE, { chatMessage: false, fastforward: true }));
             if (save.total < SAVE_DC) {
+                jez.runRuneVFX(tObjs[i], SCHOOL, COLOR)
                 if (TL > 2) jez.trace(`${MACRO} ${FNAME} | ${tObjs[i].name} failed: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)
                 failSaves.push(tObjs[i])
                 failNames += `<b>${tObjs[i].name}</b>: ${save.total} (${save._formula})<br>`
             } else {
+                runRuneVFX(tObjs[i], SCHOOL, COLOR)
                 if (TL > 2) jez.trace(`${MACRO} ${FNAME} | ${tObjs[i].name} saved: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)
                 madeSaves.push(tObjs[i])
                 madeNames += `<b>${tObjs[i].name}</b>: ${save.total} (${save._formula})<br>`
@@ -322,17 +317,11 @@ async function pickProcessTargets(RANGE=30, optionObj = {}) {
             });
             compulsionEffect = failSaves[i].actor.effects.find(ef => ef.data.label === "Compulsion")
             if (!compulsionEffect) return badNews(`Compulsion effect didn't stick...`, "e")
-            console.log("compulsionEffect", compulsionEffect)
             // Strip off the last part of the UUID: <Goodstuff>.ActiveEffect.3F8dtbZ6JqNZ21av
-            console.log("==> compulsionEffect.uuid", compulsionEffect.uuid)
             let xyz = compulsionEffect.uuid.slice(0, -30) // Chop off .ActiveEffect.3F8dtbZ6JqNZ21av
-            console.log("==> xyz", xyz)
-
             effectUuids = effectUuids + xyz + ' '
-            console.log("compulsionEffect.uuid", compulsionEffect.uuid)
-            //console.log("compulsionEffect.parent.parent.id",compulsionEffect.parent.parent.id)
         }
-        console.log(`effectUuids >${effectUuids}<`)
+        if (TL > 2) jez.trace(`${FNAME} | effectUuids >${effectUuids}<`)
         //---------------------------------------------------------------------------------------------
         // Step 8. Craft results message with summary of made and failed saves and post it.
         //
@@ -389,9 +378,9 @@ async function modConcentratingEffect(token5e, effectUuids, optionObj = {}) {
     //----------------------------------------------------------------------------------------------
     // Apply the modification to add changes infoto existing effect
     //
-    console.log("effect.data", effect.data)
+    if (TL > 1) jez.trace(`${FNAME} | effect.data`, effect.data)
     const result = await effect.update({ 'changes': effect.data.changes });
-    if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
+    if (result && TL>1) jez.trace(`${FNAME} | Active Effect ${EFFECT} updated!`, result);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set Off. Treating the origin and 
@@ -424,4 +413,44 @@ async function doOff() {
         return
     }
     return jez.trace(`${MACRO} ${FNAME} | doOff invoked for ${aToken.name} doing nothing`)
+}
+/***************************************************************************************************
+ * Run a 2 part spell rune VFX on indicated token  with indicated rune, Color, scale, and opacity
+ * may be optionally specified.
+ * 
+ * If called with an array of target tokens, it will recursively apply the VFX to each token 
+ ***************************************************************************************************/
+ async function runRuneVFX(target, school, color, scale, opacity) {
+    school = school || "enchantment"            // default school is enchantment \_(ツ)_/
+    color = color || jez.getRandomRuneColor()   // If color not provided get a random one
+    scale = scale || 1.2                        // If scale not provided use 1.0
+    opacity = opacity || 1.0                    // If opacity not provided use 1.0
+    // jez.log("runRuneVFX(target, school, color, scale, opacity)","target",target,"school",school,"scale",scale,"opacity",opacity)
+    if (Array.isArray(target)) {                // If function called with array, do recursive calls
+        for (let i = 0; i < target.length; i++) jez.runRuneVFX(target[i], school, color, scale, opacity);
+        return (true)                           // Stop this invocation after recursive calls
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Build names of video files needed
+    // 
+    const INTRO = `jb2a.magic_signs.rune.${school}.intro.${color}`
+    const OUTRO = `jb2a.magic_signs.rune.${school}.outro.${color}`
+    //-----------------------------------------------------------------------------------------------
+    // Play the VFX
+    // 
+    new Sequence()
+        .effect()
+        .file(INTRO)
+        .atLocation(target)
+        .scaleToObject(scale)
+        .opacity(opacity)
+        .waitUntilFinished(-500)
+        .fadeOut(1500)
+        .effect()
+        .file(OUTRO)
+        .atLocation(target)
+        .scaleToObject(scale)
+        .opacity(opacity)
+        .fadeOut(2000)
+        .play();
 }
