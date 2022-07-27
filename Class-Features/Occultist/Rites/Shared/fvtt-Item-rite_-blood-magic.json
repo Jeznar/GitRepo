@@ -1,0 +1,92 @@
+{
+  "name": "Rite: Blood Magic",
+  "type": "feat",
+  "img": "Icons_JGB/Misc/blood2.svg",
+  "data": {
+    "description": {
+      "value": "<p><em>Prerequisite: Blood Rituals</em></p>\n<p>You can sacrifice the blood of living creatures to power spells. When you cast a spell, instead of expending a spell slot, you can sacrifice blood to power the spell, sacrificing <strong>one hit die per level of spell you cast</strong>, rolling them and taking damage equal to the number rolled.</p>\n<p><strong>Willing creatures within 10 feet</strong> can use their <strong>reaction to contribute</strong> blood to the spell, sacrificing hit dice by rolling them and taking necrotic damage equal to the number rolled. All sacrificed hit dice are added together to the level of the spell you can cast.</p>\n<p>Creatures that lose hit points in this way cannot regain those hit points until they complete a long rest.</p>\n<p>You can cast a total number of spell levels in this manner equal to your Occultist level. You regain all levels of usage of this rite when you complete a long rest. Some spells (marked as blood magic) can only be cast via blood magic using this rite.</p>\n<hr />\n<p><strong>Kibble's Note:&nbsp;</strong>Blood magic spells are not yet implemented, and will be expanded on in a future update.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated.&nbsp;&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Kibble's Tasty Occultist v1.2, p.15",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist (Blood Rituals)",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.nVEo3gWvsHJJTqXJ"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

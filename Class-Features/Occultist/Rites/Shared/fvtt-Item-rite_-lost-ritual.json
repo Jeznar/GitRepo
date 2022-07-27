@@ -1,0 +1,106 @@
+{
+  "name": "Rite: Lost Ritual",
+  "type": "feat",
+  "img": "icons/magic/symbols/question-stone-yellow.webp",
+  "data": {
+    "description": {
+      "value": "<p>You learn of a ritual lost to time. Select an Occultist spell you know of 5th level or lower. This spell gains the ritual tag. You can cast this spell as a ritual once, and must complete a short or long rest before casting it as a ritual again.</p>\n<hr />\n<p><strong>FoundryVTT</strong>:&nbsp; This is not automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Kibble's Tasty Occultist v1.2, p.15",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "qaYtuH8GrzOWsHty",
+          "name": "Animate Dead (ASE)",
+          "pack": "world",
+          "img": "icons/magic/control/fear-fright-monster-red.webp",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "3",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.nVEo3gWvsHJJTqXJ"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

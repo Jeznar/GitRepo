@@ -1,0 +1,132 @@
+{
+  "name": "Rite: Sympathetic Bond",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/protect-sky-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You learn the @Item[iZ99bs7muwt1xhVu]{Warding Bond} spell. It is an Occultist spell for you, but does not count against your spells known.</p>\n<p>When you cast&nbsp;warding bond, you can choose to increase the power of the bond. When you do so, if either bonded creature makes an Intelligence, Wisdom, or Charisma saving throw, both creatures make the save. If either succeeds on the saving throw, both succeed, but if both fail, both are affected by the condition being saved against, even if only one was targeted. If both creatures are saving against the same effect, they do not roll twice, but both succeed if either succeeds on the saving throws and only fail if both fail the saving throw.</p>\n<hr />\n<p><strong>FoundryVTT</strong>:&nbsp; Add the spell yo spell book.&nbsp; The increased power element is not auutomated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Kibble's Tasty Occultist v1.2, p.16",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "sr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "M2Y5NzMwYWRhZjU2",
+          "name": "Protection from Evil and Good",
+          "pack": "world",
+          "img": "/systems/dnd5e/icons/spells/protect-sky-2.jpg",
+          "baseLevel": "1",
+          "level": "1",
+          "consumption": "1",
+          "upcast": "1",
+          "upcastCost": "1",
+          "flatDc": false
+        },
+        "1": {
+          "id": "qaYtuH8GrzOWsHty",
+          "name": "Animate Dead (ASE)",
+          "pack": "world",
+          "img": "icons/magic/control/fear-fright-monster-red.webp",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "3",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.nVEo3gWvsHJJTqXJ"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

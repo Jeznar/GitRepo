@@ -1,0 +1,142 @@
+{
+  "name": "Rite: Expert of Tradition",
+  "type": "feat",
+  "img": "icons/skills/social/thumbsup-approval-like.webp",
+  "data": {
+    "description": {
+      "value": "<p><em>Prerequisite: 10th level Occultist</em></p>\n<p>Choose an additional skill you are proficient in from among:</p>\n<ul>\n<li>Animal Handling,</li>\n<li>Arcana,</li>\n<li>Medicine,</li>\n<li>Nature, and</li>\n<li>Survival.</li>\n</ul>\n<p>Your <strong>proficiency bonus is doubled </strong>for any ability check you make that uses the chosen proficiency.</p>\n<p>If you do not have proficiency in any of the selected skills, you <strong>instead gain proficiency</strong> in one of your choice.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is initially setup to provide expertise to Animal Handling, via a DAE effect.&nbsp; This is appropriate for a character that is proficient in animal handling and is choosing to benefit that skill.&nbsp; The DAE effect should be edited to affect the dessired skill with proficiency or expertise. This Rite should have its name changed and desciption updated to indicate the skill benefited by it.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Kibble's Tasty Occultist v1.2, p.15",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist 10",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "cs9ezzjy3h8b12l3",
+      "changes": [
+        {
+          "key": "data.skills.ani.value",
+          "mode": 2,
+          "value": "2",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/skills/social/thumbsup-approval-like.webp",
+      "label": "Rite: Expert of Tradition",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "data.skills.ani.value"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.nVEo3gWvsHJJTqXJ"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

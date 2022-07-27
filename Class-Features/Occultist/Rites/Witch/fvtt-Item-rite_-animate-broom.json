@@ -1,0 +1,89 @@
+{
+  "name": "Rite: Animate Broom",
+  "type": "feat",
+  "img": "Icons_JGB/Monster_Features/Broom.png",
+  "data": {
+    "description": {
+      "value": "<p>You infuse an object - traditionally a broom, but any vaguely broom-shaped object (like a staff, spear, or similar) can be used - with flying magic, turning it into a Broom of Flying (basic rules, pg. 156).</p>\n<p>If your broom is lost or destroyed, you can create a new one during 8 hours of work. If a previous broom still exists when you make a new one, it loses its magic upon the completion of the new one.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Manually drag a @Item[UmMenjJC5uGYvH6q]{Broom of Flying} onto the character sheet.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist 12 (Witch)",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

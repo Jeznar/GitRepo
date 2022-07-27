@@ -1,0 +1,132 @@
+{
+  "name": "Rite: Soulburn",
+  "type": "feat",
+  "img": "icons/magic/unholy/hand-grasping-green.webp",
+  "data": {
+    "description": {
+      "value": "<p>You can make your powers sear the very soul of the creature they strike. When you deal cold, fire or lightning damage, you can choose to deal necrotic damage instead.</p>\n<hr />\n<p><strong>FoundryVTT</strong>:&nbsp; This is not automated</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Kibble's Tasty Occultist v1.2, p.16",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "sr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l",
+      "spells": {
+        "0": {
+          "id": "M2Y5NzMwYWRhZjU2",
+          "name": "Protection from Evil and Good",
+          "pack": "world",
+          "img": "/systems/dnd5e/icons/spells/protect-sky-2.jpg",
+          "baseLevel": "1",
+          "level": "1",
+          "consumption": "1",
+          "upcast": "1",
+          "upcastCost": "1",
+          "flatDc": false
+        },
+        "1": {
+          "id": "qaYtuH8GrzOWsHty",
+          "name": "Animate Dead (ASE)",
+          "pack": "world",
+          "img": "icons/magic/control/fear-fright-monster-red.webp",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "3",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.nVEo3gWvsHJJTqXJ"
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

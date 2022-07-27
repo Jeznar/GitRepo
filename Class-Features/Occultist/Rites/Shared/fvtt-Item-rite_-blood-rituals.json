@@ -1,0 +1,92 @@
+{
+  "name": "Rite: Blood Rituals",
+  "type": "feat",
+  "img": "Icons_JGB/Misc/blood2.svg",
+  "data": {
+    "description": {
+      "value": "<p><em>Prerequisite: 5th level Occultist</em></p>\n<p>Whenever you cast a ritual spell that requires a material component, you can instead use blood.</p>\n<p>Willing living creatures within 10 feet of you can <strong>expend hit dice</strong> as part of casting the spell, rolling them and taking necrotic damage equal to the value rolled to fuel the ritual instead of a material component, with <strong>each 10 hit points </strong>sacrificed in this manner able to replace up to <strong>100 gp of material</strong> components</p>\n<p>Example: to replace a diamond worth 500 gold, 50 hit points would have to be expended in this manner.</p>\n<p>Creatures that lose hit points in this way <strong>cannot regain those hit points until they complete a long rest.</strong></p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated.&nbsp;&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Kibble's Tasty Occultist v1.2, p.15",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist 5",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.nVEo3gWvsHJJTqXJ"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

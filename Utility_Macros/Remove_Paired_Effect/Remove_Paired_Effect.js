@@ -24,7 +24,7 @@ if (args[0] === "off") {  // Only execute this when removed from Token
     // Random wait mitigates a race error caused by a DAE bug that executes each 
     // macro.execute for each line in an effect.  I have opened an issue on gitlab.
     // https://gitlab.com/tposney/dae/-/issues/319
-    await jez.wait(Math.floor(Math.random() * 500))
+    // await jez.wait(Math.floor(Math.random() * 500)) // Fixed in DAE 0.10.22
     //------------------------------------------------------------------------------------
     if (args.length === 3) {
         const EFFECT = await fromUuid(args[1])

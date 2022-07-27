@@ -1,0 +1,89 @@
+{
+  "name": "Rite: Animate Hair",
+  "type": "feat",
+  "img": "Icons_JGB/Class_Features/Occultist/Hair.png",
+  "data": {
+    "description": {
+      "value": "<p> </p>\n<p>As a <strong>bonus action</strong>, you can expend a <strong>1st level spell slot</strong> to cause your hair to lengthen, strengthen, and spring to life for <strong>1 minute</strong>.</p>\n<p>While it is animated, you can use your action to make a melee spell attack with a range of 5 feet with it, dealing <strong>1d8 bludgeoning damage</strong> on hit. This increases by 1d8 when you reach 5th Level (2d8), 11th level (3d8), and 17th level (4d8).</p>\n<p>If you hit a Large or smaller creature with this attack, as a bonus action you can attempt to <strong>grapple the creature </strong>with your hair using your <strong>Wisdom modifier</strong> in place of your Strength modifier to initiate and maintain grapple.</p>\n<p>A grappled creature can contest the grapple as normal, or deal <strong>5 slashing, fire, or acid damage to the hair </strong>to free themselves. The hair has an <strong>AC of 12</strong>, and you take no damage when it is attacked.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist (Witch)",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

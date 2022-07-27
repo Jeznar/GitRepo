@@ -1,0 +1,89 @@
+{
+  "name": "Rite: Rites of the Moon",
+  "type": "feat",
+  "img": "Icons_JGB/Misc/Moon_Cloud.png",
+  "data": {
+    "description": {
+      "value": "<p> </p>\n<p>You learn the ancient rites of the moon and the powers that they hold, opening new pathways of magic to you. You learn the following spells at the following levels. These are Occultist spells for you, but do not count against your spells known.</p>\n<table style=\"border-spacing:0px;background-color:#eee5ce;font-family:ScalySans;width:324.854px;margin-bottom:1em;font-size:10pt;line-height:1.1em;z-index:15;break-inside:avoid;overflow:visible;caret-color:#000000;text-indent:0px;text-size-adjust:auto\">\n<thead style=\"box-sizing:border-box;print-color-adjust:exact;display:table-row-group;font-weight:800;color:black;border-bottom-width:3px;border-bottom-style:solid;border-bottom-color:#888888;background-color:#aaaaaa\">\n<tr style=\"box-sizing:border-box;print-color-adjust:exact\">\n<th style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em;text-align:center;line-height:13.45px;vertical-align:middle\">Occultist Level</th>\n<th style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em;text-align:center;line-height:13.45px;vertical-align:middle\">Spells Learned</th>\n</tr>\n</thead>\n<tbody style=\"box-sizing:border-box;print-color-adjust:exact\">\n<tr style=\"box-sizing:border-box;print-color-adjust:exact;background-color:#e0e5c1\">\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;background-color:#cccccc;text-align:center\">1st</td>\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;background-color:#cccccc;text-align:center\"><em style=\"box-sizing:border-box\">faerie fire</em></td>\n</tr>\n<tr style=\"box-sizing:border-box;print-color-adjust:exact\">\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;text-align:center\">3rd</td>\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;text-align:center\"><em style=\"box-sizing:border-box\">moonbeam</em></td>\n</tr>\n<tr style=\"box-sizing:border-box;print-color-adjust:exact;background-color:#e0e5c1\">\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;background-color:#cccccc;text-align:center\">5th</td>\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;background-color:#cccccc;text-align:center\"><em style=\"box-sizing:border-box\">tidal wave</em></td>\n</tr>\n<tr style=\"box-sizing:border-box;print-color-adjust:exact\">\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;text-align:center\">7th</td>\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;text-align:center\"><em style=\"box-sizing:border-box\">control water</em></td>\n</tr>\n<tr style=\"box-sizing:border-box;print-color-adjust:exact;background-color:#e0e5c1\">\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;background-color:#cccccc;text-align:center\">9th</td>\n<td style=\"box-sizing:border-box;print-color-adjust:exact;padding:0.3em 0.1em;line-height:13.45px;background-color:#cccccc;text-align:center\"><em style=\"box-sizing:border-box\">wall of light</em></td>\n</tr>\n</tbody>\n</table>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist (Witch)",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

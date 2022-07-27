@@ -1,0 +1,89 @@
+{
+  "name": "Rite: Companion Coven",
+  "type": "feat",
+  "img": "Icons_JGB/Monster_Features/Coven.png",
+  "data": {
+    "description": {
+      "value": "<p>As a ritual that takes 1 hour, you can form a coven bond with one willing creature. While both of you are conscious and within 120 feet of each other, you gain the ability to share spell slots up to a spell slot of your Witch level divided by four (rounded down), minimum of 1st level slots.</p>\n<p>While this bond is active, you can use your Spellcasting feature to cast using their spell slots (consuming them as normal), and they can use their Spellcasting feature (if they have one) to cast using your qualifying spell slots (consuming them as normal).</p>\n<p>Additionally, you know their location at all times while they are part of your coven and within 120 feet of you. You can only be bonded to one creature with this bond at a time. You can end this coven at any time.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is not automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist (Witch)",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
