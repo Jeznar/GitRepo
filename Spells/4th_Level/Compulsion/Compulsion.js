@@ -191,8 +191,6 @@ async function doOnUse() {
     await jez.wait(100)
     const RANGE = jez.getRange(aItem, ["", "ft", "any"]) ?? 30
     if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
-
-
     await pickProcessTargets(RANGE, {traceLvl: TL})
     if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
     return true;

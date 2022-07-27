@@ -43,7 +43,7 @@ if (args[0]?.tag === "OnUse") {
     }
     let returned = await jez.inRangeTargets(aToken, 30, options);
     console.log("Result", returned)
-    if (returned.length === 0) return jez.badNews(`No affectable targets in range`, "i")
+    if (returned.length === 0) return jez.badNews(`No effectable targets in range`, "i")
     for (let i = 0; i < returned.length; i++) console.log(`Targeting: ${returned[i].name}`)
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
