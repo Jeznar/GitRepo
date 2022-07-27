@@ -125,7 +125,7 @@ if (jezcon.hasCE( "Hindered", targetD.actor.uuid), {traceLvl: 2} )
 
 No function for this one, as I don't see an obvious pattern to automate, but examples from my code.
 
-Example from Grasping Root a Creature Feature:
+<details> <summary>Example from Grasping Root a Creature Feature</summary>
 
 ~~~javascript
 //----------------------------------------------------------------------------------
@@ -137,8 +137,11 @@ let overTimeVal=`turn=start,label="Grasping Root",damageRoll=1d6+${statMod},save
 effectData.changes.push( { key: 'flags.midi-qol.OverTime', mode: jez.OVERRIDE, value:overTimeVal , priority: 20 })
 game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tToken.actor.uuid, origin: sToken.actor.uuid });
 ~~~
+</details>
 
-Example from Electrify, 1st level Occultist's spell that only applies effect till start of target's next turn.
+<details> <summary>Example from Electrify, lasts just one turn</summary>
+
+1st level Occultist's spell that only applies effect till start of target's next turn.
 
 ~~~javascript
 //-------------------------------------------------------------------------------------------------------------
@@ -151,6 +154,39 @@ effectData.flags.dae.specialDuration.push("turnStart")
 if (TL>3) jez.trace(`${FNAME} | updated ===>`, effectData)  
 game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tActor.uuid, origin: aActor.uuid });
 ~~~
+</details>
+
+<details> <summary>Example from Compulsion</summary>
+
+This one adds an overTime effect to an array of target tokens and builds a list of UUIDs for subsequent removal by a modified concentration effect. 
+
+~~~javascript
+//---------------------------------------------------------------------------------------------
+// Step 7. Apply our CE Compulsion effect modified to include an overTime element to failues
+//
+let effectUuids = ""
+let effectData = game.dfreds.effectInterface.findEffectByName("Compulsion").convertToObject();
+if (TL > 3) jez.trace(`${FNAME} | effectData >`, effectData)
+let overTimeVal = `turn=end, saveAbility=${SAVE_TYPE}, saveDC=${SAVE_DC},label="Save vs Compulsion"`
+effectData.changes.push({
+    key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal,
+    priority: 20
+})
+if (TL > 3) jez.trace(`${FNAME} | updated ===>`, effectData)
+for (let i = 0; i < failSaves.length; i++) {
+    if (TL > 2) jez.trace(`${FNAME} | Apply affect to ${failSaves[i].name}`)
+    await game.dfreds.effectInterface.addEffectWith({
+        effectData: effectData,
+        uuid: failSaves[i].actor.uuid, origin: aItem.uuid
+    });
+    compulsionEffect = failSaves[i].actor.effects.find(ef => ef.data.label === "Compulsion")
+    if (!compulsionEffect) return badNews(`Compulsion effect didn't stick...`, "e")
+    // Strip off the last part of the UUID: <Goodstuff>.ActiveEffect.3F8dtbZ6JqNZ21av
+    let xyz = compulsionEffect.uuid.slice(0, -30) // Chop off .ActiveEffect.3F8dtbZ6JqNZ21av
+    effectUuids = effectUuids + xyz + ' '
+}
+~~~
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 
