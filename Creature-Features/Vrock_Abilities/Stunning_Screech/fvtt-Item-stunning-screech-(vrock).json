@@ -1,0 +1,219 @@
+{
+  "name": "Stunning Screech (Vrock)",
+  "type": "feat",
+  "img": "Tokens/Monsters/Vrock/vrock_avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>The vrock emits a horrific screech.</p>\n<p>Each creature within 20 feet of it that can hear it and that isn't a demon must succeed on a <strong>DC 14 CON Save</strong> or be @JournalEntry[Ch02WiipJvf69EDN]{Stunned} until the end of the vrock's next turn .</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Creatures in range that can not hear or that are demons, will need to have an applied stun removed manually. Place the targeting circle on the middle of the Vrock.</p>\n<p> </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 20,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": 14,
+      "scaling": "str"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    },
+    "attunement": 0
+  },
+  "effects": [
+    {
+      "_id": "wr539fviiubymylr",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Stunned",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 2
+      },
+      "icon": "Tokens/Monsters/Vrock/vrock_avatar.png",
+      "label": "Stunning Screech (Vrock)",
+      "transfer": false,
+      "flags": {
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnEndSource"
+          ],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.CE"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.p7JAJkLoYMiBX1zD"
+    },
+    "autoanimations": {
+      "version": 4,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "menuType": "circle",
+        "variant": "01",
+        "enableCustom": false,
+        "repeat": null,
+        "delay": null,
+        "scaleX": null,
+        "scaleY": null,
+        "opacity": null,
+        "removeTemplate": true,
+        "persistent": false
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "template",
+      "animation": "musicnote",
+      "color": "darkred",
+      "audio": {
+        "a01": {
+          "enable": false
+        }
+      },
+      "preview": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Stunning Screech (Vrock)",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Stunning_Screech.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Stunning Screech (1/Day). The vrock emits a horrific screech. Each creature within 20 feet of it \n * that can hear it and that isn't a demon must succeed on a DC 14 Constitution saving throw or be \n * stunned until the end of the vrock's next turn.\n * \n * Expected flow of this macro (all of this within a doOuse function):\n * - Obtain the range of the effect from the item card, defaulting to 25 to allow for the size of the \n *   token.\n * - Play a VFX on the area affected\n * - Obtain a list of all the tokens that are in range, have an unobstructed Line of Sound, and do \n *   not have the deafened condition on them.\n * - Prune out tokens that represent demons based on race (PC) and subtype (NPC)\n * - Quietly roll saving throws for potential victims keeping lists of successes and failures\n * - If any actor failed, build a Stunned condition that will be applied \n * - Apply Stunned condition built in previous step to all those that failed saving throws\n * = Post a summary message of the effects\n * \n * 07/28/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim of the version number and extension\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n\n    if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} | `\n    await jez.wait(100)\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${MACRONAME} ---`);\n    //-----------------------------------------------------------------------------------------------\n    // Obtain the range of the effect from the item card, adding padding based on the size of the \n    // token\n    //\n    const RANGE = getRangeOfSpell({ traceLvl: TL });\n    //-----------------------------------------------------------------------------------------------\n    // Play a VFX on the area affected\n    //\n    runVFX(2.00)\n    //-----------------------------------------------------------------------------------------------\n    // Obtain a list of all the tokens that are in range, have an unobstructed Line of Sound, and do \n    // not have the deafened condition on them.\n    //\n    if (TL > 2) console.log(\"\");\n    if (TL > 2) jez.trace(`${TAG} Obtain a list of all the tokens that are in range...`);\n    let options = {\n        direction: \"t2o\",       // t2o or o2t (Origin to Target) (t2o is default) \n        chkHear: true,         // Boolean (false is default)\n        chkDeaf: true,          // Boolean (false is default)\n        traceLvl: TL,           // Trace level, integer typically 0 to 5\n    }\n    let inRangeTokens = await jez.inRangeTargets(aToken, RANGE, options);\n    if (inRangeTokens.length === 0) return jez.badNews(`No effectable targets in range`, \"i\")\n    if (TL > 1) for (let i = 0; i < inRangeTokens.length; i++)\n        jez.trace(`${FNAME} | ${i + 1}) Target: ${inRangeTokens[i].name}`)\n    //-----------------------------------------------------------------------------------------------\n    // Prune out tokens that represent demons based on race (PC) and subtype (NPC).  This needs to be\n    // done differently for PC and NPC type tokens.\n    //\n    // In both cases, we are obtaining a text field that allows an unrestrcited string.  We're going \n    // to assume that if it contains the word \"demon\" then the token represents a demon. \n    //  PC -- Extraxt the race field, fold to lower case, and hope it was done usefully\n    //  NPC - Extract the subtype field, fold to lower case and hope...\n    //\n    if (TL > 2) console.log(\"\");\n    if (TL > 2) jez.trace(`${TAG} We have ${inRangeTokens.length} potential victims`);\n    for (let i = 0; i < inRangeTokens.length; i++) {    // Process each targetable token \n        let subject = inRangeTokens[i].actor\n        if (TL > 3) jez.trace(`${TAG} Checking ${subject.name} for demon type`, subject);\n        let isNPC, targetType;\n        if (subject.data.type === \"npc\") isNPC = true; else isNPC = false;\n        if (TL > 3) jez.trace(`${TAG} ${subject.name} is NPC?`, isNPC);\n        if (isNPC) targetType = subject.data.data.details.type.subtype.toLowerCase()\n        else targetType = subject.data.data.details.race.toLowerCase()\n        if (TL > 3) jez.trace(`${TAG} ${subject.name} target type`, targetType);\n        let words = targetType.split(/[^a-zA-Z0-9]+/)   // Parse data field into alphanumeric words\n        if (TL > 2) jez.trace(`${TAG} Words found in targetType field`, words);\n        for (let j = 0; j < words.length; j++) {        // Loop through the words \n            if (\"demon\" === words[j].toLowerCase()) {   // Looking for the magic \"demon\" string \n                if (TL > 2) jez.trace(`${TAG} Removing ${subject.name} from targets`, inRangeTokens[i]);\n                inRangeTokens.splice(i, 1);             // Remove the demon from target array\n            }\n        }\n    }\n    if (TL > 2) jez.trace(`${TAG} ${inRangeTokens.length} remaining viable target(s)`, inRangeTokens);\n    //-----------------------------------------------------------------------------------------------\n    // Quietly roll saving throws for potential victims keeping lists of successes and failures\n    //\n    let failSaves = []  // Array to contain the tokens that failed their saving throws\n    let madeSaves = []  // Array to contain the tokens that made their saving throws\n    let madeNames = \"\"  // String with concatination of names that made saves\n    let failNames = \"\"  // String with concatination of names that fail saves\n    const SAVE_TYPE = \"con\"\n    const SAVE_DC = aActor.data.data.attributes.spelldc;\n    if (TL > 2) console.log(\"\");\n    if (TL > 2) jez.trace(`${TAG} Quietly roll ${inRangeTokens.length} saving throws...`);\n    if (TL > 3) jez.trace(`${TAG} inRangeTokens`, inRangeTokens);\n    for (let i = 0; i < inRangeTokens.length; i++) {\n        const TARGET = inRangeTokens[i]\n        let save = (await TARGET.actor.rollAbilitySave(SAVE_TYPE,\n            { chatMessage: false, fastforward: true }));\n        const ROLL = save.total\n        if (ROLL < SAVE_DC) {\n            if (TL > 2) jez.trace(`${TAG} ${TARGET.name} failed: ${SAVE_TYPE}${ROLL} vs ${SAVE_DC}`)\n            failSaves.push(TARGET)\n            failNames += `<b>${TARGET.name}</b>: ${ROLL} (${save._formula})<br>`\n        } else {\n            if (TL > 2) jez.trace(`${TAG} ${TARGET.name} saved: ${SAVE_TYPE}${ROLL} vs ${SAVE_DC}`)\n            madeSaves.push(TARGET)\n            madeNames += `<b>${TARGET.name}</b>: ${ROLL} (${save._formula})<br>`\n        }\n    }\n    if (TL > 3) jez.trace(`${FNAME} | Failed Saves ===>`, failSaves)\n    //-----------------------------------------------------------------------------------------------\n    // If any actor failed, build a Stunned condition that will be appled \n    //\n    let eData\n    if (failSaves.length > 0) { // Define new condition to apply from existing CE Stunned\n        const COND_APPLIED = \"Stunned\"\n        if (TL > 2) console.log(\"\");\n        if (TL > 2) jez.trace(`${TAG} Build a ${COND_APPLIED} effect`);\n        const SPECDUR = \"turnEndSource\"\n        const CE_DESC = \"Fail DEX and STR saves, grant advantage, can't move, and incapacitated\"\n        ceData = game.dfreds.effectInterface.findEffectByName(COND_APPLIED).convertToObject();\n        if (TL > 3) jez.trace(`${FNAME} | ceData >`, ceData)\n        let specialDuration = [SPECDUR, \"newDay\", \"longRest\", \"shortRest\"]\n        eData = [{\n            label: ceData.label,    // `Stunned`,\n            icon: ceData.icon,      // `Icons_JGB/Conditions/Stun_Icon.png`,\n            origin: LAST_ARG.uuid,\n            disabled: false,\n            duration: ceData.duration ?? { seconds: 60, startTime: game.time.worldTime },\n            flags: {\n                dae: {\n                    itemData: aItem,\n                    specialDuration: specialDuration\n                },\n                core: { statusId: ceData.statusId ?? \"Convenient Effect: Stunned\" },\n                isConvenient: ceData.isConvenient ?? true,\n                isCustomConvenient: ceData.isCustomConvenient ?? true,\n                convenientDescription: ceData.convenientDescription ?? CE_DESC\n            },\n            changes: ceData.changes,\n        }];\n        if (TL > 3) jez.trace(`${FNAME} | updated ===>`, eData)\n    }\n    //-------------------------------------------------------------------------------------------------------------\n    // Apply Stunned condition built in previous step to all those that failed saving throws\n    //   \n    for (let i = 0; i < failSaves.length; i++) {\n        if (TL > 1) jez.trace(`${TAG} Adding Stunned to ${failSaves[i].name}`, \"DataObj\", failSaves[i], \"eData\", eData)\n        await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: failSaves[i].actor.uuid, effects: eData });\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Post a summary message of the effects\n    //\n    let chatMessage = await game.messages.get(args[args.length - 1].itemCardId);\n    await jez.wait(100)\n    if (madeNames) {\n        msg = `<b><u>Successful ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${madeNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkgreen\", fSize: 14, msg: msg, tag: \"damage\" })\n    }\n    if (failNames) {\n        msg = `<b><u>Failed ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${failNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkred\", fSize: 14, msg: msg, tag: \"damage\" })\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    await jez.wait(100)\n    if (TL > 3) jez.trace(`${FNAME} | More Detailed Trace Info.`)\n    msg = `Those that failed saves are stunned until the end of <b>${aToken.name}'s</b> next turn.`\n    postResults(msg)\n    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Get the range of spell adding half of the width of the using token as additional range so that it\n * represents the distance from creatur's edge, not distance from creatures center.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction getRangeOfSpell(optionObj = {}) {\n    const FUNCNAME = \" getRangeOfSpell(optionObj = {})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} | `\n    const TL = optionObj?.traceLvl ?? 0\n    if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);\n    if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`);\n    //-----------------------------------------------------------------------------------------------\n    // Proceed with function's task\n    //\n    const ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n    let maxRangeObtained = jez.getRange(aItem, ALLOWED_UNITS) ?? 20; // Default range is 20 feet\n    const SCALE = 5; // Feet per square on tactical scenes\n    const GRID_SIZE = game.scenes.viewed.data.grid; // Pixel width of a square in the scene\n    const TOKEN_WIDTH = aToken.w ?? 70;             // Pixel width of the token\n    const HALF_WIDTH = Math.trunc(TOKEN_WIDTH / 2); // Half the pixel width\n    const PADDING = HALF_WIDTH / GRID_SIZE * SCALE; // Additional feet to add to range\n    maxRange = maxRangeObtained + PADDING;\n    if (TL > 2) jez.trace(`${TAG} Values found and calculated`, \"maxRange obtained\", maxRangeObtained,\n        \"SCALE\", SCALE, \"GRID_SIZE\", GRID_SIZE, \"TOKEN_WIDTH\", TOKEN_WIDTH, \"HALF_WIDTH\", HALF_WIDTH,\n        \"PADDING\", PADDING, \"maxRange returned\", maxRange)\n    return maxRange\n}\n/***************************************************************************************************\n * Launch the VFX effects\n ***************************************************************************************************/\nasync function runVFX(VFX_SCALE) {\n    const VFX_NAME = `${MACRO}-${aToken.id}`\n    const VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Template/Circle/Vortex_01_Regular_Blue_600x600.webm\"\n    const VFX_INTRO = \"modules/jb2a_patreon/Library/Generic/Template/Circle/VortexIntro_01_Regular_Blue_600x600.webm\"\n    const VFX_OUTRO = \"modules/jb2a_patreon/Library/Generic/Template/Circle/VortexOutro_01_Regular_Blue_600x600.webm\"\n    const VFX_OPACITY = 0.8;\n    new Sequence()\n        .effect()\n        .file(VFX_INTRO)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .waitUntilFinished(-500) // Negative wait time (ms) clips the effect to avoid fadeout\n        .effect()\n        .file(VFX_LOOP)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        //.persist()\n        .duration(3000)\n        .name(VFX_NAME) // Give the effect a uniqueish name\n        .fadeIn(10) // Fade in for specified time in milliseconds\n        .fadeOut(1000) // Fade out for specified time in milliseconds\n        .extraEndDuration(1200) // Time padding on exit to connect to Outro effect\n        .effect()\n        .file(VFX_OUTRO)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .attachTo(aToken)\n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

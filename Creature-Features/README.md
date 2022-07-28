@@ -47,6 +47,7 @@ I'll try to document functions as I add them to the repository.
 * **[Summon Demons, Vrock](#summon-demons-vrock)** -- Implment Vrock's summon
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
+* **[Stunning Screech](#stunning-screech)** -- Implements the Vrock's surprisingly complex ability
 * **Portent (Arabelle)** -- Portent slightly modified for Arabelle
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
 * **[Trampling Charge](#trampling-charge)** -- Equine charge / knockdown
@@ -500,7 +501,7 @@ Summons per the Vrock ability. This item uses an ItemMacro to:
 
 ### **Summon Swarm of Insects**
 
-This implments **Baba Lysaga**'s ability to call forth 1d4 swarms of insects.  This is implemented with warpgate and does a couple of interesting things:
+This implements **Baba Lysaga**'s ability to call forth 1d4 swarms of insects.  This is implemented with warpgate and does a couple of interesting things:
 
 1. It adds a suffix number on the end of each summoned swarm
 2. It plays a pre and post VFX for each summon. 
@@ -515,8 +516,7 @@ This implments **Baba Lysaga**'s ability to call forth 1d4 swarms of insects.  T
 
 This one is intended to be run from the hot bar or more likely from a journal article outlining the standing stones at Yester Hill.
 
-It (maybe) zaps the one and only selected token for a bunch of lightning damage.  The cha
-nce of zapping is set in a constant in the macro that can be easily adjusted.   
+It (maybe) zaps the one and only selected token for a bunch of lightning damage.  The chance of zapping is set in a constant in the macro that can be easily adjusted.   
 
 I wanted to use  MidiQOL.applyTokenDamage() for this, but I couldn't get it to actually apply damage to the token.  Discussions on discord suggested a possible bug in Midi, so I implemented the damage more directly.  This macro does consider damage immunity/resistance/vulnerability to lightning.  Not quite up to Midi's usual checking, but seemingly more than good enough for a one off ability. 
 
@@ -530,7 +530,26 @@ Damage is announced with a simple chat card like the following:
 
 ---
 
-### **Threat Display**
+### **Stunning Screech**
+
+This implements the Vrock's stunning speech.  It is rather complex,
+
+1. Obtain the range of the effect from the item card, defaulting to 25 to allow for the size of the token.
+2. Play a VFX on the area affected
+3. Obtain a list of all the tokens that are in range, have an unobstructed Line of Sound, and do not have the deafened condition on them.
+4. Prune out tokens that represent demons based on race (PC) and subtype (NPC)
+5. Quietly roll saving throws for potential victims keeping lists of successes and failures
+6. If any actor failed, build a Stunned condition that will be applied 
+7. Apply Stunned condition built in previous step to all those that failed saving throws
+8. Post a summary message of the effects
+
+This one uses the information stored in CE's Stunned effect to build a custom effect.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Stunning Screech**
 
 This is a homebrew freature I cooked up for Galahad (others might know him as Lancelot), a GSD my party of Travelers in Barovia befriended in Durst Manor. Following is my description of the ability:
 
