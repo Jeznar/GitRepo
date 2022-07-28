@@ -256,6 +256,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.28 Fix to Moonbeam, it was missing concentration
 
+22.07.28 Fix to Phantasmal_Killer so it is removed on concentration drop by making Remove_Paired_Effect recognize UUID of active effect (likely also fixes many other macros). Also adds a Convenient Effect (CE) description and chat bubble.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

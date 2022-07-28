@@ -1,9 +1,10 @@
-const MACRONAME = "Phantasmal_Killer.0.2.js"
+const MACRONAME = "Phantasmal_Killer.0.3.js"
 /*****************************************************************************************
  * Phantasmal Killer leveraging Midi-qol for overtime damage and saves
  * 
  * 02/19/22 0.1 Creation of Macro
  * 06/08/22 0.2 General update to more current form and bug chase
+ * 07/28/22 0.3 Effect removal bug fixed, CE description added, bubble speech added
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -78,10 +79,20 @@ async function doOnUse() {
         disabled: false,
         // flags: { dae: { stackable: false, macroRepeat: "none" } },
         // flags: { dae: { itemData: aItem.data, macroRepeat: "startEveryTurn", token: aToken.uuid } },
-        flags: { dae: { itemData: aItem, macroRepeat: "startEveryTurn", token: tToken.uuid, stackable: false } },
+        flags: {
+            dae: {
+                itemData: aItem,
+                macroRepeat: "startEveryTurn",
+                token: tToken.uuid,
+                stackable: false
+            },
+            isConvenient: true,
+            isCustomConvenient: true,
+            convenientDescription: `May not willing move closer to ${aToken.name}`
+        },
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
-// COOL-THING: Midi-QoL OverTime dot & save effect
+            // COOL-THING: Midi-QoL OverTime dot & save effect
             { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value:overTimeVal , priority: 20 },
             { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: jez.ADD, value: 1, priority: 20 },
             { key: `flags.midi-qol.disadvantage.skill.all`, mode: jez.ADD, value: 1, priority: 20 },
@@ -112,7 +123,7 @@ async function doOnUse() {
     return (true);
 }
 /***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
+ * Perform the code that runs each turn via DAE
  ***************************************************************************************************/
  async function doEach() {
     const FUNCNAME = "doEach()";
@@ -124,7 +135,12 @@ async function doOnUse() {
     msg = `${aToken.name} is still ${FRIGHTENED_JRNL}.  May not willing move closer to ${oToken.name}.`
     await jez.postMessage({color:"purple", fSize:15, msg:msg, title:`${aToken.name} Frightened`, 
         token:aToken, icon:FRIGHTENED_ICON})
-    //-------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
+    // Post a chat bubble
+    //
+    msg = `I am frightened of ${oToken.name}<br>and may not willingly move closer.`
+    bubbleForAll(aToken.id, msg, true, true)
+    //-----------------------------------------------------------------------------------------------
     // Launch that VFX
     //
     runVFX(aToken)
