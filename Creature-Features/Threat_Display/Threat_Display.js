@@ -1,12 +1,13 @@
-const MACRONAME = "Threat_Display_0.2.js"
-/************************************************************
+const MACRONAME = "Threat_Display_0.3.js"
+/***************************************************************************************************
  * Apply the "Frighted" condition if target fails save.... 
  * 
  * It would be nice for the macro to post results in addition.
  * 
  * 10/29/21 0.1 JGB created from Grapple_Initiate_0.8
  * 05/03/22 0.2 JGB Updated for FoundryVTT 9.x
- ***********************************************************/
+ * 07/28/22 0.3 JGB Update to provide CE descriptions and VFX
+ **************************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
@@ -26,7 +27,7 @@ const GAME_RND = game.combat ? game.combat.round : 0;
 const CONDITION = "Frightened";
 const SAVE_TYPE = "wis";
 const COND_ICON = "Icons_JGB/Conditions/Scared.png"
-const IMMUNE    = "Frightened, Immune (${aToken.name))"
+const IMMUNE    = `Frightened, Immune ${aToken.name}`
 const IMMU_ICON = "Icons_JGB/Conditions/Scared_Immune.png"
 const SAVE_DC   = aActor.data.data.attributes.spelldc;
 const FRIGHTENED_JRNL = "@JournalEntry[tjg0x0jXlwvbdI9h]{Frightened}"
@@ -131,12 +132,6 @@ async function doOnUse() {
     else if (aTokenSizeValue === tTokenSizeValue-2) saveInput.options = 
         { flavor: flavor, chatMessage: true, fastForward: true, advantage: true }
 
-    /*let saveObject = await MidiQOL.socket().executeAsGM("rollAbility", {
-        request: "save",
-        targetUuid: tActor.uuid,
-        ability: SAVE_TYPE,
-        options: { flavor: flavor, chatMessage: true, fastForward: true }
-    }); */ 
     let saveObject = await MidiQOL.socket().executeAsGM("rollAbility", saveInput);
     if (saveObject.total < SAVE_DC) saved = false;
     //----------------------------------------------------------------------------------
@@ -144,6 +139,7 @@ async function doOnUse() {
     //
     let specDur = ["newDay", "longRest", "shortRest"]
     if (!saved) {
+        runVFX(tToken)
         specDur.push("turnEnd")
         jez.log(`Player Wins - Apply ${CONDITION}`);
         let effectData = {
@@ -152,7 +148,15 @@ async function doOnUse() {
             origin: LAST_ARG.uuid,
             disabled: false,
             duration: { rounds: 99, startRound: GAME_RND },
-            flags: { dae: { itemData: aItem, specialDuration: specDur } },
+            flags: { 
+                dae: { 
+                    itemData: aItem, 
+                    specialDuration: specDur 
+                },
+                isConvenient: true,
+                isCustomConvenient: true,
+                convenientDescription: `Frightened of ${aToken.name}, may not move closer`
+             },
             changes: [
                 { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: ADD, value: 1, priority: 20 },
                 { key: `flags.midi-qol.disadvantage.attack.all`,        mode: ADD, value: 1, priority: 20 },
@@ -170,7 +174,15 @@ async function doOnUse() {
             origin: LAST_ARG.uuid,
             disabled: false,
             duration: { rounds: 99, startRound: GAME_RND },
-            flags: { dae: { itemData: aItem, specialDuration: specDur } },
+            flags: { 
+                dae: { 
+                    itemData: aItem, 
+                    specialDuration: specDur 
+                },
+                isConvenient: true,
+                isCustomConvenient: true,
+                convenientDescription: `Immmune to fear effect from ${aToken.name}`
+            },
             changes: [
                 { key: `flags.gm-notes.notes`, mode: CUSTOM, value:`Immune to ${aToken.name}} ${CONDITION}`, priority: 20 },
             ]
@@ -181,4 +193,18 @@ async function doOnUse() {
     jez.log("final message", msg)
     await jez.addMessage(chatMsg, {color:"dodgerblue", fSize:15, msg:msg, tag: "saves" })
     return
+}
+/***************************************************************************************************
+ * Run Frightened VFX on Target
+ ***************************************************************************************************/
+ async function runVFX(target) {
+    const VFX_LOOP = "modules/jb2a_patreon/Library/Generic/UI/IconHorror_*_200x200.webm"
+    new Sequence()
+        .effect()
+        .fadeIn(1000)
+        .fadeOut(1000)
+        .file(VFX_LOOP)
+        .atLocation(target)
+        .scaleToObject(1.0)
+        .play();
 }
