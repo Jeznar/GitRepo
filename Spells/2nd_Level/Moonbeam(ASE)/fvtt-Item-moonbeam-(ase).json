@@ -1,7 +1,7 @@
 {
   "name": "Moonbeam (ASE)",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/beam-blue-3.jpg",
+  "img": "icons/magic/light/beam-rays-blue-large.webp",
   "data": {
     "description": {
       "value": "<p>A silvery beam of pale light shines down in a 5-foot-radius, 40-foot-high cylinder centered on a point within range (intersection of four squares). Until the spell ends, dim light fills the cylinder.</p>\n<p>When a creature <strong><span style=\"text-decoration:underline\">enters the spell’s area for the first time</span></strong> on a turn or <strong><span style=\"text-decoration:underline\">starts its turn there</span></strong>, it is engulfed in ghostly flames that cause searing pain, and it must make a Constitution saving throw. It takes 2d10 radiant damage on a failed save, or half as much damage on a successful one.</p>\n<p>A shapechanger makes its saving throw with disadvantage. If it fails, it also instantly reverts to its original form and can’t assume a different form until it leaves the spell’s light.</p>\n<p>On each of your turns after you cast this spell, you can use an <strong>action</strong> to move the beam up to <span style=\"text-decoration:underline\">60 feet in any direction</span>.</p>\n<p><em><strong>At Higher Levels.</strong></em> When you cast this spell using a spell slot of 3rd level or higher, the damage increases by 1d10 for each slot level above 2nd.</p>",
@@ -15,8 +15,8 @@
       "condition": ""
     },
     "duration": {
-      "value": null,
-      "units": ""
+      "value": 1,
+      "units": "minute"
     },
     "target": {
       "value": null,
@@ -43,7 +43,10 @@
     "actionType": "other",
     "attackBonus": 0,
     "chatFlavor": "",
-    "critical": null,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
     "damage": {
       "parts": [],
       "versatile": ""
@@ -62,7 +65,7 @@
       "somatic": true,
       "material": true,
       "ritual": false,
-      "concentration": false
+      "concentration": true
     },
     "materials": {
       "value": "",
@@ -80,7 +83,6 @@
     }
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "advancedspelleffects": {
       "enableASE": true,
@@ -111,16 +113,28 @@
       "set3p": false
     },
     "midi-qol": {
-      "onUseMacroName": ""
+      "onUseMacroName": "",
+      "effectActivation": false
     },
     "core": {
       "sourceId": "Item.CWigebZVRQZtpXaM"
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

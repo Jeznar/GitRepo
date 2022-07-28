@@ -254,6 +254,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.28 Updated Vrock's Stunning Screech to auto select targets based on range, creature type (demons are immune), and line of sound.  
 
+22.07.28 Fix to Moonbeam, it was missing concentration
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
