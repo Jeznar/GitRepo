@@ -94,7 +94,10 @@ async function doOnUse() {
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, specialDuration: ["1Hit:msak", "1Hit:mwak"] } },
+        flags: { 
+            dae: { itemData: aItem, specialDuration: ["1Hit:msak", "1Hit:mwak"] },
+            convenientDescription: `Next melee hit inflicts 1d10 lighting bonus damage and may stun target`
+        },
         icon: aItem.img,
         label: aItem.name
     }];

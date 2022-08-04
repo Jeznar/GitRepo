@@ -1,7 +1,9 @@
-//##############################################
-// Midi-Qol On Use
-// Detects Undead and gives them disadvantage
-//##############################################
+const MACRONAME = "Chill_Touch.0.2.js"
+/*****************************************************************************************
+ * Source Unknown
+ * 
+ * 08/02/22 0.4 Add convenientDescription
+ *****************************************************************************************/
 async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
 if (args[0].hitTargets.length === 0) return {};
 const target = canvas.tokens.get(args[0].hitTargets[0].id);
@@ -14,10 +16,15 @@ let undeadDis = [{ "key": "data.traits.di.value", "mode": 2, "value": "healing",
 if (undead) undeadDis.push(
     { "key": "flags.midi-qol.disadvantage.attack.all", "mode": 2, "value": 1, "priority": 20 }    
 );
+const CE_DESC = `Can not regain hit points.`
 let effectData = {
     label: effectName,
     icon: "systems/dnd5e/icons/skills/ice_17.jpg",
     origin: args[0].uuid,
+    disabled: false,
+    flags: { 
+        convenientDescription: CE_DESC
+    },
     //------------------
     // 6 second duration replaced with 1 round duration to keep the effect in place till the 
     // caster's next turn (unless token exit/enter the turn tracker, that screws it up). -Jez

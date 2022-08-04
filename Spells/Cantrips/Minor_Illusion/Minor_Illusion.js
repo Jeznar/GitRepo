@@ -1,10 +1,11 @@
-const MACRONAME = "Minor_Illusion.0.2.js"
+const MACRONAME = "Minor_Illusion.0.3.js"
 /*****************************************************************************************
  * Run a three staget Illusion rune VFX in the 5' square tile created when the spell was targeted. 
  * Delete that VFX on spell completion or removal. 
  * 
  * 06/01/22 0.1 Creation of Macro
  * 07/01/22 0.2 Swap in calls to jez.tileCreate and jez.tileDelete
+ * 08/02/22 0.4 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let trcLvl = 1;
@@ -93,13 +94,17 @@ async function doOnUse() {
     // Add an effect to the active token 
     //
     const GAME_RND = game.combat ? game.combat.round : 0;
+    const CE_DESC = `Maintaining a minor illusion`
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
         origin: aToken.uuid,
         disabled: false,
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem } },
+        flags: { 
+            dae: { itemData: aItem }, 
+            convenientDescription: CE_DESC
+        },
         changes: [
             { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `Tile ${fetchedTile.id}`, priority: 20 },
         ]

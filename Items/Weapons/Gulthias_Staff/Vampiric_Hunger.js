@@ -1,4 +1,4 @@
-const macroName = "Vampiric_Hunger_0.1"
+const MACRONAME = "Vampiric_Hunger.1.1.js"
 /********************************************************************************************************
  * Macro to implement Vampiric Hunger life drain effect.
  * 
@@ -12,19 +12,23 @@ const macroName = "Vampiric_Hunger_0.1"
  * This macro just applies a debuff to implement the HP max reduction.
  * 
  * 12/16/21 1.0 JGB Creation from "Sacrificial_Summon_0.3"
+ * 08/02/22 1.1 JGB Add convenientDescription
  ******************************************************************************************************/
 const DEBUG = false;
-const lastArg = args[args.length - 1];
-const itemD = lastArg.item;
+const LAST_ARG = args[args.length - 1];
+// Set the value for the Active Item (aItem)
+let aItem;         
+if (args[0]?.item) aItem = args[0]?.item; 
+else aItem = LAST_ARG.efData?.flags?.dae?.aItemata;
 const gameRound = game.combat ? game.combat.round : 0;
-let damageDetail = await lastArg.damageDetail.find(i=> i.type === "necrotic");
+let damageDetail = await LAST_ARG.damageDetail.find(i=> i.type === "necrotic");
 let damageTotal = (damageDetail.damage-(damageDetail.DR ?? 0))*(damageDetail.damageMultiplier ?? 1);
 
 if (DEBUG) {
     console.log(`Executing: ${MACRONAME}`);
     console.log(` actor: ${actor.name}`,actor);
     console.log(` actor.uuid: `,actor.uuid);
-    console.log(` ItemD: ${itemD.name}`,itemD);
+    console.log(` aItem: ${aItem.name}`,aItem);
     console.log(` damageDetail: `,damageDetail);
     console.log(` damageTotal: `,damageTotal);
 }
@@ -41,13 +45,17 @@ if (args[0].failedSaves.length === 0) {
 //----------------------------------------------------------------------------------------------------
 // Apply the debuff effect
 //
+const CE_DESC = `Hit point maximum reduced by ${damageTotal}` 
 let effectData = {
-    label: itemD.name,
-    icon: itemD.img,
-    flags: { dae: { itemData: itemD, stackable: true, macroRepeat: "none" } },
+    label: aItem.name,
+    icon: aItem.img,
+    flags: { 
+        dae: { itemData: aItem, stackable: true, macroRepeat: "none" },
+        convenientDescription: CE_DESC
+     },
     origin: actor.uuid,
     disabled: false,
-    duration: { rounds: 999999, startRound: gameRound },
+    // duration: { rounds: 999999, startRound: gameRound },
     changes: [{ key: "data.attributes.hp.max", mode: 2, value: -damageTotal, priority: 20 }]
 };
 await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: actor.uuid, effects: [effectData] });
@@ -70,9 +78,9 @@ return;
  * Post the results to chat card
  ***************************************************************************************/
  async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
+    const LAST_ARG = args[args.length - 1];
 
-    let chatMessage = await game.messages.get(lastArg.itemCardId);
+    let chatMessage = await game.messages.get(LAST_ARG.itemCardId);
     let content = await duplicate(chatMessage.data.content);
     // const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
     // const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;

@@ -1,4 +1,4 @@
-const MACRONAME = "Animate_Objects.0.3.js"
+const MACRONAME = "Animate_Objects.0.4.js"
 /*****************************************************************************************
  * Implement Animate Objects which is a rather complicated spell.  This macro assumes
  * enoiugh of the appropriate type of objects are in range.  The general flow of this 
@@ -15,6 +15,7 @@ const MACRONAME = "Animate_Objects.0.3.js"
  * 06/01/22 0.1 Creation of Macro
  * 07/15/22 0.2 Update to use warpgate.spawnAt with range limitation
  * 07/17/22 0.3 Update to use jez.spawnAt (v2) for summoning
+ * 08/02/22 0.4 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -200,6 +201,7 @@ async function addWatchdogEffect(tokenIdArray) {
   let tokenIds = ""
   const EXPIRE = ["newDay", "longRest", "shortRest"];
   const GAME_RND = game.combat ? game.combat.round : 0;
+  const CE_DESC = `Animated objects are active`
   // Build list of token IDs seperated by spaces
   for (let i = 0; i < tokenIdArray.length; i++) tokenIds += `${tokenIdArray[i]} `
   let effectData = {
@@ -208,7 +210,10 @@ async function addWatchdogEffect(tokenIdArray) {
     origin: LAST_ARG.uuid,
     disabled: false,
     duration: { rounds: 10, startRound: GAME_RND, startTime: game.time.worldTime },
-    flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+    flags: { 
+      dae: { macroRepeat: "none", specialDuration: EXPIRE },
+      convenientDescription: CE_DESC
+    },
     changes: [
       { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },
     ]

@@ -96,7 +96,7 @@ This function wraps the CE add function, providing options that come close to du
 ~~~javascript
 const TL = 4
 await jezcon.addCondition("Prone", LAST_ARG.targetUuids, 
-   {allowDups: false, replaceEx: true, origin: aActor.uuid, overlay: false, traveLvl: TL }) 
+   {allowDups: false, replaceEx: true, origin: aActor.uuid, overlay: false, traceLvl: TL }) 
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

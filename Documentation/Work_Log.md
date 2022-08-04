@@ -260,6 +260,22 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.07.28 Updated Threat_Display (Super Scary) to have a CE Description and VFX
 
+22.07.29 Review usage of MidiQOL.socket().executeAsGM("createEffects"... calls.  Updating [status spreadsheet](https://docs.google.com/spreadsheets/d/1Fpo2mE5PAeSU-zoz5VxhHv8w8JwKVqQ1/edit#gid=34352724) as progress is made.  For each instance consider:
+
+1. Replacing with a CE add call instead of custom crafted effect
+2. Add a flags: {convenientDescription: "Text Here"} data line
+3. Opt to leave unchanged
+
+22.07.29 Fixing various smite spells.  They need to have jez.CUSTOM swapped to jez.OVERRIDE for two effects: `flags.midi-qol.spellLevel` and `flags.midi-qol.spellId`.  Fixed so far: 
+
+* Searing Smite 7/29
+* Ensnaring Strike 7/31
+
+22.07.30 Opened [issue #161](https://github.com/DFreds/dfreds-convenient-effects/issues/161) against Convenient Effects Module.  The module's findEffectByName function is stacking Special Durations added as supposedly one time things.  Created macro **Convenient Effects Exercise** to tickle the apparent bug.
+
+22.08.01 Major rewrite of Sleep
+
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

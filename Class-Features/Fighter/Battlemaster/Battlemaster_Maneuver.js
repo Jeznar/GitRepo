@@ -1,4 +1,4 @@
-const MACRONAME = "Battlemaster_Maneuver.0.2.js"
+const MACRONAME = "Battlemaster_Maneuver.0.3.js"
 /*****************************************************************************************
  * Derived from Divine Smite.  Reads the item name to determine the type of manuever. 
  * Supported manuevers are listed in the below description.
@@ -19,6 +19,7 @@ const MACRONAME = "Battlemaster_Maneuver.0.2.js"
  *  
  * 01/22/22 0.1 JGB Creation
  * 05/02/22 0.2 JGB Update for Foundry 9.x
+ * 08/02/22 0.3 JGB convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 const LAST_ARG = args[args.length - 1];
@@ -56,6 +57,7 @@ if(!DAMAGE_TYPE) {
 }
 let tToken = canvas.tokens.get(lastAttack?.damageList[0]?.tokenId);
 let tActor = tToken?.actor;
+jez.log(`Targeting ${tToken.name}`, tActor)
 //---------------------------------------------------------------------------------------
 // Roll the extra damage die and apply it.
 //
@@ -109,14 +111,14 @@ async function doTrip() {
     //-----------------------------------------------------------------------------------
     // End if target is already affected by CONDITION
     //
-  //if (aActor.effects.find(ef => ef.data.label === CONDITION)) {
-    let oldEffect = aActor.effects.find(ef => ef.data.label === CONDITION)
-    if (tActor.effects.find(ef => ef.data.label === CONDITION)) {
-        let msg = `${tToken.name} already prone, can not be tripped.`;
-        jez.log(msg);
-        jez.addMessage(chatMessage, { color: "darkbrown", fSize: 14, msg: msg, tag: "saves" })
-        return;
-    }
+    //if (aActor.effects.find(ef => ef.data.label === CONDITION)) {
+    // let oldEffect = aActor.effects.find(ef => ef.data.label === CONDITION)
+    // if (tActor.effects.find(ef => ef.data.label === CONDITION)) {
+    //     let msg = `${tToken.name} already prone, can not be tripped.`;
+    //     jez.log(msg);
+    //     jez.addMessage(chatMessage, { color: "darkbrown", fSize: 14, msg: msg, tag: "saves" })
+    //     return;
+    // }
     //-----------------------------------------------------------------------------------
     // Strength saving throw to avoid a knockdown. 
     //
@@ -129,21 +131,22 @@ async function doTrip() {
     // Apply condition to the target as appropriate
     // 
     if (save.total < SAVE_DC) {
-        let effectData = {
-            label: CONDITION,
-            icon: "modules/combat-utility-belt/icons/prone.svg",
-            origin: aActor.uuid,
-            disabled: false,
-            duration: { rounds: 99, startRound: gameRound },
-            changes: [
-                { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.mwak`, mode: jez.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.msak`, mode: jez.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.disadvantage.attack.rwak`, mode: jez.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.disadvantage.attack.rsak`, mode: jez.ADD, value: 1, priority: 20 }
-            ]
-        };
-        await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tActor.uuid, effects: [effectData] });
+        await jezcon.addCondition("Prone", tActor.uuid, {allowDups: false}) 
+        // let effectData = {
+        //     label: CONDITION,
+        //     icon: "modules/combat-utility-belt/icons/prone.svg",
+        //     origin: aActor.uuid,
+        //     disabled: false,
+        //     duration: { rounds: 99, startRound: gameRound },
+        //     changes: [
+        //         { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },
+        //         { key: `flags.midi-qol.grants.advantage.attack.mwak`, mode: jez.ADD, value: 1, priority: 20 },
+        //         { key: `flags.midi-qol.grants.advantage.attack.msak`, mode: jez.ADD, value: 1, priority: 20 },
+        //         { key: `flags.midi-qol.grants.disadvantage.attack.rwak`, mode: jez.ADD, value: 1, priority: 20 },
+        //         { key: `flags.midi-qol.grants.disadvantage.attack.rsak`, mode: jez.ADD, value: 1, priority: 20 }
+        //     ]
+        // };
+        // await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tActor.uuid, effects: [effectData] });
         msg = `${tToken.name} has been knocked prone by ${aToken.name}`
         jez.log(msg);
         jez.addMessage(chatMessage, { color: "saddlebrown", fSize: 14, msg: msg, tag: "saves" })
@@ -170,13 +173,11 @@ async function doDistracting() {
         origin: aActor.uuid,
         disabled: false,
         duration: { turns: 1, startRound: gameRound },
-        flags: { dae: { macroRepeat: "none", specialDuration: [mqExpire] } },
-        changes: [{
-            key: mqFlag,
-            value: 1,
-            mode: jez.ADD,
-            priority: 20
-        }]
+        flags: { 
+            dae: { macroRepeat: "none", specialDuration: [mqExpire] },
+            convenientDescription: `Grants advantage on next attack`
+        },
+        changes: [{ key: mqFlag, value: 1, mode: jez.ADD, priority: 20 }]
     }
     await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tActor.uuid, effects: [effectData] });
     msg = `${tToken.name} is granting advantage to the next attack within a round, not from ${aToken.name}.`
@@ -193,7 +194,7 @@ async function doDisarming() {
     let save = (await tActor.rollAbilitySave(SAVE_TYPE,{FLAVOR,chatMessage:true,fastforward:true}));
     if (save.total < SAVE_DC) {
         msg = `${tToken.name} has been disarmed, dropping the item ${aToken.name} specified.
-    That item is now on the ground at ${tToken.name}'s feet.`
+    That item is now on the ground at ${tToken.name}'s feet.<br><br>This must be handled manually.`
         jez.log(msg);
         jez.addMessage(chatMessage, { color: "saddlebrown", fSize: 14, msg: msg, tag: "saves" })
     } else {

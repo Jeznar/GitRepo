@@ -1,12 +1,15 @@
-const MACRONAME = "Cruel_Puppetry.0.3.js"
+const MACRONAME = "Cruel_Puppetry.0.4.js"
 /*****************************************************************************************
  * Create a temporary attack item to use against the victim of Cruel Puppetry
  *
  * 01/15/22 0.1 Creation of Macro
  * 01/16/22 0.2 Finishing up.  Still has issue with multiple targets
  * 05/17/22 0.3 FoundryVTT 9.x compatibility
+ * 08/02/22 0.4 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+const TL = 5;                               // Trace Level for this macro
+let msg = "";                               // Global message string
 jez.log("")
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
@@ -22,27 +25,27 @@ jez.log("------- Global Values Set -------",
     `Active Token (aToken) ${aToken?.name}`, aToken,
     `Active Actor (aActor) ${aActor?.name}`, aActor,
     `Active Item (aItem) ${aItem?.name}`, aItem)
-let msg, errorMsg, msgTitle = "";
+let errorMsg, msgTitle = "";
 let gameRound = game.combat ? game.combat.round : 0;
 const SMASH_IMG = "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet.png"
-const RIP_IMG   = "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet_Broken.png"
+const RIP_IMG = "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet_Broken.png"
 const FORCE_IMG = "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet_Moved.png"
-const HOLD_IMG  = "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet_Restrained.png"
+const HOLD_IMG = "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet_Restrained.png"
 const FAIL_ICON = "Icons_JGB/Misc/Failure.png"
 const RESTRAINED_JOURNAL = "<b>@JournalEntry[CZWEqV2uG9aDWJnD]{restrained}</b>"
-const RESTRAINED_ICON    = "modules/combat-utility-belt/icons/restrained.svg"
-const RESTRAINED_NAME    = "Restrained" // aItem.name || "Nature's Wraith";
-const ERROR_ICON         = "Icons_JGB/Misc/Error.png"
+const RESTRAINED_ICON = "modules/combat-utility-belt/icons/restrained.svg"
+const RESTRAINED_NAME = "Restrained" // aItem.name || "Nature's Wraith";
+const ERROR_ICON = "Icons_JGB/Misc/Error.png"
 const ATTACK_ITEM = "Cruel Puppetry Repeat Effect";
 let distance = 15
 let numDice = 3
 let repeatExe = false
 if (args[0]?.item?.name.toLowerCase().includes("repeat")) repeatExe = true // e.g. "Cruel Puppetry Repeat Effect"
-jez.log("Repeat execution",repeatExe)
+jez.log("Repeat execution", repeatExe)
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
-if ( (args[0]?.tag === "OnUse") && (!repeatExe) ) { // Only check on first doOnUse run
+if ((args[0]?.tag === "OnUse") && (!repeatExe)) { // Only check on first doOnUse run
     if (!(await preCheck())) {
         jez.log(errorMsg)
         return;
@@ -51,20 +54,16 @@ if ( (args[0]?.tag === "OnUse") && (!repeatExe) ) { // Only check on first doOnU
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off")  doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
+if (args[0] === "off") doOff();                   // DAE removal
 if (args[0]?.tag === "OnUse") doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE removal
 if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
-
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Check the setup of things.  Setting the global errorMsg and returning true for ok!
  ***************************************************************************************************/
 async function preCheck() {
@@ -75,16 +74,16 @@ async function preCheck() {
 
         msg = `No, no, NO!.<br><br><b>Cruel Puppetry</b> requires exactly one target! <br><br>${errorMsg}`
         msgTitle = "Suspected PEBCAK Error"
-        await jezPostMessage({ color: "Crimson", fSize: 14, msg: msg, title: msgTitle, icon: ERROR_ICON })
+        await jez.postMessage({ color: "Crimson", fSize: 14, msg: msg, title: msgTitle, icon: ERROR_ICON })
         // await jezDeleteItem(ATTACK_ITEM, aActor); // Broken at FoundryVTT 9.x
         await jez.deleteItems(ATTACK_ITEM, "spell", aActor);
-        await DAE.unsetFlag(aActor, `${MACRO}.spellData`); 
+        await DAE.unsetFlag(aActor, `${MACRO}.spellData`);
         jez.log("aActor", aActor)
         let concentrating = await aActor.effects.find(ef => ef.data.label === "Concentrating");
         jez.log("concentrating", concentrating)
         if (concentrating) await concentrating.delete();
 
-        return(false);
+        return (false);
     }
     jez.log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
     return (true)
@@ -95,7 +94,7 @@ async function preCheck() {
  *
  * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects
  ***************************************************************************************************/
- async function doOff() {
+async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     let originID = lastArg.origin.split(".")[1] // aqNN90V6BjFcJpI5 (Origin  ID)
@@ -107,7 +106,7 @@ async function preCheck() {
     jez.log(`doOff ---> Delete ${ATTACK_ITEM} from ${oToken.data.name} if it exists`)
     //await jezDeleteItem(ATTACK_ITEM, oActor);
     await jez.deleteItems(ATTACK_ITEM, "spell", oActor);
-    await DAE.unsetFlag(oActor, `${MACRO}.spellData`); 
+    await DAE.unsetFlag(oActor, `${MACRO}.spellData`);
     jez.log("Actor to remove concentration from", oActor)
     let concentrating = await oActor.effects.find(ef => ef.data.label === "Concentrating");
     jez.log("Concentration effect", concentrating)
@@ -115,8 +114,7 @@ async function preCheck() {
     // await deleteItem(ATTACK_ITEM, oActor);
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
-  }
-
+}
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set On
  ***************************************************************************************************/
@@ -160,7 +158,7 @@ async function doOnUse() {
             msg = `${tToken.name} has broken the Cruel Pupptry spell, with a CHA save of ${save.total}
             against a DC${saveDC}.  The doll used to cast the spell has been destroyed.`
             msgTitle += "Spell Broken"
-            jezPostMessage({ color: "BlueViolet", fSize: 14, msg: msg, title: msgTitle, icon: FAIL_ICON })
+            jez.postMessage({ color: "BlueViolet", fSize: 14, msg: msg, title: msgTitle, icon: FAIL_ICON })
             return;
         } else {
             jez.log(`save failed with a ${save.total}`);
@@ -169,7 +167,7 @@ async function doOnUse() {
             msg = `${tToken.name} failed to save against the Cruel Pupptry spell, with a CHA save of 
             ${save.total} against a DC${saveDC}.  ${aToken.name} may choose an effect.`
             msgTitle += "Save Failed"
-            jezPostMessage({ color: "DarkGreen", fSize: 14, msg: msg, title: msgTitle, icon: FAIL_ICON })
+            jez.postMessage({ color: "DarkGreen", fSize: 14, msg: msg, title: msgTitle, icon: FAIL_ICON })
         }
     } else { // First time execution
         tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
@@ -183,16 +181,12 @@ async function doOnUse() {
             targetID: tActor?.id,
             spellLevel: args[0].spellLevel,
         }
-        await DAE.unsetFlag(aActor, `${MACRO}.spellData`); 
+        await DAE.unsetFlag(aActor, `${MACRO}.spellData`);
         await DAE.setFlag(aActor, `${MACRO}.spellData`, spellData);
     }
 
     await pickFlavor()
- 
-    // https://www.w3schools.com/tags/ref_colornames.asp
-    msg = `<p style="color:blue;font-size:14px;">
-    Maybe say something useful...</p>`
-    //postResults(msg);
+
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
     //----------------------------------------------------------------------------------
@@ -238,7 +232,7 @@ async function doOnUse() {
 /***************************************************************************************************
  * Select Flavor of Spell this Round and Initiate Callback
  ***************************************************************************************************/
- async function pickFlavor() {
+async function pickFlavor() {
     const FUNCNAME = "pickFlavor()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const queryTitle = "Select How to Use Doll"
@@ -256,17 +250,17 @@ async function doOnUse() {
 /****************************************************************************************
  * Create and process selection dialog, passing it onto specified callback function
  ***************************************************************************************/
- function pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions) {
+function pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions) {
     const FUNCNAME = "pickFromList(queryTitle, queryText, ...queryOptions)";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    if (typeof(pickCallBack)!="function" ) {
-        let msg = `pickFromList given invalid pickCallBack, it is a ${typeof(pickCallBack)}`
+    if (typeof (pickCallBack) != "function") {
+        msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
         ui.notifications.error(msg);
         jez.log(msg);
         return
     }
     if (!queryTitle || !queryText || !queryOptions) {
-        let msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
+        msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
                    but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         ui.notifications.error(msg);
         jez.log(msg);
@@ -308,7 +302,7 @@ async function doOnUse() {
     }).render(true)
 
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-        return;
+    return;
 }
 /***************************************************************************************************
  * Callback function to handle menu choice.
@@ -334,7 +328,7 @@ async function pickFlavorCallBack(selection) {
             msg = `${tToken.name} is affected by the ${RESTRAINED_JOURNAL} condition until
                     ${aToken.name}'s next turn`
             msgTitle += "Hold Still"
-            jezPostMessage({ color: "purple", fSize: 14, msg: msg, title: msgTitle, icon: HOLD_IMG })
+            jez.postMessage({ color: "purple", fSize: 14, msg: msg, title: msgTitle, icon: HOLD_IMG })
             break;
         case "Force":
             jez.log(`Force Case: ${selection}`)
@@ -342,7 +336,7 @@ async function pickFlavorCallBack(selection) {
                    <b>${aToken.name}</b> chooses path and destination.`
             msgTitle += "Forced Move"
             jez.log("msg", msg)
-            jezPostMessage({ color: "purple", fSize: 14, msg: msg, title: msgTitle, icon: FORCE_IMG })
+            jez.postMessage({ color: "purple", fSize: 14, msg: msg, title: msgTitle, icon: FORCE_IMG })
             break;
         case "Smash":
             jez.log(`Smash Case: ${selection}`)
@@ -366,11 +360,23 @@ async function pickFlavorCallBack(selection) {
     // Apply Restrained Condition to specified UUID
     //
     function applyRestrained(actorUUID) {
+        const FUNCNAME = "applyRestrained(actorUUID)";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `${MACRO} ${FNAME} |`
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "actorUUID", actorUUID);
+        //----------------------------------------------------------------------------------
+        //jezcon.add({ effectName: RESTRAINED_NAME, uuid: actorUUID, traceLvl: TL });
+        const CE_DESC = `Speed is 0, no bonuses to speed, grants advantage to attacks, disadvantage on attacks and DEX Saves`
         let effectData = [{
             label: RESTRAINED_NAME,
             icon: RESTRAINED_ICON,
             origin: aActor.uuid,
             disabled: false,
+            flags: { 
+                dae: { itemData: aItem }, 
+                convenientDescription: CE_DESC
+            },
             duration: { rounds: 1, startRound: gameRound },
             changes: [
                 { key: `flags.VariantEncumbrance.speed`, mode: OVERRIDE, value: 1, priority: 20 },
@@ -400,7 +406,7 @@ async function pickFlavorCallBack(selection) {
                damage on <b>${tToken.name}</b>.`
         msgTitle += "Smash Doll"
         jez.log("msg", msg)
-        jezPostMessage({ color: "Maroon", fSize: 14, msg: msg, title: msgTitle, icon: SMASH_IMG })
+        jez.postMessage({ color: "Maroon", fSize: 14, msg: msg, title: msgTitle, icon: SMASH_IMG })
 
     }
     //----------------------------------------------------------------------------------
@@ -417,7 +423,7 @@ async function pickFlavorCallBack(selection) {
                damage on <b>${tToken.name}</b> and ending the spell effect.`
         msgTitle += "Rip Doll"
         jez.log("msg", msg)
-        jezPostMessage({ color: "FireBrick", fSize: 14, msg: msg, title: msgTitle, icon: RIP_IMG })
+        jez.postMessage({ color: "FireBrick", fSize: 14, msg: msg, title: msgTitle, icon: RIP_IMG })
 
         let concentrating = await aActor.effects.find(ef => ef.data.label === "Concentrating");
         if (concentrating) await concentrating.delete();
@@ -440,116 +446,4 @@ function oneTarget() {
     }
     jez.log(`Targeting one target, a good thing`);
     return (true);
-}
-/***************************************************************************************
- * Function to delete an item from actor
- *
- * Parameters
- *  - itemName: A string naming the item to be found in actor's inventory
- *  - actor: Optional actor to be searched, defaults to actor launching this macro
- ***************************************************************************************/
- /*async function jezDeleteItem(itemName, actor) {
-    const FUNCNAME = "deleteItem(itemName, actor)";
-    let defActor = null;
-    if (lastArg.tokenId) defActor = canvas.tokens.get(lastArg.tokenId).actor; 
-    else defActor = game.actors.get(lastArg.actorId);
-    actor = actor ? actor : defActor; // Set actor if not supplied
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,
-        "itemName", itemName, `actor ${actor?.name}`, actor);
-
-    if (!jezIsActor5e(actor)) {
-        errorMsg = `Obtained actor argument is not of type Actor5E (${actor?.constructor.name})`
-        jez.log(errorMsg)
-        jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} ==> FALSE --------------`);
-        return (false);
-    }
-    let item = actor.items.find(item => item.data.name === itemName && item.type === "spell")
-    if (item == null || item == undefined) {
-        errorMsg = `${actor.name} does not have ${itemName}`
-        jez.log(errorMsg);
-        jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} ==> FALSE --------------`);
-        return (false);
-    }
-
-    jez.log("item.id", item.id)
-    jez.log(await actor.deleteOwnedItem(item.id));
-    //jez.log(await aActor.deleteEmbeddedDocuments(item.id));
-    // await item.uuid.delete()
-    jez.log(`${actor.name} had (past tense) ${item.name}`, item);
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} ==> TRUE -----------------`);
-    return (true);
-}*/
-/***************************************************************************************************
- * Return true if passed argument is of object type "Token5e"
- ***************************************************************************************************/
- function jezIsActor5e(obj) {
-    if (obj?.constructor.name === "Actor5e") return(true)
-    return(false)
-}
-/***************************************************************************************************
- * Post the results to chat card
- ***************************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
-
-    let chatMessage = game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    jez.log(`chatMessage: `,chatMessage);
-    //const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
-    //const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
-    const searchString = /<div class="end-midi-qol-saves-display">/g;
-    const replaceString = `<div class="end-midi-qol-saves-display">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
-    return;
-}
-
-/***************************************************************************************************
- * Post a new chat message -- msgParm should be a string for a simple message or an object with
- * some or all of these fields set below for the chat object.
- *
- * Example Calls:
- *  jezPostMessage("Hi there!")
- *  jezPostMessage({color:"purple", fSize:18, msg:"Bazinga", title:"Sheldon says..." })
- *
- ***************************************************************************************************/
- async function jezPostMessage(msgParm) {
-    const FUNCNAME = "postChatMessage(msgParm)";
-    jez.log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`,
-        "msgParm", msgParm);
-    let typeOfParm = typeof (msgParm)
-    switch (typeOfParm) {
-        case "string":
-            await ChatMessage.create({ content: msgParm });
-            break;
-        case "object":
-            let chat = {}
-            chat.title = msgParm?.title || "Generic Chat Message"
-            chat.fSize = msgParm?.fSize || 12
-            chat.color = msgParm?.color || "black"
-            chat.icon  = msgParm?.icon  || "icons/vtt-512.png"
-            chat.msg   = msgParm?.msg   || "Maybe say something useful..."
-            let chatCard = `
-            <div class="dnd5e chat-card item-card midi-qol-item-card">
-                <header class="card-header flexrow">
-                    <img src="${chat.icon}" title="${chat.title}" width="36" height="36">
-                    <h3 class="item-name">${chat.title}</h3>
-                </header>
-                <div class="card-buttons">
-                    <p style="color:${chat.color};font-size:${chat.fSize}px">
-                        ${chat.msg}</p>
-                </div>
-            </div>`
-            await ChatMessage.create({ content: chatCard });
-            break;
-        default:
-            errorMsg`Icky Poo Poo!  Parameter passed was neither a string nor object (${typeOfParm})`
-            jez.log(errorMsg, msgParm)
-            ui.notifications.error(errorMsg)
-    }
-    await jez.wait(100);
-    await ui.chat.scrollBottom();
-    jez.log(`--------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return;
 }

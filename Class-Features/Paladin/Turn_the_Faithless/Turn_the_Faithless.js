@@ -1,4 +1,4 @@
-const MACRONAME = "Turn_the_Faithless.0.4.js";
+const MACRONAME = "Turn_the_Faithless.0.5.js";
 /*******************************************************************************************
  * Source: Unknown
  * Requires: DAE, Callback macros ActorUpdate
@@ -7,22 +7,40 @@ const MACRONAME = "Turn_the_Faithless.0.4.js";
  * 12/22/21 0.2 JGB Working on getting the set of targets 
  * 12/22/21 0.3 JGB Remove stray existance of Frightened 
  * 05/04/22 0.4 Update for Foundry 9.x
+ * 08/02/22 0.5 Add convenientDescription
  *******************************************************************************************/
+ const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 5;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //---------------------------------------------------------------------------------------------------
+ if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
+ if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ const LAST_ARG = args[args.length - 1];
+ //---------------------------------------------------------------------------------------------------
+ // Set the value for the Active Token (aToken)
+ let aToken;         
+ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+ else aToken = game.actors.get(LAST_ARG.tokenId);
+ let aActor = aToken.actor; 
+ //
+ // Set the value for the Active Item (aItem)
+ let aItem;         
+ if (args[0]?.item) aItem = args[0]?.item; 
+ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+ //---------------------------------------------------------------------------------------------------
+ // Set Macro specific globals
+ //
 const DEBUG = true;
-log("---------------------------------------------------------------------------",
-    "Starting", MACRONAME);
 
 const ActorUpdate = game.macros?.getName("ActorUpdate");
 if (!ActorUpdate) return ui.notifications.error(`Cannot locate ActorUpdate GM Macro`);
 if (!ActorUpdate.data.flags["advanced-macros"].runAsGM) return ui.notifications.error(`ActorUpdate "Execute as GM" needs to be checked.`);
 
-const activeToken = token; // Token is preset in the execution environment to active token
-const tokenId = args[0].tokenId;
-const actorD = game.actors.get(args[0].actor._id);
-const level = actorD.getRollData().classes.paladin.levels;
-const dc = actorD.getRollData().attributes.spelldc;
-const itemD = args[0].item;
-const saveType = "wis";
+// const actorD = game.actors.get(args[0].actor._id);
+const level = aActor.getRollData().classes.paladin.levels;
+const SAVE_DC = aActor.getRollData().attributes.spelldc;
+const SAVE_TYPE = "wis";
 const RANGEPAD = 4.9;
 const TURNEDICON = "Icons_JGB/Misc/Turned.png";
 const allowedUnits = ["", "ft", "any"];
@@ -38,31 +56,38 @@ let isNPC = true;
 let targetType = "";
 let isFaithless = false;
 
-
-log('Inititial Values Set as follows:',
-    "actorD", actorD,
-    "activeToken", activeToken,
-    "tokenId", tokenId,
-    "token", token,     // Preset in the execution environment to active token
-    "level", level,
-    "dc", dc,
-    "itemD", itemD,
-    "itemD.data.range.value", itemD.data.range.value,
-    "itemD.data.range.units", itemD.data.range.units,
-    "saveType", saveType);
-log("rollData", actorD.getRollData());
-
-let spellRange = getSpellRange(itemD, allowedUnits) + RANGEPAD;
-log("Values from Item Card", "spellRange", `${spellRange} including ${RANGEPAD} padding`);
-
-let targetList = getInRangeTokens(activeToken, spellRange);
-
-log(`Total of ${targetList.length} tokens in range`, targetList);
-if (DEBUG) for (let i = 0; i < targetList.length; i++) log(` ${i + 1} ${targetList[i].name}`);
-
+if (TL>4) jez.trace(`${TAG} Inititial Values Set as follows:`,
+    "aActor", aActor, "aToken", aToken, "token", token, "level", level,
+    "SAVE_DC", SAVE_DC, "aItem", aItem, "aItem.data.range.value", aItem.data.range.value,
+    "aItem.data.range.units", aItem.data.range.units, "SAVE_TYPE", SAVE_TYPE);
+if (TL>3) jez.trace(`${TAG} rollData`, aActor.getRollData());
+//-------------------------------------------------------------------------------------------------
+// Get Spell Range from item card
+//
+// let spellRange = getSpellRange(aItem, allowedUnits) + RANGEPAD;
+// if (TL>3) jez.trace(`${TAG} Values from Item Card`, "spellRange", `${spellRange} including ${RANGEPAD} padding`);
+const ALLOWED_UNITS = ["", "ft", "any"];
+const SPELL_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 30
+//-------------------------------------------------------------------------------------------------
+// Get in Range tokens list
+//
+let options = {
+    exclude: "self",    // self, friendly, or none (self is default)
+    direction: "t2o",       // t2o or o2t (Origin to Target) (t2o is default) 
+    chkHear: false,         // Boolean (false is default)
+    chkDeaf: true,          // Boolean (false is default)
+    traceLvl: TL,           // Trace level, integer typically 0 to 5
+}
+let targetList = await jez.inRangeTargets(aToken, 30, options);
+if (targetList.length === 0) return jez.badNews(`No effectable targets in range`, "i")
+if (TL>1) for (let i = 0; i < targetList.length; i++) jez.trace(`${TAG} Targeting: ${targetList[i].name}`)
+// let targetList = getInRangeTokens(aToken, SPELL_RANGE);
+//-------------------------------------------------------------------------------------------------
+// Loop through potential targets and evaluate
+//
 for (let targeted of targetList) {
     let target = canvas.tokens.get(targeted.id);
-    log("Targeting", target.actor.name);
+    if (TL>3) jez.trace(`${TAG} Targeting`, target.actor.name);
     //------------------------------------------------------------------------------------------
     // Need the creature type, but PCs and NPCs store that data differently.  Some important 
     // data hidden in the data structures:
@@ -77,10 +102,10 @@ for (let targeted of targetList) {
     //
     if (targeted.document._actor.data.type === "npc") isNPC = true;
     else isNPC = false;
-    // log(`${targeted.name} is NPC? ${isNPC}`)
+    if (TL>3) jez.trace(`${TAG} ${targeted.name} is NPC? ${isNPC}`)
     if (isNPC) targetType = target.document._actor.data.data.details.type.value 
     else targetType = target.document._actor.data.data.details.race.toLowerCase()
-    // log(`targetType`,targetType);
+    if (TL>3) jez.trace(`${TAG} targetType`,targetType);
 
     isFaithless = false;
     for (let i = 0; i < faithlessTypes.length; i++) {
@@ -89,7 +114,7 @@ for (let targeted of targetList) {
             break;
         }
     }
-    log(`${targeted.name} is faithless?`, isFaithless);
+    if (TL>2) jez.trace(`${TAG} ${targeted.name} is faithless?`, isFaithless);
 
     if (isFaithless) {
         let resist = ["Turn Resistance", "Turn Defiance"];
@@ -97,7 +122,7 @@ for (let targeted of targetList) {
         let immunity = ["Turn Immunity"];
         let getImmunity = target.actor.items.find(i => immunity.includes(i.name));
         let save = "";
-        getResistance ? save = await target.actor.rollAbilitySave(saveType, { advantage: true, chatMessage: false, fastForward: true }) : save = await target.actor.rollAbilitySave(saveType, { chatMessage: false, fastForward: true });
+        getResistance ? save = await target.actor.rollAbilitySave(SAVE_TYPE, { advantage: true, chatMessage: false, fastForward: true }) : save = await target.actor.rollAbilitySave(SAVE_TYPE, { chatMessage: false, fastForward: true });
         if (getImmunity) {
             turnTargets.push(`<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${target.id}">${target.name} immune</div><div><img src="${target.data.img}" width="30" height="30" style="border:0px"></div></div>`);
         }
@@ -112,8 +137,9 @@ for (let targeted of targetList) {
             * - If true form is concealed by an illusion, shapeshifting, or other 
             *   effect, that form is revealed while it is turned.
             ***************************************************************************************/
-            if (dc > save.total) {
-                log(" -- Failed Save --", `Target name ${target.name}`, target, `save.total ${save.total}`, save);
+            if (SAVE_DC > save.total) {
+                if (TL>2) jez.trace(`${TAG} -- Failed Save --`, `Target name ${target.name}`, target, `save.total ${save.total}`, save);
+                const CE_DESC = `Must move & dash away from ${aToken.name}, can not move with 30 ft. If can not move, must dodge.`
                 let gameRound = game.combat ? game.combat.round : 0;
                 let effectData = {
                     label: EFFECT,
@@ -121,24 +147,28 @@ for (let targeted of targetList) {
                     origin: args[0].uuid,
                     disabled: false,
                     duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
-                    flags: { dae: { macroRepeat: "none", specialDuration: ["isDamaged"] } },
+                    flags: { 
+                        dae: { macroRepeat: "none", specialDuration: ["isDamaged"] },
+                        convenientDescription: CE_DESC
+                    },
                     changes: [
-                        { key: `flags.gm-notes.notes`, mode: CUSTOM, value: `Applied by ${activeToken.name}`, priority: 20 },
+                        { key: `flags.gm-notes.notes`, mode: CUSTOM, value: `Applied by ${aToken.name}`, priority: 20 },
+                        { key: `macro.CE`, mode: jez.CUSTOM, value: `Reactions - None`, priority: 20 }
                     ]};
                 let effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize(`${EFFECT}`));
                 if (!effect) await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:target.actor.uuid, effects: [effectData] });
                 turnTargets.push(`<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${target.id}">${target.name} fails with ${save.total} [${EFFECT}]</div><div><img src="${target.data.img}" width="30" height="30" style="border:0px"></div></div>`);
 
             } else {
-                console.log(target.name, save.total, `Save`);
+                if (TL>0) jez.trace(`${TAG} ${target.name}, save total ${save.total} saved`);
                 turnTargets.push(`<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${target.id}">${target.name} succeeds with ${save.total}</div><div><img src="${target.data.img}" width="30" height="30" style="border:0px"></div></div>`);
             }
         }
     }
 }
-await wait(800);
+await jez.wait(800);
 let turn_list = turnTargets.join('');
-let turn_results = `<div class="midi-qol-nobox midi-qol-bigger-text">${itemD.name} DC ${dc} ${CONFIG.DND5E.abilities[saveType]} Saving Throw:</div><div><div class="midi-qol-nobox">${turn_list}</div></div>`;
+let turn_results = `<div class="midi-qol-nobox midi-qol-bigger-text">${aItem.name} DC ${SAVE_DC} ${CONFIG.DND5E.abilities[SAVE_TYPE]} Saving Throw:</div><div><div class="midi-qol-nobox">${turn_list}</div></div>`;
 const chatMessage = await game.messages.get(args[0].itemCardId);
 let content = await duplicate(chatMessage.data.content);
 const searchString = /<div class="midi-qol-hits-display">[\s\S]*<div class="end-midi-qol-hits-display">/g;
@@ -150,122 +180,24 @@ await ui.chat.scrollBottom();
 
 postResults(`Creatures that failed their saving throw are affected by the <b>${TURNED_JRNL}</b> condition.`)
 
-log("---------------------------------------------------------------------------",
-    "Finished", MACRONAME);
+if (TL>3) jez.trace(`${TAG} --- Finished ---`);
 return;
 
 /***************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************/
-
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
-
-/****************************************************************************************
-* Functrion is no longer used, keeping just-in-case
-***************************************************************************************/
-async function cr_lookup(level) {
-    if ((level >= 5) && (level < 8)) { return 0.5; }
-    if ((level >= 8) && (level < 11)) { return 1; }
-    if ((level >= 11) && (level < 14)) { return 2; }
-    if ((level >= 14) && (level < 17)) { return 3; }
-    if ((level >= 17) && (level <= 20)) { return 4; }
-}
-
-/****************************************************************************************
-* Return an array of the tokens that are within range of primeToken
-***************************************************************************************/
-function getInRangeTokens(primeToken, range) {
-    let tokenSet = [];
-    let placeables = canvas.tokens.placeables;
-    log(`canvas.tokens.placeables`, canvas.tokens.placeables)
-
-    for (let i = 0; i < placeables.length; i++) {
-        let thisToken = placeables[i];
-        let distance = canvas.grid.measureDistance(primeToken, thisToken).toFixed(1);
-        if (distance > range || activeToken.name === thisToken.name) {
-            log(` Droping ${thisToken.name} at ${distance} feet, from consideration`);
-            if (toFarCount++) { toFar += ", "; };
-            toFar += thisToken.name;
-            // log(`  To Far #${toFarCount} ${token.name} is ${distance} feet. To Fars: ${toFar}`);
-        } else {
-            log(` Adding ${thisToken.name} at ${distance} feet, to inRangeTokens`);
-            tokenSet.push(thisToken);
-        }
-    };
-    return tokenSet;
-}
-
-/****************************************************************************************
- * Get spell range
- ***************************************************************************************/
-
-function getSpellRange(itemD, allowedUnits) {
-    const FUNCNAME = "getSpellRange(itemD, allowedUnits)";
-    log("---------------------------------------------------------------------------",
-        "Starting", `${MACRONAME} ${FUNCNAME}`);
-
-    let range = itemD.data.range?.value;
-    let unit = itemD.data.range.units;
-    log("range", range, "unit", unit);
-    range = range ? range : 30;
-
-    if (allowedUnits.includes(unit)) {
-        log("Units are ok");
-        return (range);
-    } else {
-        log(`Unit ${unit} not in`, allowedUnits);
-        ui.notifications.error(`Unit ${unit} not in allowed units`);
-        return (0);
-    }
-}
-
-/***************************************************************************************
- * Post the results to chat card
- ***************************************************************************************/
- async function postResults(resultsString) {
-    const FUNCNAME = "postResults(resultsString)";
-    log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-    log(`Starting ${MACRONAME} ${FUNCNAME}`,
-        `resultsString`, resultsString);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-
-    // let chatmsg = await game.messages.get(itemCard.id)
-    let chatmsg = game.messages.get(args[0].itemCardId);
-    let content = await duplicate(chatmsg.data.content);
-    log(`chatmsg: `, chatmsg);
-    const searchString = /<div class="end-midi-qol-saves-display">/g;
-    const replaceString = `<div class="end-midi-qol-saves-display">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatmsg.update({ content: content });
-    await ui.chat.scrollBottom();
-
-    log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
-        `Finished`, `${MACRONAME} ${FUNCNAME}`);
-    return;
-}
-
-/****************************************************************************************
-* DEBUG Logging
-* 
-* If passed an odd number of arguments, put the first on a line by itself in the log,
-* otherwise print them to the log seperated by a colon.  
-* 
-* If more than two arguments, add numbered continuation lines. 
-***************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], ":", parms[i + 1]);
-    } else {            // Even number of arguments
-        console.log(parms[i], ":", parms[i + 1]);
-        i = 2;
-        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], ":", parms[i + 1]);
-    }
+ ***************************************************************************************
+ * Post results to the chat card
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>1) jez.trace(`${TAG}--- Starting ---`);
+    if (TL>2) jez.trace("postResults Parameters","msg",msg)
+    //-----------------------------------------------------------------------------------------------
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL>1) jez.trace(`${TAG}--- Finished ---`);
 }

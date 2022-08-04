@@ -1,4 +1,4 @@
-const MACRONAME = "Nausinating Poison.0.2.js"
+const MACRONAME = "Nausinating Poison.0.3.js"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Homebrew Spell from Occultist list
@@ -14,6 +14,7 @@ jez.log(MACRONAME)
  * 
  * 03/12/22 0.1 Creation of Macro
  * 07/09/22 0.2 Replace CUB.addCondition with CE
+ * 07/31/22 0.3 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -110,6 +111,7 @@ async function doOnUse() {
     //-------------------------------------------------------------------------------------------------
     // Define and apply the effect
     // 
+    const C_DESC = `Next melee spell, unarmed, or melee weapon hit does extra damage and CON save or poisoned.`
     let effectData = [{
         changes: [
             { key: "flags.dnd5e.DamageBonusMacro", mode: 0, value: `ItemMacro.${aItem.name}`, priority: 20 },
@@ -119,7 +121,10 @@ async function doOnUse() {
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, specialDuration: ["1Hit:mwak"] } },
+        flags: { 
+            dae: { itemData: aItem, specialDuration: ["1Hit:mwak"] },
+            convenientDescription: C_DESC
+         },
         icon: aItem.img,
         label: aItem.name
     }];

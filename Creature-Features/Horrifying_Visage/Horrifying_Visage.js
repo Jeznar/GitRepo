@@ -1,4 +1,4 @@
-const MACRONAME = "Horrifying_Visage.0.1"
+const MACRONAME = "Horrifying_Visage.0.2.js"
 console.log(MACRONAME)
 /*****************************************************************************************
  * Implment Banshee Horrifying Visage 
@@ -11,6 +11,7 @@ console.log(MACRONAME)
  *   target is immune to the banshee's Horrifying Visage for the next 24 hours.
  * 
  * 01/01/21 0.1 Creation of Macro
+ * 08/02/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim off the version number and extension
@@ -26,7 +27,7 @@ if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else a
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const GAME_RND = game.combat ? game.combat.round : 0;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 let errorMsg = "";
 const BLIND_COND = "Blinded"
@@ -59,9 +60,7 @@ return;
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
  ***************************************************************************************************/
  async function doOff() {
@@ -330,40 +329,44 @@ async function runVFX() {
  * Apply the horrified condition
  ***************************************************************************************************/
 async function applyHorrified(token, saveType, saveDC) {
+    const CE_DESC = `Horrified, DC${saveDC} WIS save (disadvantage if ${aToken.name} visible) at end of turns. May not approach ${aToken.name}.`
     let effectData = [{
         label: HORRIFIED_COND,
         icon: HORRIFIED_ICON,
         origin: LAST_ARG.uuid,
         disabled: false,
-        flags: { dae: { stackable: false, macroRepeat: "endEveryTurn" } },
+        flags: { 
+            dae: { stackable: false, macroRepeat: "endEveryTurn" },
+            convenientDescription: CE_DESC
+         },
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
-            { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: ADD, value: 1, priority: 20 },
-            { key: `flags.midi-qol.disadvantage.skill.all`, mode: ADD, value: 1, priority: 20 },
-            { key: `flags.midi-qol.disadvantage.attack.all`, mode: ADD, value: 1, priority: 20 },
-            { key: `macro.itemMacro`, mode: CUSTOM, value: `Save_DC ${saveDC} ${saveType}`, priority: 20 },
-            //{ key: `flags.dae.deleteUuid`, mode: 5, value: conc.uuid, priority: 20 },
-            //{ key: `flags.midi-qol.OverTime`, mode: 5, value: `turn=start,label=Frightened,saveDC=${spellDC},saveAbility=${saveType},saveRemove=true`, priority: 20 }
+            { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: jez.ADD, value: 1, priority: 20 },
+            { key: `flags.midi-qol.disadvantage.skill.all`, mode: jez.ADD, value: 1, priority: 20 },
+            { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },
+            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `Save_DC ${saveDC} ${saveType}`, priority: 20 },
         ]
     }];
     let horrified = token.actor.effects.find(i => i.data.label === HORRIFIED_COND);
     if (!horrified) applyEffect(token, effectData);
-    //await wait(500);
-    //updateEffect(tokenD, target, conc);
 }
 /***************************************************************************************************
  * Apply the Immune to Horrified Condition
  ***************************************************************************************************/
 async function applyImmunized(token) {
+    const CE_DESC = `Immune to ${aToken.name}'s Horrified.`
     let effectData = [{
         label: IMMUNIZED_COND,
         icon: IMMUNIZED_ICON,
         origin: LAST_ARG.uuid,
         disabled: false,
-        flags: { dae: { stackable: false, macroRepeat: "none" } },
+        flags: { 
+            dae: { stackable: false, macroRepeat: "none" },
+            convenientDescription: CE_DESC
+        },
         duration: { rounds: 14400, seconds: 86400, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
-            { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Immune to Horrifying Visage", priority: 20 },
+            { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Immune to Horrifying Visage", priority: 20 },
         ]
     }];
     let horrified = token.actor.effects.find(i => i.data.label === HORRIFIED_COND);

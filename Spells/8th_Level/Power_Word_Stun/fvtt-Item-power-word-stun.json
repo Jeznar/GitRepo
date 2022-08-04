@@ -1,7 +1,7 @@
 {
   "name": "Power Word Stun",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/shielding-fire-2.jpg",
+  "img": "icons/magic/control/debuff-chains-ropes-red.webp",
   "data": {
     "description": {
       "value": "<p>You speak a word of power that can overwhelm the mind of one creature you can see within range, leaving it dumbfounded. If the target has <strong>150 hit points or fewer, it is stunned</strong>. Otherwise, the spell has no effect.</p>\n<p>The stunned target must make a <strong>Constitution saving throw</strong> at the end of each of its turns. On a successful save, this stunning effect ends.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell is fully automated.</p>",
@@ -80,13 +80,14 @@
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "attunement": null
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "midi-qol": {
-      "onUseMacroName": "ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "core": {
       "sourceId": "Item.OTA2MTUzM2QwNmJj"
@@ -100,7 +101,7 @@
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "const MACRONAME = \"Power_Word_Stun.js\"\n/*****************************************************************************************\n * You speak a word of power that can overwhelm the mind of one creature you can see \n * within range, leaving it dumbfounded. If the target has 150 hit points or fewer, it \n * is stunned. Otherwise, the spell has no effect. (Note: No Save)\n * \n * The stunned target must make a Constitution saving throw at the end of each of its \n * turns. On a successful save, this stunning effect ends.\n * \n * 02/11/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst COND = \"Stunned\"\nconst SPELL_DC = aToken.actor.data.data.attributes.spelldc;\nconst SAVE_TYPE = \"con\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        postResults(msg);\n        return (false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    if (!preCheck()) return (false)\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))\n    let curHP = tToken.actor.data.data.attributes.hp.value\n    if (curHP <= 150) {\n        //----------------------------------------------------------------------------------------------\n        // ${tToken.name} has ${curHP} HP so it is affected by the stun`)\n        //\n        let overTimeVal=`turn=end,\n            label=${COND},\n            saveDC=${SPELL_DC},\n            saveAbility=${SAVE_TYPE},\n            saveRemove=true,\n            saveMagic=true`\n        let effectData = [ {\n            label: COND,\n            icon: aItem.img,\n            origin: args[0].uuid,\n            disabled: false,\n            changes: [  { key: `macro.CUB`, mode: jez.CUSTOM, value: COND, priority: 20 },\n                        { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value:overTimeVal , priority: 20 } ]\n        } ];\n        MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: effectData });\n        msg = `${tToken.name} is stunned until a successful ${SPELL_DC}DC ${SAVE_TYPE.toUpperCase()} saving throw \n        at the end of its turn.`\n    } else {\n        msg = `${tToken.name} shakes off the effects of ${aItem.name}.`\n    }\n    postResults(msg)\n    return (true);\n}",
+          "command": "const MACRONAME = \"Power_Word_Stun.0.2.js\"\n/*****************************************************************************************\n * You speak a word of power that can overwhelm the mind of one creature you can see \n * within range, leaving it dumbfounded. If the target has 150 hit points or fewer, it \n * is stunned. Otherwise, the spell has no effect. (Note: No Save)\n * \n * The stunned target must make a Constitution saving throw at the end of each of its \n * turns. On a successful save, this stunning effect ends.\n * \n * 02/11/22 0.1 Creation of Macro\n * 08/02/22 0.2 Add convenientDescription\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst COND = \"Stunned\"\nconst SAVE_DC = aToken.actor.data.data.attributes.spelldc;\nconst SAVE_TYPE = \"con\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    if (args[0].targets.length !== 1) {     // If not exactly one target, return\n        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`\n        postResults(msg);\n        return (false);\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    if (!preCheck()) return (false)\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    jez.runRuneVFX(tToken, jez.getSpellSchool(aItem))\n    let curHP = tToken.actor.data.data.attributes.hp.value\n    if (curHP <= 150) {\n        //----------------------------------------------------------------------------------------------\n        // ${tToken.name} has ${curHP} HP so it is affected by the stun`)\n        //\n        const CE_DESC = `Dumbfounded (stunned), DC${SAVE_DC} end of turns to end.`\n        let overTimeVal=`turn=end,label=${COND},saveDC=${SAVE_DC},saveAbility=${SAVE_TYPE},saveRemove=true,saveMagic=true`\n        let effectData = [ {\n            label: COND,\n            icon: aItem.img,\n            origin: args[0].uuid,\n            disabled: false,\n            flags: { \n                dae: { itemData: aItem }, \n                convenientDescription: CE_DESC\n            },            \n            changes: [  { key: `macro.CE`, mode: jez.CUSTOM, value: COND, priority: 20 },\n                        { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value:overTimeVal , priority: 20 } ]\n        } ];\n        MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: effectData });\n        msg = `${tToken.name} is stunned until a successful ${SAVE_DC}DC ${SAVE_TYPE.toUpperCase()} saving throw \n        at the end of its turn.`\n    } else {\n        msg = `${tToken.name} shakes off the effects of ${aItem.name}.`\n    }\n    postResults(msg)\n    return (true);\n}",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -110,11 +111,22 @@
         }
       }
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

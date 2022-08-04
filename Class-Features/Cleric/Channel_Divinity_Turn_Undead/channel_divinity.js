@@ -13,6 +13,7 @@ const MACRONAME = "Channel_Divinity.22.04.12.js"
  * - Eliminate [postActiveEffects] prefix from item's ItemMacro line
  * 
  * 04/18/22 0.1 Modification of Crymic's 04/12/22 implementation
+ * 08/02/22 0.2 Add convenientDescription (Not adequately tested)
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -95,13 +96,17 @@ for (let target of targetList) {
                     .play()
             } else {
                 jez.log(`=>`, `Target Processed:`, target.name, `| CR:`, mon_cr, `| DC:`, DC, `| Save:`, save.total, `[Fail]`, `| Result: Turned`);
+                const CE_DESC = `Should have a useful description snippet here.`
                 let effectData = {
                     // label: "Frightened",
                     label: "Turned",    // JGB: Changed name as it is not the RAW Frightened condition effect
                     icon: "icons/svg/terror.svg",
                     origin: lastArg.uuid,
                     disabled: false,
-                    flags: { dae: { specialDuration: ["isDamaged"] } },
+                    flags: { 
+                        dae: { specialDuration: ["isDamaged"] },
+                        convenientDescription: CE_DESC
+                    },
                     duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
                     changes: [{ key: `flags.midi-qol.disadvantage.ability.check.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },
                     { key: `flags.midi-qol.disadvantage.skill.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },

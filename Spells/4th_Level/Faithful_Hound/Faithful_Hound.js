@@ -1,4 +1,4 @@
-const MACRONAME = "Faithful_Hound.0.2.js"
+const MACRONAME = "Faithful_Hound.0.3.js"
 /*****************************************************************************************
  * Summon a Faithful Hound to the current scene.  Some key points:
  * 
@@ -8,6 +8,7 @@ const MACRONAME = "Faithful_Hound.0.2.js"
  * 
  * 02/11/22 0.1 Creation of Macro
  * 07/15/22 0.2 Suppress Tokenmold and limit range of summoning
+ * 08/02/22 0.3 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -198,6 +199,7 @@ async function summonHound() {
  ***************************************************************************************************/
  async function addWatchdogEffect(tokenIdArray) {
     let tokenIds = ""
+    const CE_DESC = `Faithful Hound is Active`
     const EXPIRE = ["longRest"];
     const GAME_RND = game.combat ? game.combat.round : 0;
     // Build list of token IDs seperated by spaces
@@ -208,7 +210,10 @@ async function summonHound() {
       origin: LAST_ARG.uuid,
       disabled: false,
       duration: { rounds: 4800, startRound: GAME_RND, seconds: 28800, startTime: game.time.worldTime },
-      flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+      flags: { 
+        dae: { macroRepeat: "none", specialDuration: EXPIRE }, 
+        convenientDescription: CE_DESC 
+      },
       changes: [
         { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },
       ]

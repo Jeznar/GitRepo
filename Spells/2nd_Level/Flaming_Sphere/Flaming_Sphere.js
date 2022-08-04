@@ -1,4 +1,4 @@
-const MACRONAME = "Flaming_Sphere.0.7.js"
+const MACRONAME = "Flaming_Sphere.0.8.js"
 /*****************************************************************************************
  * Implements Flaming Sphere, based on Moonbeam.0.8 and its Helper_DAE script
  * 
@@ -7,6 +7,7 @@ const MACRONAME = "Flaming_Sphere.0.7.js"
  * 05/16/22 0.5 Update for FoundryVTT 9.x
  * 07/15/22 0.6 Update to use warpgate.spawnAt with range limitation
  * 07/17/22 0.7 Update to use jez.spawnAt (v2) for summoning
+ * 08/02/22 0.8 Add convenientDescription
  *****************************************************************************************/
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
  jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -23,17 +24,12 @@ const MACRONAME = "Flaming_Sphere.0.7.js"
 
 const ATTACK_ITEM = "Flaming Sphere Attack";
 const MINION = "Flaming_Sphere"
+const EFFECT = "Flaming Sphere"
 const MINION_UNIQUE_NAME = `${aToken.name}'s Sphere`
 const MACRO_HELPER = `${MACRO}_Helper_DAE`;
 const VFX_NAME = `${MACRO}-${aToken.id}`
-// const VFX_LOOP = "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/FlamingSphere_02_Orange_200x200.webm";
 const VFX_OPACITY = 0.7;
 const VFX_SCALE = 0.6;   
-// const DeleteAsGM_MACRO = "DeleteTokenMacro";
-// const SummonAsGM_MACRO = "SummonCreatureMacro";
-// const VIEWED_SCENE = game.scenes.viewed;
-// const SQUARE_WIDTH = VIEWED_SCENE.data.grid;
-// const TEMPLATE_ID = args[0]?.templateId
 let sphereID = null     // The token.id of the summoned fire sphere
 let sphereToken = null  // Variable to hold the token5e for the Sphere
 jez.log("------- Obtained Global Values -------",
@@ -172,7 +168,7 @@ function preCheck() {
         "img": args[0].item.img,
         "effects": []
 
-    }];
+     }];
      await aActor.createEmbeddedDocuments("Item", itemData);
      await summonCritter(MINION)
      jez.log(`OnUse ==> Start the VFX sequence on ${MINION_UNIQUE_NAME}`)
@@ -183,11 +179,15 @@ function preCheck() {
      let gameRound = game.combat ? game.combat.round : 0;
      value = `${MACRO_HELPER} "${MINION_UNIQUE_NAME}" "${VFX_NAME}" 
              "${ATTACK_ITEM}" ${VFX_OPACITY} ${VFX_SCALE}`;
+     const CE_DESC = `Maintaining Flaming Sphere, Bonus action to move it each round.`
      let effectData = {
-         label: MACRO,
+         label: EFFECT,
          icon: aItem.img,
          origin: aActor.uuid,
-         flags: { dae: { itemData: aItem.data, macroRepeat: "startEveryTurn", token: aToken.uuid } },
+         flags: {
+             dae: { itemData: aItem.data, macroRepeat: "startEveryTurn", token: aToken.uuid },
+             convenientDescription: CE_DESC
+         },
          disabled: false,
          duration: { rounds: 10, turns: 10, startRound: gameRound, seconds: 60, startTime: game.time.worldTime },
          changes: [
@@ -198,8 +198,8 @@ function preCheck() {
      jez.log(`applied ${MACRO} effect`, effectData);
 
      jez.log("--------------OnUse---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return;
-}
+     return;
+ }
 /***************************************************************************************************
  * Start the Visual Special Effects (VFX) on specified token
  ***************************************************************************************************/

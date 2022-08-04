@@ -1,0 +1,192 @@
+{
+  "name": "Searing Smite",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/1st%20Level/searing_smite.png",
+  "data": {
+    "description": {
+      "value": "<p>The next time you hit a creature with a melee weapon attack during the spell’s duration, your weapon flares with white-hot intensity, and the attack deals an <strong>extra 1d6 fire </strong>damage to the target and causes the target to ignite in flames.</p>\n<p>At the start of each of its turns until the spell ends, the target must make a Constitution saving throw. <strong>On a failed save, it takes 1d6 fire</strong> damage. On a successful save, the spell ends.</p>\n<p>If the target or a creature within 5 feet of it uses an action to put out the flames, or if some other effect douses the flames (such as the target being submerged in water), the spell ends.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the initial extra damage dealt by the attack <span style=\"text-decoration:underline\">increases by 1d6 for each slot.</span></p>\n<p><a href=\"https://www.dndbeyond.com/spells/searing-smite\" target=\"_blank\" rel=\"noopener\">D&amp;DBeyond</a></p>",
+      "chat": "<p>The next time you hit a creature with a melee weapon attack during the spell’s duration, your weapon flares with white-hot intensity, and the attack deals an extra 1d6 fire damage to the target and causes the target to ignite in flames. At the start of each of its turns until the spell ends, the target must make a Constitution saving throw. On a failed save, it takes 1d6 fire damage. On a successful save, the spell ends. If the target or a creature within 5 feet of it uses an action to put out the flames, or if some other effect douses the flames (such as the target being submerged in water), the spell ends.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the initial extra damage dealt by the attack increases by 1d6 for each slot.</p>",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook pg 274",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "1d6"
+    },
+    "attunement": 0
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 138679,
+      "definitionId": 2319,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 2,
+          "pageNumber": 274,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-spells.r701qu8kyPWkXlY9"
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "forceCEOn": false,
+      "effectActivation": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Searing Smite",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Searing_Smite.0.3.js\"\n/*****************************************************************************************\n * Original downloaded from https://www.patreon.com/posts/searing-smite-56611523\n * \n * 11/09/21 0.0 Cry Posted Version which seems fine\n * 12/27/21 0.1 JGB Add lighting effect for the \"on fire\" victim\n * 01/25/22 0.2 JGB Add VFX\n * 05/05/22 0.3 Change ATL.dimLight etc. to ATL.light.dim etc. for 9.x\n *****************************************************************************************/\n const DEBUG = true;\n const MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\n log(\"---------------------------------------------------------------------------\",\n     \"Starting\", `${MACRONAME} or ${MACRO}`);\n for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nconst lastArg = args[args.length - 1];\nconst aToken = canvas.tokens.get(lastArg.tokenId);\nconst SAVE_DC = aToken.actor.data.data.attributes.spelldc;                                // Spell DC\n\nconst gameRound = game.combat ? game.combat.round : 0;\n// VFX Settings -------------------------------------------------------------------\nconst VFX_NAME = `${MACRO}-${aToken.id}`\nconst VFX_TARGET = \"modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_PurplePink_Target_400x400.webm\"\nconst VFX_CASTER = \"modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_PurplePink_Caster_400x400.webm\"\nconst VFX_OPACITY = 1.0;\nconst VFX_SCALE = 0.70;\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nif (lastArg.tag === \"OnUse\") {\n    let itemD = lastArg.item;\n    let spellLevel = lastArg.spellLevel;\n    //------------------------------------------------------------------------------------------------\n    // Launch VFX on caster\n    // \n    new Sequence()\n        .effect()\n        .file(VFX_CASTER)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(false)\n        .name(VFX_NAME)          // Give the effect a uniqueish name\n        .play()\n    //-------------------------------------------------------------------------------------------------\n    // Define and apply the effect\n    // \n    let effectData = [{\n        changes: [\n            { key: \"flags.dnd5e.DamageBonusMacro\", mode: jez.CUSTOM, value: `ItemMacro.${lastArg.item.name}`, priority: 20 },\n            { key: \"flags.midi-qol.spellLevel\",    mode: jez.OVERRIDE, value: `${spellLevel}`, priority: 20 },\n            { key: \"flags.midi-qol.spellId\",       mode: jez.OVERRIDE, value: `${lastArg.uuid}`, priority: 20 },\n        ],\n        origin: lastArg.uuid,\n        disabled: false,\n        duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },\n        flags: { \n            dae: { itemData: itemD, specialDuration: [\"DamageDealt\"] },\n            convenientDescription: `Next weapon attack forces target to make DC${SAVE_DC} CON Save or and take DoT each turn.`\n        },\n        icon: lastArg.item.img,\n        label: lastArg.item.name\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: effectData });    \n}\n\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"doBonusDamage\"\n ***************************************************************************************************/\nif (lastArg.tag === \"DamageBonus\") {\n    if (![\"mwak\"].includes(lastArg.item.data.actionType)) return {}; \n    log(\"aToken.actor\", aToken.actor)                                                       // Input data\n    let target = canvas.tokens.get(lastArg.hitTargets[0].id);\n    let spellLevel = getProperty(lastArg.actor.flags, \"midi-qol.spellLevel\");               // Spell Level\n    log(\"spellLevel\",spellLevel)                                                            // Trace info\n    // let spellDC = aToken.actor.data.data.attributes.spelldc;                                // Spell DC\n    // log(\"spellDC\",spellDC)                                                                  // Trace info\n    let spellUuid = getProperty(lastArg.actor.flags, \"midi-qol.spellId\");                   // Old Line\n    log(\"spellUuid\",spellUuid)                                                              // Trace info\n    let spellItem = await fromUuid(getProperty(lastArg.actor.flags, \"midi-qol.spellId\"));   // Old Line\n    log(\"spellItem\",spellItem)                                                              // Trace info\n    let damageType = \"fire\";\n    const CONC = aToken.actor.effects.find(i => i.data.label === \"Concentrating\");\n    //-------------------------------------------------------------------------------------------------------------\n    // Launch VFX on target\n    // \n    new Sequence()\n        .effect()\n        .file(VFX_TARGET)\n        .attachTo(target)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(false)\n        .name(VFX_NAME)          // Give the effect a uniqueish name\n        .play()\n    //-------------------------------------------------------------------------------------------------------------\n    // Define & Apply Effect\n    //\n    let effectData = [{\n        changes: [\n            { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: `turn=start,label=${spellItem.name},\n                damageRoll=${spellLevel}d6,saveDC=${SAVE_DC},damageType=${damageType},\n                saveAbility=con,saveRemove=true`, priority: 20 },\n            { key: \"ATL.light.dim\",     mode: jez.ADD,      value: 10,          priority: 20},\n            { key: \"ATL.light.bright\",  mode: jez.ADD,      value: 5,           priority: 20},\n            { key: \"ATL.light.color\",   mode: jez.OVERRIDE, value: \"#f8c377\",   priority: 20},\n            { key: \"ATL.light.alpha\",   mode: jez.OVERRIDE, value: 0.07,        priority: 20},\n        ],\n        origin: spellUuid,\n        flags: { dae: { itemData: spellItem.data, token: target.uuid} },\n        disabled: false,\n        duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },\n        icon: spellItem.img,\n        label: spellItem.name\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: target.actor.uuid, effects: effectData });\n    // Bug Fix?  Crymic had the following line execute to remove concentration, which I think is an incorrect \n    // interpretation of the spell.  Dropping concentration should end the DoT.  Keeping this line in case I want\n    // to revert my change to Crymic's code.\n    //\n    // await MidiQOL.socket().executeAsGM(\"removeEffects\", { actorUuid: aToken.actor.uuid, effects: [CONC.id] });\n    await jez.wait(100)\n    jez.pairEffects(aToken.actor, \"Concentrating\", target.actor, spellItem.name)\n    //-------------------------------------------------------------------------------------------------------------\n    // Return the damage function\n    //\n    return { damageRoll: `${spellLevel}d6[${damageType}]`, flavor: `(${spellItem.name} (${CONFIG.DND5E.damageTypes[damageType]}))` };\n}\n\nlog(\"---------------------------------------------------------------------------\",\n`Finished`, `${MACRONAME}`);\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n\n/****************************************************************************************\n * DEBUG Logging\n * \n * If passed an odd number of arguments, put the first on a line by itself in the log,\n * otherwise print them to the log seperated by a colon.  \n * \n * If more than two arguments, add numbered continuation lines. \n ***************************************************************************************/\n function log(...parms) {\n    if (!DEBUG) return;             // If DEBUG is false or null, then simply return\n    let numParms = parms.length;    // Number of parameters received\n    let i = 0;                      // Loop counter\n    let lines = 1;                  // Line counter \n\n    if (numParms % 2) {  // Odd number of arguments\n        console.log(parms[i++])\n        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], \":\", parms[i + 1]);\n    } else {            // Even number of arguments\n        console.log(parms[i], \":\", parms[i + 1]);\n        i = 2;\n        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], \":\", parms[i + 1]);\n    }\n}\n\n/****************************************************************************************\n * Tricksy little sleep implementation\n ***************************************************************************************/\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "favtab": {
+      "isFavorite": true
+    },
+    "enhanced-terrain-layer": {
+      "multiple": 1,
+      "min": 0,
+      "max": 0,
+      "environment": ""
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    },
+    "enhancedcombathud": {
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    }
+  }
+}

@@ -1,4 +1,4 @@
-const MACRONAME = "Hex.0.6.js"
+const MACRONAME = "Hex.0.7.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * My rewrite of Hex, borrowing heavily from Crymic's code
  * 
@@ -7,6 +7,7 @@ const MACRONAME = "Hex.0.6.js"
  * 06/08/22 0.4 Modified to use library functions to manage temp item
  * 07/01/22 0.5 FoundryVTT 9.x Change: subclass changed location 
  * 07/10/22 0.6 Added Hex VFX
+ * 07/31/22 0.7 Add convenientDescription
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const FLAG = MACRO                      // Name of the DAE Flag       
@@ -22,7 +23,7 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
 else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
 const ITEM_NAME = "Hex - Move"                          // Base name of the helper item
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
@@ -178,12 +179,15 @@ async function doOnUse() {
             disabled: false,
             duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, 
                 startTime: game.time.worldTime },
-            flags: { dae: { itemData: aItem } },
+            flags: {
+                dae: { itemData: aItem },
+                convenientDescription: `Extra damage to hexed target`
+            },
             changes: [
-                { key: "flags.midi-qol.hexMark", mode: OVERRIDE, value: tToken.id, priority: 20 },
-                { key: "flags.dnd5e.DamageBonusMacro", mode: CUSTOM, value: `ItemMacro.${aItem.name}`, 
+                { key: "flags.midi-qol.hexMark", mode: jez.OVERRIDE, value: tToken.id, priority: 20 },
+                { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${aItem.name}`, 
                     priority: 20 },
-                { key: "flags.midi-qol.concentration-data.targets", mode: ADD, 
+                { key: "flags.midi-qol.concentration-data.targets", mode: jez.ADD, 
                     value: { "actorId": aActor.id, "tokenId": aToken.id }, priority: 20 }
             ]
         };
@@ -238,9 +242,7 @@ async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECON
     // Crymic's code looked for "hex" I changed it to look for the name of the item instead.
     const hexEffect = await aToken.actor.effects.find(i => i.data.label === aItem.name);
     const concEffect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
-    //jez.log(`aToken.id ${aToken?.id}`, aToken)
-    //jez.log(`hexEffect.id ${hexEffect?.id}`, hexEffect)
-    //jez.log(`concEffect.id ${concEffect?.id}`, concEffect.id)
+    const C_DESC = `Takes extra damage from ${aToken.name}'s attacks`
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
@@ -248,9 +250,17 @@ async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECON
         disabled: false,
         duration: { rounds: RNDS, SECONDS: SECONDS, startRound: GAME_RND, 
             startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect.id, 
-            concId: concEffect.id } },
-        changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, 
+        flags: { 
+            dae: { 
+                itemData: aItem, 
+                spellLevel: LEVEL, 
+                tokenId: aToken.id, 
+                hexId: hexEffect.id, 
+                concId: concEffect.id 
+            },
+            convenientDescription: C_DESC
+        },
+        changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: jez.ADD, value: 1, 
             priority: 20 }]
     };
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, 
@@ -288,7 +298,7 @@ async function modConcEffect(token5e) {
     const EFFECT = "Concentrating"
     await jez.wait(100)
     let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);
-    effect.data.changes.push({ key: `macro.itemMacro`, mode: CUSTOM, value: `arbitrary_arg`, priority: 20 })
+    effect.data.changes.push({ key: `macro.itemMacro`, mode: jez.CUSTOM, value: `arbitrary_arg`, priority: 20 })
     const result = await effect.update({ 'changes': effect.data.changes });
     if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
 }

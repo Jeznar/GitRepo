@@ -447,6 +447,22 @@ This ability has the user place a targeting, makes con checks for those in the a
 
 ---
 
+### **Threat Display**
+
+Item that performs a WIS save on the target placing a Frightened condition for 1 turn on failures. If the actor is larger than the target it has advantage.  If it is 2 size categories smaller it has disadvantage.  If it is 3 or more smaller it auto-fails.
+
+The frightened creature will speak a short phrase expressing its far taken from the table named in the *PHRASE_TABLE* constant in the code.  This is currently set to **Frightened_by_Dog**, which should exist as a table in the running world, if it doesn't a warning is issued and a default is used. 
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+---
+
+### **Threat Display**
+
+---
+
 ### **Shapechange, Baba Lysaga**
 
 Simple configuration of the ability with reminder to use the drop to shift feature of FoundryVTT.

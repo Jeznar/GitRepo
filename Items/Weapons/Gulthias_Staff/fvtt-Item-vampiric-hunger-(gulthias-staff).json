@@ -4,7 +4,7 @@
   "img": "Icons_JGB/Items/Gulthias_Staff.jpg",
   "data": {
     "description": {
-      "value": "<p>The Gulthias staff symbiotes attempts to consume a portion of their host's life force.&nbsp;</p>\n<p>The host attempts a Constition save taking&nbsp;half damage on save.</p>",
+      "value": "<p>The Gulthias staff symbiotes attempts to consume a portion of their host's life force. </p>\n<p>The host attempts a Constition save taking half damage on save.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -66,10 +66,10 @@
     "recharge": {
       "value": null,
       "charged": false
-    }
+    },
+    "attunement": null
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "magicitems": {
       "enabled": false,
@@ -103,7 +103,7 @@
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "const macroName = \"Vampiric_Hunger_0.1\"\n/********************************************************************************************************\n * Macro to implement Vampiric Hunger life drain effect.\n * \n * Description: The Gulthias staff draws its power from the blood of its wielder, extending tiny black \n *   roots into the veins beneath the owner's skin. For each day that a character is attuned to it, that \n *   character must succeed on a DC 14 Constitution saving throw, taking 2d6 necrotic damage on a \n *   failure. The target's hit point maximum is reduced by an amount equal to the necrotic damage taken. \n *   The reduction lasts until the target destroys or unattunes from the Gulthias staff and finishes a \n *   long rest. The target dies if this effect reduces its hit point maximum to 0.\n * \n * This macro just applies a debuff to implement the HP max reduction.\n * \n * 12/16/21 1.0 JGB Creation from \"Sacrificial_Summon_0.3\"\n ******************************************************************************************************/\nconst DEBUG = false;\nconst lastArg = args[args.length - 1];\nconst itemD = lastArg.item;\nconst gameRound = game.combat ? game.combat.round : 0;\nlet damageDetail = await lastArg.damageDetail.find(i=> i.type === \"necrotic\");\nlet damageTotal = (damageDetail.damage-(damageDetail.DR ?? 0))*(damageDetail.damageMultiplier ?? 1);\n\nif (DEBUG) {\n    console.log(`Executing: ${MACRONAME}`);\n    console.log(` actor: ${actor.name}`,actor);\n    console.log(` actor.uuid: `,actor.uuid);\n    console.log(` ItemD: ${itemD.name}`,itemD);\n    console.log(` damageDetail: `,damageDetail);\n    console.log(` damageTotal: `,damageTotal);\n}\n\n//----------------------------------------------------------------------------------------------------\n// If save was made, report as such and terminate.\n//\nif (args[0].failedSaves.length === 0) {\n    let message = `<b>${actor.name}</b> made save and suffers no ill effects`;\n    postResults(message);\n    return;\n}\n\n//----------------------------------------------------------------------------------------------------\n// Apply the debuff effect\n//\nlet effectData = {\n    label: itemD.name,\n    icon: itemD.img,\n    flags: { dae: { itemData: itemD, stackable: true, macroRepeat: \"none\" } },\n    origin: actor.uuid,\n    disabled: false,\n    duration: { rounds: 999999, startRound: gameRound },\n    changes: [{ key: \"data.attributes.hp.max\", mode: 2, value: -damageTotal, priority: 20 }]\n};\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effectData] });\n\n//----------------------------------------------------------------------------------------------------\n// Post results and end\n//\nlet message = `The <strong>Gulthias Staff's</strong> tenticles writhe and grow beneath \n<b>${actor.name}</b>'s skin. Drinking in life force and reducing maximum health (HP).`;\npostResults(message); \nreturn;\n\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n\n/****************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\n async function postResults(resultsString) {\n    const lastArg = args[args.length - 1];\n\n    let chatMessage = await game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    // const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n    // const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${resultsString}`;\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}",
+          "command": "const MACRONAME = \"Vampiric_Hunger.1.1.js\"\n/********************************************************************************************************\n * Macro to implement Vampiric Hunger life drain effect.\n * \n * Description: The Gulthias staff draws its power from the blood of its wielder, extending tiny black \n *   roots into the veins beneath the owner's skin. For each day that a character is attuned to it, that \n *   character must succeed on a DC 14 Constitution saving throw, taking 2d6 necrotic damage on a \n *   failure. The target's hit point maximum is reduced by an amount equal to the necrotic damage taken. \n *   The reduction lasts until the target destroys or unattunes from the Gulthias staff and finishes a \n *   long rest. The target dies if this effect reduces its hit point maximum to 0.\n * \n * This macro just applies a debuff to implement the HP max reduction.\n * \n * 12/16/21 1.0 JGB Creation from \"Sacrificial_Summon_0.3\"\n * 08/02/22 1.1 JGB Add convenientDescription\n ******************************************************************************************************/\nconst DEBUG = false;\nconst LAST_ARG = args[args.length - 1];\n// Set the value for the Active Item (aItem)\nlet aItem;         \nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.aItemata;\nconst gameRound = game.combat ? game.combat.round : 0;\nlet damageDetail = await LAST_ARG.damageDetail.find(i=> i.type === \"necrotic\");\nlet damageTotal = (damageDetail.damage-(damageDetail.DR ?? 0))*(damageDetail.damageMultiplier ?? 1);\n\nif (DEBUG) {\n    console.log(`Executing: ${MACRONAME}`);\n    console.log(` actor: ${actor.name}`,actor);\n    console.log(` actor.uuid: `,actor.uuid);\n    console.log(` aItem: ${aItem.name}`,aItem);\n    console.log(` damageDetail: `,damageDetail);\n    console.log(` damageTotal: `,damageTotal);\n}\n\n//----------------------------------------------------------------------------------------------------\n// If save was made, report as such and terminate.\n//\nif (args[0].failedSaves.length === 0) {\n    let message = `<b>${actor.name}</b> made save and suffers no ill effects`;\n    postResults(message);\n    return;\n}\n\n//----------------------------------------------------------------------------------------------------\n// Apply the debuff effect\n//\nconst CE_DESC = `Hit point maximum reduced by ${damageTotal}` \nlet effectData = {\n    label: aItem.name,\n    icon: aItem.img,\n    flags: { \n        dae: { itemData: aItem, stackable: true, macroRepeat: \"none\" },\n        convenientDescription: CE_DESC\n     },\n    origin: actor.uuid,\n    disabled: false,\n    // duration: { rounds: 999999, startRound: gameRound },\n    changes: [{ key: \"data.attributes.hp.max\", mode: 2, value: -damageTotal, priority: 20 }]\n};\nawait MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: actor.uuid, effects: [effectData] });\n\n//----------------------------------------------------------------------------------------------------\n// Post results and end\n//\nlet message = `The <strong>Gulthias Staff's</strong> tenticles writhe and grow beneath \n<b>${actor.name}</b>'s skin. Drinking in life force and reducing maximum health (HP).`;\npostResults(message); \nreturn;\n\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n\n/****************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\n async function postResults(resultsString) {\n    const LAST_ARG = args[args.length - 1];\n\n    let chatMessage = await game.messages.get(LAST_ARG.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    // const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n    // const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${resultsString}`;\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -114,7 +114,8 @@
       }
     },
     "midi-qol": {
-      "onUseMacroName": "ItemMacro"
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "gm-notes": {
       "notes": "<h3 style=\"box-sizing: border-box; user-select: text; color: #191813;\"><strong style=\"box-sizing: border-box; user-select: text;\">Vampiric Hunger</strong></h3>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813;\">The Gulthias staff draws its power from the blood of its wielder, extending tiny black roots into the veins beneath the owner's skin. For each day that a character is attuned to it, that character must succeed on a DC 14 Constitution saving throw, taking 2d6 necrotic damage on a failure. The target's hit point maximum is reduced by an amount equal to the necrotic damage taken. The reduction lasts until the target destroys or unattunes from the Gulthias staff and finishes a long rest. The target dies if this effect reduces its hit point maximum to 0.</p>"
@@ -122,11 +123,22 @@
     "core": {
       "sourceId": "Item.zSEdlUtyTqQOxd5H"
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

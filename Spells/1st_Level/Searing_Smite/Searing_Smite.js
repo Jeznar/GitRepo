@@ -15,10 +15,12 @@ const MACRONAME = "Searing_Smite.0.3.js"
 
 async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
 const lastArg = args[args.length - 1];
-const tokenD = canvas.tokens.get(lastArg.tokenId);
+const aToken = canvas.tokens.get(lastArg.tokenId);
+const SAVE_DC = aToken.actor.data.data.attributes.spelldc;                                // Spell DC
+
 const gameRound = game.combat ? game.combat.round : 0;
 // VFX Settings -------------------------------------------------------------------
-const VFX_NAME = `${MACRO}-${tokenD.id}`
+const VFX_NAME = `${MACRO}-${aToken.id}`
 const VFX_TARGET = "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_PurplePink_Target_400x400.webm"
 const VFX_CASTER = "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_PurplePink_Caster_400x400.webm"
 const VFX_OPACITY = 1.0;
@@ -35,7 +37,7 @@ if (lastArg.tag === "OnUse") {
     new Sequence()
         .effect()
         .file(VFX_CASTER)
-        .attachTo(tokenD)
+        .attachTo(aToken)
         .scale(VFX_SCALE)
         .opacity(VFX_OPACITY)
         .belowTokens(false)
@@ -47,31 +49,37 @@ if (lastArg.tag === "OnUse") {
     let effectData = [{
         changes: [
             { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${lastArg.item.name}`, priority: 20 },
-            { key: "flags.midi-qol.spellLevel",    mode: jez.CUSTOM, value: `${spellLevel}`, priority: 20 },
-            { key: "flags.midi-qol.spellId",       mode: jez.CUSTOM, value: `${lastArg.uuid}`, priority: 20 },
+            { key: "flags.midi-qol.spellLevel",    mode: jez.OVERRIDE, value: `${spellLevel}`, priority: 20 },
+            { key: "flags.midi-qol.spellId",       mode: jez.OVERRIDE, value: `${lastArg.uuid}`, priority: 20 },
         ],
         origin: lastArg.uuid,
         disabled: false,
         duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
-        flags: { dae: { itemData: itemD, specialDuration: ["DamageDealt"] } },
+        flags: { 
+            dae: { itemData: itemD, specialDuration: ["DamageDealt"] },
+            convenientDescription: `Next weapon attack forces target to make DC${SAVE_DC} CON Save or and take DoT each turn.`
+        },
         icon: lastArg.item.img,
         label: lastArg.item.name
     }];
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tokenD.actor.uuid, effects: effectData });    
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: effectData });    
 }
 
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
  ***************************************************************************************************/
 if (lastArg.tag === "DamageBonus") {
-    if (!["mwak"].includes(lastArg.item.data.actionType)) return {};    
+    if (!["mwak"].includes(lastArg.item.data.actionType)) return {}; 
+    log("aToken.actor", aToken.actor)                                                       // Input data
     let target = canvas.tokens.get(lastArg.hitTargets[0].id);
-    let spellLevel = getProperty(lastArg.actor.flags, "midi-qol.spellLevel");
-    let spellDC = tokenD.actor.data.data.attributes.spelldc;
-    let spellUuid = getProperty(lastArg.actor.flags, "midi-qol.spellId");
-    let spellItem = await fromUuid(getProperty(lastArg.actor.flags, "midi-qol.spellId"));
+    let spellLevel = getProperty(lastArg.actor.flags, "midi-qol.spellLevel");               // Spell Level
+    log("spellLevel",spellLevel)                                                            // Trace info
+    let spellUuid = getProperty(lastArg.actor.flags, "midi-qol.spellId");                   // Old Line
+    log("spellUuid",spellUuid)                                                              // Trace info
+    let spellItem = await fromUuid(getProperty(lastArg.actor.flags, "midi-qol.spellId"));   // Old Line
+    log("spellItem",spellItem)                                                              // Trace info
     let damageType = "fire";
-    const CONC = tokenD.actor.effects.find(i => i.data.label === "Concentrating");
+    const CONC = aToken.actor.effects.find(i => i.data.label === "Concentrating");
     //-------------------------------------------------------------------------------------------------------------
     // Launch VFX on target
     // 
@@ -90,7 +98,7 @@ if (lastArg.tag === "DamageBonus") {
     let effectData = [{
         changes: [
             { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: `turn=start,label=${spellItem.name},
-                damageRoll=${spellLevel}d6,saveDC=${spellDC},damageType=${damageType},
+                damageRoll=${spellLevel}d6,saveDC=${SAVE_DC},damageType=${damageType},
                 saveAbility=con,saveRemove=true`, priority: 20 },
             { key: "ATL.light.dim",     mode: jez.ADD,      value: 10,          priority: 20},
             { key: "ATL.light.bright",  mode: jez.ADD,      value: 5,           priority: 20},
@@ -105,9 +113,16 @@ if (lastArg.tag === "DamageBonus") {
         label: spellItem.name
     }];
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.actor.uuid, effects: effectData });
-    // Bug Fix?  Following line appears to be needed to clear conc after use
-    await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: tokenD.actor.uuid, effects: [CONC.id] });
-
+    // Bug Fix?  Crymic had the following line execute to remove concentration, which I think is an incorrect 
+    // interpretation of the spell.  Dropping concentration should end the DoT.  Keeping this line in case I want
+    // to revert my change to Crymic's code.
+    //
+    // await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [CONC.id] });
+    await jez.wait(100)
+    jez.pairEffects(aToken.actor, "Concentrating", target.actor, spellItem.name)
+    //-------------------------------------------------------------------------------------------------------------
+    // Return the damage function
+    //
     return { damageRoll: `${spellLevel}d6[${damageType}]`, flavor: `(${spellItem.name} (${CONFIG.DND5E.damageTypes[damageType]}))` };
 }
 

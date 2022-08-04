@@ -783,6 +783,11 @@ class jez {
     }
     /***************************************************************************************************
      * Obtain and return the character level of the passed token, actor or token.id
+     * 
+     * From crymic's viscious mockery spell:
+     *  let getClass = Object.keys(aActor.classes);
+     *  let level = aActor.classes[getClass].data.data.levels;
+     * Maybe that is a cool way to do the same thing?
      ***************************************************************************************************/
     static getCharLevel(subject) {
         let trcLvl = 4
@@ -1204,7 +1209,10 @@ class jez {
         //subject, `subject.data.type`, subject.data.type)
         let isNPC, targetType;
         if (subject.data.type === "npc") isNPC = true; else isNPC = false;
-        if (isNPC) targetType = subject.data.data.details.type.value.toLowerCase()
+        if (isNPC) {
+            targetType = subject.data.data.details.type.value.toLowerCase()
+            if (targetType === "custom") targetType = subject.data.data.details.type.custom.toLowerCase()
+        }
         else targetType = subject.data.data.details.race.toLowerCase()
         return (targetType)
     }
@@ -2274,9 +2282,15 @@ class jez {
         return CEMreturn
     }
 
-    static async deleteEmbeddedDocs(type, ids) {
+    static async deleteEmbeddedDocs(type, ids, options={}) {
+        const FUNCNAME = "jez.deleteEmbeddedDocs(type, ids, options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 0
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "type", type, "ids", ids, "options", options);
         const DELETE_EMBEDDED_MACRO = jez.getMacroRunAsGM(jez.DELETE_EMBEDDED_MACRO)
         if (!DELETE_EMBEDDED_MACRO) return false
+        if (TL > 2) jez.trace(`${FNAME} | Calling DELETE_EMBEDDED_MACRO`,DELETE_EMBEDDED_MACRO);
         let CEMreturn = await DELETE_EMBEDDED_MACRO.execute(type, ids)
         return CEMreturn
     }
@@ -2346,13 +2360,13 @@ class jez {
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * Delete a tile identified by tileId
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async tileDelete(tileId) {
-        const FUNCNAME = "jez.tileDelete(tileId)";
-        const TRACE_LEVEL = 0
-        jez.trc(3, TRACE_LEVEL, `--- Starting --- ${FUNCNAME} ---`);
-        jez.trc(4, TRACE_LEVEL, "Parameters", "tileId", tileId)
-        jez.trc(3, TRACE_LEVEL, `--- Calling  jez.deleteEmbeddedDocs("Tile", [${tileId}])--- ${FUNCNAME} ---`);
-        return await jez.deleteEmbeddedDocs("Tile", [tileId])
+    static async tileDelete(tileId, options={}) {
+        const FUNCNAME = "jez.tileDelete(tileId, options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 0
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "tileId", tileId, "options", options);
+        return await jez.deleteEmbeddedDocs("Tile", [tileId], {traceLvl: TL})
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * If the token-mold module is active, check to see if renaming is enabled.  If it is, turn it off 
@@ -2963,7 +2977,7 @@ class jez {
             // Maybe check if the target token can see to other, that is does a wall block sight?
             //
             if (optVal.chkSight) {
-                let badLoS = canvas.walls.checkCollision(ray, { type: "sound", mode: "any" })
+                let badLoS = canvas.walls.checkCollision(ray, { type: "sight", mode: "any" })
                 if (TL > 2 && badLoS)
                     jez.trace(`${TAG} ${token.name} vision path blocked (${optVal.direction}), skipping.`)
                 if (badLoS) return  // Line of Sight
@@ -2972,7 +2986,7 @@ class jez {
             // Maybe check if the target token can hear to other location, does a wall block sound?
             //
             if (optVal.chkHear) {
-                let badLoS = canvas.walls.checkCollision(ray, { type: "sight", mode: "any" })
+                let badLoS = canvas.walls.checkCollision(ray, { type: "sound", mode: "any" })
                 if (TL > 2 && badLoS)
                     jez.trace(`${TAG} ${token.name} sound path blocked (${optVal.direction}), skipping.`)
                 if (badLoS) return  // Line of Sound

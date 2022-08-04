@@ -1,8 +1,9 @@
-const MACRONAME = "Morning_Amulet.js"
+const MACRONAME = "Morning_Amulet.0.2.js"
 /*****************************************************************************************
  * Implments a bit of VFX and a message for Morning Amulet which is largely manual.
  * 
  * 06/02/22 0.1 Creation of Macro
+ * 08/02/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -75,7 +76,10 @@ async function doOnUse() {
             icon: aItem.img,
             origin: aToken.uuid,
             disabled: false,
-            flags: { dae: { itemData: aItem } },
+            flags: { 
+                dae: { itemData: aItem },
+                convenientDescription: `${aItem.name} is active (effects handled manually)`
+            },
             duration: { rounds: 100, seconds: 600, startRound: GAME_RND, startTime: game.time.worldTime },
             changes: [
                 { key: `macro.itemMacro`, mode: jez.CUSTOM, value: 40, priority: 20 },

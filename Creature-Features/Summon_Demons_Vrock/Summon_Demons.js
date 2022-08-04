@@ -1,4 +1,4 @@
-const MACRONAME = "Summon_Demons.0.2.js"
+const MACRONAME = "Summon_Demons.0.3.js"
 /*****************************************************************************************
  * Implement a Vrock's summon ability,
  * 
@@ -10,6 +10,7 @@ const MACRONAME = "Summon_Demons.0.2.js"
  * 
  * 05/21/22 0.1 Creation of Macro
  * 07/17/22 0.2 Update to use jez.spawnAt for summoning
+ * 08/02/22 0.3 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -23,12 +24,10 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken 
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 const TL = 0;                               // Trace Level for this macro
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-// if (args[0] === "off") await doOff();                   // DAE removal
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -54,8 +53,8 @@ async function doOnUse() {
   let summonAttempt = new Roll(`1d100`).evaluate({ async: false });
   game.dice3d?.showForRoll(summonAttempt);
   jez.log("Roll result", summonAttempt.total)
-  if (summonAttempt.total <= 01) {  // 70 gets 70% failure rate
-    msg = `<b>${token.name}</b>'s summon attempt has failed!  It wasted its turn.`
+  if (summonAttempt.total <= 70) {  // 70 gets 70% failure rate
+    msg = `<b>${token.name}</b>'s summon attempt has failed, wasting a turn.`
     jez.log(msg)
     postResults(msg)
     return (false)
@@ -194,14 +193,17 @@ async function summonCritter(summons, number) {
   // Build list of token IDs seperated by spaces
   for (let i = 0; i < tokenIdArray.length; i++) tokenIds+= `${tokenIdArray[i]} ` 
   if (TL > 1) jez.trace(`${FNAME} | tokenIdArray`,tokenIdArray);
-
+  const CE_DESC = `Summoned demon servant(s) is active.`
   let effectData = {
     label: aItem.name,
     icon: aItem.img,
     origin: LAST_ARG.uuid,
     disabled: false,
     duration: { rounds: 10, startRound: GAME_RND, startTime: game.time.worldTime },
-    flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+    flags: { 
+      dae: { macroRepeat: "none", specialDuration: EXPIRE }, 
+      convenientDescription: CE_DESC 
+    },
     changes: [
          { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenIds}`, priority: 20 },
     ]

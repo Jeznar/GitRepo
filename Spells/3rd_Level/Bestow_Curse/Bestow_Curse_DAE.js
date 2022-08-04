@@ -1,4 +1,4 @@
-const MACRONAME = "Bestow_Curse.1.4.js";
+const MACRONAME = "Bestow_Curse.1.5.js";
 /*****************************************************************************************
  * Implemention of Bestow Curse.
  * 
@@ -29,23 +29,32 @@ const MACRONAME = "Bestow_Curse.1.4.js";
  * 12/21/21 1.2 JGB Combine nearly redundent selection functions
  * 05/02/22 1.3 JGB Update for Foundry 9.x
  * 05/05/22 1.4 JGB change createEmbeddedEntity to createEmbeddedDocuments for 9.x
+ * 07/29/22 1.5 JGB Added Convenient Description and fixed logic error in Vulnerabilty 
  ******************************************************************************************/
-const DEBUG = false;
+const DEBUG = true;
 const CURSENAME = "BestowCurse";
 const CONDITION = "Cursed";
 const ICON = "Icons_JGB/Misc/curse.png";
 const NOACTIONSICON = "Icons_JGB/Misc/Stop_Sign.png";
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-const lastArg = args[args.length - 1]; 
+const LAST_ARG = args[args.length - 1]; 
+const SAVE_DC = args[0]?.item?.data?.save?.dc
+
+
 const CurseofLethergy = "Curse of Lethergy";
+const CurseofIneptitude = "Curse of Ineptitude"
 let msg = "";
+//---------------------------------------------------------------------------------------------------
+// Set the value for the Active Token (aToken)
+let aToken;         
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor; 
 
-let tactor = (lastArg.tokenId) 
-	? canvas.tokens.get(lastArg.tokenId).actor 
-	: game.actors.get(lastArg.actorId);
-
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
+let tactor = (LAST_ARG.tokenId) 
+	? canvas.tokens.get(LAST_ARG.tokenId).actor 
+	: game.actors.get(LAST_ARG.actorId);
 
 log("---------------------------------------------------------------------------",
     "Starting", MACRONAME,
@@ -204,8 +213,7 @@ async function doOff() {
 async function doEach() {
     const FUNCNAME = "doEach()";
     log("===========================================================================",
-        `Starting`, `${MACRONAME} ${FUNCNAME}`, 
-        "tactor", tactor);
+        `Starting`, `${MACRONAME} ${FUNCNAME}`, "tactor", tactor);
     for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
 
     let secondDebuff = DAE.getFlag(tactor, `${MACRO}.SecondDebuff`);
@@ -242,15 +250,17 @@ async function doEach() {
                 origin: tactor.uuid,
                 disabled: false,
                 duration: { rounds: 2, turns: 2, startRound: gameRound, seconds: 12, startTime: game.time.worldTime },
-                flags: { dae: { macroRepeat: "none", specialDuration: ["turnStart"] } },
-                changes: [
-                    { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "No Actons", priority: 20 },
-                ]
+                flags: { 
+                    dae: { macroRepeat: "none", specialDuration: ["turnStart"] },
+                    convenientDescription: `No Actions or Bonus Actions (Reactions allowed)`
+                },
             };
 
             await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tactor.uuid, effects: [effectData] });
             log(`applied "No Actions" Debuff: `, effectData);
-            await wait(10);
+            msg = `No actions this turn!`
+            bubbleForAll(aToken.id, msg, true, true)
+            await jez.wait(10);
         }
 
         log(msg, "save roll", save);
@@ -432,7 +442,7 @@ async function pickStatCallBack(selection) {
     }                   
     log(`Short Stat Name`, stat);
     
-    const secondDebuff = `${CurseofLethergy} (${selection})`
+    const secondDebuff = `${CurseofIneptitude} (${selection})`
     let gameRound = game.combat ? game.combat.round : 0;
     let effectData = {
         label: secondDebuff,
@@ -440,6 +450,7 @@ async function pickStatCallBack(selection) {
         origin: player.actor.uuid,
         disabled: false,
         duration: { rounds: 99, startRound: gameRound },
+        flags: { convenientDescription: `${selection} ability checks and saves at disadvantage` }, 
         changes: [
             { key: `flags.midi-qol.disadvantage.ability.check.${stat}`, mode: ADD, value: 1, priority: 20 },
             { key: `flags.midi-qol.disadvantage.ability.save.${stat}`,  mode: ADD, value: 1, priority: 20 },
@@ -465,7 +476,20 @@ async function applyCurseStub(curseName) {
         "curseName", curseName, 
         "player", player, 
         "targetD", targetD);
-
+    // --------------------------------------------------------------------------------
+    // Set the convenientDescription value based on curseName
+    //
+    let ceDesc = ""
+    switch (curseName) {
+        case "Aversion":
+            ceDesc = `Disadvantage on attack rolls against ${aToken.name}`; break;
+        case "Lethergy":
+            ceDesc = `DC${SAVE_DC} WIS Save or No Actions each turn`; break;
+        case "Vulnerability":
+            ceDesc = `${aToken.name}'s attacks deal an extra 1d8 necrotic damage`; break;
+        default:
+            ceDesc = `Some other effect agreed on by player and GM`; break;
+    }
     // --------------------------------------------------------------------------------
     // Add cursed condition to target
     //
@@ -477,6 +501,7 @@ async function applyCurseStub(curseName) {
         origin: player.actor.uuid,
         disabled: false,
         duration: { rounds: 999999, startRound: gameRound },
+        flags: { convenientDescription: ceDesc }, 
     };
     await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:targetD.actor.uuid, effects: [effectData] });
     await DAE.setFlag(targetD.actor, `${MACRO}.SecondDebuff`, secondDebuff);
@@ -496,7 +521,7 @@ async function postResults(resultsString) {
     for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
 
     // let chatmsg = await game.messages.get(itemCard.id)
-    let chatmsg = game.messages.get(lastArg.itemCardId);
+    let chatmsg = game.messages.get(LAST_ARG.itemCardId);
     let content = await duplicate(chatmsg.data.content);
     log(`chatmsg: `, chatmsg);
     const searchString = /<div class="end-midi-qol-saves-display">/g;
@@ -561,7 +586,7 @@ function doBonusDamage() {
     for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
 
     // --------------------------------------------------------------------------------
-    // Obtain and optionally log a bunch of information for application of daamge
+    // Obtain and optionally log a bunch of information for application of damage
     //  
     const target = canvas.tokens.get(args[0].targets[0].id);
     const actorD = game.actors.get(args[0].actor._id);
@@ -575,11 +600,6 @@ function doBonusDamage() {
         "tokenD", tokenD, "tokenD.name", tokenD.name,
         "itemD", itemD, "itemD.name", itemD.name,
         "curseItemD", curseItemD);
-  
-    // --------------------------------------------------------------------------------
-    // Replace the image for the curse with ICON
-    //      
-    curseItemD.img = ICON;
 
     // --------------------------------------------------------------------------------
     // Make sure the actor has midi-qol.hexmark which is being hijacked for this macro
@@ -591,6 +611,11 @@ function doBonusDamage() {
             getProperty(tokenD.actor.data.flags, "midi-qol.hexMark"));
         return {};
     }
+
+    // --------------------------------------------------------------------------------
+    // Replace the image for the curse with ICON
+    //      
+    curseItemD.img = ICON;
 
     // --------------------------------------------------------------------------------
     // Was the action that invoked this an attack (mwak, msak, rwak, rsak)?  If it 

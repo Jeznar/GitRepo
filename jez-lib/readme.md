@@ -606,6 +606,31 @@ The returned object will be composed of:
 * @property {string}  string - Spelled out size all lower case
 * @property {string}  String - Spelled out size with the first letter capitalized  
 
+<details> <summary>**Sample getSize Use**</summary>
+
+~~~javascript
+...
+const FUNCNAME = "doOnUse()";
+const FNAME = FUNCNAME.split("(")[0] 
+const TAG = `${MACRO} ${FNAME} |`
+//----------------------------------------------------------------------------------
+// Obtain the size of the aActor and tActor to determine advantage/disadvantage
+// 
+if (TL>2) jez.trace(`${TAG} await jez.getSize(aToken)`, await jez.getSize(aToken))
+let aTokenSizeValue = (await jez.getSize(aToken)).value
+let tTokenSizeValue = (await jez.getSize(tToken)).value
+if (TL>1) jez.trace(`${TAG} ${aToken.name} size = ${aTokenSizeValue}, ${tToken.name} size = ${tTokenSizeValue}`)
+if (aTokenSizeValue + 3 <= tTokenSizeValue) {
+    msg = `${tToken.name} is too large to be frightend by ${aToken.name}`
+    if (TL>0) jez.trace(`${TAG} msg`);
+    await jez.addMessage(chatMsg, {color:"dodgerblue", fSize:15, msg:msg, tag: "saves" })
+    return;
+}
+~~~
+
+</details>
+
+
 [*Back to Functions list*](#functions-in-this-module)
 
 ---

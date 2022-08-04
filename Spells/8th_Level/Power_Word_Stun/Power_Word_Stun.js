@@ -1,4 +1,4 @@
-const MACRONAME = "Power_Word_Stun.js"
+const MACRONAME = "Power_Word_Stun.0.2.js"
 /*****************************************************************************************
  * You speak a word of power that can overwhelm the mind of one creature you can see 
  * within range, leaving it dumbfounded. If the target has 150 hit points or fewer, it 
@@ -8,6 +8,7 @@ const MACRONAME = "Power_Word_Stun.js"
  * turns. On a successful save, this stunning effect ends.
  * 
  * 02/11/22 0.1 Creation of Macro
+ * 08/02/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -21,7 +22,7 @@ if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 const COND = "Stunned"
-const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
+const SAVE_DC = aToken.actor.data.data.attributes.spelldc;
 const SAVE_TYPE = "con"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -63,22 +64,22 @@ async function doOnUse() {
         //----------------------------------------------------------------------------------------------
         // ${tToken.name} has ${curHP} HP so it is affected by the stun`)
         //
-        let overTimeVal=`turn=end,
-            label=${COND},
-            saveDC=${SPELL_DC},
-            saveAbility=${SAVE_TYPE},
-            saveRemove=true,
-            saveMagic=true`
+        const CE_DESC = `Dumbfounded (stunned), DC${SAVE_DC} end of turns to end.`
+        let overTimeVal=`turn=end,label=${COND},saveDC=${SAVE_DC},saveAbility=${SAVE_TYPE},saveRemove=true,saveMagic=true`
         let effectData = [ {
             label: COND,
             icon: aItem.img,
             origin: args[0].uuid,
             disabled: false,
-            changes: [  { key: `macro.CUB`, mode: jez.CUSTOM, value: COND, priority: 20 },
+            flags: { 
+                dae: { itemData: aItem }, 
+                convenientDescription: CE_DESC
+            },            
+            changes: [  { key: `macro.CE`, mode: jez.CUSTOM, value: COND, priority: 20 },
                         { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value:overTimeVal , priority: 20 } ]
         } ];
         MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: effectData });
-        msg = `${tToken.name} is stunned until a successful ${SPELL_DC}DC ${SAVE_TYPE.toUpperCase()} saving throw 
+        msg = `${tToken.name} is stunned until a successful ${SAVE_DC}DC ${SAVE_TYPE.toUpperCase()} saving throw 
         at the end of its turn.`
     } else {
         msg = `${tToken.name} shakes off the effects of ${aItem.name}.`
@@ -86,3 +87,4 @@ async function doOnUse() {
     postResults(msg)
     return (true);
 }
+

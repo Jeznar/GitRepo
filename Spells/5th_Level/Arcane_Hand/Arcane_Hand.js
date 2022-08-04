@@ -1,4 +1,4 @@
-const MACRONAME = "Arcane_Hand.0.3.js"
+const MACRONAME = "Arcane_Hand.0.4.js"
 /*****************************************************************************************
  * Summon aand customize an Arcane Hound to the scene
  *  
@@ -9,6 +9,7 @@ const MACRONAME = "Arcane_Hand.0.3.js"
  * 02/11/22 0.1 Creation of Macro
  * 07/15/22 0.2 Update to use warpgate.spawnAt with range limitation
  * 07/17/22 0.3 Update to use jez.spawnAt (v2) for summoning
+ * 08/02/22 0.4 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -201,6 +202,7 @@ async function addWatchdogEffect(tokenIdArray) {
     let tokenIds = ""
     const EXPIRE = ["longRest"];
     const GAME_RND = game.combat ? game.combat.round : 0;
+    const CE_DESC = `Arcane Hand is Active`
     // Build list of token IDs seperated by spaces
     for (let i = 0; i < tokenIdArray.length; i++) tokenIds += `${tokenIdArray[i]} `
     let effectData = {
@@ -209,7 +211,10 @@ async function addWatchdogEffect(tokenIdArray) {
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 4800, startRound: GAME_RND, seconds: 28800, startTime: game.time.worldTime },
-        flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+        flags: { 
+            dae: { macroRepeat: "none", specialDuration: EXPIRE }, 
+            convenientDescription: CE_DESC
+        },
         changes: [
             { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },
         ]

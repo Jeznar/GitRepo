@@ -7,6 +7,7 @@ const MACRONAME = "Starter_Macro.0.3.js"
  * 07/08/22 0.3 Update to use jez.trace
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
+const TAG = `${MACRO} |`
 const TL = 1;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
@@ -76,12 +77,13 @@ async function preCheck() {
  function postResults(msg) {
     const FUNCNAME = "postResults(msg)";
     const FNAME = FUNCNAME.split("(")[0] 
-
-    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>1) jez.trace(`${TAG} --- Starting ---`);
     if (TL>2) jez.trace("postResults Parameters","msg",msg)
+    //-----------------------------------------------------------------------------------------------
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+    if (TL>1) jez.trace(`${TAG}--- Finished ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set Off
@@ -121,9 +123,11 @@ async function doOn() {
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"arg",arg);
     await jez.wait(100)
-
-    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    //----------------------------------------------------------------------------------
     if (!await preCheck()) return(false);
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
@@ -155,7 +159,7 @@ async function doOn() {
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
+ * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";

@@ -1,4 +1,4 @@
-const MACRONAME = "Retched_Spittle.1.1.js"
+const MACRONAME = "Retched_Spittle.1.2.js"
 /*****************************************************************************************
  * Ilyas Retched Spittle per MandyMod
  * 
@@ -14,6 +14,7 @@ const MACRONAME = "Retched_Spittle.1.1.js"
  * 
  * 02/06/22 0.1 Rebuild of Macro to include repeating save and general cleanup
  * 05/02/22 1.1 Update for Foundry 9.x
+ * 08/02/22 1.2 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim off the version number and extension
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
@@ -56,6 +57,7 @@ async function doOnUse() {
     // target is an actor, not a token
     jez.log(`  Apply Poisoned: ${target.data.name}`);
     jez.log(i, target);
+    const CE_DESC = `Poisoned, may attempt DC${SAVE_DC} CON Save end of each turn`
     let effectData = {
       label: DEBUFF_NAME,
       icon: "modules/combat-utility-belt/icons/poisoned.svg",
@@ -69,7 +71,8 @@ async function doOnUse() {
           macroRepeat: "endEveryTurn",
           stackable: false,
           specialDuration: ['isSaveSuccess.con']
-        }
+        },
+        convenientDescription: CE_DESC
       },
       changes: [
         { key: `macro.itemMacro`, mode: CUSTOM, value: `Save_DC ${SAVE_DC} ${SAVE_TYPE}`, priority: 20 },

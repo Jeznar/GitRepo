@@ -1,10 +1,11 @@
-const MACRONAME = "Branding_Smite.0.6.js"
+const MACRONAME = "Branding_Smite.0.7.js"
 /*****************************************************************************************
  * Implment Branding Smite!
  * 
  * 01/25/22 0.1 Creation of Macro
  * 01/26/22 0.5 Add VFX
  * 05/05/22 0.6 Change ATL.dimLight etc. to ATL.light.dim etc. for 9.x
+ * 08/01/22 0.7 Fix to accomodate change in Midi (flags.midi-qol.itemDetails needs OVERIDE)
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log("")
@@ -53,10 +54,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-
-/***************************************************************************************************
+ ***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function doOnUse() {
@@ -77,15 +75,19 @@ async function doOnUse() {
     //------------------------------------------------------------------------------------------------
     // Define and apply the effect
     // 
+    const CE_DESC = `Next weapon hit does extra damage and target glows with a dim light.`
     let effectData = [{
         changes: [
-            { key: "flags.dnd5e.DamageBonusMacro", mode: 0, value: `ItemMacro.${aItem.name}`, priority: 20 },
-            { key: "flags.midi-qol.itemDetails", mode: 0, value: `${LAST_ARG.uuid}`, priority: 20 },
+            { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${aItem.name}`, priority: 20 },
+            { key: "flags.midi-qol.itemDetails", mode: jez.OVERRIDE, value: `${LAST_ARG.uuid}`, priority: 20 },
         ],
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, specialDuration: ["DamageDealt"] } },
+        flags: { 
+            dae: { itemData: aItem, specialDuration: ["DamageDealt"] },
+            convenientDescription: CE_DESC
+        },
         icon: aItem.img,
         label: aItem.name
     }];
@@ -107,16 +109,16 @@ async function doBonusDamage() {
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     if (args[0].tag === "DamageBonus") {
         if (!["mwak"].includes(LAST_ARG.item.data.actionType)) return {};
-        let conc = aToken.actor.effects.find(i => i.data.label === "Concentrating");
-        jez.log("conc", conc);
+        // let conc = aToken.actor.effects.find(i => i.data.label === "Concentrating");
+        // jez.log("conc", conc);
         let tToken = canvas.tokens.get(LAST_ARG.hitTargets[0].id);
         jez.log("tToken", tToken)
         let itemUuid = getProperty(LAST_ARG.actor.flags, "midi-qol.itemDetails");
         let itemN = await fromUuid(itemUuid);
         jez.log("itemN =====>", itemN)
         let numDice = LAST_ARG.isCritical ? 2 * SPELL_LVL : SPELL_LVL;
-        await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [conc.id] });
-        await jez.wait(500);
+        // await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [conc.id] });
+        await jez.wait(200);
         //-------------------------------------------------------------------------------------------------------------
         // If tToken is invisible, make it visible
         //        
@@ -148,23 +150,30 @@ async function doBonusDamage() {
         //-------------------------------------------------------------------------------------------------------------
         // Apply Branded condition
         //   
+        const CE_DESC = `Glows with a dim light (5 feet) and can not become invisible.`
         let effectData = [{
             label: COND_APPLIED,
             icon: itemN.img,
             origin: "",
             disabled: false,
-            flags: { dae: { stackable: false, macroRepeat: "none" } },
+            flags: { 
+                dae: { stackable: false, macroRepeat: "none" },
+                convenientDescription: CE_DESC 
+            },
             duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
             changes: [
                 { key: `ATL.light.dim`, mode: jez.UPGRADE, value: 5, priority: 20 },
                 { key: `ATL.light.color`, mode: jez.OVERRIDE, value: "#ff0000", priority: 20 },
                 { key: "ATL.light.alpha", mode: jez.OVERRIDE, value: 0.07, priority: 20 }, // As of 9.269 light is far, far too intense
-                { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Can not become invisible", priority: 20 },
-                //{ key: `flags.midi-qol.OverTime`, mode: 5, value: `turn=start,label=${CONDITION},saveDC=${SPELL_DC},saveAbility=${SAVE_TYPE},saveRemove=true`, priority: 20 }
             ]
         }];
         let branded = tToken.actor.effects.find(i => i.data.label === COND_APPLIED);
         if (!branded) applyEffect(tToken, effectData);
+        //-------------------------------------------------------------------------------------------------------------
+        // Pair the new debuff with concentration
+        //  
+        await jez.wait(200)
+        jez.pairEffects(aActor, "Concentrating", tToken.actor, "Branded")
         //-------------------------------------------------------------------------------------------------------------
         // Dig through the chat history, to find the message that should have new message added...but don't use it?
         //

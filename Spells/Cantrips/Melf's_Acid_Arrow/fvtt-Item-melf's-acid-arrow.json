@@ -1,0 +1,190 @@
+{
+  "name": "Melf's Acid Arrow",
+  "type": "spell",
+  "img": "icons/skills/ranged/arrow-flying-ornate-gold.webp",
+  "data": {
+    "description": {
+      "value": "<p>A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target.</p>\n<dl>\n<dt><strong><u>On a hit</u></strong></dt>\n<dd>Target takes<strong> 4d4 acid damage</strong> immediately and <strong>2d4 acid damage</strong> at the end of its next turn.</dd>\n<dt><strong><u>On a miss</u></strong></dt>\n<dd>Arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn.</dd>\n</dl>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 3rd level or higher, the damage (both initial and later) increases by 1d4 for each slot level above 2nd.</p>",
+      "chat": "<p>A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn.</p>\n<p><strong>At Higher Levels. </strong>When you cast this spell using a spell slot of 3rd level or higher, the damage (both initial and later) increases by 1d4 for each slot level above 2nd.</p>",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook pg 259",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 90,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 2,
+    "school": "evo",
+    "components": {
+      "value": "powdered rhubarb leaf and an adder’s stomach",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "powdered rhubarb leaf and an adder’s stomach",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "1d4"
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 138473,
+      "definitionId": 2330,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 2,
+          "pageNumber": 259,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "enhanced-terrain-layer": {
+      "multiple": 1,
+      "min": 0,
+      "max": 0,
+      "environment": ""
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "fumbleThreshold": null,
+      "effectActivation": false
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-spells.P38ecOyGUW8O9jKA"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Melf's Acid Arrow",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Melf's_Acid_Arrow.0.2.js\"\nconsole.log(MACRONAME)\n/*****************************************************************************************\n * \n * \n * 01/01/21 0.1 Creation of Macro\n * 08/02/22 0.2 Add convenientDescription\n *****************************************************************************************/\nconst DEBUG = true;\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nlog(\"\")\nlog(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\nconst lastArg = args[args.length - 1];\nlog(\"lastArg\", lastArg);\n\nconst spellLevel = lastArg.spellLevel;\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.aItemata;\nconst damageType = \"acid\";\nconst gameRound = game.combat ? game.combat.round : 0;\nlet damageRoll;\nlet msg = \"\";\nlet errorMsg = \"\";\n\nif (!oneTarget()) {\n    log(errorMsg)\n    ui.notifications.error(errorMsg)\n    return(false)\n}\n\nlet tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\nplayVFX(aToken, tToken)\nawait wait(1000) // Let the VFX substatially complete before the damage rolls\n\nif (lastArg.hitTargets.length > 0) {\n    log(`${lastArg.hitTargets.length} Target(s) hit.`)\n    const CE_DESC = `Taking acid damage over time.`\n    let effectData = {\n        label: aItem.name,\n        icon: aItem.img,\n        flags: { \n            dae: { itemData: aItem, macroRepeat: \"none\", specialDuration: [\"turnEnd\"] },\n            convenientDescription: CE_DESC\n        },\n        origin: lastArg.uuid,\n        disabled: false,\n        duration: { turns: 2, startRound: gameRound, startTime: game.time.worldTime },\n        changes: [\n            {\n                key: `flags.midi-qol.OverTime`,\n                mode: 2,\n                value: `turn=end,label=${aItem.name},damageRoll=${spellLevel}d4,damageType=${damageType}`,\n                priority: 20\n            },\n        ]\n    };\n\n    log(`Add effect ${aItem.name} to ${tToken.name}`)  \n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: [effectData] });\n\n    log(`Roll immediate damage from ${aItem.name} to ${tToken.name}`)\n    damageRoll = new Roll(`${spellLevel + 2}d4`).evaluate({ async: false });\n    log(`Roll results`, damageRoll)\n    game.dice3d?.showForRoll(damageRoll);\n    log(`Apply Damage ${damageRoll.total} ${damageType}`)\n    await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total, damageType, [tToken], damageRoll,\n        { flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`, itemCardId: lastArg.itemCardId, useOther: false });\n    msg = `<p style=\"color:Olive;font-size:14px;\">${tToken.name} is hit by the acid arrow and begins to melt.</p>`\n    await postResults(msg);\n} else {\n    log(`${tToken.name} was missed, doing half damage.`)\n    damageRoll = new Roll(`${spellLevel}d4`).evaluate({ async: false });\n    log(`Roll results`, damageRoll)\n    game.dice3d?.showForRoll(damageRoll);\n    log(`Apply Damage ${damageRoll.total} ${damageType}`)\n    await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll.total, damageType, [tToken], damageRoll,\n        { flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`, itemCardId: lastArg.itemCardId, useOther: false });\n    msg = `<p style=\"color:Olive;font-size:14px;\">${tToken.name} is splashed by the near miss, taking a bit of damage.</p>`\n    await postResults(msg);\n}\nlog(\"That's all folks.\")\nreturn;\n\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/\n\nasync function playVFX(aToken5E, tToken5E) {\n    log(`lets play a VFX from ${aToken5E.name} to ${tToken5E.name}`,tToken5E)\n    new Sequence()\n        .effect()\n        .file(\"modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Ranged/Arrow02_01_Regular_Green_Poison_30ft_1600x400.webm\")\n        .atLocation(aToken5E)\n        .stretchTo(tToken5E)\n        .missed(args[0].hitTargets.length === 0)\n        .play()\n}\n\n/************************************************************************\n * Verify exactly one target selected, boolean return\n*************************************************************************/\nfunction oneTarget() {\n    if (!game.user.targets) {\n        errorMsg = `Targeted nothing, must target single token to be acted upon`;\n        log(errorMsg);\n        return (false);\n    }\n    if (game.user.targets.ids.length != 1) {\n        errorMsg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n        log(errorMsg);\n        return (false);\n    }\n    log(`Targeting one target, a good thing`);\n    return (true);\n}\n\n\n/***************************************************************************************************\n * Post the results to chat card\n ***************************************************************************************************/\n async function postResults(resultsString) {\n    const lastArg = args[args.length - 1];\n\n    let chatMessage = game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(chatMessage.data.content);\n    log(`chatMessage: `,chatMessage);\n    //const searchString = /<div class=\"midi-qol-other-roll\">[\\s\\S]*<div class=\"end-midi-qol-other-roll\">/g;\n    //const replaceString = `<div class=\"midi-qol-other-roll\"><div class=\"end-midi-qol-other-roll\">${resultsString}`;\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    content = await content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n    return;\n}\n\n/***************************************************************************************************\n * DEBUG Logging\n * \n * If passed an odd number of arguments, put the first on a line by itself in the log,\n * otherwise print them to the log seperated by a colon.  \n * \n * If more than two arguments, add numbered continuation lines. \n ***************************************************************************************************/\nfunction log(...parms) {\n    if (!DEBUG) return;             // If DEBUG is false or null, then simply return\n    let numParms = parms.length;    // Number of parameters received\n    let i = 0;                      // Loop counter\n    let lines = 1;                  // Line counter \n\n    if (numParms % 2) {  // Odd number of arguments\n        console.log(parms[i++])\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    } else {            // Even number of arguments\n        console.log(parms[i],\":\",parms[i+1]);\n        i = 2;\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    }\n}\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    }
+  }
+}

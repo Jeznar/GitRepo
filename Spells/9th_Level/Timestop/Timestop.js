@@ -1,9 +1,10 @@
-const MACRONAME = "Timestop"
+const MACRONAME = "Timestop.0.3.js"
 /*****************************************************************************************
  * This macro implments VFX and a widespread DAE effect for timestop. 
  * 
  * 04/13/22 0.1 Creation of Macro
- * 07/09/22 Replace CUB.addCondition with CE
+ * 07/09/22 0.2 Replace CUB.addCondition with CE
+ * 07/29/22 0.3 Added convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -99,7 +100,10 @@ async function doOnUse() {
             origin: args[0].uuid,
             disabled: false,
             duration: { rounds: duration, startRound: GAME_RND },
-            flags: { dae: { specialDuration: ["DamageDealt"] } },
+            flags: { 
+                dae: { dae: { specialDuration: ["DamageDealt"] } },
+                convenientDescription: `Briefly stop the flow of time for everyone else`
+            },
             changes: [
                 { key: `macro.itemMacro`, mode: jez.CUSTOM, value: 0, priority: 20 },
             ]
@@ -107,7 +111,7 @@ async function doOnUse() {
     jez.log("effectData", effectData)
     MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: effectData });
 
-    msg = `<b>${aToken.name}</b> briefly stops the flow of time for everyone else for a brief time. 
+    msg = `<b>${aToken.name}</b> briefly stops the flow of time for everyone else. 
     ${aToken.name} may act normally while time is frozen.<br><br>
     Effect ends if affect a creature other than yourself or an object being worn or carried by 
     someone other than you. Or if you move to a place more than 1,000 feet from the location where you 

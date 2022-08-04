@@ -1,4 +1,4 @@
-const MACRONAME = "Alter_Self.0.3.js"
+const MACRONAME = "Alter_Self.0.5.js"
 /*****************************************************************************************
  * Alter Self
  * 
@@ -18,6 +18,7 @@ const MACRONAME = "Alter_Self.0.3.js"
  * 01/15/22 0.2 Another Day Another Version
  * 05/02/22 0.3 Update for Foundry 9.x
  * 05/16/22 0.4 Update (again) for Foundry 9.x
+ * 08/01/22 0.5 Added convenientDescriptions
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -41,7 +42,7 @@ const FIRST_BUFF = aItem.name;
 const AQUATIC_BUFF = "Acquatic Adaptation"
 const AQUATIC_IMG = "Icons_JGB/Spells/2nd_Level/Aquatic_Adaptation.png"
 const CHANGE_BUFF = "Change Appearance"
-const CHANGE_IMG = "Icons_JGB/Spells/1st Level/Disguised.png"
+const CHANGE_IMG = "Icons_JGB/Spells/1st_Level/Disguised.png"
 const WEAP_BUFF = "Natural Weapons"
 const WEAP_IMG = "Icons_JGB/Monster_Features/claws.png"
 const WEAP_NAME = "Natural Weapon (Alter Self)"
@@ -112,6 +113,14 @@ async function doOn() {
     // Pop the dialog and connect to callback
     //
     pickFromListArray(queryTitle, queryText, pickItemCallBack, alterOptions);
+    //----------------------------------------------------------------------------------------------
+    // Modify recently created effect to have a convenientDescription
+    //
+    let effect = await aToken.actor.effects.find(i => i.data.label === FIRST_BUFF);
+    if (!effect) return jez.badNews(`Could not find ${FIRST_BUFF} effect on ${aToken.name}`,"e")
+    const C_DESC = `With an Action may alter certain elements of body or appearance`
+    await effect.update({ flags: { convenientDescription: C_DESC } });
+    //
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
 }
@@ -141,22 +150,25 @@ async function pickItemCallBack(selection) {
     if (!selection) return;
     let choice = selection.split(" ")[0];     // Trim off the version number and extension
     jez.log(`Selection: ${choice}!`)
-    let baseEffect = aActor.effects.find(ef => ef.data.label === FIRST_BUFF) ?? null; // Added a null case.
-    let remaingTurns = baseEffect ? baseEffect?.data.duration.turns : 62
-    jez.log(`Proceed with ${choice} for ${remaingTurns} turns`, baseEffect)
+    let concEffect = aActor.effects.find(ef => ef.data.label === "Concentrating");
+    let remainingSecs = concEffect ? concEffect?.data.duration.seconds : 3600
+    jez.log(`Proceed with ${choice} for ${remainingSecs} seconds`, concEffect)
     let effectData = null;
     let cardImg = null;
 
+    let ceDesc
     switch (choice) {
         case "Aquatic":
             jez.log(`acquire gills and fins`)
+            ceDesc = `Now has gills and fins, can breathe underwater and gains swimming speed equal to walking.`
             let swimSpeed = aActor.data.data.attributes.movement?.walk || 1;
             effectData = {
                 label: AQUATIC_BUFF, 
                 icon: AQUATIC_IMG,
                 origin: lastArg.uuid,
                 disabled: false,
-                duration: { turns: remaingTurns, startRound: gameRound, startTime: game.time.worldTime },
+                duration: { seconds: remainingSecs, startTime: game.time.worldTime },
+                flags: { convenientDescription: ceDesc },
                 changes: [
                     {key: `data.attributes.movement.swim`, mode: jez.UPGRADE, value: swimSpeed, priority: 20},
                     {key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Water Breathing", priority: 20},
@@ -170,12 +182,14 @@ async function pickItemCallBack(selection) {
             break;
         case "Change":
             jez.log(`Change visual appearance`)
+            ceDesc = `Altered visual appearance`
             effectData = {
                 label: CHANGE_BUFF, 
                 icon: CHANGE_IMG,
                 origin: lastArg.uuid,
                 disabled: false,
-                duration: { turns: remaingTurns, startRound: gameRound, startTime: game.time.worldTime },
+                duration: { seconds: remainingSecs, startTime: game.time.worldTime },
+                flags: { convenientDescription: ceDesc },
                 changes: [
                     {key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Physical Appearance Changed", priority: 20},
                 ]
@@ -189,12 +203,14 @@ async function pickItemCallBack(selection) {
         case "Piercing":
         case "Bludgeoning":
             jez.log(`Natural Weapon with damage type: ${choice.toLowerCase()}`)
+            ceDesc = `Has sprouted natural weapons`
             effectData = {
                 label: WEAP_BUFF, 
                 icon: WEAP_IMG,
                 origin: lastArg.uuid,
                 disabled: false,
-                duration: { turns: remaingTurns, startRound: gameRound, startTime: game.time.worldTime },
+                duration: { seconds: remainingSecs, startTime: game.time.worldTime },
+                flags: { convenientDescription: ceDesc },
                 changes: [
                     {key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: `Natural ${choice} Weapon Added`, priority: 20},
                     {key: `data.traits.weaponProf.custom`, mode: jez.CUSTOM, value: `${WEAP_NAME}`, priority: 20},                  

@@ -75,12 +75,13 @@
     },
     "preparation": {
       "mode": "prepared",
-      "prepared": false
+      "prepared": true
     },
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "attunement": null
   },
   "effects": [
     {
@@ -96,7 +97,8 @@
       "disabled": false,
       "duration": {
         "startTime": null,
-        "turns": 10
+        "turns": 10,
+        "rounds": 10
       },
       "icon": "Icons_JGB/Spells/3rd_Level/Cruel_Puppetry/Puppet.png",
       "label": "Cruel Puppetry",
@@ -106,7 +108,9 @@
           "stackable": "none",
           "macroRepeat": "none",
           "specialDuration": [],
-          "transfer": false
+          "transfer": false,
+          "selfTarget": false,
+          "durationExpression": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -121,14 +125,17 @@
           "height": false,
           "hidden": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
         }
       },
-      "tint": null,
+      "tint": "",
       "selectedKey": "macro.execute"
     }
   ],
-  "sort": 0,
   "flags": {
     "betterCurses": {
       "isCurse": false,
@@ -167,13 +174,25 @@
       }
     },
     "midi-qol": {
-      "onUseMacroName": "Cruel_Puppetry"
+      "onUseMacroName": "[postActiveEffects]Cruel_Puppetry",
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

@@ -1,4 +1,4 @@
-const MACRONAME = "Sleep.1.6.js"
+const MACRONAME = "Sleep.2.0.js"
 //############################################################################################################
 // READ FIRST
 // based on @ccjmk macro for sleep. Gets targets and ignores those who are immune to sleep.
@@ -15,229 +15,311 @@ const MACRONAME = "Sleep.1.6.js"
  *                  Also, avoid double application of prone contion.      
  * 02/18/22 1.5 JGB Update to use jez.lib functions and handle VFX          
  * 05/13/22 1.6 JGB Update to read color string from icon to set VFX color   
+ * 08/01/22 2.0 JGB Rewritten so that it has a more logical flow and handles multiple choices for last sleeper
  *************************************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-let aItem;          // Active Item information, item invoking this macro
-if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
-
-let immuneRaces = ["undead", "construct", "elf"];    // Set strings that define immune races
-const condition = "Unconscious";                     // Condition to be slept representing sleep 
-let gameRound = game.combat ? game.combat.round : 0; // Added missing initilization -JGB
-let effectData = [];                                 // Array to hold effect data
-jez.log(`Starting: ${MACRONAME}`); 
-
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
+const TL = 0
+const TAG = MACRO
+if (TL>0) jez.trace(`${TAG} ============== Starting === ${MACRONAME} =================`);
+if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`${TAG} args[${i}]`, args[i]);
+const LAST_ARG = args[args.length - 1];
+//---------------------------------------------------------------------------------------------------
+// Set the value for the Active Token (aToken)
+let aToken;         
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor; 
+//
+// Set the value for the Active Item (aItem)
+let aItem;         
+if (args[0]?.item) aItem = args[0]?.item; 
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
+let immuneRaces = ["undead", "construct", "elf"];   // Set strings that define immune races
+const CONDITION = "Unconscious";                    // CONDITION to be slept representing sleep 
+let gameRound = game.combat ? game.combat.round : 0;// Added missing initilization -JGB
+let effectData = [];                                // Array to hold effect data
+let sleptCount = 0                                  // Count of targets slept
+let sleptNames = []                                 // Array of names of slet targets
+//---------------------------------------------------------------------------------------------------
+// Define the HP Pool for this execution
+//
 const sleepHp = await args[0].damageTotal;
 if (!sleepHp) return ui.notifications.error("Set the Spells Damage Details to 'No Damage'");
-
-jez.log(`Sleep Spell => Available HP Pool [${sleepHp}] points`);
-let targets = await args[0].targets.filter(i=> i.actor.data.data.attributes.hp.value != 0).sort((a, b) => canvas.tokens.get(a.id).actor.data.data.attributes.hp.value < canvas.tokens.get(b.id).actor.data.data.attributes.hp.value ? -1 : 1);
+if (TL>1) jez.trace(`${TAG} Available HP Pool [${sleepHp}] points`);
 let remainingSleepHp = sleepHp;
-
-runVFX()
-
-let slept_target = [];
-
-checkTarget: for (let target of targets) {
-   jez.log(`Target ${target.name}`, target);
-   let find_target = await canvas.tokens.get(target.id);
-   jez.log(` find_target: ${target.id}`); 
-
-   let targetRace = find_target.actor.data.data.details.race;   // Shorten subsequent lines for Target Details Race
-   let targetType = find_target.actor.data.data.details.type;   // Shorten subsequent lines for Target Details Type
-
-   /* Following line from original macro is both hard to read and fails on player characters.  
-   let immune_type = find_target.actor.data === "character" ? ["undead", "construct"].some(race => (find_target.actor.data.data.details.race || "").toLowerCase().includes(race)) : ["undead", "construct"].some(value => (find_target.actor.data.data.details.type.value || "").toLowerCase().includes(value));
-   */  
-   // Rewritten Giant line of code from above, in longer (working) form
-   let immune_type = false;	
-   if(find_target.actor.data.type === "character")	{
-       jez.log(`${target.name} is a PC`, target);
-       for(let immuneRace of immuneRaces) {
-           if(targetRace) {
-               if(immuneRace.toLowerCase().includes(targetRace.toLowerCase()))
-               {
-                   jez.log(`${target.name}'s race is ${immuneRace}`, target, immuneRace);
-                   immune_type = true;
-               }
-            } else jez.log(`${target.name} has no race`, target);
-       }		
-   } else { 
-       jez.log(`${target.name} is an NPC`, target);
-       // Loop through each creature types found in the immuneRaces array.
-       for(let immuneRace of immuneRaces) {
-           jez.log(`Checking against ${immuneRace}`);
-           // If the creature type is custom...
-           if (targetType.value.toLowerCase() === "custom") {
-               jez.log(` Beginning custom type Checker`);          
-               // Check custom creature type against our immuneRaces collection
-               if(targetType.custom.toLowerCase().includes(immuneRace.toLowerCase())) {
-                   jez.log(` Found a dirty ${immuneRace} spy.`, immuneRace);
-                   immune_type = true;
-               }
-           } else jez.log(` ${target.name} does not have a custom race -- ${targetType.value}`);
-           // If the creature has a subtype...
-           if(!targetType.subtype == "") {
-           // if(targetType.subtype) {
-                   // If the creature's subtype is found in the immuneRaces collection...
-                   if (targetType.subtype.toLowerCase() === immuneRace.toLowerCase()) {					
-                   jez.log(" Beginning subtype Checker");
-
-                   // Check creature Subtypes for the types in our immuneRaces collection.
-                   if(targetType.custom.toLowerCase().includes(immuneRace.toLowerCase())) {
-                       jez.log(" Found a sneaky subtype.");
-                       immune_type = true;
-                   }
-               }
-           } else jez.log(` ${target.name} does not have a subtype`);
-           
-           // Check creature type against our immuneRaces collection.
-           if(immuneRace.toLowerCase() === targetType.value.toLowerCase()) {
-               jez.log(` target's npc type is ${immuneRace}`);
-               immune_type = true;
-           } else jez.log(` ${target.name} vulnerable npc type is ${targetType.value}`);
-       }
-   }      
-   // End of rewritten Giant line of code from above
-    jez.log(` immune type:`, immune_type);
-    let immune_ci = find_target.actor.data.data.traits.ci.custom.includes("Sleep");
-    jez.log(` custom immunity:`, immune_ci);
-    jez.log(` find_target.actor: `, find_target.actor);
-    // Set sleeping to "true" (load its data structure) if token is currently "unconscious"
-    let sleeping = find_target.actor.effects.find(i => i.data.label === condition); 
-        if (sleeping) { // Sleeping creatures are immune to this spell and should be skipped
-            jez.log(` ${target.name} is ${condition}`,sleeping);
-            jez.log(` remaining unconscious: ${sleeping.data.duration.rounds} rounds, ${sleeping.data.duration.seconds} seconds`);
-        } else { jez.log(` ${target.name} is not ${condition}`) }
-    
-    // Set prone to "true" (load its data structure) if token is currently "prone"
-    let prone = find_target.actor.effects.find(i => i.data.label === "Prone"); 
-        if (prone) { 
-            jez.log(` ${target.name} is already prone`), prone;
-        } else jez.log(` ${target.name} is not yet prone`)
-
-   let targetHpValue = find_target.actor.data.data.attributes.hp.value;
-   jez.log(` targetHpValue: `,targetHpValue); 
-   if ((immune_type) || (immune_ci) || (sleeping)) {
-       jez.log(`Sleep Results => Target: ${find_target.name} | HP: ${targetHpValue} | Status: Not Affected`);
-       slept_target.push(`<div class="midi-qol-flex-container"><div>no effect</div><div class="midi-qol-target-npc midi-qol-target-name" id="${find_target.id}"> ${find_target.name}</div><div><img src="${find_target.data.img}" width="30" height="30" style="border:0px"></div></div>`);
-
-       // Sleeping target needs sleep reapplied as Midi-QoL will remove it due to a "feature" which takes zero damage applied as damage applied.
-       if (sleeping) { 
-           effectData = addSleepEffectData(effectData, sleeping.data.duration.rounds, sleeping.data.duration.seconds);
-           await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: find_target.actor.uuid, effects: effectData }); 
-       }
-       continue checkTarget;
-   }
-   if (remainingSleepHp > targetHpValue) {
-       remainingSleepHp -= targetHpValue;
-       jez.log(`Sleep Results => Target: ${find_target.name} |  HP: ${targetHpValue} | HP Pool: ${remainingSleepHp} | Status: Slept`);
-       slept_target.push(`<div class="midi-qol-flex-container"><div>slept</div><div class="midi-qol-target-npc midi-qol-target-name" id="${find_target.id}"> ${find_target.name}</div><div><img src="${find_target.data.img}" width="30" height="30" style="border:0px"></div></div>`);
-
-       if (!prone) {                                    // If target is not prone load array to add sleep and prone effects
-           effectData = addSleepProneEffectData(effectData);
-           // game.cub.addCondition("Prone", target);   // Combat Utility Belt mod to add Prone generated unhappiness
-       } else {                                         // If target is already prone load array to add sleep effect only
-           effectData = addSleepEffectData(effectData, 10, 60);
-       }
- 
-       await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: find_target.actor.uuid, effects: effectData });
-       continue;
-   } else {
-       console.log(`Sleep Results => Target: ${target.name} | HP: ${targetHpValue} | HP Pool: ${remainingSleepHp - targetHpValue} | Status: Missed`);
-       slept_target.push(`<div class="midi-qol-flex-container"><div>misses</div><div class="midi-qol-target-npc midi-qol-target-name" id="${find_target.id}"> ${find_target.name}</div><div><img src="${find_target.data.img}" width="30" height="30" style="border:0px"></div></div>`);
-       break;
-   } 
+//---------------------------------------------------------------------------------------------------
+// Build array of eligible targets from all those tokens targeted.
+//
+let ct = canvas.tokens
+if (TL>3) jez.trace(`${TAG} canvas.tokens`, ct);
+let targets = await args[0].targets.filter(i=> i.actor.data.data.attributes.hp.value != 0).sort((a, b) => 
+    ct.get(a.id).actor.data.data.attributes.hp.value + ct.get(a.id).actor.data.data.attributes.hp.temp < 
+    ct.get(b.id).actor.data.data.attributes.hp.value + ct.get(b.id).actor.data.data.attributes.hp.temp ? 
+    -1 : 1);
+if (TL>3) jez.trace(`${TAG} targets`, targets);
+//---------------------------------------------------------------------------------------------------
+// Slice off those targets that have more health (normal + temp) than the entire HP Pool
+//
+for (let i = 0; i < targets.length; i++) {
+    if (TL>4) jez.trace(`${TAG} Checking ${targets[i].name}`, targets[i]);
+    if (targets[i].actor.data.data.attributes.hp.value + targets[i].actor.data.data.attributes.hp.temp <= 
+        sleepHp) continue
+    if (TL>1) jez.trace(`${TAG} ${targets[i].name} has more HP than pool, truncating target list`);
+    targets.length = i; // Clip the array just before the current entry
+    break;              // Terminate our scan as we have all those that have HP that could be slept
 }
-let slept_list = slept_target.join('');
-await wait(500);
-let slept_results = `<div><div class="midi-qol-nobox">${slept_list}</div></div>`;
-const chatMessage = game.messages.get(args[0].itemCardId);
-let content = duplicate(chatMessage.data.content);
-const searchString = /<div class="midi-qol-hits-display">[\s\S]*<div class="end-midi-qol-hits-display">/g;
-const replaceString = `<div class="midi-qol-hits-display"><div class="end-midi-qol-hits-display">${slept_results}`;
-content = await content.replace(searchString, replaceString);
-await chatMessage.update({ content: content });
+//---------------------------------------------------------------------------------------------------
+// Launch the VFX
+//
+runVFX({traceLvl: 0})
+//---------------------------------------------------------------------------------------------------
+// Build array of eligible targets from all those tokens targeted.
+//
+let eTargs = pruneImmunes(targets, {traceLvl: 0})
+console.log("")
+if (TL>2) for (let target of eTargs) {      // If tracing, spit out eligible list
+    let normalHP = target.actor.data.data.attributes.hp.value
+    let tempHP = target.actor.data.data.attributes.hp.temp
+    jez.trace(`${TAG} Eligible: ${target.name} HP: ${normalHP} Normal, ${tempHP} Temp`)
+}
+//---------------------------------------------------------------------------------------------------
+// Build array of slept targets checking to make sure that we randomly select from targets that are
+// tied in HP value at the end of the pool so that those excluded are actually random.
+//
+let sleepers = pickSleepers(eTargs, { traceLvl: 0 })
+if (TL>1) for (let target of sleepers) {    // If tracing, spit out to be slept list
+    let normalHP = target.actor.data.data.attributes.hp.value
+    let tempHP = target.actor.data.data.attributes.hp.temp
+    jez.trace(`${TAG} Sleeper: ${target.name} HP: ${normalHP} Normal, ${tempHP} Temp`)
+}
+//---------------------------------------------------------------------------------------------------
+// Obtain, modify and CE CONDITION to be used 
+//
+let effect = game.dfreds.effectInterface.findEffectByName(CONDITION).convertToObject();
+effect.duration = { rounds: 10, startRound: gameRound, startTime: game.time.worldTime }
+// Following line seems to tickle a bug in CE that causes the special duration to be set into 
+// reference copy so I'll make my function that applies sleep add this condition to each
+// effect.flags.dae.specialDuration = ["isDamaged"]  // Add to the effect's special duration
+//---------------------------------------------------------------------------------------------------
+// Loop through the sleepers list, putting them to sleep (yea!)
+//
+for (let sleeper of sleepers) {
+    if (TL > 1) jez.trace(`${TAG} Putting ${sleeper.name} to sleep`, sleeper);
+    applySleep(sleeper, effect, {traceLvl:0})
+    sleptNames.push(sleeper.name)
+    sleptCount++
+}
+//---------------------------------------------------------------------------------------------------
+// Update the chat card with results
+//
+let nameList = ""
+msg = `${sleptCount} creatures have been put to sleep.`
+if (sleptCount === 1) msg = msg + `<br><br>${sleptNames[0]}`
+if (sleptCount > 1) {
+    sleptNames.sort()
+    for (let i = 0; i < sleptCount; i++)
+        if (nameList) nameList = `${nameList},<br>${sleptNames[i]}`
+        else nameList = `<br><br>${sleptNames[i]}`
+    msg = msg + nameList
+}
+postResults(msg)
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ *    END_OF_MAIN_MACRO_BODY
+ *                                END_OF_MAIN_MACRO_BODY
+ *                                                             END_OF_MAIN_MACRO_BODY
+ ****************************************************************************************************
+ * Post results to the chat card
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0]
 
+    if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    if (TL > 2) jez.trace("postResults Parameters", "msg", msg)
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+}
 /***********************************************************************************************************************
- * Function to load up array with data to be used to apply unconscious and prone effects to target
+ * Function to actually apply sleep and prone (unless already prone)
 ************************************************************************************************************************/
-function addSleepProneEffectData(_effectData) {
-    jez.log(` ...add Sleep & Prone effect data`)
-    _effectData = [
-        {
-            label: condition,
-            icon: "icons/svg/sleep.svg",
-            origin: args[0].uuid,
-            disabled: false,
-            // duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
-            duration: { rounds: 10, startRound: gameRound, startTime: game.time.worldTime },
-            flags: { dae: { specialDuration: ["isDamaged"] } },
-            changes: [
-                { key: `flags.midi-qol.grants.critical.mwak`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.all`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.fail.ability.save.str`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.fail.ability.save.dex`, mode: 2, value: 1, priority: 20 },
-                { key: `data.attributes.movement.all`, mode: 5, value: 0, priority: 20 }
-            ]
-        }, {
-            label: "Prone",
-            icon: "modules/combat-utility-belt/icons/prone.svg",
-            origin: args[0].uuid,
-            disabled: false,
-            duration: { rounds: 99, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
-            changes: [
-                { key: `flags.midi-qol.disadvantage.attack.all`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.mwak`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.msak`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.disadvantage.attack.rwak`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.disadvantage.attack.rsak`, mode: 2, value: 1, priority: 20 }
-            ]
-        }];
-        return(_effectData);
+async function applySleep(TARG, effectData, options={}) {
+    const TL = options.traceLvl ?? 0
+    const FUNCNAME = "applySleep(TARG, effectData, options=())";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |` 
+    if (TL>1) jez.trace(`${TAG} --- Start ---`);
+    //----------------------------------------------------------------------------------------
+    // Apply CE CONDITION passed to us
+    //
+    if (TL>2) jez.trace(`${TAG} target data`, TARG);
+    if (TL>2) jez.trace(`${TAG} effect data`, effectData);
+    game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: TARG.actor.uuid,
+        origin: aActor.uuid
+    });
+    await jez.wait(1000)
+    //----------------------------------------------------------------------------------------
+    // Just for fun, have them pop out some Z's
+    //
+    await jez.wait(Math.floor(Math.random() * 3000))
+    bubbleForAll(TARG.id, `Zzzzz...`, true, true)
+    //----------------------------------------------------------------------------------------
+    // Find CONDITION just applied and patch in a special duration to dance around CE oddness
+    // This seems like it shouldn't be required.  Issue opened against CE Module.
+    //
+    //          https://github.com/DFreds/dfreds-convenient-effects/issues/161
+    //
+    let effect = await TARG.actor.effects.find(i => i.data.label === CONDITION);
+    if (!effect) return jez.badNews(`Could not find ${CONDITION} effect on ${TARG.name}`, "w")
+    await effect.update({ 'flags.dae.specialDuration': ["isDamaged"] });
+    //----------------------------------------------------------------------------------------
+    // Knock the target prone, if it isn't already prone
+    //
+    await jezcon.addCondition("Prone", TARG.actor.uuid, { allowDups: false })
+    //----------------------------------------------------------------------------------------
+    // Just for fun, have them pop out some Z's
+    //
+    await jez.wait(Math.floor(Math.random() * 5000))
+    bubbleForAll(TARG.id, `Zzzzz...`, true, true)
+}
+/*****************************************************************************************************
+ * Prune out the immune or otherwise unaffectable targets from our list and return the result
+ *****************************************************************************************************/
+ function pruneImmunes(targets, options = {}) {
+    const TL = options.traceLvl ?? 0
+    const FUNCNAME = "pruneImmunes(targets, options = {})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |` 
+    if (TL>1) jez.trace(`${TAG} --- Start ---`);
+    let eligibleTargets = []
+    //---------------------------------------------------------------------------------------------------
+    // Loop through the targets only keeping eligible targets
+    //
+    chkTarget: for (let target of targets) {
+        const THIS_TARG = target._object
+        if (TL > 2) jez.trace(`${TAG} Considering ${THIS_TARG.name}`, THIS_TARG);
+        let rtnVal = jezcon.hasCE("Unconscious", THIS_TARG.actor.uuid, { traceLvl: 0 })
+        if (rtnVal) {
+            if (TL > 1) jez.trace(`${TAG} ${THIS_TARG.name} is aleady slept (unconscious)`);
+            continue chkTarget
+        }
+        // Check Specific Condition Immunities looking for "unconscious"
+        if (THIS_TARG.actor.data.data.traits.ci) {
+            const CI = THIS_TARG.actor.data.data.traits.ci.value
+            for (let i = 0; i < CI.length; i++)
+                if (CI[i] === "unconscious") {
+                    if (TL > 1) jez.trace(`${TAG} ${THIS_TARG.name} has immunity to unconscious checked`);
+                    continue chkTarget
+                }
+        }
+        // Check Custom Condition Immunities looking for "sleep" and "slept"
+        if (THIS_TARG.actor.data.data.traits.ci.custom) {
+            const CUST_IMMUNITY = THIS_TARG.actor.data.data.traits.ci.custom.toLowerCase()
+            if (CUST_IMMUNITY.includes("slept") || CUST_IMMUNITY.includes("sleep")) {
+                if (TL > 1) jez.trace(`${TAG} ${THIS_TARG.name} has custom immunity (sleep or slept)`, CUST_IMMUNITY);
+                continue chkTarget
+            }
+        }
+        // Check Race for immunity against immuneRaces array
+        let RACE = jez.getRace(THIS_TARG).toLowerCase()
+        if (TL > 3) jez.trace(`${TAG} ${THIS_TARG.name} race`, RACE)
+        if (RACE) {
+            for (let immuneRace of immuneRaces) {
+                if (RACE.includes(immuneRace)) {
+                    if (TL > 1) jez.trace(`${TAG} ${THIS_TARG.name}'s immune race is ${RACE}`);
+                    continue chkTarget
+                }
+            }
+        }
+        // Check individual HP normal plus temp against total available, eliminating if more than possible.
+        eligibleTargets.push(THIS_TARG)
     }
-/***********************************************************************************************************************
- * Function to load up array with data to be used to apply unconscious only (already prone) effect to target.
- * _rounds and _seconds are optional parameters intendedto be used for reapplying a partially timed out effect.
-************************************************************************************************************************/
-function addSleepEffectData(_effectData, _rounds, _seconds) {
-    jez.log(` ...add Sleep effect data`)
-    let newRounds = _rounds || 10;
-    // let newSeconds = _seconds || 60;
-    _effectData = [
-        {
-            label: condition,
-            icon: "icons/svg/sleep.svg",
-            origin: args[0].uuid,
-            disabled: false,
-            // duration: { rounds: newRounds, seconds: newSeconds, startRound: gameRound, startTime: game.time.worldTime },
-            duration: { rounds: newRounds, startRound: gameRound, startTime: game.time.worldTime },
-            flags: { dae: { specialDuration: ["isDamaged"] } },
-            changes: [
-                { key: `flags.midi-qol.grants.critical.mwak`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.all`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.fail.ability.save.str`, mode: 2, value: 1, priority: 20 },
-                { key: `flags.midi-qol.fail.ability.save.dex`, mode: 2, value: 1, priority: 20 },
-                { key: `data.attributes.movement.all`, mode: 5, value: 0, priority: 20 }
-            ]
-        }];
-    return (_effectData);
+    // Return our restultant list
+    if (TL > 1) jez.trace(`${TAG} Finished, returning`, eligibleTargets)
+    return eligibleTargets
+}
+/*****************************************************************************************************
+ * Pick out the sleepers from the targets available
+ *****************************************************************************************************/
+ function pickSleepers(eTargs, options = {}) {
+    const TL = options.traceLvl ?? 0
+    const FUNCNAME = "pickSleepers(eTargs, options = {})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL > 1) jez.trace(`${TAG} --- Start ---`);
+    //---------------------------------------------------------------------------------------------------
+    // Loop through the targets only keeping eligible targets
+    //
+    let sleepers = []
+    addSleepers: for (let i = 0; i < eTargs.length; i++) {
+        const TARG_HP = eTargs[i].actor.data.data.attributes.hp.value + eTargs[i].actor.data.data.attributes.hp.temp
+        if (TARG_HP > remainingSleepHp) break       // Ran out of budget on this item
+        if (i < eTargs.length - 1) {                // At least one more to consider, need to look ahead
+            let nextHPnorm = eTargs[i + 1].actor.data.data.attributes.hp.value
+            let nextHPtemp = eTargs[i + 1].actor.data.data.attributes.hp.temp
+            let nextHP = nextHPnorm + nextHPtemp    // Total health of next target in list
+            if (TARG_HP < nextHP) {                // Current target has less health than next
+                if (TL > 2) jez.trace(`${TAG} ${eTargs[i].name} added to sleepers list`);
+                sleepers.push(eTargs[i])            // Store current target in our sleepers list
+                remainingSleepHp -= TARG_HP         // Remove the target's HP from pool
+                continue addSleepers                // Go on to next target
+            } else {                                // At least next target has same health
+                if (TL > 3) jez.trace(`${TAG} Starting at ${eTargs[i].name} multiple with same HP (${TARG_HP})`);
+                let matches = [];                   // So far we have one HP match
+                for (let j = i; j < eTargs.length; j++) {   // step forward through list
+                    matches.push(eTargs[j])         // Add target to our list of matches
+                    let n = eTargs[j + 1].actor.data.data.attributes.hp.value
+                    let t = eTargs[j + 1].actor.data.data.attributes.hp.temp
+                    if (n + t > TARG_HP) { i = j; break }
+                    if (TL > 2) jez.trace(`${TAG} ${eTargs[j].name} has same HP (${n}+${t})`);
+                }
+                // Print out info on the set of matches
+                if (TL > 1) for (let j = 0; j < matches.length; j++)
+                    jez.trace(`${TAG} Matches at ${TARG_HP}HP ${j} ${matches[j].name}`);
+                // Need to randomly pick those from the matches that fit inside the budget
+                let x = 0
+                while (TARG_HP < remainingSleepHp) {// Select matches while budge allows
+                    if (TL > 2) jez.trace(`${TAG} Looking through ${matches.length} matches`, matches);
+                    if (!matches.length) break      // No remaining matches break out
+                    matches = pickMatch(matches)    // Pick a match and set new list of matches
+                }
+                // Function to pick a match
+                function pickMatch(matches) {
+                    // Obtain a random integer from 0 to matches.length-1
+                    let sel = Math.floor(Math.random() * matches.length);
+                    if (TL > 1) jez.trace(`${TAG} Selected #${sel} ${matches[sel].name} from matches`, matches);
+                    sleepers.push(matches[sel])         // Store selected target in our sleepers list
+                    remainingSleepHp -= TARG_HP         // Remove the selection's HP from pool
+                    // Remove the selection from matches array
+                    if (TL > 3) jez.trace(`${TAG} matches list before splice`, matches);
+                    matches.splice(sel, 1)              // splice out match used    
+                    if (TL > 3) jez.trace(`${TAG} matches list after splice`, matches);
+                    return matches
+                }
+
+            }
+        }
+        else sleepers.push(eTargs[i])           // Last one fit inside budget, rare occurance
+    }
+    return(sleepers)
 }
 /***************************************************************************************************
- * Perform the VFX code that runs when this macro is invoked as an ItemMacro "OnUse"
+ * Perform the VFX code
  ***************************************************************************************************/
-async function runVFX() {
-    jez.log("Launch VFX")
-    jez.log("args[0]", args[0])
-    const FUNCNAME = "doOnUse()";
+async function runVFX(options = {}) {
+    const TL = options.traceLvl ?? 0
+    const FUNCNAME = "runVFX()";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |` 
+    if (TL>1) jez.trace(`${TAG} --- Start ---`);
     const VFX_NAME = `${MACRO}`
-    const VFX_OPACITY = 1.0;
+    const VFX_OPACITY = 0.5;
     const VFX_SCALE = 2.7;
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const templateID = args[0].templateId
-    jez.log('templateID', templateID)
+    if (TL>2) jez.trace(`${TAG} templateID`, templateID)
     //----------------------------------------------------------------------------------------------
     // Pick a colour based on a colour string found in the icon's name.
     // Color Mappings (Icon String : VFX Color):
@@ -252,9 +334,9 @@ async function runVFX() {
     else if (IMAGE.includes("jade")) color = "Regular_Green"
     else if (IMAGE.includes("magenta")) color = "Regular_Pink"
     else if (IMAGE.includes("fire")) color = "Regular_Yellow"
-    //jez.log(`Color ${color}`)
+    if (TL>2) jez.trace(`${TAG} Color selected: ${color}`)
     const VFX_LOOP = `modules/jb2a_patreon/Library/1st_Level/Sleep/Cloud01_01_${color}_400x400.webm`
-    jez.log(`VFX_File: ${VFX_LOOP}`)
+    if (TL>2) jez.trace(`${TAG} VFX_File: ${VFX_LOOP}`)
     new Sequence()
     .effect()
         .file(VFX_LOOP)
@@ -273,4 +355,5 @@ async function runVFX() {
     .play();
     await jez.wait(100)         // Don't delete till VFX established
     canvas.templates.get(templateID).document.delete()
+    if (TL>1) jez.trace(`${TAG} --- Finish ---`);
 }

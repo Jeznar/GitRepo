@@ -1,9 +1,10 @@
-const MACRONAME = "Silent_Image.0.1.js"
+const MACRONAME = "Silent_Image.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Call a token via warpgate, most interesting element is the use of jez.warpCrosshairs to control
  * how far away the token can be summoned.
  * 
  * 07/20/22 0.1 Creation of Macro
+ * 07/31/22 0.3 Add convenientDescription
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TL = 0;                               // Trace Level for this macro
@@ -84,7 +85,10 @@ async function doOnUse() {
       seconds: 3600, startTime: game.time.worldTime,
       token: aToken.uuid, stackable: false
     },
-    flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+    flags: { 
+      dae: { macroRepeat: "none", specialDuration: EXPIRE },
+      convenientDescription: `Maintaining Silent Image.  See Spell Description.`
+     },
     changes: [
       { key: `macro.itemMacro`, mode: jez.ADD, value: summonedID, priority: 20 },
     ]

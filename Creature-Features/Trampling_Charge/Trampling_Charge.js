@@ -1,4 +1,4 @@
-const MACRONAME = "Trampling_Charge_0.2.js"
+const MACRONAME = "Trampling_Charge_0.3.js"
 /*****************************************************************************************
  * Implement the knockdown portion of trampling charge
  * 
@@ -9,206 +9,151 @@ const MACRONAME = "Trampling_Charge_0.2.js"
  * 
  * 12/11/21 0.1 Creation of Macro
  * 05/04/22 0.2 Update for Foundry 9.x
+ * 08/04/22 0.3 Add convenientDescription 
  *****************************************************************************************/
+const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
+const TAG = `${MACRO} |`
+const TL = 5;                               // Trace Level for this macro
+let msg = "";                               // Global message string
+//---------------------------------------------------------------------------------------------------
+if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
+if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+const LAST_ARG = args[args.length - 1];
+//---------------------------------------------------------------------------------------------------
+// Set the value for the Active Token (aToken)
+let aToken;
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor;
+//
+// Set the value for the Active Item (aItem)
+let aItem;
+if (args[0]?.item) aItem = args[0]?.item;
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
 const DEBUG = true;
-let msg = "";
 const CONDITION = "Prone";
-let actorID = canvas.tokens.get(args[0].tokenId);
-
-if (DEBUG) {
-    console.log(`************ Executing ${MACRONAME} ****************`)
-    console.log(`args[0]: `,args[0]);
-}
-
+const PRONE_JRNL = `@JournalEntry[${game.journal.getName(CONDITION).id}]{Prone}`
+//------------------------------------------------------------------------------------------
+// Prepare for and pop a simple dialog asking if preconditions were met
+const Q_TITLE = `Did ${aToken.name} Charge?`
+const Q_TEXT = `To qualify as a trampling charge ${aToken.name} must impact the target after
+    moving 20 feet or more in a straight line at the target.<br><br>Select Yes, if this 
+    precondition was met.<br><br>`
+let confirmation = await Dialog.confirm({title: Q_TITLE, content: Q_TEXT,});
+if (!confirmation) return jez.badNews(`Preconditions not met, skipping ${aItem.name} effects.`,"i")
 // ---------------------------------------------------------------------------------------
 // Make sure exactly one target.
 //
+console.log(args[0].targets.length)
 if (args[0].targets.length !== 1) {
-    msg = `Funny business going on, one and only one target is allowed.  
-           Tried to hit ${args[0].targets.length} targets.`;
-    await postResults(msg);
-    if (DEBUG) {
-        console.log(` ${msg}`, args[0].saves); 
-        console.log(`************ Ending ${MACRONAME} ****************`)
-    }
-    return;
+    msg = `One and only one target is allowed.  Tried to hit ${args[0].targets.length}.`;
+    postResults(msg);
+    return jez.badNews(msg, "i")
 }
-
 // ---------------------------------------------------------------------------------------
 // If no target was hit, post result and terminate 
 //
+let tToken = canvas.tokens.get(args[0].targets[0].id);
 if (args[0].hitTargets.length === 0) {
-    msg = `${args[0].hitTargets[0]} avoids the knockdown by making its save.`;
-    await postResults(msg);
-    if (DEBUG) {
-        console.log(` ${msg}`, args[0].saves); 
-        console.log(`************ Ending ${MACRONAME} ****************`)
-    }
-    return;
+    msg = `${tToken.name} avoided the knockdown by making its save.`;
+    postResults(msg);
+    return jez.badNews(msg, "i")
 }
-// let targetID = args[0].hitTargets[0];
-let targetID = canvas.tokens.get(args[0].targets[0].id);
-
-// ---------------------------------------------------------------------------------------
-// Make sure the target is the same size or smaller as the charger 
-//
-if (DEBUG) console.log(`actorID, targetID:`, actorID, targetID)
-let sizeDiff = sizeDelta(actorID, targetID);
-if (DEBUG) console.log(`sizeDiff ${sizeDiff}`);
-if (sizeDiff === -99) {
-    msg = `Something went sideways comparing the size of actor and target`;
-    await postResults(msg);
-    ui.notifications.error(message);
-    return;
-}
-if (sizeDiff < 0) {
-    msg = `${targetID.name} is larger than ${actorID.name} and can not be knocked @JournalEntry[FBPUaHRxNyNXAOeh]{prone}. 
-    If ${targetID.name} is already prone, ${actorID.name} may make an extra attack as a 
-    bonus action.`;
-    await postResults(msg);
-    return;
-}
-
-// ---------------------------------------------------------------------------------------
-// If the target saved post that and exit 
-//
-let failCount = args[0].failedSaves.length 
-if (DEBUG) console.log(`${failCount} args[0].failedSaves: `,args[0].failedSaves)
-if (failCount === 0) {
-    msg = `${targetID.name} made its saving throw. It is unaffected by knockdown.`
-    await postResults(msg);
-    if (DEBUG) {
-        console.log(` ${msg}`, args[0].saves); 
-        console.log(`************ Ending ${MACRONAME} ****************`)
-    }
-    return;
-}
-
 // ---------------------------------------------------------------------------------------
 // Check to make sure the target isn't already prone
 //
-if (DEBUG) console.log(`targetID.actor.effects: `,targetID.actor.effects);
-let proneEffect = targetID.actor.effects.find(ef => ef.data.label === CONDITION);
-if (DEBUG) console.log(`proneEffect: `, proneEffect);
+if (TL > 2) jez.trace(`${TAG} tToken.actor.effects: `, tToken.actor.effects);
+let proneEffect = tToken.actor.effects.find(ef => ef.data.label === CONDITION);
+if (TL > 2) jez.trace(`${TAG} proneEffect: `, proneEffect);
 if (proneEffect) {
-    if (DEBUG) console.log(`${targetID.name} is already ${CONDITION}.`);
+    msg = `<b>${tToken.name}</b> is already ${CONDITION}. <b>${aToken.name}</b> may use a <b>Bonus action</b> to make an additional attack.`
+    if (TL > 1) jez.trace(`${TAG} ${TAG}`);
     postResults(msg);
     return;
-} else {
-    msg = `${targetID.name} is knocked @JournalEntry[FBPUaHRxNyNXAOeh]{Prone} by the charge.`
 }
-
+// ---------------------------------------------------------------------------------------
+// Make sure the target is the same size or smaller as the charger 
+//
+if (TL > 2) jez.trace(`${TAG} Involved Tokens ---`, "Active Token",aToken,"Target Token",tToken);
+let sizeDiff = await sizeDelta(aToken, tToken, {traceLvl: TL});
+if (TL > 1) jez.trace(`${TAG} Size Difference`, sizeDelta);
+if (sizeDiff < 0) {
+    msg = `${tToken.name} is larger than ${aToken.name} and can not be knocked ${PRONE_JRNL}.`;
+    postResults(msg);
+    return;
+}
+// ---------------------------------------------------------------------------------------
+// If the target saved post that and exit 
+//
+if (args[0].failedSaves.length === 0) {
+    msg = `${tToken.name} made its saving throw. It is unaffected by knockdown.`
+    postResults(msg);
+    if (TL > 1) jez.trace(`${TAG} ${msg}`)
+    return;
+}
 // ---------------------------------------------------------------------------------------
 // Add prone condition to target
 //
-const CUSTOM=0, MULTIPLY=1, ADD=2, DOWNGRADE=3, UPGRADE=4, OVERRIDE=5;
-let gameRound = game.combat ? game.combat.round : 0;
-
-let effectData = {
-    label: CONDITION,
-    icon: "modules/combat-utility-belt/icons/prone.svg",
-    // origin: player.uuid,
-    disabled: false,
-    duration: { rounds: 99, startRound: gameRound },
-    changes: [
-        { key: `flags.midi-qol.disadvantage.attack.all`, mode: ADD, value: 1, priority: 20 },
-        { key: `flags.midi-qol.grants.advantage.attack.mwak`, mode: ADD, value: 1, priority: 20 },
-        { key: `flags.midi-qol.grants.advantage.attack.msak`, mode: ADD, value: 1, priority: 20 },
-        { key: `flags.midi-qol.grants.disadvantage.attack.rwak`, mode: ADD, value: 1, priority: 20 },
-        { key: `flags.midi-qol.grants.disadvantage.attack.rsak`, mode: ADD, value: 1, priority: 20 }
-    ]
-};
-await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:targetID.actor.uuid, effects: [effectData] });
-
+await jezcon.addCondition(CONDITION, tToken.actor.uuid, 
+   {allowDups: false, replaceEx: false, origin: aActor.uuid, overlay: false, traveLvl: TL }) 
+// let gameRound = game.combat ? game.combat.round : 0;
+// let effectData = {
+//     label: CONDITION,
+//     icon: "modules/combat-utility-belt/icons/prone.svg",
+//     // origin: player.uuid,
+//     disabled: false,
+//     duration: { rounds: 99, startRound: gameRound },
+//     changes: [
+//         { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },
+//         { key: `flags.midi-qol.grants.advantage.attack.mwak`, mode: jez.ADD, value: 1, priority: 20 },
+//         { key: `flags.midi-qol.grants.advantage.attack.msak`, mode: jez.ADD, value: 1, priority: 20 },
+//         { key: `flags.midi-qol.grants.disadvantage.attack.rwak`, mode: jez.ADD, value: 1, priority: 20 },
+//         { key: `flags.midi-qol.grants.disadvantage.attack.rsak`, mode: jez.ADD, value: 1, priority: 20 }
+//     ]
+// };
+// await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
 // ---------------------------------------------------------------------------------------
 // Create and post success message.
 //
-msg = `${targetID.name} has been knocked @JournalEntry[FBPUaHRxNyNXAOeh]{Prone}. The trampler may make
-        an extra attack as a bonus action.`
+msg = `<b>${tToken.name}</b> has been knocked ${PRONE_JRNL}. <b>${aToken.name}</b> may make an extra attack as a bonus action.`
 postResults(msg);
-console.log(`************ Terminating ${MACRONAME} ****************`)
-
 return;
-
-/***************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************
- * Post the results to chat card
- ***************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
+ ****************************************************************************************************
+ * Post results to the chat card
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0]
 
-    /***************************************** 
-     * Some Special div's per Posney's docs
-     *  - midi-qol-attack-roll
-     *  - midi-qol-damage-roll
-     *  - midi-qol-hits-display
-     *  - midi-qol-saves-display
-     * 
-     * One other that I have been using
-     *  - midi-qol-other-roll
-    ******************************************/
-
-    const DIV = "midi-qol-damage-roll"; 
-
-    let chatMessage = game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    if (DEBUG) console.log(`chatMessage: `,chatMessage);
-    //const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
-    //const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
-    const searchString = /<div class="end-midi-qol-saves-display">/g;
-    const replaceString = `<div class="end-midi-qol-saves-display">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
-    return;
+    if (TL > 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    if (TL > 2) jez.trace("postResults Parameters", "msg", msg)
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL > 1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
 }
-
-/************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Determine the number of size category first argument is larger than 
- * second and return that. Send back a -99 on error conditions.
- ***********************************************************************/
-function sizeDelta(entity1, entity2) {
-    class CreatureSizes {
-        constructor(size) {
-            this.SizeString = size;
-
-            switch (size) {
-                case "tiny": this.SizeInt = 1; break;
-                case "sm": this.SizeInt = 2; break;
-                case "med": this.SizeInt = 3; break;
-                case "lg": this.SizeInt = 4; break;
-                case "huge": this.SizeInt = 5; break;
-                case "grg": this.SizeInt = 6; break;
-                default: this.SizeInt = 0;  // Error Condition
-            }
-        }
-    }
-
-    if (DEBUG) console.log(` entity1: `,entity1);
-    let entity1SizeString = entity1.document._actor.data.data.traits.size;
-    let entity1SizeObject = new CreatureSizes(entity1SizeString);
-    let entity1Size = entity1SizeObject.SizeInt;  // Returns 0 on failure to match size string
-    if (!entity1Size) {
-        let message = `Size of ${entity1.name}, ${entity1SizeString} failed to parse.`;
-        if (debug) console.log(message);
-        ui.notifications.error(message);
-        return(-99);
-    }
-
-    if (DEBUG) console.log(` entity2: `,entity2);
-    let entity2SizeString = entity2.document._actor.data.data.traits.size;
-    let entity2SizeObject = new CreatureSizes(entity2SizeString);
-    let entity2Size = entity2SizeObject.SizeInt;  // Returns 0 on failure to match size string
-    if (!entity2Size) {
-        let message = `Size of ${entity2.name}, ${entity1SizeString} failed to parse.`;
-        if (debug) console.log(message);
-        ui.notifications.error(message);
-        return(-99);
-    }
-
-    if (DEBUG) console.log(`${entity1.name} ${entity1SizeString} ${entity1Size} - ${entity2.name} ${entity2SizeString} ${entity2Size} `);
-    return(entity1Size - entity2Size);
+ * second and return that. 
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function sizeDelta(entity1, entity2, options = {}) {
+    const FUNCNAME = "sizeDelta(entity1, entity2)";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- ${FUNCNAME} ---`, "entity1", entity1, "entity2", entity2);
+    //-----------------------------------------------------------------------------------------------
+    // Do the thing
+    //
+    let entity1SizeValue = (await jez.getSize(entity1)).value
+    if (TL > 1) jez.trace(`${TAG} ${entity1.name} size value`, entity1SizeValue)
+    let entity2SizeValue = (await jez.getSize(entity2)).value
+    if (TL > 1) jez.trace(`${TAG} ${entity2.name} size value`, entity2SizeValue)
+    return (entity1SizeValue - entity2SizeValue)
 }

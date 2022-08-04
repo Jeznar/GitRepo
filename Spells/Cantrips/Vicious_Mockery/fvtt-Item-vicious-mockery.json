@@ -4,7 +4,7 @@
   "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
   "data": {
     "description": {
-      "value": "<p>You unleash a string of insults laced with subtle enchantments at a creature you can see within range. If the target can hear you (though it need not understand you), it must succeed on a Wisdom saving throw or take 1d4 psychic damage and have disadvantage on the next attack roll it makes before the end of its next turn.</p>\n<p>This spell's damage increases by 1d4 when you reach 5th level (2d4), 11th level (3d4), and 17th level (4d4).</p>",
+      "value": "<p>You unleash a string of insults laced with subtle enchantments at a creature you can see within range.</p>\n<p>If the target can hear you (though it need not understand you), it must succeed on a Wisdom saving throw or take <strong>1d4 psychic damage</strong> and have <strong>disadvantage on the next attack roll</strong> it makes before the end of its next turn.</p>\n<p>This spell's damage increases by 1d4 when you reach 5th level (2d4), 11th level (3d4), and 17th level (4d4).</p>\n<hr />\n<p><strong>FoundryVTT:</strong> This includes automatic mockeries displayed to screen. Condition deafened is checked, but line of sound is not.</p>",
       "chat": "<p>You unleash a string of insults laced with subtle enchantments at a creature you can see within range. If the target can hear you (though it need not understand you), it must succeed on a Wisdom saving throw or take 1d4 psychic damage and have disadvantage on the next attack roll it makes before the end of its next turn.</p>\n<p>This spell's damage increases by 1d4 when you reach 5th level (2d4), 11th level (3d4), and 17th level (4d4).</p>",
       "unidentified": ""
     },
@@ -80,10 +80,10 @@
     "scaling": {
       "mode": "cantrip",
       "formula": "1d4"
-    }
+    },
+    "attunement": null
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "ddbimporter": {
       "id": 138907,
@@ -132,8 +132,9 @@
       "alwaysActive": false
     },
     "midi-qol": {
-      "onUseMacroName": "ItemMacro",
-      "effectActivation": false
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false,
+      "forceCEOn": false
     },
     "core": {
       "sourceId": "Compendium.world.ddb-darklands-spells.UvLyXWkIpf8ElUBf"
@@ -147,7 +148,7 @@
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
           "scope": "global",
-          "command": "// Crymic 21.12.25 Vicious Mockery\n// Let macro deal damage instead of the item, it also supports \"mockeries\" table found in Community Tables Module.\n// Requires ActiveEffect callback macro\nconst lastArg = args[args.length - 1];\nif (lastArg.failedSaves.length === 0) return {};\nlet itemD = lastArg.item;\nlet actorD = game.actors.get(lastArg.actor._id);\nlet tokenD = canvas.tokens.get(lastArg.tokenId);\nlet target = canvas.tokens.get(lastArg.failedSaves[0].id);\nlet getClass = Object.keys(actorD.classes);\nlet level = actorD.classes[getClass].data.data.levels;\nlet numDice = 1 + (Math.floor((level + 1) / 6));\n\njez.runRuneVFX(tokenD, jez.getSpellSchool(itemD))\n\n// COOL-THING: Draw a text message from a roll table\nlet tableName = \"Mockeries-All\";\nlet table = game.tables.getName(tableName);\njez.log(\"table\", table)\nlet damageType = \"psychic\";\nlet mockery = \"\";\nif (table) {\n    let roll = await table.roll();\n    mockery = roll.results[0].data.text;\n} else {\n    mockery = \"Now go away or I shall taunt you a second time-a!\";\n}\n// Call to my library function to generate a formatted chat card\njez.postMessage({color: \"purple\", fSize: 16, icon: tokenD.data.img, \n    msg: mockery, title: `${tokenD.name} speaks mockingly...`, token: tokenD})\n// COOL-THING: Generate a chat bubble on the scene, using a World script!  \nbubbleForAll(tokenD.id, mockery, true, true)\n\nlet combatRound = game.combat ? game.combat.round : 0;\nlet damageRoll = new Roll(`${numDice}d4`).evaluate({ async: false });\nawait new MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, damageType, [target], damageRoll, { flavor: `<hr><div style=\"font-weight:bold;\">${mockery}</div><hr><div>(${CONFIG.DND5E.damageTypes[damageType]})</div>`, itemCardId: lastArg.itemCardId });\nlet effectData = {\n    label: itemD.name,\n    icon: itemD.img,\n    duration: { rounds: 1, turns: 1, startRound: combatRound, startTime: game.time.worldTime },\n    flags: { dae: { macroRepeat: \"none\", specialDuration: [\"1Attack\", \"turnEnd\"] } },\n    origin: lastArg.uuid,\n    disabled: false,\n    changes: [{\n        \"key\": \"flags.midi-qol.disadvantage.attack.all\",\n        \"mode\": 0,\n        \"value\": 1,\n        \"priority\": 20\n    }]\n};\nlet effect = target.actor.effects.find(ef => ef.data.label === game.i18n.localize(itemD.name));\nif (!effect) await MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:target.actor.uuid, effects: [effectData] });",
+          "command": "const MACRONAME = \"Viscious_Mockery.0.2.js\"\n/*****************************************************************************************\n * Based on Crymic 21.12.25 Vicious Mockery\n * Let macro deal damage instead of the item, it also supports \"mockeries\" table found in Community Tables Module.\n * Requires ActiveEffect callback macro\n * \n * 12/25/21 0.1 Creation of Macro by Crymic\n * 08/02/22 0.2 Add convenientDescription\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nconst TL = 5;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);\nif (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;         \nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor; \n//\n// Set the value for the Active Item (aItem)\nlet aItem;         \nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\n// let getClass = Object.keys(aActor.classes);\n// if (TL > 2) jez.trace(`${MACRO} | ${aToken.name} getClass`,getClass)\n// let level = aActor.classes[getClass].data.data.levels;\nlet level = jez.getCharLevel(aToken)\nif (TL > 2) jez.trace(`${MACRO} | ${aToken.name} level`,level)\nlet numDice = 1 + (Math.floor((level + 1) / 6));\n//---------------------------------------------------------------------------------------------------\n// If nothing failed the save, we're done here.\n//\nif (LAST_ARG.failedSaves.length === 0) return jez.badNews(`Target saved vs ${aItem.name}`,\"i\")\n//---------------------------------------------------------------------------------------------------\n// Set the target\n//\nlet tToken = canvas.tokens.get(LAST_ARG.failedSaves[0].id);\nif (TL > 2) jez.trace(`${MACRO} | Targeting ${tToken.name}`)\n//---------------------------------------------------------------------------------------------------\n// Run the VFX\n//\njez.runRuneVFX(aToken, jez.getSpellSchool(aItem))\n//---------------------------------------------------------------------------------------------------\n// Grab a mockery to be played from the roll table and play it\n//\n// COOL-THING: Draw a text message from a roll table\nlet table = game.tables.getName(\"Mockeries-All\");\nlet mockery = \"\";\nif (TL > 2) jez.trace(`${MACRO} | Mockery table`,table)\nif (table) {\n    let roll = await table.roll();\n    mockery = roll.results[0].data.text;\n} else {\n    jez.badNews(`No mockery (\"Mockeries-All\") table found, using default.`,\"w\")\n    mockery = \"Now go away or I shall taunt you a second time-a!\";\n}\njez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img, \n    msg: mockery, title: `${aToken.name} speaks mockingly...`, token: aToken})\nbubbleForAll(aToken.id, mockery, true, true)\n//---------------------------------------------------------------------------------------------------\n// If the target has the no LoS (Line of Sound), it is immune\n//\nray = new Ray(tToken.center, aToken.center)\nlet badLoS = canvas.walls.checkCollision(ray, { type: \"sound\", mode: \"any\" })\nif (TL > 2 && badLoS)  jez.trace(`${MACRO} | ${token.name} sound path blocked`)\nmsg = `Maybe there was a noise over that way?`\nbubbleForAll(tToken.id, msg, true, true)\nmsg = `<i>...while pointing generally toward ${aToken.name}...</i><br><br>` + msg\njez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: tToken.data.img, \n    msg: msg, title: `${tToken.name} wonders...`, token: tToken})\nif (badLoS) return  // Line of Sound\n//---------------------------------------------------------------------------------------------------\n// If the target has the deafened condition, it is immune\n//\nif (jezcon.hasCE(\"Deafened\", tToken.actor.uuid, { traceLvl: 0 })) {\n    if (TL > 1) jez.trace(`${MACRO} | ${token.name} is deaf, and this immune.`)\n    msg = `Did ${aToken.name} say something?`\n    bubbleForAll(tToken.id, msg, true, true)\n    jez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: tToken.data.img, \n        msg: msg, title: `${tToken.name} wonders...`, token: tToken})\n    return\n}\n//---------------------------------------------------------------------------------------------------\n// Handle damage from the spell\n//\nlet combatRound = game.combat ? game.combat.round : 0;\nlet damageType = \"psychic\";\nlet damageRoll = new Roll(`${numDice}d4`).evaluate({ async: false });\nif (TL > 2) jez.trace(`${MACRO} | Performing damage action with DamageOnlyWorkflow`,\n    \"damageType\",damageType,\"damageRoll\",damageRoll)\nawait new MidiQOL.DamageOnlyWorkflow(aActor,aToken,damageRoll.total,damageType,[tToken],damageRoll, \n    { flavor:`<hr><div style=\"font-weight:bold;\">${mockery}</div><hr><div>(${CONFIG.DND5E.damageTypes[damageType]})</div>`, itemCardId: LAST_ARG.itemCardId });\n//---------------------------------------------------------------------------------------------------\n// Define and apply debuff effect\n//\nconst CE_DESC = `Disadvantage on next attack roll`\nlet effectData = {\n    label: aItem.name,\n    icon: aItem.img,\n    duration: { rounds: 1, turns: 1, startRound: combatRound, startTime: game.time.worldTime },\n    flags: { dae: { macroRepeat: \"none\", specialDuration: [\"1Attack\", \"turnEnd\"] } },\n    origin: LAST_ARG.uuid,\n    disabled: false,\n    flags: { \n        dae: { itemData: aItem }, \n        convenientDescription: CE_DESC\n    },\n    changes: [{\n        \"key\": \"flags.midi-qol.disadvantage.attack.all\",\n        \"mode\": 0,\n        \"value\": 1,\n        \"priority\": 20\n    }]\n};\nif (TL > 2) jez.trace(`${MACRO} | Apply effect`, effectData)\nlet effect = tToken.actor.effects.find(ef => ef.data.label === game.i18n.localize(aItem.name));\nif (!effect) await MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:tToken.actor.uuid, effects: [effectData] });",
           "folder": null,
           "sort": 0,
           "permission": {
@@ -164,10 +165,21 @@
       "environment": ""
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     }
   }
 }

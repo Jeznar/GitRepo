@@ -1,4 +1,4 @@
-const MACRONAME = "Ensnaring_Strike_0.3"
+const MACRONAME = "Ensnaring_Strike_0.4.js"
 /*******************************************************************************************
  * Implement Ensnaring Strike
  * 
@@ -26,10 +26,11 @@ const MACRONAME = "Ensnaring_Strike_0.3"
  * 12/27/21 0.1 JGB Creation
  * 12/28/21 0.2 JGB Continued Development
  * 12/28/21 0.3 JGB Add dialog to make skill check to escape an option
+ * 07/29/22 0.4 JGB Add convenientDescription, fixed bug from Midi change, paired effect
  *******************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 
 const DEBUFF_NAME = "Restrained" // aItem.name || "Nature's Wraith";
 const DEBUFF_ICON = "modules/combat-utility-belt/icons/restrained.svg"
@@ -72,7 +73,6 @@ log("------- Obtained Global Values -------",
 //
 if (args[0]?.tag === "OnUse") await doOnUse();      // Midi ItemMacro On Use
 if (args[0] === "on") await doOn();          		        // DAE Application
-if (args[0] === "off") await doOff();        			    // DAE removal
 if (args[0] === "each") await doEach();					    // DAE removal
 if (args[0]?.tag === "DamageBonus") await doBonusDamage();    // DAE Damage Bonus
 
@@ -97,14 +97,17 @@ async function doOnUse() {
 
     let effectData = [{
         changes: [
-            { key: "flags.dnd5e.DamageBonusMacro", mode: CUSTOM, value: `ItemMacro.${aItem.name}`, priority: 20 },
-            { key: "flags.midi-qol.spellLevel", mode: CUSTOM, value: `${spellLevel}`, priority: 20 },
-            { key: "flags.midi-qol.spellId", mode: CUSTOM, value: `${lastArg.uuid}`, priority: 20 },
+            { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${aItem.name}`, priority: 20 },
+            { key: "flags.midi-qol.spellLevel", mode: jez.OVERRIDE, value: `${spellLevel}`, priority: 20 },
+            { key: "flags.midi-qol.spellId", mode: jez.OVERRIDE, value: `${lastArg.uuid}`, priority: 20 },
         ],
         origin: lastArg.uuid,
         disabled: false,
         duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, specialDuration: ["DamageDealt"] } },
+        flags: { 
+            dae: { itemData: aItem, specialDuration: ["DamageDealt"] },
+            convenientDescription: `Next weapon attack forces DC${saveDC} STR Save or be Restrained and take DoT`
+         },
         icon: aItem.img,
         label: aItem.name
     }];
@@ -124,7 +127,7 @@ async function doOnUse() {
 }
 
 /****************************************************************************************
- * Execute code for a DAE Macro application (on) - nothing other than place holding
+ * Execute code for a DAE Macro application (on) 
  ***************************************************************************************/
 async function doOn() {
     const FUNCNAME = "doOn()";
@@ -191,18 +194,6 @@ async function doOn() {
     }
 
     log("--------------On----------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return;
-}
-
-/****************************************************************************************
- * Execute code for a DAE Macro application (on) - nothing other than place holding
- ***************************************************************************************/
-async function doOff() {
-    const FUNCNAME = "doOff()";
-    log("--------------Off---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-    // do any clean up
-    log("--------------Off---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }
 
@@ -352,42 +343,50 @@ async function doBonusDamage() {
 
     if (!["mwak"].includes(lastArg.item.data.actionType)) return {};
     let target = canvas.tokens.get(lastArg.hitTargets[0].id);
+    log("target",target)
     let spellLevel = getProperty(lastArg.actor.flags, "midi-qol.spellLevel");
+    log("spellLevel",spellLevel)
     let saveDC = aToken.actor.data.data.attributes.spelldc;
+    log("saveDC",saveDC)
     let spellUuid = getProperty(lastArg.actor.flags, "midi-qol.spellId");
+    log("spellUuid",spellUuid)
     let spellItem = await fromUuid(getProperty(lastArg.actor.flags, "midi-qol.spellId"));
+    log("spellItem",spellItem)
     let damageType = "piercing";
-    log("----Obtained Values----",
-        "target", target,
-        "spellLevel", spellLevel,
-        "saveDC", saveDC,
-        "spellUuid", spellUuid,
-        "spellItem", spellItem,
-        "damageType", damageType);
-
+    log("damageType",damageType)
     //---------------------------------------------------------------------------------------
     // Apply the debuff to the target
     //
-    let value = `turn=start,label=${spellItem.name},damageRoll=${spellLevel}d6,damageType=${damageType}`
+    let value = `turn=start,label="Ensnaring Strike",damageRoll=${spellLevel}d6,damageType=${damageType}`
     let effectData = [{
         changes: [
-            { key: `flags.midi-qol.OverTime`, mode: OVERRIDE, value: value, priority: 20 },
-            { key: "data.attributes.movement.walk", mode: OVERRIDE, value: 1, priority: 20 },
-            { key: "macro.itemMacro", mode: CUSTOM, value: saveDC, priority: 20 }
+            { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: value, priority: 20 },
+            { key: "data.attributes.movement.walk", mode: jez.OVERRIDE, value: 1, priority: 20 },
+            { key: "macro.itemMacro", mode: jez.CUSTOM, value: saveDC, priority: 20 },
+            { key: "macro.CE", mode: jez.CUSTOM, value: "Restrained", priority: 20 },
         ],
         origin: spellUuid,
-        flags: { dae: { itemData: spellItem.data, macroRepeat: "startEveryTurn", token: target.uuid } },
+        flags: { 
+            dae: { itemData: spellItem.data, macroRepeat: "startEveryTurn", token: target.uuid },
+            convenientDescription: `${DEBUFF_NAME} and taking Damage over Time`        
+        },
         disabled: false,
         duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
-        icon: DEBUFF_ICON, // spellItem.img,
-        label: DEBUFF_NAME // spellItem.name
+        icon: spellItem.img,
+        label: spellItem.name
     }];
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.actor.uuid, effects: effectData });
-
+    // Bug Fix?  Crymic had the following line execute to remove concentration, which I think is an incorrect 
+    // interpretation of the spell.  Dropping concentration should end the DoT.  Keeping this line in case I want
+    // to revert my change to Crymic's code.
+    //
+    // await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [CONC.id] });
+    await jez.wait(100)
+    jez.pairEffects(aActor, "Concentrating", target.actor, spellItem.name)
     log("--------------doBonusDamage---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return {
         damageRoll: `${spellLevel}d6[${damageType}]`,
-        flavor: `(${spellItem.name} (${CONFIG.DND5E.damageTypes[damageType]}))`
+        flavor: `(Ensnaring Strike (${CONFIG.DND5E.damageTypes[damageType]}))`
     };
 }
 

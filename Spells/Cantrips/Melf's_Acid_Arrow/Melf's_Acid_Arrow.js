@@ -1,9 +1,10 @@
-const MACRONAME = "Melf's_Acid_Arrow.0.1"
+const MACRONAME = "Melf's_Acid_Arrow.0.2.js"
 console.log(MACRONAME)
 /*****************************************************************************************
- * Create a temporary attack item to use against the victim of Heat Metal
+ * 
  * 
  * 01/01/21 0.1 Creation of Macro
+ * 08/02/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -39,10 +40,14 @@ await wait(1000) // Let the VFX substatially complete before the damage rolls
 
 if (lastArg.hitTargets.length > 0) {
     log(`${lastArg.hitTargets.length} Target(s) hit.`)
+    const CE_DESC = `Taking acid damage over time.`
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
-        flags: { dae: { itemData: aItem, macroRepeat: "none", specialDuration: ["turnEnd"] } },
+        flags: { 
+            dae: { itemData: aItem, macroRepeat: "none", specialDuration: ["turnEnd"] },
+            convenientDescription: CE_DESC
+        },
         origin: lastArg.uuid,
         disabled: false,
         duration: { turns: 2, startRound: gameRound, startTime: game.time.worldTime },

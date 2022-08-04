@@ -1,4 +1,4 @@
-const MACRONAME = "Howling_Babble.js"
+const MACRONAME = "Howling_Babble.0.3.js"
 /*****************************************************************************************
  * Implments the Allip's ability of same name.
  * 
@@ -11,6 +11,7 @@ const MACRONAME = "Howling_Babble.js"
  * 
  * 04/14/22 0.1 Creation of Macro
  * 05/02/22 0.2 Update for Foundry 9.x
+ * 08/02/22 0.3 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -177,6 +178,7 @@ async function doOnUse() {
             //-----------------------------------------------------------------------------------------------
             // Apply Stunned condition to each failed token
             //
+            const CE_DESC = `Stunned by ${aToken.name}'s Howl`
             for (const ELEMENT of failSaves) {
                 let effectData = [{
                     label: `Stunned by Howling Babble`,
@@ -184,9 +186,12 @@ async function doOnUse() {
                     origin: LAST_ARG.uuid,
                     disabled: false,
                     duration: { seconds: 12, startTime: game.time.worldTime },
-                    flags: { dae: { itemData: aItem, specialDuration: ["turnEnd", "newDay", "longRest", "shortRest"] } },
+                    flags: { 
+                        dae: { itemData: aItem, specialDuration: ["turnEnd", "newDay", "longRest", "shortRest"] }, 
+                        convenientDescription: CE_DESC
+                    },
                     changes: [
-                        { key: `macro.CUB`, mode: jez.CUSTOM, value: `Stunned`, priority: 20 },
+                        { key: `macro.CE`, mode: jez.CUSTOM, value: `Stunned`, priority: 20 },
                     ]
                 }];
                 await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:ELEMENT.uuid, effects: effectData });

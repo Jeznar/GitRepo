@@ -1,8 +1,9 @@
-const MACRONAME = "Hideous_Laughter.0.2.js"
+const MACRONAME = "Hideous_Laughter.0.3.js"
 /*****************************************************************************************
  * 
  * 06/02/22 0.1 Creation of Macro
  * 07/09/22 0.2 Replace CUB.addCondition with CE
+ * 07/31/22 0.3 Add convenientDescription, prevent duplicate prones
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -21,6 +22,7 @@ let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
+const EFFECT_NAME = "Hideous Laughter"
 //##################################
 // Read First!!! Requires both Dynamic Active Effects + Midi-QoL
 // DAE setup
@@ -36,6 +38,7 @@ jez.log("itemUuid",itemUuid)
 const caster = itemUuid?.actor; // curious setting here...makes the clearing conc work
 jez.log(`*** caster`, caster)  
 const GAME_RND = game.combat ? game.combat.round : 0;
+const SAVE_DC = aActor.data.data.attributes.spelldc;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -89,14 +92,19 @@ async function damageCheck(workflow) {
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     jez.log(`### workflow`, workflow)
     //----------------------------------------------------------------------------------------------
-    // (Crymic) Place Damage Save Effect on afflicted token
+    // (Crymic) Place Damage Save Effect on afflicted token ... this is a VERY short duration effect 
+    // that manages the daving throw from damage.  
     //
+    const C_DESC = `Incapacitated with laughter.  DC${SAVE_DC} WIS Save to end end of each turn and when damaged.`
     let effectData = [{
         label: "Damage Save",
         icon: "icons/skills/wounds/injury-triple-slash-bleed.webp",
         origin: origin,
         disabled: false,
-        flags: { dae: { specialDuration: ["isDamaged"] } },
+        flags: { 
+            dae: { specialDuration: ["isDamaged"] }, 
+            convenientDescription: C_DESC
+        },
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [{ key: `flags.midi-qol.advantage.ability.save.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 }]
     }];
@@ -136,6 +144,7 @@ async function damageCheck(workflow) {
         if (save.total >= DC) {
             let removeConc = caster.effects.find(i => i.data.label === "Concentrating");
             jez.log(">>> removeConc", removeConc)
+            bubbleForAll(aToken.id, `Ouch, not funny`, true, true)
             if (removeConc) await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: caster.uuid, effects: [removeConc.id] });
             ChatMessage.create({
                 user: game.user._id,
@@ -145,6 +154,7 @@ async function damageCheck(workflow) {
             });
         } else {
             runVFX(aToken);
+            bubbleForAll(aToken.id, `That tickles!`, true, true)
             ChatMessage.create({
                 user: game.user._id,
                 speaker: ChatMessage.getSpeaker({ token: aToken }),
@@ -184,27 +194,37 @@ async function damageCheck(workflow) {
         msg = `${tToken.name} doesn't see why that is funny.  Might be because its intelligence is less than 5.`
         jez.log(msg)
         postResults(msg)
-
         await jez.wait(100) // Allow earlier effects to complete 
         let conc = aActor.effects.find(i => i.data.label === "Concentrating");
         if (conc) conc.delete();
-        //if (conc) await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aActor.uuid, effects: [conc.id] });
+        // Generate a chat bubble on the scene, using a World script!
+        msg = `I don't get it.  That's not funny!`
+        bubbleForAll(tToken.id, msg, true, true)
         return
     }
     //----------------------------------------------------------------------------------------------
     // Proceed with saving throw
     //
-    if (args[0].failedSaveUuids.length === 1) {         // target made save
+    if (args[0].failedSaveUuids.length === 1) {         // target failed save
         msg = `<b>${tToken.name}</b> failed save and is affected by ${aItem.name}, incapacitated
         and falling prone.`
+        bubbleForAll(tToken.id, `That is hillarious!`, true, true)
+        await jez.wait(50) // Allow earlier effects to complete 
+        // Knock the target prone, if it isn't already prone
+        await jezcon.addCondition("Prone", tToken.actor.uuid, {allowDups: false}) 
         await jez.wait(100) // Allow earlier effects to complete 
-        await jezcon.add({ effectName: 'Prone', uuid: tToken.actor.uuid, traceLvl: 0 });
-        jez.log(`Knock ${tToken.name} Prone`)
-    }
-    else {                                              // target failed save
-        msg = `<b>${tToken.name}</b> made save and is unaffected by ${aItem.name}`
-        jez.log(`Do not knock ${tToken.name} Prone`)
-    }
+    } 
+    else bubbleForAll(tToken.id, `Yea, right, not that funny`, true, true)
+    //----------------------------------------------------------------------------------------------
+    // Modify recently created effect to have a convenientDescription
+    //
+    let effect = await tToken.actor.effects.find(i => i.data.label === EFFECT_NAME);
+    if (!effect) return jez.badNews(`Could not find ${EFFECT_NAME} effect on ${tToken.name}`,"e")
+    const C_DESC = `Incapacitated with laughter.  DC${SAVE_DC} WIS Save to clear, end of turns and when damaged.`
+    await effect.update({ flags: { convenientDescription: C_DESC } });
+    //----------------------------------------------------------------------------------------------
+    // Post results
+    //
     postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
@@ -220,40 +240,6 @@ async function preCheck() {
     }
     return(true)
 }
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set Off
- ***************************************************************************************************/
- /*async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.postMessage({color: jez.randomDarkColor(), 
-                fSize: 14, 
-                icon: aToken.data.img, 
-                msg: `${aToken.name} suffers from waves of lethergy as the ferntic energy fades. No
-                actions until end of nect turn.`, 
-                title: `No longer hasted!`, 
-                token: aToken})
-    // ---------------------------------------------------------------------------------------
-    // Add an effect to the active token that expires at the end of its next turn imposing 
-    // CUB condition: No Action
-    //
-    const GAME_RND = game.combat ? game.combat.round : 0;
-    let effectData = {
-        label: "No Actions",
-        icon: aItem.img,
-        origin: aToken.uuid,
-        disabled: false,
-        // flags: { dae: { itemData: aItem, specialDuration: ['turnEndSource'] } },
-        flags: { dae: { itemData: aItem, specialDuration: ['turnEnd'] } },
-        duration: { rounds: 2, seconds: 12, startRound: GAME_RND, startTime: game.time.worldTime },
-        changes: [
-            { key: `macro.CUB`, mode: jez.CUSTOM, value: "No_Actions", priority: 20 }
-        ]
-    };
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aActor.uuid, effects: [effectData] });
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-}*/
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked each round by DAE
  ***************************************************************************************************/

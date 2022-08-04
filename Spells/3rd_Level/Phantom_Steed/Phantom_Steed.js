@@ -1,4 +1,4 @@
-const MACRONAME = "Phantom_Steed.0.2.js"
+const MACRONAME = "Phantom_Steed.0.3.js"
 /*****************************************************************************************
  * This macro implements Phantom Steed.
  * 
@@ -23,6 +23,7 @@ const MACRONAME = "Phantom_Steed.0.2.js"
  * 
  * 05/31/22 0.1 Creation from Find Steed Specific
  * 07/17/22 0.2 Update to use jez.spawnAt for summoning
+ * 08/02/22 0.4 Add convenientDescription
  ******************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -127,6 +128,7 @@ async function doOnUse() {
   // 5. Add watchdog effect to despawn summoned token at expiration (1 hour) via doOff 
   //
   const EXPIRE = ["newDay", "longRest", "shortRest"];
+  const CE_DESC = `Phantom Steed is Active.`
   const GAME_RND = game.combat ? game.combat.round : 0;
   let effectData = {
     label: aItem.name,
@@ -138,7 +140,10 @@ async function doOnUse() {
       seconds: 3600, startTime: game.time.worldTime,
       token: aToken.uuid, stackable: false
     },
-    flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+    flags: { 
+      dae: { macroRepeat: "none", specialDuration: EXPIRE }, 
+      convenientDescription: CE_DESC
+    },
     changes: [
       { key: `macro.itemMacro`, mode: jez.ADD, value: returned, priority: 20 },
     ]

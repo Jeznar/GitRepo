@@ -101,14 +101,21 @@ async function doOnUse() {
     // connectivity.
     //
     let gameRound = game.combat ? game.combat.round : 0;
-    let specialDuration = ["turnEndSource"]
+    let specialDuration = ["turnEnd"] // Seems like this should be turnEndSource, but turnEnd works
+    const CE_DESC = `Hailstones have created difficult terrain until end of next turn.`
     let effectData = {
         label: "Ice Storm",
         icon: aItem.img,
         origin: aToken.uuid,
         disabled: false,
-        duration: { rounds: 2, startRound: gameRound },
-        flags: { dae: { itemData: aItem, specialDuration: specialDuration } },
+        duration: { rounds: 3, startRound: gameRound },
+        flags: { 
+            dae: { 
+                    itemData: aItem, 
+                    specialDuration: specialDuration 
+                 },
+            convenientDescription: CE_DESC
+        },
         changes: [
             { key: `macro.itemMacro`, mode: jez.CUSTOM, value: fetchedTile.id, priority: 20 },
         ]

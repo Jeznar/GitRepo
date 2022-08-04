@@ -1,9 +1,10 @@
-const MACRONAME = "Hex-Move.0.2.js"
+const MACRONAME = "Hex-Move.0.3.js"
 /*****************************************************************************************
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
  * 07/10/22 0.2 Move the hex if the taregt is missing and confirmed in a dialog
+ * 07/31/22 0.3 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const MAC = MACRONAME.split("-")[0]     // Extra short form of the MACRONAME
@@ -203,13 +204,24 @@ async function doOnUse() {
      * Apply the hex debuff to the target
     ***************************************************************************************************/
     async function applyDis(tToken, ability, aItem, UUID, LEVEL, aToken, RNDS, SECONDS, GAME_RND) {
+        const C_DESC = `Takes extra damage from ${aToken.name}'s attacks`
         let effectData = {
             label: aItem.name,
             icon: aItem.img,
             origin: UUID,
             disabled: false,
             duration: { rounds: RNDS, SECONDS: SECONDS, startRound: startRound, startTime: startTime },
-            flags: { dae: { itemData: aItem, spellLevel: LEVEL, tokenId: aToken.id, hexId: hexEffect, concId: concId } },
+            flags: {
+                dae: {
+                    itemData: aItem,
+                    spellLevel: LEVEL,
+                    tokenId: aToken.id,
+                    hexId: hexEffect,
+                    concId: concId
+                },
+                convenientDescription: C_DESC
+
+            },
             changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20 }]
         };
         await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });

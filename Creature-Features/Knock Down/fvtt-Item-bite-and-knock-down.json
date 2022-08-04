@@ -1,0 +1,184 @@
+{
+  "name": "Bite & Knock Down",
+  "type": "weapon",
+  "img": "Icons_JGB/Monster_Features/Bite.png",
+  "data": {
+    "description": {
+      "value": "<p>Bite at target, on a hit does 1d6+STR modifier damage and target, must succed on strength saving throw with a DC of 10+Athletics bonus or be knocked prone.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">Targets more than one size larger can not be knocked prone.</p>\n<hr style=\"box-sizing: border-box; user-select: text; border-top: 1px solid var(--color-border-light-primary); border-bottom: 1px solid var(--color-border-light-highlight); color: #191813; font-size: 13px;\" />\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><strong style=\"box-sizing: border-box; user-select: text;\">FoundryVTT:&nbsp;</strong>&nbsp;This is automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 1,
+    "price": 0,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "str",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": 20,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d6 + @mod",
+          "piercing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": 12,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "simpleM",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "hvy": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "lgt": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ada": false,
+      "lod": false,
+      "mgc": false,
+      "sil": false
+    },
+    "proficient": false
+  },
+  "effects": [],
+  "flags": {
+    "enhancedcombathud": {
+      "set1s": false,
+      "set1p": true,
+      "set2p": false,
+      "set3p": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "fumbleThreshold": null,
+      "effectActivation": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.jm86S1OTMMhD5WQs"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Bite & Knock Down",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Knock_Down.0.6.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Apply the \"Prone\" condition if tToken fails save.  This is\n * intended to be used to automate \"Chomp\" for Galahad \n * \n *  - Set needed variables\n *  - End if tToken is already prone\n *  - Determine DC of save\n *  - Determine success/failure\n *  - Apply results\n * \n * It would be nice for the macro to post results in addition.\n * \n * 11/14/21 0.1 JGB created from Grapple_Initiate_0.8\n * 11/15/21 0.2 JGB Add logic to abourt macro if no hit and\n *                  eliminate uneeded hotbar protection\n * 11/15/21 0.3 JGB add limitation that tToken must be no more \n *                  one size larger than aToken\n * 11/20/21 0.4 JGB Add card updates for errors\n * 05/04/22 0.5 JGB Update for Foundry 9.x\n * 08/02/22 0.6 JGB Add convenientDescription and general cleanup\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \nconst MACRO = MACRONAME.split(\".\")[0]       // Trim of the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 4;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);\nif (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;         \nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor; \n//\n// Set the value for the Active Item (aItem)\nlet aItem;         \nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst debug = 1;\nlet gameRound = game.combat ? game.combat.round : 0;\nconst CONDITION = \"Prone\";\n/************************************************************************\n* Set Variables for aToken and tToken\n*************************************************************************/\nif (game.user.targets.ids.length != 1) {\n    let message = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n    ui.notifications.warn(message);\n    if (debug) console.log(message);\n    return // Abort execution if a single token wasn't targeted\n}\n//-----------------------------------------------------------------------------------------------\n// Get the target for this macro\n//\nlet tToken = canvas.tokens.get(args[0].targets[0].id);\nif (!tToken) return jez.badNews(`Need to target a token.`,\"i\")\nif (debug) console.log(` Player: ${aToken.name}, Target: ${tToken.name}`);\nlet tActor = tToken.actor\n//-----------------------------------------------------------------------------------------------\n// End if tToken was missed in calling action.\n//\nif (args[0].hitTargets.length === 0) return jez.badNews(`Missed ${tToken.name}`,\"i\")\n//----------------------------------------------------------------------------------\n// Obtain the size of the aActor and tActor to determine advantage/disadvantage\n// \nif (TL>2) jez.trace(`${TAG} await jez.getSize(aToken)`, await jez.getSize(aToken))\nlet aTokenSizeValue = (await jez.getSize(aToken)).value\nlet tTokenSizeValue = (await jez.getSize(tToken)).value\nif (TL>1) jez.trace(`${TAG} ${aToken.name} size = ${aTokenSizeValue}, ${tToken.name} size = ${tTokenSizeValue}`)\n//-----------------------------------------------------------------------------------------------\n// End if tToken is more than one size category larger than aToken\n//\nif (aTokenSizeValue + 1 < tTokenSizeValue) {\n    msg = `${tToken.name} is too large for ${aToken.name} to knock down.`\n    if (TL>0) jez.trace(`${TAG} ${msg}`);\n    postResults(msg);\n    return;\n}\n//-----------------------------------------------------------------------------------------------\n// End if tToken is already affected by CONDITION\n//\nif (tToken.actor.effects.find(ef => ef.data.label === CONDITION)) {\n    let message = ` ${tToken.name} already prone, end ${MACRO}`;\n    if (debug) console.log(message);\n    postResults(`${tToken.name} is already ${CONDITION}.`);\n    return;\n}\n//-----------------------------------------------------------------------------------------------\n// Determine DC of save (10 + Athletics total bonus)\n//\nconst SAVE_DC = 10 + aToken.actor.data.data.skills.ath.total;\nif (debug) console.log(` DC = ${SAVE_DC}`);\n//-----------------------------------------------------------------------------------------------\n// Determine success/failure\n//\nlet saveType = \"str\";\nlet saveObject = await MidiQOL.socket().executeAsGM(\"rollAbility\", {\n    request: \"save\",\n    targetUuid: tToken.actor.uuid,\n    ability: saveType,\n    options: { chatMessage: true, fastForward: true }\n});\nlet saved = true;\nif (saveObject.total < SAVE_DC) {\n    if (debug) console.log(`Target Failed! ${saveObject.total} vs ${SAVE_DC}`);\n    saved = false;\n} \nif (debug && saved) console.log(`${tToken.name} Saved!`); \nelse console.log(`${tToken.name} Failed!`);\n//-----------------------------------------------------------------------------------------------\n//  Apply Prone Condition, if tToken did not win (save)\n//\nif (!saved) {\n    if (debug) console.log(`Player Wins - Apply ${CONDITION}`);\n    await jezcon.addCondition(\"Prone\", tActor.uuid,\n        { allowDups: false, replaceEx: false, origin: aActor.uuid, overlay: false, traceLvl: TL })\n    // let effectData = {\n    //     label: CONDITION,\n    //     icon: \"modules/combat-utility-belt/icons/prone.svg\",\n    //     origin: aToken.uuid,\n    //     disabled: false,\n    //     duration: { rounds: 99, startRound: gameRound },\n    //     changes: [\n    //         { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },\n    //         { key: `flags.midi-qol.grants.advantage.attack.mwak`, mode: jez.ADD, value: 1, priority: 20 },\n    //         { key: `flags.midi-qol.grants.advantage.attack.msak`, mode: jez.ADD, value: 1, priority: 20 },\n    //         { key: `flags.midi-qol.grants.disadvantage.attack.rwak`, mode: jez.ADD, value: 1, priority: 20 },\n    //         { key: `flags.midi-qol.grants.disadvantage.attack.rsak`, mode: jez.ADD, value: 1, priority: 20 }\n    //     ]\n    // };\n    // await MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:tToken.actor.uuid, effects: [effectData] });\n    msg = `${tToken.name} is knocked prone.`;\n    ui.notifications.info(msg);\n    postResults(msg);\n} else {\n    if (debug) console.log(\"Target Wins\");\n    postResults(`${tToken.name} avoids a knock down.`);\n}\nreturn;\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *         END OF MAIN MACRO BODY\n *                                        END OF MAIN MACRO BODY\n ****************************************************************************************************\n * Post the results to chat card\n *************************************************************************/\n async function postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n\n    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);\n    if (TL>2) jez.trace(\"postResults Parameters\",\"msg\",msg)\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "gm-notes": {},
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

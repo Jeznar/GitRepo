@@ -1,4 +1,4 @@
-const MACRONAME = "Staggering_Smite.0.2.js"
+const MACRONAME = "Staggering_Smite.0.3.js"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Implment Staggering Smite
@@ -12,6 +12,7 @@ jez.log(MACRONAME)
  *   next turn.
  * 
  * 05.29.22 0.1 Creation of Macro
+ * 08/01/22 0.3 Fix to accomodate change in Midi (flags.midi-qol.itemDetails needs OVERIDE)
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log("")
@@ -28,13 +29,13 @@ const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 
 let msg = "";
 let errorMsg = "";
 const GAME_RND = game.combat ? game.combat.round : 0;
-const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
+const SAVE_DC = aToken.actor.data.data.attributes.spelldc;
 const SAVE_TYPE = "wis";
 const COND_APPLIED = "Staggered"
 const COND_ICON = aItem.img
 const DAM_TYPE = "psychic";
 const SPELL_LVL = LAST_ARG?.spellLevel ? LAST_ARG.spellLevel : 2
-jez.log("CONSTANTS Set", "GAME_RND", GAME_RND, "SPELL_DC", SPELL_DC, "SAVE_TYPE", SAVE_TYPE,
+jez.log("CONSTANTS Set", "GAME_RND", GAME_RND, "SAVE_DC", SAVE_DC, "SAVE_TYPE", SAVE_TYPE,
     "COND_ICON", COND_ICON, "DAM_TYPE", DAM_TYPE, "SPELL_LVL", SPELL_LVL)
 // VFX Settings -------------------------------------------------------------------
 const VFX_NAME = `${MACRO}-${aToken.id}`
@@ -77,15 +78,19 @@ async function doOnUse() {
     //-------------------------------------------------------------------------------------------------
     // Define and apply the effect
     // 
+    const CE_DESC = `Next weapon hit does bonus psychic damage and forces a DC${SAVE_DC} WIS Save or Staggered.`
     let effectData = [{
         changes: [
-            { key: "flags.dnd5e.DamageBonusMacro", mode: 0, value: `ItemMacro.${aItem.name}`, priority: 20 },
-            { key: "flags.midi-qol.itemDetails", mode: 0, value: `${LAST_ARG.uuid}`, priority: 20 },
+            { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${aItem.name}`, priority: 20 },
+            { key: "flags.midi-qol.itemDetails", mode: jez.OVERRIDE, value: `${LAST_ARG.uuid}`, priority: 20 },
         ],
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { itemData: aItem, specialDuration: ["DamageDealt"] } },
+        flags: { 
+            dae: { itemData: aItem, specialDuration: ["DamageDealt"] },
+            convenientDescription: CE_DESC
+        },
         icon: aItem.img,
         label: aItem.name
     }];
@@ -135,20 +140,23 @@ async function doBonusDamage() {
         //-------------------------------------------------------------------------------------------------------------
         // Apply Staggered condition, if the save failed
         // 
-        if (save.total < SPELL_DC) {
+        if (save.total < SAVE_DC) {
+            const CE_DESC = `Staggered -- disadvantage on attacks and ability checks and no Reactions`
             let mqExpire = "turnEnd";
             let effectData = [{
                 label: COND_APPLIED,
                 icon: itemN.img,
                 origin: "",
                 disabled: false,
-                flags: { dae: { stackable: false, macroRepeat: "none" } },
                 duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
-                flags: { dae: { macroRepeat: "none", specialDuration: [mqExpire] } },
+                flags: { 
+                    dae: { macroRepeat: "none", specialDuration: [mqExpire] },
+                    convenientDescription: CE_DESC 
+                },
                 changes: [
                     { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: jez.ADD, value: 1, priority: 20 },
                     { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },
-                    { key: `macro.CUB`, mode: jez.CUSTOM, value: `Reactions - None`, priority: 20 }
+                    { key: `macro.CE`, mode: jez.CUSTOM, value: `Reactions - None`, priority: 20 }
                 ]
             }];
             applyEffect(tToken, effectData);

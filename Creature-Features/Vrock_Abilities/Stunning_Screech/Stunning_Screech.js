@@ -1,4 +1,4 @@
-const MACRONAME = "Stunning_Screech.0.1.js"
+const MACRONAME = "Stunning_Screech.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Stunning Screech (1/Day). The vrock emits a horrific screech. Each creature within 20 feet of it 
  * that can hear it and that isn't a demon must succeed on a DC 14 Constitution saving throw or be 
@@ -17,7 +17,8 @@ const MACRONAME = "Stunning_Screech.0.1.js"
  * = Post a summary message of the effects
  * 
  * 07/28/22 0.1 Creation of Macro
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ * 08/02/22 0.2 Add convenientDescription
+ **********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string

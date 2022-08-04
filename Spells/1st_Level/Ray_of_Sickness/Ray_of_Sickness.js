@@ -5,6 +5,7 @@ const MACRONAME = "Ray_of_Sickness"
  * 
  * 02/19/22 0.1 Creation of Macro
  * 05/02/22 0.2 Update for Foundry 9.x
+ * 07/31/22 0.3 Convert to a CE appplication of effect
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -20,7 +21,7 @@ const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 
 let msg = "";
 const POISONED_JRNL = `@JournalEntry[${game.journal.getName("Poisoned").id}]{Poisoned}`
 
-if((args[0]?.tag === "OnUse") && !preCheck()) return;
+if ((args[0]?.tag === "OnUse") && !preCheck()) return;
 
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -33,7 +34,6 @@ if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 jez.log("")
 return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -54,14 +54,14 @@ function preCheck() {
  * 
  * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects
  ***************************************************************************************************/
- async function doOff() {
+async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     jez.log("Something could have been here")
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
-  }
-  
+}
+
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set On
  ***************************************************************************************************/
@@ -75,12 +75,12 @@ async function doOn() {
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
- async function doOnUse() {
+async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
- 
+
 
     jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
     jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
@@ -88,42 +88,53 @@ async function doOn() {
     runVFX(aToken, tToken)
 
     const GAME_RND = game.combat ? game.combat.round : 0;
-     const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
-     const SAVE_TYPE = "con";
-     let save = await MidiQOL.socket().executeAsGM("rollAbility", { request: "save", targetUuid: tToken.actor.uuid, ability: SAVE_TYPE, options: { chatMessage: false, fastForward: true } });
-     let success = "saves";
-     let chatMessage = await game.messages.get(LAST_ARG.itemCardId);
-     if (save.total < SPELL_DC) {
-         success = "fails";
-         let effectData = {
-             label: "Poisoned",
-             icon: "modules/combat-utility-belt/icons/poisoned.svg",
-             origin: LAST_ARG.uuid,
-             disabled: false,
-             duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
-             flags: { dae: { itemData: aItem, specialDuration: ['turnEndSource'] } },
-             changes: [{ key: `flags.midi-qol.disadvantage.attack.all`, mode: 2, value: 1, priority: 20 },
-                 { key: `flags.midi-qol.disadvantage.skill.check.all`, mode: 2, value: 1, priority: 20 },
-                 { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: 2, value: 1, priority: 20 }]
-         };
-         let effect = tToken.actor.effects.find(ef => ef.data.label === game.i18n.localize("Poisoned"));
-         if (!effect) await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:tToken.actor.uuid, effects: [effectData] });
-         //----------------------------------------------------------------------------------------------
-         // Post a message to the chatcard with results
-         //
-         msg = `${tToken.name} is ${POISONED_JRNL} until the end of its next turn`
-         //let chatMessage = game.messages.get(args[args.length - 1].itemCardId);
-         jez.addMessage(chatMessage, { color: "mediumseagreen", fSize: 14, msg: msg, tag: "saves" })
-         await jez.wait(250)
-     }
-     let saveResult = `<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${tToken.id}">${tToken.name} ${success} with a ${save.total}</div><img src="${tToken.data.img}" width="30" height="30" style="border:0px"></div>`;
-     let saveMessage = `<div class="midi-qol-nobox midi-qol-bigger-text">${CONFIG.DND5E.abilities[SAVE_TYPE]} Saving Throw: DC ${SPELL_DC}</div><div class="midi-qol-nobox">${saveResult}</div>`;
-     let content = await duplicate(chatMessage.data.content);
-     let searchString = /<div class="midi-qol-saves-display">[\s\S]*<div class="end-midi-qol-saves-display">/g;
-     let replaceString = `<div class="midi-qol-saves-display"><div class="end-midi-qol-saves-display">${saveMessage}`;
-     content = await content.replace(searchString, replaceString);
-     await chatMessage.update({ content: content });
-     await ui.chat.scrollBottom();
+    const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
+    const SAVE_TYPE = "con";
+    let save = await MidiQOL.socket().executeAsGM("rollAbility", { request: "save", targetUuid: tToken.actor.uuid, ability: SAVE_TYPE, options: { chatMessage: false, fastForward: true } });
+    let success = "saves";
+    let chatMessage = await game.messages.get(LAST_ARG.itemCardId);
+    if (save.total < SPELL_DC) {
+        success = "fails";
+        //  let effectData = {
+        //      label: "Poisoned",
+        //      icon: "modules/combat-utility-belt/icons/poisoned.svg",
+        //      origin: LAST_ARG.uuid,
+        //      disabled: false,
+        //      duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
+        //      flags: { 
+        //         dae: { itemData: aItem, specialDuration: ['turnEndSource'] },
+        //         convenientDescription: C_DESC
+        //     },
+        //      changes: [
+        //         { key: `flags.midi-qol.disadvantage.attack.all`, mode: 2, value: 1, priority: 20 },
+        //         { key: `flags.midi-qol.disadvantage.skill.check.all`, mode: 2, value: 1, priority: 20 },
+        //         { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: 2, value: 1, priority: 20 }]
+        //  };
+        //  let effect = tToken.actor.effects.find(ef => ef.data.label === game.i18n.localize("Poisoned"));
+        //  if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
+        // ---------------------------------------------------------------------------------------
+        // Obtain and modify CE condition to be applied
+        //
+        let effect = game.dfreds.effectInterface.findEffectByName("Poisoned").convertToObject();
+        if (effect.flags?.dae) effect.flags.dae.specialDuration.push(SPECDUR)
+        else effect.flags.dae = { specialDuration: ['turnEndSource'] } 
+        game.dfreds.effectInterface.addEffectWith({effectData:effect, uuid:tActor.uuid, origin:aActor.uuid });
+        //----------------------------------------------------------------------------------------------
+        // Post a message to the chatcard with results
+        //
+        msg = `${tToken.name} is ${POISONED_JRNL} until the end of its next turn`
+        //let chatMessage = game.messages.get(args[args.length - 1].itemCardId);
+        jez.addMessage(chatMessage, { color: "mediumseagreen", fSize: 14, msg: msg, tag: "saves" })
+        await jez.wait(250)
+    }
+    let saveResult = `<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${tToken.id}">${tToken.name} ${success} with a ${save.total}</div><img src="${tToken.data.img}" width="30" height="30" style="border:0px"></div>`;
+    let saveMessage = `<div class="midi-qol-nobox midi-qol-bigger-text">${CONFIG.DND5E.abilities[SAVE_TYPE]} Saving Throw: DC ${SPELL_DC}</div><div class="midi-qol-nobox">${saveResult}</div>`;
+    let content = await duplicate(chatMessage.data.content);
+    let searchString = /<div class="midi-qol-saves-display">[\s\S]*<div class="end-midi-qol-saves-display">/g;
+    let replaceString = `<div class="midi-qol-saves-display"><div class="end-midi-qol-saves-display">${saveMessage}`;
+    content = await content.replace(searchString, replaceString);
+    await chatMessage.update({ content: content });
+    await ui.chat.scrollBottom();
 
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
@@ -136,12 +147,12 @@ function preCheck() {
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
         ui.notifications.warn(msg)
         jez.log(msg)
-        return(false);
+        return (false);
     }
     if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
         msg = `Target was missed.`
         ui.notifications.info(msg)
-        return(false);
+        return (false);
     }
     return (true)
 }
@@ -150,11 +161,11 @@ function preCheck() {
  ***************************************************************************************************/
 // COOL-THING: Run the VFX -- Beam from originator to the target
 async function runVFX(token1, token2) {
-const VFX_FILE = "modules/jb2a_patreon/Library/Cantrip/Ray_Of_Frost/RayOfFrost_01_Regular_Green_30ft_1600x400.webm"
-new Sequence()
-    .effect()
+    const VFX_FILE = "modules/jb2a_patreon/Library/Cantrip/Ray_Of_Frost/RayOfFrost_01_Regular_Green_30ft_1600x400.webm"
+    new Sequence()
+        .effect()
         .atLocation(token1)
         .stretchTo(token2)
         .file(VFX_FILE)
-    .play();
+        .play();
 }

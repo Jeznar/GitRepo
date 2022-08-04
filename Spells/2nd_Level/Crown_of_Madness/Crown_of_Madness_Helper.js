@@ -1,10 +1,11 @@
-const MACRONAME = "Crown_of_Madness_Helper"
+const MACRONAME = "Crown_of_Madness_Helper.0.2.js"
 /*****************************************************************************************
  * This helper function is intended to be run as a world macro launched by the 
  * Crown_of_Madness as an everyturn macro.  It will prompt the caster, removing 
  * concentration if they choose to use action for a different purpose.
  * 
  * 03/01/22 0.1 Creation of Macro
+ * 08/01/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -19,6 +20,7 @@ let msg = "";
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "each") doEach();					    // DAE removal
+if (args[0] === "on") await doOn();                     // DAE Application
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
 /***************************************************************************************************
@@ -54,4 +56,18 @@ return;
     })
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Perform the code that runs when this macro is removed by DAE, set On
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ async function doOn() {
+    const FUNCNAME = "doOn()";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TL = 2
+    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    //-----------------------------------------------------------------------------------------------
+    // Comments, perhaps
+    //
+    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+    return true;
 }

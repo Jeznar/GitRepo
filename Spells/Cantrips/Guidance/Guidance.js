@@ -1,4 +1,4 @@
-const MACRONAME = "Guidance.0.2.js"
+const MACRONAME = "Guidance.0.3.js"
 /*****************************************************************************************
  * Macro does the following:
  * - Verify exactly one target is targeted
@@ -8,6 +8,7 @@ const MACRONAME = "Guidance.0.2.js"
  * 
  * 05/20/22 0.1 Creation of Macro
  * 06/15/22 0.2 Expire buff after an ability check as well as after skill check
+ * 08/02/22 0.3 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -119,13 +120,17 @@ async function preCheck() {
     //----------------------------------------------------------------------------------------------
     // Apply the guidance effect
     //
+    const CE_DESC = `${aToken.name}'s spell adds 1d4 to one ability or skill check for 1 minute`
     let effectData = {
         label: aItem.name, 
         icon: aItem.img,
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 10, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+        flags: { 
+            dae: { macroRepeat: "none", specialDuration: EXPIRE },
+            convenientDescription: CE_DESC
+        },
         changes: [
             {key: `data.bonuses.abilities.check`, mode: jez.ADD, value: "+1d4", priority: 20},
             {key: `macro.itemMacro`, mode: jez.ADD, value: aToken.id, priority: 20},    

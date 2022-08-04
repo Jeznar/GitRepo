@@ -1,13 +1,18 @@
-const MACRONAME = "Mace_of_Disruption.js"
+const MACRONAME = "Mace_of_Disruption.0.3.js"
 /*****************************************************************************************
  * Crymic's code imported and rolled back for Foundry 8.9 compatibility
  * 
  * 04/23/22 0.1 Import of macro and initial compatibility effort
  * 05/02/22 0.2 Update for Foundry 9.x
-  *****************************************************************************************/
+ * 08/02422 0.3 Add convenientDescription
+ *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
 for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+// Set the value for the Active Item (aItem)
+let aItem;         
+if (args[0]?.item) aItem = args[0]?.item; 
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 // Crymic 21.12.25
 // Midi-qol On Use
 // Requires 1 callback macros ActorUpdate
@@ -23,8 +28,8 @@ jez.log("AdvancedMacros.runAsGM",AdvancedMacros.runAsGM)
 if(!AdvancedMacros.runAsGM) return ui.notifications.error("REQUIRED: ActorUpdate must be set to RunAsGM");
 const actorD = game.actors.get(lastArg.actor._id);
 jez.log("actorD", actorD)
-const tokenD = canvas.tokens.get(lastArg.tokenId);
-jez.log("tokenD", tokenD)
+const aToken = canvas.tokens.get(lastArg.tokenId);
+jez.log("aToken", aToken)
 const target = canvas.tokens.get(lastArg.hitTargets[0].id);
 jez.log("target", target )
 const type = target.actor.data.type === "npc" ? ["undead", "fiend"].some(value => (target.actor.data.data.details.type.value || "").toLowerCase().includes(value)) : ["undead", "fiend"].some(race => (target.actor.data.data.details.race || "").toLowerCase().includes(race));
@@ -36,22 +41,26 @@ if (type) {
     let saveType = "wis";
     let damageRoll = new Roll(`${crit}d6[radiant]`).evaluate({ async: false });
     let npcCheck = target.actor.data.type === "character" ? { chatMessage: false, fastForward: false } : { chatMessage: false, fastForward: true };
-    await new MidiQOL.DamageOnlyWorkflow(actorD, tokenD, damageRoll.total, damageType, [target], damageRoll, { flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`, itemCardId: lastArg.itemCardId, damageList: lastArg.damageList });
+    await new MidiQOL.DamageOnlyWorkflow(actorD, aToken, damageRoll.total, damageType, [target], damageRoll, { flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`, itemCardId: lastArg.itemCardId, damageList: lastArg.damageList });
     let save = await MidiQOL.socket().executeAsGM("rollAbility", { request: "save", targetUuid: target.actor.uuid, ability: saveType, options: npcCheck });
     let dc = 15;
-    console.log(save.total);
-    // adjust for latency
+    console.log(`Save Total`,save.total);
     let saved = "";
     if (target.actor.data.data.attributes.hp.value <= 25) {
         if (target.actor.data.data.attributes.hp.value === 0) return {};
         if (save.total >= dc) {
+            const CE_DESC = `Frightened of ${aToken.name}.`
             saved = "saves";
             let gameRound = game.combat ? game.combat.round : 0;
             let effectData = {
                 label: "Frightened",
-                icon: "icons/svg/terror.svg",
+                icon: "Icons_JGB/Monster_Features/Frighten.png",
                 origin: lastArg.uuid,
                 disabled: false,
+                flags: { 
+                    dae: { itemData: aItem }, 
+                    convenientDescription: CE_DESC
+                },
                 duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
                 changes: [{ key: `flags.midi-qol.disadvantage.ability.check.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },
                 { key: `flags.midi-qol.disadvantage.skill.all`, mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: 1, priority: 20 },
@@ -87,16 +96,8 @@ if (type) {
         .file(VFX_LOOP)
         .atLocation(token1)     // Effect will appear at  template, center
         .scale(VFX_SCALE)
-        //.scaleIn(0.25, 1000)    // Expand from 0.25 to 1 size over 1 second
-        //.rotateIn(180, 1000)    // 1/2 Rotation over 1 second 
-        //.scaleOut(0.25, 1000)   // Contract from 1 to 0.25 size over 1 second
-        //.rotateOut(180, 1000)   // 1/2 Counter Rotation over 1 second
         .opacity(VFX_OPACITY)
-        //.duration(6000)
         .name(VFX_NAME)         // Give the effect a uniqueish name
-        //.fadeIn(10)             // Fade in for specified time in milliseconds
-        //.fadeOut(1000)          // Fade out for specified time in milliseconds
-        //.extraEndDuration(1200) // Time padding on exit to connect to Outro effect
     .play();
     await jez.wait(100)         // Don't delete till VFX established
 }

@@ -1,4 +1,4 @@
-const MACRONAME = "Shillelagh.0.2.js"
+const MACRONAME = "Shillelagh.0.3.js"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Create/manage a limited duration item for the Shillelagh spell
@@ -11,6 +11,7 @@ jez.log(MACRONAME)
  * 
  * 12/31/21 0.1 Creation of Macro
  * 05/17/22 0.2 Update for Foundry 9.x and VFX
+ * 08/02/22 0.3 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`----------- Starting ${MACRONAME}--------------------------`);
@@ -123,6 +124,7 @@ async function doOnUse() {
     //-------------------------------------------------------------------------------
     // Create an effect on the caster to trigger the doOff action to remove temp weap
     //
+    const CE_DESC = `Held Staff or Club is imbued with nature's power.`
     let gameRound = game.combat ? game.combat.round : 0;
     let value = `${MACRO_HELPER} "${attackItem}"`;
     let effectData = {
@@ -130,6 +132,9 @@ async function doOnUse() {
         icon: EFFECT_ICON,
         origin: aActor.uuid,
         disabled: false,
+        flags: { 
+            convenientDescription: CE_DESC
+        },
         duration: { rounds: 10, turns: 10, startRound: gameRound, seconds: 60, startTime: game.time.worldTime },
         changes: [
             { key: "macro.execute", mode: jez.CUSTOM, value: value, priority: 20 },

@@ -1,4 +1,4 @@
-const MACRONAME = "Alter_Self_Helper.0.3"
+const MACRONAME = "Alter_Self_Helper.0.4"
 /*****************************************************************************************
  * Alter Self Helper
  * 
@@ -6,6 +6,7 @@ const MACRONAME = "Alter_Self_Helper.0.3"
  * 
  * 01/15/22 0.1 Creation of Macro
  * 05/02/22 0.3 JGB Update for Foundry 9.x
+ * 08/01/22 0.4 Added convenientDescriptions
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -123,22 +124,24 @@ async function pickItemCallBack(selection) {
     if (!selection) return;
     let choice = selection.split(" ")[0];     // Trim off the version number and extension
     jez.log(`Selection: ${choice}!`)
-    let baseEffect = aActor.effects.find(ef => ef.data.label === FIRST_BUFF) ?? null; // Added a null case.
-    let remaingTurns = baseEffect ? baseEffect?.data.duration.turns : 62
-    jez.log(`Proceed with ${choice} for ${remaingTurns} turns`, baseEffect)
+    let concEffect = aActor.effects.find(ef => ef.data.label === "Concentrating");
+    let remainingSecs = concEffect ? concEffect?.data.duration.seconds : 3600
+    jez.log(`Proceed with ${choice} for ${remainingSecs} seconds`, concEffect)
     let effectData = null;
     let cardImg = null;
 
     switch (choice) {
         case "Aquatic":
             jez.log(`acquire gills and fins`)
+            ceDesc = `Now has gills and fins, can breathe underwater and gains swimming speed equal to walking.`
             let swimSpeed = aActor.data.data.attributes.movement?.walk || 1;
             effectData = {
                 label: AQUATIC_BUFF, 
                 icon: AQUATIC_IMG,
                 origin: lastArg.uuid,
                 disabled: false,
-                duration: { turns: remaingTurns, startRound: gameRound, startTime: game.time.worldTime },
+                duration: { seconds: remainingSecs, startTime: game.time.worldTime },
+                flags: { convenientDescription: ceDesc },
                 changes: [
                     {key: `data.attributes.movement.swim`, mode: UPGRADE, value: swimSpeed, priority: 20},
                     {key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Water Breathing", priority: 20},
@@ -152,12 +155,14 @@ async function pickItemCallBack(selection) {
             break;
         case "Change":
             jez.log(`Change visual appearance`)
+            ceDesc = `Altered visual appearance`
             effectData = {
                 label: CHANGE_BUFF, 
                 icon: CHANGE_IMG,
                 origin: lastArg.uuid,
                 disabled: false,
-                duration: { turns: remaingTurns, startRound: gameRound, startTime: game.time.worldTime },
+                duration: { seconds: remainingSecs, startTime: game.time.worldTime },
+                flags: { convenientDescription: ceDesc },
                 changes: [
                     {key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Physical Appearance Changed", priority: 20},
                 ]
@@ -171,12 +176,14 @@ async function pickItemCallBack(selection) {
         case "Piercing":
         case "Bludgeoning":
             jez.log(`Natural Weapon with damage type: ${choice.toLowerCase()}`)
+            ceDesc = `Has sprouted natural weapons`
             effectData = {
                 label: WEAP_BUFF, 
                 icon: WEAP_IMG,
                 origin: lastArg.uuid,
                 disabled: false,
-                duration: { turns: remaingTurns, startRound: gameRound, startTime: game.time.worldTime },
+                duration: { seconds: remainingSecs, startTime: game.time.worldTime },
+                flags: { convenientDescription: ceDesc },
                 changes: [
                     {key: `flags.gm-notes.notes`, mode: CUSTOM, value: `Natural ${choice} Weapon Added`, priority: 20},
                     {key: `data.traits.weaponProf.custom`, mode: CUSTOM, value: `${WEAP_NAME}`, priority: 20},                  

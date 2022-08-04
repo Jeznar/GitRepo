@@ -1,4 +1,4 @@
-const MACRONAME = "Thunderous_Smite.0.2.js"
+const MACRONAME = "Thunderous_Smite.0.3.js"
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(MACRONAME)
 /*****************************************************************************************
@@ -8,6 +8,7 @@ jez.log(MACRONAME)
  * 
  * 01/25/22 0.1 Add headers and VFX
  * 05/03/22 0.2 Updated for FoundryVTT 9.x
+ * 08/01/22 0.3 Fix to accomodate change in Midi (flags.midi-qol.itemDetails needs OVERIDE)
  *****************************************************************************************/
 async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
 const lastArg = args[args.length - 1];
@@ -40,16 +41,21 @@ if (args[0].tag === "OnUse") {
     //-------------------------------------------------------------------------------------------------
     // Define and apply the effect
     // 
+    const CE_DESC = `Next weapon attack rings out 150 feet, does extra damage and may knock back.`
     let itemD = lastArg.item;
     let effectData = [{
         changes: [
-            { key: "flags.dnd5e.DamageBonusMacro", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: `ItemMacro.${itemD.name}`, priority: 20 },
-            { key: "flags.midi-qol.itemDetails", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: `${lastArg.uuid}`, priority: 20 }
+            { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${itemD.name}`, priority: 20 },
+            { key: "flags.midi-qol.itemDetails", mode: jez.OVERRIDE, value: `${lastArg.uuid}`, priority: 20 }
         ],
         origin: lastArg.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: gameRound, startTime: game.time.worldTime },
-        flags: { dae: { itemData: itemD, specialDuration: ["DamageDealt"] } },
+        flags: { 
+            dae: { itemData: itemD, specialDuration: ["DamageDealt"] }, 
+            convenientDescription: CE_DESC
+
+        },
         icon: itemD.img,
         label: itemD.name
     }];
@@ -86,23 +92,13 @@ if (args[0].tag === "DamageBonus") {
     //
     if (save.total < spellDC) {
         saveSuccess = "fails";
-        let effectData = [{
-            changes: [
-                { key: `flags.midi-qol.disadvantage.attack.all`, mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.mwak`, mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.advantage.attack.msak`, mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.disadvantage.attack.rwak`, mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: 1, priority: 20 },
-                { key: `flags.midi-qol.grants.disadvantage.attack.rsak`, mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: 1, priority: 20 },
-                { key: `data.attributes.movement.walk`, mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: `${Math.floor(target.actor.data.data.attributes.movement.walk / 3)}`, priority: 20 }
-            ],
-            origin: "",
-            disabled: false,
-            duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
-            icon: "icons/svg/falling.svg",
-            label: "Prone"
-        }];
-        let prone = target.actor.effects.find(i => i.data.label === "Prone");
-        if (!prone) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: target.actor.uuid, effects: effectData });
+        //----------------------------------------------------------------------------------------
+        // Knock the target prone, if it isn't already prone
+        //
+        await jezcon.addCondition("Prone", target.actor.uuid, { allowDups: false })
+        //----------------------------------------------------------------------------------------
+        // Knock the target the target back as appropriate
+        //
         knockback(tokenD, target, 10);
     }
     await wait(500);

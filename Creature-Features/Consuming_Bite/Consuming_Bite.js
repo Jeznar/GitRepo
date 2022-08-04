@@ -1,4 +1,4 @@
-const MACRONAME = "Consuming_Bite.1.0"
+const MACRONAME = "Consuming_Bite.1.1.js"
 /*****************************************************************************************
  * Ilyas Consuming Bite per MandyMod
  * 
@@ -12,6 +12,7 @@ const MACRONAME = "Consuming_Bite.1.0"
  * This is buit from a Crymic macro and Horrifying_Visage.0.1
  * 
  * 02/06/22 0.1 Rebuild of Macro to include fear element
+* 08/02/22 1.1 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim off the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -36,23 +37,29 @@ const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 
 const HEAL_TYPE = "healing";
 const DAMAGE_TYPE = "necrotic";
 const BLIND_COND = "Blinded"
-const FRIGHTENED_COND = "Ilya Fright"
-const IMMUNIZED_COND = "Ilya Fright, Immune"
-const FRIGHTENED_ICON = "Icons_JGB/Monster_Features/Frightened.png"
-const IMMUNIZED_ICON = "Icons_JGB/Monster_Features/Frightened_Immune.png"
-const FRIGHTENED_JRNL = "@JournalEntry[tjg0x0jXlwvbdI9h]{Frightened}"
+const PRIMARY_COND = "Ilya Fright"
+const IMMUNE_COND = "Ilya Fright, Immune"
+const PRIMARY_ICON = "Icons_JGB/Monster_Features/Frightened.png"
+const IMMUNE_ICON = "Icons_JGB/Monster_Features/Frightened_Immune.png"
+const PRIMARY_JRNL = "@JournalEntry[tjg0x0jXlwvbdI9h]{Frightened}"
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
-
 jez.log(`============== Finishing === ${MACRONAME} =================`);
-jez.log("")
 return;
-
-
+/***************************************************************************************************
+ * Perform the code that runs when this macro is removed by DAE, set Off
+ ***************************************************************************************************/
+async function doOff() {
+    const FUNCNAME = "doOff()";
+    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    jez.log(`${aToken.name} immune to ${PRIMARY_COND} for 24 hours`)
+    applyImmune(aToken)
+    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    return;
+}
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
@@ -85,7 +92,7 @@ return;
     //----------------------------------------------------------------------------------
     // Perform the bite portion of this ability (borrowed from Crymic)
     //
-    doBite();
+    doBite(tToken);
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
 }
@@ -132,10 +139,10 @@ async function doFear() {
             continue
         }
         //-----------------------------------------------------------------------------------------
-        // Check to see if the current target has the IMMUNIZED_COND
+        // Check to see if the current target has the IMMUNE_COND
         //
-        if (tTokens[i].actor.effects.find(ef => ef.data.label === IMMUNIZED_COND)) {
-            jez.log(`${tTokens[i].name} has ${IMMUNIZED_COND} condition`)
+        if (tTokens[i].actor.effects.find(ef => ef.data.label === IMMUNE_COND)) {
+            jez.log(`${tTokens[i].name} has ${IMMUNE_COND} condition`)
             immuneNames += `<b>${tTokens[i].name} (Immunized)</b><br>`
             continue
         }
@@ -175,20 +182,20 @@ async function doFear() {
         return;
     }
     //---------------------------------------------------------------------------------------------
-    // Process Tokens that Failed Saves, giving them the FRIGHTENED_COND
+    // Process Tokens that Failed Saves, giving them the PRIMARY_COND
     //
-    jez.log(`${failSaves.length} Tokens failed saves, need '${FRIGHTENED_COND}' added`)
+    jez.log(`${failSaves.length} Tokens failed saves, need '${PRIMARY_COND}' added`)
     for (let i = 0; i < failSaves.length; i++) {
         jez.log(` ${i + 1}) ${failSaves[i].name}`, failSaves[i])
-        applyFrightened(failSaves[i], SAVE_TYPE, SAVE_DC);
+        applyPrimary(failSaves[i], SAVE_TYPE, SAVE_DC);
     }
     //---------------------------------------------------------------------------------------------
-    // Process Tokens that made Saves, giving them the IMMUNIZED_COND
+    // Process Tokens that made Saves, giving them the IMMUNE_COND
     //
-    jez.log(`${madeSaves.length} Tokens passed saves, need '${IMMUNIZED_COND}' added`)
+    jez.log(`${madeSaves.length} Tokens passed saves, need '${IMMUNE_COND}' added`)
     for (let i = 0; i < madeSaves.length; i++) {
         jez.log(` ${i + 1}) ${madeSaves[i].name}`, madeSaves[i])
-        applyImmunized(madeSaves[i])
+        applyImmune(madeSaves[i])
     }
     //---------------------------------------------------------------------------------------------
     // Craft results message and post it.
@@ -207,7 +214,7 @@ async function doFear() {
         jez.addMessage(chatMessage, { color: "darkgreen", fSize: 14, msg: msg, tag: "saves" })
     }
     if (failNames) {
-        msg = `Creatures that failed their save are <b>${FRIGHTENED_JRNL}</b> for 3 rounds.<br>`
+        msg = `Creatures that failed their save are <b>${PRIMARY_JRNL}</b> for 3 rounds.<br>`
         await jez.wait(100)
         jez.addMessage(chatMessage, { color: "darkred", fSize: 14, msg: msg, tag: "saves" })
         msg = `<b><u>Failed ${SAVE_TYPE.toUpperCase()} Save</u></b> vs DC${SAVE_DC}<br>${failNames}`
@@ -222,47 +229,51 @@ async function doFear() {
     return (true);
 }
 /***************************************************************************************************
- * Apply the frightened condition
+ * Apply the primary condition
  ***************************************************************************************************/
-async function applyFrightened(token, saveType, saveDC) {
+async function applyPrimary(token, saveType, saveDC) {
+    const CE_DESC = `Ability checks & attack rolls at disadvantage while ${aToken.name} is visible. May not move closer to ${aToken.name}.`
     let effectData = [{
-        label: FRIGHTENED_COND,
-        icon: FRIGHTENED_ICON,
+        label: PRIMARY_COND,
+        icon: PRIMARY_ICON,
         origin: LAST_ARG.uuid,
         disabled: false,
-        flags: { dae: { stackable: false, macroRepeat: "endEveryTurn" } },
+        flags: { 
+            dae: { stackable: false, macroRepeat: "endEveryTurn", specialDuration: ["shortRest"] }, 
+            convenientDescription: CE_DESC  
+        },
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
             { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: ADD, value: 1, priority: 20 },
             { key: `flags.midi-qol.disadvantage.skill.all`, mode: ADD, value: 1, priority: 20 },
             { key: `flags.midi-qol.disadvantage.attack.all`, mode: ADD, value: 1, priority: 20 },
-            { key: `macro.itemMacro`, mode: CUSTOM, value: `Save_DC ${saveDC} ${saveType}`, priority: 20 },
-            //{ key: `flags.dae.deleteUuid`, mode: 5, value: conc.uuid, priority: 20 },
-            //{ key: `flags.midi-qol.OverTime`, mode: 5, value: `turn=start,label=Frightened,saveDC=${spellDC},saveAbility=${saveType},saveRemove=true`, priority: 20 }
+            { key: `macro.itemMacro`, mode: CUSTOM, value: `Save_DC ${saveDC} ${saveType}`, priority: 20 },           
         ]
     }];
-    let frightened = token.actor.effects.find(i => i.data.label === FRIGHTENED_COND);
-    if (!frightened) await applyEffect(token, effectData);
-    await wait(500);
-    // updateEffect(tokenD, target, conc);
+    let primary = token.actor.effects.find(i => i.data.label === PRIMARY_COND);
+    if (!primary) await applyEffect(token, effectData);
 }
 /***************************************************************************************************
  * Apply the Immune to Frightened Condition
  ***************************************************************************************************/
-async function applyImmunized(token) {
+async function applyImmune(token) {
+    const CE_DESC = `Immune to fear effect from ${aToken.name}.`
     let effectData = [{
-        label: IMMUNIZED_COND,
-        icon: IMMUNIZED_ICON,
+        label: IMMUNE_COND,
+        icon: IMMUNE_ICON,
         origin: LAST_ARG.uuid,
         disabled: false,
-        flags: { dae: { stackable: false, macroRepeat: "none" } },
+        flags: { 
+            dae: { stackable: false, macroRepeat:"none", specialDuration:["shortRest"] },
+            convenientDescription: CE_DESC 
+         },
         duration: { rounds: 14400, seconds: 86400, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
             { key: `flags.gm-notes.notes`, mode: CUSTOM, value: "Immune to Ilya's Fear", priority: 20 },
         ]
     }];
-    let frightened = token.actor.effects.find(i => i.data.label === FRIGHTENED_COND);
-    if (!frightened) await applyEffect(token, effectData);
+    let primary = token.actor.effects.find(i => i.data.label === PRIMARY_COND);
+    if (!primary) await applyEffect(token, effectData);
 }
 /***************************************************************************************************
  * Launch the VFX effects
@@ -289,7 +300,7 @@ async function runVFX() {
 /***************************************************************************************************
  * Perform the damage/heal portion of this ability
  ***************************************************************************************************/
-async function doBite() {
+async function doBite(token1) {
     const fracRec = 1.0; // Fraction of necrotic damage healed
 
     let damageDetail = await LAST_ARG.damageDetail.find(i => i.type === DAMAGE_TYPE);
@@ -297,8 +308,8 @@ async function doBite() {
     MidiQOL.applyTokenDamage([{ damage: damageTotal, type: HEAL_TYPE }],
         damageTotal * fracRec, new Set([aToken]), aItem.name, new Set());
     let healMsg = `<div class="midi-qol-flex-container">
-    <div class="midi-qol-target-npc midi-qol-target-name" id="${tToken.id}">
-    hits ${tToken.name}</div><img src="${tToken.data.img}" 
+    <div class="midi-qol-target-npc midi-qol-target-name" id="${token1.id}">
+    hits ${token1.name}</div><img src="${token1.data.img}" 
     width="30" height="30" style="border:0px"></div><div 
     class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" 
     id="${aToken.id}">Heals ${aToken.name} 
@@ -323,13 +334,13 @@ async function applyEffect(target, effectData) {
  * Legacy Function -- Related to concentration management
  ***************************************************************************************************/
 async function updateEffect(tokenD, target, conc) {
-    let frightened = target.actor.effects.find(i => i.data.label === "Frightened");
+    let primary = target.actor.effects.find(i => i.data.label === "Frightened");
     await MidiQOL.socket().executeAsGM("updateEffects", {
         actorUuid: tokenD.actor.uuid,
         updates: [{
             _id: conc.id, changes: [{
                 key: `flags.dae.deleteUuid`, mode: 5,
-                value: frightened.uuid, priority: 20
+                value: primary.uuid, priority: 20
             }]
         }]
     });

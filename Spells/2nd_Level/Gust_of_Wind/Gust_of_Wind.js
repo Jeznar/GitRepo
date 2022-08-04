@@ -1,9 +1,10 @@
-const MACRONAME = "Gust_of_Wind.0.3.js"
+const MACRONAME = "Gust_of_Wind.0.4.js"
 /*****************************************************************************************
  * 05/31/22 0.1 Creation of Macro
  * 06/29/22 0.2 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
  *              canvas.scene.deleteEmbeddedDocuments
  * 07/01/22 0.3 Swap in calls to jez.tileCreate and jez.tileDelete
+ * 08/02/22 0.4 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let trcLvl = 1;
@@ -87,12 +88,16 @@ async function doOnUse() {
     // ---------------------------------------------------------------------------------------
     // Add an effect to the active token that expires at the end of its next turn. 
     //
+    const CE_DESC = `Bonus action to change direction the gust blasts from ${aToken.name}.`
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
         origin: aToken.uuid,
         disabled: false,
-        flags: { dae: { itemData: aItem } },
+        flags: { 
+            dae: { itemData: aItem }, 
+            convenientDescription: CE_DESC
+        },
         changes: [
             { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `Tile ${fetchedTile.id}`, priority: 20 },
         ]

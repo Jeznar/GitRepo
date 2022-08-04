@@ -1,4 +1,4 @@
-const MACRONAME = "Binding_Curse.0.2.js"
+const MACRONAME = "Binding_Curse.0.3.js"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Binding Curse.  Post a simple message to the chat card describing the effect
@@ -21,6 +21,7 @@ jez.log(MACRONAME)
  *              4. Pull token back one square on failed STR save, if more than 10 feet 
  *                 from anchor.
  *              5. Auto-Perform save on afflicted token move
+ * 07/20/22 0.3 Suppress token mold renaming and add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`-------------------Starting ${MACRONAME}----------------------------------`)
@@ -80,7 +81,10 @@ return;
         icon: aItem.img,
         origin: aToken.uuid,
         disabled: false,
-        flags: { dae: { itemData: aItem, macroRepeat: "startEveryTurn", token: tToken.uuid, stackable: false } },
+        flags: { 
+            dae: { itemData: aItem, macroRepeat: "startEveryTurn", token: tToken.uuid, stackable: false }, 
+            convenientDescription: `Moving more than 5 feet from anchor requires DC${SPELL_DC} WIS Save.`
+        },
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
             { key: `macro.itemMacro`, mode: jez.CUSTOM, 
@@ -265,12 +269,14 @@ async function spawnAnchor(token, newName) {
     //--------------------------------------------------------------------------------------
     // Define warpgate updates, options and callbacks 
     //
+    jez.log("newName for Anchor", newName)
+
     let updates = { token: { name: newName } }
     const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet
     const CALLBACKS = {
         pre: async (template) => {
             preEffects(template);
-            await jez.wait(2000)
+            await jez.wait(1000)
         },
         post: async (template) => {
             postEffects(template);
@@ -279,6 +285,8 @@ async function spawnAnchor(token, newName) {
     //--------------------------------------------------------------------------------------
     // Fire off warpgate 
     //
+    jez.suppressTokenMoldRenaming(1500) 
+    await jez.wait(50)
     let anchorId = await warpgate.spawnAt(center, ANCHOR_ORIG_NAME, updates, CALLBACKS, OPTIONS);
     jez.log("anchorId", anchorId)
     return(anchorId)

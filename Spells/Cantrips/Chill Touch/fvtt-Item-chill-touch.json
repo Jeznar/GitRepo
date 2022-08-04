@@ -1,0 +1,205 @@
+{
+  "name": "Chill Touch",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/ice-blue-1.jpg",
+  "data": {
+    "description": {
+      "value": "<p>You create a ghostly, skeletal hand in the space of a creature within range. Make a ranged spell attack against the creature to assail it with the chill of the grave. On a hit, the target takes 1d8 necrotic damage, and it <strong>can't regain hit points </strong>until the start of your next turn. Until then, the hand clings to the target.</p>\n<p>If you hit an <strong>undead target, it also has disadvantage on attack rolls</strong> against you until the end of your next turn.</p>\n<p>This spell's damage<strong> increases by 1d8</strong> when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).</p>",
+      "chat": "<p>You create a ghostly, skeletal hand in the space of a creature within range. Make a ranged spell attack against the creature to assail it with the chill of the grave. On a hit, the target takes 1d8 necrotic damage, and it can't regain hit points until the start of your next turn. Until then, the hand clings to the target.</p>\n<p>If you hit an undead target, it also has disadvantage on attack rolls against you until the end of your next turn.</p>\n<p>This spell's damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8).</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 221",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "round"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d8",
+          "necrotic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "cantrip",
+      "formula": "1d8"
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 136198,
+      "definitionId": 2026,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 221,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "dae": {
+      "activeEquipped": false,
+      "alwaysActive": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "criticalThreshold": "20",
+      "forceCEOff": false,
+      "fumbleThreshold": null,
+      "effectActivation": false
+    },
+    "enhanced-terrain-layer": {
+      "multiple": 1,
+      "min": 0,
+      "max": 0,
+      "environment": ""
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-spells.eePzbosaQQyOPRbg"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Chill Touch",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Chill_Touch.0.2.js\"\n/*****************************************************************************************\n * Source Unknown\n * \n * 08/02/22 0.4 Add convenientDescription\n *****************************************************************************************/\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nif (args[0].hitTargets.length === 0) return {};\nconst target = canvas.tokens.get(args[0].hitTargets[0].id);\nconst undead = (target.actor.data.data.details?.type?.value || target.actor.data.data.details?.race).toLowerCase().includes(\"undead\");\nconst itemD = args[0].item;\nconst spellSeconds = itemD.data.duration.value * 6;\nconst gameRound = game.combat ? game.combat.round : 0;\nconst effectName = `${itemD.name} Effect`;\nlet undeadDis = [{ \"key\": \"data.traits.di.value\", \"mode\": 2, \"value\": \"healing\", \"priority\": 20 }];\nif (undead) undeadDis.push(\n    { \"key\": \"flags.midi-qol.disadvantage.attack.all\", \"mode\": 2, \"value\": 1, \"priority\": 20 }    \n);\nconst CE_DESC = `Can not regain hit points.`\nlet effectData = {\n    label: effectName,\n    icon: \"systems/dnd5e/icons/skills/ice_17.jpg\",\n    origin: args[0].uuid,\n    disabled: false,\n    flags: { \n        convenientDescription: CE_DESC\n    },\n    //------------------\n    // 6 second duration replaced with 1 round duration to keep the effect in place till the \n    // caster's next turn (unless token exit/enter the turn tracker, that screws it up). -Jez\n    //\n    //duration: { seconds: spellSeconds, startRound: gameRound, startTime: game.time.worldTime },\n    duration: { rounds: 1, startRound: gameRound, startTime: game.time.worldTime },\n    changes: undeadDis\n};\nlet checkEffect = target.actor.effects.find(i => i.data.label === effectName);\nif (checkEffect) return {};\nawait MidiQOL.socket().executeAsGM(\"createEffects\",{actorUuid:target.actor.uuid, effects: [effectData] });",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    }
+  }
+}

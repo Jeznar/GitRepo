@@ -1,4 +1,4 @@
-const MACRONAME = "eyebite.0.3.js"
+const MACRONAME = "eyebite.0.4.js"
 /*****************************************************************************************
  * For the spell’s Duration, your eyes become an inky void imbued with dread power. One 
  * creature of your choice within 60 feet of you that you can see must succeed on a Wisdom 
@@ -29,6 +29,7 @@ const MACRONAME = "eyebite.0.3.js"
  * 02/21/22 0.1 Creation of Macro
  * 05/03/22 0.2 Updated for FoundryVTT 9.x
  * 07/09/22 Replace CUB with CE
+ * 08/02/22 0.4 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -41,8 +42,8 @@ let aItem;          // Active Item information, item invoking this macro
 if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-let spellDC = aActor.data.data.attributes.spelldc;
-jez.log("spellDC", spellDC)
+const SAVE_DC = aActor.data.data.attributes.spelldc;
+jez.log("SAVE_DC", SAVE_DC)
 // const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 const IMMUNE_COND = `Eyebite Immune ${LAST_ARG.actorUuid}`
 jez.log('IMMUNE_COND', IMMUNE_COND)
@@ -86,9 +87,20 @@ async function doOn() {
     const FUNCNAME = "doOn()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     firstEyebiteDialog()
+    //----------------------------------------------------------------------------------------------
+    // Modify recently created effect to have a convenientDescription
+    //
+    await jez.wait(100)
+    let effect = await aToken.actor.effects.find(i => i.data.label === aItem.name);
+    if (!effect) return jez.badNews(`Could not find ${aItem.name} effect on ${aToken.name}`,"e")
+    const CE_DESC = `Use action to force visible target to make a DC${SAVE_DC} WIS save or be affected by an eyebite effect`
+    await effect.update({ flags: { convenientDescription: CE_DESC } });
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
 }
+
+
+
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked each round by DAE
  ***************************************************************************************************/
@@ -105,7 +117,7 @@ async function doOn() {
 function firstEyebiteDialog() {
     const FUNCNAME = "EyebiteDialog()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    spellDC = args[1]
+    // SAVE_DC = args[1]
     //----------------------------------------------------------------------------------
     //
     new Dialog({
@@ -134,7 +146,7 @@ function firstEyebiteDialog() {
  function eachEyebiteDialog() {
     const FUNCNAME = "EyebiteDialog()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    spellDC = args[1]
+    // const SAVE_DC = args[1]
     //----------------------------------------------------------------------------------
     //
     const qTitle = "Use Action to Inflict Eyebite?"
@@ -200,9 +212,9 @@ async function checkTokenSave(selectedEffect) {
     // Perform save, apply condition on failure
     //
     jez.log(`Targeted ${tToken}.name`, tToken)
-    const flavor = `${CONFIG.DND5E.abilities["wis"]} DC${spellDC} ${DAEItem?.name || ""}`;
+    const flavor = `${CONFIG.DND5E.abilities["wis"]} DC${SAVE_DC} ${DAEItem?.name || ""}`;
     let saveRoll = (await tToken.actor.rollAbilitySave("wis", { flavor })).total;
-    if (saveRoll < spellDC) {
+    if (saveRoll < SAVE_DC) {
         await jezcon.add({ effectName: selectedEffect, uuid: tToken.actor.uuid, traceLvl: 5 });
         msg = `<b>${tToken.name}</b> failed save (with a ${saveRoll}) and is subject to 
             <b>${aToken.name}</b>'s eyebite effect.`
@@ -236,7 +248,7 @@ async function checkTokenSave(selectedEffect) {
         //
         //    https://gitlab.com/tposney/midi-qol#flagsmidi-qolovertime-overtime-effects
         //
-        let overTimeVal = `turn=end,label=${selectedEffect},saveDC=${spellDC},saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save`
+        let overTimeVal = `turn=end,label=${selectedEffect},saveDC=${SAVE_DC},saveAbility=wis,saveRemove=true,saveMagic=true,rollType=save`
         effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal, priority: 20 })
         jez.log(`effect.data.changes 2`, effect.data.changes)
         //----------------------------------------------------------------------------------
@@ -283,12 +295,16 @@ async function checkTokenSave(selectedEffect) {
  async function applyImmunity(token1) {
     const FUNCNAME = "applyImmunity(token1)";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    const CE_DESC = `Immune to ${aItem.name} from ${aToken.name} for a minute.`
     let immuneEffect = [{
         label: IMMUNE_COND,
         icon: IMMUNE_ICON,
         origin: LAST_ARG.uuid,
         disabled: false,
-        flags: { dae: { itemData: aItem, specialDuration: ["newDay", "longRest", "shortRest"] } },
+        flags: { 
+            dae: { itemData: aItem, specialDuration: ["newDay", "longRest", "shortRest"] },
+            convenientDescription: CE_DESC
+         },
         duration: { rounds: 10, startRound: GAME_RND, seconds: 60, startTime: game.time.worldTime }, 
         changes: [
             { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Immune to Eyebite from this source", priority: 20 },

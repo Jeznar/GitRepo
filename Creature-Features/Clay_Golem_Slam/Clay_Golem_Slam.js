@@ -1,4 +1,4 @@
-const MACRONAME = "Clay_Golem_Slam"
+const MACRONAME = "Clay_Golem_Slam.0.2.js"
 /*****************************************************************************************
  * Implement the reduction in HP Max portion of this ability.
  * 
@@ -8,6 +8,7 @@ const MACRONAME = "Clay_Golem_Slam"
  *   removed by the greater restoration spell or other magic.
  * 
  * 04/17/22 0.1 Creation of Macro
+ * 08/02/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -66,12 +67,17 @@ function preCheck() {
     //---------------------------------------------------------------------------------------------
     // Apply DAE effect to reduce target's max health by amount of damage just done
     //
+    const CE_DESC = `Maximum health reduced by ${DAM_DONE}.`
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
         flags: { dae: { itemData: aItem, stackable: true, macroRepeat: "none" } },
         origin: LAST_ARG.uuid,
         disabled: false,
+        flags: { 
+            dae: { itemData: aItem }, 
+            convenientDescription: CE_DESC
+        },
         //duration: {seconds: 86400, hours: 24, startRound: gameRound, startTime: game.time.worldTime },
         changes: [{ key: "data.attributes.hp.max", mode: jez.ADD, value: -DAM_DONE, priority: 20 }]
     };

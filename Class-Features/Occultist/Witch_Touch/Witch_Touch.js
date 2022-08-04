@@ -1,6 +1,6 @@
-const MACRONAME = "Witch_Touch"
+const MACRONAME = "Witch_Touch.0.2.js"
 /*****************************************************************************************
- * Implementatio0n macro for Occultist's Witch's Touch.  This macro powers an item that 
+ * Implementation macro for Occultist's Witch's Touch.  This macro powers an item that 
  * is to be used as a followup to an Occultist taking an action that should trigger the 
  * Witch's Touch.  Here's Kibble's description:
  * 
@@ -23,6 +23,7 @@ const MACRONAME = "Witch_Touch"
  * I added the word title and split the Curse option into Curse and Bless.
  * 
  * 02/13/22 0.1 Creation of Macro
+ * 08/02/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -46,20 +47,13 @@ const BUFF_BLESS = `Witch Touch's Bless`
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
-if ((args[0]?.tag === "OnUse") && !preCheck())return;
-
+if ((args[0]?.tag === "OnUse") && !preCheck()) return;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-//if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-// DamageBonus must return a function to the caller
-//if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
-
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -73,17 +67,6 @@ function preCheck() {
         postResults(msg);
         return (false);
     }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        postResults();
-        return(false);
-    }*/
-    /*if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return
-        msg = `Saving throw succeeded.  ${aItem.name} has no effect.`
-        postResults();
-
-        return(false);
-    }*/
     return(true)
 }
 /***************************************************************************************************
@@ -179,14 +162,19 @@ function applyBolster() {
     //----------------------------------------------------------------------------------------------
     // Define the effect that will be applied
     //
+    const CE_DESC = `Has ${CAST_MOD} temp HP from ${aToken.name}'s bolstering touch.`
     let effectData = [
         {
             label: BUFF_BOLSTER,
             icon: aItem.img,
             origin: args[0].uuid,
             disabled: false,
-            duration: { rounds: 9999, startRound: GAME_RND, startTime: game.time.worldTime },
-            flags: { dae: { specialDuration: ["isDamaged"] } },
+            // duration: { rounds: 9999, startRound: GAME_RND, startTime: game.time.worldTime },
+            flags: { 
+                dae: { specialDuration: ["isDamaged", "newDay", "longRest", "shortRest"] }, 
+                convenientDescription: CE_DESC,
+                core: { statusId: true },
+            },
             changes: [
                 { key: `data.attributes.hp.temp`, mode: UPGRADE, value: CAST_MOD, priority: 20 },
             ]
@@ -265,14 +253,19 @@ async function applyWither() {
     //----------------------------------------------------------------------------------------------
     // Define Effect Data
     //
+    const CE_DESC = `Cursed: subtract 1d4 from next attack roll or saving throw before the start of ${aToken.name}'s next turn.`
     let effectData = [
         {
             label: BUFF_CURSE,
             icon: aItem.img,
             origin: args[0].uuid,
             disabled: false,
-            duration: { rounds: 9999, startRound: GAME_RND, startTime: game.time.worldTime },
-            flags: { dae: { specialDuration: ["1Attack", "isSave", "turnStartSource"] } },
+            // duration: { rounds: 9999, startRound: GAME_RND, startTime: game.time.worldTime },
+            flags: { 
+                dae: { specialDuration: ["1Attack", "isSave", "turnStartSource", "newDay", "longRest", "shortRest"] }, 
+                convenientDescription: CE_DESC,
+                core: { statusId: true },
+            },
             changes: [
                 { key: `data.bonuses.All-Attacks`, mode: ADD, value: `-1d4[${BUFF_CURSE}]`, priority: 20 },
                 { key: `data.bonuses.abilities.save`, mode: ADD, value: `-1d4[${BUFF_CURSE}]`, priority: 20 },
@@ -304,14 +297,19 @@ async function applyWither() {
     //----------------------------------------------------------------------------------------------
     // Define Effect Data
     //
+    const CE_DESC = `Blessed: add 1d4 to next attack roll or saving throw before the start of ${aToken.name}'s next turn.`
     let effectData = [
         {
             label: BUFF_BLESS,
             icon: aItem.img,
             origin: args[0].uuid,
             disabled: false,
-            duration: { rounds: 9999, startRound: GAME_RND, startTime: game.time.worldTime },
-            flags: { dae: { specialDuration: ["1Attack", "isSave", "turnStartSource"] } },
+            // duration: { rounds: 9999, startRound: GAME_RND, startTime: game.time.worldTime },
+            flags: { 
+                dae: { specialDuration: ["1Attack", "isSave", "turnStartSource", "newDay", "longRest", "shortRest"] } , 
+                convenientDescription: CE_DESC, 
+                core: { statusId: true },
+            },
             changes: [
                 { key: `data.bonuses.All-Attacks`, mode: ADD, value: `+1d4[${BUFF_BLESS}]`, priority: 20 },
                 { key: `data.bonuses.abilities.save`, mode: ADD, value: `+1d4[${BUFF_BLESS}]`, priority: 20 },

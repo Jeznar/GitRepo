@@ -1,9 +1,10 @@
-const MACRONAME = "Nightmare_Haunting"
+const MACRONAME = "Nightmare_Haunting.0.2.js"
 /*****************************************************************************************
  * Applies a debuff to the target that reduces max HP.  No error checking performed,
  * No save is allowed.
  * 
  * 02/18/22 0.1 Creation of Macro
+ * 08/02/22 0.2 Add convenientDescription
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -20,11 +21,7 @@ let msg = "";
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-//if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-//if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
 
@@ -55,13 +52,18 @@ async function doOnUse() {
     //---------------------------------------------------------------------------------------------
     // Apply the debuff effect
     //
+    const CE_DESC = `Maximum health reduced by ${damageTotal}`
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
         flags: { dae: { itemData: aItem, stackable: true, macroRepeat: "none"/*, specialDuration: ["longRest"]*/ } },
         origin: aActor.uuid,
         disabled: false,
-        duration: { rounds: 999999, startRound: GAME_RND },
+        flags: { 
+            dae: { itemData: aItem }, 
+            convenientDescription: CE_DESC
+        },
+        // duration: { rounds: 999999, startRound: GAME_RND },
         changes: [{ key: "data.attributes.hp.max", mode: ADD, value: -damageTotal, priority: 20 }]
     };
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tActor.uuid, effects: [effectData] });

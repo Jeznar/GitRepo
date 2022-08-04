@@ -171,6 +171,7 @@ async function pickEleCallBack(selection) {
     //--------------------------------------------------------------------------------------------------
     // Add an effect to our recently summoned elemental to delete itself at the end of the spell duration
     //
+    const CE_DESC = `Summoned ${summons} will remain for up to an hour`
     const EXPIRE = ["newDay", "longRest", "shortRest"];
     const GAME_RND = game.combat ? game.combat.round : 0;
     let effectData = {
@@ -183,7 +184,10 @@ async function pickEleCallBack(selection) {
             seconds: duration, startTime: game.time.worldTime,
             token: aToken.uuid, stackable: false
         },
-        flags: { dae: { macroRepeat: "none", specialDuration: EXPIRE } },
+        flags: { 
+            dae: { macroRepeat: "none", specialDuration: EXPIRE }, 
+            convenientDescription: CE_DESC 
+        },
         changes: [
             { key: `macro.execute`, mode: jez.CUSTOM, value: `Dismiss_Tokens ${elemementalUuid}`, priority: 20 },
         ]
