@@ -1,4 +1,4 @@
-const MACRONAME = "Sacrificial_Summon.0.5.js"
+const MACRONAME = "Sacrificial_Summon.0.6.js"
 /*****************************************************************************************
  * Implemention of sacrifical summon HomeBrewed forOlivia in the TiB Campaign.
  * 
@@ -9,6 +9,7 @@ const MACRONAME = "Sacrificial_Summon.0.5.js"
  * 
  * 02/16/22 0.4 Convert to new(ish) styles
  * 07/16/22 0.5 Update to use jez.spawnAt with VFX
+ * 08/02/22 0.6 Add convenientDescription
  *****************************************************************************************/
  const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
  const TL = 0;                               // Trace Level for this macro
@@ -43,13 +44,18 @@ jez.log(`Executing: ${MACRONAME}`,
 //----------------------------------------------------------------------------------------
 // Apply the debuff effect
 //
+const CE_DESC = `Maximum hit points reduced by ${damageTotal}.`
 let effectData = {
     label: itemD.name,
     icon: itemD.img,
-    flags: { dae: { itemData: itemD, stackable: true, macroRepeat: "none", specialDuration: ["longRest"] } },
+    flags: { 
+        // core: { statusId: true },    // Force display of the effect when applied
+        convenientDescription: CE_DESC,
+        dae: { itemData: itemD, stackable: true, macroRepeat: "none", specialDuration: ["longRest"] },
+     },
     origin: actor.uuid,
     disabled: false,
-    duration: { rounds: 99999, startRound: gameRound },
+    // duration: { rounds: 99999, startRound: gameRound },
     changes: [{ key: "data.attributes.hp.max", mode: 2, value: -damageTotal, priority: 20 }]
 };
 await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: actor.uuid, effects: [effectData] });

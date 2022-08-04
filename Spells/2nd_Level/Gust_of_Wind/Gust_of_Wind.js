@@ -21,6 +21,7 @@ let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
+const TL = 4
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -47,11 +48,16 @@ async function doOff() {
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     if (args[1] === "Tile") {
         const TILE_ID = args[2]
-        jez.tileDelete(TILE_ID)
+        jez.log(`Calling jez.tileDelete(${TILE_ID})`)
+        jez.tileDelete(TILE_ID, {traceLvl: TL})
     } 
     else if (args[1] === "Effect") {
         let existingEffect = await aToken.actor.effects.find(i => i.data.label === args[2]);
-        if (existingEffect) await existingEffect.delete()
+        if (existingEffect) {
+            jez.log(`Found effect to be deleted`,existingEffect)
+            await existingEffect.delete()
+        }
+        else jez.log(`Failed to find existing Effect`,args[2])
     } else {
         msg = `Some bad logic happened in ${MACRO}. Args[1] = ${args[1]}. Please tell Joe the tale.`
         ui.notifications.error(msg)
@@ -89,6 +95,7 @@ async function doOnUse() {
     // Add an effect to the active token that expires at the end of its next turn. 
     //
     const CE_DESC = `Bonus action to change direction the gust blasts from ${aToken.name}.`
+    let gameRound = game.combat ? game.combat.round : 0;
     let effectData = {
         label: aItem.name,
         icon: aItem.img,
@@ -98,6 +105,7 @@ async function doOnUse() {
             dae: { itemData: aItem }, 
             convenientDescription: CE_DESC
         },
+        duration: { rounds: 12, turns: 12, startRound: gameRound, startTime: game.time.worldTime },
         changes: [
             { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `Tile ${fetchedTile.id}`, priority: 20 },
         ]
