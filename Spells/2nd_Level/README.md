@@ -361,13 +361,16 @@ Notes from the author's wiki:
 
 ### Spiritual Weapon
 
-This spell is implemented using [Automated Evocations](https://github.com/theripper93/automated-evocations), while not ideal it gets the job done.
+This spell was originally implemented using [Automated Evocations](https://github.com/theripper93/automated-evocations), while not ideal it got the job done, until I discontinued using the AE module to avoid its extra menu item and occasional rough edges.  I rewrote this item (8/5/22) to use basic warpgate and jezlib calls.  
 
-AE's implementation requires an actor named **Spiritual Weapon** to exist which will be summoned by a world macro named **AE_Companion_Macro(Spiritual Weapon)**.  I have modified the macro to rename the summoned token, prefixing the standard name with the name of the owner.  The summoned weapon can then be used to *attack* having had its modifiers adjusted to the summoner. 
+It grabs an actor named *%Spiritual Weapon%* from the actors directory, updates it and allows the casting player to place it.  From that point it functions as a minion that is essentially immune to everything - though some issues may crop up with it being targetable.
 
-The part I don't like is the appearance of a selection dialog with exactly one choice.  I expect I can fix that to not appear, but I haven't invested the time. 
+<details> <summary>Video of previous version in use.</summary>
+
+This shows the older version, which is similar to my implementation (and I don't want to spend the time to make a new vid.
 
 ![spiritual-weapon](Spiritual_Weapon/Spiritual_Weapon.gif)
+</details>
 
 There is an [Advanced Spell Effects Module](https://github.com/Vauryx/AdvancedSpellEffects/wiki/Currently-Available-Spells#spiritual-weapon) implmentation, but I'm happy enough with what I have to just let it stand. 
 

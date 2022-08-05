@@ -4,7 +4,7 @@
   "img": "modules/jb2a_patreon/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Mace01_01_Spectral_Red_Thumb.webp",
   "data": {
     "description": {
-      "value": "<p>You create a floating, spectral weapon within range that lasts for the duration or until you cast this spell again. When you cast the spell, you can make a melee spell attack against a creature within 5 feet of the weapon.</p>\n<p>On a hit, the target takes force damage equal to <strong>1d8 + your spellcasting ability</strong> modifier.</p>\n<p>As a <span style=\"text-decoration:underline\">bonus action</span> on your turn, you can move the weapon up to <span style=\"text-decoration:underline\">20 feet</span> and repeat the attack against a creature within 5 feet of it.</p>\n<p>The weapon can take whatever form you choose. Clerics of deities who are associated with a particular weapon (as St. Cuthbert is known for his mace and Thor for his hammer) make this spell’s effect resemble that weapon.</p>\n<p><strong>Higher Levels.</strong> When you cast this spell using a spell slot of 3rd level or higher, the damage <strong>increases by 1d8 for every two slot levels</strong> above the 2nd.</p>",
+      "value": "<p>You create a floating, spectral weapon within range that lasts for the duration or until you cast this spell again. When you cast the spell, you can make a melee spell attack against a creature within 5 feet of the weapon.</p>\n<p>On a hit, the target takes force damage equal to <strong>1d8 + your spellcasting ability</strong> modifier.</p>\n<p>As a <span style=\"text-decoration: underline;\">bonus action</span> on your turn, you can move the weapon up to <span style=\"text-decoration: underline;\">20 feet</span> and repeat the attack against a creature within 5 feet of it.</p>\n<p>The weapon can take whatever form you choose. Clerics of deities who are associated with a particular weapon (as St. Cuthbert is known for his mace and Thor for his hammer) make this spell&rsquo;s effect resemble that weapon.</p>\n<p><strong>Higher Levels.</strong> When you cast this spell using a spell slot of 3rd level or higher, the damage <strong>increases by 1d8 for every two slot levels</strong> above the 2nd.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This item will summon a customized actor representing the weapon to the scene.&nbsp; The weapon will include an&nbsp;<em>attack&nbsp;</em>weapon that can be used to execute teh bonus action.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -76,15 +76,15 @@
     },
     "preparation": {
       "mode": "prepared",
-      "prepared": false
+      "prepared": true
     },
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "attunement": null
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "core": {
       "sourceId": "Item.NzA4ZDYxZWJmZGQ2"
@@ -96,7 +96,9 @@
     },
     "midi-qol": {
       "criticalThreshold": "20",
-      "onUseMacroName": ""
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false,
+      "forceCEOn": false
     },
     "betterCurses": {
       "isCurse": false,
@@ -107,11 +109,41 @@
       "msak": false,
       "rsak": false
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Spiritual Weapon",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Spiritual_Weapon.0.1.js\"\n/*****************************************************************************************\n * Created from Faithful_Hound to replace the function previously handled by Automated\n * Evocations which has gotten to feel cranky.\n * \n * - Summon with WarpGate\n * - Modify Bite ability to have correct to-hit bonus\n * - Delete summon when effect on original caster is removed (or expires)\n * \n * 08/04/22 0.1 Creation of Macro from Faithful_Hound\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst TL = 5;                               // Trace Level for this macro\n//----------------------------------------------------------------------------------\n// Setup some specific global values\n//\nconst MINION = \"%Spiritual Weapon%\"\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n    jez.log(`Checking for creature: \"${MINION}\"`)\n    let critter = game.actors.getName(MINION)\n    jez.log(\"Template Creature\", critter)\n    if (!critter) {\n        msg = `Configuration problem: <b>${MINION}</b> was not found in the actor's directory.`\n        ui.notifications.error(msg)\n        postResults(msg)\n        return (false)\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    for (let i = 1; i < args.length - 1; i++) {\n        jez.log(`  args[${i}]`, args[i]);\n        await jez.wait(250)\n        warpgate.dismiss(args[i], game.scenes.viewed.id)\n    }\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    if (!await preCheck()) return (false);\n    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    let houndInfo = await summonHound()\n    jez.log(\"Hound Info\", houndInfo)\n    addWatchdogEffect(houndInfo);\n    msg = `Maybe say something useful...${houndInfo}`\n    postResults(msg)\n    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n    return (true);\n}\n/***************************************************************************************************\n * Summon the minion and update HP\n * \n * https://github.com/trioderegion/warpgate\n ***************************************************************************************************/\nasync function summonHound() {\n    const CAST_MOD = jez.getCastMod(aToken);\n    const PROF_MOD = jez.getProfMod(aToken);\n    const CHAR_LVL = jez.getCharLevel(aToken);\n    const NAME = `${aToken.name.split(\" \")[0]}'s Spiritual Weapon`\n    const SPELL_LVL = args[0].spellLevel\n    const CAST_STAT = aActor.data.data.abilities[jez.getCastStat(aToken)].value\n    //-----------------------------------------------------------------------------------------------\n    //\n    //\n    let updates = {\n        token: { name: NAME },\n        actor: { // Borrowed from Arcane_Hand.js\n          name: NAME,\n          // img: `modules/jb2a_patreon/Library/5th_Level/Arcane_Hand/ArcaneHand_Human_01_Idle_${color}_Thumb.webp`,\n          'data.details.cr': CHAR_LVL,            // Set CR to make weapon's proficency bonus match the casters\n          'data.abilities.str.value': CAST_STAT,  // Make weapon's cast stat match casters\n      },\n        embedded: {\n            Item: {\n                \"Attack\": {\n                    // \"data.attackBonus\": args[0].assignedActor?.data.data.attributes.spelldc - \n                    //     8 + args[0].assignedActor?.data.data.bonuses.msak.attack,\n                    // \"data.damage.parts\": [[`${1 + Math.floor((args[0].spellLevel - 2) / 2)}d8 + \n                    //     ${args[0].assignedActor?.data.data.abilities[args[0].assignedActor?.data.data.attributes.spellcasting]?.mod || \"\"}`, \"force\"]]\n                   'data.damage.parts' : [[`${1 + Math.floor((SPELL_LVL - 2) / 2)}d8 + ${CAST_MOD}`, \"force\"]]\n                }\n            }\n        }\n    }\n    const OPTIONS = { controllingActor: aActor };   // Hides an open character sheet\n    const CALLBACKS = {\n      pre: async (template) => {\n        preEffects(template);\n        await warpgate.wait(500);\n      },\n      post: async (template, token) => {\n        postEffects(template);\n        await warpgate.wait(500);\n      }\n    };\n    //-----------------------------------------------------------------------------------------------\n    // Get and set maximum sumoning range\n    //\n    const ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n    if (TL > 1) jez.trace(\"ALLOWED_UNITS\",ALLOWED_UNITS);\n    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 30\n    //-----------------------------------------------------------------------------------------------\n    // Obtan location for spawn\n    //\n    let summonData = game.actors.getName(MINION)\n    if (TL > 1) jez.trace(\"summonData\",summonData);\n    let {x,y} = await jez.warpCrosshairs(aToken,MAX_RANGE,summonData.img,aItem.name,{},-1,{traceLvl:TL})\n    //-----------------------------------------------------------------------------------------------\n    // Suppress Token Mold for a wee bit\n    //\n    jez.suppressTokenMoldRenaming(1000) \n    await jez.wait(100) \n    //-----------------------------------------------------------------------------------------------\n    // Return while executing the summon\n    //\n    return (await warpgate.spawnAt({ x, y }, MINION, updates, CALLBACKS, OPTIONS));\n  }\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function preEffects(template) {\n    const VFX_FILE = \"jb2a.explosion.07.bluewhite\"\n    new Sequence()\n      .effect()\n      .file(VFX_FILE)\n      .atLocation(template)\n      .center()\n      .scale(0.25)\n      .opacity(0.75)\n      .play()\n  }\n  /***************************************************************************************************\n   * \n   ***************************************************************************************************/\n   async function postEffects(template) {\n    const VFX_OPACITY = 1.0\n    const VFX_SCALE = 1.0\n    const VFX_FILE = \"modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_Blue_400x400.webm\"\n    new Sequence()\n      .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*.5)\n        .opacity(VFX_OPACITY*0.75)\n        .waitUntilFinished(-1000) \n    .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*.75)\n        .opacity(VFX_OPACITY*0.5)\n        .waitUntilFinished(-1000) \n    .effect()\n        .file(VFX_FILE)\n        .atLocation(template)\n        .center()\n        .scale(VFX_SCALE*1)\n        .opacity(VFX_OPACITY*0.25)\n        .waitUntilFinished(-1000) \n    .play()\n  }\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function addWatchdogEffect(tokenIdArray) {\n    let tokenIds = \"\"\n    const CE_DESC = `Spiritual Weapon is Active`\n    const EXPIRE = [\"newDay\", \"longRest\", \"shortRest\"];\n    const GAME_RND = game.combat ? game.combat.round : 0;\n    // Build list of token IDs seperated by spaces\n    for (let i = 0; i < tokenIdArray.length; i++) tokenIds+= `${tokenIdArray[i]} ` \n    let effectData = {\n      label: aItem.name,\n      icon: aItem.img,\n      origin: LAST_ARG.uuid,\n      disabled: false,\n      duration: { rounds: 4800, startRound: GAME_RND, seconds: 28800, startTime: game.time.worldTime },\n      flags: { \n        dae: { macroRepeat: \"none\", specialDuration: EXPIRE }, \n        convenientDescription: CE_DESC \n      },\n      changes: [\n        { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },\n      ]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });\n  }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }

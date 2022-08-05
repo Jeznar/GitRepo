@@ -275,6 +275,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.01 Major rewrite of Sleep
 
+22.08.04 Rewrite of Spiritual Weapon to replace Automated Evocations
+
 
 [Link back to my Documentation Listing](README.md) 
 
