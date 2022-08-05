@@ -98,21 +98,24 @@ async function doOnUse() {
 async function summonHound() {
     const CAST_MOD = jez.getCastMod(aToken);
     const PROF_MOD = jez.getProfMod(aToken);
+    const CHAR_LVL = jez.getCharLevel(aToken);
     const NAME = `${aToken.name.split(" ")[0]}'s Spiritual Weapon`
+    const SPELL_LVL = args[0].spellLevel
+    const CAST_STAT = aActor.data.data.abilities[jez.getCastStat(aToken)].value
     //-----------------------------------------------------------------------------------------------
     //
     //
-    // Below based on: https://github.com/trioderegion/warpgate/wiki/Summon-Spiritual-Badger
     let updates = {
         token: { name: NAME },
-        actor: { name: NAME },
+        actor: { // Borrowed from Arcane_Hand.js
+          name: NAME,
+          'data.details.cr': CHAR_LVL,            // Set CR to make weapon's proficency bonus match the casters
+          'data.abilities.str.value': CAST_STAT,  // Make weapon's cast stat match casters
+      },
         embedded: {
             Item: {
                 "Attack": {
-                    "data.attackBonus": args[0].assignedActor?.data.data.attributes.spelldc - 
-                        8 + args[0].assignedActor?.data.data.bonuses.msak.attack,
-                    "data.damage.parts": [[`${1 + Math.floor((args[0].spellLevel - 2) / 2)}d8 + 
-                        ${args[0].assignedActor?.data.data.abilities[args[0].assignedActor?.data.data.attributes.spellcasting]?.mod || ""}`, "force"]]
+                   'data.damage.parts' : [[`${1 + Math.floor((SPELL_LVL - 2) / 2)}d8 + ${CAST_MOD}`, "force"]]
                 }
             }
         }

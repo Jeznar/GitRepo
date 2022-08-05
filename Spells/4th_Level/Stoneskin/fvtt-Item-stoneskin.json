@@ -1,7 +1,7 @@
 {
   "name": "Stoneskin",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/runes-orange-2.jpg",
+  "img": "icons/magic/symbols/runes-star-orange.webp",
   "data": {
     "description": {
       "value": "<p>This spell turns the flesh of a willing creature you touch as hard as stone. Until the spell ends, the target has resistance to nonmagical bludgeoning, piercing, and slashing damage.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Spell should be configured to consume the material components after it is added to a character's sheet.</p>",
@@ -36,14 +36,17 @@
     },
     "consume": {
       "type": "material",
-      "target": "ROt0ucn8hA73WFUE",
+      "target": "8zYdSYIDulrMevIF",
       "amount": 4
     },
     "ability": "",
     "actionType": "util",
     "attackBonus": 0,
     "chatFlavor": "",
-    "critical": null,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
     "damage": {
       "parts": [],
       "versatile": "",
@@ -74,7 +77,7 @@
     },
     "preparation": {
       "mode": "prepared",
-      "prepared": false
+      "prepared": true
     },
     "scaling": {
       "mode": "none",
@@ -127,7 +130,6 @@
       "selectedKey": "data.traits.dr.value"
     }
   ],
-  "sort": 0,
   "flags": {
     "dynamiceffects": {
       "effects": [
@@ -153,13 +155,26 @@
       "sourceId": "Compendium.Dynamic-Effects-SRD.DAE SRD Spells.CPDlGQUUKkLUhU2q"
     },
     "midi-qol": {
-      "onUseMacroName": "Run_RuneVFX_onTargets"
+      "onUseMacroName": "[postActiveEffects]Run_RuneVFX_onTargets",
+      "effectActivation": false,
+      "forceCEOn": true
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
     }
   }
 }
