@@ -120,10 +120,11 @@ async function doOn() {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
- async function doOnUse() {
+ async function doOnUse(options={}) {
     const FUNCNAME = "doOnUse()";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
     if (TL===1) jez.trace(`${TAG} --- Starting ---`);
     if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"arg",arg);
     await jez.wait(100)

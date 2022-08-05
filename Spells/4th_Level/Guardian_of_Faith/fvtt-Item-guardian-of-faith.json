@@ -1,0 +1,132 @@
+{
+  "name": "Guardian of Faith",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/4th_Level/Guardian_of_Faith.png",
+  "data": {
+    "description": {
+      "value": "<p>A Large spectral guardian appears and hovers for the duration in an unoccupied space of your choice that you can see within range. The guardian occupies that space and is indistinct except for a gleaming sword and shield emblazoned with the symbol of your deity. Any creature hostile to you that moves to a space within 10 feet of the guardian for the first time on a turn must succeed on a Dexterity saving throw. The creature takes 20 radiant damage on a failed save, or half as much damage on a successful one. The guardian vanishes when it has dealt a total of 60 damage.</p>\n<p><a href=\"Icons_JGB/Spells/4th_Level/Guardian_of_Faith.png\" target=\"_blank\" rel=\"noopener\">D&amp;D Beyond LInk</a></p>\n<p>&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 8,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "space"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 4,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": false,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.YWYxMDYxYmQ4MGQ4"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Guardian of Faith",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Guardian_of_Faith.0.1.js\"\n/*****************************************************************************************\n * Summon a Guardian of Faith to the current scene.  Some key points:\n * \n * - Summon with WarpGate\n * - Modify Bite ability to have correct to-hit bonus\n * - Delete summon when effect on original caster is removed (or expires)\n * \n * 08/04/22 0.1 Creation of Macro based on Faithful Hound\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;\nelse aActor = game.actors.get(LAST_ARG.actorId);\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst TL = 0;                               // Trace Level for this macro\n//----------------------------------------------------------------------------------\n// Setup some specific global values\n//\nconst MINION = `%Guardian of Faith%`;\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"off\") await doOff();                   // DAE removal\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\njez.log(`============== Finishing === ${MACRONAME} =================`);\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nasync function preCheck() {\n  jez.log(`Checking for creature: \"${MINION}\"`)\n  let critter = game.actors.getName(MINION)\n  jez.log(\"Template Creature\", critter)\n  if (!critter) {\n    msg = `Configuration problem: <b>${MINION}</b> was not found in the actor's directory.`\n    ui.notifications.error(msg)\n    postResults(msg)\n    return (false)\n  }\n  return (true)\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\nfunction postResults(msg) {\n  jez.log(msg);\n  let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n  jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is removed by DAE, set Off\n ***************************************************************************************************/\nasync function doOff() {\n  const FUNCNAME = \"doOff()\";\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  for (let i = 1; i < args.length - 1; i++) {\n    jez.log(`  args[${i}]`, args[i]);\n    await jez.wait(250)\n    warpgate.dismiss(args[i], game.scenes.viewed.id)\n  }\n  bubbleForAll(aToken.id, `My guardian is no more`, true, true)\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return;\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse() {\n  const FUNCNAME = \"doOnUse()\";\n  if (!await preCheck()) return (false);\n  jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  let guardianInfo = await summonGuardian()\n  jez.log(\"Guardian Info\", guardianInfo)\n  addWatchdogEffect(guardianInfo);\n  addFlagToSummoned(guardianInfo, aToken.id, {traceLvl: TL});\n  msg = `${aToken.name} has summoned a Guardian of Faith to the field that will protect the area it was summoned to.`\n  postResults(msg)\n  jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);\n  return (true);\n}\n/***************************************************************************************************\n * Summon the minion \n ***************************************************************************************************/\nasync function summonGuardian() {\n  const NAME = `${aToken.name.split(\" \")[0]}'s Guardian of Faith`\n  const CHAR_LVL = jez.getCharLevel(aToken);\n  const CAST_STAT = aActor.data.data.abilities[jez.getCastStat(aToken)].value\n  //--------------------------------------------------------------------------------------------------\n  // Define modifcations for the summons\n  //\n  let updates = {\n    token: { name: NAME },\n    actor: { \n      name: NAME,\n      'data.details.cr': CHAR_LVL,            // Set CR to  match the caster's\n      'data.abilities.wis.value': CAST_STAT,  // Make key stat match caster's\n    }\n  }\n  //--------------------------------------------------------------------------------------------------\n  // Build the argument object for the summons\n  //\n  let argObj = {\n    defaultRange: 30,\n    duration: 3000,                     // Duration of the intro VFX\n    introTime: 1000,                    // Amount of time to wait for Intro VFX\n    introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm',\n    minionName: `${NAME}`,\n    name: aItem.name,                   // Name of action (message only), typically aItem.name\n    outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm',\n    scale: 0.7,\t\t\t\t\t\t\t\t// Default value but needs tuning at times\n    source: aToken,                     // Coords for source (with a center), typically aToken\n    templateName: `${MINION}`,        // Name of the actor in the actor directory\n    updates: updates,\n    width: 2,                           // Width of token to be summoned\n    traceLvl: TL\n  }\n  //--------------------------------------------------------------------------------------------------\n  // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it\n  // to update the img attribute or set basic image to match this item\n  //\n  let summonData = await game.actors.getName(MINION)\n  argObj.img = summonData ? summonData.img : aItem.img\n  //--------------------------------------------------------------------------------------------------\n  // Do the actual summon\n  //\n  return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\nasync function addWatchdogEffect(tokenIdArray) {\n  let tokenIds = \"\"\n  const CE_DESC = `Guardian of Faith is Active`\n  const EXPIRE = [\"newDay\", \"shortRest\", \"longRest\"];\n  const GAME_RND = game.combat ? game.combat.round : 0;\n  // Build list of token IDs seperated by spaces\n  for (let i = 0; i < tokenIdArray.length; i++) tokenIds += `${tokenIdArray[i]} `\n  let effectData = {\n    label: aItem.name,\n    icon: aItem.img,\n    origin: LAST_ARG.uuid,\n    disabled: false,\n    duration: { rounds: 4800, startRound: GAME_RND, seconds: 28800, startTime: game.time.worldTime },\n    flags: {\n      dae: { macroRepeat: \"none\", specialDuration: EXPIRE },\n      convenientDescription: CE_DESC\n    },\n    changes: [\n      { key: `macro.itemMacro`, mode: jez.ADD, value: tokenIds, priority: 20 },\n    ]\n  };\n  await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });\n}\n/***************************************************************************************************\n * \n ***************************************************************************************************/\n async function addFlagToSummoned(guardianID, tokenId, options={}) {\n  const FUNCNAME = \"addFlagToSummoned(guardianID, tokenId)\";\n  const FNAME = FUNCNAME.split(\"(\")[0] \n  const TAG = `${MACRO} ${FNAME} |`\n  const TL = options.traceLvl ?? 0\n  if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n  if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\"guardianID\",guardianID,\"tokenId\",tokenId);\n  //-------------------------------------------------------------------------------------------------\n  // convert the guardianID into guardian token data (Token5e)\n  //\n  let gToken = null\n  for (let i = 1; i < 11; i++) {\n    gToken = await canvas.tokens.placeables.find(ef => ef.id === guardianID[0])\n             // await canvas.tokens.placeables.find(ef => ef.id === \"7sMRPW32f4hSR1la\")\n    if (gToken) break\n    if (TL>1) jez.trace(`${TAG} Try #${i} for ${guardianID[0]} failed finding guardian`,gToken);\n    await jez.wait(200)\n  }\n  if (!gToken) return jez.badNews(`Unable to find token associated with ID #${guardianID[0]}`,\"w\")\n  //-------------------------------------------------------------------------------------------------\n  await DAE.setFlag(gToken.actor, MACRO, tokenId);\n  if (TL>2) jez.trace(`${TAG} ${gToken.name} current DAE flagObj`,gToken.actor.data.flags.dae)\n  let curVal = await DAE.getFlag(gToken.actor, MACRO);\n  if (TL>1) jez.trace(`${TAG} ${gToken.name} flag value ${curVal}`)\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

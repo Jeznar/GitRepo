@@ -283,6 +283,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.04 Updated Freedom of Movement to use a Convenient Effect
 
+22.08.04 Created Guardian of Faith which summons via jez.spawnAt and sets up automated removal when health reaches zero.
+
 
 
 [Link back to my Documentation Listing](README.md) 

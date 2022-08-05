@@ -158,6 +158,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Confusion](4th_Level#confusion)
 * [Death Ward](4th_Level#death-ward)
 * [Faithful Hound](4th_Level#faithful-hound)
+* [Guardian of Faith](4th_Level#guardian-of-faith)
 * [Fire Shield](4th_Level#fire-shield)
 * [Freedom of Movement](4th_Level#freedom-of-movement)
 * [Greater Invisibility](4th_Level#greater-invisibility)

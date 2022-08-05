@@ -14,6 +14,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Fire Shield](#fire-shield)
 * [Freedom of Movement](#freedom-of-movement)
 * [Greater Invisibility](#greater-invisibility)
+* [Guardian of Faith](#guardian-of-faith)
 * [Hypnotic Pattern](#hypnotic-pattern)
 * [Ice Storm](#ice-storm)
 * [Phantasmal Killer](#phantasmal-killer)
@@ -223,6 +224,16 @@ There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_on
 This is just a minor reskinning of [Invisibility](../2nd_Level#invisibility).  It has a 10 round duration and does not drop when the invisible token attacks or casts a spell.
 
 Curiously, it quietly supports upcasting, in the same manner as the Invisibility spell.  It being easier than having people target correctly than removing the option. 
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Guardian of Faith
+
+This summons a guardian from the actor's directory (%Guardian of Faith%) to the scene and allows placement via **jez.spawnAt()** library function. A watchdog is applied to the summoner that deletes the guardian when removed.  The guardian has an at-will spell to actually inflict the prescribed damage and reduce it's own health.  When the guardian reaches zero health, it removes the watchdog effect which in turn causes it to be removed.
+
+The summoning macro places a flag on the summoned token to enable the removal of the watchdog from the summoner based on summoned's health.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 
