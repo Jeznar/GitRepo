@@ -277,6 +277,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.04 Rewrite of Spiritual Weapon to replace Automated Evocations
 
+22.08.04 Implemented Beacon of Hope using a Convenient Effect and no macro.
+
 
 [Link back to my Documentation Listing](README.md) 
 

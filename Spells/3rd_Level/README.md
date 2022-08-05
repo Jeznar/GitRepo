@@ -4,6 +4,7 @@ This repository will contain my automated 3rd level spells as I create new or up
 Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Animate Dead](#animate-dead)
+* [Beacon of Hope](#beacon-of-hope)
 * [Bestow Curse](#bestow-curse)
 * [Blinding Smite](#blinding-smite)
 * [Call Lightning](#call-lightning) (ASE)
@@ -50,6 +51,14 @@ The old version is retained in the repo, marked as depricated.  That version did
 ~~~javascript
 tokenAttacher.deleteMissingLinks()
 ~~~
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Beacon of Hope
+
+This item simply applies the Convenient Effect ***Beacon of Hope*** to preselected targets.  It is removed on a concentration break.  No macro needed to make this go.
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

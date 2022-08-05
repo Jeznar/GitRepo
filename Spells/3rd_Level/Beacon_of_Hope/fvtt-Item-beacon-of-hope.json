@@ -1,0 +1,112 @@
+{
+  "name": "Beacon of Hope",
+  "type": "spell",
+  "img": "icons/magic/light/explosion-star-large-blue-yellow.webp",
+  "data": {
+    "description": {
+      "value": "<p>This spell bestows hope and vitality. Choose any number of creatures within range. For the duration, each target gains:</p>\n<ol>\n<li><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">Advantage on </span><strong>Wisdom saving</strong> throws and</li>\n<li><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">Advantage on </span><strong>death saving</strong> throws, and</li>\n<li><strong>Maximum</strong> number of<strong> hit points</strong> possible from any healing.</li>\n</ol>\n<hr />\n<p><strong>FoundryVTT</strong>: Manually target the desired recipients before casting this spell.</p>\n<p>First two effects are automated, third needs to be handled manually.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "abj",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "effectActivation": false,
+      "forceCEOn": true
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.ALuLiJZU3V4RnfmY"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
