@@ -140,6 +140,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Revivify](3rd_Level#revivify)
 * [Slow](3rd_Level#slow)
 * [Speak with Dead](3rd_Level#speak-with-dead)
+* [Speak with Plants](3rd_Level#speak-with-plants)
 * [Spirit Guardians](3rd_Level#spirit-guardians)
 * [Summon Fey](3rd_Level#summon-fey)
 * [Thunder Step](3rd_Level#thunder-step)
@@ -168,6 +169,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Polymorph](4th_Level#polymorph)
 * [Staggering Smite](4th_Level#staggering-smite)
 * [Stoneskin](4th_Level#stoneskin)
+* [Wall of Fire](4th_Level#wall-of-fire)
 
 [*Back to Spell Level List*](#spells)
 

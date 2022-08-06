@@ -69,12 +69,17 @@ bubbleForAll(aToken.id, mockery, true, true)
 //
 ray = new Ray(tToken.center, aToken.center)
 let badLoS = canvas.walls.checkCollision(ray, { type: "sound", mode: "any" })
-if (TL > 2 && badLoS)  jez.trace(`${MACRO} | ${token.name} sound path blocked`)
-msg = `Maybe there was a noise over that way?`
-bubbleForAll(tToken.id, msg, true, true)
-msg = `<i>...while pointing generally toward ${aToken.name}...</i><br><br>` + msg
-jez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: tToken.data.img, 
-    msg: msg, title: `${tToken.name} wonders...`, token: tToken})
+if (TL > 2 && badLoS) {
+    jez.trace(`${MACRO} | ${token.name} sound path blocked`)
+    msg = `Maybe there was a noise over that way?`
+    await jez.wait(2000)
+    bubbleForAll(tToken.id, msg, true, true)
+    msg = `<i>...while pointing generally toward ${aToken.name}...</i><br><br>` + msg
+    jez.postMessage({
+        color: jez.randomDarkColor(), fSize: 14, icon: tToken.data.img,
+        msg: msg, title: `${tToken.name} wonders...`, token: tToken
+    })
+}
 if (badLoS) return  // Line of Sound
 //---------------------------------------------------------------------------------------------------
 // If the target has the deafened condition, it is immune

@@ -1,7 +1,7 @@
 # 4th Level Spells
 This repository will contain my automated 4th level spells as I create new or update existing (there are many) that currently reside only in my game data (which is regularly backed up) I'll add them here.
 
-Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
+Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Arcane Eye](#arcane-eye)
 * [Banishment](#banishment)
@@ -21,6 +21,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Polymorph](#polymorph)
 * [Staggering Smite](#staggering-smite)
 * [Stoneskin](#stoneskin)
+* [Wall of Fire](#wall-of-fire)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -314,6 +315,14 @@ This implementation:
 
 ![Stoneskin_Details.png](Stoneskin/Stoneskin_Details.png)
 </details>
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Wall of Fire
+
+Wall of Fire implemented as an [Advanced Spell Effects macro](https://github.com/Vauryx/advancedspelleffects/wiki/Currently-Available-Spells#wall-of-fire).  It's a bit odd, but seems to largely work.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

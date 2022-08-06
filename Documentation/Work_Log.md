@@ -285,6 +285,10 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.04 Created Guardian of Faith which summons via jez.spawnAt and sets up automated removal when health reaches zero.
 
+22.08.05 Created super simple Speak with Plants spell
+
+22.08.05 Added Wall of Fire (ASE)
+
 
 
 [Link back to my Documentation Listing](README.md) 

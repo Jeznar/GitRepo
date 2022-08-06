@@ -24,6 +24,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Revivify](#revivify)
 * [Slow](#slow)
 * [Speak with Dead](#speak-with-dead)
+* [Speak with Plants](#speak-with-plants)
 * [Spirit Guardians](#spirit-guardians)
 * [Summon Fey](#summon-fey)
 * [Thunder Step](#thunder-step)
@@ -323,6 +324,14 @@ An every turn (at start) ItemMacro is used to post a reminder message to the cha
 ### Speak with Dead
 
 Spell plays a RuneVFX on the target and places a DAE effect noting the presence of the spell.  It does no checking. 
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Speak with Plants
+
+Spell plays a RuneVFX on the target and places a CE effect noting the presence of the spell.  
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

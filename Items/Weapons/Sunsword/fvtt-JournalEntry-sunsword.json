@@ -1,0 +1,17 @@
+{
+  "name": "Sunsword",
+  "content": "<h1>Sunsword</h1>\n<h4><em>Weapon (longsword), legendary (requires attunement)</em></h4>\n<h4>The Sunsword is a unique blade once possessed by Strahd’s brother, Sergei von Zarovich. In its original form, it had a platinum hilt and guard, and a thin crystal blade as strong as steel.</h4>\n<p>The sword's luminous blade emits bright light in a 15-foot radius and dim light for an additional 15 feet. The light is sunlight. While the blade persists, you can use an action to expand or reduce its radius of bright and dim light by 5 feet each, to a maximum of 30 feet each or a minimum of 10 feet each.</p>\n<section class=\"secret\">\n<p><span style=\"font-family:var(--font-primary);font-size:var(--font-size-14)\">Strahd employed a powerful wizard named Khazan to destroy the weapon after Sergei’s death. The first part of the process required the hilt and the blade to be separated, which Khazan accomplished. While Khazan was busying himself destroying the blade, his apprentice stole the hilt and fled. Khazan later located his apprentice’s mutilated corpse in the Svalich Woods, but the hilt was nowhere to be found. To avoid the vampire’s wrath, Khazan told Strahd that the entire weapon had been destroyed.</span></p>\nThe hilt, which is sentient, knows that it can never be reunited with its original crystal blade. It has, however, gained the properties of a <a href=\"https://www.dndbeyond.com/magic-items/4774-sun-blade\" target=\"_blank\" rel=\"noopener\">Sun Blade</a><br /><br /><strong><em>Sentience.</em></strong> The <em>Sunsword</em> is a sentient chaotic good weapon with an Intelligence of 11, a Wisdom of 17, and a Charisma of 16. It has hearing and normal vision out to a range of 60 feet. The weapon communicates by transmitting emotions to the creature carrying or wielding it.<br /><br /><strong><em>Personality.</em></strong> The <em>Sunsword</em>’s special purpose is to destroy <a class=\"entity-link\" data-entity=\"Actor\" data-id=\"ZTZiYzA5N2ViNTZi\">Strahd</a>, not so much because it wants to free the land of Barovia from evil but because it wants revenge for the loss of its crystal blade. The weapon secretly fears its own destruction.</section>",
+  "img": "Icons_JGB/Weapons/Sunsword.png",
+  "flags": {
+    "R20Converter": {
+      "handout-order": 45,
+      "handout-archived": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
