@@ -289,6 +289,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.05 Added Wall of Fire (ASE)
 
+22.08.05 Created Locate Creature
+
 
 
 [Link back to my Documentation Listing](README.md) 

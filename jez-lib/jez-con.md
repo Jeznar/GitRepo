@@ -24,6 +24,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[hasCE(effectName, uuid)](#hasceeffectname-uuid)** -- Checks for presence of a CE effect
 * **[modAdd](#modadd)** -- Example of modifying and adding an effect
 * **[remove(effectName, uuid)](#removeeffectname-uuid-options--)** -- Calls CE to remove an effect by name
+* **[Update convenientDescription](#update-convenientdescription)** -- Not a library call but a code snippet
 * **[toggle(effectName, { overlay, uuids = [] } = {})](#toggleeffectname--overlay-uuids-----)** -- Uses CE to toggle an effect
                                      
 More about each of these in the following sections. 
@@ -213,7 +214,36 @@ for (const UUID of uuids) {
 
 [*Back to Functions list*](#functions-in-this-module)
 
----  
+---    
+
+### Update convenientDescription
+
+I've needed to update a convenient description a number of times.  The details keep tripping me up, so here is an example the changes a description.
+
+<details> <summary>Code Example</summary>
+
+~~~javascript
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+const EFFECT_NAME = "Sample Effect"
+const CE_DESC = `Here is an effect description, if only it was helpful`
+//-----------------------------------------------------------------------------------------------
+// Search the active actor to find the just added effect
+let effect = await aActor.effects.find(i => i.data.label === EFFECT_NAME);
+//-----------------------------------------------------------------------------------------------
+// Define the desired modification to the changes data
+effect.data.flags = { convenientDescription: CE_DESC }
+await effect.data.update({ 'flags': effect.data.flags });
+//----------------------------------------------------------------------------------------------
+// Apply the modification to add changes into existing effect
+const result = await effect.update({ 'changes': effect.data.changes });
+~~~
+</details>
+
+
+[*Back to Functions list*](#functions-in-this-module)
+
+--- 
 
 ### toggle(effectName, { overlay, uuids = [] } = {})
 
@@ -230,7 +260,7 @@ Toggles the effect on the provided actor UUIDS as the GM via sockets. If no acto
 * @param {string[]} **params.uuids** - Array of UUIDS of the actors to toggle the effect on (ActorId, TokenId, ActorName)
 * @returns {Promise} a promise that resolves when the GM socket function completes
 
-Following is an example from Toggle_Cover_Three_Quarters.js 
+<details> <summary>Example from Toggle_Cover_Three_Quarters.js </summary>
 
 ~~~javascript
 let uuids = await game.dfreds.effectInterface._foundryHelpers.getActorUuids()
@@ -244,6 +274,7 @@ for (const UUID of uuids) {
 await jez.wait(150)     // Allow the removals to settle before 
 for (const UUID of uuids) jezcon.toggle("Cover (Three-Quarters)",{uuids: [UUID]})
 ~~~
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 

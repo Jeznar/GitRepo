@@ -17,6 +17,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Guardian of Faith](#guardian-of-faith)
 * [Hypnotic Pattern](#hypnotic-pattern)
 * [Ice Storm](#ice-storm)
+* [Locate Creature](#locate-creature)
 * [Phantasmal Killer](#phantasmal-killer)
 * [Polymorph](#polymorph)
 * [Staggering Smite](#staggering-smite)
@@ -258,6 +259,14 @@ I configured it to use this VFX file: `modules/jb2a_patreon/Library/Generic/Temp
 ### Ice Storm
 
 This spell places Tile with a cracked earth effect to mark the area of difficult terrain.  The tile should be removed at the end of the caster's next turn, but that is failing as of 5/29 on what seems like a Midi/Times-Up issue that I need to research.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Locate Creature
+
+Places a CE Effect on the caster and plays a Rune VFX
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

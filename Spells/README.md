@@ -165,6 +165,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Greater Invisibility](4th_Level#greater-invisibility)
 * [Hypnotic Pattern](4th_Level#hypnotic-pattern)
 * [Ice Storm](4th_Level#ice-storm)
+* [Locate Creature](4th_Level#locate-creature)
 * [Phantasmal Killer](4th_Level#phantasmal-killer)
 * [Polymorph](4th_Level#polymorph)
 * [Staggering Smite](4th_Level#staggering-smite)
