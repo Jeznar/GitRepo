@@ -151,7 +151,9 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [4th Level Spells](4th_Level)
 
-* [Arcane Eye](4th_Level#arcane-eye)
+https://github.com/Jeznar/GitRepo/tree/main/Spells/4th_Level#arcane-eye
+
+* [Arcane Eye](./4th_Level#arcane-eye)
 * [Banishment](4th_Level#banishment)
 * [Black Tentacles](4th_Level#black-tentacles)
 * [Blight](4th_Level#blight)
@@ -159,6 +161,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Confusion](4th_Level#confusion)
 * [Death Ward](4th_Level#death-ward)
 * [Dominate Beast](4th_Level#dominate-beast)
+* 
 * [Faithful Hound](4th_Level#faithful-hound)
 * [Guardian of Faith](4th_Level#guardian-of-faith)
 * [Fire Shield](4th_Level#fire-shield)
