@@ -87,34 +87,36 @@ async function preCheck() {
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set Off
+ * This runs on actor that has the affected removed from it.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOff() {
     const FUNCNAME = "doOff()";
     const FNAME = FUNCNAME.split("(")[0] 
-
-    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
+    if (TL>3) jez.trace(`${TAG} | More Detailed Trace Info.`)
 
-    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set On
+ * This runs on actor that has the affected applied to it.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function doOn() {
     const FUNCNAME = "doOn()";
     const FNAME = FUNCNAME.split("(")[0] 
-
-    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
+    if (TL>3) jez.trace(`${TAG} | More Detailed Trace Info.`)
 
-    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -126,7 +128,7 @@ async function doOn() {
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
     if (TL===1) jez.trace(`${TAG} --- Starting ---`);
-    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"arg",arg);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
     await jez.wait(100)
     //----------------------------------------------------------------------------------
     if (!await preCheck()) return(false);
@@ -135,12 +137,12 @@ async function doOn() {
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
+    if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)
 
 
     msg = `Maybe say something useful...`
     postResults(msg)
-    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -149,14 +151,14 @@ async function doOn() {
  async function doEach() {
     const FUNCNAME = "doEach()";
     const FNAME = FUNCNAME.split("(")[0] 
-
-    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
+    if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)
 
-    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -165,14 +167,14 @@ async function doOn() {
  async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
     const FNAME = FUNCNAME.split("(")[0] 
-
-    if (TL>1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    if (TL>3) jez.trace(`${FNAME} | More Detailed Trace Info.`)
+    if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)
 
 
-    if (TL>1) jez.trace(`--- Finished --- ${MACRONAME} ${FNAME} ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }

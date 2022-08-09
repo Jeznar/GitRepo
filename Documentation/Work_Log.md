@@ -291,6 +291,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.05 Created Locate Creature
 
+22.08.09 Automated Dominate Beast, Person, Monster.  They share an ItemMacro, modify convenientEffects, post chat bubbles, use a hook to take action when the dominated critter is damaged.
 
 
 [Link back to my Documentation Listing](README.md) 

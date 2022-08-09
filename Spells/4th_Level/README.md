@@ -10,6 +10,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Compulsion](#compulsion)
 * [Confusion](#confusion)
 * [Death Ward](#death-ward)
+* [Dominate Beast](#dominate-beast)
 * [Faithful Hound](#faithful-hound)
 * [Fire Shield](#fire-shield)
 * [Freedom of Movement](#freedom-of-movement)
@@ -162,6 +163,36 @@ This one is built on a DAE SRD macro (checkout *MidiMacros.confusion* from the c
 ### Death Ward
 
 There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_onTargets and places a DAE effect that simply marks the existence of the spell.  Effects to be handled manually.
+
+[*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Dominate Beast
+
+This spell is one if the dominate triplets:
+
+1. [Dominate Beast (4th)](../4th_Level#dominate-beast)
+2. [Dominate Person (5th)](../5th_Level#dominate-person)
+3. [Dominate Monster (8th)](../8th_Level#dominate-monster)
+
+They all operate in the same fashion and even share the same ItemMacro that operates a bit different for each.  The macro reads the item name, taking the second word which should be Beast, Person, or Monster, to select execution path. The macro and description of the spell is kept as Dominate Beast, so look there, err, here for the code.
+
+This item is fairly complex.  Some of the more interesting elements:
+
+* **Activation Condition** is set on the **Details** page to `['beast'].includes('@raceOrType')` which checks the race/type against the type "beast" before applying effects.  If the target's type is not set correctly, this will fail ingloriously.
+* A DAE effect is transferred to the target on save failures that has two effects: (1) Applies the CE effect *Dominated* which must be defined with Convenient Effects folder. (2) Trigger the ItemMacro for this item.
+* The ItemMacro (which is also used for **Dominate Person** and **Dominate Monster** is complex in of itself.  
+
+The ItemMacro does the following major things:
+
+* Define creature type that can be affected by nabbing the second word from the item's name, e.g. Beast, Person, or Monster.
+* When applied to a target (**doOn**) set a Flag stashing info on the source actor, set a hook, and run a VFX.
+* When removed from a token (**doOff**) clear the flag, hook, and remove corresponding concentration effect.
+* When actor with this effect is damaged (**damageCheck**), triggered by the hook, perform appropriate save, have the target say something from a table of statements, and clear effect on save.
+* When the item is used (**doOnUse**) check prerequisites, check creature type, and update convenient descriptions for the two added CE effects.
+
+This spell depends on two CE effects having being configured to apply **Dominated** effect which, in turn applies **Charmed** as a CE effect via a Macro.CE DAE effects line.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

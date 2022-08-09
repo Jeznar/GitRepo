@@ -93,7 +93,7 @@ async function damageCheck(workflow) {
     jez.log(`### workflow`, workflow)
     //----------------------------------------------------------------------------------------------
     // (Crymic) Place Damage Save Effect on afflicted token ... this is a VERY short duration effect 
-    // that manages the daving throw from damage.  
+    // that manages the saving throw from damage.  
     //
     const C_DESC = `Incapacitated with laughter.  DC${SAVE_DC} WIS Save to end end of each turn and when damaged.`
     let effectData = [{

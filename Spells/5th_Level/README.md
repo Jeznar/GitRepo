@@ -1,7 +1,7 @@
 # 5th Level Spells
 This repository will contain my automated 5th level spells as I create new or update existing (there are many) that currently reside only in my game data (which is regularly backed up) I'll add them here.
 
-Spells will have notes on elemnts that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
+Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
 * [Animate Objects](#animate-objects)
 * [Arcane Hand](#arcane-hand)
@@ -12,6 +12,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Danse Macabre](#danse-macabre)
 * [Dispel Evil and Good](#dispel-evil-and-good)
 * [Dream](#dream)
+* [Dominate Person](#dominate-person)
 * [Geas](#geas)
 * [Hold Monster](#hold-monster)
 * [Mass Cure Wounds](#mass-cure-wounds)
@@ -203,6 +204,22 @@ This macro does quite a few things.  Here are the highlights:
 There is no macro itemMacro for this one. This item simply calls Rune_RuneVFX_onSelf and places a DAE effect that simply marks the existence of the spell.  Effects to be handled manually.
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
+
+---
+
+### Dominate Person
+
+This spell is one if the dominate triplets:
+
+1. [Dominate Beast (4th)](../4th_Level#dominate-beast)
+2. [Dominate Person (5th)](../5th_Level#dominate-person)
+3. [Dominate Monster (8th)](../8th_Level#dominate-monster)
+
+They all operate in the same fashion and even share the same ItemMacro that operates a bit different for each.  The macro reads the item name, taking the second word which should be Beast, Person, or Monster, to select execution path. The macro and description of the spell is kept as Dominate Beast, so look there for the code.
+
+The *Person* variation checks for the creature type *humanoid* as that is the value set when the Humanoid box is checked as a creature's race.  There is no race named Person.
+
+[*Back to 5th Level Spell List*](#5th-level-spells)
 
 ---
 

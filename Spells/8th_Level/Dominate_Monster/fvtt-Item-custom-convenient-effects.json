@@ -1,0 +1,2439 @@
+{
+  "name": "Custom Convenient Effects",
+  "type": "consumable",
+  "img": "modules/dfreds-convenient-effects/images/magic-palm.svg",
+  "data": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 0,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null,
+      "autoDestroy": false
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": null,
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "consumableType": "potion"
+  },
+  "effects": [
+    {
+      "_id": "2lTyOOes36DtU3F2",
+      "changes": [
+        {
+          "key": "ATL.light.dim",
+          "mode": 5,
+          "value": "0",
+          "priority": 5
+        },
+        {
+          "key": "ATL.light.bright",
+          "mode": 5,
+          "value": "0",
+          "priority": 5
+        },
+        {
+          "key": "ATL.light.animation",
+          "mode": 5,
+          "value": "{ \"type\":\"none\"}",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.blinded",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "sense",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012,
+        "startRound": 0,
+        "startTurn": 0
+      },
+      "icon": "modules/conditional-visibility/icons/ae/affliction_24.jpg",
+      "label": "Blinded (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "A blinded creature can't see and automatically fails any ability check that requires sight.<br>Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.",
+        "dae": {
+          "stackable": false,
+          "specialDuration": [],
+          "transfer": true
+        },
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "tCvOhylFZccSldji",
+      "changes": [
+        {
+          "key": "ATCV.blindsight",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "sense",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012,
+        "startRound": 0,
+        "startTurn": 0
+      },
+      "icon": "modules/conditional-visibility/icons/ae/green_18.jpg",
+      "label": "Blind Sight (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "A monster with blindsight can perceive its surroundings without relying on sight, within a specific radius.<br>Creatures without eyes, such as grimlocks and gray oozes, typically have this special sense, as do creatures with echolocation or heightened senses, such as bats and true dragons.<br>If a monster is naturally blind, it has a parenthetical note to this effect, indicating that the radius of its blindsight defines the maximum range of its perception.",
+        "dae": {
+          "stackable": false,
+          "specialDuration": [],
+          "transfer": true
+        },
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "hzqCRJley2O7FRJ2",
+      "changes": [
+        {
+          "key": "ATL.light.dim",
+          "mode": 4,
+          "value": "0",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.darkvision",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "sense",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012,
+        "startRound": 0,
+        "startTurn": 0
+      },
+      "icon": "modules/conditional-visibility/icons/ae/evil-eye-red-1.jpg",
+      "label": "Darkvision (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "A monster with Darkvision can see in the dark within a specific radius. The monster can see in dim light within the radius as if it were bright light, and in Darkness as if it were dim light. The monster can't discern color in Darkness, only Shades of Gray. Many Creatures that live Underground have this Special sense.",
+        "dae": {
+          "stackable": false,
+          "specialDuration": [],
+          "transfer": true
+        },
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "4EYtIqdUcaIzEs5m",
+      "changes": [
+        {
+          "key": "ATCV.devilssight",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "sense",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012,
+        "startRound": 0,
+        "startTurn": 0
+      },
+      "icon": "modules/conditional-visibility/icons/ae/blue_17.jpg",
+      "label": "Devil's sight (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "You can see normally in darkness, both magical and nonmagical, to a certain distance.",
+        "dae": {
+          "stackable": false,
+          "specialDuration": [],
+          "transfer": true
+        },
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "VHzrfKw3Jh3p0w7l",
+      "changes": [
+        {
+          "key": "ATCV.seeinvisible",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "sense",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012,
+        "startRound": 0,
+        "startTurn": 0
+      },
+      "icon": "modules/conditional-visibility/icons/ae/shadow_11.jpg",
+      "label": "See invisible (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "For the duration, you see invisible creatures and objects as if they were visible, and you can see into the Ethereal Plane. Ethereal creatures and objects appear ghostly and translucent.",
+        "dae": {
+          "stackable": false,
+          "specialDuration": [],
+          "transfer": true
+        },
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "0fncyB8OPbzoPV3M",
+      "changes": [
+        {
+          "key": "ATCV.tremorsense",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionElevation",
+          "mode": 0,
+          "value": "true",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "sense",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012,
+        "startRound": 0,
+        "startTurn": 0
+      },
+      "icon": "modules/conditional-visibility/icons/ae/ice_15.jpg",
+      "label": "Tremor Sense (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "A monster with tremorsense can detect and pinpoint the origin of vibrations within a specific radius, provided that the monster and the source of the vibrations are in contact with the same ground or substance. Tremorsense can't be used to detect flying or incorporeal creatures. Many burrowing creatures, such as ankhegs and umber hulks, have this special sense.",
+        "dae": {
+          "stackable": false,
+          "specialDuration": [],
+          "transfer": true
+        },
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "AerqAPoBdn9nPyuN",
+      "changes": [
+        {
+          "key": "ATCV.truesight",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "sense",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012,
+        "startRound": 0,
+        "startTurn": 0
+      },
+      "icon": "modules/conditional-visibility/icons/ae/emerald_11.jpg",
+      "label": "True Sight (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "core": {
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "A monster with truesight can, out to a specific range, see in normal and magical darkness, see invisible creatures and objects, automatically detect visual illusions and succeed on saving throws against them, and perceive the original form of a shapechanger or a creature that is transformed by magic. Furthermore, the monster can see into the Ethereal Plane within the same range.",
+        "dae": {
+          "stackable": false,
+          "specialDuration": [],
+          "transfer": true
+        },
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "RwnuMazoG9thpxfF",
+      "changes": [
+        {
+          "key": "ATCV.hidden",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "condition",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012
+      },
+      "icon": "modules/conditional-visibility/icons/hidden.jpg",
+      "label": "Hidden (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "core": {
+          "statusId": "Convenient Effect: Hidden (CV)",
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "This sense is used from the module 'Conditional Visibility', and represents the active stealth value for this system, retrieved from a roll",
+        "dae": {},
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "yeLYcaTkEHzW47rV",
+      "changes": [
+        {
+          "key": "ATCV.invisible",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "blindsight,seeinvisible,tremorsense,truesight",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "condition",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012
+      },
+      "icon": "modules/conditional-visibility/icons/invisible.jpg",
+      "label": "Invisible (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "core": {
+          "statusId": "Convenient Effect: Invisible (CV)",
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "This sense is used from the module 'Conditional Visibility'",
+        "dae": {},
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "pK0KB2zEp6ptLPcX",
+      "changes": [
+        {
+          "key": "ATCV.obscured",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "blindsight,tremorsense",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "condition",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012
+      },
+      "icon": "modules/conditional-visibility/icons/obscured.jpg",
+      "label": "Obscured (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "core": {
+          "statusId": "Convenient Effect: Obscured (CV)",
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "This sense is used from the module 'Conditional Visibility'",
+        "dae": {},
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "8MnrMRtnSshfbMYc",
+      "changes": [
+        {
+          "key": "ATCV.indarkness",
+          "mode": 0,
+          "value": "1",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionTargets",
+          "mode": 0,
+          "value": "",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionSources",
+          "mode": 0,
+          "value": "blindsight,tremorsense,devilssight,truesight",
+          "priority": 5
+        },
+        {
+          "key": "ATCV.conditionType",
+          "mode": 0,
+          "value": "condition",
+          "priority": 5
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": 23112012
+      },
+      "icon": "modules/conditional-visibility/icons/indarkness.jpg",
+      "label": "In Darkness (CV)",
+      "origin": "None",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "core": {
+          "statusId": "Convenient Effect: In Darkness (CV)",
+          "overlay": false
+        },
+        "isConvenient": true,
+        "convenientDescription": "This sense is used from the module 'Conditional Visibility'",
+        "dae": {},
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "GC9p2PW57Iin27XF",
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.attack.mwak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.advantage.attack.msak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 1
+      },
+      "icon": "Icons_JGB/Conditions/flanking.png",
+      "label": "Flanking",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Grants +2 to hit on atack rolls against flanked target",
+        "core": {
+          "statusId": "Convenient Effect: Flanking"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.advantage.attack.mwak",
+        "flags.midi-qol.advantage.attack.msak"
+      ]
+    },
+    {
+      "_id": "E5Ha70R2x4ZMh3hh",
+      "changes": [
+        {
+          "key": "flags.midi-qol.grants.disadvantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.advantage.ability.save.dex",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Misc/Dodge.png",
+      "label": "Dodge",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "specialDuration": [
+            "turnStart"
+          ],
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "transfer": true
+        },
+        "isCustomConvenient": true,
+        "convenientDescription": "Grants disadvantage to all who attack and advantage on all dexterity saving throws until next turn",
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.grants.disadvantage.attack.all",
+        "flags.midi-qol.advantage.ability.save.dex"
+      ]
+    },
+    {
+      "_id": "jlaGlVYknw9Nnr2x",
+      "changes": [
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.all",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 1
+      },
+      "icon": "Icons_JGB/Actions/Hinder.png",
+      "label": "Hindered",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Imposes disadvantage on next ability check within one turn",
+        "core": {
+          "statusId": "Convenient Effect: Hindered"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "isAttacked"
+          ],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "flags.midi-qol.grants.advantage.attack.all"
+    },
+    {
+      "_id": "gAaiD4xSjgxqm554",
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.ability.check.all",
+          "value": "1",
+          "mode": 2,
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "rounds": 1,
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Actions/Help_Icon.png",
+      "label": "Helped",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Help grants advantage on next ability check within one turn",
+        "core": {
+          "statusId": "Convenient Effect: Helped"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "isCheck",
+            "isSkill"
+          ],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        },
+        "isConvenient": true
+      }
+    },
+    {
+      "_id": "GU91D0NbaPtYuPek",
+      "changes": [
+        {
+          "key": "data.attributes.movement.walk",
+          "mode": 1,
+          "value": "0.5",
+          "priority": "25"
+        },
+        {
+          "key": "data.attributes.movement.fly",
+          "mode": 1,
+          "value": "0.5",
+          "priority": "20"
+        },
+        {
+          "key": "data.attributes.movement.swim",
+          "mode": 1,
+          "value": "0.5",
+          "priority": "20"
+        },
+        {
+          "key": "data.attributes.movement.climb",
+          "mode": 1,
+          "value": "0.5",
+          "priority": "20"
+        },
+        {
+          "key": "data.attributes.movement.burrow",
+          "mode": 1,
+          "value": "0.5",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Conditions/grappling.png",
+      "label": "Grappling",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Movement Speed Reduced by Half",
+        "core": {
+          "statusId": "Convenient Effect: Grappling"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "data.attributes.movement.walk",
+        "data.attributes.movement.fly",
+        "data.attributes.movement.swim",
+        "data.attributes.movement.climb",
+        "data.attributes.movement.burrow"
+      ]
+    },
+    {
+      "_id": "gw3y8MZR5pTgqUHs",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/svg/aura.svg",
+      "label": "New Effect",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "vvCrczvoejlt6Eic",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "modules/dfreds-convenient-effects/images/incapacitated.svg",
+      "label": "Incapacitated",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Can't take actions or reactions.",
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      }
+    },
+    {
+      "_id": "cufbgtgnADZ7yyI2",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Misc/Stop_Sign.png",
+      "label": "No_Actions",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "No Actions or Bonus Actions (Reactions allowed)",
+        "core": {
+          "statusId": "No_Actions"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null
+    },
+    {
+      "_id": "vyWr0bGTmF25W6cq",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "modules/combat-utility-belt/icons/diseased.svg",
+      "label": "Diseased",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Can indicate a variety of disease conditions.",
+        "core": {
+          "statusId": "Diseased"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null
+    },
+    {
+      "_id": "qTMes2k4ugfleY0q",
+      "changes": [
+        {
+          "key": "flags.midi-qol.disadvantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.ability.check.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.skill.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Monster_Features/Frighten.png",
+      "label": "Frightened",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Disadvantage on ability checks and attack rolls while the source of its fear is visible and may not move closer to the source of its fear.",
+        "core": {
+          "statusId": "Convenient Effect: Frightened"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true,
+          "selfTarget": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.disadvantage.attack.all",
+        "flags.midi-qol.disadvantage.ability.check.all",
+        "flags.midi-qol.disadvantage.skill.all"
+      ]
+    },
+    {
+      "_id": "GTFcPcoiW69CfCkH",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "No_Actions",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Conditions/insane.png",
+      "label": "Insane",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "While Insane: No Actions, Can't Understand Others, Speaks/Writes Gibberish",
+        "core": {
+          "statusId": "Convenient Effect: Insane"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.CE"
+    },
+    {
+      "_id": "zcDdXBMMJdNVBJgq",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "modules/dfreds-convenient-effects/images/charmed.svg",
+      "label": "Charmed",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Can't attack the charmer.  Charmer has advantage on interactions",
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      }
+    },
+    {
+      "_id": "986FzcZxvuNyqSs7",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Conditions/Reactions-No.png",
+      "label": "Reactions - None",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "May not take reactions.",
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null
+    },
+    {
+      "_id": "WUg3v6p4xiSLcJ4q",
+      "changes": [
+        {
+          "key": "flags.midi-qol.advantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.disadvantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Conditions/Invisibility.png",
+      "label": "Invisible",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Grants advantage on attack rolls while forcing disadvantage to all who attack",
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.advantage.attack.all",
+        "flags.midi-qol.grants.disadvantage.attack.all"
+      ]
+    },
+    {
+      "_id": "t5PzRtb7jYzuWnd4",
+      "changes": [
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 2,
+          "value": "<p>The creature's jump distance is tripled until the spell ends.</p>\n\n<p><span style=\"color: #191813; font-size: 14px;\">The distance</span> can <span style=\"color: #191813; font-size: 14px;\">be calculated using an&nbsp;</span><a style=\"box-sizing: border-box; user-select: text;\" href=\"https://fexlabs.com/5ejump/\" target=\"_blank\" rel=\"noopener\">outside jump calculator</a><span style=\"color: #191813;\">.&nbsp;</span></p>",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "seconds": 60,
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Actions/Jump.png",
+      "label": "Jump",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Jump distance trippled",
+        "core": {
+          "statusId": "Convenient Effect: Jump"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": "flags.gm-notes.notes"
+    },
+    {
+      "_id": "iqSZX4nKnP0wvRd5",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/svg/aura.svg",
+      "label": "New Effect",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "5rmX758wixdwcqCK",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "seconds": 86400,
+        "startTime": null
+      },
+      "icon": "icons/magic/water/pseudopod-swirl-blue.webp",
+      "label": "Water Breathing",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Breathe underwater; retaining normal mode of respiration",
+        "core": {
+          "statusId": "Convenient Effect: Water Breathing"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      }
+    },
+    {
+      "_id": "UXSXRSxrtpW5zWYW",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60
+      },
+      "icon": "Icons_JGB/Spells/4th_Level/Compulsion.png",
+      "label": "Compulsion",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Afflicted must move per instructions",
+        "core": {
+          "statusId": ""
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "startEveryTurn",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.itemMacro"
+    },
+    {
+      "_id": "0kmytI18TAt8nJSn",
+      "changes": [
+        {
+          "key": "flags.midi-qol.fail.ability.save.dex",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.fail.ability.save.str",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        },
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Incapacitated",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Conditions/Stun_Icon.png",
+      "label": "Stunned",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": true,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Fail DEX and STR saves, grant advantage, can't move, and incapacitated",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": "Convenient Effect: Stunned"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.fail.ability.save.dex",
+        "flags.midi-qol.fail.ability.save.str",
+        "flags.midi-qol.grants.advantage.attack.all",
+        "data.attributes.movement.all",
+        "macro.CE"
+      ]
+    },
+    {
+      "_id": "Rt1vmhdMZRpAAFEi",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/svg/aura.svg",
+      "label": "New Effect",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true
+      }
+    },
+    {
+      "_id": "PWqBo7uinxT65ToG",
+      "changes": [
+        {
+          "key": "flags.midi-qol.disadvantage.ability.save.dex",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "0",
+          "priority": "25"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "modules/dfreds-convenient-effects/images/restrained.svg",
+      "label": "Restrained",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Speed is 0, no bonuses to speed, grants advantage to attacks, disadvantage on attacks and DEX Saves",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "Convenient Effect: Restrained"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.disadvantage.ability.save.dex",
+        "flags.midi-qol.disadvantage.attack.all",
+        "flags.midi-qol.grants.advantage.attack.all",
+        "data.attributes.movement.all"
+      ]
+    },
+    {
+      "_id": "hDtJAw2fY0YbuQ17",
+      "changes": [
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.mwak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.msak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.disadvantage.attack.rwak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.disadvantage.attack.rsak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "*0.5",
+          "priority": "25"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "modules/dfreds-convenient-effects/images/prone.svg",
+      "label": "Prone",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Stand up ends. Disadvantage on attack rolls, grants advantage to adjacent attackers, otherwise imposes disadvantage.",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.grants.advantage.attack.mwak",
+        "flags.midi-qol.grants.advantage.attack.msak",
+        "flags.midi-qol.grants.disadvantage.attack.rwak",
+        "flags.midi-qol.grants.disadvantage.attack.rsak",
+        "flags.midi-qol.disadvantage.attack.all",
+        "data.attributes.movement.all"
+      ]
+    },
+    {
+      "_id": "A0LS0Mn0pcb0nBdu",
+      "changes": [
+        {
+          "key": "flags.midi-qol.fail.ability.save.dex",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.fail.ability.save.str",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.critical.range",
+          "mode": 5,
+          "value": "5",
+          "priority": "50"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "0",
+          "priority": "25"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.mwak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.msak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.disadvantage.attack.rwak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.disadvantage.attack.rsak",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.disadvantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "*0.5",
+          "priority": "25"
+        },
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Incapacitated",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/svg/sleep.svg",
+      "label": "Unconscious",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Incapacitated, can't move or speak, unaware of surroundings. Fails STR and DEX saves. Grants advantage. Attack from adjacent is automatic critical.",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "Convenient Effect: Unconscious"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.fail.ability.save.dex",
+        "flags.midi-qol.fail.ability.save.str",
+        "flags.midi-qol.grants.advantage.attack.all",
+        "flags.midi-qol.grants.critical.range",
+        "data.attributes.movement.all",
+        "flags.midi-qol.grants.advantage.attack.mwak",
+        "flags.midi-qol.grants.advantage.attack.msak",
+        "flags.midi-qol.grants.disadvantage.attack.rwak",
+        "flags.midi-qol.grants.disadvantage.attack.rsak",
+        "flags.midi-qol.disadvantage.attack.all",
+        "data.attributes.movement.all",
+        "macro.CE"
+      ]
+    },
+    {
+      "_id": "ZM2j3TwzuYUs8srE",
+      "changes": [
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Misc/Stop_Sign.png",
+      "label": "No Move or Actions",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "No Movement, Actions, Bonus Actions, or Reactions",
+        "core": {
+          "statusId": "Convenient Effect: No Move or Actions"
+        },
+        "dae": {
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "selfTarget": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        },
+        "isConvenient": true
+      },
+      "selectedKey": "data.attributes.movement.all"
+    },
+    {
+      "_id": "800ZO6yaXNl379xs",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "seconds": 3600,
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/spells/slice-spirit-2.jpg",
+      "label": "Freedom of Movement",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Ignore difficult terrain, can not be magically slowed, restrained, or paralyzed. Water does not reduce speed.",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      }
+    },
+    {
+      "_id": "OkVr0gqb3vAkupKm",
+      "changes": [
+        {
+          "key": "flags.midi-qol.fail.ability.save.dex",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.fail.ability.save.str",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.advantage.attack.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "0"
+        },
+        {
+          "key": "flags.midi-qol.grants.critical.range",
+          "mode": 5,
+          "value": "5",
+          "priority": "50"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "0",
+          "priority": "25"
+        },
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Incapacitated",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "modules/dfreds-convenient-effects/images/paralyzed.svg",
+      "label": "Paralyzed",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Can't move or Speak. Fail STR and DEX Saves. Grants advantage to attacks. Attacks from within 5 feet auto-critical",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "Convenient Effect: Paralyzed"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "flags.midi-qol.fail.ability.save.dex",
+        "flags.midi-qol.fail.ability.save.str",
+        "flags.midi-qol.grants.advantage.attack.all",
+        "flags.midi-qol.grants.critical.range",
+        "data.attributes.movement.all",
+        "macro.CE"
+      ]
+    },
+    {
+      "_id": "ZLs06qs5ozlzRP2d",
+      "changes": [
+        {
+          "key": "macro.tokenMagic",
+          "mode": 0,
+          "value": "mantle-of-madness",
+          "priority": "0"
+        },
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Paralyzed",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "seconds": 60,
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/spells/shielding-fire-2.jpg",
+      "label": "Hold Monster",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Apply the effects of the paralyzed condition for 1 minute",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "selectedKey": [
+        "macro.tokenMagic",
+        "macro.CE"
+      ]
+    },
+    {
+      "_id": "EUjXWGfiQ0MyJrhf",
+      "changes": [
+        {
+          "key": "macro.tokenMagic",
+          "mode": 0,
+          "value": "fumes",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 10
+      },
+      "icon": "Icons_JGB/Misc/Leadership.png",
+      "label": "Leadership",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "May add 1d4 to an attack roll or saving throw",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "noneName",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "Convenient Effect: Leadership"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.tokenMagic"
+    },
+    {
+      "_id": "MismEOWGRZQgwwX2",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "seconds": 60,
+        "startTime": null,
+        "rounds": 10
+      },
+      "icon": "systems/dnd5e/icons/spells/wind-magenta-2.jpg",
+      "label": "Feather Fall",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Descent slows to 60 feet per round, taking no damage on landing",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      }
+    },
+    {
+      "_id": "gotxVN3pOQypiXK1",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "seconds": 600,
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Spells/3rd_Level/Speak_with_Plants.png",
+      "label": "Speak with Plants",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "tint": null,
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Plants within 30 feet gain limited intelligence and communications.  See Spell Description.",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "Convenient Effect: Speak with Plants"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      }
+    },
+    {
+      "_id": "jk2IilrBSXekmTqL",
+      "changes": [],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Spells/4th_Level/Locate.png",
+      "label": "Locate Creature",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Sense location of creature within 1000 feet",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null
+    },
+    {
+      "_id": "74DX5HI5IfV7kIsN",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Charmed",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Spells/4th_Level/Dominated.png",
+      "label": "Dominated",
+      "origin": "Item.14xXzVPo4FKfR0cd",
+      "transfer": false,
+      "flags": {
+        "isCustomConvenient": true,
+        "convenientDescription": "Creature is dominated",
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "Convenient Effect: Dominated"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.CE"
+    }
+  ],
+  "flags": {
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

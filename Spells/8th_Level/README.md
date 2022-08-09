@@ -3,12 +3,29 @@ This repository will contain my automated 8th level spells as I create new or up
 
 Spells will have notes on elements that I think are interesting.  In some cases differences from RAW, notes on how to use the spell in game, or coding notes.
 
+* [Dominate Monster](#dominate-monster)
 * [Mind Blank](#mind-blank)
 * [Power Word Stun](#power-word-stun)
 
 [*Back to List of All Spells*](../README.md)
 
 ## Spell Notes
+
+### Dominate Monster
+
+This spell is one if the dominate triplets:
+
+1. [Dominate Beast (4th)](../4th_Level#dominate-beast)
+2. [Dominate Person (5th)](../5th_Level#dominate-person)
+3. [Dominate Monster (8th)](../8th_Level#dominate-monster)
+
+They all operate in the same fashion and even share the same ItemMacro that operates a bit different for each.  The macro reads the item name, taking the second word which should be Beast, Person, or Monster, to select execution path. The macro and description of the spell is kept as Dominate Beast, so look there for the code.
+
+The *Monster* variation skips the race/type check as it works on any creature,
+
+[*Back to 8th Level Spell List*](#8th-level-spells)
+
+---
 
 ### Mind Blank
 

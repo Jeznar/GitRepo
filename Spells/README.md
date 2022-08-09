@@ -158,6 +158,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Compulsion](4th_Level#compulsion)
 * [Confusion](4th_Level#confusion)
 * [Death Ward](4th_Level#death-ward)
+* [Dominate Beast](4th_Level#dominate-beast)
 * [Faithful Hound](4th_Level#faithful-hound)
 * [Guardian of Faith](4th_Level#guardian-of-faith)
 * [Fire Shield](4th_Level#fire-shield)
@@ -185,6 +186,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Danse Macabre](5th_Level#danse-macabre)
 * [Dispel Evil and Good](5th_Level#dispel-evil-and-good)
 * [Dream](5th_Level#dream)
+* [Dominate Person](5th_Level#dominate-person)
 * [Geas](5th_Level#geas)
 * [Hold Monster](5th_Level#hold-monster)
 * [Mass Cure Wounds](5th_Level#mass-cure-wounds)
@@ -218,6 +220,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [8th Level Spells](8th_Level)
 
+* [Dominate Monster](8th_Level#dominate-monster)
 * [Mind Blank](8th_Level#mind-blank)
 * [Power Word Stun](8th_Level#power-word-stun)
 
