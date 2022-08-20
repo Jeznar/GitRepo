@@ -15,6 +15,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Ensnaring Strike](Cantrips#ensnaring-strike)
 * [Entangle](#entangle)
 * [False Life](#false-life)
+* [Find Familiar](#find-familiar)
 * [Fog Cloud](#fog-cloud) (ASE)
 * [Guiding Bolt](#guiding-bolt)
 * [Hex](#hex)
@@ -197,6 +198,23 @@ Import of older macro that appears to be FoundryVTT 9.x compatible.
 ### False Life
 
 Simple ItemMacro based spell that automates the addition of appropriate amount of temporary hit points (TempHP)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Find Familiar
+
+This spell digs through the actor directory for a folder with a magic name and then composes a list of familiar forms that can be summoned.  If the caster has the chain lock feature allowing additional forms, the scan is repeated.  A dialog is then presented with the available options and a summon is performed using the **jez.spawnAt()** library function (it uses WarpGate under the covers).
+
+ Assumptions & Preconditions
+ 
+ * Name to be used for the familiar has been set with "**Set Familiar Name**"
+ * One or more familiars are stored in the folder defined by FAM_FLDR ("**Familiars**")
+ * Familiars, if any, for Chain Locks stored in FAM\_FLDR\_CHAIN ("**Familiars Pact of the Chain**")
+ * Feature named PACT\_OF\_THE\_CHAIN ("**Pact of the Chain**") spelled exactly enables Chain Lock
+ * Familiars have unique names, i.e. there is only one "bat," "raven," etc.
+ * Feature CHAIN\_MASTER (**"Invocation: Investment of the Chain Master"**), if present results in message reminding that this is not automated.
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

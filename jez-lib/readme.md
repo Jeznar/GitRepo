@@ -224,6 +224,7 @@ return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 </details>
 
 <details> <summary>**Explosion Effect Recording**</summary>
+
 ![Summon_Explosion.gif](images/Summon_Explosion.gif)
 </details>
 
@@ -261,6 +262,7 @@ return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 </details>
 
 <details> <summary>**Fireworks Effect Recording**</summary>
+
 ![Summon_Fireworks.gif](images/Summon_Fireworks.gif)
 </details>
 
@@ -309,6 +311,7 @@ return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 </details>
 
 <details> <summary>**Portal Effect Recording**</summary>
+
 ![Summon_Portal.gif](images/Summon_Portal.gif)
 </details>
 

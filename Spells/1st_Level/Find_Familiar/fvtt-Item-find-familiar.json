@@ -1,0 +1,143 @@
+{
+  "name": "Find Familiar",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/wild-eerie-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Your familiar acts independently of you, but it always obeys your commands. In combat, it rolls its own initiative and acts on its own turn. A familiar can’t attack, but it can take other actions as normal.</p>\n<p><a href=\"https://www.dndbeyond.com/spells/find-familiar\" target=\"_blank\" rel=\"noopener\">See D&amp;D Beyond for additional information.</a></p>\n<p><em>Requires: 10 gp worth of @Item[S2KAJtj3VfwaYg3w]{Incense, Charcoal and Herbs} that must be consumed by fire in a brass brazier</em></p>\n<hr />\n<p><strong>FoundryVTT: </strong>This is largely automated, including searching actor directory for allowed familiar forms.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 240",
+    "activation": {
+      "type": "hour",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "any",
+      "type": "space"
+    },
+    "range": {
+      "value": 10,
+      "long": 0,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "material",
+      "target": "",
+      "amount": 1
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "level": 1,
+    "school": "con",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": true,
+      "concentration": false
+    },
+    "materials": {
+      "value": "10 gp worth of charcoal, incense, and herbs that must be consumed by fire in a brass brazier",
+      "consumed": true,
+      "cost": 10,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "pact",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": 0
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Item.YWUzNmI2OWJjZWQ3"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Find Familiar",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Find_Familiar.1.0.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Look in the sidebar for creatures that can serve as fams and provide a list of options for\n * the find fam spell.\n * \n Assumptions & Preconditions\n * Name to be used for the familiar has been set with \"Set Familiar Name\"\n * One or more fams are stored in the folder defined by FAM_FLDR (\"Familiars\")\n * Familiars, if any, for Chain Locks stored in FAM_FLDR_CHAIN (\"Familiars Pact of the Chain\")\n * Feature named PACT_OF_THE_CHAIN (\"Pact of the Chain\") spelled exacty enables Chain Lock\n * Familars have unique names, i.e. there is only one \"bat,\" \"raven,\" etc.\n * Feature CHAIN_MASTER, if present results in message reminding that this is not automated.\n\n * 08/18/22 1.0 Creation\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim of the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nconst FAM_FLDR = \"Familiars\"\nconst FAM_FLDR_CHAIN = \"Familiars Pact of the Chain\"\nconst PACT_OF_THE_CHAIN = \"Pact of the Chain\"\nconst CHAIN_MASTER = \"Invocation: Investment of the Chain Master\"\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n//\nlet famNames = []   // Global array to hold the list of familiar names\nconst FLAG_NAME = \"familiar_name\"\nconst FAMILIAR_NAME = DAE.getFlag(aActor, FLAG_NAME)\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\n// jez.log(`============== Finishing === ${MACRONAME} =================`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------\n    // Obtain the list of familiars that can be choosen from\n    // \n    famOpts = getFamiliarOptions({ traceLvl: TL })\n    if (!famOpts) return jez.badNews(`No familiars to choose from found`, \"e\")\n    //-----------------------------------------------------------------------------------------------\n    // Build an array of familiar names, sort it and make sure they are unique\n    //\n    for (let i = 0; i < famOpts.length; i++) famNames.push(famOpts[i].name)\n    famNames = famNames.sort()\n    for (let i = 1; i < famNames.length; i++)\n        if (famNames[i - 1] === famNames[i])\n            return jez.badNews(`Duplicate familiar option (${famNames[i]} found, not allowed)`, \"e\")\n    console.log(`famNames`, famNames)\n    //-----------------------------------------------------------------------------------------------\n    // If we have more than one familiar choice, setup and run a dialog to select the familiar\n    //\n    if (famNames.length > 1) popDialog1(famNames, { traceLvl: TL })\n    else {\n        console.log(\"TODO: NEED SHORT CIRCUIT TO SUMMON THE ONLY AVAILABLE FAMILIAR OPTION\")\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n\n    if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)\n\n\n    msg = `Maybe say something useful...`\n    postResults(msg)\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Grab Familiar Options\n * \n * Returns an array of the options available\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction getFamiliarOptions(options = {}) {\n    const FUNCNAME = \"getFamiliarOptions(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //--------------------------------------------------------------------------------------------\n    // Grab the folder of fams from the actor directory (sidebar)\n    //\n    let famFold = game.folders.find(item => item.data.name === FAM_FLDR)\n    if (!famFold) return jez.badNews(`Could not find a folder named ${FAM_FLDR}`, \"e\")\n    if (TL > 3) jez.trace(`${TAG} Familiar Folder`, famFold)\n    //--------------------------------------------------------------------------------------------\n    // Make sure at least one familiar exists in the folder\n    //\n    if (!famFold.content || famFold.content.length === 0)\n        return jez.badNews(`No familiars found in the ${FAM_FLDR} folder`, \"e\")\n    //--------------------------------------------------------------------------------------------\n    // Convert the folder data into an array of handy actor objects\n    //\n    let famArray = []\n    for (let i = 0; i < famFold.content.length; i++) {\n        famArray[i] = {\n            name: famFold.content[i].name,\n            id: famFold.content[i].id,\n            actor5e: famFold.content[i]\n        }\n    }\n    let famCnt = famArray.length\n    //--------------------------------------------------------------------------------------------\n    // Does the caster have the \"Pact of the Chain\" (PACT_OF_THE_CHAIN) feature, and thus \n    // more options?\n    //\n    let chainLock = false   // Boolean flag indicating caster is a chain lock (or not)\n    if (aActor.items.find(i => i.name === PACT_OF_THE_CHAIN)) chainLock = true\n    if (TL > 2)\n        if (chainLock) jez.trace(`${TAG} ${aToken.name} is a Chain Warlock`)\n        else jez.trace(`${TAG} ${aToken.name} is not a Chain Warlock`)\n    //--------------------------------------------------------------------------------------------\n    // If we're dealing with a Chain Lock, need to add in the additional familiar options\n    //\n    if (chainLock) {\n        let chainFamFold = game.folders.find(item => item.data.name === FAM_FLDR_CHAIN)\n        if (!chainFamFold)\n            jez.badNews(`Could not find chain lock familiar folder \"${FAM_FLDR_CHAIN}\"`, \"w\")\n        else {\n            if (TL > 3) jez.trace(`${TAG} Chain Lock Familiar Folder`, chainFamFold)\n            for (let i = famCnt; i < chainFamFold.content.length + famCnt; i++) {\n                if (TL > 4) jez.trace(`${TAG} Processing`, chainFamFold.content[i - famCnt].name)\n                famArray[i] = {\n                    name: chainFamFold.content[i - famCnt].name,\n                    id: chainFamFold.content[i - famCnt].id,\n                    actor5e: chainFamFold.content[i - famCnt]\n                }\n            }\n        }\n    }\n    //--------------------------------------------------------------------------------------------\n    // Depending on TL, spit out what we have assembled\n    //\n    for (let i = 0; i < famArray.length; i++) {\n        if (TL > 3) jez.trace(`${TAG} ${i + 1} Familiar`, famArray[i].name)\n        if (TL > 5) jez.trace(`${TAG} ${i + 1} Familiar`, famArray[i].id)\n        if (TL > 4) jez.trace(`${TAG} ${i + 1} Familiar`, famArray[i].actor5e)\n    }\n    //--------------------------------------------------------------------------------------------\n    // Return results\n    //\n    return famArray\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Create the dialog to select a familiar\n * \n **********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function popDialog1(famNames, options = {}) {\n    const FUNCNAME = \"popDialog1(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"famNames\", famNames,\n        \"options\", options);\n    //-----------------------------------------------------------------------------------------------\n    // Obtain the list of familiars that can be choosen from\n    // \n    const queryTitle = \"What form for Familiar\"\n    const queryText = \"Select the form for the familiar from drop down list\"\n    jez.pickFromListArray(queryTitle, queryText, callBack1, famNames);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Process the selection from the dialog offering list of familiar forms.\n * \n **********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function callBack1(itemSelected) {\n    const FUNCNAME = \"callBack1(itemSelected)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"itemSelected\", itemSelected);\n    //-----------------------------------------------------------------------------------------------\n    //\n    if (TL > 1) jez.trace(`${TAG} itemCallBack: Item \"${itemSelected}\" selected in the dialog`)\n    //--------------------------------------------------------------------------------------------\n    // If cancel button was selected on the preceding dialog, null is returned ==> Terminate\n    //\n    if (itemSelected === null) return;\n    //--------------------------------------------------------------------------------------------\n    // If nothing was selected call preceding function and terminate this one\n    //\n    if (!itemSelected) {\n        if (TL > 1) jez.trace(`${TAG} No selection passed to ${FUNCNAME}, trying again.`)\n        popDialog1(famNames, { traceLvl: TL })\n        return;\n    }\n    //--------------------------------------------------------------------------------------------\n    // Summon the familiar to the scene\n    //\n    if (TL > 1) jez.trace(`${TAG} Actually summon the familiar ${itemSelected}`)\n    let familiarName = FAMILIAR_NAME ?? `${aToken.name}'s ${itemSelected}`\n    if (TL > 2) jez.trace(`${TAG} Familiar name: ${familiarName}`)\n    let argObj = {\n        defaultRange: 10,\n        duration: 3000,                     // Duration of the intro VFX\n        introTime: 1000,                    // Amount of time to wait for Intro VFX\n        introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file\n        minionName: familiarName,\n        outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file\n        scale: 0.4,\t\t\t\t\t\t\t// Default value but needs tuning at times\n        source: aToken,                     // Coords for source (with a center), typically aToken\n        templateName: itemSelected,         // Name of the actor in the actor directory\n        traceLvl: TL\n    }\n    //--------------------------------------------------------------------------------------------------\n    // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it\n    // to update the img attribute or set basic image to match this item\n    //\n    let summonData = await game.actors.getName(itemSelected)\n    argObj.img = summonData ? summonData.img : aItem.img\n    //--------------------------------------------------------------------------------------------\n    // Does the caster have the CHAIN_MASTER feature, and thus needs special treatment?\n    //\n    let chainMaster = false   // Boolean flag indicating caster has CHAIN_MASTER invocation\n    if (aActor.items.find(i => i.name === CHAIN_MASTER)) chainMaster = true\n    if (chainMaster) {\n        if (TL > 1) jez.trace(`${TAG} ${aToken.name} has ${CHAIN_MASTER}`)\n        jez.badNews(`Features provided by ${CHAIN_MASTER} are not automated`, \"i\")\n    }\n    else if (TL > 1) jez.trace(`${TAG} ${aToken.name} lacks ${CHAIN_MASTER}`)\n    //--------------------------------------------------------------------------------------------------\n    // Do the actual summon\n    //\n    let returnValue = await jez.spawnAt(itemSelected, aToken, aActor, aItem, argObj)\n    console.log(`Return Value`, returnValue)\n    return\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

@@ -5,7 +5,7 @@ This repository will contain my automated spells as I create new one or update t
 
 ---
 
-Since there should eventually be a enourmous number of spells in this repo, this document will list the spells and provide a link to the README for each spell level which contain additional notes.
+Since there should eventually be an enormous number of spells in this repo, this document will list the spells and provide a link to the README for each spell level which contain additional notes.
 
 * [Cantrips](#cantrips)
 * [1st Level Spells](#1st-level-spells)
@@ -62,6 +62,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 * [Ensnaring Strike](Cantrips#ensnaring-strike)
 * [Entangle](1st_Level#entangle)
 * [False Life](1st_Level#false-life)
+* [Find Familiar](1st_Level#find-familiar)
 * [Fog Cloud](1st_Level#fog-cloud) (ASE)
 * [Guiding Bolt](1st_Level#guiding-bolt)
 * [Hideous Laughter](1st_Level#hideous-laughter)
@@ -151,9 +152,7 @@ Since there should eventually be a enourmous number of spells in this repo, this
 
 ## [4th Level Spells](4th_Level)
 
-https://github.com/Jeznar/GitRepo/tree/main/Spells/4th_Level#arcane-eye
-
-* [Arcane Eye](./4th_Level#arcane-eye)
+* [Arcane Eye](4th_Level#arcane-eye)
 * [Banishment](4th_Level#banishment)
 * [Black Tentacles](4th_Level#black-tentacles)
 * [Blight](4th_Level#blight)
@@ -161,7 +160,6 @@ https://github.com/Jeznar/GitRepo/tree/main/Spells/4th_Level#arcane-eye
 * [Confusion](4th_Level#confusion)
 * [Death Ward](4th_Level#death-ward)
 * [Dominate Beast](4th_Level#dominate-beast)
-* 
 * [Faithful Hound](4th_Level#faithful-hound)
 * [Guardian of Faith](4th_Level#guardian-of-faith)
 * [Fire Shield](4th_Level#fire-shield)
