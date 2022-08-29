@@ -295,6 +295,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.20 Built Find Familiar with scan of actor directory for familiar options
 
+22.08.29 Fix to invisibility self only and creation of Imp Shape Shift that changes token image and movement rates.  It scans a directory of the server to validate the image before attempting to use it.
+
 
 [Link back to my Documentation Listing](README.md) 
 

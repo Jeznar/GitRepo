@@ -32,6 +32,7 @@ I'll try to document functions as I add them to the repository.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
 * **[Howling Babble](#howling-babble)** -- Allip's special attack.
+* **[Imp Shape Change](#imp-shape-change)** -- Imp's ablity to change form and speed
 * **Knock Down** -- Implements a dog/wolf's bite and knock down
 * **[Life Drain](#life-drain)** -- Wraith's Life Drain Ability
 * **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
@@ -345,6 +346,23 @@ This ability requires nothing more than being a feature name "Magic Resistance."
 Special magic attack of the **[Allip](https://www.dndbeyond.com/monsters/93770-allip)** undead critter. It affects all creatures that can hear the cast within 30 feet.  The associated ItemMacro pops a dialog that allows for selection of all the tokens to be affected after eliminating any undead or constructs (they are immune). 
 
 ![Howling_Babble.gif](Howling_Babble/Howling_Babble.gif)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Imp Shape Shift**
+
+Automates the swapping of an Imp's token image to one of the allowed types.  This macro assumes that the allowed types are present in the same directory that contains the image of the imp used by the token and are named exactly:
+
+* Imp, 
+* Raven,
+* Rat, 
+* Spider.
+
+All of the alternative images must have the same file extension as the base Imp file.
+
+Movement of the ability are set per the RAW definition.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

@@ -1,8 +1,9 @@
-const MACRONAME = "Compulsion.0.2.js"
+const MACRONAME = "Compulsion.0.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * This is a complex macro to implement Compulsion.
  * 
  * 07/22/22 0.1 Creation of Macro
+ * 08/29/22 0.3 Fix for case where no targets are selected
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TL = 0;                               // Trace Level for this macro
@@ -261,7 +262,8 @@ async function pickProcessTargets(RANGE=30, optionObj = {}) {
         if (selection === null) return;     // Cancel button was selected on the preceding dialog
         if (selection.length === 0) {       // Nothing was selected
             if (TL > 0) jez.trace(`${MACRO} ${FNAME} | No selection passed to pickCheckCallBack(selection), trying again.`)
-            itemCallBack(itemSelected)		// itemSelected is a global that is passed to preceding func
+            // itemCallBack(itemSelected)		// itemSelected is a global that is passed to preceding func
+            pickProcessTargets(RANGE, optionObj)
             return;
         }
         //--------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-const MACRONAME = "Find_Familiar.1.1.js"
+const MACRONAME = "Find_Familiar.1.0.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Look in the sidebar for creatures that can serve as fams and provide a list of options for
  * the find fam spell. Then, execute the summon with jez.spawnAt (WarpGate)
@@ -12,13 +12,10 @@ const MACRONAME = "Find_Familiar.1.1.js"
  * Feature CHAIN_MASTER, if present results in message reminding that this is not automated.
 
  * 08/18/22 1.0 Creation
- * 08/29/22 1.1 Update familiar's name to use just the caster's first name token
- *              Set size of token being summoned to match the summoned creature (lib call does not 
- *                  support less than size 1)
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 const FAM_FLDR = "Familiars"
 const FAM_FLDR_CHAIN = "Familiars Pact of the Chain"
 const PACT_OF_THE_CHAIN = "Pact of the Chain"
@@ -34,7 +31,6 @@ let aToken;
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
 else aToken = game.actors.get(LAST_ARG.tokenId);
 let aActor = aToken.actor;
-const FIRST_NAME_TOKEN = aToken.name.split(" ")[0]     // Grab the first word from the selection
 //
 // Set the value for the Active Item (aItem)
 let aItem;
@@ -154,8 +150,8 @@ function getFamiliarOptions(options = {}) {
     let chainLock = false   // Boolean flag indicating caster is a chain lock (or not)
     if (aActor.items.find(i => i.name === PACT_OF_THE_CHAIN)) chainLock = true
     if (TL > 2)
-        if (chainLock) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} is a Chain Warlock`)
-        else jez.trace(`${TAG} ${FIRST_NAME_TOKEN} is not a Chain Warlock`)
+        if (chainLock) jez.trace(`${TAG} ${aToken.name} is a Chain Warlock`)
+        else jez.trace(`${TAG} ${aToken.name} is not a Chain Warlock`)
     //--------------------------------------------------------------------------------------------
     // If we're dealing with a Chain Lock, need to add in the additional familiar options
     //
@@ -236,8 +232,7 @@ async function callBack1(itemSelected) {
     // Summon the familiar to the scene
     //
     if (TL > 1) jez.trace(`${TAG} Actually summon the familiar ${itemSelected}`)
-
-    let familiarName = FAMILIAR_NAME ?? `${FIRST_NAME_TOKEN}'s ${itemSelected}`
+    let familiarName = FAMILIAR_NAME ?? `${aToken.name}'s ${itemSelected}`
     if (TL > 2) jez.trace(`${TAG} Familiar name: ${familiarName}`)
     let argObj = {
         defaultRange: 10,
@@ -253,22 +248,20 @@ async function callBack1(itemSelected) {
     }
     //--------------------------------------------------------------------------------------------------
     // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
-    // to update the img and width attributes or set basic image to match this item
+    // to update the img attribute or set basic image to match this item
     //
     let summonData = await game.actors.getName(itemSelected)
     argObj.img = summonData ? summonData.img : aItem.img
-    argObj.width = summonData ? summonData.data.token.width : 1
-    if (TL > 2) jez.trace(`${TAG} argObj`,argObj)
     //--------------------------------------------------------------------------------------------
     // Does the caster have the CHAIN_MASTER feature, and thus needs special treatment?
     //
     let chainMaster = false   // Boolean flag indicating caster has CHAIN_MASTER invocation
     if (aActor.items.find(i => i.name === CHAIN_MASTER)) chainMaster = true
     if (chainMaster) {
-        if (TL > 1) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} has ${CHAIN_MASTER}`)
+        if (TL > 1) jez.trace(`${TAG} ${aToken.name} has ${CHAIN_MASTER}`)
         jez.badNews(`Features provided by ${CHAIN_MASTER} are not automated`, "i")
     }
-    else if (TL > 1) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} lacks ${CHAIN_MASTER}`)
+    else if (TL > 1) jez.trace(`${TAG} ${aToken.name} lacks ${CHAIN_MASTER}`)
     //--------------------------------------------------------------------------------------------------
     // Do the actual summon
     //
