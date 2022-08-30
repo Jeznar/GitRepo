@@ -1,4 +1,4 @@
-const MACRONAME = "Find_Familiar.1.1.js"
+const MACRONAME = "Find_Familiar.1.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Look in the sidebar for creatures that can serve as fams and provide a list of options for
  * the find fam spell. Then, execute the summon with jez.spawnAt (WarpGate)
@@ -15,6 +15,7 @@ const MACRONAME = "Find_Familiar.1.1.js"
  * 08/29/22 1.1 Update familiar's name to use just the caster's first name token
  *              Set size of token being summoned to match the summoned creature (lib call does not 
  *                  support less than size 1)
+ * 08/30/22 1.2 Add effect to caster that deletes summoned familiar when it is removed
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
@@ -44,11 +45,12 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 //
 let famNames = []   // Global array to hold the list of familiar names
 const FLAG_NAME = "familiar_name"
-const FAMILIAR_NAME = DAE.getFlag(aActor, FLAG_NAME)
+const FAM_NAME = DAE.getFlag(aActor, FLAG_NAME)
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use
+if (args[0] === "off") await doOff();                           // DAE removal
+if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });  // Midi ItemMacro On Use
 // jez.log(`============== Finishing === ${MACRONAME} =================`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
@@ -100,17 +102,6 @@ async function doOnUse(options = {}) {
     else {
         console.log("TODO: NEED SHORT CIRCUIT TO SUMMON THE ONLY AVAILABLE FAMILIAR OPTION")
     }
-    //-----------------------------------------------------------------------------------------------
-    // Comments, perhaps
-    //
-
-    if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)
-
-
-    msg = `Maybe say something useful...`
-    postResults(msg)
-    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
-    return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Grab Familiar Options
@@ -233,18 +224,28 @@ async function callBack1(itemSelected) {
         return;
     }
     //--------------------------------------------------------------------------------------------
-    // Summon the familiar to the scene
+    // If an existing Find_Familiar effect exists on calling actor, delete it
+    //
+    existingEffect = aActor.effects.find(ef => ef.data.label === aItem.name)
+    if (aActor.effects.find(ef => ef.data.label === aItem.name)) {
+        await existingEffect.delete();
+        // await jez.deleteItems(aItem.name, "feat", aToken.actor);
+        msg = `<b>${aToken.name}</b> previously existing familiar has been dismissed.`
+        jez.postMessage({color: jez.randomDarkColor(), fSize: 13, icon: aToken.data.img, msg: msg, 
+            title: `Existing Familiar Dismissed`, token: aToken})
+    }
+    //--------------------------------------------------------------------------------------------
+    // Build basic data object for the summon
     //
     if (TL > 1) jez.trace(`${TAG} Actually summon the familiar ${itemSelected}`)
-
-    let familiarName = FAMILIAR_NAME ?? `${FIRST_NAME_TOKEN}'s ${itemSelected}`
-    if (TL > 2) jez.trace(`${TAG} Familiar name: ${familiarName}`)
+    let famName = FAM_NAME ?? `${FIRST_NAME_TOKEN}'s ${itemSelected}`
+    if (TL > 2) jez.trace(`${TAG} Familiar name: ${famName}`)
     let argObj = {
         defaultRange: 10,
         duration: 3000,                     // Duration of the intro VFX
         introTime: 1000,                    // Amount of time to wait for Intro VFX
         introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
-        minionName: familiarName,
+        minionName: famName,
         outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
         scale: 0.4,							// Default value but needs tuning at times
         source: aToken,                     // Coords for source (with a center), typically aToken
@@ -272,7 +273,77 @@ async function callBack1(itemSelected) {
     //--------------------------------------------------------------------------------------------------
     // Do the actual summon
     //
-    let returnValue = await jez.spawnAt(itemSelected, aToken, aActor, aItem, argObj)
-    console.log(`Return Value`, returnValue)
-    return
+    let tokenId = await jez.spawnAt(itemSelected, aToken, aActor, aItem, argObj)
+    if (TL > 1) jez.trace(`${TAG} Token ID of summoned familiar`,tokenId)
+    //--------------------------------------------------------------------------------------------------
+    // Add watchdog effect to the summoning token 
+    //
+    addWatchdogEffect(tokenId, famName)
+    //-----------------------------------------------------------------------------------------------
+    // Post message about the summons
+    //
+    msg = `<b>${aToken.name}</b> has summoned ${famName} as thier familiar.`
+    postResults(msg)
+    return 
+}
+/***************************************************************************************************
+ * Add an effect to the using actor that can perform additional actions on the summoned actor.
+ * 
+ * Expected input is a single token id and the name of teh familiar
+ ***************************************************************************************************/
+ async function addWatchdogEffect(tokenId, famName) {
+    const FUNCNAME = "addWatchdogEffect(tokenId)";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const DEL_TOKEN_MACRO = "ActorUpdate";
+
+    if (TL===1) jez.trace(`${TAG} Starting --- `);
+    if (TL > 1) jez.trace(`${TAG} Starting ---`,"tokenId",tokenId,"famName",famName);
+    //------------------------------------------------------------------------------------------------
+    // Make sure DEL_TOKEN_MACRO exists and is GM execute enabled
+    //
+    const delTokenMacro = game.macros.getName(DEL_TOKEN_MACRO);
+    if (!delTokenMacro) 
+        return jez.badNews(`Cannot locate ${DEL_TOKEN_MACRO} GM Macro, skipping watchdog`);
+    if (!delTokenMacro.data.flags["advanced-macros"].runAsGM) 
+        return jez.badNews(`${DEL_TOKEN_MACRO} "Execute as GM" not checked, skipping watchdog`);
+    //------------------------------------------------------------------------------------------------
+    // Proceed with adding watchdog
+    //
+    const CE_DESC = `Familiar, ${famName}, is active`
+    let effectData = {
+      label: aItem.name,
+      icon: aItem.img,
+      origin: LAST_ARG.uuid,
+      disabled: false,
+      flags: { 
+        dae: { macroRepeat: "none" }, 
+        convenientDescription: CE_DESC 
+      },
+      changes: [
+           { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenId}`, priority: 20 },
+      ]
+    };
+    if (TL > 1) jez.trace(`${FNAME} | effectData`,effectData);
+    if (TL > 3) jez.trace(`${FNAME} | MidiQOL.socket().executeAsGM("createEffects"`,"aToken.actor.uuid",
+    aToken.actor.uuid,"effectData",effectData);
+    await MidiQOL.socket().executeAsGM("createEffects", 
+        { actorUuid: aToken.actor.uuid, effects: [effectData] });  
+    if (TL > 0 ) jez.trace(`---  Finished --- ${MACRO} ${FNAME} ---`);
+  }
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * When the monitor effect is removed, attempt to delete our summoned familiar from the scene
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ async function doOff() {
+    const FUNCNAME = "doOff()";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    //-----------------------------------------------------------------------------------------------
+    // Comments, perhaps
+    //
+    if (TL>3) jez.trace(`${TAG} | More Detailed Trace Info.`)
+
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
+    return;
 }

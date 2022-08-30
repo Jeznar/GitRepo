@@ -11,6 +11,9 @@ const MACRONAME = "Imp_Shape_Change.0.1.js"
  *   Its statistics are the same in each form, except for the speed changes noted. Any equipment it 
  *   is wearing or carrying isn't transformed. It reverts to its true form if it dies.
  * 
+ * PRECONDITIONS
+ * - The directory containing the token image for the Imp must also contain images for other shapes
+ * 
  * 08/29/22 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
@@ -89,6 +92,7 @@ async function pickShapeCallBack(selection) {
     const FUNCNAME = "pickShapeCallBack(selection)";
     const FNAME = FUNCNAME.split("(")[0]
     const TAG = `${MACRO} ${FNAME} |`
+    let newImage = aToken.data.img                      // Default to retaining original image file
     if (TL === 1) jez.trace(`${TAG} Called ${FNAME}`);
     if (TL > 1) jez.trace(`${TAG} Called ${FUNCNAME}`, "Selection", selection);
     //---------------------------------------------------------------------------------------------------
@@ -96,12 +100,71 @@ async function pickShapeCallBack(selection) {
     //
     if (selection === null) return;     // Cancel button was selected on the preceding dialog
     if (selection.length === 0) {       // Nothing was selected
-        if (TL > 0) jez.trace(`${MACRO} ${FNAME} | No selection passed to pickShapeCallBack(selection), trying again.`)
+        if (TL > 0) jez.trace(`${TAG} No selection passed to pickShapeCallBack(selection), trying again.`)
         doOnUse()
         return;
     }
     //---------------------------------------------------------------------------------------------------
-    // Do something useful from here
+    // Extract the directory path from the image data for the associated token.
+    // Typical image data: aToken.data.img: 'Tokens/Monsters/Imp/Imp.png'
+    //
+    const PATH_TOKENS = aToken.data.img.split("/")
+    let path = ""
+    for (let i = 0; i < PATH_TOKENS.length-1; i++) {
+        if (path) path = `${path}/${PATH_TOKENS[i]}`
+        else path = `${PATH_TOKENS[i]}`
+    }
+    path = `${path}/`
+    const PATH = path
+    if (TL > 1) jez.trace(`${TAG} Path for our image`, PATH)
+    //---------------------------------------------------------------------------------------------------
+    // Nab extension from the last token, the last token after a period in the last of the PATH_TOKENS
+    //
+    if (TL > 3) jez.trace(`${TAG} ${PATH_TOKENS.length} Path Tokens`, PATH_TOKENS)
+
+    const FILE_TOKENS = PATH_TOKENS[PATH_TOKENS.length-1].split(".")
+    const EXT = FILE_TOKENS[FILE_TOKENS.length-1]
+    if (TL > 2) jez.trace(`${TAG} Extension for our image`, EXT)
+    //---------------------------------------------------------------------------------------------------
+    // Create new image file name from PATH and EXT
+    //
+    const NEW_IMG = `${PATH}${selection}.${EXT}`
+    if (TL > 2) jez.trace(`${TAG} New image file found at`, NEW_IMG)
+    //-------------------------------------------------------------------------------------------------
+    // Does the NEW_IMG file exist in teh game data directory?  If not, share bad news and just retain 
+    // the original image
+    //
+    if (TL > 4) jez.trace(`Does the New Image file "${NEW_IMG}" exist?`)
+    let matches = await FilePicker.browse("data", NEW_IMG, { wildcard: true })
+    if (TL > 4) jez.trace(`matches value`, matches)
+    if (matches.files.length !== 1) 
+        jez.badNews(`Unique file for ${NEW_IMG} not found, retaining original image`,"w")
+    else 
+        newImage = NEW_IMG
+    if (TL > 1) jez.trace(`${TAG} Our new image will be`, newImage)
+    //---------------------------------------------------------------------------------------------------
+    // Launch VFX on the token making a shift
+    //
+    jez.vfxPostSummonEffects(aToken, {color:"*", scale:0.4, opacity:0.7, traceLvl: TL});
+    //---------------------------------------------------------------------------------------------------
+    // Apply an update to make the new token image active in game
+    //
+    await aToken.document.update({ "img": newImage });
+    await jez.wait(100)
+    //---------------------------------------------------------------------------------------------------
+    // Build the new data structure for movement ability in the new form 
     //
     if (TL > 0) jez.trace(`${TAG} Perform swap to ${selection} shape`)
+    let moveObj = { burrow: 0, climb: 0, fly: 0, hover: false, swim: 0, units: "ft", walk: 0 }
+    switch (selection) {
+        case "Imp": moveObj.fly = 40; moveObj.walk = 20; break;
+        case "Raven": moveObj.fly = 60; moveObj.walk = 20; break;
+        case "Rat": moveObj.walk = 20; break;
+        case "Spider": moveObj.climb = 20; moveObj.walk = 20; break;
+        default: return jez.badNews(`Selection "${selection}" is not one of the supported forms`,"e")
+    }
+    //---------------------------------------------------------------------------------------------------
+    // Update the familiar's actor to have the appropriate movement ability
+    //
+    await aToken.actor.update({ 'data.attributes.movement': moveObj })
 }

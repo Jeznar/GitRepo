@@ -1534,11 +1534,11 @@ Runs a VFX explosion useful to warpgate summons as a pre-effect.  It is called w
 ...
   const CALLBACKS = {
     pre: async (template) => {
-      jez.vfxPreSummonEffects(template, {color:"*", scale:1, opacity:1});
+      jez.vfxPreSummonEffects(template, {color:"*", scale:1, opacity:1, traceLvl: TL});
       await warpgate.wait(500);
     },
     post: async (template) => {
-      jez.vfxPostSummonEffects(template, {color:"*", scale:1, opacity:1});
+      jez.vfxPostSummonEffects(template, {color:"*", scale:1, opacity:1, traceLvl: TL});
       await warpgate.wait(500); 
     }
   };
@@ -1558,7 +1558,7 @@ Runs a VFX smoke useful to warpgate summons as a post-effect.  It is called with
 * opacity - real number defining opacity, defaults to 1.0
 * scale - real number defining scale, defaults to 1.0
 
-See **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)]** for an example usage.
+See **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)]** for an example usage.
 
 ---
 
