@@ -1,4 +1,4 @@
-const MACRONAME = "Find_Familiar.1.2.js"
+const MACRONAME = "Find_Familiar.1.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Look in the sidebar for creatures that can serve as fams and provide a list of options for
  * the find fam spell. Then, execute the summon with jez.spawnAt (WarpGate)
@@ -16,6 +16,7 @@ const MACRONAME = "Find_Familiar.1.2.js"
  *              Set size of token being summoned to match the summoned creature (lib call does not 
  *                  support less than size 1)
  * 08/30/22 1.2 Add effect to caster that deletes summoned familiar when it is removed
+ * 08/30/22 1.3 Added shortcut selection triggered by aItem.name containing a "-" character
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
@@ -24,6 +25,9 @@ const FAM_FLDR = "Familiars"
 const FAM_FLDR_CHAIN = "Familiars Pact of the Chain"
 const PACT_OF_THE_CHAIN = "Pact of the Chain"
 const CHAIN_MASTER = "Invocation: Investment of the Chain Master"
+const SPELL_NAME = `Find Familiar`
+const TEMPLATE_SPELL = "Swap Senses (Familiar)" // Name as expected in Items Directory 
+
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
@@ -94,14 +98,27 @@ async function doOnUse(options = {}) {
     for (let i = 1; i < famNames.length; i++)
         if (famNames[i - 1] === famNames[i])
             return jez.badNews(`Duplicate familiar option (${famNames[i]} found, not allowed)`, "e")
-    console.log(`famNames`, famNames)
     //-----------------------------------------------------------------------------------------------
-    // If we have more than one familiar choice, setup and run a dialog to select the familiar
+    // Check to see if aItem.name contains a shortcut selection for familiar to be summoned.  That is
+    // a string folling the last dash character (if any) in aItem.name
     //
-    if (famNames.length > 1) popDialog1(famNames, { traceLvl: TL })
-    else {
-        console.log("TODO: NEED SHORT CIRCUIT TO SUMMON THE ONLY AVAILABLE FAMILIAR OPTION")
+    let shortCutFamName = ""
+    const NAME_TOKENS = aItem.name.split("-")
+    if (NAME_TOKENS.length > 1) {
+        // Set short cut name to last token with leading & trailing white space stripped
+        shortCutFamName = NAME_TOKENS[NAME_TOKENS.length -1].trim()   
+        if (TL > 1) jez.trace(`${TAG} Shortcut familiar name specified: ${shortCutFamName}`);
+        if (!famNames.includes(shortCutFamName)) {  // Is the shortcut name an allowed choice?
+            jez.badNews(`Familiar's Actor for shortcut, "${shortCutFamName}" not found.`,"w");
+            shortCutFamName = ""
+        }
     }
+    //-----------------------------------------------------------------------------------------------
+    // If we have more than one familiar choice and no shortcut, setup and run a dialog to select the 
+    // familiar; otherwise skip dialog and proceed
+    //
+    if (famNames.length > 1 && !shortCutFamName) popDialog1(famNames, { traceLvl: TL })
+    else callBack1(shortCutFamName)
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Grab Familiar Options
@@ -194,7 +211,7 @@ async function popDialog1(famNames, options = {}) {
     //-----------------------------------------------------------------------------------------------
     // Obtain the list of familiars that can be choosen from
     // 
-    const queryTitle = "What form for Familiar"
+    const queryTitle = "What form for Familiar?"
     const queryText = "Select the form for the familiar from drop down list"
     jez.pickFromListArray(queryTitle, queryText, callBack1, famNames);
 }
@@ -226,10 +243,10 @@ async function callBack1(itemSelected) {
     //--------------------------------------------------------------------------------------------
     // If an existing Find_Familiar effect exists on calling actor, delete it
     //
-    existingEffect = aActor.effects.find(ef => ef.data.label === aItem.name)
-    if (aActor.effects.find(ef => ef.data.label === aItem.name)) {
+    existingEffect = aActor.effects.find(ef => ef.data.label === SPELL_NAME)
+    if (existingEffect) {
         await existingEffect.delete();
-        // await jez.deleteItems(aItem.name, "feat", aToken.actor);
+        // await jez.deleteItems(SPELL_NAME, "feat", aToken.actor);
         msg = `<b>${aToken.name}</b> previously existing familiar has been dismissed.`
         jez.postMessage({color: jez.randomDarkColor(), fSize: 13, icon: aToken.data.img, msg: msg, 
             title: `Existing Familiar Dismissed`, token: aToken})
@@ -239,6 +256,7 @@ async function callBack1(itemSelected) {
     //
     if (TL > 1) jez.trace(`${TAG} Actually summon the familiar ${itemSelected}`)
     let famName = FAM_NAME ?? `${FIRST_NAME_TOKEN}'s ${itemSelected}`
+    const NEW_SPELL = `Swap Senses with ${famName}`
     if (TL > 2) jez.trace(`${TAG} Familiar name: ${famName}`)
     let argObj = {
         defaultRange: 10,
@@ -251,6 +269,15 @@ async function callBack1(itemSelected) {
         source: aToken,                     // Coords for source (with a center), typically aToken
         templateName: itemSelected,         // Name of the actor in the actor directory
         traceLvl: TL
+    }
+    //-----------------------------------------------------------------------------------------------
+    // If a temporary ability to swap spells for this familiar exists, delete it
+    //
+    let itemFound = aActor.items.find(item => item.data.name === NEW_SPELL && item.type === "spell")
+    if (itemFound) {
+        await itemFound.delete();
+        msg = `"${NEW_SPELL}" has been deleted from ${aToken.name}'s spell book`
+        jez.badNews(msg,"i");
     }
     //--------------------------------------------------------------------------------------------------
     // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
@@ -279,6 +306,13 @@ async function callBack1(itemSelected) {
     // Add watchdog effect to the summoning token 
     //
     addWatchdogEffect(tokenId, famName)
+    //-------------------------------------------------------------------------------------------------
+    // Add the Swap Senses 'spell' to spell book
+    // 
+    if (copyEditItem(aToken, famName, NEW_SPELL)) {
+        msg = `An At-Will Spell "${NEW_SPELL}" has been added to ${aToken.name}`
+        jez.badNews(msg,"i");
+    }
     //-----------------------------------------------------------------------------------------------
     // Post message about the summons
     //
@@ -312,7 +346,7 @@ async function callBack1(itemSelected) {
     //
     const CE_DESC = `Familiar, ${famName}, is active`
     let effectData = {
-      label: aItem.name,
+      label: SPELL_NAME,
       icon: aItem.img,
       origin: LAST_ARG.uuid,
       disabled: false,
@@ -331,6 +365,77 @@ async function callBack1(itemSelected) {
         { actorUuid: aToken.actor.uuid, effects: [effectData] });  
     if (TL > 0 ) jez.trace(`---  Finished --- ${MACRO} ${FNAME} ---`);
   }
+  /***************************************************************************************************
+ * Copy the temporary item to actor's spell book and edit it as appropriate
+ ***************************************************************************************************/
+ async function copyEditItem(token5e, familiarName, NEW_SPELL) {
+    const FUNCNAME = "copyEditItem(token5e)";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+
+    if (TL===1) jez.trace(`${TAG} Starting --- `);
+    if (TL > 1) jez.trace(`${TAG} Starting ---`,"token5e",token5e,"familiarName",familiarName,
+        "NEW_SPELL",NEW_SPELL);
+    //----------------------------------------------------------------------------------------------
+    let oldActorItem = token5e.actor.data.items.getName(NEW_SPELL)
+    if (oldActorItem) await deleteItem(token5e.actor, oldActorItem)
+    //----------------------------------------------------------------------------------------------
+    if (TL > 1) jez.trace(`${TAG} Get the item from the Items directory add to ${aToken.name}`)
+    let itemObj = game.items.getName(TEMPLATE_SPELL)
+    if (!itemObj) {
+        msg = `Failed to find ${TEMPLATE_SPELL} in the Items Directory`
+        ui.notifications.error(msg);
+        postResults(msg)
+        return (false)
+    }
+    console.log('Item5E fetched by Name', itemObj)
+    await replaceItem(token5e.actor, itemObj)
+    //----------------------------------------------------------------------------------------------
+    if (TL > 1) jez.trace(`${TAG} Edit the item on ${aToken.name}'s actor, `)
+    let aActorItem = token5e.actor.data.items.getName(TEMPLATE_SPELL)
+    if (TL > 1) jez.trace(`${TAG} aActorItem`, aActorItem)
+    if (!aActorItem) {
+        msg = `Failed to find ${TEMPLATE_SPELL} on ${token5e.name}`
+        ui.notifications.error(msg);
+        postResults(msg)
+        return (false)
+    }
+    //-----------------------------------------------------------------------------------------------
+    if (TL > 1) jez.trace(`${TAG} Remove the don't change this message assumed to be embedded in the 
+        item description.  It should be of the form: <p><strong>%%*%%</strong></p> followed by white 
+        space`)
+    const searchString = `<p><strong>%%.*%%</strong></p>[\s\n\r]*`;
+    const regExp = new RegExp(searchString, "g");
+    const replaceString = ``;
+    let content = await duplicate(aActorItem.data.data.description.value);
+    content = await content.replace(regExp, replaceString);
+    let itemUpdate = {
+        'name': NEW_SPELL,
+        'data.description.value': content,
+    }
+    if (TL > 1) jez.trace(`${TAG} Updating Item`,itemUpdate)
+    await aActorItem.update(itemUpdate)
+    if (TL > 1) jez.trace(`${TAG} --- Finished`);
+    return (true);
+}
+/*************************************************************************************
+ * replaceItem
+ * 
+ * Replace or Add targetItem to inventory of actor5e passed as parms
+ *************************************************************************************/
+ async function replaceItem(actor5e, targetItem) {
+    await deleteItem(actor5e, targetItem)
+    return (actor5e.createEmbeddedDocuments("Item", [targetItem.data]))
+}
+/*************************************************************************************
+ * deleteItem
+ * 
+ * Delete targetItem to inventory of actor5e passed as parms
+ *************************************************************************************/
+ async function deleteItem(actor5e, targetItem) {
+    let itemFound = actor5e.items.find(item => item.data.name === targetItem.data.name && item.type === targetItem.type)
+    if (itemFound) await itemFound.delete();
+}
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * When the monitor effect is removed, attempt to delete our summoned familiar from the scene
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
