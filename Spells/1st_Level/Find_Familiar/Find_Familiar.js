@@ -20,13 +20,13 @@ const MACRONAME = "Find_Familiar.1.3.js"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 const FAM_FLDR = "Familiars"
 const FAM_FLDR_CHAIN = "Familiars Pact of the Chain"
 const PACT_OF_THE_CHAIN = "Pact of the Chain"
 const CHAIN_MASTER = "Invocation: Investment of the Chain Master"
 const SPELL_NAME = `Find Familiar`
-const TEMPLATE_SPELL = "Swap Senses (Familiar)" // Name as expected in Items Directory 
+const TEMPLATE_SPELL = "%%Swap Senses (Familiar)%%" // Name as expected in Items Directory 
 
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ async function callBack1(itemSelected) {
         traceLvl: TL
     }
     //-----------------------------------------------------------------------------------------------
-    // If a temporary ability to swap spells for this familiar exists, delete it
+    // If a temp ability to swap senses for this familiar exists, delete it
     //
     let itemFound = aActor.items.find(item => item.data.name === NEW_SPELL && item.type === "spell")
     if (itemFound) {
@@ -356,6 +356,7 @@ async function callBack1(itemSelected) {
       },
       changes: [
            { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenId}`, priority: 20 },
+           { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `0`, priority: 20 },           
       ]
     };
     if (TL > 1) jez.trace(`${FNAME} | effectData`,effectData);
@@ -437,7 +438,7 @@ async function callBack1(itemSelected) {
     if (itemFound) await itemFound.delete();
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * When the monitor effect is removed, attempt to delete our summoned familiar from the scene
+ * Delete any existing temp abilities for this spell
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOff() {
     const FUNCNAME = "doOff()";
@@ -445,10 +446,34 @@ async function callBack1(itemSelected) {
     const TAG = `${MACRO} ${FNAME} |`
     if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
-    // Comments, perhaps
+    // If a temp ability to swap senses for a familiar exists, delete it
     //
+    deleteTempSpells({traceLvl:TL})
     if (TL>3) jez.trace(`${TAG} | More Detailed Trace Info.`)
 
     if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return;
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Delete existing temporary spell items, if any.  They must be at-will spells that start with 
+ * NEW_SPELL_PREFIX
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ async function deleteTempSpells(options = {}) {
+    const FUNCNAME = "deleteTempSpell(options = {})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    //-----------------------------------------------------------------------------------------------
+    // Delete all of the at-will spells that start with NEW_SPELL_PREFIX
+    //
+    const NEW_SPELL_PREFIX = "Swap Senses with"
+    let itemFound = null
+    while (itemFound = aActor.items.find(item => item.data.name.startsWith(NEW_SPELL_PREFIX) &&
+        item.type === "spell" && item.data.data.preparation.mode === "atwill")) {
+        await itemFound.delete();
+        jez.badNews(`At-Will Spell "${itemFound.name}" has been deleted from ${aToken.name}'s spell book`, 'i')
+        await jez.wait(50)
+    }
 }
