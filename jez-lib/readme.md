@@ -180,6 +180,34 @@ The pre function also waits for **introTime** which allows the introVFX some tim
 |--------------|------------------|:-------------------------:|------------------------------------------------------------|
 | actor        | Object           | { name: `${aToken.name}'s ${MINION}` } | New name for the summoned token
 | token        | Object           | { name: `${aToken.name}'s ${MINION}` } | New name for actor summoned to field
+
+Another Example, this one updating the saving throw on a Sting attack
+
+~~~javascript
+// ---------------------------------------------------------------------------------------------
+// Special case treatment of Imp to set its attack saving throw
+//
+if (summonData.name === "Imp") {
+if (TL > 1) jez.trace(`${TAG} Special case treatment of our ${summonData.name}`)
+    argObj.updates = {
+       actor: {
+           name: famName,
+           // 'data.attributes.hp': { value: 66, max: 66 }
+       },
+       token: { name: famName },
+       embedded: {
+           Item: {
+              "Sting": {
+                   // 'data.damage.parts': [[`1d6 + 3`, "fire"]],
+                   // 'data.attackBonus': `2[mod] + 3[prof]`,   
+                   'data.save.dc': jez.getSpellDC(aActor),
+               },
+            }
+        }
+    }
+}
+~~~
+        
 </details>
 
 I've tried to craft this to allow for a lot of customization on the summons while requiring less coding for each.  In the following subsections, I'll walk through how to setup each of three summoning effects:

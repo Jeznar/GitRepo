@@ -6,7 +6,7 @@ const MACRONAME = "Swap_Senses.0.1.js"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
@@ -68,11 +68,27 @@ async function doOnUse(options = {}) {
     if (!famToken) {
         if (TL > 1) jez.trace(`${TAG} Cleaning up, since familiar is MIA`);
         deleteTempSpells({ traceLvl: TL })
-        existingEffect = aActor.effects.find(ef => ef.data.label.startsWith("Swap Sense"))
-        if (existingEffect) existingEffect.delete
+        let existingEffect = aActor.effects.find(ef => ef.data.label.startsWith("Swap Senses "))
+        if (existingEffect) existingEffect.delete()
         return
     }
     if (TL > 2) jez.trace(`${TAG} Familiar Token data`, famToken);
+    //-----------------------------------------------------------------------------------------------
+    // Make sure the familiar is no further than 100 feet
+    //
+    let distance = jez.getDistance5e(aToken, famToken)
+    if (TL > 2) jez.trace(`${TAG} Distance to the familiar: ${distance}`);
+    if (distance > 100) {
+        let existingEffect = aActor.effects.find(ef => ef.data.label.startsWith("Swap Senses "))
+        if (TL > 1) jez.trace(`${TAG} Existing effect`,existingEffect);
+        if (existingEffect) {
+            if (TL > 1) jez.trace(`${TAG} Deleting existing effect`);
+            let rc = await existingEffect.delete()
+            if (TL > 1) jez.trace(`${TAG} Deleting rc`,rc);
+        }
+        jez.badNews(`${famToken.name} is more than 100 feet away. Attempt to share senses failed.`,"i")
+        return
+    }
     //-----------------------------------------------------------------------------------------------
     // Activate vision on the familiar, deactivate vision on the caster
     //

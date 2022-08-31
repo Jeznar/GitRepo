@@ -1,4 +1,4 @@
-const MACRONAME = "Find_Familiar.1.3.js"
+const MACRONAME = "Find_Familiar.1.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Look in the sidebar for creatures that can serve as fams and provide a list of options for
  * the find fam spell. Then, execute the summon with jez.spawnAt (WarpGate)
@@ -17,6 +17,7 @@ const MACRONAME = "Find_Familiar.1.3.js"
  *                  support less than size 1)
  * 08/30/22 1.2 Add effect to caster that deletes summoned familiar when it is removed
  * 08/30/22 1.3 Added shortcut selection triggered by aItem.name containing a "-" character
+ * 08/31/22 1.4 Teach the code to modify saving throws for CHAIN_MASTER familiar
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
@@ -287,14 +288,51 @@ async function callBack1(itemSelected) {
     argObj.img = summonData ? summonData.img : aItem.img
     argObj.width = summonData ? summonData.data.token.width : 1
     if (TL > 2) jez.trace(`${TAG} argObj`,argObj)
-    //--------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------
     // Does the caster have the CHAIN_MASTER feature, and thus needs special treatment?
     //
     let chainMaster = false   // Boolean flag indicating caster has CHAIN_MASTER invocation
     if (aActor.items.find(i => i.name === CHAIN_MASTER)) chainMaster = true
     if (chainMaster) {
-        if (TL > 1) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} has ${CHAIN_MASTER}`)
-        jez.badNews(`Features provided by ${CHAIN_MASTER} are not automated`, "i")
+        if (TL > 0) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} has ${CHAIN_MASTER}`)
+        // ---------------------------------------------------------------------------------------------
+        // Special case treatment of Imp to set its attack saving throw
+        //
+        if (summonData.name === "Imp") {
+            if (TL > 1) jez.trace(`${TAG} Special case treatment of our ${summonData.name}`)
+            argObj.updates = {
+                actor: {
+                    name: famName,
+                    // 'data.attributes.hp': { value: 66, max: 66 }
+                },
+                token: { name: famName },
+                embedded: {
+                    Item: {
+                        "Sting (Imp)": {
+                            // 'data.damage.parts': [[`1d6 + 3`, "fire"]],
+                            // 'data.attackBonus': `2[mod] + 3[prof]`,   
+                            'data.save.dc': jez.getSpellDC(aActor),
+                        },
+                    }
+                }
+            }
+        }
+        jez.badNews(`Features provided by ${CHAIN_MASTER} are not automated other than Imp's save DC`, "i")
+        // ---------------------------------------------------------------------------------------------
+        // Following code was a start at generalizing the saving throw update.  I am opting to just
+        // special case Imp in an attempt to get this done in finite time.
+        // let items = summonData.items.contents
+        // if (TL > 0) jez.trace(`${TAG} ${summonData.name} items`, items)
+        // for (let i = 0; i < items.length; i++) {
+        //     if (TL > 1) jez.trace(`${TAG} ${i} ${items[i].name}`, items[i].data.type)
+        //     if (items[i].data.type === "weapon" || items[i].data.type === "spell") {
+        //         if (items[i].data.data.save.dc && items[i].data.data.save.scaling === "flat") {
+        //             if (TL > 1) jez.trace(`${TAG} TODO: Item ${items[i].name} needs to have its flat save value adjusted`)
+        //             if (TL > 1) jez.trace(`${TAG} Save data`, items[i].data.data.save)
+        //         }
+        //     }
+        // }
+        // ---------------------------------------------------------------------------------------------       
     }
     else if (TL > 1) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} lacks ${CHAIN_MASTER}`)
     //--------------------------------------------------------------------------------------------------
