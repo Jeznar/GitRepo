@@ -1,0 +1,89 @@
+{
+  "name": "Familiar",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/wild-orange-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>&nbsp;</p>\n<div title=\"Page 1\">\n<div>\n<div>\n<div>\n<p>A spirit serving its master assumes the shape of an unassuming beast or fancier creature if the summoner is capable of such magic as described on <a href=\"https://www.dndbeyond.com/spells/find-familiar\" target=\"_blank\" rel=\"noopener\">D&amp;D Beyond Find Familiar. </a></p>\n<h2>Attacks</h2>\n<p>The familiar acts independently of its master. In combat, (RAW) it rolls its own initiative and acts on its own turn. A familiar <strong>can not attack</strong>, but it <strong>can take other actions </strong>as normal.</p>\n<p>Exception: Warlocks have access to abilities that enable attacks,</p>\n<ol>\n<li><a href=\"https://www.dndbeyond.com/sources/phb/warlock#PactoftheChain\" target=\"_blank\" rel=\"noopener\"> </a>\n<p><a href=\"https://www.dndbeyond.com/sources/phb/warlock#PactoftheChain\" target=\"_blank\" rel=\"noopener\">Pact of the Chain</a> allows the familiar an <strong>attack in place of</strong> one of their master's attacks.</p>\n</li>\n<li><a href=\"https://www.dndbeyond.com/sources/tcoe/warlock#InvestmentoftheChainMaster\"> </a>\n<p><a href=\"https://www.dndbeyond.com/sources/tcoe/warlock#InvestmentoftheChainMaster\">Investment of the Chain Master</a> allows the use of the master&rsquo;s <strong>bonus action</strong> to command the familiar to take an <a href=\"https://www.dndbeyond.com/compendium/rules/basic-rules/combat#Attack\">Attack</a> action.</p>\n</li>\n</ol>\n<h2>Dismissal/Recall</h2>\n<p>When the familiar drops to 0 hp, it disappears, leaving behind no physical form.</p>\n<p><strong>As an action</strong>, the master can temporarily dismiss the familiar to a pocket dimension or dismiss it forever.</p>\n<p><strong>As an action</strong> while it is temporarily dismissed, the master can cause it to reappear in any unoccupied space within 30 feet.</p>\n<p>Whenever the familiar drops to 0 hp or disappears into the pocket dimension, it leaves behind in its space anything it was wearing or carrying.</p>\n<h2>Communication</h2>\n<p>While the familiar is within 100 feet of its master, they can communicate telepathically.</p>\n<h2>Remote Senses</h2>\n<p>While the familiar is within 100 feet of its master, <strong>as an action</strong>, the master can see &amp; hear what the familiar does until the start of master&rsquo;s next turn. During this time, you are deaf and blind with regard to your own senses.</p>\n<p>The range limitation is removed if the master has the <a href=\"https://www.dndbeyond.com/sources/phb/warlock#VoiceoftheChainMaster\" target=\"_blank\" rel=\"noopener\">Voice of the Chain Master </a>feature.&nbsp;</p>\n<p><strong>FoundryVTT:&nbsp;</strong>This ability is implmented as a temporary at-will spell in the master's spell book.</p>\n</div>\n</div>\n</div>\n</div>\n<div title=\"Page 2\">\n<div>\n<div>\n<div>\n<h2>Delivery of Spells</h2>\n<p>When the master casts a spell with a range of touch, the familiar can deliver the spell as if it had cast the spell. Familiar must be within 100 feet of you, and it must use its reaction to deliver the spell when you cast it. If the spell requires an attack roll, you use your attack modifier for the roll.</p>\n</div>\n</div>\n</div>\n</div>\n<p>&nbsp;</p>\n<p>&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

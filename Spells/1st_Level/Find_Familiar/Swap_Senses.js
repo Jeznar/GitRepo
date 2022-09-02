@@ -1,8 +1,9 @@
-const MACRONAME = "Swap_Senses.0.1.js"
+const MACRONAME = "Swap_Senses.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Swap vision from the active token to the actor specified by ID doOnUse() and reverse doOff()
  * 
  * 08/30/22 0.1 Creation of Macro
+ * 09/02/22 0.2 Add support for CHAIN_MASTER_VOICE
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
@@ -27,6 +28,7 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 // Set Macro specific globals
 //
 const SPELL_NAME = `Find Familiar`
+const CHAIN_MASTER_VOICE = "Invocation: Voice of the Chain Master"
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -73,21 +75,28 @@ async function doOnUse(options = {}) {
         return
     }
     if (TL > 2) jez.trace(`${TAG} Familiar Token data`, famToken);
-    //-----------------------------------------------------------------------------------------------
-    // Make sure the familiar is no further than 100 feet
+    //--------------------------------------------------------------------------------------------------
+    // Does the caster have the CHAIN_MASTER_VOICE feature?  Set boolean appropriately
     //
-    let distance = jez.getDistance5e(aToken, famToken)
-    if (TL > 2) jez.trace(`${TAG} Distance to the familiar: ${distance}`);
-    if (distance > 100) {
-        let existingEffect = aActor.effects.find(ef => ef.data.label.startsWith("Swap Senses "))
-        if (TL > 1) jez.trace(`${TAG} Existing effect`,existingEffect);
-        if (existingEffect) {
-            if (TL > 1) jez.trace(`${TAG} Deleting existing effect`);
-            let rc = await existingEffect.delete()
-            if (TL > 1) jez.trace(`${TAG} Deleting rc`,rc);
+    let chainMasterVoice = false   // Boolean flag indicating caster has CHAIN_MASTER_VOICE invocation
+    if (aActor.items.find(i => i.name === CHAIN_MASTER_VOICE)) chainMasterVoice = true
+    //-----------------------------------------------------------------------------------------------
+    // If the caster lacks CHAIN_MASTER_VOICE, make sure the familiar is no further than 100 feet
+    //
+    if (!chainMasterVoice) {
+        let distance = jez.getDistance5e(aToken, famToken)
+        if (TL > 2) jez.trace(`${TAG} Distance to the familiar: ${distance}`);
+        if (distance > 100) {
+            let existingEffect = aActor.effects.find(ef => ef.data.label.startsWith("Swap Senses "))
+            if (TL > 1) jez.trace(`${TAG} Existing effect`, existingEffect);
+            if (existingEffect) {
+                if (TL > 1) jez.trace(`${TAG} Deleting existing effect`);
+                let rc = await existingEffect.delete()
+                if (TL > 1) jez.trace(`${TAG} Deleting rc`, rc);
+            }
+            jez.badNews(`${famToken.name} is more than 100 feet away. Attempt to share senses failed.`, "i")
+            return
         }
-        jez.badNews(`${famToken.name} is more than 100 feet away. Attempt to share senses failed.`,"i")
-        return
     }
     //-----------------------------------------------------------------------------------------------
     // Activate vision on the familiar, deactivate vision on the caster

@@ -1,0 +1,128 @@
+{
+  "name": "Set Familiar Name",
+  "type": "feat",
+  "img": "Icons_JGB/Misc/Vault_Open.png",
+  "data": {
+    "description": {
+      "value": "<p><strong>FoundryVTT: </strong>This item stashes the name for the running actor's familiar in the database for use by other macros.</p>\n<ol>\n<li>It displays the current value, if any in the iput field.</li>\n<li>Deletes the flag entirely if given an empty string.</li>\n<li>Stores a provided string in the DAE Flag: <strong>Familiar_Name</strong> </li>\n</ol>\n<hr />\n<p><strong>FoundryVTT</strong>: Add this item to your character and run it to set, view, or delete your stored familiar name.</p>\n<hr />\n<p><em>Developer's Note: The following javascript obtains the value of this flag for the specified actor:</em></p>\n<p><em>let familiarName</em><em> = await jez.familiarNameGet(aToken.actor);</em></p>\n<div><em>If no name is set familiarName will be undefined.</em></div>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Set Familiar Name",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Set_Familiar_Name.js\"\n/*****************************************************************************************\n * Obtain and store the name of actor's familiar as a DAE Flag\n * \n * 03/15/22 0.1 Creation of Macro\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\njez.log(`============== Starting === ${MACRONAME} =================`);\nfor (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nif (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);\nlet aItem;          // Active Item information, item invoking this macro\nif (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nlet msg = \"\";\nconst FLAG_NAME = \"Familiar_Name\"\n//----------------------------------------------------------------------------------\n// Just for funz access some jez-lib constants\n//\nconsole.log(jez.ADD)\nconsole.log(jez.OVERRIDE)\nconsole.log(jez.DAEFLAG_FAMILIAR_NAME)\nconsole.log(`${jez.ADD} + ${jez.OVERRIDE} =`,jez.ADD + jez.OVERRIDE)\n//----------------------------------------------------------------------------------\n// Obtain the current name of familiar\n//\n//let currentName = await DAE.getFlag(aToken.actor, jez.DAEFLAG_FAMILIAR_NAME);\n//if (!currentName) currentName = \"\"\nlet currentName = await jez.familiarNameGet(aToken.actor)\njez.log(\"currentName\",currentName)\n//----------------------------------------------------------------------------------\n// Pop a dialog to solicit new name input\n//\nlet template = `<div><label>Enter the name of the familar in the box below, exactly as it \n                    is stored in the <b>Actors Directory</b></label>\n                <div class=\"form-group\" style=\"font-size: 14px; padding: 5px; \n                    border: 2px solid silver; margin: 5px;\">\n                    <input name=\"TEXT_SUPPLIED\" style=\"width:350px\" value=${currentName}></div>`\nlet d = new Dialog({\n    title: `Set ${aToken.name}'s Familiar's Name`,\n    content: template,\n    buttons: {\n        done: {\n            label: \"Store\",\n            callback: (html) => {\n                callBackFunc(html, \"chat\");\n            }\n        },\n        cancel: {\n            label: \"Cancel\",\n            callback: (html) => {\n                msg = `Hopefully, you didn't really want to mess with the familiar's name.  Because I'm not going to.`;\n                postResults(msg);\n            }\n        }\n    },\n    default: \"cancel\"\n})\nd.render(true)\nreturn\n//----------------------------------------------------------------------------------\n// \n//\nasync function callBackFunc(html, mode) {\n    const TEXT_SUPPLIED = html.find(\"[name=TEXT_SUPPLIED]\")[0].value;\n    if (TEXT_SUPPLIED === \"\") {\n        msg = `Name supplied is an empty string.<br><br>So, I'll delete the flag`;\n        postResults(msg);\n        //await DAE.unsetFlag(aToken.actor, jez.DAEFLAG_FAMILIAR_NAME);\n        await jez.familiarNameUnset(aToken.actor)\n        return;\n    }\n    if (mode === \"chat\") {\n        msg = `Name for ${aToken.name}'s familiar shall now be <b>'${TEXT_SUPPLIED}</b>.'\n                <br><br>I hope you are happy now!`;\n        postResults(msg);\n        //await DAE.setFlag(aToken.actor, jez.DAEFLAG_FAMILIAR_NAME, TEXT_SUPPLIED);\n        await jez.familiarNameSet(aToken.actor, TEXT_SUPPLIED)\n        return;\n    }\n    msg = `Hopefully, you didn't really want to mess with the familiar's name.  \n        Because you seemingly canceled the dialog.`;\n    postResults(msg);\n    return;\n}\n/***************************************************************************************************\n * Post results to the chat card\n ***************************************************************************************************/\n function postResults(msg) {\n    jez.log(msg);\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "ItemMacro"
+    },
+    "core": {
+      "sourceId": "Item.cj8R4JzVDRwIoIy9"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
