@@ -297,6 +297,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.08.29 Fix to invisibility self only and creation of Imp Shape Shift that changes token image and movement rates.  It scans a directory of the server to validate the image before attempting to use it.
 
+22.09.02 Add support for CHAIN_MASTER_VOICE to Swap Senses and Find Familiar
+
 
 [Link back to my Documentation Listing](README.md) 
 

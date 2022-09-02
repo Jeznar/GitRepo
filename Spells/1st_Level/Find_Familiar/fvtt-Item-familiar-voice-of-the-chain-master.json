@@ -4,7 +4,7 @@
   "img": "icons/creatures/mammals/humanoid-cat-skulking-teal.webp",
   "data": {
     "description": {
-      "value": "<p><span style=\"color: #191813; font-size: 13px;\">The master can communicate telepathically with familiar and perceive through your familiar's senses as long as you are on the same plane of existence. </span></p>\n<p><span style=\"color: #191813; font-size: 13px;\">Additionally, while perceiving through your familiar's senses, you can also speak through your familiar in your own voice, even if your familiar is normally incapable of speech.</span></p>\n<div title=\"Page 1\">\n<div>\n<div>\n<div><hr />\n<p><strong>FoundryVTT:&nbsp;</strong>This feature is not automated.</p>\n</div>\n</div>\n</div>\n</div>",
+      "value": "<p><span style=\"color: #191813; font-size: 13px;\">The master can communicate telepathically with familiar and perceive through your familiar's senses as long as you are on the same plane of existence. </span></p>\n<p><span style=\"color: #191813; font-size: 13px;\">Additionally, while perceiving through your familiar's senses, you can also speak through your familiar in your own voice, even if your familiar is normally incapable of speech.</span></p>\n<div title=\"Page 1\">\n<div>\n<div>\n<div><hr />\n<p><strong>FoundryVTT: </strong>The range check for Swap Senses is suppressed if this feature is presnet, other elements are not automated.</p>\n</div>\n</div>\n</div>\n</div>",
       "chat": "",
       "unidentified": ""
     },
