@@ -1,4 +1,4 @@
-const MACRONAME = "Find_Familiar.1.6.js"
+const MACRONAME = "Find_Familiar.1.7.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Look in the sidebar for creatures that can serve as fams and provide a list of options for
  * the find fam spell. Then, execute the summon with jez.spawnAt (WarpGate)
@@ -20,6 +20,7 @@ const MACRONAME = "Find_Familiar.1.6.js"
  * 08/31/22 1.4 Teach the code to modify saving throws for CHAIN_MASTER_PACT familiar
  * 09/01/22 1.5 Genralize handling of CHAIN_MASTER_PACT familiar savingthrow change
  * 09/02/22 1.6 Add support for CHAIN_MASTER_VOICE
+ * 09/03/22 1.7 Change the disposition of familiar to match the summoner's disposition
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
@@ -296,8 +297,20 @@ async function callBack1(itemSelected) {
     //--------------------------------------------------------------------------------------------------
     // Does the caster have the CHAIN_MASTER_VOICE feature?  Set boolean appropriately
     //
-    let chainMasterVoice = false   // Boolean flag indicating caster has CHAIN_MASTER_VOICE invocation
-    if (aActor.items.find(i => i.name === CHAIN_MASTER_VOICE)) chainMasterVoice = true
+    // let chainMasterVoice = false   // Boolean flag indicating caster has CHAIN_MASTER_VOICE invocation
+    // if (aActor.items.find(i => i.name === CHAIN_MASTER_VOICE)) chainMasterVoice = true
+    //--------------------------------------------------------------------------------------------------
+    // Create an updates object that will mutate the disposition of the familiar to match master's
+    //
+    if (TL > 1) jez.trace(`${TAG} Building a custom update object for familiar to mutate disposition`)
+    argObj.updates = {
+        actor: { name: famName },
+        token: { 
+            name: famName,
+            disposition: aActor.data.token.disposition,
+         },
+        embedded: { Item: {} } // Need an empty entry here to hold one or more additions
+    }
     //--------------------------------------------------------------------------------------------------
     // Does the caster have the CHAIN_MASTER_PACT feature, and thus needs special treatment?
     //
@@ -325,15 +338,15 @@ async function callBack1(itemSelected) {
         // If one or more items contain flat saving throws, craft a custom update data structure
         //
         if (saveItems.length > 0) {
-            if (TL > 1) jez.trace(`${TAG} Building a custom update object for save items`,saveItems)
-            argObj.updates = {
-                actor: { name: famName },
-                token: { name: famName },
-                embedded: { Item: {} } // Need an empty entry here to hold one or more additions
-            }
+            // if (TL > 1) jez.trace(`${TAG} Building a custom update object for save items`,saveItems)
+            // argObj.updates = {
+            //     actor: { name: famName },
+            //     token: { name: famName },
+            //     embedded: { Item: {} } // Need an empty entry here to hold one or more additions
+            // }
             // -----------------------------------------------------------------------------------------       
             for (let i = 0; i < saveItems.length; i++) {
-                if (TL > 1) jez.trace(`${TAG} Add data to adjust save for Item: "${saveItems[i]}"`)
+                if (TL > 2) jez.trace(`${TAG} Add data to adjust save for Item: "${saveItems[i]}"`)
                 argObj.updates.embedded.Item[saveItems[i]] = { 'data.save.dc': SPELL_DC }
             }
             if (TL > 1) jez.trace(`${TAG} argObj.updates`, argObj.updates)
@@ -371,7 +384,7 @@ async function callBack1(itemSelected) {
     //-----------------------------------------------------------------------------------------------
     // Post message about the summons
     //
-    msg = `<b>${aToken.name}</b> has summoned ${famName} as thier familiar.`
+    msg = `<b>${aToken.name}</b> has summoned ${famName} as their familiar.`
     postResults(msg)
     return
 }
