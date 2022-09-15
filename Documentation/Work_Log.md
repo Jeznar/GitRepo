@@ -299,6 +299,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.09.02 Add support for CHAIN_MASTER_VOICE to Swap Senses and Find Familiar
 
+22.09.15 Inspiring Leader: Eliminated assumption that the caster is selected before this item is used.  Problem was this line: ```let tokenD = canvas.tokens.controlled[0];```
+
 
 [Link back to my Documentation Listing](README.md) 
 

@@ -22,6 +22,8 @@ It always benefits **friendly** tokens regardless of the attitude of the caster.
 
 If the user of this ability doesn't want to include himself, then simply remove the temp HP manually after using this ability.
 
+Update 9/15/22: Eliminated assumption that the caster is selected before this item is used.
+
 *[Back to the Feats in this Repo](#feats-in-this-repo)*
 
 ---
