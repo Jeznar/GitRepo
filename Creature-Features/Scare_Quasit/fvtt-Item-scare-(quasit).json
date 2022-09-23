@@ -1,29 +1,22 @@
 {
-  "name": "Claw (Quasit)",
-  "type": "weapon",
-  "img": "Icons_JGB/Monster_Features/claws.png",
+  "name": "Scare (Quasit)",
+  "type": "feat",
+  "img": "Icons_JGB/Monsters/Quasit-Avatar.png",
   "data": {
     "description": {
-      "value": "<p><strong>Claw (Bite while in Beast Form).</strong><em>Melee Weapon Attack</em>, Reach 5 ft, one target.</p>\n<p><em><strong>Hit</strong> : </em>5 (1d4 + 3) piercing damage plus 5 (2d4) poison damage, and the target must succeed on a DC 10 CON Save or take 5 (2d4) poison damage and become poisoned for 1 minute.</p>\n<p>The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> This is automated.</p>",
+      "value": "<p>One creature of the quasit's choice within 20 ft. of it must succeed on a DC 10 Wisdom saving throw or be frightened for 1 minute.</p>\n<p>The target can repeat the saving throw at the end of each of its turns, with disadvantage if the quasit is within line of sight, ending the effect on itself on a success.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> Save at end of each turn is made normally.  If save should be at disadvantage, this will have to be manually addressed.</p>",
       "chat": "",
       "unidentified": ""
     },
     "source": "",
-    "quantity": 1,
-    "weight": 1,
-    "price": 0,
-    "attunement": 0,
-    "equipped": true,
-    "rarity": "",
-    "identified": true,
     "activation": {
       "type": "action",
       "cost": 1,
       "condition": ""
     },
     "duration": {
-      "value": 0,
-      "units": ""
+      "value": null,
+      "units": "inst"
     },
     "target": {
       "value": null,
@@ -32,94 +25,59 @@
       "type": ""
     },
     "range": {
-      "value": 5,
-      "long": null,
+      "value": 20,
+      "long": 20,
       "units": "ft"
     },
     "uses": {
-      "value": 0,
-      "max": "0",
-      "per": ""
+      "value": 1,
+      "max": "1",
+      "per": "day"
     },
     "consume": {
       "type": "",
       "target": "",
       "amount": null
     },
-    "ability": "dex",
-    "actionType": "mwak",
-    "attackBonus": "",
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
     "chatFlavor": "",
     "critical": {
       "threshold": null,
-      "damage": ""
+      "damage": null
     },
     "damage": {
-      "parts": [
-        [
-          "1d4 + 3",
-          "piercing"
-        ],
-        [
-          "2d4",
-          "poison"
-        ]
-      ],
+      "parts": [],
       "versatile": ""
     },
     "formula": "",
     "save": {
-      "ability": "con",
+      "ability": "wis",
       "dc": 10,
       "scaling": "spell"
     },
-    "armor": {
-      "value": 10
-    },
-    "hp": {
+    "requirements": "",
+    "recharge": {
       "value": 0,
-      "max": 0,
-      "dt": null,
-      "conditions": ""
-    },
-    "weaponType": "natural",
-    "baseItem": "",
-    "properties": {
-      "amm": false,
-      "hvy": false,
-      "fin": false,
-      "fir": false,
-      "foc": false,
-      "lgt": false,
-      "rch": false,
-      "rel": false,
-      "ret": false,
-      "spc": false,
-      "thr": false,
-      "two": false,
-      "ver": false,
-      "ada": false,
-      "lod": false,
-      "mgc": false,
-      "sil": false
-    },
-    "proficient": true
+      "charged": false
+    }
   },
   "effects": [
     {
-      "_id": "jqsj6gj9hld4trv4",
+      "_id": "9jyf52l0x85vtiq1",
       "changes": [
         {
           "key": "macro.CE",
           "mode": 0,
-          "value": "Poisoned",
+          "value": "Frightened",
           "priority": "20"
         },
         {
           "key": "flags.midi-qol.OverTime",
           "mode": 5,
-          "value": "turn=end,label=Save against Quasit's Poison,saveDC=@attributes.spelldc,saveAbility=con,saveRemove=true,saveMagic=true,rollType=save",
-          "priority": "20"
+          "value": "turn=end,label=Save against Quasit's Scare Ability,saveDC=@attributes.spelldc,saveAbility=con,saveRemove=true,saveMagic=true,rollType=save",
+          "priority": "50"
         }
       ],
       "disabled": false,
@@ -128,8 +86,8 @@
         "seconds": 60,
         "rounds": 10
       },
-      "icon": "Icons_JGB/Monster_Features/claws.png",
-      "label": "Claw (Quasit)",
+      "icon": "Icons_JGB/Monsters/Quasit-Avatar.png",
+      "label": "Scare (Quasit)",
       "transfer": false,
       "flags": {
         "dae": {
@@ -168,21 +126,6 @@
     }
   ],
   "flags": {
-    "midi-qol": {
-      "fumbleThreshold": null,
-      "effectActivation": false
-    },
-    "midiProperties": {
-      "nodam": false,
-      "fulldam": false,
-      "halfdam": false,
-      "rollOther": false,
-      "critOther": false,
-      "magicdam": false,
-      "magiceffect": false,
-      "concentration": false,
-      "toggleEffect": false
-    },
     "magicitems": {
       "enabled": false,
       "equipped": false,
@@ -197,8 +140,22 @@
       "rechargeUnit": "r1",
       "sorting": "l"
     },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "core": {
-      "sourceId": "Item.YwNYnKmYpfHsYo4J"
+      "sourceId": "Item.E7nXXGsbXZxUJLRn"
     },
     "exportSource": {
       "world": "travels-in-barovia-ce",

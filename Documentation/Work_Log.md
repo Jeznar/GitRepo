@@ -305,6 +305,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.09.23 Implement Quasit claw that includes a Poison DAE effect which allows saves OverTime.
 
+22.09.23 Implement Quasit scare that includes a Frightened DAE effect which allows saves OverTime.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

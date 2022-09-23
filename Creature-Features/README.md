@@ -43,6 +43,7 @@ I'll try to document functions as I add them to the repository.
 * **[Pit](#pit)** -- Abilities for use by the pit *monster*
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
+* **[Scare Quasit](#scare_quasit)** -- Quasit special attack that forces a save or frightened with followup save each turn
 * **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
 * **[Slow, Golem](#slow-golem)** -- Golem slow ability mimicing the spell effect
 * **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
@@ -511,6 +512,14 @@ Here's the decription of the ability:
 
 This ability has the user place a targeting, makes con checks for those in the area of effect (not necessarily DC13, it is calculated, so different stats and CR can change it). It also uses DAE's on each to make saving throws at appropriate times for those poisoned. 
 
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Scare Quasit**
+
+Implements a Quasit's scare ability that places a one minute debuff that allows a save at the end of each turn.  This is accomplished with proper DAE configuration, no macro is needed.  It is very similar to **[Claw Quasit](#claw_quasit)**, see that ability for additional documentation.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
