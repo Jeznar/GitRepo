@@ -48,6 +48,7 @@ I'll try to document functions as I add them to the repository.
 * **[Summon Demons, Vrock](#summon-demons-vrock)** -- Implment Vrock's summon
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
+* **[Stench](#stench)** == Ghast's Stench effect
 * **[Stunning Screech](#stunning-screech)** -- Implements the Vrock's surprisingly complex ability
 * **Portent (Arabelle)** -- Portent slightly modified for Arabelle
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
@@ -465,22 +466,6 @@ This ability has the user place a targeting, makes con checks for those in the a
 
 ---
 
-### **Threat Display**
-
-Item that performs a WIS save on the target placing a Frightened condition for 1 turn on failures. If the actor is larger than the target it has advantage.  If it is 2 size categories smaller it has disadvantage.  If it is 3 or more smaller it auto-fails.
-
-The frightened creature will speak a short phrase expressing its far taken from the table named in the *PHRASE_TABLE* constant in the code.  This is currently set to **Frightened_by_Dog**, which should exist as a table in the running world, if it doesn't a warning is issued and a default is used. 
-
-*[Back to the Table of Contents](#abilities-in-this-repo)*
-
----
-
----
-
-### **Threat Display**
-
----
-
 ### **Shapechange, Baba Lysaga**
 
 Simple configuration of the ability with reminder to use the drop to shift feature of FoundryVTT.
@@ -564,6 +549,24 @@ Damage is announced with a simple chat card like the following:
 
 ---
 
+### **Stench**
+
+Implements a Ghast's stench effect.
+
+The macro is intended to be used as an ItemMacro invoked from an ability that triggers the appropriate saving throw.  It depends on that saving throw result and having a single token targeted. It does:
+
+1. Runs a VFX on the originator,
+2. Check to see if the target is immune, if so post message and return,
+3. If the target failed save, apply a 1 turn POISONED effect from existing CE effect,
+4. If the target saved, apply a 24 hour immunity effect,
+5. Post results.
+
+This was originally going-to be an aura, but I couldn't noodle out how to make it apply to each adjacent creature at the start of the creature's turn, so I implemented it as an active ability to be used as needed.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
 ### **Stunning Screech**
 
 This implements the Vrock's stunning speech.  It is rather complex,
@@ -594,6 +597,16 @@ This is a homebrew freature I cooked up for Galahad (others might know him as La
 > Creatures affected by the unwavering loyalty trait automatically succed on this saving throw. Once a creature has saved against this effect it is immune for the combat.
 
 The macro manages immunities cause by saves, checks size differences, performs the appropriate save. Finally, it places the appropriate effect on the target.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Threat Display**
+
+Item that performs a WIS save on the target placing a Frightened condition for 1 turn on failures. If the actor is larger than the target it has advantage.  If it is 2 size categories smaller it has disadvantage.  If it is 3 or more smaller it auto-fails.
+
+The frightened creature will speak a short phrase expressing its far taken from the table named in the *PHRASE_TABLE* constant in the code.  This is currently set to **Frightened_by_Dog**, which should exist as a table in the running world, if it doesn't a warning is issued and a default is used. 
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

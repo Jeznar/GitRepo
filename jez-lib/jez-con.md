@@ -114,7 +114,7 @@ Checks to see if any of the current active effects applied to the actor with the
 * @returns {boolean} **true** if the effect is applied, false otherwise
 
 ~~~javascript
-if (jezcon.hasCE( "Hindered", targetD.actor.uuid), {traceLvl: 2} )
+if (jezcon.hasCE( "Hindered", targetD.actor.uuid, {traceLvl: 2} ))
     postResults(`${targetD.name} has already been hindered, no additional effect.`)
 ~~~
 
@@ -157,6 +157,37 @@ game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tActor
 ~~~
 </details>
 
+<details> <summary>Example from Stench till start of target's next turn (with generous comments)</summary>
+
+This one adds a modified Convenient Effect that lasts until the start of the targets next turn.  It also does a 
+couple other minor tweaks to the standard CE Poisoned effect. 
+
+~~~javascript
+//-----------------------------------------------------------------------------------------------
+// If the target did not save apply a 1 turn POISONED effect
+//
+if (args[0].saves.length === 0) {
+    if (TL > 1) jez.trace(`${TAG} Target ${tToken.name} failed its save`);
+    // Retrieve as an object, the POISONED Convenient Effect for modification
+    let effectData = game.dfreds.effectInterface.findEffectByName(POISONED).convertToObject();
+    // If debugging, dump out the effect data object
+    if (TL>3) jez.trace(`${TAG} effectData objtained`, effectData)  
+    // The standard Poisoned CE lags a "dae" field in its flags, so it needs to be added
+    effectData.flags.dae = { specialDuration : [ "turnStart" ] }
+    // Change the icon used to one specific to this spell
+    effectData.icon = POIS_ICON
+    // Change the convenient description to one specific to this spell
+    effectData.description = "Poisoned by overwhelming stench, disadvantage on attack rolls and ability checks."
+    // If debugging, dump out the effect data object after the updates
+    if (TL>3) jez.trace(`${TAG} updated ===>`, effectData)  
+    // Slap the updated CE onto our targeted actor
+    game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tActor.uuid, origin: aActor.uuid });
+    // Set msg with result for later display
+    msg = `<b>${tToken.name}</b> has been poisoned by the effects of ${aItem.name} for one turn.`
+}
+~~~
+</details>
+
 <details> <summary>Example from Compulsion</summary>
 
 This one adds an overTime effect to an array of target tokens and builds a list of UUIDs for subsequent removal by a modified concentration effect. 
@@ -188,6 +219,7 @@ for (let i = 0; i < failSaves.length; i++) {
 }
 ~~~
 </details>
+
 
 [*Back to Functions list*](#functions-in-this-module)
 

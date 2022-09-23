@@ -301,6 +301,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.09.15 Inspiring Leader: Eliminated assumption that the caster is selected before this item is used.  Problem was this line: ```let tokenD = canvas.tokens.controlled[0];```
 
+22.09.23 Implement Ghast's Stench ability that manages an immunity effect and applies a modified Convenient Effect of Poisoned to those that fail saving throw.
 
 [Link back to my Documentation Listing](README.md) 
 
