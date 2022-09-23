@@ -1,0 +1,1 @@
+turn=end,label=Save against Quasit's Poison,saveDC=@attributes.spelldc,saveAbility=con,saveRemove=true,saveMagic=true,rollType=save

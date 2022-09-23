@@ -15,6 +15,7 @@ I'll try to document functions as I add them to the repository.
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
 * **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
 * **[Charge, Sangzor](#charge-sangzor)** -- Implement Sangzor's charge
+* **[Claw Quasit](#claw_quasit)** -- Quasit attack that forces a save or poisoned with followup save each turn
 * **[Clay Golem Haste](#clay-golem-haste)** -- Applies a DAE Effect
 * **[Clay Golem Slam](#clay-golem-slam)** -- Reduces targets hit points by amount of damage inflicted
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
@@ -132,6 +133,55 @@ Essentially just the Druid Wild Shape ability reskinned.
 Sangor's charge that applies a CUB effect via DAE on a failed save in addition to the damage component.
 
 ![Charge_Details.png](Charge_Sangzor/Charge_Details.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Claw Quasit**
+
+Implements a Quasit's claw with poison damage that places a one minute debuff that allows a save at the end of each turn.  This is accomplished with proper DAE configuration, no macro is needed.  
+
+<details> <summary>The secret sauce is the OverTime effect that includes the following configuration.</summary>
+
+The following is placed in the **Effect Value** field of a **flags.midi-qol.OverTime** entry set to **Override**.
+
+~~~javascript
+turn=end,
+label=Save against Quasit's Poison,
+saveDC=@attributes.spelldc,
+saveAbility=con,
+saveRemove=true,
+saveMagic=true,
+rollType=save
+~~~
+</details>
+
+Configuration fields are included below.
+
+<details> <summary>Configuration of basic item.</summary>
+
+The damage and save elements must be set correctly.
+
+![Claw_Quasit_Config.png](Claw_Quasit/Claw_Quasit_Config.png)
+
+</details>
+
+<details> <summary>DAE Duration configuration.</summary>
+
+The duration needs to be set.
+
+![Claw_Quasit_DAE_Duration.png](Claw_Quasit/Claw_Quasit_DAE_Duration.png)
+
+</details>
+
+<details> <summary>DAE Effect configuration.</summary>
+
+The effect needs to be set, the magic is in that overtime coding.
+
+![Claw_Quasit_DAE_Effects.png](Claw_Quasit/Claw_Quasit_DAE_Effects.png)
+
+</details>
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
