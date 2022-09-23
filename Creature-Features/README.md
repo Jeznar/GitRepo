@@ -33,7 +33,7 @@ I'll try to document functions as I add them to the repository.
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
 * **[Horrifying Visage](#horrifying-visage)** -- Banshee's visage can terrify creatures that can see it and are within 60 feet.
 * **[Howling Babble](#howling-babble)** -- Allip's special attack.
-* **[Imp Shape Change](#imp-shape-change)** -- Imp's ablity to change form and speed
+* **[Imp Shape Change](#imp-shape-change)** -- Imp's ability to change form and speed
 * **Knock Down** -- Implements a dog/wolf's bite and knock down
 * **[Life Drain](#life-drain)** -- Wraith's Life Drain Ability
 * **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
@@ -41,6 +41,7 @@ I'll try to document functions as I add them to the repository.
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
 * **[Paralyzing Touch](#paralyzing-touch)** -- A Lich's primary attack
 * **[Pit](#pit)** -- Abilities for use by the pit *monster*
+* **[Quasit Shape Change](#quasit-shape-change)** -- Quasit's ability to change form and speed
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Scare Quasit](#scare_quasit)** -- Quasit special attack that forces a save or frightened with followup save each turn
@@ -476,6 +477,14 @@ This item also applies the CUB Condition: Paralyzed via a DAE effect.
 ### **Pit**
 
 Abilities to automate damage from a spiked pit and a poisoned spike pit.  Damage amounts may need to be adjusted for circumstances. 
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Quasit Shape Shift**
+
+Automates the swapping of an Quasit's token image to one of the allowed types, very much like the Imp Shape Shift.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

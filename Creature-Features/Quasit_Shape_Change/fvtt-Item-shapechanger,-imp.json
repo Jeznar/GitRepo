@@ -1,0 +1,128 @@
+{
+  "name": "Shapechanger, Imp",
+  "type": "feat",
+  "img": "Tokens/Monsters/Imp/Imp-Avatar.png",
+  "data": {
+    "description": {
+      "value": "<p>Imp can use its action to polymorph into a beast form that resembles:</p>\n<ul>\n<li>rat (speed 20 ft.),</li>\n<li>raven (20 ft., fly 60 ft.), or</li>\n<li>spider (20 ft., climb 20 ft.), or</li>\n<li>back into its true form.</li>\n</ul>\n<p>Its statistics are the same in each form, except for the speed changes noted. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This ability pops up a dialog asking which shape is desired and wikk update the speed of the actor appropriately.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 0,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 0,
+      "charged": false
+    },
+    "attunement": null,
+    "preparation": null
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.IaVR8no9QMvyKcVq"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Shapechanger, Imp",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Imp_Shape_Change.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Implment IMP's Shape Change Ability.  Changing displayed token image and movement per RAW, except\n * token does not revert on death and nothing is done with equipment.\n * \n *   Imp can use its action to polymorph into a beast form that resembles:\n *    1. rat(speed 20 ft.),\n *    2. raven (20 ft., fly 60 ft.), or \n *    3. spider (20 ft., climb 20 ft.), or\n *    4. back into its true form.\n *   Its statistics are the same in each form, except for the speed changes noted. Any equipment it \n *   is wearing or carrying isn't transformed. It reverts to its true form if it dies.\n * \n * PRECONDITIONS\n * - The directory containing the token image for the Imp must also contain images for other shapes\n * \n * 08/29/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \nconst MACRO = MACRONAME.split(\".\")[0]       // Trim of the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 1;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);\nif (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;         \nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor; \n//\n// Set the value for the Active Item (aItem)\nlet aItem;         \nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nlet SHAPES = [\"Imp\", \"Raven\", \"Rat\", \"Spider\"]\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse();          // Midi ItemMacro On Use\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \n function postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL>1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>2) jez.trace(\"postResults Parameters\",\"msg\",msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL>1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Prepare and pop a dialog asking what shape is desired, calling callback with response\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \n async function doOnUse(options={}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\"options\",options);\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    const queryTitle = \"What form is desired?\"\n    const queryText = `Pick a form for ${aToken.name} from the list below`\n    jez.pickRadioListArray(queryTitle, queryText, pickShapeCallBack, SHAPES);\n\n    // if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)\n    // msg = `Maybe say something useful...`\n    // postResults(msg)\n    // if (TL>1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Extract the results of calling dialog and proceed\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \nasync function pickShapeCallBack(selection) {\n    const FUNCNAME = \"pickShapeCallBack(selection)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    let newImage = aToken.data.img                      // Default to retaining original image file\n    if (TL === 1) jez.trace(`${TAG} Called ${FNAME}`);\n    if (TL > 1) jez.trace(`${TAG} Called ${FUNCNAME}`, \"Selection\", selection);\n    //---------------------------------------------------------------------------------------------------\n    // Handle a cancel or X button from previous dialog\n    //\n    if (selection === null) return;     // Cancel button was selected on the preceding dialog\n    if (selection.length === 0) {       // Nothing was selected\n        if (TL > 0) jez.trace(`${TAG} No selection passed to pickShapeCallBack(selection), trying again.`)\n        doOnUse()\n        return;\n    }\n    //---------------------------------------------------------------------------------------------------\n    // Extract the directory path from the image data for the associated token.\n    // Typical image data: aToken.data.img: 'Tokens/Monsters/Imp/Imp.png'\n    //\n    const PATH_TOKENS = aToken.data.img.split(\"/\")\n    let path = \"\"\n    for (let i = 0; i < PATH_TOKENS.length-1; i++) {\n        if (path) path = `${path}/${PATH_TOKENS[i]}`\n        else path = `${PATH_TOKENS[i]}`\n    }\n    path = `${path}/`\n    const PATH = path\n    if (TL > 1) jez.trace(`${TAG} Path for our image`, PATH)\n    //---------------------------------------------------------------------------------------------------\n    // Nab extension from the last token, the last token after a period in the last of the PATH_TOKENS\n    //\n    if (TL > 3) jez.trace(`${TAG} ${PATH_TOKENS.length} Path Tokens`, PATH_TOKENS)\n\n    const FILE_TOKENS = PATH_TOKENS[PATH_TOKENS.length-1].split(\".\")\n    const EXT = FILE_TOKENS[FILE_TOKENS.length-1]\n    if (TL > 2) jez.trace(`${TAG} Extension for our image`, EXT)\n    //---------------------------------------------------------------------------------------------------\n    // Create new image file name from PATH and EXT\n    //\n    const NEW_IMG = `${PATH}${selection}.${EXT}`\n    if (TL > 2) jez.trace(`${TAG} New image file found at`, NEW_IMG)\n    //-------------------------------------------------------------------------------------------------\n    // Does the NEW_IMG file exist in teh game data directory?  If not, share bad news and just retain \n    // the original image\n    //\n    if (TL > 4) jez.trace(`Does the New Image file \"${NEW_IMG}\" exist?`)\n    let matches = await FilePicker.browse(\"data\", NEW_IMG, { wildcard: true })\n    if (TL > 4) jez.trace(`matches value`, matches)\n    if (matches.files.length !== 1) \n        jez.badNews(`Unique file for ${NEW_IMG} not found, retaining original image`,\"w\")\n    else \n        newImage = NEW_IMG\n    if (TL > 1) jez.trace(`${TAG} Our new image will be`, newImage)\n    //---------------------------------------------------------------------------------------------------\n    // Launch VFX on the token making a shift\n    //\n    jez.vfxPostSummonEffects(aToken, {color:\"*\", scale:0.4, opacity:0.7, traceLvl: TL});\n    //---------------------------------------------------------------------------------------------------\n    // Apply an update to make the new token image active in game\n    //\n    await aToken.document.update({ \"img\": newImage });\n    await jez.wait(100)\n    //---------------------------------------------------------------------------------------------------\n    // Build the new data structure for movement ability in the new form \n    //\n    if (TL > 0) jez.trace(`${TAG} Perform swap to ${selection} shape`)\n    let moveObj = { burrow: 0, climb: 0, fly: 0, hover: false, swim: 0, units: \"ft\", walk: 0 }\n    switch (selection) {\n        case \"Imp\": moveObj.fly = 40; moveObj.walk = 20; break;\n        case \"Raven\": moveObj.fly = 60; moveObj.walk = 20; break;\n        case \"Rat\": moveObj.walk = 20; break;\n        case \"Spider\": moveObj.climb = 20; moveObj.walk = 20; break;\n        default: return jez.badNews(`Selection \"${selection}\" is not one of the supported forms`,\"e\")\n    }\n    //---------------------------------------------------------------------------------------------------\n    // Update the familiar's actor to have the appropriate movement ability\n    //\n    await aToken.actor.update({ 'data.attributes.movement': moveObj })\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.269",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
