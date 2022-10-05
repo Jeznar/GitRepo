@@ -1,0 +1,203 @@
+{
+  "name": "Wall of Ice",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/beam-blue-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">You create a wall of ice on a solid surface within range. You can form it into:</p>\n<ul style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">\n<li style=\"box-sizing: border-box; user-select: text;\">hemispherical dome or a sphere with a radius of up to 10 feet, or</li>\n<li style=\"box-sizing: border-box; user-select: text;\">flat surface made up of ten 10-foot-square panels. Each panel must be contiguous with another panel. In any form, the wall is 1 foot thick and lasts for the duration.</li>\n</ul>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">If the wall cuts through a creature's space when it appears, the creature within its area is pushed to one side of the wall and must make a&nbsp;<strong style=\"box-sizing: border-box; user-select: text;\">DEX Save</strong>. On a failed save, the creature takes&nbsp;<strong style=\"box-sizing: border-box; user-select: text;\">10d6&nbsp;<a class=\"inline-roll roll\" style=\"box-sizing: border-box; user-select: text; border: 1px solid var(--color-border-dark-tertiary);\" title=\"Cold Damage\" data-mode=\"roll\" data-flavor=\"Cold Damage\" data-formula=\"10d6\">&nbsp;Cold Damage</a></strong>, half on a succesful save.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">The wall is an object that can be damaged and thus breached. It has:</p>\n<ul style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">\n<li style=\"box-sizing: border-box; user-select: text;\">AC 12 and</li>\n<li style=\"box-sizing: border-box; user-select: text;\">30 hit points per 10-foot section, and</li>\n<li style=\"box-sizing: border-box; user-select: text;\">Is vulnerable to fire damage.</li>\n</ul>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">Reducing a 10-foot section of wall to 0 hit points destroys it and leaves behind a sheet of frigid air in the space the wall occupied. A creature moving through the sheet of frigid air for the first time on a turn must make a&nbsp;<strong style=\"box-sizing: border-box; user-select: text;\">CON Save</strong>. That creature takes 5<strong style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary); font-size: var(--font-size-14);\">d6&nbsp;<a class=\"inline-roll roll\" style=\"box-sizing: border-box; user-select: text; border: 1px solid var(--color-border-dark-tertiary);\" title=\"Cold Damage\" data-mode=\"roll\" data-flavor=\"Cold Damage\" data-formula=\"5d6\">&nbsp;Cold Damage</a></strong><span style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary); font-size: var(--font-size-14);\">,&nbsp; half as much on a sucessful save.</span></p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><strong style=\"box-sizing: border-box; user-select: text;\">At Higher Levels.</strong>&nbsp;When you cast this spell using a spell slot of 7th level or higher, the damage the wall deals when it appears&nbsp;<strong style=\"box-sizing: border-box; user-select: text;\">increases by 2d6</strong>, and the damage from passing through the sheet of frigid air&nbsp;<strong style=\"box-sizing: border-box; user-select: text;\">increases by 1d6</strong>, for each slot level above 6th.</p>\n<hr style=\"box-sizing: border-box; user-select: text; border-top: 1px solid var(--color-border-light-primary); border-bottom: 1px solid var(--color-border-light-highlight); color: #191813; font-size: 13px;\" />\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\"><strong style=\"box-sizing: border-box; user-select: text;\">FoundryVTT</strong>: This spell is not automated.&nbsp; The location of the a spherical wall will need to be manually drawn on the map or remebered by the players.&nbsp;</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">Flat wall panels can be represented by placing&nbsp;<em style=\"box-sizing: border-box; user-select: text;\"><a class=\"entity-link content-link\" style=\"box-sizing: border-box; user-select: text; border: 1px solid var(--color-border-dark-tertiary);\" draggable=\"true\" data-type=\"Actor\" data-entity=\"Actor\" data-id=\"9OaWE1iXnSo4uwdI\">&nbsp;Wall of Ice</a>&nbsp;</em>actors on the field.&nbsp; Remember that an actor moved while holding down the&nbsp;<em style=\"box-sizing: border-box; user-select: text;\">shift</em>&nbsp;key can be placed off the grid and that&nbsp;<em style=\"box-sizing: border-box; user-select: text;\">Command-Mouse Wheel</em>&nbsp;can be used to rotate a token.&nbsp; If the actor is used it can be targeted as normal and will&nbsp;<em style=\"box-sizing: border-box; user-select: text;\">die,&nbsp;</em>the dead token can remain on the map showing the location of fridgid air.</p>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">Concentration is placed on the casting actor, though placed wall segements are not automatically cleaned up when it drops.</p>",
+      "chat": "<p>You create a wall of ice on a solid surface within range. You can form it into a hemispherical dome or a sphere with a radius of up to 10 feet, or you can shape a flat surface made up of ten 10-foot-square panels. Each panel must be contiguous with another panel. In any form, the wall is 1 foot thick and lasts for the duration.</p>\n<p>If the wall cuts through a creature's space when it appears, the creature within its area is pushed to one side of the wall and must make a Dexterity saving throw. On a failed save, the creature takes 10d6 cold damage, or half as much damage on a successful save.</p>\n<p>The wall is an object that can be damaged and thus breached. It has AC 12 and 30 hit points per 10-foot section, and it is vulnerable to fire damage. Reducing a 10-foot section of wall to 0 hit points destroys it and leaves behind a sheet of frigid air in the space the wall occupied. A creature moving through the sheet of frigid air for the first time on a turn must make a Constitution saving throw. That creature takes 5d6 cold damage on a failed save, or half as much damage on a successful one.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 7th level or higher, the damage the wall deals when it appears increases by 2d6, and the damage from passing through the sheet of frigid air increases by 1d6, for each slot level above 6th.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 285",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 6,
+    "school": "evo",
+    "components": {
+      "value": "a small piece of quartz",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 138920,
+      "definitionId": 2293,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 285,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Control"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_s4ls9woie3n"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.SrBTNBSHwrQkLDj4"
+    },
+    "advancedspelleffects": {
+      "enableASE": false,
+      "spellEffect": "Wall Spell",
+      "effectOptions": {
+        "summons": {
+          "zombie": {
+            "actor": "hVYWiHkNbXvyeC28"
+          },
+          "skeleton": {
+            "actor": "hVYWiHkNbXvyeC28"
+          }
+        },
+        "range": 10,
+        "magicSchool": "abjuration",
+        "magicSchoolColor": "blue",
+        "effectAColor": "dark_green",
+        "effectBColor": "blue",
+        "magicSchoolSound": "",
+        "magicSchoolSoundDelay": 0,
+        "magicSchoolVolume": 1,
+        "magicSchoolSoundOutro": "",
+        "magicSchoolSoundDelayOutro": 0,
+        "magicSchoolVolumeOutro": 1,
+        "effectASound": "",
+        "effectASoundDelay": 0,
+        "effectASoundVolume": 1,
+        "effectBSound": "",
+        "effectBSoundDelay": 0,
+        "effectBSoundVolume": 1,
+        "wallType": "fire",
+        "levelScaling": true,
+        "dmgDieCount": 5,
+        "dmgDie": "d8",
+        "dmgMod": 0,
+        "wallLength": 60,
+        "wallHeight": 20,
+        "wallWidth": 1,
+        "wallRadius": 10,
+        "useWebP": false,
+        "fireColor": "blue",
+        "fireImpactColor": "blue",
+        "wallSpellDmgSound": "",
+        "wallSpellDmgSoundDelay": 0,
+        "wallSpellDmgVolume": 0.5,
+        "wallSpellSound": "",
+        "wallSpellSoundDelay": 0,
+        "wallSpellVolume": 0.5
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

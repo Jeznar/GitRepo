@@ -205,6 +205,7 @@ Since there should eventually be an enormous number of spells in this repo, this
 * [Globe of Invulnerability](6th_Level#globe-of-invulnerability)
 * [Steel Wind Strike](6th_Level#steel-wind-strike)
 * [True Seeing](6th_Level#true-seeing)
+* [Wall of Ice](6th_Level#wall-of-ice)
 
 
 [*Back to Spell Level List*](#spells)

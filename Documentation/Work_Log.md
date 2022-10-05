@@ -311,6 +311,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.05 Wrote up documentation for Magic Item Configuration
 
+22.10.05 Created largely manual Wall of Ice Spell
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -8,6 +8,7 @@ Spells will have notes on elemnts that I think are interesting.  In some cases d
 * [Globe of Invulnerability](#globe-of-invulnerability)
 * [Steel Wind Strike](#steel-wind-strike)
 * [True Seeing](#true-seeing)
+* [Wall of Ice](#wall-of-ice)
 
 [*Back to List of All Spells*](../README.md)
 
@@ -67,6 +68,19 @@ This spell seems awesome as built in the [Advanced Spell Effects Module](https:/
 ### True Seeing
 
 Adds a DAE effect for True Sight, plays a rune VFX and adds an appropriate summary to the chat log.  It does not automate the vision effect.
+
+[*Back to 6th Level Spell List*](#6th-level-spells)
+
+---
+
+### Wall of Ice
+
+Largely just a rewrite of the description and the creation of an actor named *Wall of Ice* that can be placed on the scene multiple times to mark the location flat wall sections that can be created by the spell.  That actor can take damage and is vulnerable to fire making tracking the effect a bit easier. 
+
+When the actor (for flat sections) is placed, it will need to be rotated (command-mouse wheel on a Mac) and possibly placed off grid (shift when releasing mouse button).  
+
+If a cylindrical or spherical wall is desired it will need to be drawn/handled manually.
+
 
 [*Back to 6th Level Spell List*](#6th-level-spells)
 
