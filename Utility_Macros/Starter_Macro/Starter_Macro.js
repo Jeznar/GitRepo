@@ -32,12 +32,12 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE everyround
 // DamageBonus must return a function to the caller
-if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
+if (args[0]?.tag === "DamageBonus") return(doBonusDamage());   
+if (args[0] === "off") await doOff();                   // DAE removal
 if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
@@ -84,23 +84,6 @@ async function preCheck() {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
     if (TL>1) jez.trace(`${TAG}--- Finished ---`);
-}
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Perform the code that runs when this macro is removed by DAE, set Off
- * This runs on actor that has the affected removed from it.
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
- async function doOff() {
-    const FUNCNAME = "doOff()";
-    const FNAME = FUNCNAME.split("(")[0] 
-    const TAG = `${MACRO} ${FNAME} |`
-    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
-    //-----------------------------------------------------------------------------------------------
-    // Comments, perhaps
-    //
-    if (TL>3) jez.trace(`${TAG} | More Detailed Trace Info.`)
-
-    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
-    return;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set On
@@ -177,4 +160,21 @@ async function doOn() {
 
     if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return true;
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Perform the code that runs when this macro is removed by DAE, set Off
+ * This runs on actor that has the affected removed from it.
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ async function doOff() {
+    const FUNCNAME = "doOff()";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    //-----------------------------------------------------------------------------------------------
+    // Comments, perhaps
+    //
+    if (TL>3) jez.trace(`${TAG} | More Detailed Trace Info.`)
+
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
+    return;
 }

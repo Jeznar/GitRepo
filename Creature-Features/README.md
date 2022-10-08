@@ -743,6 +743,26 @@ A number of abilities imported from older work.  Including:
 - **Vampire Bite**: Returns part of the necrotic damage from the bite as healing to the Vamp.
 - **Vampire Charm**: Obsolete macro, now implemented entirely via DAE configuration.
 - **Vampire Claw**: Inflict damage and grappling.
+- **Regeneration, Vampire Initialize**: Define a hooked function that applies effect when vampire is hit with radiant damage.
+
+**Regeneration, Vampire Initialize** also has a do nothing **Effect Macro** that fires at the start of the actor's turn.  It contains some code that is commented out but that could be used to implement a regen effect which may be useful since DnD5e Helpers is end of life with FoundryVTT 9 and no like-for-like replacement is on the horizon for FoundryVTT 10. That code is included below for potential future reference.
+
+<details> <summary>Effect Macro that contains commented out regen logic</summary>
+
+~~~javascript
+console.log(`Fires at start of turn for "${token.name}" effectively a keyboard macro.`)
+console.dir(actor)
+console.dir(token)
+//---------------------------------------------------------------------------------------
+// From Discord
+// https://discord.com/channels/170995199584108546/699750150674972743/1024326847980392449
+//
+// const noRegen = actor.effects.find(e => e.label === "No Regen");
+// if ( noRegen ) return;
+// const {total} = await new Roll("2d8").evaluate({async: true});
+// await actor.applyDamage(-total);
+~~~
+</details>
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

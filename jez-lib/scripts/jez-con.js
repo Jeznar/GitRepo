@@ -160,7 +160,7 @@ class jezcon {
             if (TL > 3) jez.trace(`${FNAME} | Targets is an array.`)
             for (const TARGET of targets) {
                 if (TL > 3) jez.trace(`${FNAME} | Process ${TARGET}`)
-                addEffect(TARGET)
+                await addEffect(TARGET)
             }
         }
         else {                                  // Presumably a single target's identifier
@@ -170,7 +170,7 @@ class jezcon {
         // ----------------------------------------------------------------------------------------------
         // Function to add effect to a single target
         //
-        function addEffect(targetUuid) {
+        async function addEffect(targetUuid) {
             const FNAME = 'addEffect   '
             if (!jez.isActorUUID(targetUuid, { traceLvl: TL })) return false
             let hasEffect = false
@@ -178,17 +178,17 @@ class jezcon {
                 hasEffect = jezcon.hasCE(effectName, targetUuid)
                 if (TL > 3) jez.trace(`${FNAME} | hasEffect?`, hasEffect)
                 if (hasEffect) {
-                    if (!allowDups) {        // Skip applying as duplicates not allowed
+                    if (replaceEx) {        // Delete existing effect so new application can replace it        
+                        if (TL > 3) jez.trace(`${FNAME} | Remove existing effect so new can replace it.`)
+                        await jezcon.remove(effectName, targetUuid)
+                    }
+                    else if (!allowDups) {        // Skip applying as duplicates not allowed
                         if (TL > 3) jez.trace(`${FNAME} | Has effect and duplicates not allowed.`)
                         return false
                     }
-                    if (replaceEx) {        // Delete existing effect so new application can replace it        
-                        if (TL > 3) jez.trace(`${FNAME} | Remove existing effect so new can replace it.`)
-                        jezcon.remove(effectName, targetUuid)
-                    }
                 }
             }
-            jezcon.add({ effectName: effectName, uuid: targetUuid, origin: origin, overlay: overlay })
+            await jezcon.add({ effectName: effectName, uuid: targetUuid, origin: origin, overlay: overlay })
         }
         return true
     }

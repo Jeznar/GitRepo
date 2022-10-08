@@ -315,6 +315,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.05 Bug fix for displayed message of Vampire Bite
 
+22.10.08 Created **Regeneration, Vampire Initialize** that defines a hooked function that watches for radiant damage and places debuff when received.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
