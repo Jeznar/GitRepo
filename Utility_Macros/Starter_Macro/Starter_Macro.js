@@ -47,22 +47,10 @@ if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
  * Check the setup of things.  Post bad message and return false fr bad, true for ok!
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function preCheck() {
-    const FUNCNAME = "preCheck()";
-    const FNAME = FUNCNAME.split("(")[0] 
-
-    if (args[0].targets.length !== 1) {     // If not exactly one target, return
-        msg = `Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`
-        if (TL>3) jez.trace(`${FNAME} | ${msg}`)
-
-        ui.notifications.warn(msg)
-        postResults(msg);
-        return (false);
-    }
-    /*if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        postResults(msg);
-        return(false);
-    }*/
+    if (args[0].targets.length !== 1)       // If not exactly one target 
+        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`,"w");
+    if (LAST_ARG.hitTargets.length === 0)   // If target was missed, return
+        return jez.badNews(`Target was missed.`, "w")
     /*if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return
         msg = `Saving throw succeeded.  ${aItem.name} has no effect.`
         postResults(msg);

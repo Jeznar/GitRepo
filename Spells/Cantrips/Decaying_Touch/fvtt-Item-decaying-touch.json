@@ -1,0 +1,246 @@
+{
+  "name": "Decaying Touch",
+  "type": "spell",
+  "img": "icons/magic/unholy/hand-light-green.webp",
+  "data": {
+    "description": {
+      "value": "<p><span style=\"color:#191813;font-size:13px\">You wreath your hand in necrotic decay that causes anything you touch to wither and die. Make a melee spell attack against the target. On a hit, the targets takes <strong>1d4 necrotic damage</strong> and starts to rot and decay. The first time they take damage from another source before the start of your next turn, they take an <strong>additional 1d6 necrotic</strong> damage. Targets immune to diseases are immune to this effect.</span><br style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\" /><br style=\"box-sizing:border-box;user-select:text;color:#191813;font-size:13px\" /><span style=\"color:#191813;font-size:13px\">The both the initial and secondary damage of the spell <strong>increases by a die</strong> when you reach 5th level (2d6), 11th level (3d6), and 17th level  (4d6).</span></p>",
+      "chat": "<p>You brandish the weapon used in the spell’s casting and make a melee attack with it against one creature within 5 feet of you. On a hit, the target suffers the weapon attack’s normal effects and then becomes sheathed in booming energy until the start of your next turn. If the target willingly moves 5 feet or more before then, the target takes 1d8 thunder damage, and the spell ends.</p>\n<p>This spell’s damage increases when you reach certain levels. At 5th level, the melee attack deals an extra 1d8 thunder damage to the target on a hit, and the damage the target takes for moving increases to 2d8. Both damage rolls increase by 1d8 at 11th level (2d8 and 3d8) and again at 17th level (3d8 and 4d8).</p>",
+      "unidentified": ""
+    },
+    "source": "Sword Coast Adventurer's Guide pg 142",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "round"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "touch",
+      "type": "creature"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "touch"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "msak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d4",
+          "necrotic"
+        ]
+      ],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "evo",
+    "components": {
+      "value": "a melee weapon worth at least 1 sp",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "a melee weapon worth at least 1 sp",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "cantrip",
+      "formula": "1d4"
+    },
+    "attunement": null
+  },
+  "effects": [
+    {
+      "_id": "PwkmUwe1HOCMDZDi",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "@token",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 1,
+        "turns": 1
+      },
+      "icon": "icons/magic/unholy/hand-light-green.webp",
+      "label": "Decaying Touch",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnStartSource"
+          ],
+          "transfer": false,
+          "selfTarget": false,
+          "durationExpression": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
+        }
+      },
+      "tint": "",
+      "selectedKey": "macro.itemMacro"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "id": 130378,
+      "definitionId": 2410,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 13,
+          "pageNumber": 142,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Control",
+        "Combat"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-spells.BX0DmAIb1lmhH5Qj"
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "criticalThreshold": "20",
+      "fumbleThreshold": null,
+      "effectActivation": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Decaying Touch",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Decaying_Touch.0.3.js\"\n/*****************************************************************************************\n * Implementation of a Decaying Touch\n * \n * Description: You wreath your hand in necrotic decay that causes anything you touch to \n *   wither and die. Make a melee spell attack against the target. On a hit, the target \n *   takes 1d4 necrotic damage and starts to rot and decay. The first time they take \n *   damage from another source before the start of your next turn, they take an \n *   additional 1d6 necrotic damage. Targets immune to diseases are immune to this \n *   effect.\n * \n *   The both the initial and secondary damage of the spell increases by a die when you \n *   reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).\n *   \n * 12/14/21 0.1 Creation of Macro headers and inclusion of Booming Blade as starter code\n * 10/14/22 0.3 Trying to revive this function, update to new formats, ....\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1];\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nif (args[0] === \"off\") doOff();         // DAE removal\nif (args[0] === \"on\") doOn();           // DAE Application\nif (args[0].tag === \"OnUse\") doOnUse(); // Midi ItemMacro On Use\nreturn;\n/***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************\n * Code to execute on effect application\n ***************************************************************************************/\nasync function doOn() {\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    // let hookId = Hooks.on(\"updateToken\", tokenDamage); <--\n    //----------------------------------------------------------------------------------\n    // Look up the level of the source actor. Note, originID might be Linked or Unlinked\n    //   Linked:   Actor.qvVZIQGyCMvDJFtG.Item.4tptuQLQGWdxNll8\n    //   Unlinked: Scene.MzEyYTVkOTQ4NmZk.Token.0hevcNwN4wwXPEUv.Item.1xzrc1y43ujcafbo\n    //\n    const ORIGIN_UUID = LAST_ARG.origin\n    if (TL > 2) jez.trace(`${TAG} ORIGIN_UUID`, ORIGIN_UUID);\n    let oActor\n    if (ORIGIN_UUID.includes(\"Actor\")) {    // Find actor data for a linked actor\n        let oActorId = ORIGIN_UUID.split(\".\")[1]\n        if (TL > 2) jez.trace(`${TAG} oActorId`, oActorId);\n        oActor = game.actors.get(oActorId)\n    } else {                                // Find actor data for an unlinked actor\n        let oTokenId = ORIGIN_UUID.split(\".\")[3]\n        if (TL > 2) jez.trace(`${TAG} oTokenId`, oTokenId);\n        let oToken = canvas.tokens.placeables.find(ef => ef.id === oTokenId)\n        oActor = oToken.actor\n    }\n    if (TL > 2) jez.trace(`${TAG} oActor`, oActor);\n    //----------------------------------------------------------------------------------\n    // Get the level of the origin based on actor found in previous step\n    // \n    let oLevel = await jez.getCharLevel(oActor)\n    if (TL > 2) jez.trace(`${TAG} oLevel`, oLevel);\n    //----------------------------------------------------------------------------------\n    // Set the hook\n    //\n    let hookId = Hooks.on(\"updateToken\", (tokenData, tokenId, diff, userid) => {\n        if (tokenId._id === aToken.id) tokenDamage(tokenData, tokenId, diff, userid, oLevel)\n    })\n    DAE.setFlag(aToken.actor, `${MACRONAME}hookId`, hookId);\n}\n/***************************************************************************************\n * Actor Damage -- Did the actor take damage?\n ***************************************************************************************/\nasync function tokenDamage(tokenData, tokenId, diff, userid, oLevel) {\n    // Following line checks to see if the damaged token is the one carrying this effect\n    const FUNCNAME = \"tokenDamage(tokenData, tokenId, diff, userid)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL === 1) jez.trace(`${TAG} Starting`)\n    if (TL > 1) jez.trace(`${MACRO} ${FUNCNAME} | Input Data`,\n        `tokenData`, tokenData, `tokenId`, tokenId, `diff`, diff, `userid`, userid, \"oLevel\", oLevel)\n    //----------------------------------------------------------------------------------\n    // Grab some funky data (I don't understand why this should work)\n    //\n    let oldHp = tokenData.data.actorData.oldHpVal;\n    let newHp = tokenData.data.actorData.data.attributes.hp.value;\n    if (TL > 1) jez.trace(`${TAG} Funky Data`, `oldHp`, oldHp, `newHp`, newHp)\n    //----------------------------------------------------------------------------------\n    // \n    //\n    await jez.wait(500);\n    if (newHp >= oldHp) return {};\n    dealDamage(oLevel);\n    MidiQOL.socket().executeAsGM(\"removeEffects\", { actorUuid: aToken.actor.uuid, effects: [LAST_ARG.effectId] });\n    if (TL > 0) jez.trace(`${TAG} Finished`)\n    return;\n}\n/***************************************************************************************\n * Apply Damage\n ***************************************************************************************/\nasync function dealDamage(oLevel) {\n    const FUNCNAME = \"dealDamage(oLevel)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL === 1) jez.trace(`${TAG} Starting`)\n    if (TL > 1) jez.trace(`${MACRO} ${FUNCNAME} | Input Data`, \"oLevel\", oLevel)\n    //----------------------------------------------------------------------------------\n    // \n    //\n    await jez.wait(500);\n    let lastDamage = DAE.getFlag(aToken.actor, `${MACRONAME}`);\n    if (lastDamage) {\n        if (TL > 0) jez.trace(`${TAG} Already damaged for ${lastDamage}`)\n        return;\n    }\n    let numDice = 1 + (Math.floor((oLevel + 1) / 6));\n    if (TL > 1) jez.trace(`${TAG} numDice`, numDice)\n    let damageType = \"necrotic\";\n    let damageRoll = new Roll(`${numDice}d6`).evaluate({ async: false });\n    game.dice3d?.showForRoll(damageRoll);\n    new MidiQOL.DamageOnlyWorkflow(aToken.actor, aToken, damageRoll.total, damageType,\n        [aToken], damageRoll, {\n        flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`,\n        itemData: aItem, itemCardId: \"new\"\n    }\n    );\n    if (TL > 1) jez.trace(`${TAG} damageRoll.total `, damageRoll.total);\n    if (damageRoll.total > 0) DAE.setFlag(aToken.actor, `${MACRONAME}`, damageRoll.total);\n    if (TL > 0) jez.trace(`${TAG} Finished`)\n    return;\n}\n/***************************************************************************************\n * Code to execute on effect removal \n ***************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 0) jez.trace(`${TAG} Starting`)\n    //----------------------------------------------------------------------------------\n    // \n    //\n    let hookId = DAE.getFlag(aToken.actor, `${MACRONAME}hookId`);\n    Hooks.off(\"updateToken\", hookId);\n    DAE.unsetFlag(aToken.actor, `${MACRONAME}hookId`);\n    DAE.unsetFlag(aToken.actor, `${MACRONAME}`);\n    if (TL > 0) jez.trace(`${TAG} Finished`)\n}\n\n/***************************************************************************************\n * Code to execute on onUse ItemMacro\n ***************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 0) jez.trace(`${TAG} Starting`)\n    //----------------------------------------------------------------------------------\n    if (!await preCheck()) return (false);\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    //----------------------------------------------------------------------------------\n    // \n    //\n    let msg = `<b>${tToken.name}</b> appears to rot and decay.  The next damage they receive\n    may cause additional damage.`\n    postResults(msg);\n    if (TL > 0) jez.trace(`${TAG} Finished`)\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function preCheck() {\n    if (args[0].targets.length !== 1)       // If not exactly one target \n        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, \"w\");\n    if (LAST_ARG.hitTargets.length === 0)   // If target was missed, return\n        return jez.badNews(`Target was missed.`, \"w\")\n    return (true)\n}\n/***************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    }
+  }
+}

@@ -321,6 +321,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.14 Fix to scope for Dominated (affects Beast, Person, Monster) - Hook was triggering on any token taking damage
 
+22.10.14 Major rebuild to Decaying Touch including limitation of scope for hook (best yet!)
+
 
 [Link back to my Documentation Listing](README.md) 
 

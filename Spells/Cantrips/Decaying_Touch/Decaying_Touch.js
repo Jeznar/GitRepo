@@ -1,4 +1,4 @@
-const MACRONAME = "Decaying_Touch_0.2"
+const MACRONAME = "Decaying_Touch.0.3.js"
 /*****************************************************************************************
  * Implementation of a Decaying Touch
  * 
@@ -13,175 +13,196 @@ const MACRONAME = "Decaying_Touch_0.2"
  *   reach 5th level (2d6), 11th level (3d6), and 17th level (4d6).
  *   
  * 12/14/21 0.1 Creation of Macro headers and inclusion of Booming Blade as starter code
+ * 10/14/22 0.3 Trying to revive this function, update to new formats, ....
  *****************************************************************************************/
-const DEBUG = true;
-if (DEBUG) {
-    console.log(`************ Executing ${MACRONAME} ****************`)
-    console.log(`tag ${args[0].tag}, args[0]:`,args[0]);
-}
-
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
-const lastArg = args[args.length - 1];
-let target = canvas.tokens.get(lastArg.tokenId);
-let itemD = lastArg.efData.flags.dae.itemData;
-let tokenD = canvas.tokens.get(args[1]);
-let msg = "";
-
-if (DEBUG) {
-    console.log(` target `, target);
-    console.log(` itemD `, itemD);
-    console.log(` tokenD`, tokenD);
-}
-
+const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+const TAG = `${MACRO} |`
+const TL = 0;                               // Trace Level for this macro
+let msg = "";                               // Global message string
+//---------------------------------------------------------------------------------------------------
+if (TL > 1) jez.trace(`${TAG} === Starting ===`);
+if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+const LAST_ARG = args[args.length - 1];
+//---------------------------------------------------------------------------------------------------
+// Set the value for the Active Token (aToken)
+let aToken;
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
+else aToken = game.actors.get(LAST_ARG.tokenId);
+let aActor = aToken.actor;
+//
+// Set the value for the Active Item (aItem)
+let aItem;
+if (args[0]?.item) aItem = args[0]?.item;
+else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
 if (args[0] === "off") doOff();         // DAE removal
 if (args[0] === "on") doOn();           // DAE Application
 if (args[0].tag === "OnUse") doOnUse(); // Midi ItemMacro On Use
-
 return;
-
 /***************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************/
-
-/***************************************************************************************
+ ***************************************************************************************
  * Code to execute on effect application
  ***************************************************************************************/
- async function doOn() {
-    //if (args[0] === "on") {    
-        if (DEBUG) console.log(`************** EXECUTING doOn()`);
-        let hookId = Hooks.on("updateToken", tokenDamage);
-        // let hookPos = {x: target.data.x, y: target.data.y};
-        DAE.setFlag(target.actor, `${MACRONAME}hookId`, hookId);
-        // DAE.setFlag(target.actor, "BoomingBladePosition", hookPos);
- }
-
+async function doOn() {
+    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);
+    // let hookId = Hooks.on("updateToken", tokenDamage); <--
+    //----------------------------------------------------------------------------------
+    // Look up the level of the source actor. Note, originID might be Linked or Unlinked
+    //   Linked:   Actor.qvVZIQGyCMvDJFtG.Item.4tptuQLQGWdxNll8
+    //   Unlinked: Scene.MzEyYTVkOTQ4NmZk.Token.0hevcNwN4wwXPEUv.Item.1xzrc1y43ujcafbo
+    //
+    const ORIGIN_UUID = LAST_ARG.origin
+    if (TL > 2) jez.trace(`${TAG} ORIGIN_UUID`, ORIGIN_UUID);
+    let oActor
+    if (ORIGIN_UUID.includes("Actor")) {    // Find actor data for a linked actor
+        let oActorId = ORIGIN_UUID.split(".")[1]
+        if (TL > 2) jez.trace(`${TAG} oActorId`, oActorId);
+        oActor = game.actors.get(oActorId)
+    } else {                                // Find actor data for an unlinked actor
+        let oTokenId = ORIGIN_UUID.split(".")[3]
+        if (TL > 2) jez.trace(`${TAG} oTokenId`, oTokenId);
+        let oToken = canvas.tokens.placeables.find(ef => ef.id === oTokenId)
+        oActor = oToken.actor
+    }
+    if (TL > 2) jez.trace(`${TAG} oActor`, oActor);
+    //----------------------------------------------------------------------------------
+    // Get the level of the origin based on actor found in previous step
+    // 
+    let oLevel = await jez.getCharLevel(oActor)
+    if (TL > 2) jez.trace(`${TAG} oLevel`, oLevel);
+    //----------------------------------------------------------------------------------
+    // Set the hook
+    //
+    let hookId = Hooks.on("updateToken", (tokenData, tokenId, diff, userid) => {
+        if (tokenId._id === aToken.id) tokenDamage(tokenData, tokenId, diff, userid, oLevel)
+    })
+    DAE.setFlag(aToken.actor, `${MACRONAME}hookId`, hookId);
+}
 /***************************************************************************************
  * Actor Damage -- Did the actor take damage?
  ***************************************************************************************/
-async function tokenDamage(tokenData, tokenId, diff, userid) {
+async function tokenDamage(tokenData, tokenId, diff, userid, oLevel) {
+    // Following line checks to see if the damaged token is the one carrying this effect
+    const FUNCNAME = "tokenDamage(tokenData, tokenId, diff, userid)";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL === 1) jez.trace(`${TAG} Starting`)
+    if (TL > 1) jez.trace(`${MACRO} ${FUNCNAME} | Input Data`,
+        `tokenData`, tokenData, `tokenId`, tokenId, `diff`, diff, `userid`, userid, "oLevel", oLevel)
+    //----------------------------------------------------------------------------------
+    // Grab some funky data (I don't understand why this should work)
+    //
     let oldHp = tokenData.data.actorData.oldHpVal;
     let newHp = tokenData.data.actorData.data.attributes.hp.value;
-
-    if (DEBUG) {
-        console.log(`************** EXECUTING tokenDamage`);
-        console.log(`tokenData`, tokenData);
-        console.log(`tokenId`, tokenId);
-        console.log(`diff`, diff);
-        console.log(`userid `, userid);
-        console.log(`oldHp`, oldHp);
-        console.log(`newHp`, newHp);
-    }
-    await wait(500);
-    if (tokenId._id != target.id) return {};
-    // let currentPosition = {x: tokenData.data.x, y: tokenData.data.y};
-    // let savedPosition = DAE.getFlag(target.actor, "BoomingBladePosition");
-    // if(savedPosition === undefined) return {};
-    // console.log(savedPosition);
-    // if ((currentPosition.x === savedPosition.x) && (currentPosition.y === savedPosition.y)) return {};
+    if (TL > 1) jez.trace(`${TAG} Funky Data`, `oldHp`, oldHp, `newHp`, newHp)
+    //----------------------------------------------------------------------------------
+    // 
+    //
+    await jez.wait(500);
     if (newHp >= oldHp) return {};
-    dealDamage();
-    MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: target.actor.uuid, effects: [lastArg.effectId] });
+    dealDamage(oLevel);
+    MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [LAST_ARG.effectId] });
+    if (TL > 0) jez.trace(`${TAG} Finished`)
     return;
 }
-
 /***************************************************************************************
  * Apply Damage
  ***************************************************************************************/
-async function dealDamage() {
-    if (DEBUG) console.log(`************** EXECUTING dealDamage()...`);
-    await wait(500);
-
-    let lastDamage = DAE.getFlag(target.actor, `${MACRONAME}`);
+async function dealDamage(oLevel) {
+    const FUNCNAME = "dealDamage(oLevel)";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL === 1) jez.trace(`${TAG} Starting`)
+    if (TL > 1) jez.trace(`${MACRO} ${FUNCNAME} | Input Data`, "oLevel", oLevel)
+    //----------------------------------------------------------------------------------
+    // 
+    //
+    await jez.wait(500);
+    let lastDamage = DAE.getFlag(aToken.actor, `${MACRONAME}`);
     if (lastDamage) {
-        if (DEBUG) console.log(`Already damaged for ${lastDamage}, returning`);
+        if (TL > 0) jez.trace(`${TAG} Already damaged for ${lastDamage}`)
         return;
     }
-
-    let spellLevel = tokenD.actor.data.type === "character" ?
-        tokenD.actor.data.data.details.level :
-        tokenD.actor.data.data.details.cr;
-    let numDice = 1 + (Math.floor((spellLevel + 1) / 6));
+    let numDice = 1 + (Math.floor((oLevel + 1) / 6));
+    if (TL > 1) jez.trace(`${TAG} numDice`, numDice)
     let damageType = "necrotic";
     let damageRoll = new Roll(`${numDice}d6`).evaluate({ async: false });
     game.dice3d?.showForRoll(damageRoll);
-    new MidiQOL.DamageOnlyWorkflow(tokenD.actor, tokenD, damageRoll.total, damageType,
-        [target], damageRoll, {
+    new MidiQOL.DamageOnlyWorkflow(aToken.actor, aToken, damageRoll.total, damageType,
+        [aToken], damageRoll, {
         flavor: `(${CONFIG.DND5E.damageTypes[damageType]})`,
-        itemData: itemD, itemCardId: "new"
-        }
+        itemData: aItem, itemCardId: "new"
+    }
     );
-    if (DEBUG) console.log(`damageRoll.total `, damageRoll.total);
-    if (damageRoll.total > 0) DAE.setFlag(target.actor, `${MACRONAME}`, damageRoll.total);
+    if (TL > 1) jez.trace(`${TAG} damageRoll.total `, damageRoll.total);
+    if (damageRoll.total > 0) DAE.setFlag(aToken.actor, `${MACRONAME}`, damageRoll.total);
+    if (TL > 0) jez.trace(`${TAG} Finished`)
     return;
 }
-
 /***************************************************************************************
  * Code to execute on effect removal 
  ***************************************************************************************/
 async function doOff() {
-    if (DEBUG) console.log(`************** EXECUTING doOff()`);
-    // if (args[0] === "off") {
-    let hookId = DAE.getFlag(target.actor, `${MACRONAME}hookId`);
+    const FUNCNAME = "doOff()";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL > 0) jez.trace(`${TAG} Starting`)
+    //----------------------------------------------------------------------------------
+    // 
+    //
+    let hookId = DAE.getFlag(aToken.actor, `${MACRONAME}hookId`);
     Hooks.off("updateToken", hookId);
-    DAE.unsetFlag(target.actor, `${MACRONAME}hookId`);
-    DAE.unsetFlag(target.actor, `${MACRONAME}`);
+    DAE.unsetFlag(aToken.actor, `${MACRONAME}hookId`);
+    DAE.unsetFlag(aToken.actor, `${MACRONAME}`);
+    if (TL > 0) jez.trace(`${TAG} Finished`)
 }
 
 /***************************************************************************************
  * Code to execute on onUse ItemMacro
  ***************************************************************************************/
- async function doOnUse() {
-    if (!oneTarget) { postResults(msg); return; }
-    if (!hitTarget) { postResults(msg); return; }
-    let msg = `<b>${target.name}</b> appears to rot and decay.  The next damage they receive
-    will cause additional damage.`
+async function doOnUse() {
+    const FUNCNAME = "doOnUse()";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL > 0) jez.trace(`${TAG} Starting`)
+    //----------------------------------------------------------------------------------
+    if (!await preCheck()) return (false);
+    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+    let tActor = tToken?.actor;
+    //----------------------------------------------------------------------------------
+    // 
+    //
+    let msg = `<b>${tToken.name}</b> appears to rot and decay.  The next damage they receive
+    may cause additional damage.`
     postResults(msg);
+    if (TL > 0) jez.trace(`${TAG} Finished`)
 }
-
-/************************************************************************
- * Verify exactly one target selected, boolean return
-*************************************************************************/
-function oneTarget() {
-    if (!game.user.targets) {
-        msg = `Targeted nothing, must target single token to be acted upon`;
-        if (debug) console.log(message);
-        return (false);
-    }
-    if (game.user.targets.ids.length != 1) {
-        msg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;
-        if (debug) console.log(message);
-        return (false);
-    }
-    if (debug) console.log(`targeting one target`);
-    return (true);
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Check the setup of things.  Post bad message and return false fr bad, true for ok!
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function preCheck() {
+    if (args[0].targets.length !== 1)       // If not exactly one target 
+        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, "w");
+    if (LAST_ARG.hitTargets.length === 0)   // If target was missed, return
+        return jez.badNews(`Target was missed.`, "w")
+    return (true)
 }
-
-/************************************************************************
-* If no target was hit, write msg and return false, otherwise true 
-*************************************************************************/
-function hitTarget() {
-    if (args[0].hitTargets.length === 0) {
-        msg = `The attack missed, no additional effects.`;
-        return(false);
-    }
-    return(true);
-}
-
 /***************************************************************************************
  * Post the results to chat card
  ***************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
-
-    let chatMessage = game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    if (DEBUG) console.log(`chatMessage: `,chatMessage);
-    const searchString = /<div class="end-midi-qol-saves-display">/g;
-    const replaceString = `<div class="end-midi-qol-saves-display">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
-    return;
+function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 2) jez.trace("postResults Parameters", "msg", msg)
+    //-----------------------------------------------------------------------------------------------
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);
 }
