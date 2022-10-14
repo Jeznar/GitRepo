@@ -9,6 +9,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Comprehend Languages](#comprehend-languages)
 * [Cure Wounds](#cure-wounds)
 * [Detect Magic](#detect-magic)
+* [Disguise Self](#disguise-self)
 * [Dissonant Whispers](#dissonant-whispers)
 * [Earth Tremor](#earth-tremor)
 * [Electrify](#electrify)
@@ -118,6 +119,14 @@ No macro used.
 Implements the basic cure spell.  It runs a macro that checks to make sure exactly one target is targeted and issues an error message if needed. It also runs a simple rune based VFX on the token that is healed. 
 
 ![Cure_Wounds.gif](Cure_Wounds/Cure_Wounds.gif)
+
+[*Back to 1st Level Spell List*](#1st-level-spells)
+
+---
+
+### Disguise Self
+
+Simple addition of [Crymic's v10](https://www.patreon.com/posts/disguise-self-58480968?utm_medium=post_notification_email&utm_source=post_link&utm_campaign=patron_engagement&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZWRpc19rZXkiOiJpYTo2YmM5NzIyMC0yZDJhLTRiNDUtYjNkNi0xZmRmNTQxMmMzYzEiLCJwb3N0X2lkIjo1ODQ4MDk2OCwicGF0cm9uX2lkIjo1NzIwNDY5MH0.2yhpKavSkdQ_EdIMcJPYIymwJ2OD2Emv0Sckm38BTnk) code (which seems to be just fine on v9) that allows a token to morph to the appearance of any token in the folder of actors that has the same name as this spell. This implies that actors with at least (and presumably only) a token appearance need to be added as appropriate.   This is purely a cosmetic spell. 
 
 [*Back to 1st Level Spell List*](#1st-level-spells)
 

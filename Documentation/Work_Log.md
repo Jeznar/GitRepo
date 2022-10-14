@@ -323,6 +323,7 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.14 Major rebuild to Decaying Touch including limitation of scope for hook (best yet!)
 
+22.10.14 Added disguise self using Crymic's v10 macro.
 
 [Link back to my Documentation Listing](README.md) 
 

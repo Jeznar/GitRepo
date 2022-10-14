@@ -56,6 +56,7 @@ Since there should eventually be an enormous number of spells in this repo, this
 * [Comprehend Languages](1st_Level#comprehend-languages)
 * [Cure Wounds](1st_Level#cure-wounds)
 * [Detect Magic](1st_Level#detect-magic)
+* [Disguise Self](1st_Level#disguise-self)
 * [Dissonant Whispers](1st_Level#dissonant-whispers)
 * [Earth Tremor](1st_Level#earth-tremor)
 * [Electrify](1st_Level#electrify)

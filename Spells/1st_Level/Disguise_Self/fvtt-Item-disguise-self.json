@@ -1,0 +1,242 @@
+{
+  "name": "Disguise Self",
+  "type": "spell",
+  "img": "Icons_JGB/Spells/1st%20Level/Disguised.png",
+  "data": {
+    "description": {
+      "value": "<p>You make yourself--including your <strong>clothing</strong>, <strong>armor</strong>, <strong>weapons</strong>, and other belongings on your person--look different until the spell ends or until you use your action to dismiss it. You can seem <strong>1 foot shorter</strong> or <strong>taller</strong> and can appear thin, fat, or in between. You <span style=\"text-decoration:underline\">can't change your body type</span>, so you must adopt a form that has the same basic arrangement of limbs. Otherwise, the extent of the illusion is up to you.</p>\n<p>The changes wrought by this spell fail to hold up to physical inspection. For example, if you use this spell to add a hat to your outfit, objects pass through the hat, and anyone who touches it would feel nothing or would feel your head and hair. If you use this spell to appear thinner than you are, the hand of someone who reaches out to touch you would bump into you while it was seemingly still in midair.</p>\n<p>To discern that you are disguised, a creature can use its action to inspect your appearance and must succeed on an Intelligence (Investigation) check against your spell save DC.</p>",
+      "chat": "<p>You make yourself--including your clothing, armor, weapons, and other belongings on your person--look different until the spell ends or until you use your action to dismiss it. You can seem 1 foot shorter or taller and can appear thin, fat, or in between. You can't change your body type, so you must adopt a form that has the same basic arrangement of limbs. Otherwise, the extent of the illusion is up to you.</p>\n<p>The changes wrought by this spell fail to hold up to physical inspection. For example, if you use this spell to add a hat to your outfit, objects pass through the hat, and anyone who touches it would feel nothing or would feel your head and hair. If you use this spell to appear thinner than you are, the hand of someone who reaches out to touch you would bump into you while it was seemingly still in midair.</p>\n<p>To discern that you are disguised, a creature can use its action to inspect your appearance and must succeed on an Intelligence (Investigation) check against your spell save DC.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 233",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "hour"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "ill",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    },
+    "attunement": null
+  },
+  "effects": [
+    {
+      "_id": "vzunyPrXzNJHDl22",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 2,
+          "value": "0",
+          "priority": "0"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 3600
+      },
+      "icon": "Icons_JGB/Spells/1st%20Level/Disguised.png",
+      "label": "Disguise Self",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false,
+          "selfTarget": false,
+          "durationExpression": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
+        }
+      },
+      "tint": "",
+      "selectedKey": "macro.itemMacro"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "id": 136608,
+      "definitionId": 2069,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 233,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Shapechanging"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_y8e7215chl"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.QTaURWW2EOlqV9HP"
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]",
+      "effectActivation": false,
+      "forceCEOn": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Disguise Self",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "// Crymic's Disguise Self 22.10.13\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nconst lastArg = args[args.length - 1];\nconst tokenD = canvas.tokens.get(lastArg.tokenId);\nconst itemD = lastArg.efData.flags.dae.itemData;\nconst transitionType = 6;\nconst transWait = 300;\nconst folderName = itemD.name;\nconst actorList = game.folders.contents.find(i=> i.name === folderName);\nif(!actorList) return ui.notifications.error(`Cannot find folder named ${itemD.name}. Please create it and add actors.`);\nlet getactorImages = actorList.contents.reduce((list, target)=> {\n    list += `<label class=\"radio-label\"><input type=\"radio\" name=\"disguiseForm\" value=\"${target.data.token.img}\"><img src=\"${target.data.token.img}\" style=\"border:0px; width: 50px; height:50px;\">${target.name}</label>`;\nreturn list;\n}, \"\");\nlet params;\nif (args[0] === \"on\") {\n    new Dialog({\n        title: itemD.name,\n        content: `\n        <style>\n    #disguiseSpell .form-group {\n        display: flex;\n        flex-wrap: wrap;\n        width: 100%;\n        align-items: flex-start;\n      }\n      \n      #disguiseSpell .radio-label {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        text-align: center;\n        justify-items: center;\n        flex: 1 0 25%;\n        line-height: normal;\n      }\n      \n      #disguiseSpell .radio-label input {\n        display: none;\n      }\n      \n      #disguiseSpell img {\n        border: 0px;\n        width: 50px;\n        height: 50px;\n        flex: 0 0 50px;\n        cursor: pointer;\n      }\n          \n      /* CHECKED STYLES */\n      #disguiseSpell [type=radio]:checked + img {\n        outline: 2px solid #f00;\n      }\n    </style>\n        <form id=\"disguiseSpell\"><div class=\"form-group\">${getactorImages}</div></form>`,\n        buttons: {\n            change: {\n                label: \"Change\", callback: async (html) => {\n                    let disguise = html.find(\"input[type='radio'][name='disguiseForm']:checked\")[0];\n                    let disguiseImage = disguise.value;\n                    params = [{\n                        filterType: \"polymorph\",\n                        filterId: itemD.name,\n                        type: transitionType,\n                        padding: 70,\n                        magnify: 1,\n                        imagePath: disguiseImage,\n                        animated:\n                        {\n                            progress:\n                            {\n                                active: true,\n                                animType: \"halfCosOscillation\",\n                                val1: 0,\n                                val2: 100,\n                                loops: 1,\n                                loopDuration: 1000\n                            }\n                        }\n                    }];\n                    await wait(transWait);\n                    if (tokenD.TMFXhasFilterId(itemD.name)) await TokenMagic.deleteFilters(tokenD, itemD.name);\n                    await wait(transWait);\n                    await TokenMagic.addUpdateFilters(tokenD, params);\n                }\n            }\n        },\n        default: \"change:\"\n    }).render(true);\n}\nif (args[0] === \"off\") {\n    params =\n        [{\n            filterType: \"polymorph\",\n            filterId: itemD.name,\n            type: transitionType,\n            animated:\n            {\n                progress:\n                {\n                    active: true,\n                    loops: 1\n                }\n            }\n        }];\n    await wait(transWait);\n    await TokenMagic.addUpdateFilters(tokenD, params);\n    await wait(transWait);\n    await TokenMagic.deleteFilters(tokenD, itemD.name);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
