@@ -1,9 +1,10 @@
-const MACRONAME = "Hideous_Laughter.0.3.js"
+const MACRONAME = "Hideous_Laughter.0.4.js"
 /*****************************************************************************************
  * 
  * 06/02/22 0.1 Creation of Macro
  * 07/09/22 0.2 Replace CUB.addCondition with CE
  * 07/31/22 0.3 Add convenientDescription, prevent duplicate prones
+ * 10/14/22 0.4 Fix bug that causes save to occur when any token is damaged 
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -13,13 +14,13 @@ for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 //
 const LAST_ARG = args[args.length - 1];
 let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
+if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
 else aActor = game.actors.get(LAST_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
 else aToken = game.actors.get(LAST_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
-if (args[0]?.item) aItem = args[0]?.item; 
+if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 let msg = "";
 const EFFECT_NAME = "Hideous Laughter"
@@ -31,12 +32,12 @@ const EFFECT_NAME = "Hideous Laughter"
 // Effects: Either use Item Macro or Macro Execute, no args needed.
 //##################################
 const origin = LAST_ARG.origin;
-jez.log("origin",origin)
+jez.log("origin", origin)
 let itemUuid = null
 if (origin) itemUuid = await fromUuid(origin);
-jez.log("itemUuid",itemUuid)
+jez.log("itemUuid", itemUuid)
 const caster = itemUuid?.actor; // curious setting here...makes the clearing conc work
-jez.log(`*** caster`, caster)  
+jez.log(`*** caster`, caster)
 const GAME_RND = game.combat ? game.combat.round : 0;
 const SAVE_DC = aActor.data.data.attributes.spelldc;
 //----------------------------------------------------------------------------------
@@ -54,15 +55,32 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************
  * Perform the code that runs when this macro is launched by DAE placing effect
  ***************************************************************************************************/
- async function doOn() {
+async function doOn() {
     const FUNCNAME = "doOn()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
     // Crymic retained code
+    // Next line is what Crymic used, sadly it triggers when any token is damaged.
+    // let hookId = Hooks.on("midi-qol.DamageRollComplete", damageCheck);
+    //----------------------------------------------------------------------------------------------
+    // Setup a hook that fires when the target and only the target is subject to damage
+    // Logic taken from Regeneration_Vampire_Initialize.0.1.js.  This fixes bug as of version 0.4.
+    let hookId = Hooks.on("midi-qol.DamageRollComplete", (workflow) => {
+        if (workflow.targets.first() === aToken) damageCheck(workflow)
+    })
+    //----------------------------------------------------------------------------------------------
+    // Stash the hook id (likely a 3 or 4 digit number)
     //
-    let hookId = Hooks.on("midi-qol.DamageRollComplete", damageCheck);
     DAE.setFlag(aActor, "hLaughter", hookId);
-    if ((!(game.modules.get("jb2a_patreon")?.active || game.modules.get("JB2A_DnD5e")?.active) && !(game.modules.get("sequencer")?.active))) return {};
+    //----------------------------------------------------------------------------------------------
+    // Perform some pre-req checks to protect the VFX
+    //
+    if ((!(game.modules.get("jb2a_patreon")?.active ||
+        game.modules.get("JB2A_DnD5e")?.active) && !(game.modules.get("sequencer")?.active)))
+        return jez.badNews(`${MACRO} can not find pre-req modules to run the VFX`, "w")
+    //----------------------------------------------------------------------------------------------
+    // Fire the VFX and go home
+    //
     runVFX(aToken);
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
@@ -101,8 +119,8 @@ async function damageCheck(workflow) {
         icon: "icons/skills/wounds/injury-triple-slash-bleed.webp",
         origin: origin,
         disabled: false,
-        flags: { 
-            dae: { specialDuration: ["isDamaged"] }, 
+        flags: {
+            dae: { specialDuration: ["isDamaged"] },
             convenientDescription: C_DESC
         },
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
@@ -173,7 +191,7 @@ async function damageCheck(workflow) {
  ***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults(msg) {
+function postResults(msg) {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
@@ -181,7 +199,7 @@ async function damageCheck(workflow) {
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
- async function doOnUse() {
+async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
@@ -211,15 +229,15 @@ async function damageCheck(workflow) {
         bubbleForAll(tToken.id, `That is hillarious!`, true, true)
         await jez.wait(50) // Allow earlier effects to complete 
         // Knock the target prone, if it isn't already prone
-        await jezcon.addCondition("Prone", tToken.actor.uuid, {allowDups: false}) 
+        await jezcon.addCondition("Prone", tToken.actor.uuid, { allowDups: false })
         await jez.wait(100) // Allow earlier effects to complete 
-    } 
+    }
     else bubbleForAll(tToken.id, `Yea, right, not that funny`, true, true)
     //----------------------------------------------------------------------------------------------
     // Modify recently created effect to have a convenientDescription
     //
     let effect = await tToken.actor.effects.find(i => i.data.label === EFFECT_NAME);
-    if (!effect) return jez.badNews(`Could not find ${EFFECT_NAME} effect on ${tToken.name}`,"e")
+    if (!effect) return jez.badNews(`Could not find ${EFFECT_NAME} effect on ${tToken.name}`, "e")
     const C_DESC = `Incapacitated with laughter.  DC${SAVE_DC} WIS Save to clear, end of turns and when damaged.`
     await effect.update({ flags: { convenientDescription: C_DESC } });
     //----------------------------------------------------------------------------------------------
@@ -238,29 +256,31 @@ async function preCheck() {
         postResults(msg);
         return (false);
     }
-    return(true)
+    return (true)
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked each round by DAE
  ***************************************************************************************************/
- async function doEach() {
+async function doEach() {
     const FUNCNAME = "doEach()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     runVFX(aToken)
-    jez.postMessage({color: jez.randomDarkColor(), 
-        fSize: 14, 
-        icon: aToken.data.img, 
+    jez.postMessage({
+        color: jez.randomDarkColor(),
+        fSize: 14,
+        icon: aToken.data.img,
         msg: `${aToken.name} finds everything hilariously funny and rolls on the ground in fits of 
         laughter. `,
-        title: `<b>${aToken.name}</b> ROFL!`, 
-        token: aToken})
+        title: `<b>${aToken.name}</b> ROFL!`,
+        token: aToken
+    })
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************
  * Play a little VFX on our afflicted token
  ***************************************************************************************************/
- async function runVFX(token5e) {
+async function runVFX(token5e) {
     new Sequence()
         .effect()
         .file("jb2a.toll_the_dead.purple.skull_smoke")
@@ -268,4 +288,4 @@ async function preCheck() {
         .scaleToObject(1.5)
         .waitUntilFinished(-500)
         .play()
- }
+}
