@@ -1,9 +1,10 @@
-const MACRONAME = "Magic_Weapon.0.2.js"
+const MACRONAME = "Magic_Weapon.0.3.js"
 /*****************************************************************************************
  * Implement Magic Weapon based on an ItemMacro that I literally found, source unknown.
  * 
  * 05/31/22 0.1 Creation of Macro
  * 10/15/22 0.2 Update format toward current standard, add VFX and link pair the effects
+ * 10/15/22 0.3 Update to provide convenientDescription contents for the effects
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -32,14 +33,16 @@ if (!game.modules.get("advanced-macros")?.active)
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-const CONDITION = "Magic Weapon"
+const EFFECT_NAME = "Magic Weapon"
+function clamp(val, min, max) { return val > max ? max : val < min ? min : val }
+function setBonus(level) { return clamp(Math.floor(level/2), 1, 3) }
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff({traceLvl:TL});                   // DAE removal
 if (args[0] === "on") await doOn({traceLvl:TL});                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
-jez.log(`============== Finishing === ${MACRONAME} =================`);
+if (TL > 1) jez.trace(`${TAG} === Ending ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -82,8 +85,7 @@ async function doOnUse(options={}) {
     //-----------------------------------------------------------------------------------------------
     // Verify something was targeted, if not clear concentrating and return a message of sadness
     //
-    if (!await preCheck()) 
-    {
+    if (!await preCheck()) {
         msg = `This spell requires that a target be selected before casting.`
         postResults(msg);
         await jez.wait(100)
@@ -97,11 +99,24 @@ async function doOnUse(options={}) {
     // Pair the effects so concentrating will drop if the effect is terminated
     //
     await jez.wait(100)
-    jez.pairEffects(aToken, "Concentrating", tToken, CONDITION)
+    jez.pairEffects(aToken, "Concentrating", tToken, EFFECT_NAME)
     //-------------------------------------------------------------------------------------------------------------
     // Launch the VFX on the target
     //
     runVFX(tToken)
+    //-----------------------------------------------------------------------------------------------
+    // Calculate the bonus for this casting, taking into account spell level scaling
+    //
+    // let spellLvl = Math.floor(LAST_ARG.spellLevel/2);
+    let bonus = setBonus(LAST_ARG.spellLevel)
+    //-----------------------------------------------------------------------------------------------
+    // Update the convenientDescription of the Concentrating effect to describe the spell
+    //
+    const CE_DESC = `Maintaining concentration on +${bonus} bonus to ${tToken.name}'s weapon`
+    let effect = await aActor.effects.find(i => i.data.label === "Concentrating");
+    effect.data.flags = { convenientDescription: CE_DESC }
+    await effect.data.update({ 'flags': effect.data.flags });
+    await effect.update({ 'changes': effect.data.changes });
     //-----------------------------------------------------------------------------------------------
     // Post completion message
     //
@@ -123,6 +138,11 @@ async function doOn(options={}) {
     if (TL===1) jez.trace(`${TAG} --- Starting ---`);
     if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
     //---------------------------------------------------------------------------------------------------
+    // Seemingly the spell's cast at level is stashed in args[1], grab it as use it to scale the effect
+    //
+    const SPELL_LEVEL = args[1]
+    if (TL>2) jez.trace(`${TAG} SPELL_LEVEL from args[1]`, SPELL_LEVEL);
+    //---------------------------------------------------------------------------------------------------
     // Set Function specific globals
     //
     let weapon_content = ``;
@@ -131,11 +151,8 @@ async function doOn(options={}) {
     let weapons = aActor.items.filter(i => i.data.type === `weapon`);
     if (TL>2) jez.trace(`${TAG} weapons`,weapons);
     //-----------------------------------------------------------------------------------------------
-    // Function to return the value between min and max
+    // Build HTML structure holding the target's weapons, EXAMPLE follows:
     //
-    function value_limit(val, min, max) { return val < min ? min : (val > max ? max : val); }
-    //-----------------------------------------------------------------------------------------------
-    // Build HTML structure holding the target's weapons, example follows:
     // weapon_content : <label class="radio-label">
     // <input type="radio" name="weapon" value="fUko1U9LGK8ENxwK">
     // <img src="/systems/dnd5e/icons/items/weapons/dagger.jpg" style="border:0px; width: 50px; height:50px;">
@@ -217,13 +234,12 @@ async function doOn(options={}) {
                     let itemId = $("input[type='radio'][name='weapon']:checked").val();
                     let weaponItem = aActor.items.get(itemId);
                     let copy_item = duplicate(weaponItem);
-                    let spellLevel = Math.floor(DAE_ITEM.data.level / 2);
-                    let bonus = value_limit(spellLevel, 1, 3);
+                    let bonus = setBonus(SPELL_LEVEL)
                     let wpDamage = copy_item.data.damage.parts[0][0];
                     let verDamage = copy_item.data.damage.versatile;
-                    if (TL > 2) jez.trace(`${TAG} Callback Values`, "itemId", itemId, "weaponItem",
-                        weaponItem, "copy_item", copy_item, "spellLevel", spellLevel, "bonus", bonus,
-                        "wpDamage", wpDamage, "verDamage", verDamage)
+                    if (TL>2) jez.trace(`${TAG} === Callback Values ---`, "itemId", itemId, 
+                        "weaponItem", weaponItem, "copy_item", copy_item,  
+                        "bonus", bonus, "wpDamage", wpDamage, "verDamage", verDamage)
                     //-------------------------------------------------------------------------------
                     // Set flag so that the magic can be reversed
                     //
@@ -249,6 +265,15 @@ async function doOn(options={}) {
                     // Update the "real" weapon
                     //
                     aActor.updateEmbeddedDocuments("Item", [copy_item]);
+                    //-----------------------------------------------------------------------------------------------
+                    // Seach the target actor to find the just added effect
+                    let effect = aActor.effects.find(i => i.data.label === EFFECT_NAME);
+                    //-----------------------------------------------------------------------------------------------
+                    // Define the desired modification to the changes data
+                    const CE_DESC = `${weaponItem.name} has been enchanted with a +${bonus} bonus`
+                    effect.data.flags = { convenientDescription: CE_DESC }
+                    effect.data.update({ 'flags': effect.data.flags });
+                    effect.update({ 'changes': effect.data.changes });
                 }
             },
             Cancel:
@@ -278,7 +303,7 @@ async function doOff(options={}) {
     if (TL > 2) jez.trace(`${TAG} Flag value object`, FLAG_VAL);
     if (!FLAG_VAL) return jez.trace(`${TAG} No flag containing previous data found`)
     //-----------------------------------------------------------------------------------------------
-    // Destructure the flag
+    // Destructure the flag (Furnace was tossing an error when compound statement was used)
     //
     let damage = FLAG_VAL.damage
     let weapon = FLAG_VAL.weapon
