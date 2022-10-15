@@ -32,12 +32,12 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "on") await doOn();                     // DAE Application
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE everyround
+if (args[0] === "on") await doOn({traceLvl:TL});                     // DAE Application
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
+if (args[0] === "each") doEach({traceLvl:TL});					     // DAE everyround
 // DamageBonus must return a function to the caller
-if (args[0]?.tag === "DamageBonus") return(doBonusDamage());   
-if (args[0] === "off") await doOff();                   // DAE removal
+if (args[0]?.tag === "DamageBonus") return(doBonusDamage({traceLvl:TL}));   
+if (args[0] === "off") await doOff({traceLvl:TL});                   // DAE removal
 if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
@@ -77,10 +77,11 @@ async function preCheck() {
  * Perform the code that runs when this macro is removed by DAE, set On
  * This runs on actor that has the affected applied to it.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
-async function doOn() {
+async function doOn(options={}) {
     const FUNCNAME = "doOn()";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
     if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
@@ -119,10 +120,11 @@ async function doOn() {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked each round by DAE
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
- async function doEach() {
+ async function doEach(options={}) {
     const FUNCNAME = "doEach()";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
     if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
@@ -135,10 +137,11 @@ async function doOn() {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
- async function doBonusDamage() {
+ async function doBonusDamage(options={}) {
     const FUNCNAME = "doBonusDamage()";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
     if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
@@ -153,10 +156,11 @@ async function doOn() {
  * Perform the code that runs when this macro is removed by DAE, set Off
  * This runs on actor that has the affected removed from it.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
- async function doOff() {
+ async function doOff(options={}) {
     const FUNCNAME = "doOff()";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
     if (TL>0) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps

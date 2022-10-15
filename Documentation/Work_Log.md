@@ -325,6 +325,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.14 Added disguise self using Crymic's v10 macro.
 
+22.10.15 Update Magic Weapon adding VFX and pairing effects so that concentration drops when effect ends
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
