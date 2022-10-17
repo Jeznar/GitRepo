@@ -116,6 +116,8 @@ const CE_DESC = await jez.getCEDesc(tToken, EFFECT, { traceLvl: TL })
 ```
 </details>
 
+Related Function: **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)**
+
 [*Back to Functions list*](#functions-in-this-module)
 
 ---
@@ -134,14 +136,16 @@ Inputs Are
 <details> <summary>Sample Call</summary>
 
 ```javascript
-let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-const EFFECT = "Frightened"
-const NEW_DESC = "String describing the effect of the effect!"
-const TL = 2
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); 
+const EFFECT = "Frightened";
+const NEW_DESC = "String describing the effect of the effect!";
+const TL = 2;
 
-await jez.setCEDesc(token, EFFECT, NEW_DESC, { traceLvl: TL })
+await jez.setCEDesc(tToken, EFFECT, NEW_DESC, { traceLvl: TL });
 ```
 </details>
+
+Related Function: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -160,12 +164,14 @@ Inputs Are
 
 ```javascript
 const FUNCNAME = "getCEDesc(subject, effect, optionObj={})";
-const FNAME = FUNCNAME.split("(")[0]
-let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+const FNAME = FUNCNAME.split("(")[0];
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); 
 
-let actor5e = jez.subjectToActor(tToken, FNAME)
+let actor5e = jez.subjectToActor(tToken, FNAME);
 ```
 </details>
+
+Known Use Functions: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**, **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
