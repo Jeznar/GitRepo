@@ -36,6 +36,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
+* **[getCEDesc()](#getcedescsubject-effectname-optionobj--)** -- Converts passed subject and returns Actor5e object.
 * **[getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
@@ -74,7 +75,9 @@ The functions currently included in this module are (all need to be proceeded by
 * **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring)** -- Returns updated string and count of replacements in an object.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
+* **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
 * **[spawnAt(MINION, aToken, aActor, aItem, argObj)](#spawnatminion-atoken-aactor-aitem-argobj)** -- this one is ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.* **[suppressTokenMoldRenaming(\<delay = 500\>, \<{traceLvl:1}\>)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** -- Suppresses token-mold renaming for specified number of milliseconds
+* **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
 * **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
 * **[tileCreate(tileId)](#tiledeletetileid)** -- Deletes a tile with specified ID
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
@@ -86,94 +89,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **[warpCrossHairs(...)](#warpcrosshairs)** -- Put a range display on warpgate summons 
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
 * **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
-* 
-* **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
-* **[getCEDesc()](#getcedescsubject-effectname-optionobj--)** -- Converts passed subject and returns Actor5e object.
-* **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
                                 
 More about many of these in the following sections. 
-
----
-
-### getCEDesc(subject, effectName, optionObj = {})
-
-Function that returns the Convenient Effects Description (convenientDescription) for the effect named by the **effectName** parameter from the actor identified by **subject**.  Subject is first processed by [subjectToActor()](#subjectToActorsubject-fname) so it can be an Actor5e object, Token5e object, token id string, or any other supported identification (see subjectToActor).
-
-Inputs Are
-
-- **subject**: An Actor5e or Token5e data object, or a token id. 
-- **effectName**: A string naming an effect to be read from the subject.
-- **optionObj**: Options passed, currently just **traceLvl** is supported.
-
-<details> <summary>Sample Call</summary>
-
-```javascript
-let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-const EFFECT = "Frightened"
-const TL = 2
-
-const CE_DESC = await jez.getCEDesc(tToken, EFFECT, { traceLvl: TL })
-```
-</details>
-
-Related Function: **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)**
-
-[*Back to Functions list*](#functions-in-this-module)
-
----
-
-### setCEDesc(subject, effectName, description, optionObj = {})
-
-Function that sets the Convenient Effects Description (convenientDescription) for the effect named by the **effectName** parameter on the actor identified by **subject** to the value contained in **description**.  Subject is first processed by [subjectToActor()](#subjectToActorsubject-fname) so it can be an Actor5e object, Token5e object, token id string, or any other supported identification (see subjectToActor).
-
-Inputs Are
-
-- **subject**: An Actor5e or Token5e data object, or a token id. 
-- **effectName**: A string naming an effect to be read from the subject.
-- **description**: A string that will be displayed as the convenientDescription 
-- **optionObj**: Options passed, currently just **traceLvl** is supported.
-
-<details> <summary>Sample Call</summary>
-
-```javascript
-let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); 
-const EFFECT = "Frightened";
-const NEW_DESC = "String describing the effect of the effect!";
-const TL = 2;
-
-await jez.setCEDesc(tToken, EFFECT, NEW_DESC, { traceLvl: TL });
-```
-</details>
-
-Related Function: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**
-
-[*Back to Functions list*](#functions-in-this-module)
-
----
-
-### subjectToActor(subject, fname)
-
-Utility function that accepts a *subject* and returns the appropriate Actor5e data object or false if none can be found. This is intended to be used mostly by other library functions so they can be more flexible accepting inputs.
-
-Inputs Are
-
-- **subject**: An Actor5e or Token5e data object, or a token id. 
-- **fname**: A string naming the function that is calling this function, for use in error messages.
-
-<details> <summary>Sample Call</summary>
-
-```javascript
-const FUNCNAME = "getCEDesc(subject, effect, optionObj={})";
-const FNAME = FUNCNAME.split("(")[0];
-let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); 
-
-let actor5e = jez.subjectToActor(tToken, FNAME);
-```
-</details>
-
-Known Use Functions: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**, **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)**
-
-[*Back to Functions list*](#functions-in-this-module)
 
 ---
 
@@ -370,6 +287,33 @@ Two additional get functions intended to make handling the overloaded inputs a b
 
 - **jez.getActor5eDataObj(subject)** -- Function to return the Actor5e data associated with the passed parameter. The subject can be  actor5e data object, token5e data object, token Id or actor Id
 - **getEffectDataObj(effect, subject)** -- Function to return the Effect data object identified by arguments. The **effect** parameter can be either a string naming the effect, an id or a uuid, e.g. 52 character string: `Actor.i9vqeZXzvIcdZ3BU.ActiveEffect.DmvGS7OsCz3HoggP`. **Subject** (optional) identifies the actor with effect in question, it just be a type supported by getActor5eDataObj, this parameter is not required if effect is a UUID.
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getCEDesc(subject, effectName, optionObj = {})
+
+Function that returns the Convenient Effects Description (convenientDescription) for the effect named by the **effectName** parameter from the actor identified by **subject**.  Subject is first processed by [subjectToActor()](#subjectToActorsubject-fname) so it can be an Actor5e object, Token5e object, token id string, or any other supported identification (see subjectToActor).
+
+Inputs Are
+
+- **subject**: An Actor5e or Token5e data object, or a token id. 
+- **effectName**: A string naming an effect to be read from the subject.
+- **optionObj**: Options passed, currently just **traceLvl** is supported.
+
+<details> <summary>Sample Call</summary>
+
+```javascript
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+const EFFECT = "Frightened"
+const TL = 2
+
+const CE_DESC = await jez.getCEDesc(tToken, EFFECT, { traceLvl: TL })
+```
+</details>
+
+Related Function: **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -1234,6 +1178,35 @@ async function workHorse(dataObj) {
 
 ---
 
+### setCEDesc(subject, effectName, description, optionObj = {})
+
+Function that sets the Convenient Effects Description (convenientDescription) for the effect named by the **effectName** parameter on the actor identified by **subject** to the value contained in **description**.  Subject is first processed by [subjectToActor()](#subjectToActorsubject-fname) so it can be an Actor5e object, Token5e object, token id string, or any other supported identification (see subjectToActor).
+
+Inputs Are
+
+- **subject**: An Actor5e or Token5e data object, or a token id. 
+- **effectName**: A string naming an effect to be read from the subject.
+- **description**: A string that will be displayed as the convenientDescription 
+- **optionObj**: Options passed, currently just **traceLvl** is supported.
+
+<details> <summary>Sample Call</summary>
+
+```javascript
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); 
+const EFFECT = "Frightened";
+const NEW_DESC = "String describing the effect of the effect!";
+const TL = 2;
+
+await jez.setCEDesc(tToken, EFFECT, NEW_DESC, { traceLvl: TL });
+```
+</details>
+
+Related Function: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
 ### spawnAt(minion, aToken, aActor, aItem, argObj)
 
 While most of the functions in this library perform relatively simple, atomic functions, this one is a lot more ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.
@@ -1502,6 +1475,32 @@ This is one that should not have "await" applied...
 jez.suppressTokenMoldRenaming()
 jez.suppressTokenMoldRenaming(500,{traceLvl:TL}) 
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### subjectToActor(subject, fname)
+
+Utility function that accepts a *subject* and returns the appropriate Actor5e data object or false if none can be found. This is intended to be used mostly by other library functions so they can be more flexible accepting inputs.
+
+Inputs Are
+
+- **subject**: An Actor5e or Token5e data object, or a token id. 
+- **fname**: A string naming the function that is calling this function, for use in error messages.
+
+<details> <summary>Sample Call</summary>
+
+```javascript
+const FUNCNAME = "getCEDesc(subject, effect, optionObj={})";
+const FNAME = FUNCNAME.split("(")[0];
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); 
+
+let actor5e = jez.subjectToActor(tToken, FNAME);
+```
+</details>
+
+Known Use Functions: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**, **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
