@@ -86,261 +86,85 @@ The functions currently included in this module are (all need to be proceeded by
 * **[warpCrossHairs(...)](#warpcrosshairs)** -- Put a range display on warpgate summons 
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
 * **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
+* 
+* **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
+* **[getCEDesc()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
+* **[setCEDesc()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
                                      
 More about many of these in the following sections. 
 
 ---
 
-### spawnAt(minion, aToken, aActor, aItem, argObj)
+### getCEDesc(subject, effectName, optionObj = {})
 
-While most of the functions in this library perform relatively simple, atomic functions, this one is a lot more ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.
+Function that returns the Convenient Effects Description (convenientDescription) for the effect named by the **effectName** parameter from the actor identified by **subject**.  Subject is first processed by [subjectToActor()](#subjectToActorsubject-fname) so it can be an Actor5e object, Token5e object, token id string, or any other supported identification (see subjectToActor).
 
-<details> <summary>**Highlights of the tasks it performs**</summary>
+Inputs Are
 
-1. Set up a default data object that will fill in almost all of the many inputs that may be provided with plausible defaults.
-2. Build a data object from the supplied argument object (argObj) and the default object
-3. Polish up the data object with a bit more computing 
-4. Set the snap value so that tokens that are an odd number of squares will have their center in the middle of a square while even tokens will be placed on square intersections.
-5. Verify the warpgate module (pre-req) is active
-6. Verify that a template actor exists to be summoned matching inputs
-7. Set the maximum range based on information in the item card or, if not there from the input data
-8. Call **[jez.warpCrossHairs(...)](#warpcrosshairs)** to obtain an in range spot for the summoning
-9. Call **[suppressTokenMoldRenaming(...)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** to suppress Token-Mold's pesky renaming of GM summoned tokens. (Which I generally like just not when summoning from a macro.)
-10. Actually do the summoning deed with a call to **warpgate.spawnAt(...)**
+- **subject**: An Actor5e or Token5e data object, or a token id. 
+- **effectName**: A string naming an effect to be read from the subject.
+- **optionObj**: Options passed, currently just **traceLvl** is supported.
 
-A lot of work for this function is performed in other functions.  Two key ones not mentioned so far:
+<details> <summary>Sample Call</summary>
 
-1. **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)**
-2. **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)**
+```javascript
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+const EFFECT = "Frightened"
+const TL = 2
 
-Those two functions manage the VFX that is run immediately before the summoning and after.  They have been trained to know about three different types of effects.  Others should work, but I only spent enough time testing to get the three done.  I'll outline how to use them and provide videos of them.
+const CE_DESC = await jez.getCEDesc(tToken, EFFECT, { traceLvl: TL })
+```
 </details>
 
-<details> <summary>**Arguments for spawnAt()**</summary>
+[*Back to Functions list*](#functions-in-this-module)
 
-* **minion** - a string that names the actor that will be summoned, e.g. **Magehand**, **Bonfire**, etc.  I typically wrap those names in percent symbols, %Magehand% is in my actor directory and this macro assumes that convention is maintained.
-* **aToken** - the token5e data object for the caster, used essentially just for the name of the caster.  Specifically aToken.name is the field used, really the only property that needs to be on this object.
-* **aActor** -  Used by warpgate.spawnAt(), supposedly to close active actor data sheets during a spawn.  Seems unecessary, but it is easily obtained by the calling macro.
-* **aItem** - the item data object from the calling item.  It is used to obtain the range for the invoking item.
-* **argObj** - this is the big one.  It can be a whopper or almost nothing depending on which properties need to be changed from default values.  The following table steps through the swarm of properties that can be set.
+---
+
+### setCEDesc(subject, effectName, description, optionObj = {})
+
+Function that sets the Convenient Effects Description (convenientDescription) for the effect named by the **effectName** parameter on the actor identified by **subject** to the value contained in **description**.  Subject is first processed by [subjectToActor()](#subjectToActorsubject-fname) so it can be an Actor5e object, Token5e object, token id string, or any other supported identification (see subjectToActor).
+
+Inputs Are
+
+- **subject**: An Actor5e or Token5e data object, or a token id. 
+- **effectName**: A string naming an effect to be read from the subject.
+- **description**: A string that will be displayed as the convenientDescription 
+- **optionObj**: Options passed, currently just **traceLvl** is supported.
+
+<details> <summary>Sample Call</summary>
+
+```javascript
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+const EFFECT = "Frightened"
+const NEW_DESC = "String describing the effect of the effect!"
+const TL = 2
+
+await jez.setCEDesc(token, EFFECT, NEW_DESC, { traceLvl: TL })
+```
 </details>
 
-<details> <summary>**Argument Object (argObj)**</summary>
+[*Back to Functions list*](#functions-in-this-module)
 
- Property      | Type             | Default Value             | Purpose                                                    |
-|--------------|------------------|:-------------------------:|------------------------------------------------------------|
-| allowedColorsIntro | Array of Strings | complex             | Array of allowed colors for introVFX default depends on introVFX, not needed for the basic types. 
-| allowedColorsOutro | Array of Strings | complex             | Array of allowed colors for OutroVFX default depends on outroVFX, not needed for the basic types.
-| allowedUnits | Array of Strings | ["", "ft", "any"]         | Strings naming allowed units for range on item card 
-| callbacks    | Object           | See Callbacks Object below| Callback functions to run the VFX (and maybe other things)
-| colorIntro   | String           | *                         | Name of a color or wildcard for the Intro effect
-| colorOutro   | String           | *                         | Name of a color or wildcard for the Outro effect
-| defaultRange | Integer			 | 30 feet                   | Default range for item in feet 
-| duration     | Integer          | 1000 ms                   | Duration of the intro VFX played just before the summons               
-| img          | String (filepath)| icons/svg/mystery-man.svg | Image to use on the summon location cursor (while in range)                                   
-| introTime    | Integer          | 1000 ms                   | Amount of time to wait for intro VFX before continuing                
-| introVFX     | String (filepath)| '~Explosion/Explosion_*_${color}_400x400.webm' | VFX to play before the summon, the pre or intro VFX                
-| minionName   | String           | \${aToken.name}'s \${MINION}| Name that will be placed on the summoned token                
-| name         | String           | Summoning                 | Name of action (for a message only), typically aItem.name                
-| opacity      | Real Number      | 1                         | Opacity for the VFX's that will be played                
-| options      | Object           | {controllingActor:aActor} | Allegedly hides an open character sheet, didn't work for me                
-| outroVFX     | String (filepath)| '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm' | VFX to play after the summon, the post or outro VFX                  
-| scale        | Real Number      | 0.7                       | Scale for the VFX's to be played                
-| snap         | Integer          | -1                        | Value passed to **[jez.warpCrossHairs(...)](#warpcrosshairs)**                
-| source       | Object           | {center:{x:315,y:385}}    | Coordinates for source (within center), typically aToken
-| suppressTokenMold | Integer     | 2000 or introTime + 500   | Time (in ms) to suppress TokenMold's renaming setting must be longer than **introTime**             
-| templateName | String           | `${%MINION%}`             | Name of actor in sidebar, the MINION argument wrapped in percentage symbols 
-| traceLvl     | Integer          | null                      | Level of code tracing to console log, 0 turns it off               
-| updates      | Object           | See Updates Object below  | Updates to be applied to the summoned token, this will often want to be {} for linked tokens.                
-| waitForSuppress | Integer       | 100 ms                    | Time (in ms) to wait of for Suppression to begin                
-| width        | Integer          | 1                         | Width of token being summoned (assumed square)                
-</details>
+---
 
-<details> <summary>**Callbacks Object**</summary>
+### subjectToActor(subject, fname)
 
- Property      | Type             | Default Value             | Purpose                                                    |
-|--------------|------------------|:-------------------------:|------------------------------------------------------------|
-| pre          | Function         | Complex see below         | Function called immediately before spawn
-| post         | Function         | Complex see below         | Function called immediately before spawn
+Utility function that accepts a *subject* and returns the appropriate Actor5e data object or false if none can be found. This is intended to be used mostly by other library functions so they can be more flexible accepting inputs.
 
-By default each of these functions calls another function, jez.vfxPreSummonEffects / jez.vfxPostSummonEffects with a number of properties from the above:
+Inputs Are
 
-* **allowedColors** -- Array of color names, typically from allowedColorsIntro / allowedColorsOutro
-* **color** -- color choice from colorIntro or colorOutro
-* **opacity** -- Real number between 0 and 1 inclusive that controls the opacity of the effect
-* **scale** -- Real number between 0 and 1 inclusive that controls the scale of the effect
-* **vfxFile** -- the introVFX or outroVFX file path, often including wildcard asterisks.
+- **subject**: An Actor5e or Token5e data object, or a token id. 
+- **fname**: A string naming the function that is calling this function, for use in error messages.
 
-The pre function also waits for **introTime** which allows the introVFX some time to play before the token appears.  This can be fiddly to get good enough.
-</details>
+<details> <summary>Sample Call</summary>
 
-<details> <summary>**Updates Object**</summary>
+```javascript
+const FUNCNAME = "getCEDesc(subject, effect, optionObj={})";
+const FNAME = FUNCNAME.split("(")[0]
+let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
 
- Property      | Type             | Default Value             | Purpose                                                    |
-|--------------|------------------|:-------------------------:|------------------------------------------------------------|
-| actor        | Object           | { name: `${aToken.name}'s ${MINION}` } | New name for the summoned token
-| token        | Object           | { name: `${aToken.name}'s ${MINION}` } | New name for actor summoned to field
-
-Another Example, this one updating the saving throw on a Sting attack
-
-~~~javascript
-// ---------------------------------------------------------------------------------------------
-// Special case treatment of Imp to set its attack saving throw
-//
-if (summonData.name === "Imp") {
-if (TL > 1) jez.trace(`${TAG} Special case treatment of our ${summonData.name}`)
-    argObj.updates = {
-       actor: {
-           name: famName,
-           // 'data.attributes.hp': { value: 66, max: 66 }
-       },
-       token: { name: famName },
-       embedded: {
-           Item: {
-              "Sting": {
-                   // 'data.damage.parts': [[`1d6 + 3`, "fire"]],
-                   // 'data.attackBonus': `2[mod] + 3[prof]`,   
-                   'data.save.dc': jez.getSpellDC(aActor),
-               },
-            }
-        }
-    }
-}
-~~~
-        
-</details>
-
-I've tried to craft this to allow for a lot of customization on the summons while requiring less coding for each.  In the following subsections, I'll walk through how to setup each of three summoning effects:
-
-1. Explosion/Smoke
-2. Fireworks
-3. Portal 
-
-
-#### Explosion Effect
-
-<details> <summary>**Explosion Effect Data Object**</summary>
-
-~~~javascript
-//--------------------------------------------------------------------------------------------------
-// Build the dataObject for our summon call
-//
-let argObj = {
-    defaultRange: 30,                   // Defaults to 30, but this varies per spell
-    duration: 1000,                     // Duration of the intro VFX
-    introTime: 1000,                     // Amount of time to wait for Intro VFX
-    introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
-    minionName: `${aToken.name}'s ${summons}`,
-    name: aItem.name,                   // Name of action (message only), typically aItem.name
-    outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
-    scale: 0.7,								// Default value but needs tuning at times
-    source: aToken,                     // Coords for source (with a center), typically aToken
-    width: 1,                           // Width of token to be summoned, 1 is the default
-    traceLvl: TL                        // Trace level, matching calling function decent choice
-}
-//--------------------------------------------------------------------------------------------------
-// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
-// to update the img attribute or set basic image to match this item
-//
-let summonData = await game.actors.getName(MINION)
-argObj.img = summonData ? summonData.img : aItem.img
-//--------------------------------------------------------------------------------------------------
-// Do the actual summon
-//
-return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
-~~~
-</details>
-
-<details> <summary>**Explosion Effect Recording**</summary>
-
-![Summon_Explosion.gif](images/Summon_Explosion.gif)
-</details>
-
-#### Fireworks Effect
-
-<details> <summary>**Fireworks Effect Data Object**</summary>
-
-~~~javascript
-let argObj = {
-    defaultRange: 30,
-    duration: 3000,                     // Duration of the intro VFX
-    introTime: 1000,                    // Amount of time to wait for Intro VFX
-    introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
-    minionName: `${aToken.name}'s ${summons}`,
-    name: aItem.name,                   // Name of action (message only), typically aItem.name
-    outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
-    scale: 0.7,								// Default value but needs tuning at times
-    source: aToken,                     // Coords for source (with a center), typically aToken
-    templateName: `%${MINION}%`,        // Name of the actor in the actor directory
-    width: 1,                           // Width of token to be summoned
-    traceLvl: TL
-}
-//--------------------------------------------------------------------------------------------------
-// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
-// to update the img attribute or set basic image to match this item
-//
-let summonData = await game.actors.getName(MINION)
-argObj.img = summonData ? summonData.img : aItem.img
-//--------------------------------------------------------------------------------------------------
-// Do the actual summon
-//
-return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
-
-~~~
-</details>
-
-<details> <summary>**Fireworks Effect Recording**</summary>
-
-![Summon_Fireworks.gif](images/Summon_Fireworks.gif)
-</details>
-
-#### Portal Effect
-
-<details> <summary>**Portal Effect Data Object**</summary>
-
-~~~javascript
-//--------------------------------------------------------------------------------------------------
-// Portals need the same color for pre and post effects, so get that set here. Even though only used
-// when we are doing portals
-//
-const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
-"Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange", "Bright_Purple", "Bright_Red", 
-"Bright_Yellow"]
-let index = Math.floor((Math.random() * PORTAL_COLORS.length))
-let portalColor = PORTAL_COLORS[index]
-//--------------------------------------------------------------------------------------------------
-// Build the dataObject for our summon call
-//
-let argObj = {
-    defaultRange: 30,                   // Defaults to 30, but this varies per spell
-    duration: 4000,                     // Duration of the intro VFX
-    introTime: 250,                     // Amount of time to wait for Intro VFX
-    introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file
-    minionName: `${aToken.name}'s ${summons}`,
-    name: aItem.name,                   // Name of action (message only), typically aItem.name
-    outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file
-    scale: 0.7,								// Default value but needs tuning at times
-    source: aToken,                     // Coords for source (with a center), typically aToken
-    width: 1,                           // Width of token to be summoned, 1 is the default
-    traceLvl: TL                        // Trace level, matching calling function decent choice
-}
-//--------------------------------------------------------------------------------------------------
-// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
-// to update the img attribute or set basic image to match this item
-//
-let summonData = await game.actors.getName(MINION)
-argObj.img = summonData ? summonData.img : aItem.img
-//--------------------------------------------------------------------------------------------------
-// Do the actual summon
-//
-return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
-
-~~~
-</details>
-
-<details> <summary>**Portal Effect Recording**</summary>
-
-![Summon_Portal.gif](images/Summon_Portal.gif)
+let actor5e = jez.subjectToActor(tToken, FNAME)
+```
 </details>
 
 [*Back to Functions list*](#functions-in-this-module)
@@ -359,6 +183,8 @@ The passed **msgParm** can be a string or an object as in the cousin function, [
 * **color**: String naming the foreground color,
 * **msg**: String containing the actual text to be displayed.
 * **tag**: String naming the anchor location from: saves, attack, damage, hits, other
+
+<details> <summary>Sample Code Snippet</summary>
 
 The following code snippet produces a chat card with quite a few added messages.  One thing worth noting is that repeated invocations to the same tag point (the simple form in the below example) will appear before any other message added at the tag, so messages may need to be presented *backwards*.
 
@@ -382,6 +208,7 @@ jez.addMessage(chatMessage, {color:"crimson", fSize:15, msg:msg, tag:"other" })
 The above, will generate a message such as the following:
 
 ![addMessage_example](images/addMessage_example.png)
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -1396,6 +1223,262 @@ async function workHorse(dataObj) {
    for (let line of dataObj.idArray) await pushUpdate(line, dataObj.itemName, dataObj.itemType);
 }
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### spawnAt(minion, aToken, aActor, aItem, argObj)
+
+While most of the functions in this library perform relatively simple, atomic functions, this one is a lot more ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.
+
+<details> <summary>**Highlights of the tasks it performs**</summary>
+
+1. Set up a default data object that will fill in almost all of the many inputs that may be provided with plausible defaults.
+2. Build a data object from the supplied argument object (argObj) and the default object
+3. Polish up the data object with a bit more computing 
+4. Set the snap value so that tokens that are an odd number of squares will have their center in the middle of a square while even tokens will be placed on square intersections.
+5. Verify the warpgate module (pre-req) is active
+6. Verify that a template actor exists to be summoned matching inputs
+7. Set the maximum range based on information in the item card or, if not there from the input data
+8. Call **[jez.warpCrossHairs(...)](#warpcrosshairs)** to obtain an in range spot for the summoning
+9. Call **[suppressTokenMoldRenaming(...)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** to suppress Token-Mold's pesky renaming of GM summoned tokens. (Which I generally like just not when summoning from a macro.)
+10. Actually do the summoning deed with a call to **warpgate.spawnAt(...)**
+
+A lot of work for this function is performed in other functions.  Two key ones not mentioned so far:
+
+1. **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)**
+2. **[vfxPostSummonEffects(template, optionObj](#vfxPostSummonEffectstemplate-optionObj)**
+
+Those two functions manage the VFX that is run immediately before the summoning and after.  They have been trained to know about three different types of effects.  Others should work, but I only spent enough time testing to get the three done.  I'll outline how to use them and provide videos of them.
+</details>
+
+<details> <summary>**Arguments for spawnAt()**</summary>
+
+* **minion** - a string that names the actor that will be summoned, e.g. **Magehand**, **Bonfire**, etc.  I typically wrap those names in percent symbols, %Magehand% is in my actor directory and this macro assumes that convention is maintained.
+* **aToken** - the token5e data object for the caster, used essentially just for the name of the caster.  Specifically aToken.name is the field used, really the only property that needs to be on this object.
+* **aActor** -  Used by warpgate.spawnAt(), supposedly to close active actor data sheets during a spawn.  Seems unecessary, but it is easily obtained by the calling macro.
+* **aItem** - the item data object from the calling item.  It is used to obtain the range for the invoking item.
+* **argObj** - this is the big one.  It can be a whopper or almost nothing depending on which properties need to be changed from default values.  The following table steps through the swarm of properties that can be set.
+</details>
+
+<details> <summary>**Argument Object (argObj)**</summary>
+
+ Property      | Type             | Default Value             | Purpose                                                    |
+|--------------|------------------|:-------------------------:|------------------------------------------------------------|
+| allowedColorsIntro | Array of Strings | complex             | Array of allowed colors for introVFX default depends on introVFX, not needed for the basic types. 
+| allowedColorsOutro | Array of Strings | complex             | Array of allowed colors for OutroVFX default depends on outroVFX, not needed for the basic types.
+| allowedUnits | Array of Strings | ["", "ft", "any"]         | Strings naming allowed units for range on item card 
+| callbacks    | Object           | See Callbacks Object below| Callback functions to run the VFX (and maybe other things)
+| colorIntro   | String           | *                         | Name of a color or wildcard for the Intro effect
+| colorOutro   | String           | *                         | Name of a color or wildcard for the Outro effect
+| defaultRange | Integer			 | 30 feet                   | Default range for item in feet 
+| duration     | Integer          | 1000 ms                   | Duration of the intro VFX played just before the summons               
+| img          | String (filepath)| icons/svg/mystery-man.svg | Image to use on the summon location cursor (while in range)                                   
+| introTime    | Integer          | 1000 ms                   | Amount of time to wait for intro VFX before continuing                
+| introVFX     | String (filepath)| '~Explosion/Explosion_*_${color}_400x400.webm' | VFX to play before the summon, the pre or intro VFX                
+| minionName   | String           | \${aToken.name}'s \${MINION}| Name that will be placed on the summoned token                
+| name         | String           | Summoning                 | Name of action (for a message only), typically aItem.name                
+| opacity      | Real Number      | 1                         | Opacity for the VFX's that will be played                
+| options      | Object           | {controllingActor:aActor} | Allegedly hides an open character sheet, didn't work for me                
+| outroVFX     | String (filepath)| '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm' | VFX to play after the summon, the post or outro VFX                  
+| scale        | Real Number      | 0.7                       | Scale for the VFX's to be played                
+| snap         | Integer          | -1                        | Value passed to **[jez.warpCrossHairs(...)](#warpcrosshairs)**                
+| source       | Object           | {center:{x:315,y:385}}    | Coordinates for source (within center), typically aToken
+| suppressTokenMold | Integer     | 2000 or introTime + 500   | Time (in ms) to suppress TokenMold's renaming setting must be longer than **introTime**             
+| templateName | String           | `${%MINION%}`             | Name of actor in sidebar, the MINION argument wrapped in percentage symbols 
+| traceLvl     | Integer          | null                      | Level of code tracing to console log, 0 turns it off               
+| updates      | Object           | See Updates Object below  | Updates to be applied to the summoned token, this will often want to be {} for linked tokens.                
+| waitForSuppress | Integer       | 100 ms                    | Time (in ms) to wait of for Suppression to begin                
+| width        | Integer          | 1                         | Width of token being summoned (assumed square)                
+</details>
+
+<details> <summary>**Callbacks Object**</summary>
+
+ Property      | Type             | Default Value             | Purpose                                                    |
+|--------------|------------------|:-------------------------:|------------------------------------------------------------|
+| pre          | Function         | Complex see below         | Function called immediately before spawn
+| post         | Function         | Complex see below         | Function called immediately before spawn
+
+By default each of these functions calls another function, jez.vfxPreSummonEffects / jez.vfxPostSummonEffects with a number of properties from the above:
+
+* **allowedColors** -- Array of color names, typically from allowedColorsIntro / allowedColorsOutro
+* **color** -- color choice from colorIntro or colorOutro
+* **opacity** -- Real number between 0 and 1 inclusive that controls the opacity of the effect
+* **scale** -- Real number between 0 and 1 inclusive that controls the scale of the effect
+* **vfxFile** -- the introVFX or outroVFX file path, often including wildcard asterisks.
+
+The pre function also waits for **introTime** which allows the introVFX some time to play before the token appears.  This can be fiddly to get good enough.
+</details>
+
+<details> <summary>**Updates Object**</summary>
+
+ Property      | Type             | Default Value             | Purpose                                                    |
+|--------------|------------------|:-------------------------:|------------------------------------------------------------|
+| actor        | Object           | { name: `${aToken.name}'s ${MINION}` } | New name for the summoned token
+| token        | Object           | { name: `${aToken.name}'s ${MINION}` } | New name for actor summoned to field
+
+Another Example, this one updating the saving throw on a Sting attack
+
+~~~javascript
+// ---------------------------------------------------------------------------------------------
+// Special case treatment of Imp to set its attack saving throw
+//
+if (summonData.name === "Imp") {
+if (TL > 1) jez.trace(`${TAG} Special case treatment of our ${summonData.name}`)
+    argObj.updates = {
+       actor: {
+           name: famName,
+           // 'data.attributes.hp': { value: 66, max: 66 }
+       },
+       token: { name: famName },
+       embedded: {
+           Item: {
+              "Sting": {
+                   // 'data.damage.parts': [[`1d6 + 3`, "fire"]],
+                   // 'data.attackBonus': `2[mod] + 3[prof]`,   
+                   'data.save.dc': jez.getSpellDC(aActor),
+               },
+            }
+        }
+    }
+}
+~~~
+        
+</details>
+
+I've tried to craft this to allow for a lot of customization on the summons while requiring less coding for each.  In the following subsections, I'll walk through how to setup each of three summoning effects:
+
+1. Explosion/Smoke
+2. Fireworks
+3. Portal 
+
+
+#### Explosion Effect
+
+<details> <summary>**Explosion Effect Data Object**</summary>
+
+~~~javascript
+//--------------------------------------------------------------------------------------------------
+// Build the dataObject for our summon call
+//
+let argObj = {
+    defaultRange: 30,                   // Defaults to 30, but this varies per spell
+    duration: 1000,                     // Duration of the intro VFX
+    introTime: 1000,                     // Amount of time to wait for Intro VFX
+    introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file
+    minionName: `${aToken.name}'s ${summons}`,
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    width: 1,                           // Width of token to be summoned, 1 is the default
+    traceLvl: TL                        // Trace level, matching calling function decent choice
+}
+//--------------------------------------------------------------------------------------------------
+// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+// to update the img attribute or set basic image to match this item
+//
+let summonData = await game.actors.getName(MINION)
+argObj.img = summonData ? summonData.img : aItem.img
+//--------------------------------------------------------------------------------------------------
+// Do the actual summon
+//
+return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
+~~~
+</details>
+
+<details> <summary>**Explosion Effect Recording**</summary>
+
+![Summon_Explosion.gif](images/Summon_Explosion.gif)
+</details>
+
+#### Fireworks Effect
+
+<details> <summary>**Fireworks Effect Data Object**</summary>
+
+~~~javascript
+let argObj = {
+    defaultRange: 30,
+    duration: 3000,                     // Duration of the intro VFX
+    introTime: 1000,                    // Amount of time to wait for Intro VFX
+    introVFX: '~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm', // default introVFX file
+    minionName: `${aToken.name}'s ${summons}`,
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: '~Fireworks/Firework*_02_Regular_${color}_600x600.webm', // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    templateName: `%${MINION}%`,        // Name of the actor in the actor directory
+    width: 1,                           // Width of token to be summoned
+    traceLvl: TL
+}
+//--------------------------------------------------------------------------------------------------
+// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+// to update the img attribute or set basic image to match this item
+//
+let summonData = await game.actors.getName(MINION)
+argObj.img = summonData ? summonData.img : aItem.img
+//--------------------------------------------------------------------------------------------------
+// Do the actual summon
+//
+return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
+
+~~~
+</details>
+
+<details> <summary>**Fireworks Effect Recording**</summary>
+
+![Summon_Fireworks.gif](images/Summon_Fireworks.gif)
+</details>
+
+#### Portal Effect
+
+<details> <summary>**Portal Effect Data Object**</summary>
+
+~~~javascript
+//--------------------------------------------------------------------------------------------------
+// Portals need the same color for pre and post effects, so get that set here. Even though only used
+// when we are doing portals
+//
+const PORTAL_COLORS = ["Bright_Blue", "Dark_Blue", "Dark_Green", "Dark_Purple", "Dark_Red",
+"Dark_RedYellow", "Dark_Yellow", "Bright_Green", "Bright_Orange", "Bright_Purple", "Bright_Red", 
+"Bright_Yellow"]
+let index = Math.floor((Math.random() * PORTAL_COLORS.length))
+let portalColor = PORTAL_COLORS[index]
+//--------------------------------------------------------------------------------------------------
+// Build the dataObject for our summon call
+//
+let argObj = {
+    defaultRange: 30,                   // Defaults to 30, but this varies per spell
+    duration: 4000,                     // Duration of the intro VFX
+    introTime: 250,                     // Amount of time to wait for Intro VFX
+    introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file
+    minionName: `${aToken.name}'s ${summons}`,
+    name: aItem.name,                   // Name of action (message only), typically aItem.name
+    outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file
+    scale: 0.7,								// Default value but needs tuning at times
+    source: aToken,                     // Coords for source (with a center), typically aToken
+    width: 1,                           // Width of token to be summoned, 1 is the default
+    traceLvl: TL                        // Trace level, matching calling function decent choice
+}
+//--------------------------------------------------------------------------------------------------
+// Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+// to update the img attribute or set basic image to match this item
+//
+let summonData = await game.actors.getName(MINION)
+argObj.img = summonData ? summonData.img : aItem.img
+//--------------------------------------------------------------------------------------------------
+// Do the actual summon
+//
+return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
+
+~~~
+</details>
+
+<details> <summary>**Portal Effect Recording**</summary>
+
+![Summon_Portal.gif](images/Summon_Portal.gif)
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 

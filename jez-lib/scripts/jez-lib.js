@@ -1895,7 +1895,7 @@ class jez {
     * ~Energy/SwirlingSparkles_01_Regular_Blue_400x400.webm
     * Use: ~Energy/SwirlingSparkles_01_Regular_${color}_400x400.webm
     ***************************************************************************************************/
-    static async vfxPreSummonEffects(location, optionObj={}) {
+    static async vfxPreSummonEffects(location, optionObj = {}) {
         const FUNCNAME = "jez.vfxPreSummonEffects(location, optionObj)";
         const FNAME = FUNCNAME.split("(")[0]
         const TL = optionObj?.traceLvl ?? 0
@@ -1953,7 +1953,7 @@ class jez {
         //
         if (!optionObj.vfxFile)
             optionObj.vfxFile = '~Explosion/Explosion_*_${color}_400x400.webm' // default VFX file
-         //-------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------
         // Build the VFX file name
         //
         let vfxFile = optionObj?.vfxFile
@@ -2010,7 +2010,7 @@ class jez {
      * ~Fireworks/Firework01_02_Regular_GreenOrange_600x600.webm
      * Example: ~Fireworks/Firework*_02_Regular_$color}_600x600.webm
      ***************************************************************************************************/
-    static async vfxPostSummonEffects(template, optionObj={}) {
+    static async vfxPostSummonEffects(template, optionObj = {}) {
         const FUNCNAME = "jez.vfxPostSummonEffects(location, optionObj)";
         const FNAME = FUNCNAME.split("(")[0]
         const TL = optionObj?.traceLvl ?? 0
@@ -2075,11 +2075,11 @@ class jez {
         //
         if (TL > 3) jez.trace("Build the VFX file")
         let vfxFile = optionObj?.vfxFile
-        if (TL > 4) jez.trace("vfxFile",vfxFile)
+        if (TL > 4) jez.trace("vfxFile", vfxFile)
         const VFX_DIR = 'modules/jb2a_patreon/Library/Generic'
-        if (TL > 4) jez.trace("VFX_DIR",VFX_DIR)
+        if (TL > 4) jez.trace("VFX_DIR", VFX_DIR)
         if (vfxFile.charAt(0) === '~') vfxFile = `${VFX_DIR}/${vfxFile.substring(1)}`
-        if (TL > 3) jez.trace("VFX with prefix", vfxFile,"color",color)
+        if (TL > 3) jez.trace("VFX with prefix", vfxFile, "color", color)
         vfxFile = vfxFile.replace("${color}", color)
         if (TL > 3) jez.trace("VFX with color ", vfxFile)
         //-------------------------------------------------------------------------------------------------
@@ -2094,7 +2094,7 @@ class jez {
             // Returns a random integer from 0 to files.length-1:
             let sel = Math.floor(Math.random() * files.length);
             if (TL > 2) jez.trace(`fetchFileName | ${sel} of ${files.length}: ${files[sel]}`)
-            return(files[sel])
+            return (files[sel])
         }
         //-------------------------------------------------------------------------------------------------
         // Get the duration of the VFX we are going to play so the last 1/3 can be faded.
@@ -2282,7 +2282,7 @@ class jez {
         return CEMreturn
     }
 
-    static async deleteEmbeddedDocs(type, ids, options={}) {
+    static async deleteEmbeddedDocs(type, ids, options = {}) {
         const FUNCNAME = "jez.deleteEmbeddedDocs(type, ids, options={})";
         const FNAME = FUNCNAME.split("(")[0]
         const TL = options?.traceLvl ?? 0
@@ -2290,7 +2290,7 @@ class jez {
         if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "type", type, "ids", ids, "options", options);
         const DELETE_EMBEDDED_MACRO = jez.getMacroRunAsGM(jez.DELETE_EMBEDDED_MACRO)
         if (!DELETE_EMBEDDED_MACRO) return false
-        if (TL > 2) jez.trace(`${FNAME} | Calling DELETE_EMBEDDED_MACRO`,DELETE_EMBEDDED_MACRO);
+        if (TL > 2) jez.trace(`${FNAME} | Calling DELETE_EMBEDDED_MACRO`, DELETE_EMBEDDED_MACRO);
         let CEMreturn = await DELETE_EMBEDDED_MACRO.execute(type, ids)
         return CEMreturn
     }
@@ -2360,13 +2360,13 @@ class jez {
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * Delete a tile identified by tileId
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async tileDelete(tileId, options={}) {
+    static async tileDelete(tileId, options = {}) {
         const FUNCNAME = "jez.tileDelete(tileId, options={})";
         const FNAME = FUNCNAME.split("(")[0]
         const TL = options?.traceLvl ?? 0
         if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
         if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "tileId", tileId, "options", options);
-        return await jez.deleteEmbeddedDocs("Tile", [tileId], {traceLvl: TL})
+        return await jez.deleteEmbeddedDocs("Tile", [tileId], { traceLvl: TL })
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * If the token-mold module is active, check to see if renaming is enabled.  If it is, turn it off 
@@ -2526,31 +2526,31 @@ class jez {
         return (false)
     }
 
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Lifted from the MidiSRD module, just adding some documentation upon adding to jezlib
- * 
- * @param {Token} source Source of range distance (usually)
- * @param {Number} maxRange range of crosshairs
- * @param {String} icon Crosshairs Icon
- * @param {String} name Name to use for out of range error message
- * @param {Object} tokenData {width} -- Optional
- * @param {Number} snap - Optional snap position:  
- *                      2: half grid intersections, 
- *                      1: on grid intersections, 
- *                      0: no snap, 
- *                     -1: grid centers (default), 
- *                     -2: half grid centers
- * @param {Object} options {traceLvl: 0} -- Optional to specify trace level, if used preceding args
- *                                          all must be specified
- * @returns 
- * 
- * Example Calls
- *  const TEXTURE = texture || sourceItem.img
- *  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 30
- *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1,{traceLvl: 5})
- *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1)
- *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE)
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Lifted from the MidiSRD module, just adding some documentation upon adding to jezlib
+     * 
+     * @param {Token} source Source of range distance (usually)
+     * @param {Number} maxRange range of crosshairs
+     * @param {String} icon Crosshairs Icon
+     * @param {String} name Name to use for out of range error message
+     * @param {Object} tokenData {width} -- Optional
+     * @param {Number} snap - Optional snap position:  
+     *                      2: half grid intersections, 
+     *                      1: on grid intersections, 
+     *                      0: no snap, 
+     *                     -1: grid centers (default), 
+     *                     -2: half grid centers
+     * @param {Object} options {traceLvl: 0} -- Optional to specify trace level, if used preceding args
+     *                                          all must be specified
+     * @returns 
+     * 
+     * Example Calls
+     *  const TEXTURE = texture || sourceItem.img
+     *  const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 30
+     *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1,{traceLvl: 5})
+     *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE,aItem.name,{},-1)
+     *  let { x, y } = await jez.warpCrosshairs(aToken,MAX_RANGE,TEXTURE)
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
     static async warpCrosshairs(source, maxRange, icon, name = "Spell", tokenData = {}, snap = -1, options = {}) {
         const sourceCenter = source.center;
         let cachedDistance = 0;
@@ -3030,6 +3030,101 @@ class jez {
         return potTargs;
     }
 
-
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********
+    * Process the subject passed returning an Actor5e if possible. 
+    * 
+    * Inputs
+    *   subject: Actor5e, Token5e, or token id
+    *   fname: Name of the function calling this
+    * 
+    * Output
+    *   Returns either false or an actor5e data object
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static subjectToActor(subject, fname) {
+        let actor5e
+        if (!subject) return jez.badNews(`${fname} subject false must be Token5e, Actor5e, or Token.id`, "e")
+        if (typeof (subject) === "object") { // Presumably we have a Token5e or Actor5e
+            if (subject.constructor.name === "Token5e") actor5e = subject.actor
+            else if (subject.constructor.name === "Actor5e") actor5e = subject
+            else return jez.badNews(`${fname} subject is type '${typeof (subject)}' not Token5e or Actor5e`, "e")
+        } else
+            if ((typeof (subject) === "string") && (subject.length === 16))
+                actor5e = jez.getTokenById(subject).actor
+            else
+                return jez.badNews(`${fname} subject is not a Token5e, Actor5e, or Token.id: ${subject}`, "e")
+        console.log("returning:", actor5e)
+        return actor5e
+    }
+    /***************************************************************************************************
+     * Function that returns the convenientDescription from effectName of the subject
+     ***************************************************************************************************/
+    static async getCEDesc(subject, effectName, optionObj = {}) {
+        const FUNCNAME = "getCEDesc(subject, effect, optionObj={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = optionObj?.traceLvl ?? 0
+        if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
+            "optionObj", optionObj);
+        //-----------------------------------------------------------------------------------------------
+        // Convert subject into actor5e data object
+        //
+        let actor5e = jez.subjectToActor(subject, FNAME)
+        if (TL > 2) jez.trace(`${TAG} actor5e`, actor5e)
+        if (!actor5e) jez.badNews(`${TAG} Can not continue`, "e")
+        //-----------------------------------------------------------------------------------------------
+        // Grab the data object from the subject for effectName, trying up to 20 times, chilling 10ms 
+        // after each attempt.
+        //
+        let effect
+        for (let i = 1; i <= 20; i++) {
+            effect = actor5e.effects.find(i => i.data.label === effectName);
+            if (effect) break
+            console.log(`Attempt #`, i)
+            await jez.wait(20)
+        }
+        if (TL > 2) jez.trace(`${TAG} actor5e effect`, effect)
+        if (!effect) return jez.badNews(`"${effectName}" not found on subject`, "i")
+        //-----------------------------------------------------------------------------------------------
+        // return the convienetDescription
+        //
+        return effect.data.flags.convenientDescription
+    }
+    /***************************************************************************************************
+     * Function that sets the convenientDescription to description on effectName of the subject
+     ***************************************************************************************************/
+    static async setCEDesc(subject, effectName, description, optionObj = {}) {
+        const FUNCNAME = "setCEDesc(subject, effect, description, optionObj={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = optionObj?.traceLvl ?? 0
+        if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
+            "description", description, "optionObj", optionObj);
+        if (TL > 3) jez.trace(`${TAG} data subject:`, subject)
+        //-----------------------------------------------------------------------------------------------
+        // Chill for a little bit to make sure the effect being modified has settled down
+        //
+        await jez.wait(150)
+        //-----------------------------------------------------------------------------------------------
+        // Convert subject into actor5e data object
+        //
+        let actor5e = jez.subjectToActor(subject, FNAME)
+        if (TL > 2) jez.trace(`${TAG} actor5e`, actor5e)
+        if (!actor5e) jez.badNews(`${TAG} Can not continue`, "e")
+        //-----------------------------------------------------------------------------------------------
+        // Grab the data object from the subject for effectName
+        //
+        let effect = actor5e.effects.find(i => i.data.label === effectName);
+        if (TL > 2) jez.trace(`${TAG} actor5e effect`, effect)
+        if (!effect) return jez.badNews(`"${effectName}" not found on subject`, "i")
+        //-----------------------------------------------------------------------------------------------
+        // modify the description
+        //
+        effect.data.flags = { convenientDescription: description }
+        if (TL > 2) jez.trace(`${TAG} effect.data.flags`, effect.data.flags)
+        await effect.data.update({ 'flags': effect.data.flags });
+        if (TL > 2) jez.trace(`${TAG} effect.data`, effect.data)
+        await effect.update({ 'changes': effect.data.changes });
+        if (TL > 2) jez.trace(`${TAG} effect`, effect)
+    }
 } // END OF class jez
 Object.freeze(jez);
