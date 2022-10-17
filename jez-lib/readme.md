@@ -88,9 +88,9 @@ The functions currently included in this module are (all need to be proceeded by
 * **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
 * 
 * **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
-* **[getCEDesc()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
-* **[setCEDesc()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
-                                     
+* **[getCEDesc()](#getcedescsubject-effectname-optionobj--)** -- Converts passed subject and returns Actor5e object.
+* **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
+                                
 More about many of these in the following sections. 
 
 ---
