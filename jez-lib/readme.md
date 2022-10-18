@@ -785,8 +785,22 @@ Note: This operates on effect by name which can result in unexpected results if 
 * **effectName1** & **effectName2** are strings that name effects on their respective token actors.
 
 ~~~javascript
-jez.pairEffects(aActor, CONDITION1, aActor, CONDITION2)
+jez.pairEffects(aToken.id, CONDITION1, aToken.id, CONDITION2)
 ~~~
+
+Issues will occur if a player is trying to update a token they don't have rights to, in this case, use the Fancier Example.
+
+<details> <summary>Fancier Example</summary>
+
+This one uses a library function to fetch a run as GM macro that wraps the pair effects function.  If using this, be sure to use the token.id or effect.uuid form of this call (the others explode into virtual flames).
+
+~~~javascript
+const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
+if (!GM_PAIR_EFFECTS) return 
+GM_PAIR_EFFECTS.execute(aToken.id, "Concentrating", tToken.id, EFFECT_NAME)
+~~~
+
+</details>
 
 The function adds a line to the bottom of both effects that triggers [Remove_Paired_Effect](../Utility_Macros#remove-paired-effect) macro when the effect is removed.  That macro will then exterminate the other member of the pair.  
 
