@@ -777,6 +777,8 @@ The function returns a boolean value with false indicating a problem encountered
 ---
 ### pairEffects(subject1, effectName1, subject2, effectName2)
 
+Alternatively it can be called as **pairEffects(effect1.Uuid, effect2.Uuid)**.  This seems avoids possible ambiguities caused by multiple effects with the same name.  Though, it can be tricky to nab those uuid's for the effects.
+
 Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to named effect on the pair of tokens supplied.  
 
 Note: This operates on effect by name which can result in unexpected results if multiple effects on a an actor have the same name.  Not generally an issue, but it might be.
