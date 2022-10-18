@@ -13,7 +13,7 @@ let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL>1) jez.trace(`${TAG} === Starting ===`);
 if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+const LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
 //---------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
 let aToken;         
@@ -38,7 +38,7 @@ if (args[0] === "each") doEach({traceLvl:TL});					     // DAE everyround
 // DamageBonus must return a function to the caller
 if (args[0]?.tag === "DamageBonus") return(doBonusDamage({traceLvl:TL}));   
 if (args[0] === "off") await doOff({traceLvl:TL});                   // DAE removal
-if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
+if (TL>1) jez.trace(`=== Finished === ${MACRONAME} ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY

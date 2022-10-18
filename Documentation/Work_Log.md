@@ -331,6 +331,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.18 Another update to Magic weapon, this time it uses jez.setCEDesc library calls to manage the convenientDescription previously set with direct code and CE_DESC
 
+22.10.18 Created CESDescUpdate as a runAsGM macro that is used by new library function jez.setCEDescAsGM() which wraps jez.setCEDesc with GM Authority.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

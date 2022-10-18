@@ -1,4 +1,4 @@
-const MACRONAME = "test_ceDesc.0.1.js"
+const MACRONAME = "test_ceDesc.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * This macro is intended to be run as an onUse macro from a testing ability with one token targeted.  
  * It does the following
@@ -8,10 +8,11 @@ const MACRONAME = "test_ceDesc.0.1.js"
  *   4. Use the get_ceDesc() function and display the updated effect description
  *  
  * 10/17/22 0.1 Creation of Macro
+ * 10/18/22 0.2 Addressing permission issue with setCEDesc
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 0;                               // Trace Level for this macro
+const TL = 5;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 const EFFECT = "Frightened"
 //-----------------------------------------------------------------------------------------------
@@ -35,7 +36,9 @@ const CE_DESC1 = await jez.getCEDesc(tToken, EFFECT, { traceLvl: TL })
 //
 const NEW_DESC = "String describing the effect of the effect!"
 if (TL > 3) jez.trace(`${TAG} data tActor:`,tActor)  
-await jez.setCEDesc(tActor, EFFECT, NEW_DESC, { traceLvl: TL })
+// await setCEDesc(tActor, EFFECT, NEW_DESC, { traceLvl: TL })
+await setCEDescAsGM(tToken.id, EFFECT, NEW_DESC, { traceLvl: TL })
+
 //-----------------------------------------------------------------------------------------------
 // Read the convenientDescription from the effect after the modification
 //
@@ -77,14 +80,14 @@ const CE_DESC2 = await jez.getCEDesc(tActor, EFFECT, { traceLvl: TL })
 /***************************************************************************************************
  * Function that sets the convenientDescription to description on effectName of the subject
  ***************************************************************************************************/
-//  async function setCEDesc(subject, effectName, description, optionObj = {}) {
+// async function setCEDesc(subject, effectName, description, optionObj = {}) {
 //     const FUNCNAME = "setCEDesc(subject, effect, description, optionObj={})";
 //     const FNAME = FUNCNAME.split("(")[0]
+//     const TAG = `jez.${FNAME} |`
 //     const TL = optionObj?.traceLvl ?? 0
 //     if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
 //     if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
-//         "description",description,"optionObj", optionObj);
-//     if (TL > 3) jez.trace(`${TAG} data subject:`,subject)  
+//         "description", description, "optionObj", optionObj);
 //     //-----------------------------------------------------------------------------------------------
 //     // Chill for a little bit to make sure the effect being modified has settled down
 //     //
@@ -93,23 +96,35 @@ const CE_DESC2 = await jez.getCEDesc(tActor, EFFECT, { traceLvl: TL })
 //     // Convert subject into actor5e data object
 //     //
 //     let actor5e = jez.subjectToActor(subject, FNAME)
-//     if (TL > 2) jez.trace(`${TAG} actor5e`,actor5e)
-//     if (!actor5e) jez.badNews(`${TAG} Can not continue`,"e")
+//     if (TL > 2) jez.trace(`${TAG} actor5e`, actor5e)
+//     if (!actor5e) jez.badNews(`${TAG} Can not continue`, "e")
 //     //-----------------------------------------------------------------------------------------------
 //     // Grab the data object from the subject for effectName
 //     //
 //     let effect = actor5e.effects.find(i => i.data.label === effectName);
-//     if (TL > 2) jez.trace(`${TAG} actor5e effect`,effect)
-//     if (!effect) return jez.badNews(`"${effectName}" not found on subject`,"i")
+//     if (TL > 2) jez.trace(`${TAG} actor5e effect`, effect)
+//     if (!effect) return jez.badNews(`"${effectName}" not found on subject`, "i")
 //     //-----------------------------------------------------------------------------------------------
 //     // modify the description
 //     //
 //     effect.data.flags = { convenientDescription: description }
-//     if (TL > 2) jez.trace(`${TAG} effect.data.flags`,effect.data.flags)
+//     if (TL > 2) jez.trace(`${TAG} effect.data.flags`, effect.data.flags)
 //     await effect.data.update({ 'flags': effect.data.flags });
-//     if (TL > 2) jez.trace(`${TAG} effect.data`,effect.data)
-//     await effect.update({ 'changes': effect.data.changes });
-//     if (TL > 2) jez.trace(`${TAG} effect`,effect)
+//     if (TL > 2) jez.trace(`${TAG} effect.data`, effect.data)
+//     //-----------------------------------------------------------------------------------------------
+//     // Perform the update by calling a run as GM macro
+//     //
+//     // const CEDescUpdate = game.macros?.getName("CEDescUpdate");
+//     // if (!CEDescUpdate) return jez.badNews(`Cannot locate CEDescUpdate GM Macro`,"e");
+//     // if (!CEDescUpdate.data.flags["advanced-macros"].runAsGM) 
+//     //     return jez.badNews(`CEDescUpdate "Execute as GM" needs to be checked.`,"e");
+//     // console.log('>>> effect',effect)
+//     // CEDescUpdate.execute(effect, { 'flags': effect.data.flags }); 
+//     //-----------------------------------------------------------------------------------------------
+//     // Old fashined way
+//     //
+//     // await effect.update({ 'changes': effect.data.changes });
+//     if (TL > 2) jez.trace(`${TAG} effect`, effect)
 // }
 /***************************************************************************************************
  * Process the subject passed returning an Actor5e if possible. 
@@ -136,3 +151,26 @@ const CE_DESC2 = await jez.getCEDesc(tActor, EFFECT, { traceLvl: TL })
 //     console.log("returning:", actor5e)
 //     return actor5e
 // }
+
+/***************************************************************************************************
+ * Call CEDescUpdate(...), a Run as GM wrapper for setCEDesc(...) 
+ ***************************************************************************************************/
+ async function setCEDescAsGM(subject, effectName, description, optionObj = {}) {
+    const FUNCNAME = "setCEDescAsGM(subject, effect, description, optionObj={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TL = optionObj?.traceLvl ?? 0
+    if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
+    if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
+        "description", description, "optionObj", optionObj);
+    //-----------------------------------------------------------------------------------------------
+    // Make sure our Run as GM Macro exists and has appropriate permission
+    //
+    const CEDescUpdate = game.macros?.getName("CEDescUpdate");
+    if (!CEDescUpdate) return jez.badNews(`Cannot locate CEDescUpdate GM Macro`,"e");
+    if (!CEDescUpdate.data.flags["advanced-macros"].runAsGM) 
+        return jez.badNews(`CEDescUpdate "Execute as GM" needs to be checked.`,"e");
+    //-----------------------------------------------------------------------------------------------
+    // Call the Macro with arguments
+    //
+    CEDescUpdate.execute(subject, effectName, description, optionObj); 
+ }

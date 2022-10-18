@@ -76,6 +76,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
+* **[setCEDescAsGM()](#setcedescasgmsubject-effectname-description-optionobj--)** -- Wrapper for setCEDesc() adding RunAsGM.
 * **[spawnAt(MINION, aToken, aActor, aItem, argObj)](#spawnatminion-atoken-aactor-aitem-argobj)** -- this one is ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.* **[suppressTokenMoldRenaming(\<delay = 500\>, \<{traceLvl:1}\>)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** -- Suppresses token-mold renaming for specified number of milliseconds
 * **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
 * **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
@@ -1198,6 +1199,63 @@ const NEW_DESC = "String describing the effect of the effect!";
 const TL = 2;
 
 await jez.setCEDesc(tToken, EFFECT, NEW_DESC, { traceLvl: TL });
+```
+</details>
+
+Related Function: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**, **[setCEDescAsGM()](#setcedescasgmsubject-effectname-optionobj--)**
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### setCEDescAsGM(subject, effectName, description, optionObj = {})
+
+Wraps **[setCEDesc()](#setcedescsubject-effectname-optionobj--)** with a call to **CEDescUpdate** runAsGM macro that simply passes the arguments along.  Because this is going through an execute call, objects lose some structure which breaks the check for Actor5e and Token5e object types, so, the subject **MUST** be a *token.id* string!
+
+<details> <summary>CEDescUpdate.0.2.js code</summary>
+
+The following macro (or newer) must exist and have run as GM turned on.
+
+```javascript
+const MACRONAME = "CEDescUpdate.0.2.js"
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Run this macro with "Execute as GM" checked. It updates an effect,
+ * See code for loading the variables for required arguments.
+ * 
+ * 10/18/22 0.1 Creation of Macro 
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+const FUNCNAME = `${MACRO}(subject, effect, description, optionObj={})`;
+const FNAME = FUNCNAME.split("(")[0]
+const TAG = `${FNAME} |`
+jez.log(`============== Starting === ${MACRONAME} =================`);
+for (let i = 0; i < args.length; i++) jez.log(` CEDescUpdate >>> args[${i}]`, args[i]);
+if (args.length != 4) return jez.badNews(`${TAG} Wrong number of arguments`)
+//---------------------------------------------------------------------------------------------------
+// Load our variables from the passed arguments
+//
+let subject = args[0]       // Must be a token.id
+let effectName = args[1]    
+let description = args[2]
+let optionObj = args[3]
+const TL = optionObj?.traceLvl ?? 0
+//---------------------------------------------------------------------------------------------------
+// Print some log messages
+//
+if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
+if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
+    "description", description, "optionObj", optionObj);
+//---------------------------------------------------------------------------------------------------
+// Do some input validation
+//
+if (typeof subject !== "string") return jez.badNews(`${TAG} First argument must be a string`,"e")           
+if (subject.length !== 16) return jez.badNews(`${TAG} First argument must be 16 characters`,"e")           
+if (typeof effectName !== "string") return jez.badNews(`${TAG} Second argument must be a string`,"e")           
+if (typeof description !== "string") return jez.badNews(`${TAG} Third argument must be a string`,"e")           
+//---------------------------------------------------------------------------------------------------
+// Make library call, importantly as GM
+//
+jez.setCEDesc(subject, effectName, description, optionObj)
 ```
 </details>
 

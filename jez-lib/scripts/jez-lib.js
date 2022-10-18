@@ -1328,7 +1328,7 @@ class jez {
      **************************************************************************************************************/
     static async pairEffects(...args) {
         const FUNCNAME = "jez.pairEffects(...args)"
-        let trcLvl = 5;
+        let trcLvl = 0;
         jez.trc(3, trcLvl, `=== Called ${FUNCNAME} ===`)
         for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `jez.pairEffects | args[${i}]`, args[i]);
         if (args.length !== 2 && args.length !== 4)
@@ -3061,6 +3061,7 @@ class jez {
     static async getCEDesc(subject, effectName, optionObj = {}) {
         const FUNCNAME = "getCEDesc(subject, effect, optionObj={})";
         const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
         const TL = optionObj?.traceLvl ?? 0
         if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
         if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
@@ -3095,11 +3096,11 @@ class jez {
     static async setCEDesc(subject, effectName, description, optionObj = {}) {
         const FUNCNAME = "setCEDesc(subject, effect, description, optionObj={})";
         const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
         const TL = optionObj?.traceLvl ?? 0
         if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
         if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
             "description", description, "optionObj", optionObj);
-        if (TL > 3) jez.trace(`${TAG} data subject:`, subject)
         //-----------------------------------------------------------------------------------------------
         // Chill for a little bit to make sure the effect being modified has settled down
         //
@@ -3125,6 +3126,28 @@ class jez {
         if (TL > 2) jez.trace(`${TAG} effect.data`, effect.data)
         await effect.update({ 'changes': effect.data.changes });
         if (TL > 2) jez.trace(`${TAG} effect`, effect)
+    }
+    /***************************************************************************************************
+     * Call CEDescUpdate(...), a Run as GM wrapper for setCEDesc(...) 
+     ***************************************************************************************************/
+    static async setCEDescAsGM(subject, effectName, description, optionObj = {}) {
+        const FUNCNAME = "setCEDescAsGM(subject, effect, description, optionObj={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = optionObj?.traceLvl ?? 0
+        if (TL === 1) jez.trace(`--- Called ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called ${FUNCNAME} ---`, "subject", subject, "effectName", effectName,
+            "description", description, "optionObj", optionObj);
+        //-----------------------------------------------------------------------------------------------
+        // Make sure our Run as GM Macro exists and has appropriate permission
+        //
+        const CEDescUpdate = game.macros?.getName("CEDescUpdate");
+        if (!CEDescUpdate) return jez.badNews(`Cannot locate CEDescUpdate GM Macro`, "e");
+        if (!CEDescUpdate.data.flags["advanced-macros"].runAsGM)
+            return jez.badNews(`CEDescUpdate "Execute as GM" needs to be checked.`, "e");
+        //-----------------------------------------------------------------------------------------------
+        // Call the Macro with arguments
+        //
+        CEDescUpdate.execute(subject, effectName, description, optionObj);
     }
 } // END OF class jez
 Object.freeze(jez);
