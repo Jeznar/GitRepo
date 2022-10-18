@@ -784,11 +784,15 @@ Note: This operates on effect by name which can result in unexpected results if 
 * **subject1** & **subject2** are types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)
 * **effectName1** & **effectName2** are strings that name effects on their respective token actors.
 
+<details> <summary>Simple Example (that fails for players)</summary>
+
 ~~~javascript
 jez.pairEffects(aToken.id, CONDITION1, aToken.id, CONDITION2)
 ~~~
 
-Issues will occur if a player is trying to update a token they don't have rights to, in this case, use the Fancier Example. 
+</details>
+
+Issues with the simple example will occur if a player is trying to update a token they don't have rights to, in this case, use the Fancier Example. 
 
 <details> <summary>Fancier Example</summary>
 
