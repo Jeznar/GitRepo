@@ -808,9 +808,11 @@ GM_PAIR_EFFECTS.execute(aToken.id, "Concentrating", tToken.id, EFFECT_NAME)
 
 The function adds a line to the bottom of both effects that triggers [Remove_Paired_Effect](../Utility_Macros#remove-paired-effect) macro when the effect is removed.  That macro will then exterminate the other member of the pair.  
 
-It will result in something like as the last line in the effects:
+<details> <summary>It will result in something like the last line in the effects of this example.</summary>
 
 ![Remove_Paired_Effect.png](../Utility_Macros/Remove_Paired_Effect/Remove_Paired_Effect.png)
+
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 
