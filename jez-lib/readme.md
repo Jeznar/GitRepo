@@ -788,7 +788,7 @@ Note: This operates on effect by name which can result in unexpected results if 
 jez.pairEffects(aToken.id, CONDITION1, aToken.id, CONDITION2)
 ~~~
 
-Issues will occur if a player is trying to update a token they don't have rights to, in this case, use the Fancier Example.
+Issues will occur if a player is trying to update a token they don't have rights to, in this case, use the Fancier Example. 
 
 <details> <summary>Fancier Example</summary>
 
