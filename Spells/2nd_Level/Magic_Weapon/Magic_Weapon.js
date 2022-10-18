@@ -1,10 +1,11 @@
-const MACRONAME = "Magic_Weapon.0.3.js"
+const MACRONAME = "Magic_Weapon.0.4.js"
 /*****************************************************************************************
  * Implement Magic Weapon based on an ItemMacro that I literally found, source unknown.
  * 
  * 05/31/22 0.1 Creation of Macro
  * 10/15/22 0.2 Update format toward current standard, add VFX and link pair the effects
  * 10/15/22 0.3 Update to provide convenientDescription contents for the effects
+ * 10/18/22 0.4 Change to use jez.setCEDesc library calls instead of 0.3 code
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -113,10 +114,7 @@ async function doOnUse(options={}) {
     // Update the convenientDescription of the Concentrating effect to describe the spell
     //
     const CE_DESC = `Maintaining concentration on +${bonus} bonus to ${tToken.name}'s weapon`
-    let effect = await aActor.effects.find(i => i.data.label === "Concentrating");
-    effect.data.flags = { convenientDescription: CE_DESC }
-    await effect.data.update({ 'flags': effect.data.flags });
-    await effect.update({ 'changes': effect.data.changes });
+    await jez.setCEDesc(aActor, "Concentrating", CE_DESC, { traceLvl: TL });
     //-----------------------------------------------------------------------------------------------
     // Post completion message
     //
@@ -266,14 +264,9 @@ async function doOn(options={}) {
                     //
                     aActor.updateEmbeddedDocuments("Item", [copy_item]);
                     //-----------------------------------------------------------------------------------------------
-                    // Seach the target actor to find the just added effect
-                    let effect = aActor.effects.find(i => i.data.label === EFFECT_NAME);
-                    //-----------------------------------------------------------------------------------------------
                     // Define the desired modification to the changes data
                     const CE_DESC = `${weaponItem.name} has been enchanted with a +${bonus} bonus`
-                    effect.data.flags = { convenientDescription: CE_DESC }
-                    effect.data.update({ 'flags': effect.data.flags });
-                    effect.update({ 'changes': effect.data.changes });
+                    jez.setCEDesc(aActor, EFFECT_NAME, CE_DESC, { traceLvl: TL });
                 }
             },
             Cancel:
