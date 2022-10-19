@@ -3213,7 +3213,8 @@ class jez {
         //-----------------------------------------------------------------------------------------------
         // Call the Macro with arguments
         //
-        CEDescUpdate.execute(subject, effectName, description, optionObj);
+        CEDescUpdate.execute(subject, effectName, description);
+        // CEDescUpdate.execute(subject, effectName, description, optionObj);
     }
 } // END OF class jez
 Object.freeze(jez);

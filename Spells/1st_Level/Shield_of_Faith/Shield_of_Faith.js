@@ -1,4 +1,4 @@
-const MACRONAME = "Shield_of_Faith.0.3.js"
+const MACRONAME = "Shield_of_Faith.0.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * This spell macro built from a Sequencer example found at:
  * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Dynamic-Active-Effects-&-JB2A-Shield
@@ -8,6 +8,7 @@ const MACRONAME = "Shield_of_Faith.0.3.js"
  * 12/29/22 0.1 Creation of Macro
  * 01/23/22 0.2 Changed VFX opacity and placed beneath token
  * 10/18/22 0.3 General update, pair effects, create relevant convenientDescription
+ * 10/19/22 0.4 Converted to use jez.pairEffectsAsGM to fix player permission issue
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -157,14 +158,15 @@ async function doOff(options = {}) {
     // Pair the effects so concentrating will drop if the effect is terminated
     //
     await jez.wait(100)
-    jez.pairEffects(aToken, "Concentrating", tToken, EFFECT_NAME)
+    jez.pairEffectsAsGM(aToken.id, "Concentrating", tToken.id, EFFECT_NAME)
+    //jez.pairEffects(aToken, "Concentrating", tToken, EFFECT_NAME)
     //-----------------------------------------------------------------------------------------------
     // Update the convenientDescription of the Concentrating effect to describe the spell
     //
     const CE_DESC1 = `Maintaining Shield of Faith spell on ${tToken.name}`
     await jez.setCEDesc(aActor, "Concentrating", CE_DESC1, { traceLvl: TL });
     const CE_DESC2 = `Benefiting from ${aToken.name}'s Shield of Faith`
-    await jez.setCEDesc(tToken, EFFECT_NAME, CE_DESC2, { traceLvl: TL });
+    await jez.setCEDescAsGM(tToken, EFFECT_NAME, CE_DESC2, { traceLvl: TL });
     //-----------------------------------------------------------------------------------------------
     // Final message and close up shop
     //
