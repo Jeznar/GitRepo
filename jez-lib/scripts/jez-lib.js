@@ -1312,6 +1312,77 @@ class jez {
         return (await aActorItem.update(itemUpdate))
     }
 
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Function to run jez.pairEffects inside a runAsGM wrapper.  Accepts same arguments as 
+     * jez.pairEffects, though it flips subject to subject.id to avoid problems with the wrapper call not
+     * liking complex objects passed to it.
+     *
+     * Arguments are one of two formats:
+     *  subject1: any types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)
+     *  effectName1: string that names effects on respective subject
+     *  subject2 are Types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)
+     *  effectName2: string that names effects on respective subject
+     * 
+     * ALTERNATIVELY, effect.uuid mode takes two arguments
+     *  effectUuid1: 16 character string that identifies effect
+     *  effectUuid2: 16 character string that identifies effect
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9**********/
+     static pairEffectsAsGM(...args) {
+        const FUNCNAME = "jez.pairEffectsAsGM(...args)"
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `${FNAME} |`
+        const TL = 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+        //-----------------------------------------------------------------------------------------------
+        // Process the args to see what we have.  Two is effect.uuid mode, Four is older, others are bad
+        //
+        if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`${TAG} args[${i}]`, args[i]);
+        if (args.length !== 2 && args.length !== 4)
+            return jez.badNews(`Bad Argument count (${args.length}) provided to ${FNAME}`)
+        let uuidMode = false                    // False indicates subject & effect pairs
+        if (args.length === 2) uuidMode = true  // True indicates uuid call approach
+        //-----------------------------------------------------------------------------------------------
+        // Load up the runAsGM wrapper, quit if can not be found
+        //
+        const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects")
+        if (!GM_PAIR_EFFECTS) return
+        //-----------------------------------------------------------------------------------------------
+        // If we are in uuidMode, call the runAsGM wrapper macro with the two arguments and quit
+        //
+        if (uuidMode) {
+            let effectUuid1 = args[0]
+            let effectUuid2 = args[1]
+            if (TL > 1) jez.trace(`${TAG} Running in uuidMode`);
+            GM_PAIR_EFFECTS.execute(effectUuid1, effectUuid2)
+            return
+        }
+        //-----------------------------------------------------------------------------------------------
+        // Must have four arguments.  If the subjects are Token5e or Actor5e objects, need to change them
+        // to token.id or actor.id values.
+        //
+        if (TL > 1) jez.trace(`${TAG} Running in 4 Argument mode`);
+        let subject1 = getSubjectId(args[0])
+        let effectName1 = args[1]
+        let subject2 = getSubjectId(args[2])
+        let effectName2 = args[3]
+        if (!subject1 || !subject2) return  // subject will be false if could not be parsed
+        if (TL > 1) jez.trace(`${TAG} Subject Id's: ${subject1}, ${subject2}`);
+        function getSubjectId(subject) {
+            const TAG = `${FNAME} getSubjectId |`
+            if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
+                if (subject.constructor.name === "Token5e" || subject.constructor.name === "Actor5e")
+                    return (subject.id)
+                return jez.badNews(`${TAG} subject (${subject.name}) is object but not Token5e or Actor5e`)
+            }
+            if ((typeof (subject) === "string") && (subject.length === 16)) return (subject)
+            return jez.badNews(`${TAG} subject (${subject}) could not be parsed`)
+        }
+        //-----------------------------------------------------------------------------------------------
+        // If we are in uuidMode, call the runAsGM wrapper macro with the two arguments and quit
+        //
+        GM_PAIR_EFFECTS.execute(subject1, effectName1, subject2, effectName2)
+    }
     /**************************************************************************************************************
      * Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to
      * named effect on the pair of tokens supplied.
@@ -2228,12 +2299,8 @@ class jez {
      * 
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
     static getMacroRunAsGM(macroName) {
-        if (typeof macroName !== "string") {
-            let msg = `isMacroRunAsGM() received non-string paramater.  Bad, bad, programmer.`
-            console.log(msg, macroName)
-            ui.notifications.error(`ERROR: ${msg}`)
-            return (false)
-        }
+        if (typeof macroName !== "string")
+            return jez.badNews(`isMacroRunAsGM() received non-string paramater.  Bad, bad, programmer.`,'e')
         const ACTOR_UPDATE = game.macros?.getName(macroName);
         if (!ACTOR_UPDATE) return jez.badNews(`Cannot locate ${macroName} GM Macro`, "Error");
         if (!ACTOR_UPDATE.data.flags["advanced-macros"].runAsGM)
@@ -3052,7 +3119,6 @@ class jez {
                 actor5e = jez.getTokenById(subject).actor
             else
                 return jez.badNews(`${fname} subject is not a Token5e, Actor5e, or Token.id: ${subject}`, "e")
-        console.log("returning:", actor5e)
         return actor5e
     }
     /***************************************************************************************************

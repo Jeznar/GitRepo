@@ -333,6 +333,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.18 Created CESDescUpdate as a runAsGM macro that is used by new library function jez.setCEDescAsGM() which wraps jez.setCEDesc with GM Authority.
 
+22.10.19 Converted Magic Weapon to use newly created jez.pairEffectsAsGM to fix player permission issue.  
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

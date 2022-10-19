@@ -1,4 +1,4 @@
-const MACRONAME = "Magic_Weapon.0.4.js"
+const MACRONAME = "Magic_Weapon.0.5.js"
 /*****************************************************************************************
  * Implement Magic Weapon based on an ItemMacro that I literally found, source unknown.
  * 
@@ -6,6 +6,7 @@ const MACRONAME = "Magic_Weapon.0.4.js"
  * 10/15/22 0.2 Update format toward current standard, add VFX and link pair the effects
  * 10/15/22 0.3 Update to provide convenientDescription contents for the effects
  * 10/18/22 0.4 Change to use jez.setCEDesc library calls instead of 0.3 code
+ * 10/19/22 0.5 Converted to use jez.pairEffectsAsGM to fix player permission issue
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -100,7 +101,7 @@ async function doOnUse(options={}) {
     // Pair the effects so concentrating will drop if the effect is terminated
     //
     await jez.wait(100)
-    jez.pairEffects(aToken, "Concentrating", tToken, EFFECT_NAME)
+    jez.pairEffectsAsGM(aToken.id, "Concentrating", tToken.id, EFFECT_NAME)
     //-------------------------------------------------------------------------------------------------------------
     // Launch the VFX on the target
     //
@@ -120,7 +121,7 @@ async function doOnUse(options={}) {
     //
     msg = `${aToken.name} has given a weapon magical properties.`
     postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return (true);
 }
 /***************************************************************************************************
