@@ -4,7 +4,7 @@
   "img": "Icons_JGB/Items/Mace-of-Terror.png",
   "data": {
     "description": {
-      "value": "<p>This magic weapon has <strong>3 charges</strong>. While holding it, you can use an action and expend 1 charge to release a wave of terror.</p>\n<p>Each creature of your choice in a <strong>30-foot radius</strong> extending from you must succeed on a <strong>DC 15 Wisdom</strong> saving throw or become frightened of you for <strong>1 minute</strong>.</p>\n<p>While it is frightened in this way, a creature:</p>\n<ul>\n<li>must spend its turns trying to <strong>move as far away from you </strong>as it can, and it can't willingly move to a space within 30 feet of you.</li>\n<li>It also <strong>can't take reactions</strong>.</li>\n<li>For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If it has nowhere it can move, the creature can use the Dodge action.</li>\n</ul>\n<p>At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.</p>\n<p>The mace <span style=\"text-decoration: underline;\">regains 1d3 expended charges daily at dawn.</span></p>\n<hr />\n<p><strong>FoundryVTT</strong>: The spell element of this weapon is handled by a seperate but very much related item: @Item[Qpv3LE1SOL2gd4VT]{Mace of Terror (Spell effect)}</p>",
+      "value": "<p>This magic weapon has <strong>3 charges</strong>. While holding it, you can use an action and expend 1 charge to release a wave of terror.</p>\n<p>Each creature of your choice in a <strong>30-foot radius</strong> extending from you must succeed on a <strong>DC 15 Wisdom</strong> saving throw or become frightened of you for <strong>1 minute</strong>.</p>\n<p>While it is frightened in this way, a creature:</p>\n<ul>\n<li>must spend its turns trying to <strong>move as far away from you </strong>as it can, and it can't willingly move to a space within 30 feet of you.</li>\n<li>It also <strong>can't take reactions</strong>.</li>\n<li>For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If it has nowhere it can move, the creature can use the Dodge action.</li>\n</ul>\n<p>At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.</p>\n<p>The mace <span style=\"text-decoration: underline;\">regains 1d3 expended charges daily at dawn.</span></p>\n<hr />\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">FoundryVTT</strong><span style=\"color: #191813; font-size: 13px;\">: The spell element of this weapon is handled by a seperate but very much related item:&nbsp;</span><a class=\"entity-link content-link\" style=\"box-sizing: border-box; user-select: text; border: 1px solid var(--color-border-dark-tertiary); color: #191813; font-size: 13px;\" draggable=\"true\" data-type=\"Item\" data-entity=\"Item\" data-id=\"4uOy936wOTKfGK2C\">&nbsp;Mace of Terror (Activate Effect)</a><span style=\"color: #191813; font-size: 13px;\">. This item is attached as a spell under the Magic Item tab.</span></p>",
       "chat": "<p>This magic weapon has 3 charges. While holding it, you can use an action and expend 1 charge to release a wave of terror. Each creature of your choice in a 30-foot radius extending from you must succeed on a DC 15 Wisdom saving throw or become frightened of you for 1 minute. While it is frightened in this way, a creature must spend its turns trying to move as far away from you as it can, and it can't willingly move to a space within 30 feet of you. It also can't take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If it has nowhere it can move, the creature can use the Dodge action. At the end of each of its turns, a creature can repeat the saving throw, ending the effect on itself on a success.</p>\n<p>The mace regains 1d3 expended charges daily at dawn.</p>",
       "unidentified": "Mace"
     },
@@ -97,16 +97,11 @@
       "foc": false,
       "ada": false,
       "mgc": true,
-      "sil": false,
-      "nodam": false,
-      "fulldam": false,
-      "halfdam": false,
-      "critOther": false
+      "sil": false
     },
     "proficient": false
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "ddbimporter": {
       "dndbeyond": {
@@ -172,15 +167,28 @@
     },
     "magicitems": {
       "enabled": true,
-      "charges": "0",
+      "charges": "3",
       "chargeType": "c1",
-      "rechargeable": false,
-      "recharge": "0",
+      "rechargeable": true,
+      "recharge": "1d3",
       "rechargeType": "t2",
-      "rechargeUnit": "r1",
+      "rechargeUnit": "r2",
       "destroy": false,
       "destroyCheck": "d1",
-      "spells": {},
+      "spells": {
+        "0": {
+          "id": "4uOy936wOTKfGK2C",
+          "name": "Mace of Terror (Activate Effect)",
+          "pack": "world",
+          "img": "Icons_JGB/Items/Mace-of-Terror.png",
+          "baseLevel": "1",
+          "level": "1",
+          "consumption": "1",
+          "upcast": "1",
+          "upcastCost": "1",
+          "flatDc": false
+        }
+      },
       "feats": {},
       "tables": {},
       "equipped": true,
@@ -196,13 +204,26 @@
     },
     "midi-qol": {
       "criticalThreshold": "20",
-      "onUseMacroName": ""
+      "onUseMacroName": "",
+      "fumbleThreshold": null,
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
     }
   }
 }

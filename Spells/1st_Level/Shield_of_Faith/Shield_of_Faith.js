@@ -166,7 +166,7 @@ async function doOff(options = {}) {
     const CE_DESC1 = `Maintaining Shield of Faith spell on ${tToken.name}`
     await jez.setCEDesc(aActor, "Concentrating", CE_DESC1, { traceLvl: TL });
     const CE_DESC2 = `Benefiting from ${aToken.name}'s Shield of Faith`
-    await jez.setCEDescAsGM(tToken, EFFECT_NAME, CE_DESC2, { traceLvl: TL });
+    await jez.setCEDescAsGM(tToken.id, EFFECT_NAME, CE_DESC2, { traceLvl: TL });
     //-----------------------------------------------------------------------------------------------
     // Final message and close up shop
     //

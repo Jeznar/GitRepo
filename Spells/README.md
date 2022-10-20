@@ -111,6 +111,7 @@ Since there should eventually be an enormous number of spells in this repo, this
 * [Mirror Image](2nd_Level#mirror-image) (ASE)
 * [Misty Step](2nd_Level#misty-step)
 * [Moonbeam](2nd_Level#moonbeam) (ASE)
+* [Phantasmal Force](2nd_Level#phantasmal-force)
 * [Protection from Poison](#protection-from-poison)
 * [Ray of Enfeeblement](2nd_Level#ray-of-enfeeblement)
 * [Scorching Ray](2nd_Level#scorching-ray) (ASE)

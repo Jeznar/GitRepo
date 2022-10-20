@@ -142,23 +142,3 @@ async function doEach() {
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
-/***************************************************************************************************
- * Modify existing effect to include a midi-qol overtime saving throw element
- ***************************************************************************************************/
- async function modConcEffect(tokenId) {
-    const EFFECT = "Concentrating"
-    //----------------------------------------------------------------------------------------------
-    // Seach the token to find the just added effect
-    //
-    await jez.wait(100)
-    let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
-    //jez.log(`**** ${EFFECT} found?`, effect)
-    if (!effect) {
-        msg = `${EFFECT} sadly not found on ${aToken.name}.`
-        ui.notifications.error(msg);
-        postResults(msg);
-        return (false);
-    }
-    //jez.log(">>>>>>>> effect",effect)
-    return
-}

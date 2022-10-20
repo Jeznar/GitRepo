@@ -182,13 +182,17 @@ async function doOn() {
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const SAVE_DC = LAST_ARG.item.data.save.dc
     const SAVE_TYPE = LAST_ARG.item.data.save.ability
+    let ceDesc = `Terrified of ${aToken.name}. Must move away and can only take Dash action or attempt to escape restraints.` 
     let overTimeValue = `turn=end,label=Terrified,saveDC=${SAVE_DC},saveAbility=${SAVE_TYPE},saveRemove=true`
     let effectData = [{
         label: TERRIFIED_COND,
         icon: TERRIFIED_ICON,
         origin: LAST_ARG.uuid,
         disabled: false,
-        flags: { dae: { stackable: false, macroRepeat: "startEveryTurn" } },
+        flags: { 
+            dae: { stackable: false, macroRepeat: "startEveryTurn" },
+            convenientDescription: ceDesc 
+        },
         duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
             { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `'${aToken.name}'`, priority: 20 },
