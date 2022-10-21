@@ -133,6 +133,7 @@ Since there should eventually be an enormous number of spells in this repo, this
 * [Cruel Puppetry](3rd_Level#cruel-puppetry)
 * [Crusader Mantle](3rd_Level#crusader-mantle)
 * [Dispel Magic](3rd_Level#dispel-magic)
+* [Fear](3rd_Level#fear)
 * [Fireball](3rd_Level#fireball)
 * [Fly](3rd_Level#fly)
 * [Lightning Bolt](3rd_Level#lightning-bolt)

@@ -7,7 +7,9 @@ const MACRONAME = "Phantasmal_Force.0.1.js"
  * 3. Pair the newly applied effect and concentration
  * 4. Update the convenientDescription of concentrating on caster
  * 5. Update the convenientDescription on the target
- * 6. Use Warpgate to spawn in an actor to represent the phantasmal effect
+ * 6. Use jez.spawnAt (Warpgate wrapper) to spawn in an actor to represent the phantasmal effect
+ * 7. Add effect to concentrating effect to remove summoned token on concentration drop
+ * 
  * 
  * 10/20/22 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
@@ -143,7 +145,7 @@ async function doOnUse(options = {}) {
     let effectTokenId = await summonToken(tToken)
     if (TL > 1) jez.trace(`${TAG} Token ID of spawned token`, effectTokenId);
     //-----------------------------------------------------------------------------------------------
-    // 7. Add watchdog effect to the afflicted token's effect to remove summoned on effect removal
+    // 7. Add effect to concentrating effect to remove summoned token on concentration drop
     //
     // Need to modify recently added EFFECT_NAME to include a call to DeleteTokenMacro effectTokenId
     //
@@ -179,19 +181,12 @@ async function doOnUse(options = {}) {
         //
         await effect.update({ 'changes': effect.data.changes });
     }
-
-
-
-
-
-
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
     if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)
-
-
-    msg = `Maybe say something useful...`
+    msg = `While the spell persists, <b>${tToken.name}</b> is afflicted by <b>${aToken.name}'s</b>
+    phantasm that may do 1d6 psychic damage per round to it.`
     postResults(msg)
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return true;

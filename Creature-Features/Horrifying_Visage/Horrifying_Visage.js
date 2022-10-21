@@ -50,7 +50,7 @@ const VFX_SCALE = 5.50;
 //
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
+if (args[0] === "each") doEach();					    
 
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 jez.log("")

@@ -13,6 +13,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Cruel Puppetry](#cruel-puppetry)
 * [Crusader Mantle](crusader-mantle)
 * [Dispel Magic](#dispel-magic)
+* [Fear](#fear)
 * [Fireball](#fireball)
 * [Fly](#fly)
 * [Haste](#haste)
@@ -153,6 +154,15 @@ When used, it simply plays a visual on the target.  Any saves or removal of effe
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 
 ---
+
+### Fear
+
+Implemented Fear complete with per turn saving throws. 
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
 ### Fireball
 
 While this spell worked just fine straight out of [Automated Animations](https://github.com/otigon/automated-jb2a-animations), I couldn't resist adding a bit fore VFX sophistication.
