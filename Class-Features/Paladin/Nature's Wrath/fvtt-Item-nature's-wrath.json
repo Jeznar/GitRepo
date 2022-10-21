@@ -1,0 +1,236 @@
+{
+  "name": "Nature's Wrath",
+  "type": "feat",
+  "img": "icons/magic/nature/root-vine-entangled-humanoid.webp",
+  "data": {
+    "description": {
+      "value": "<p><span style=\"color:#191813;font-size:13px\">You can use your Channel Divinity to invoke primeval forces to ensnare a foe. As an action, you can cause spectral vines to spring up and reach for a creature within 10 feet of you that you can see. The creature must succeed on a Strength or Dexterity saving throw (its choice) or be @JournalEntry[CZWEqV2uG9aDWJnD]{restrained}. While restrained by the vines, the creature repeats the saving throw at the end of each of its turns. On a success, it frees itself and the vines vanish.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 10,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "resources.tertiary.value",
+      "amount": 1
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Oath of Ancients Paladin",
+    "recharge": {
+      "value": null,
+      "charged": true
+    },
+    "attunement": null
+  },
+  "effects": [
+    {
+      "_id": "W4ZcRnVY49bAMnuV",
+      "changes": [
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "@attributes.spelldc",
+          "priority": "20"
+        },
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 9999
+      },
+      "icon": "modules/combat-utility-belt/icons/restrained.svg",
+      "label": "Restrained by Nature's Wrath",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "endEveryTurn",
+          "specialDuration": [
+            "None"
+          ],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "macro.itemMacro",
+        "data.attributes.movement.all"
+      ]
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "autoanimations": {
+      "killAnim": false,
+      "animLevel": true,
+      "options": {
+        "ammo": false,
+        "scaleToToken": false,
+        "enableCustomExplosion": false,
+        "customExplosion": ""
+      },
+      "override": true,
+      "allSounds": {
+        "item": {
+          "enableAudio": false,
+          "file": "",
+          "delay": 0,
+          "volume": 0.25
+        }
+      },
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": true,
+        "animLevel": false,
+        "name": "divinesmite",
+        "color": "blueyellow",
+        "enableCustom": false,
+        "delayStart": 500,
+        "loops": 1,
+        "loopDelay": 250,
+        "scale": 1
+      },
+      "animType": "t9",
+      "explodeVariant": "impact",
+      "explodeColor": "blue",
+      "explodeRadius": 5,
+      "explodeLoop": 1,
+      "explodeDelay": 0
+    },
+    "core": {
+      "sourceId": "Item.o24OVYmdJ3Udv1dq"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Nature's Wrath",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Natures_Wrath_0.4\"\n/*******************************************************************************************\n * Implement Nature's Wrath\n * \n * Description: You can use your Channel Divinity to invoke primeval forces to ensnare a foe.\n *   As an action, you can cause spectral vines to spring up and reach for a creature within \n *   10 feet of you that you can see. The creature must succeed on a Strength or Dexterity \n *   saving throw (its choice) or be restrained. While restrained by the vines, the creature \n *   repeats the saving throw at the end of each of its turns. On a success, it frees itself \n *   and the vines vanish.\n * \n * This will need an OnUse and a Each execution.\n * \n * 12/21/21 0.1 JGB Creation\n * 12/24/21 0.2 JGB Incorporate ideas from times_up_sample#1.0.1 and making this a DAE thing\n * 12/26/21 0.3 JGB Seemingly working version\n * 10/21/22 0.4 JGB FoundryVTT 9 fix: Swap deleteEmbeddedEntity for deleteEmbeddedDocuments\n *******************************************************************************************/\nconst DEBUG = false;\nconst MACRO = MACRONAME.split(\".\")[0]     // Trim of the version number and extension\nconst CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;\nlog(\"---------------------------------------------------------------------------\",\n    \"Starting\", `${MACRONAME} or ${MACRO}`);\nfor (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\nlet gameRound = game.combat ? game.combat.round : 0;\n\n//---------------------------------------------------------------------------------------\n// Set some global variables and constants\n//\nlet msg = \"\";\nlet aActor;         // Acting actor, creature that invoked the macro\nlet aToken;         // Acting token, token for creature that invoked the macro\nlet aItem;          // Active Item information, item invoking this macro\n\n//---------------------------------------------------------------------------------------\n// Define some additional handy global variables that I need often.  Not all will be used\n// in this macro, but I want them here for future use/reference.\n//\n// See https://gitlab.com/tposney/dae#lastarg for info on what is included in lastArg\n//\nconst lastArg = args[args.length - 1];\nif (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);\nif (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);\nif (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;\n\nlog(\"------- Obtained Global Values -------\",\n    `Active Token (aToken) ${aToken.name}`, aToken,\n    `Active Actor (aActor) ${aActor.name}`, aActor,\n    `Active Item (aItem) ${aItem.name}`, aItem);\n\n//---------------------------------------------------------------------------------------\n// Set some additional derived global constants\n//\nconst DEBUFF_NAME = \"Restrained by Nature's Wrath\" // aItem.name || \"Nature's Wraith\";\nconst DEBUFF_ICON = \"modules/combat-utility-belt/icons/restrained.svg\"\n                    // aItem.img || \"icons/magic/nature/root-vine-entangled-humanoid.webp\";\n\n//-------------------------------------------------------------------------------\n// Depending on where invoked call appropriate function to do the work\n//\nif (args[0]?.tag === \"OnUse\") doOnUse();   \t\t\t    // Midi ItemMacro On Use\nif (args[0] === \"on\") doOn();          \t\t        // DAE Application\nif (args[0] === \"off\") doOff();        \t\t\t    // DAE removal\nif (args[0] === \"each\") doEach();\t\t\t\t\t    // DAE removal\n//if (args[0]?.tag === \"DamageBonus\") doBonusDamage();    // DAE Damage Bonus\n\nlog(\"---------------------------------------------------------------------------\",\n    \"Finishing\", MACRONAME);\nreturn;\n /***************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************/\n /**************************************************************************************\n * Execute code for a ItemMacro onUse\n ***************************************************************************************/\nasync function doOnUse() {\n    const FUNCNAME = \"doOnUse()\";\n    log(\"---------------------------------------------------------------------------\",\n        \"Starting\", `${MACRONAME} ${FUNCNAME}`,\n        `Active Item (aItem) ${aItem.name}`, aItem);\n\n    //---------------------------------------------------------------------------------------\n    // Make sure exactly one token was targeted\n    //\n    if (!oneTarget()) {\n        await postResults(msg);\n        log(\"msg\",msg);\n        log(`Ending ${MACRONAME} ${FUNCNAME}`);\n        await wait(2000);\n        return;\n    }\n\n    //---------------------------------------------------------------------------------------\n    // Set Variables for the target\n    //\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id);    // Targeted Token\n    let tActor = tToken?.document?._actor;                      // Targeted Actor\n    log(\"----- Obtained Values -------\",\n        `Targeted token ${tToken?.data?.name}`, tToken,\n        `Targeted actor ${tActor?.name}`, tActor);\n\n    //---------------------------------------------------------------------------------------\n    // Obtain some useful info from environment\n    //\n    let saveDC = aActor.data.data.attributes.spelldc;\n    let tarDexSaveMod = tToken.document._actor.data.data.abilities.dex.save;\n    let tarStrSaveMod = tToken.document._actor.data.data.abilities.str.save;\n    log(\"*** Obtained values ***\",\n        \"saveDC\", saveDC,\n        \"tarDexSaveMod\", tarDexSaveMod,\n        \"tarStrSaveMod\", tarStrSaveMod);\n\n   \n    //---------------------------------------------------------------------------------------\n    // Thats all folks\n    //\n    postResults(msg);\n    log(\"---------------------------------------------------------------------------\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Each turn Execution - Each time on the target's turn per DAE setting\n ***************************************************************************************/\n async function doEach() {\n    const FUNCNAME = \"doEach()\";\n    log(\"--------------Each--------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    //---------------------------------------------------------------------------------------\n    // Obtain Save Info\n    //\n    let { saveType, saveDC } = getSaveInfo(aToken);\n    const flavor = `${CONFIG.DND5E.abilities[saveType]} <b>DC${saveDC}</b> to remove <b>${DEBUFF_NAME}</b> effect`;\n    log(\"---- Save Information ---\",\"saveType\",saveType,\"saveDC\",saveDC,\"flavor\",flavor);\n\n    let save = (await aActor.rollAbilitySave(saveType, { flavor, chatMessage: true, fastforward: true })).total;\n    log(\"save\",save);\n    if (save > saveDC) {\n        log(`save was made with a ${save}`);\n        // if (aActor) aActor.deleteEmbeddedEntity(\"ActiveEffect\", lastArg.effectId); // Obsolete at FVTT 9.x\n        if (aActor) aActor.deleteEmbeddedDocuments(\"ActiveEffect\", [lastArg.effectId]);\n        // remove the effect, this macro will be called again with \"off\" when the effect has been deleted.\n    } else log(`save failed with a ${save}`);\n\n    log(\"--------------Each-------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Execute code for a DAE Macro application (on) - nothing other than place holding\n ***************************************************************************************/\nasync function doOn() {\n    const FUNCNAME = \"doOn()\";\n    log(\"--------------On----------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n\n    // Get Actor by ID: let actor = game.actors.get(\"0HcZSUIUZ48WAPyv\")\n    // Get Item by ID:  let item = game.items.get(\"0HcZSUIUZ48WAPyv\")\n\n    //---------------------------------------------------------------------------------------\n    // Set Variables for the target\n    //\n    //let tToken = canvas.tokens.get(args[0]?.targets[0]?.id);    // Targeted Token\n    let tToken = canvas.tokens.get(lastArg.tokenId);\n    // let tActor = game.actors.get(lastArg.actorId);             \n    let tActor = canvas.tokens.get(lastArg.tokenId).actor;        // Targeted Actor\n    log(\"----- Obtained Values -------\",\n        `Targeted token ${tToken.name}`, tToken,\n        `Targeted actor ${tActor?.name}`,tActor);\n\n    //---------------------------------------------------------------------------------------\n    // Obtain Save Info\n    //\n    let { saveType, saveDC } = getSaveInfo(tToken);\n\n    //---------------------------------------------------------------------------------------\n    // Roll the saving throw\n    //\n    const flavor = `${CONFIG.DND5E.abilities[saveType]} <b>DC${saveDC}</b> to avoid <b>${DEBUFF_NAME}</b> effect`;\n    let save = await tToken.actor.rollAbilitySave(saveType, {\n        chatMessage: true,\n        fastForward: true,\n        flavor: `${CONFIG.DND5E.abilities[saveType]} <b>DC${saveDC}</b> to avoid <b>${DEBUFF_NAME}</b> effect`\n    });\n    log('Result of save', save);\n\n    //---------------------------------------------------------------------------------------\n    // If the target failed save then apply effect that will trigger an every turn save\n    //\n    if (save.total >= saveDC) {\n        msg = `${tToken.name} made its save.  Rolling ${save.total} vs ${saveDC} DC.`;\n        log(msg)\n        await wait(500)   // This pause allows the debuff to be placed by DAE before removal\n        //----------------------------------------------------------------------------------\n        // Check for debuff matching DEBUFF_NAME.  If it exists, remove it.\n        //\n        log(\" tToken.data.effects\",  tToken.data.actorData.effects)\n        let existingEffect = tActor.effects.find(ef => ef.data.label === DEBUFF_NAME) ?? null; \n         \n        if (existingEffect) {\n            msg = `${tToken.name} has ${DEBUFF_NAME} effect: `;\n            log(msg, existingEffect);\n            await existingEffect.delete();\n        } else {\n            msg = `${tToken.name} lacked ${DEBUFF_NAME} effect.`;\n            log(msg);\n        }\n    }\n    else {\n        msg = `${tToken.name} failed its save.  Rolling ${save.total} vs ${saveDC} DC.`;\n        log(msg);\n    }\n\n    log(\"--------------On----------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n * Fetch and return the save type and target number\n ***************************************************************************************/\nfunction getSaveInfo(tToken) {\n    let saveDC = args[1];\n    let tarDexSaveMod = tToken.document._actor.data.data.abilities.dex.save;\n    let tarStrSaveMod = tToken.document._actor.data.data.abilities.str.save;\n\n    //---------------------------------------------------------------------------------------\n    // Determine target's prefered stat for the save, and make save roll\n    //\n    let saveType = \"\";\n    if (tarDexSaveMod > tarStrSaveMod) {\n        log(`saveDC ${saveDC} - ${tToken.name} prefers Dex save, with a ${tarDexSaveMod} mod vs ${tarStrSaveMod}`);\n        saveType = \"dex\";\n    } else {\n        log(`saveDC ${saveDC} - ${tToken.name} prefers Str save, with a ${tarStrSaveMod} mod vs ${tarDexSaveMod}`);\n        saveType = \"str\";\n    }\n    return { saveType, saveDC };\n}\n\n/****************************************************************************************\n * Execute code for a DAE Macro application (on) - nothing other than place holding\n ***************************************************************************************/\nasync function doOff() {\n    const FUNCNAME = \"doOff()\";\n    log(\"--------------Off---------------------\", \"Starting\", `${MACRONAME} ${FUNCNAME}`);\n    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);\n    // do any clean up\n    log(\"--------------Off---------------------\", \"Finished\", `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/************************************************************************\n * Verify exactly one target selected, boolean return\n*************************************************************************/\nfunction oneTarget() {\n    if (!game.user.targets) {\n        msg = `Targeted nothing, must target single token to be acted upon`;\n        ui.notifications.warn(msg);\n        log(msg);\n        return (false);\n    }\n    if (game.user.targets.ids.length != 1) {\n        msg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n        ui.notifications.warn(msg);\n        log(msg);\n        return (false);\n    }\n    log(` targeting one target`);\n    return (true);\n}\n\n/***************************************************************************************\n * Post the results to chat card\n ***************************************************************************************/\n async function postResults(resultsString) {\n    const FUNCNAME = \"postResults(resultsString)\";\n    log(\"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\");\n    log(`Starting ${MACRONAME} ${FUNCNAME}`,`resultsString`, resultsString);\n\n    // let chatmsg = await game.messages.get(itemCard.id)\n    let chatmsg = game.messages.get(args[0].itemCardId);\n    let content = await duplicate(chatmsg.data.content);\n    log(` chatmsg: `, chatmsg);\n    const searchString = /<div class=\"end-midi-qol-saves-display\">/g;\n    const replaceString = `<div class=\"end-midi-qol-saves-display\">${resultsString}`;\n    // log(\"============================ content before\", content)\n    content = await content.replace(searchString, replaceString);\n    // log(\"============================ content after\", content)\n    await chatmsg.update({ content: content });\n    await ui.chat.scrollBottom();\n\n    log(\"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\",\n        `Finished`, `${MACRONAME} ${FUNCNAME}`);\n    return;\n}\n\n/****************************************************************************************\n* DEBUG Logging\n* \n* If passed an odd number of arguments, put the first on a line by itself in the log,\n* otherwise print them to the log seperated by a colon.  \n* \n* If more than two arguments, add numbered continuation lines. \n***************************************************************************************/\nfunction log(...parms) {\n    if (!DEBUG) return;             // If DEBUG is false or null, then simply return\n    let numParms = parms.length;    // Number of parameters received\n    let i = 0;                      // Loop counter\n    let lines = 1;                  // Line counter \n\n    if (numParms % 2) {  // Odd number of arguments\n        console.log(parms[i++])\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    } else {            // Even number of arguments\n        console.log(parms[i],\":\",parms[i+1]);\n        i = 2;\n        for ( i; i<numParms; i=i+2) console.log(` ${lines++})`, parms[i],\":\",parms[i+1]);\n    }\n}\n\n/****************************************************************************************\n * Tricksy little sleep implementation\n ***************************************************************************************/\n async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

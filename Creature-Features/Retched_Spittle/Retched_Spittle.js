@@ -1,4 +1,4 @@
-const MACRONAME = "Retched_Spittle.1.2.js"
+const MACRONAME = "Retched_Spittle.1.3.js"
 /*****************************************************************************************
  * Ilyas Retched Spittle per MandyMod
  * 
@@ -15,6 +15,7 @@ const MACRONAME = "Retched_Spittle.1.2.js"
  * 02/06/22 0.1 Rebuild of Macro to include repeating save and general cleanup
  * 05/02/22 1.1 Update for Foundry 9.x
  * 08/02/22 1.2 Add convenientDescription
+ * 10/21/22 1.3 FoundryVTT 9 fix: Swap deleteEmbeddedEntity for deleteEmbeddedDocuments
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim off the version number and extension
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
@@ -107,7 +108,8 @@ async function doEach() {
   jez.log("save", save);
   if (save > SAVE_DC) {
     jez.log(`save was made with a ${save}`);
-    jez.log(aActor.deleteEmbeddedEntity("ActiveEffect", LAST_ARG.effectId))
+    // jez.log(aActor.deleteEmbeddedEntity("ActiveEffect", LAST_ARG.effectId)) // Obsolete at FVTT 9.x
+    if (aActor) aActor.deleteEmbeddedDocuments("ActiveEffect", [LAST_ARG.effectId]);
   } else jez.log(`save failed with a ${save}`);
   jez.log(`-------------Finished-${MACRONAME}-${FUNCNAME}--------------------`);
   return;

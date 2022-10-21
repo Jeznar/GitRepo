@@ -66,7 +66,6 @@ async function doEach() {
     jez.log("**** saveObj results", saveObj);
     if (save > saveDC) {
         jez.log(`save was made with a ${save}`);
-        //if (aActor) aActor.deleteEmbeddedEntity("ActiveEffect", lastArg.effectId);
         if (debuff) await debuff.delete();
         else jez.log(`${aToken.name} lacks ${DEBUFF_NAME} effect.`);
     } else {

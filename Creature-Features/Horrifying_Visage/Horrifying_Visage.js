@@ -1,4 +1,4 @@
-const MACRONAME = "Horrifying_Visage.0.2.js"
+const MACRONAME = "Horrifying_Visage.0.3.js"
 console.log(MACRONAME)
 /*****************************************************************************************
  * Implment Banshee Horrifying Visage 
@@ -12,6 +12,7 @@ console.log(MACRONAME)
  * 
  * 01/01/21 0.1 Creation of Macro
  * 08/02/22 0.2 Add convenientDescription
+ * 10/21/22 0.3 JGB FoundryVTT 9 fix: Swap deleteEmbeddedEntity for deleteEmbeddedDocuments
  *****************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim off the version number and extension
@@ -134,7 +135,8 @@ return;
          jez.log(`${aToken.name} failed with a ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)
      } else {
          jez.log(`${aToken.name} saved with a ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)
-         aActor.deleteEmbeddedEntity("ActiveEffect", LAST_ARG.effectId);
+         // aActor.deleteEmbeddedEntity("ActiveEffect", LAST_ARG.effectId); // Obsolete at FVTT 9.x
+         aActor.deleteEmbeddedDocuments("ActiveEffect", [LAST_ARG.effectId]);
      }
      jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
      return;

@@ -1,4 +1,4 @@
-const MACRONAME = "Natures_Wrath_0.3"
+const MACRONAME = "Natures_Wrath_0.4"
 /*******************************************************************************************
  * Implement Nature's Wrath
  * 
@@ -14,6 +14,7 @@ const MACRONAME = "Natures_Wrath_0.3"
  * 12/21/21 0.1 JGB Creation
  * 12/24/21 0.2 JGB Incorporate ideas from times_up_sample#1.0.1 and making this a DAE thing
  * 12/26/21 0.3 JGB Seemingly working version
+ * 10/21/22 0.4 JGB FoundryVTT 9 fix: Swap deleteEmbeddedEntity for deleteEmbeddedDocuments
  *******************************************************************************************/
 const DEBUG = false;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -141,7 +142,8 @@ async function doOnUse() {
     log("save",save);
     if (save > saveDC) {
         log(`save was made with a ${save}`);
-        if (aActor) aActor.deleteEmbeddedEntity("ActiveEffect", lastArg.effectId);
+        // if (aActor) aActor.deleteEmbeddedEntity("ActiveEffect", lastArg.effectId); // Obsolete at FVTT 9.x
+        if (aActor) aActor.deleteEmbeddedDocuments("ActiveEffect", [lastArg.effectId]);
         // remove the effect, this macro will be called again with "off" when the effect has been deleted.
     } else log(`save failed with a ${save}`);
 
