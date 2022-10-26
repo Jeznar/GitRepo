@@ -343,6 +343,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.21 Swap deleteEmbeddedEntity for deleteEmbeddedDocuments for Foundry 9.x compatibility in: Nature's Wrath, Horrifying_Visage, Retched_Spittle
 
+22.10.25 Added Abominable Yeti's gaze attack (Chilling Gaze) with an OverTime save roll.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -1,0 +1,243 @@
+{
+  "name": "Chilling Gaze",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/evil-eye-eerie-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Abominable Yeti targets one creature it can see within 30 feet of it.</p>\n<p>If the target can see the yeti, the target must succeed on a <strong>DC 18 CON save</strong> against this magic or take <strong>21 (6d6) cold damage</strong> and then be paralyzed for 1 minute, unless it is immune to cold damage.</p>\n<p>The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If the target&rsquo;s saving throw is successful, or if the effect ends on it, the target is immune to this Abominable Yeti's&nbsp;gaze for 1 hour.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> Immunity element is not automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Monster Manual pg 306",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [
+        [
+          "6d6[cold]",
+          "cold"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "con",
+      "dc": 18,
+      "scaling": "flat"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "properties": {
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false
+    },
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "ikz3b0axwkxdikxg",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Paralyzed",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 2,
+          "value": "turn=end,label=Save against Yeti's Chilling Gaze,saveDC=@attributes.spelldc,saveAbility=con,saveRemove=true,saveMagic=true,rollType=save",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "rounds": 10
+      },
+      "icon": "systems/dnd5e/icons/spells/evil-eye-eerie-3.jpg",
+      "label": "Chilling Gaze",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "macro.CE",
+        "flags.midi-qol.OverTime"
+      ]
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<strong>Chilling Gaze.</strong>",
+      "fullName": "Chilling Gaze."
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.I53MpJnzZq3ig3Ve"
+    },
+    "autoanimations": {
+      "version": 4,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "menuType": "spell",
+        "variant": "01",
+        "enableCustom": true,
+        "repeat": null,
+        "delay": null,
+        "customPath": "modules/jb2a_patreon/Library/Generic/RangedSpell/ProjectileIceShard01_01_Regular_Blue_30ft_1600x400.webm",
+        "onlyX": false
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "range",
+      "animation": "disintegrate",
+      "color": "pink",
+      "audio": {
+        "a01": {
+          "enable": false
+        },
+        "e01": {
+          "enable": false
+        }
+      },
+      "preview": false,
+      "explosions": {
+        "enable": true,
+        "menuType": "ice",
+        "animation": "icespikes",
+        "variant": "01",
+        "color": "white",
+        "enableCustom": false,
+        "radius": null,
+        "delay": null,
+        "below": false
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

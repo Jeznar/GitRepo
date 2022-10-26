@@ -14,6 +14,7 @@ I'll try to document functions as I add them to the repository.
 * **[Blessing of the Mother Night](#blessing-of-the-mother-night)** -- Baba Lysaga ability
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
 * **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
+* **[Chilling Gaze](#chilling-gaze)** -- Abominable Yeti's gaze attack
 * **[Charge, Sangzor](#charge-sangzor)** -- Implement Sangzor's charge
 * **[Claw Quasit](#claw_quasit)** -- Quasit attack that forces a save or poisoned with followup save each turn
 * **[Clay Golem Haste](#clay-golem-haste)** -- Applies a DAE Effect
@@ -125,6 +126,33 @@ To use this macro, select (not target, just select) the token to be affected and
 The Abbot's ability to **change shape** from Curse of Strahd..
 
 Essentially just the Druid Wild Shape ability reskinned.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Chilling Gaze**
+
+Abominable Yeti's gaze attack that targets one token, forces a saving throw and inflicts damage and a paralyzed effect (via a Convienent Effect) that lasts for up to 1 minute.  The afflicted can make a save at the end of each of its turns that is implemented with a Midi OverTime invocation.
+
+<details> <summary>DAE Effects Settings</summary>
+
+![Chilling_Gaze_DAE_Effects.png](Chilling_Gaze/Chilling_Gaze_DAE_Effects.png)
+
+Overtime effect value:
+
+~~~javascript
+turn=end,
+label=Save against Yeti's Chilling Gaze,
+saveDC=@attributes.spelldc,
+saveAbility=con,
+saveRemove=true,
+saveMagic=true,
+rollType=save
+~~~
+</details>
+
+TODO: This item could be extended to automatically handle the immunity element that applies after effect removal.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
