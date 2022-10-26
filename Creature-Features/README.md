@@ -29,6 +29,7 @@ I'll try to document functions as I add them to the repository.
 * **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
 * **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
+* **[Fear of Fire](#fearoffire)** -- Fear of fire ability (Abominable Yeti)
 * **[Frightening Gaze](#frightening-gaze)** -- One of a Lich's legendary actions
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Gray Ooze](#gray-ooze)** -- Gray Ooze Abilities
@@ -346,6 +347,14 @@ flags.midi-qol.OverTime CUSTOM turn=end,label=Fading Image,damageRoll=1d6,damage
 This item applies a d6 of damage and the prone condition.  It should be adjusted to make the number of dice *correct* for different height falls.
 
 ![Falling_Description.png](Falling/Falling_Description.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Fear of Fire**
+
+Ability that when clicked applies a debuff that lasts until the end of the user's next turn that causes all actions to occur at disadvantage. This needs to be applied manually by fire this ability the first time fire damage is received (it can be repeated as desired but has no further effect if the debuff is already in place).
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

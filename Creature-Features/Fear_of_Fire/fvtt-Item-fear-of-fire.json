@@ -1,0 +1,165 @@
+{
+  "name": "Fear of Fire",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/skills/yellow_18.jpg",
+  "data": {
+    "description": {
+      "value": "<p>If %TOKENNAME% takes <strong>fire</strong> damage, it has disadvantage on attack rolls and ability checks until the end of its next turn.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> Use this action (manually) whenever fire damage is recieved and the debuff is not already present.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Monster Manual pg 306",
+    "activation": {
+      "type": "special",
+      "cost": 1,
+      "condition": "Damaged by a Fire Attack"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "Quakes in fear of fire",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "vpv1p6mri5m2ju6y",
+      "changes": [
+        {
+          "key": "flags.midi-qol.disadvantage.all",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/skills/yellow_18.jpg",
+      "label": "Fear of Fire",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnEnd",
+            "longRest",
+            "shortRest"
+          ],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "true"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "flags.midi-qol.disadvantage.all"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<em><strong>Fear of Fire.</strong></em>",
+      "fullName": "Fear of Fire."
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.Xqy41QgCB52weCOa"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
