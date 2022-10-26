@@ -19,6 +19,7 @@ I'll try to document functions as I add them to the repository.
 * **[Claw Quasit](#claw_quasit)** -- Quasit attack that forces a save or poisoned with followup save each turn
 * **[Clay Golem Haste](#clay-golem-haste)** -- Applies a DAE Effect
 * **[Clay Golem Slam](#clay-golem-slam)** -- Reduces targets hit points by amount of damage inflicted
+* **[Cold Breath (Yeti)](#cold-breath--yeti-)** -- Yeti's cold breath cone attack
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
@@ -228,6 +229,16 @@ Simple macro that applies a DAE effect to implement Golem's haste ability.
 ### **Clay Golem Slam**
 
 Simple macro that applies a DAE effect to reduce target's max hit points by same amount as damage inflicted.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Cold Breath (Yeti)**
+
+No macro used, just configuration.  The VFX is implemented using automated animations in the same manner as the Cone of Cold spell. 
+
+This ability is charged, refreshing on a roll of 6 and is working as of this writting.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
