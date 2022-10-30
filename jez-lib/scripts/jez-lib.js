@@ -1327,7 +1327,7 @@ class jez {
      *  effectUuid1: 16 character string that identifies effect
      *  effectUuid2: 16 character string that identifies effect
      *********1*********2*********3*********4*********5*********6*********7*********8*********9**********/
-     static pairEffectsAsGM(...args) {
+    static pairEffectsAsGM(...args) {
         const FUNCNAME = "jez.pairEffectsAsGM(...args)"
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `${FNAME} |`
@@ -2300,7 +2300,7 @@ class jez {
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
     static getMacroRunAsGM(macroName) {
         if (typeof macroName !== "string")
-            return jez.badNews(`isMacroRunAsGM() received non-string paramater.  Bad, bad, programmer.`,'e')
+            return jez.badNews(`isMacroRunAsGM() received non-string paramater.  Bad, bad, programmer.`, 'e')
         const ACTOR_UPDATE = game.macros?.getName(macroName);
         if (!ACTOR_UPDATE) return jez.badNews(`Cannot locate ${macroName} GM Macro`, "Error");
         if (!ACTOR_UPDATE.data.flags["advanced-macros"].runAsGM)
@@ -3216,5 +3216,157 @@ class jez {
         CEDescUpdate.execute(subject, effectName, description);
         // CEDescUpdate.execute(subject, effectName, description, optionObj);
     }
+
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Fires a Beholder type eye ray at the target, effects controlled by passed options.
+     * 
+     * Many options exist, peak into code for what is available.
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {}) {
+        const FUNCNAME = "fireRay(TARGET_TOKEN, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = OPTIONS.traceLvl ?? 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting ${FNAME} ---`, "TARGET_TOKEN", TARGET_TOKEN,
+            "ACTIVE_TOKEN", ACTIVE_TOKEN, "OPTIONS", OPTIONS);
+        //-----------------------------------------------------------------------------------------------
+        // Read OPTIONS obj, stashing contents into local variables or setting to default values
+        //
+        const RAY_NAME = OPTIONS.RayName ?? "Devour Magic"
+        const VFX_COLOR = OPTIONS.VFXColor ?? "*"
+        let ceDesc = OPTIONS.ceDesc ?? `Randomly selected magic item affected by ${ACTIVE_TOKEN.name}'s ${RAY_NAME}`
+        const SAVE_TYPE = OPTIONS.saveType ?? "dex";
+        const SAVE_DC = OPTIONS.saveDC ?? ACTIVE_TOKEN.actor.data.data.attributes.spelldc
+        const EFFECT_ICON = OPTIONS.icon ?? "systems/dnd5e/icons/skills/yellow_26.jpg"
+        const EFFECT_NAME = OPTIONS.effectName ?? false
+        const DAMAGE_ROLL = OPTIONS.damageRoll ?? false
+        const DAMAGE_TYPE = OPTIONS.damageType ?? false
+        const ACTIVE_ITEM = OPTIONS.aItem ?? null
+        const PUSH_BACK = OPTIONS.pushBack ?? 0
+        const CHANGES = OPTIONS.changes ?? [{ key: `flags.gm-notes.notes`, mode: jez.ADD, value: ceDesc, priority: 20 }]
+        const SPEC_DUR = OPTIONS.specDur ?? ["turnStartSource", "newDay", "longRest", "shortRest"]
+        const ROUNDS = OPTIONS.rounds ?? 2
+        //-----------------------------------------------------------------------------------------------
+        // Set additional local variables
+        //
+        const FLAVOR = `Attempt <b>DC${SAVE_DC} ${SAVE_TYPE} save`;
+        let saved = true                                            // Success/Failure of save
+        const GAME_RND = game.combat ? game.combat.round : 0;
+        let msg = ""
+        //------------------------------------------------------------------------------------------------
+        // Launch an appropriate RayVXF from the source to the target
+        //
+        VFXRay(ACTIVE_TOKEN, TARGET_TOKEN, VFX_COLOR, { traceLvl: TL })
+        //-----------------------------------------------------------------------------------------------
+        // Roll an appropriate saving throw for our target
+        //
+        let saveObj = (await TARGET_TOKEN.actor.rollAbilitySave(SAVE_TYPE, { flavor: FLAVOR, chatMessage: true, fastforward: true }));
+        let saveRoll = saveObj.total
+        if (TL > 1) jez.trace(`${TAG} ${TARGET_TOKEN.name} rolled a ${saveRoll}`);
+        if (saveRoll < SAVE_DC) saved = false
+        //-----------------------------------------------------------------------------------------------
+        // If save was failed, and an effect name supplied apply an appropriate effect to TARGET_TOKEN
+        //
+        if (EFFECT_NAME) {
+            if (!saved) {
+                if (TL > 1) jez.trace(`${TAG} ${TARGET_TOKEN.name} - Failed & Effect Named`);
+                let effectData = [
+                    {
+                        label: EFFECT_NAME,
+                        icon: EFFECT_ICON,
+                        origin: ACTIVE_TOKEN.actor.uuid,
+                        disabled: false,
+                        duration: { rounds: ROUNDS, seconds: ROUNDS * 6, startRound: GAME_RND, startTime: game.time.worldTime },
+                        flags: {
+                            dae: { specialDuration: SPEC_DUR },
+                            convenientDescription: ceDesc,
+                            core: { statusId: true }
+                        },
+                        // changes: [{ key: `flags.gm-notes.notes`, mode: jez.ADD, value: ceDesc, priority: 20 }],
+                        changes: CHANGES,
+                    }];
+                jez.log("effectData", effectData)
+                MidiQOL.socket().executeAsGM("createEffects", { actorUuid: TARGET_TOKEN.actor.uuid, effects: effectData });
+            }
+            else ceDesc = `Unaffected.`    // No effect on a save
+        }
+        //-----------------------------------------------------------------------------------------------
+        // If damage roll indicated by settings of options parameter, roll and apply some damage
+        //
+        if (DAMAGE_ROLL && DAMAGE_TYPE) {
+            if (TL > 1) jez.trace(`${TAG} Need to apply ${DAMAGE_ROLL} ${DAMAGE_TYPE} damage to ${TARGET_TOKEN.name}`);
+            // Roll some damage
+            let damageRoll = new Roll(`${DAMAGE_ROLL}`).evaluate({ async: false });
+            if (TL > 1) jez.trace(`${TAG} Damage Rolled ${damageRoll.total}`, damageRoll)
+            game.dice3d?.showForRoll(damageRoll);
+            // Apply full damage to target, if it failed its save, otherwise half
+            if (!saved) {
+                new MidiQOL.DamageOnlyWorkflow(ACTIVE_TOKEN.actor, TARGET_TOKEN, damageRoll, DAMAGE_TYPE, [], damageRoll,
+                    { flavor: "No Workie", itemCardId: "new" /*args[0].itemCardId*/ });
+                MidiQOL.applyTokenDamage([{ damage: damageRoll.total, type: DAMAGE_TYPE }], damageRoll.total,
+                    new Set([TARGET_TOKEN]), ACTIVE_ITEM, new Set());
+                ceDesc = `It took ${damageRoll.total} ${DAMAGE_TYPE} damage from <b>${RAY_NAME}</b>.`
+            }
+            else {
+                let halfdam = Math.floor(damageRoll.total / 2)
+                new MidiQOL.DamageOnlyWorkflow(ACTIVE_TOKEN.actor, TARGET_TOKEN, damageRoll, DAMAGE_TYPE, [], damageRoll,
+                    { flavor: "No workie", itemCardId: "new" /*args[0].itemCardId*/ });
+                MidiQOL.applyTokenDamage([{ damage: halfdam, type: DAMAGE_TYPE }], halfdam,
+                    new Set([TARGET_TOKEN]), ACTIVE_ITEM, new Set());
+                ceDesc = `It took ${halfdam} ${DAMAGE_TYPE} damage from <b>${RAY_NAME}</b>.`
+            }
+
+        }
+        //-----------------------------------------------------------------------------------------------
+        // If push back indicated by settings of options parameter, push the target back 15.  
+        //
+        if (PUSH_BACK) {
+            let distance = 0
+            // Values of 1,2,3 are fine, just use as cound of spaces to push back
+            if ((PUSH_BACK === 1 || PUSH_BACK === 2 || PUSH_BACK === 3)) distance = PUSH_BACK
+            // Other values should be distance in feet, so divide by 5 and make an integer
+            else distance = Math.ceil(PUSH_BACK / 5)
+            if (distance !== 0 && distance !== 1 && distance !== 2 && distance !== 3)
+                return jez.badNews(`${TAG} Unsupported knockback distance, ${distance}`, "e")
+            if (TL > 1) jez.trace(`${TAG} Pushback ${TARGET_TOKEN.name} ${distance} spaces from ${ACTIVE_TOKEN.name}`,
+                "ACTIVE_TOKEN", ACTIVE_TOKEN, "TARGET_TOKEN", TARGET_TOKEN)
+            jez.moveToken(ACTIVE_TOKEN, TARGET_TOKEN, distance, 750)
+        }
+        //-----------------------------------------------------------------------------------------------
+        // Post an appropriate message
+        //
+        if (saved) msg = `<b>${TARGET_TOKEN.name}</b> saved versus <b>Devour Magic Ray</b>; rolling a 
+        ${saveRoll} ${SAVE_TYPE.toUpperCase()} save vs ${SAVE_DC} DC. ${ceDesc}`
+        else msg = `<b>${TARGET_TOKEN.name}</b> failed to save, rolling a ${saveRoll} 
+        ${SAVE_TYPE.toUpperCase()} save vs ${SAVE_DC} DC. ${ceDesc}`
+        if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
+        return(msg);
+        /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+        * Run VFX from the aToken to the provded tToken, using the provided color.
+        *
+        * Colors expected to be used:
+        *  DevourMagicRay: rainbow02
+        *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+        async function VFXRay(aToken, tToken, color, options = {}) {
+            const FUNCNAME = "VFXRay(tToken, color, options = {})";
+            const FNAME = FUNCNAME.split("(")[0]
+            const TAG = `jez.lib ${FNAME} |`
+            const TL = options.traceLvl ?? 0
+            if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+            if (TL > 1) jez.trace(`${TAG} --- Starting ${FNAME} ---`, "tToken", tToken, "color", color,
+                "options", options);
+            //-----------------------------------------------------------------------------------------------
+            new Sequence()
+                .effect()
+                //.file("jb2a.scorching_ray.01.rainbow02")
+                .file(`jb2a.scorching_ray.01.${color}`)
+                .atLocation(aToken)
+                .stretchTo(tToken)
+                .play()
+        }
+    }
+
+
 } // END OF class jez
 Object.freeze(jez);

@@ -33,6 +33,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[createEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Creates an embedded document, wraps a RunAsGM function
 * **[deleteEmbeddedDocs(type, ids)](#embeddeddoc-functions)** -- Deletes an embedded document, wraps a RunAsGM function
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
+* **[fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {})]($fireray-target-token-active-token-optons---)** -- Executes one beholder style beam
 * **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
@@ -174,6 +175,108 @@ A brief deletion messages is popped for each item deleted. Sample call:
 ```javascript
 await jez.deleteItems(ATTACK_ITEM, "spell", aActor);
 ```
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+ 
+### fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {})
+
+Special case library call that implements the eye ray attack of beholder style creatures (e.g. Gauth, Spectator).  It depends on a large set of options to execute the types of things Beholder eye rays can do.  
+
+<details> <summary>Options Content</summary>
+
+Options parameters fall into four categories: Always, Effects, Damage, Push Back.  The last three only having a use on rays that place effects, do damage, or include a knockback.
+
+#### Always
+1. **RAY_NAME** = OPTIONS.RayName ?? "Devour Magic"
+1. **VFX_COLOR** = OPTIONS.VFXColor ?? "*"
+1. **ceDesc** = OPTIONS.ceDesc ?? `Randomly selected magic item affected by ${ACTIVE_TOKEN.name}'s ${RAY_NAME}`
+1. **SAVE_TYPE** = OPTIONS.saveType ?? "dex";
+1. **SAVE_DC** = OPTIONS.saveDC ?? ACTIVE_TOKEN.actor.data.data.attributes.spelldc
+2. **traceLvl** = OPTIONS.traceLvl ?? 0
+
+#### Effects
+1. **EFFECT_ICON** = OPTIONS.icon ?? "systems/dnd5e/icons/skills/yellow_26.jpg"
+1. **EFFECT_NAME** = OPTIONS.effectName ?? false
+1. **CHANGES** = OPTIONS.changes ?? [{ key: `flags.gm-notes.notes`, mode: jez.ADD, value: ceDesc, priority: 20 }]
+1. **SPEC_DUR** = OPTIONS.specDur ?? ["turnStartSource", "newDay", "longRest", "shortRest"]
+1. **ROUNDS** = OPTIONS.rounds ?? 2
+
+#### Damage
+1. **DAMAGE_ROLL** = OPTIONS.damageRoll ?? false
+1. **DAMAGE_TYPE** = OPTIONS.damageType ?? false
+1. **ACTIVE_ITEM** = OPTIONS.aItem ?? null
+
+#### Knock Back
+1. **PUSH_BACK** = OPTIONS.pushBack ?? 0
+</details>
+
+<details> <summary>Devoir Magic Ray Call (Effect)</summary>
+
+```javascript
+...
+rayName = "Devour Magic"
+options = {
+    RayName: rayName,
+    VFXColor: "rainbow02",
+    ceDesc: devourMagicDesc,
+    traceLvl: TL,
+    saveType: "dex",
+    icon: aItem.img,
+    effectName: rayName,
+    changes: [{key: `flags.gm-notes.notes`, mode: jez.ADD, value: devourMagicDesc, priority: 20}]    
+}
+msg = await jez.fireRay(targetArray[i], aToken, options);
+```
+</details>
+
+
+<details> <summary>Pushing Ray Call (Knock Back)</summary>
+
+```javascript
+...
+rayName = "Pushing Ray"
+options = {
+    RayName: rayName,
+    VFXColor: "yellow",
+    ceDesc: `Pushed back up to 15 feet and speed reduced by half by ${aToken.name}'s ${rayName}`,
+    traceLvl: TL,
+    saveType: "str",
+    icon: "Icons_JGB/Conditions/slow1.png",                  
+    effectName: rayName,
+    pushBack: 15,
+    changes: [
+        { key: `data.attributes.movement.walk`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },
+        { key: `data.attributes.movement.swim`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },
+        { key: `data.attributes.movement.fly`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },
+        { key: `data.attributes.movement.climb`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },
+        { key: `data.attributes.movement.burrow`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },
+    ]    
+}
+msg = await jez.fireRay(targetArray[i], aToken, options);
+```
+</details>
+
+<details> <summary>Fire Ray Call (Damage)</summary>
+
+```javascript
+...
+rayName = "Fire Ray"
+options = {
+    RayName: rayName,
+    VFXColor: "orange",
+    ceDesc: `${tToken.name} damaged by ${aToken.name}'s ${rayName}`,
+    traceLvl: TL,
+    saveType: "dex",
+    damageRoll: "4d10",
+    damageType: "fire",
+    effectName: false,
+    aItem: aItem
+}
+msg = await jez.fireRay(targetArray[i], aToken, options);
+```
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 

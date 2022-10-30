@@ -38,7 +38,7 @@ if (args[0] === "each") doEach({traceLvl:TL});					     // DAE everyround
 // DamageBonus must return a function to the caller
 if (args[0]?.tag === "DamageBonus") return(doBonusDamage({traceLvl:TL}));   
 if (args[0] === "off") await doOff({traceLvl:TL});                   // DAE removal
-if (TL>1) jez.trace(`=== Finished === ${MACRONAME} ===`);
+if (TL>1) jez.trace(`${TAG} === Finished ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -125,7 +125,8 @@ async function doOn(options={}) {
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
-    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
@@ -143,6 +144,7 @@ async function doOn(options={}) {
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
     if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
@@ -161,7 +163,8 @@ async function doOn(options={}) {
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
-    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //

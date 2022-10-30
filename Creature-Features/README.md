@@ -31,6 +31,7 @@ I'll try to document functions as I add them to the repository.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
 * **[Fear of Fire](#fearoffire)** -- Fear of fire ability (Abominable Yeti)
 * **[Frightening Gaze](#frightening-gaze)** -- One of a Lich's legendary actions
+* **[Gauth Eye Rays](#gautheyerays)** -- Gauth's Eye Beam ability
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Gray Ooze](#gray-ooze)** -- Gray Ooze Abilities
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
@@ -369,6 +370,16 @@ turn=end,label=Save against Lich's Fright,saveDC=18,saveAbility=wis,saveRemove=t
 ~~~
 
 This item also applies the CUB Condition: Paralyzed via a DAE effect.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Gauth Eye Rays**
+
+Implements Gauth Eye Rays using library function jez.fireRay() call.
+
+This is a rather complex macro, with lots of possible results.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

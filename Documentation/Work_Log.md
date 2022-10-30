@@ -349,6 +349,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.10.26 Fear of Fire created.  It applies a debuff that lasts till the end of the user's next turn.
 
+22.10.30 Gauth Fire Ray and fireRay library call created.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
