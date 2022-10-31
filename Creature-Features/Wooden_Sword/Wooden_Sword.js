@@ -1,4 +1,4 @@
-const MACRONAME = "Wooden_Sword.0.2.js"
+const MACRONAME = "Wooden_Sword.0.5.js"
 /*****************************************************************************************
  * Implement Arabelle's Wooden Sword action which has two 
  * special results:
@@ -22,10 +22,11 @@ const MACRONAME = "Wooden_Sword.0.2.js"
  * 
  * 05/02/22 Update for Foundry 9.x
  * 08/02/22 0.4 Add convenientDescription and arabelle's quips in bubble statements
+ * 10/31/22 0.5 Change range calaculations to handle larger target tokens
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
-const TL = 0;                               // Trace Level for this macro
+const TL = 5;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
@@ -49,6 +50,8 @@ jez.log(`Starting: ${MACRONAME} arguments passed: ${args.length}`);
 let gameRound = game.combat ? game.combat.round : 0;
 let resultsString = "";
 let attackHit = false;
+const GRID_SIZE = game.scenes.viewed.data.grid
+const GRID_DISTANCE = game.scenes.viewed.data.gridDistance
 /************************************************************************
 * Set Variables for execution
 *************************************************************************/
@@ -70,11 +73,24 @@ if (game.user.targets.ids.length != 1) {
     jez.log(message);
     return;
 } else jez.log(` targeting one target`);
-// Target needs to be in range
-distance = canvas.grid.measureDistance(aToken, tToken);
-distance = distance.toFixed(1);             // Chop the extra decimals, if any
-jez.log(` Considering ${tToken.name} at ${distance} distance`);
-if (distance > range) {
+//----------------------------------------------------------------------------------
+// Target needs to be in range, first Define FUDGE for this token so that distance 
+// will be checked against an outer square and not at the top left corner of the
+// token.
+//
+const WIDTH = tToken.w // The number of screen units wide the token is 
+const TOKEN_SIZE = Math.round(GRID_DISTANCE*WIDTH/GRID_SIZE)
+const FUDGE = (TOKEN_SIZE - 5)/1.41
+if (TL>4) jez.trace(`${TAG} ${tToken.name} size is ${TOKEN_SIZE} feet, fudge is ${FUDGE}`)
+//----------------------------------------------------------------------------------
+//
+//
+distance = jez.getDistance5e(aToken, tToken)
+if (TL>4) jez.trace(`${TAG} ${tToken.name} distance is ${distance} vs ${range+FUDGE}`)
+// distance = canvas.grid.measureDistance(aToken, tToken);
+// distance = distance.toFixed(1);             // Chop the extra decimals, if any
+// jez.log(` Considering ${tToken.name} at ${distance} distance`);
+if (distance > range + FUDGE) {
     let message = ` ${tToken.name} is not in range (${distance}), end ${MACRONAME}`;
     ui.notifications.warn(message);
     jez.log(message);
