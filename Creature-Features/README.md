@@ -25,6 +25,7 @@ I'll try to document functions as I add them to the repository.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
 * **[Create Specter](#create-specter)** -- Wraith's ability to convert corpse to a specter
 * **[Crocodile Bite](#crocodile-bite)** -- Crocodile bite and grapple possibility
+* **[Death Throes](#deaththroes)** -- PBAOE damage from the death of a Gauth
 * **[Disrupt Life, Lich](#disrupt-life-lich)** -- Lich PBAOE ability to damage all non-undeads
 * **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
 * **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
@@ -303,6 +304,16 @@ Perform several checks before using WarpGate to bring in a Specter which will ha
 ### **Crocodile Bite**
 
 Import of older macro.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Death Throes**
+
+Macro targets tokens in range (as defined by the item card), runs a VFX, and then allows the item card to handle damage in the normal way.
+
+The interesting element of this item is that it runs **Called before the item is rolled (*)** and sets the targets that are subsequently used by the item card.  This is a new technique for me.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

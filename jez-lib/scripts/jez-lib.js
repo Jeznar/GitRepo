@@ -292,8 +292,10 @@ class jez {
      ***************************************************************************************************/
     static getDistance5e(one, two) {
         let gs = canvas.grid.size;
-        let d1 = Math.abs((one.x - two.x) / gs);
-        let d2 = Math.abs((one.y - two.y) / gs);
+        // let d1 = Math.abs((one.x - two.x) / gs); // This gets middle of top left square of token
+        // let d2 = Math.abs((one.y - two.y) / gs);
+        let d1 = Math.abs((one.center.x - two.center.x) / gs); // This gets middle (center) of token
+        let d2 = Math.abs((one.center.y - two.center.y) / gs);
         let maxDim = Math.max(d1, d2);
         let minDim = Math.min(d1, d2);
         let dist = (maxDim + Math.floor(minDim / 2)) * canvas.scene.data.gridDistance;
@@ -2974,6 +2976,8 @@ class jez {
         let potTargs = []
         let potTargNames = []
         const TAG = `${FNAME} |`
+        const GRID_SIZE = game.scenes.viewed.data.grid
+        const GRID_DISTANCE = game.scenes.viewed.data.gridDistance
         if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
         if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "origin", origin, "RANGE", RANGE,
             "opts", opts);
@@ -2997,24 +3001,21 @@ class jez {
         //-----------------------------------------------------------------------------------------------
         //
         //
-        // Following is from the checkCollision code, providing a modicum of documentation
-        //
-        /** Test whether movement along a given Ray collides with a Wall.
-         * @param {Ray} ray                        The attempted movement
-         * @param {object} [options={}]            Options which customize how collision is tested
-         * @param {string} [options.type=movement] Which collision type to check: movement, sight, sound
-         * @param {string} [options.mode=any]      Which type of collisions are returned: any, closest, all
-         * @returns {boolean|object[]|object}      False if there are no Walls
-         *                                         True if the Ray is outside the Canvas
-         *                                         Whether any collision occurred if mode is "any"
-         *                                         An array of collisions, if mode is "all"
-         *                                         The closest collision, if mode is "closest"
-         *
-         * checkCollision(ray, { type="move", mode="any" } = {}) {...}
-         **/
         canvas.tokens.placeables.forEach(token => {
+            //-------------------------------------------------------------------------------------------
+            // Define FUDGE for this token so that distance will be checked against an outer square and 
+            // not just at the center of the token being checked
+            //
+            const WIDTH = token.w // The number of screen units wide the token is 
+            const TOKEN_SIZE = Math.round(GRID_DISTANCE*WIDTH/GRID_SIZE)
+            const FUDGE = (TOKEN_SIZE - 5)/2
+            if (TL>4) jez.trace(`${TAG} ${token.name} size is ${TOKEN_SIZE} feet, fudge is ${FUDGE}`)
+            //-------------------------------------------------------------------------------------------
+            // Check distance
+            //
             if (!(optVal.exclude === "none") && (origin.name === token.name)) return;   // Active token 
-            if (jez.getDistance5e(origin, token) > RANGE) return;                   // Out of range 
+            if (TL>4) jez.trace(`${TAG} ${token.name} distance is ${jez.getDistance5e(origin, token)}`)
+            if (jez.getDistance5e(origin, token) > RANGE + FUDGE) return;               // Out of range 
             //-------------------------------------------------------------------------------------------
             // Maybe check if the target token has same disposition as the caster
             //
@@ -3096,7 +3097,6 @@ class jez {
         if (TL > 2) jez.trace(`--- Finished --- ${FNAME} ---`);
         return potTargs;
     }
-
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********
     * Process the subject passed returning an Actor5e if possible. 
     * 
@@ -3306,7 +3306,7 @@ class jez {
                     { flavor: "No Workie", itemCardId: "new" /*args[0].itemCardId*/ });
                 MidiQOL.applyTokenDamage([{ damage: damageRoll.total, type: DAMAGE_TYPE }], damageRoll.total,
                     new Set([TARGET_TOKEN]), ACTIVE_ITEM, new Set());
-                ceDesc = `It took ${damageRoll.total} ${DAMAGE_TYPE} damage from <b>${RAY_NAME}</b>.`
+                ceDesc = `It took ${damageRoll.total} ${DAMAGE_TYPE} damage.`
             }
             else {
                 let halfdam = Math.floor(damageRoll.total / 2)
@@ -3314,7 +3314,7 @@ class jez {
                     { flavor: "No workie", itemCardId: "new" /*args[0].itemCardId*/ });
                 MidiQOL.applyTokenDamage([{ damage: halfdam, type: DAMAGE_TYPE }], halfdam,
                     new Set([TARGET_TOKEN]), ACTIVE_ITEM, new Set());
-                ceDesc = `It took ${halfdam} ${DAMAGE_TYPE} damage from <b>${RAY_NAME}</b>.`
+                ceDesc = `It took ${halfdam} ${DAMAGE_TYPE} damage.`
             }
 
         }
@@ -3336,10 +3336,10 @@ class jez {
         //-----------------------------------------------------------------------------------------------
         // Post an appropriate message
         //
-        if (saved) msg = `<b>${TARGET_TOKEN.name}</b> saved versus <b>Devour Magic Ray</b>; rolling a 
+        if (saved) msg = `<b>${TARGET_TOKEN.name}</b> saved versus <b>${RAY_NAME}</b>; rolling a 
         ${saveRoll} ${SAVE_TYPE.toUpperCase()} save vs ${SAVE_DC} DC. ${ceDesc}`
-        else msg = `<b>${TARGET_TOKEN.name}</b> failed to save, rolling a ${saveRoll} 
-        ${SAVE_TYPE.toUpperCase()} save vs ${SAVE_DC} DC. ${ceDesc}`
+        else msg = `<b>${TARGET_TOKEN.name}</b> failed to save versus <b>${RAY_NAME}</b>; rolling a 
+        ${saveRoll} ${SAVE_TYPE.toUpperCase()} save vs ${SAVE_DC} DC. ${ceDesc}`
         if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
         return(msg);
         /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
