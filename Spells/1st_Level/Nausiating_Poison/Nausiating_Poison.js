@@ -1,4 +1,4 @@
-const MACRONAME = "Nausinating Poison.0.3.js"
+const MACRONAME = "Nausinating Poison.0.4.js"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Homebrew Spell from Occultist list
@@ -15,6 +15,7 @@ jez.log(MACRONAME)
  * 03/12/22 0.1 Creation of Macro
  * 07/09/22 0.2 Replace CUB.addCondition with CE
  * 07/31/22 0.3 Add convenientDescription
+ * 11/01/22 0.4 Added MSAK as triggering action
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -51,15 +52,17 @@ const VFX_BEAM = "jb2a.bolt.poison.green"
 const VFX_CASTER = "jb2a.icon.poison.dark_green"
 const VFX_OPACITY = 1.0;
 const VFX_SCALE = 1.1;
+const TL = 0
+const TAG = `${MACRO} |`
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 let returnFunc = null
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl: TL});          // Midi ItemMacro On Use
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0]?.tag === "DamageBonus") {
     let returnFunc = await doBonusDamage();    // DAE Damage Bonus
-    return(returnFunc)
+    return (returnFunc)
 }
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
@@ -70,9 +73,13 @@ return;
  ***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
-async function doOnUse() {
+async function doOnUse(options={}) {
     const FUNCNAME = "doOnUse()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
     //------------------------------------------------------------------------------------------------
     // Launch VFX on caster
     // 
@@ -88,25 +95,25 @@ async function doOnUse() {
     // 
     new Sequence()
         .effect()
-            .file(VFX_CASTER)
-            .attachTo(aToken)
-            .scale(VFX_SCALE)
-            .scaleIn(0.1, 3000)
-            .opacity(VFX_OPACITY)
-            //.repeats(3,1000)
-            .fadeIn(1000)
-            .waitUntilFinished(-500) 
+        .file(VFX_CASTER)
+        .attachTo(aToken)
+        .scale(VFX_SCALE)
+        .scaleIn(0.1, 3000)
+        .opacity(VFX_OPACITY)
+        //.repeats(3,1000)
+        .fadeIn(1000)
+        .waitUntilFinished(-500)
         .effect()
-            .file(VFX_CASTER)
-            .attachTo(aToken)
-            .scale(VFX_SCALE)
-            .opacity(VFX_OPACITY)
-            .belowTokens(true)
-            .persist()
-            //.repeats(3,1000)
-            .fadeOut(2000)
-            .scaleOut(0.5, 2000)
-            .name(VFX_NAME)          // Give the effect a uniqueish name
+        .file(VFX_CASTER)
+        .attachTo(aToken)
+        .scale(VFX_SCALE)
+        .opacity(VFX_OPACITY)
+        .belowTokens(true)
+        .persist()
+        //.repeats(3,1000)
+        .fadeOut(2000)
+        .scaleOut(0.5, 2000)
+        .name(VFX_NAME)          // Give the effect a uniqueish name
         .play()
     //-------------------------------------------------------------------------------------------------
     // Define and apply the effect
@@ -121,10 +128,10 @@ async function doOnUse() {
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: GAME_RND, startTime: game.time.worldTime },
-        flags: { 
+        flags: {
             dae: { itemData: aItem, specialDuration: ["1Hit:mwak"] },
             convenientDescription: C_DESC
-         },
+        },
         icon: aItem.img,
         label: aItem.name
     }];
@@ -134,7 +141,7 @@ async function doOnUse() {
     // 
     msg = `${aToken.name} shrouds her/his hand, a held weapon, or a natural weapon in dark ichorous miasma.`
     await jez.addMessage(game.messages.get(args[args.length - 1].itemCardId),
-                   {color:"green",fSize:14,msg:msg,tag:"saves"})
+        { color: "green", fSize: 14, msg: msg, tag: "saves" })
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
@@ -147,71 +154,94 @@ async function doBonusDamage() {
     for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
     jez.log("")
     //if (args[0].tag === "DamageBonus") {
-        //------------------------------------------------------------------------------------------
-        // Only applies to melee weapon and spell attacks
-        // Action Types: mwak, msak, rwak, rsak
-        jez.log("----- LAST_ARG.item.data.actionType",LAST_ARG.item.data.actionType)
-        let actionType = LAST_ARG.item.data.actionType
-        if (!(actionType === "mwak")) {
-            msg = `<b>${actionType.toUpperCase()}</b> action does not trigger ${aItem.name} damage.`;
-            ui.notifications.info(msg)
-            jez.log(msg)
-            return
-        }
-        let tToken = canvas.tokens.get(LAST_ARG.hitTargets[0].id);
-        jez.log("tToken", tToken)
-        let itemUuid = getProperty(LAST_ARG.actor.flags, "midi-qol.itemDetails");
-        // let itemN = await fromUuid(itemUuid);
-        let itemN = MACRO
-        jez.log("itemN =====>", itemN)
-        let numDice = LAST_ARG.isCritical ? 2 : 1;
-        await jez.wait(500);
-        //--------------------------------------------------------------------------------------------
-        // Launch VFX on target
-        // 
-        new Sequence()
+    //------------------------------------------------------------------------------------------
+    // Only applies to melee weapon and spell attacks
+    // Action Types: mwak, msak, rwak, rsak
+    jez.log("----- LAST_ARG.item.data.actionType", LAST_ARG.item.data.actionType)
+    let actionType = LAST_ARG.item.data.actionType
+    if (!(actionType === "mwak" || actionType === "msak"))
+        return jez.badNews(`<b>${actionType.toUpperCase()}</b> action does not trigger ${aItem.name} damage.`, 'i')
+    let tToken = canvas.tokens.get(LAST_ARG.hitTargets[0].id);
+    jez.log("tToken", tToken)
+    let itemUuid = getProperty(LAST_ARG.actor.flags, "midi-qol.itemDetails");
+    // let itemN = await fromUuid(itemUuid);
+    let itemN = MACRO
+    jez.log("itemN =====>", itemN)
+    let numDice = LAST_ARG.isCritical ? 2 : 1;
+    await jez.wait(500);
+    //--------------------------------------------------------------------------------------------
+    // Launch VFX on target
+    // 
+    new Sequence()
         .effect()
-            .atLocation(aToken)
-            .stretchTo(tToken)
-            .scale(1)
-            .file(VFX_BEAM)
-            .waitUntilFinished(-500) 
-            .belowTokens(false)
+        .atLocation(aToken)
+        .stretchTo(tToken)
+        .scale(1)
+        .file(VFX_BEAM)
+        .waitUntilFinished(-500)
+        .belowTokens(false)
         .effect()
-            .atLocation(tToken)
-            .fadeIn(1000)
-            .scaleIn(0.1, 1000)
-            .fadeOut(2000)
-            .scaleIn(0.1, 2000)
-            //.repeats(3,1500)
-            .scale(VFX_SCALE)
-            .file(VFX_CASTER)
+        .atLocation(tToken)
+        .fadeIn(1000)
+        .scaleIn(0.1, 1000)
+        .fadeOut(2000)
+        .scaleIn(0.1, 2000)
+        //.repeats(3,1500)
+        .scale(VFX_SCALE)
+        .file(VFX_CASTER)
         .play()
-        //-------------------------------------------------------------------------------------------------------------
-        // Apply COND_APPLIED condition if save is failed
-        //   
-        const FLAVOR = `${CONFIG.DND5E.abilities[SAVE_TYPE]} DC${SAVE_DC} to avoid ${MACRO}'s ${COND_APPLIED}`;
-        let saveRoll = (await tToken.actor.rollAbilitySave("con", { flavor:FLAVOR }))
-        jez.log("saveRoll", saveRoll)
-        if (saveRoll.total < SAVE_DC) await jezcon.add({ effectName: COND_APPLIED, uuid: tToken.actor.uuid, traceLvl: 0 });
-        //-------------------------------------------------------------------------------------------------------------
-        // Modify the effects to have a proper termination time
-        //
-        modEffect(tToken, COND_APPLIED)
-        //-------------------------------------------------------------------------------------------------------------
-        // Dig through the chat history, to find the message that should have new message added...but don't use it?
-        //
-        let msgHistory = [];
-        game.messages.reduce((list, message) => {
-            if (message.data?.flags["midi-qol"]?.itemId === aItem._id && message.data.speaker.token === aToken.id) list.push(message.id);
-            return list;
-        }, msgHistory);
-        //-------------------------------------------------------------------------------------------------------------
-        // Return Extra Damage function
-        //
-        jez.log(`--- Finishing(Extra Damage))--- ${MACRONAME} ${FUNCNAME} ---`,
-            "numDice", numDice, "DAM_TYPE", DAM_TYPE, "itemN", itemN);
-        return { damageRoll: `${numDice}${DICE_TYPE}[${DAM_TYPE}]`, flavor: `(${itemN} (${CONFIG.DND5E.damageTypes[DAM_TYPE]}))` };
+    //-------------------------------------------------------------------------------------------------------------
+    // Roll that sweet, sweet save
+    //   
+    const FLAVOR = `${CONFIG.DND5E.abilities[SAVE_TYPE]} DC${SAVE_DC} to avoid ${MACRO}'s ${COND_APPLIED}`;
+    let saveRoll = (await tToken.actor.rollAbilitySave("con", { flavor: FLAVOR }))
+    jez.log("saveRoll", saveRoll)
+    // if (saveRoll.total < SAVE_DC) await jezcon.add({ effectName: COND_APPLIED, uuid: tToken.actor.uuid, traceLvl: 0 });
+
+    //-----------------------------------------------------------------------------------------------
+    // Apply COND_APPLIED condition if save is failed, modifying appropriately
+    //
+    if (saveRoll.total < SAVE_DC) {
+        if (TL > 1) jez.trace(`${TAG} Target ${tToken.name} failed its save`);
+        // Retrieve as an object, the COND_APPLIED Convenient Effect for modification
+        let effectData = game.dfreds.effectInterface.findEffectByName(COND_APPLIED).convertToObject();
+        // If debugging, dump out the effect data object
+        if (TL > 3) jez.trace(`${TAG} effectData objtained`, effectData)
+        // The standard Poisoned CE lacks a "dae" field in its flags, so it needs to be added
+        effectData.flags.dae = { specialDuration: ["turnEndSource"] }
+        // Change the icon used to one specific to this spell
+        // effectData.icon = POIS_ICON
+        // Change the convenient description to one specific to this spell
+        effectData.description = "Poisoned by Nauseating Poison, disadvantage on attack rolls and ability checks."
+        // If debugging, dump out the effect data object after the updates
+        if (TL > 3) jez.trace(`${TAG} updated ===>`, effectData)
+        // Slap the updated CE onto our targeted actor
+        game.dfreds.effectInterface.addEffectWith({ effectData: effectData, uuid: tToken.actor.uuid, origin: aActor.uuid });
+        // Set msg with result for later display
+        msg = `<b>${tToken.name}</b> has been poisoned by the effects of ${aItem.name} for one turn.`
+    }
+
+
+
+
+    //-------------------------------------------------------------------------------------------------------------
+    // Modify the effects to have a proper termination time
+    //
+    // modEffect(tToken, COND_APPLIED)
+    //-------------------------------------------------------------------------------------------------------------
+    // Dig through the chat history, to find the message that should have new message added...but don't use it?
+    //
+    let msgHistory = [];
+    game.messages.reduce((list, message) => {
+        if (message.data?.flags["midi-qol"]?.itemId === aItem._id && message.data.speaker.token === aToken.id) list.push(message.id);
+        return list;
+    }, msgHistory);
+    //-------------------------------------------------------------------------------------------------------------
+    // Return Extra Damage function
+    //
+    jez.log(`--- Finishing(Extra Damage))--- ${MACRONAME} ${FUNCNAME} ---`,
+        "numDice", numDice, "DAM_TYPE", DAM_TYPE, "itemN", itemN);
+    return { damageRoll: `${numDice}${DICE_TYPE}[${DAM_TYPE}]`, flavor: `(${itemN} (${CONFIG.DND5E.damageTypes[DAM_TYPE]}))` };
     //}
     jez.log(`-------------- Finished(Bottom)--- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
@@ -233,19 +263,21 @@ async function doBonusDamage() {
  ***************************************************************************************************/
 async function modEffect(token5e, EFFECT) {
     const LAST_ARG = args[args.length - 1];
-    jez.log("------- modEffect(token5e, EFFECT) --------","token5e",token5e,"EFFECT",EFFECT)
-    await jez.wait(500)     
+    jez.log("------- modEffect(token5e, EFFECT) --------", "token5e", token5e, "EFFECT", EFFECT)
+    await jez.wait(500)
     let effect = await token5e.actor.effects.find(i => i.data.label === EFFECT);
     jez.log(`${EFFECT} >>> effect`, effect)
-    jez.log("effect.data.flags.dae",effect.data.flags.dae)
+    jez.log("effect.data.flags.dae", effect.data.flags.dae)
     if (effect.data.flags.dae === undefined) {
         jez.log("Adding DAE to our critter")
         effect.data.flags.dae = {}
     } else jez.log("flags.dae already existed, party time?")
     effect.data.flags.dae.specialDuration = ["turnEndSource"]
-    const result = await effect.update({ 'flags.dae.specialDuration': effect.data.flags.dae.specialDuration,
-                                         'origin': LAST_ARG.itemUuid });
-    jez.log(`${EFFECT} >>> result`,result)
+    const result = await effect.update({
+        'flags.dae.specialDuration': effect.data.flags.dae.specialDuration,
+        'origin': LAST_ARG.itemUuid
+    });
+    jez.log(`${EFFECT} >>> result`, result)
     if (result) jez.log(`${EFFECT} >>> Active Effect ${EFFECT} updated!`, result);
     else jez.log(`${EFFECT} >>> Active Effect not updated! =(`, result);
 }
@@ -268,7 +300,7 @@ async function doOff() {
 /***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
- function postResults(msg) {
+function postResults(msg) {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });

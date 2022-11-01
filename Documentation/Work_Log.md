@@ -355,6 +355,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.01 Created library function 'deleteEffectAsGM' and used it in Hex-Move to eliminate permission issue.
 
+22.11.01 Fixed permission issues and MSAK not triggering damage elements of Nauseating Poison
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
