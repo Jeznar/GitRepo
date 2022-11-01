@@ -1,10 +1,11 @@
-const MACRONAME = "Hex-Move.0.3.js"
+const MACRONAME = "Hex-Move.0.4.js"
 /*****************************************************************************************
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
  * 07/10/22 0.2 Move the hex if the taregt is missing and confirmed in a dialog
  * 07/31/22 0.3 Add convenientDescription
+ * 11/01/22 0.4 Dealing with player permission issue clering old hex from corpse
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const MAC = MACRONAME.split("-")[0]     // Extra short form of the MACRONAME
@@ -19,7 +20,8 @@ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken 
 if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
 let msg = "";
-const FLAG = MAC    // Name of the DAE Flag       
+const FLAG = MAC    // Name of the DAE Flag    
+const TL = 0;   
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
@@ -127,6 +129,7 @@ async function doOnUse() {
     if (oToken) {
         oldEffect = await oToken.actor.effects.find(i => i.data.label === FLAG);
         jez.log(`**** ${FLAG} found?`, oldEffect)
+        jez.log(`**** Effect UUID`, oldEffect.uuid) // Scene.MzEyYTVkOTQ4NmZk.Token.KVTYA7FwushIK9h9.ActiveEffect.ztlq9s7jopvvevn9
         if (!oldEffect) {
             msg = `${FLAG} sadly not found on ${oToken.name}.`
             ui.notifications.error(msg);
@@ -148,6 +151,7 @@ async function doOnUse() {
     const hexEffect = await aToken.actor.effects.find(i => i.data.label === "Hex");
     const concEffect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
     let concId = oldEffect?.data?.flags?.dae?.concId ? oldEffect?.data?.flags?.dae?.concId : concEffect.id
+    const OLD_UUID = oldEffect?.uuid
     let ability = ""
     //-----------------------------------------------------------------------------------------------
     // Build up ability list for following dialog
@@ -198,7 +202,7 @@ async function doOnUse() {
     //----------------------------------------------------------------------------------------------
     // Delete the old effect
     //
-    if (oldEffect) oldEffect.delete();
+    if (oldEffect) jez.deleteEffectAsGM(OLD_UUID, { traceLvl: TL })
     vfxPlayHex(tToken, { color: "*" })
     /***************************************************************************************************
      * Apply the hex debuff to the target
@@ -228,9 +232,8 @@ async function doOnUse() {
         //----------------------------------------------------------------------------------------------
         // Post the results message
         //
-        msg = `Hex removed from corpse of ${oToken?.name}. ${tToken.name}'s ${ability.toUpperCase()} is now hexed,
-    and will make stat checks at disadvantage. ${aToken.name} will do additional damage on each hit to 
-    ${tToken.name}`
+        msg = `Hex removed from ${oToken?.name}'s corpse. <b>${tToken.name}</b>'s ${ability.toUpperCase()} is now hexed,
+    and will make stat checks at disadvantage.`
         postResults(msg)
         jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
         return (true);

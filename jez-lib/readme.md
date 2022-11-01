@@ -31,6 +31,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[badNews(message, \<badness\>)](#badNewsmessage-badness)** -- Displays warning message on console and ui then returns false
 * **[createEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Creates an embedded document, wraps a RunAsGM function
+* **[deleteEffectAsGM(UUID, options = {})](#deleteeffectasgm-uuid-options---)** GM wrapped macro to delete an entity by UUID
 * **[deleteEmbeddedDocs(type, ids)](#embeddeddoc-functions)** -- Deletes an embedded document, wraps a RunAsGM function
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
 * **[fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {})]($fireray-target-token-active-token-optons---)** -- Executes one beholder style beam
@@ -139,14 +140,14 @@ The above, will generate a message such as the following:
 
 ---
 
-### badNews(message, \<badness\>)
+### badNews(message, \<badnews\>)
 
 Pop the passed string (message) onto the console and as ui notification and return false.
 
 This function can accept one or two arguments
 
 * message: required string that will be used as the error message
-* badness: optional severity indicator.  It can be an integer (1, 2, or 3) or a string that begins with a i, w, or e (technically, the code is much more permissive but this is intent.)
+* badnews: optional severity indicator.  It can be an integer (1, 2, or 3) or a string that begins with a i, w, or e (technically, the code is much more permissive but this is intent.)
 
 ```javascript
 if (matches === 0) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not in Item Directory, can not continue.`)
@@ -158,7 +159,20 @@ jez.badNews("Error Message", 3) // Error
 
 [*Back to Functions list*](#functions-in-this-module)
 
---- 
+---
+
+### deleteEffectAsGM(UUID, options = {})
+
+Wrapper around a run as GM to delete an item, ostensibly an effect (though likely anything with a UUID can be affected), by UUID asGM.
+
+```javascript
+if (oldEffect) jez.deleteEffectAsGM(OLD_UUID, { traceLvl: TL })
+```
+Nothing is returned and no error handling is performed. 
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---  
 
 ### deleteItems(itemName, type, subject)
 

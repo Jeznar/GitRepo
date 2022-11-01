@@ -925,6 +925,7 @@ class jez {
     static get UPDATE_EMBEDDED_MACRO() { return "UpdateEmbeddedDocuments" }
     static get CREATE_EMBEDDED_MACRO() { return "CreateEmbeddedDocuments" }
     static get DELETE_EMBEDDED_MACRO() { return "DeleteEmbeddedDocuments" }
+    static get DELETE_EFFECT_MACRO() { return "DeleteEffect" }
     static get GRAPPLE_ESCAPE_MACRO() { return "GrappleEscape" }
     /***************************************************************************************************
      * Set the Familiar name into the DAE Flag
@@ -2363,6 +2364,21 @@ class jez {
         let CEMreturn = await DELETE_EMBEDDED_MACRO.execute(type, ids)
         return CEMreturn
     }
+
+    static async deleteEffectAsGM(UUID, options = {}) {
+        const FUNCNAME = "jez.deleteEffect(uuid, options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TL = options?.traceLvl ?? 0
+        if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
+        if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "UUID", UUID, "options", options);
+        const A = jez.DELETE_EFFECT_MACRO
+        console.log(`A is ${typeof A}`, A)
+        const DELETE_EFFECT_MACRO = jez.getMacroRunAsGM(jez.DELETE_EFFECT_MACRO)
+        if (!DELETE_EFFECT_MACRO) return false
+        if (TL > 2) jez.trace(`${FNAME} | Calling DELETE_EFFECT_MACRO`, DELETE_EFFECT_MACRO);
+        await DELETE_EFFECT_MACRO.execute(UUID)
+    }
+
     /***************************************************************************************************
      * Use the ACTOR_UPDATE_MACRO to update an Actor as GM. 
      * 

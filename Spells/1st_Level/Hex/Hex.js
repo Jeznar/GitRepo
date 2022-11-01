@@ -1,4 +1,4 @@
-const MACRONAME = "Hex.0.7.js"
+const MACRONAME = "Hex.0.8.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * My rewrite of Hex, borrowing heavily from Crymic's code
  * 
@@ -8,6 +8,7 @@ const MACRONAME = "Hex.0.7.js"
  * 07/01/22 0.5 FoundryVTT 9.x Change: subclass changed location 
  * 07/10/22 0.6 Added Hex VFX
  * 07/31/22 0.7 Add convenientDescription
+ * 11/01/22 0.8 Chasing bug causing no damage to be dealt
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
 const FLAG = MACRO                      // Name of the DAE Flag       
@@ -64,29 +65,13 @@ async function doOff() {
     const FUNCNAME = "doOff()";
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //-----------------------------------------------------------------------------------------------
-    // Obtain the existing effect data
-    //
-    let hexedId = await DAE.getFlag(aToken?.actor, FLAG);
-    let hexedToken = await canvas.tokens.placeables.find(ef => ef.id === hexedId)
-    let existingHex = await hexedToken?.actor.effects.find(i => i.data.label === FLAG);
-    //-----------------------------------------------------------------------------------------------
-    // Delete the existing effect
-    //
-    if (existingHex) await existingHex.delete()
-    //-----------------------------------------------------------------------------------------------
     // Delete the DAE flag
     //
     await DAE.unsetFlag(aToken.actor, FLAG)
     //-----------------------------------------------------------------------------------------------
     // Delete the temporary ability from the actor's spell book
     //
-    let itemFound = aActor.items.find(item => item.data.name === NEW_ITEM_NAME && item.type === "spell")
-    jez.log("itemFound", itemFound)
-    if (itemFound) {
-        await itemFound.delete();
-        msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been deleted from ${aToken.name}'s spell book`
-        ui.notifications.info(msg);
-    }
+    await jez.deleteItems(NEW_ITEM_NAME, "spell", aActor);
     //-----------------------------------------------------------------------------------------------
     // Say Good bye!
     //
@@ -103,6 +88,10 @@ async function doOnUse() {
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
     jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
+    //-----------------------------------------------------------------------------------------------
+    // Delete any cruft like move_hex spell pre-existing on the aActor
+    //
+    await jez.deleteItems(NEW_ITEM_NAME, "spell", aActor);
     //-----------------------------------------------------------------------------------------------
     // Set the DAE Flag to point at the targeted token id
     //
