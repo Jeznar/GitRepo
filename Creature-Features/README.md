@@ -65,7 +65,7 @@ I'll try to document functions as I add them to the repository.
 * **[Undead Fortitude](#undead-fortitude)** -- Certain undead's (e.g. Zombie) ability to deny death  
 * **[Undead Slayer](#undead-slayer)** -- Adds an extra 3d6 of damage to weapon attacks vs undead
 * **[Wail](#wail)** -- Banshee's wail that can drop things in their tracks.
-* **[Whispers of Madness](#whispersofmadness)** -- Allip's ability
+* **[Whispers of Madness](#whispers-of-madness)** -- Allip's ability
 * **[Vampire Abilities](#vampire-abilities)** -- A number of vampire specific abilities.
 * **[Wooden Sword](#wooden-sword)** -- Arabelle's wooden sword debuffing machine.
 
