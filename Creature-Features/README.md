@@ -10,30 +10,30 @@ I'll try to document functions as I add them to the repository.
 ## Abilities in this Repo
 
 * **[Angelic Weapons](#angelic-weapons)** -- Bonus damage on all weapon hits.
-* **[Aura of Annihilation](#auraofannihilation)** -- Bodak's aura.
+* **[Aura of Annihilation](#aura-of-anhillation)** -- Bodak's aura.
 * **[Beyond Death](#beyond-death)** -- Ability to restore 1HP when dropped to zero
 * **[Blessing of the Mother Night](#blessing-of-the-mother-night)** -- Baba Lysaga ability
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
 * **[Change Shape, Deva](#change-shape-deva)** -- **[The Abbot's](https://www.dndbeyond.com/monsters/the-abbot)** shape change ability.
 * **[Chilling Gaze](#chilling-gaze)** -- Abominable Yeti's gaze attack
 * **[Charge, Sangzor](#charge-sangzor)** -- Implement Sangzor's charge
-* **[Claw Quasit](#claw_quasit)** -- Quasit attack that forces a save or poisoned with followup save each turn
+* **[Claw Quasit](#claw-quasit)** -- Quasit attack that forces a save or poisoned with followup save each turn
 * **[Clay Golem Haste](#clay-golem-haste)** -- Applies a DAE Effect
 * **[Clay Golem Slam](#clay-golem-slam)** -- Reduces targets hit points by amount of damage inflicted
-* **[Cold Breath (Yeti)](#cold-breath--yeti-)** -- Yeti's cold breath cone attack
+* **[Cold Breath (Yeti)](#cold-breath-yeti)** -- Yeti's cold breath cone attack
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
 * **[Create Specter](#create-specter)** -- Wraith's ability to convert corpse to a specter
 * **[Crocodile Bite](#crocodile-bite)** -- Crocodile bite and grapple possibility
-* **[Death Throes](#deaththroes)** -- PBAOE damage from the death of a Gauth
+* **[Death Throes](#death-throes)** -- PBAOE damage from the death of a Gauth
 * **[Disrupt Life, Lich](#disrupt-life-lich)** -- Lich PBAOE ability to damage all non-undeads
-* **[Etherealness](#etherealness)** -- Transitions a token to ethereal realm (sort of).
-* **[Fading Image](#fadingimage)** -- Applies a turn-end dot to the possessor.
+* **[Etherealness](#ethrealness)** -- Transitions a token to ethereal realm (sort of).
+* **[Fading Image](#fading-image)** -- Applies a turn-end dot to the possessor.
 * **[Falling](#falling)** -- Applies 1d6 (by default) damage and the CUB Prone condition
-* **[Fear of Fire](#fearoffire)** -- Fear of fire ability (Abominable Yeti)
+* **[Fear of Fire](#fear-of-fire)** -- Fear of fire ability (Abominable Yeti)
 * **[Frightening Gaze](#frightening-gaze)** -- One of a Lich's legendary actions
-* **[Gauth Eye Rays](#gautheyerays)** -- Gauth's Eye Beam ability
+* **[Gauth Eye Rays](#gauth-eye-rays)** -- Gauth's Eye Beam ability
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Gray Ooze](#gray-ooze)** -- Gray Ooze Abilities
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
@@ -50,7 +50,7 @@ I'll try to document functions as I add them to the repository.
 * **[Quasit Shape Change](#quasit-shape-change)** -- Quasit's ability to change form and speed
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
-* **[Scare Quasit](#scare_quasit)** -- Quasit special attack that forces a save or frightened with followup save each turn
+* **[Scare Quasit](#scare-quasit)** -- Quasit special attack that forces a save or frightened with followup save each turn
 * **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
 * **[Slow, Golem](#slow-golem)** -- Golem slow ability mimicing the spell effect
 * **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
@@ -65,8 +65,8 @@ I'll try to document functions as I add them to the repository.
 * **[Undead Fortitude](#undead-fortitude)** -- Certain undead's (e.g. Zombie) ability to deny death  
 * **[Undead Slayer](#undead-slayer)** -- Adds an extra 3d6 of damage to weapon attacks vs undead
 * **[Wail](#wail)** -- Banshee's wail that can drop things in their tracks.
-* **[Whispers of Madness]($whispersofmadness) -- Allip's ability
-* **[Vampire Abilities](#vampire-abilities) -- A number of vampire specific abilities.
+* **[Whispers of Madness](#whispersofmadness)** -- Allip's ability
+* **[Vampire Abilities](#vampire-abilities)** -- A number of vampire specific abilities.
 * **[Wooden Sword](#wooden-sword)** -- Arabelle's wooden sword debuffing machine.
 
 ## Additional Notes on Functions
@@ -182,7 +182,7 @@ TODO: This item could be extended to automatically handle the immunity element t
 
 ---
 
-### **Charge, Sangor**
+### **Charge, Sangzor**
 
 Sangor's charge that applies a CUB effect via DAE on a failed save in addition to the damage component.
 
