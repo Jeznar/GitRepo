@@ -51,13 +51,13 @@ I'll try to document functions as I add them to the repository.
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Scare Quasit](#scare-quasit)** -- Quasit special attack that forces a save or frightened with followup save each turn
-* **[Shapechange, Baba Lysaga](#shanpechange-baba-lysaga)** -- Simply states the ability
+* **[Shapechange, Baba Lysaga](#shapechange-baba-lysaga)** -- Simply states the ability
 * **[Slow, Golem](#slow-golem)** -- Golem slow ability mimicing the spell effect
 * **[Spore Cloud](#spore-cloud)** -- The damage effect of Yellow Mold
 * **[Summon Demons, Vrock](#summon-demons-vrock)** -- Implment Vrock's summon
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
-* **[Stench](#stench)** == Ghast's Stench effect
+* **[Stench](#stench)** Ghast's Stench effect
 * **[Stunning Screech](#stunning-screech)** -- Implements the Vrock's surprisingly complex ability
 * **Portent (Arabelle)** -- Portent slightly modified for Arabelle
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
