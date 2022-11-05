@@ -1,0 +1,130 @@
+{
+  "name": "Aura of Annihilation",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/skills/affliction_09.jpg",
+  "data": {
+    "description": {
+      "value": "<p>%TOKENNAME% can activate or deactivate this feature as a bonus action.</p>\n<p>While active, the aura deals <strong>2d4</strong><strong>&nbsp;necrotic</strong> damage to any creature that ends its turn within 30 feet of %TOKENNAME%.</p>\n<p><strong>Undead</strong> and <strong>fiends</strong> ignore this effect.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This has been autmated.&nbsp; Using this ability toggles the aura on/off.&nbsp; From there, it is automated.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Volo's Guide to Monsters pg 127",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<em><strong>Aura of Annihilation.</strong></em>",
+      "fullName": "Aura of Annihilation."
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Aura of Annihilation",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Aura_of_Annihilation.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Support thevBodak's damage aura which is defined as follows:\n * \n *    %TOKENNAME% can activate or deactivate this feature as a bonus action. While active, the aura \n *    deals 5 necrotic damage to any creature that ends its turn within 30 feet of %TOKENNAME%.\n *    Undead and fiends ignore this effect.\n * \n * This macro does a bunch of things.\n * \n * OnUse:   Toggles the effect on/off. When it toggles on, it places an effect that includes an \n *          Active Effect that drives the rest of the process.  \n * doOn:    At one point deleted the effect on immune tokens, but this caused an issue with the \n *          effect being applied/removed in an infinite loop by active auras, so it now does nothing.\n * doOff:   If the active token is the origin, remove the persistent VFX\n * each:    Apply damage to those not immune along with a VFX.\n * \n * 11/04/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nif (TL > 1) jez.trace(`${TAG} Active Token: ${aToken.name}`);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst COND_NAME = 'Aura of Annihilation'\n// const COND_NAME = `${aToken.name}'s Aura`\nconst DAMAGE_ROLL = \"2d4\"\nconst DAMAGE_TYPE = \"necrotic\"\nconst VFX_NAME = `${MACRO}-${aToken.name}`\nconst IMMUNE_RACES = ['undead', 'fiend']\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"on\") await doOn({ traceLvl: TL });                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach({ traceLvl: TL });\t\t\t\t\t     // DAE everyround\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Post message to new chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function postMessage(title, msg) {\n    const RC = await jez.postMessage({\n        color: jez.randomDarkColor(),\n        fSize: 14,\n        icon: aToken.data.img,\n        msg: msg,\n        title: title,\n        token: aToken\n    })\n    return (RC)\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * OnUse, this function will check for teh aura on the active token, removing it if found, adding it\n * it if it wasn't found.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //----------------------------------------------------------------------------------\n    // Check for the aura created by this macro, from this actor\n    //\n    // Examples:\n    //   data.origin: Scene.MzEyYTVkOTQ4NmZk.Token.SGSAiWBUM7kTzeB1.Item.t4b3rcea8drrhtbu\n    //   aActor.uuid: Scene.MzEyYTVkOTQ4NmZk.Token.SGSAiWBUM7kTzeB1\n    //\n    const EFFECT = await aToken.actor.effects.find(ef => ef.data.label === COND_NAME &&\n        ef.data.origin.includes(aActor.uuid))\n    //----------------------------------------------------------------------------------\n    // If found, delete the aura and exit with approriate message.\n    //\n    if (EFFECT) {\n        if (TL > 2) jez.trace(`${TAG} Aura on ${aToken.name} found`, EFFECT);\n        EFFECT.delete()\n        msg = `<b>${aToken.name} has toggled ${COND_NAME} off`\n        postResults(msg)\n        // Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken });\n        return\n    }\n    //----------------------------------------------------------------------------------\n    // If missing, add aura and exit with approriate message.\n    //\n    if (TL > 2) jez.trace(`${TAG} Effect aura \"${EFFECT}\" on ${aToken.name} not found`);\n    const CE_DESC = `${COND_NAME} from ${aToken.name}`\n    let effectData = {\n        label: COND_NAME,\n        icon: aItem.img,\n        origin: aItem.uuid,\n        disabled: false,\n        transfer: false,\n        flags: {\n            ActiveAuras: {\n                alignment: \"\",\n                aura: \"All\",\n                displayTemp: false,\n                height: false,\n                hostile: true,\n                ignoreSelf: true,\n                isAura: true,\n                onlyOnce: false,\n                radius: 30,\n                type: \"\"\n            },\n            convenientDescription: CE_DESC,\n            // core: {\n            //     statusId: \"true\" // This forces the effect icon to display\n            // },\n            dae: {\n                durationExpression: \"\",\n                macroRepeat: \"endEveryTurn\",\n                selfTarget: false,\n                specialDuration: ['None'],\n                stackable: false,\n                transfer: true\n            },\n        },\n        changes: [\n            { key: `macro.itemMacro`, mode: jez.ADD, value: `\"${aToken.name}\" ${aToken.id}`, priority: 20 },\n        ]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: [effectData] });\n    //----------------------------------------------------------------------------------\n    // run VFX on origin\n    //\n    runVFXorigin(aToken)\n    //----------------------------------------------------------------------------------\n    // Post message and exit\n    //\n    msg = `<b>${aToken.name} has toggled ${COND_NAME} on`\n    postResults(msg)\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * If effect is applied to creature of type: Undead or Fiend, and this creature isn't the origin, \n * delete the effect straight away.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOn(options = {}) {\n    const FUNCNAME = \"doOn()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL > 0) jez.trace(`${TAG} --- Starting ---`);\n    //-----------------------------------------------------------------------------------------------\n    // If we're the origin of the effect, just leave\n    //\n    if (LAST_ARG.origin.includes(aActor.uuid)) return\n    //-----------------------------------------------------------------------------------------------\n    // If we're not origin of the effect, check to see if immune race, if so remove effect\n    // This resulted in some race condition when two bodaks were active, so I moved the operation \n    // to doEach, giving damage immunity\n    //\n    // const RACE = jez.getRace(aToken)\n    // if (IMMUNE_RACES.includes(RACE)) {\n    //     // Find and remove the effect just applied\n    //     let aEffect = await aToken?.actor?.effects?.find(ef => ef?.id === LAST_ARG.effectId)\n    //     if (aEffect) {\n    //         await aEffect.delete()\n    //         await jez.wait(1000)\n    //     }\n    // }\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOff(options = {}) {\n    const FUNCNAME = \"doOff()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(1000)\n    //-----------------------------------------------------------------------------------------------\n    // If we are removing the effect from the origin token, need to cancel the persistent VXF\n    //\n    if (LAST_ARG.origin.includes(aActor.uuid)) {\n        Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken });\n    }\n    //-----------------------------------------------------------------------------------------------\n    // That's all Folks\n    //\n    if (TL > 3) jez.trace(`${TAG} | More Detailed Trace Info.`)\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked each round by DAE\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doEach(options = {}) {\n    const FUNCNAME = \"doEach()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //-----------------------------------------------------------------------------------------------\n    // If this is executed on the origin token return\n    //\n    if (LAST_ARG.origin.includes(aActor.uuid)) return\n    //-----------------------------------------------------------------------------------------------\n    // Get Token5e object for origin token\n    //\n    let oToken = canvas.tokens.placeables.find(ef => ef.id === args[2])\n    if (TL > 1) jez.trace(`${TAG} Origin token data object`, oToken)\n    if (!oToken) return jez.badNews(`Could not find origin token, ${args[1]} ${args[2]}`, 'w')\n    //-----------------------------------------------------------------------------------------------\n    // If the token is of immune type, quietly exit\n    //\n    const RACE = jez.getRace(aToken)\n    if (IMMUNE_RACES.includes(RACE)) return\n    //-----------------------------------------------------------------------------------------------\n    // If this is executed on non-origin token, roll/apply some damage if in range post a message, \n    // remove the effect then return\n    //\n    if (TL > 1) jez.trace(`${TAG} Need to apply ${DAMAGE_ROLL} ${DAMAGE_TYPE} damage to ${aToken.name}`);\n    // Roll some damage\n    let damageRoll = new Roll(`${DAMAGE_ROLL}`).evaluate({ async: false });\n    if (TL > 1) jez.trace(`${TAG} Damage Rolled ${damageRoll.total}`, damageRoll)\n    game.dice3d?.showForRoll(damageRoll);\n    // Apply damage to target\n    new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll, DAMAGE_TYPE, [], damageRoll,\n        { flavor: \"No Workie\", itemCardId: \"new\" /*args[0].itemCardId*/ });\n    MidiQOL.applyTokenDamage([{ damage: damageRoll.total, type: DAMAGE_TYPE }], damageRoll.total,\n        new Set([aToken]), null /*aItem*/, new Set());\n    await postMessage(`Damaged by ${COND_NAME}`, `${aToken.name} takes ${damageRoll.total} \n        ${DAMAGE_TYPE} damage from ${oToken.name}'s ${COND_NAME}.`)\n    //-----------------------------------------------------------------------------------------------\n    // Get Token5e object for origin token\n    //\n    runVFXtarget(aToken)\n    //-----------------------------------------------------------------------------------------------\n    // All done\n    //\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/***************************************************************************************************\n * Run some VFX on origin token\n ***************************************************************************************************/\n function runVFXorigin(token) {\n    const VFX_TARGET = \"modules/jb2a_patreon/Library/Generic/Template/Circle/OutPulse/OutPulse_02_Regular_PurplePink_Loop_600x600.webm\"\n    const VFX_SCALE = 2.2\n    const VFX_OPACITY = 0.2\n    new Sequence()\n        .effect()\n        .file(VFX_TARGET)\n        .attachTo(token)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .persist()\n        .name(VFX_NAME) \n        .belowTokens(true)\n        .play();\n}\n/***************************************************************************************************\n * Run some VFX on target token\n ***************************************************************************************************/\n function runVFXtarget(token) {\n    const VFX_TARGET = \"modules/jb2a_patreon/Library/Generic/Impact/Impact_03_Regular_PinkPurple_400x400.webm\"\n    const VFX_SCALE = 1\n    const VFX_OPACITY = 1.0\n    new Sequence()\n        .effect()\n        .file(VFX_TARGET)\n        .attachTo(token)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)\n        .belowTokens(false)\n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.Dfe2e2izXj5lYIfP"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

@@ -9,7 +9,8 @@ I'll try to document functions as I add them to the repository.
 
 ## Abilities in this Repo
 
-* **[Angelic Weapons](#angelic_weapons)** -- Bonus damage on all weapon hits.
+* **[Angelic Weapons](#angelic-weapons)** -- Bonus damage on all weapon hits.
+* **[Aura of Annihilation](#auraofannihilation)** -- Bodak's aura.
 * **[Beyond Death](#beyond-death)** -- Ability to restore 1HP when dropped to zero
 * **[Blessing of the Mother Night](#blessing-of-the-mother-night)** -- Baba Lysaga ability
 * **[Brown Mold Freezing Wave](#brown-mold-freezing-wave)** -- Environmental damage component of Brown Mold.
@@ -75,6 +76,25 @@ I'll try to document functions as I add them to the repository.
 This ability requires only a bit of DAE configuration to add 4d8 Radiant damage to all MWAK and RWAK actions for an actor.  It does not add the magical characteristic, I don't know how to do that easily, so I am leaving it for manual twiddling in the (presumably) rare situations where it would matter.  
 
 ![Angelic_Weapons/Angelic_Weapons_DAE.png](Angelic_Weapons/Angelic_Weapons_DAE.png)
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Aura of Anhillation**
+
+Support thevBodak's damage aura which is defined as follows:
+
+Bodak can activate or deactivate this feature as a bonus action. While active, the aura 
+deals 5 necrotic damage to any creature that ends its turn within 30 feet of Bodak.
+Undead and fiends ignore this effect.
+
+This macro does a bunch of things.
+
+* **OnUse**: Toggles the effect on/off. When it toggles on, it places an effect that includes an Active Effect that drives the rest of the process.  
+* **doOn**: At one point deleted the effect on immune tokens, but this caused an issue with the effect being applied/removed in an infinite loop by active auras, so it now does nothing.
+* **doOff**: If the active token is the origin, remove the persistent VFX
+* **each**: Apply damage to those not immune along with a VFX.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

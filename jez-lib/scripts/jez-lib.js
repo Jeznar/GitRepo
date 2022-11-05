@@ -148,7 +148,7 @@ class jez {
             </div>`
         }
         //await ChatMessage.create({ content: chatCard });
-        await ChatMessage.create({
+        const RC = await ChatMessage.create({
             //speaker: ChatMessage.getSpeaker(controlledToken),
             speaker: speaker ? ChatMessage.getSpeaker(speaker) : null,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
@@ -158,7 +158,7 @@ class jez {
         await jez.wait(100);
         await ui.chat.scrollBottom();
         // jez.log(`-------------- Finished ${FUNCNAME}-----------`);
-        return;
+        return(RC);
     }
 
     /***************************************************************************************************

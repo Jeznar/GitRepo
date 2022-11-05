@@ -357,6 +357,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.01 Fixed permission issues and MSAK not triggering damage elements of Nauseating Poison
 
+22.11.05 Created Bodak's aura using an active aura that inflicts selective damage.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -1,8 +1,9 @@
-const MACRONAME = "Mordenkainen's_Sword.0.1.js"
+const MACRONAME = "Mordenkainen's_Sword.0.2.js"
 /*****************************************************************************************
  * 
  * 
  * 10/31/22 0.1 Creation of Macro from Spiritual_Weapon.0.1.js
+ * 11/02/22 0.2 Attempting modification to eliminate the concentration element
  *****************************************************************************************/
  const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
  const TAG = `${MACRO} |`
