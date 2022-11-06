@@ -359,6 +359,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.05 Created Bodak's aura using an active aura that inflicts selective damage.
 
+22.11.05 Bodak's death gaze affecting all tokens who can see it and generating compact roll summary.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

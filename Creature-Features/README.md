@@ -26,6 +26,7 @@ I'll try to document functions as I add them to the repository.
 * **[Coven Casting](#coven-casting)** -- Night Hag's shared Casting
 * **[Create Specter](#create-specter)** -- Wraith's ability to convert corpse to a specter
 * **[Crocodile Bite](#crocodile-bite)** -- Crocodile bite and grapple possibility
+* **[Death Gaze](#death-gaze)** -- Bodak's ability, not quite RAW
 * **[Death Throes](#death-throes)** -- PBAOE damage from the death of a Gauth
 * **[Disrupt Life, Lich](#disrupt-life-lich)** -- Lich PBAOE ability to damage all non-undeads
 * **[Etherealness](#ethrealness)** -- Transitions a token to ethereal realm (sort of).
@@ -324,6 +325,20 @@ Perform several checks before using WarpGate to bring in a Specter which will ha
 ### **Crocodile Bite**
 
 Import of older macro.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Death Gaze**
+
+Bodak's Death gaze, implemented as an explicit bonus action for the Bodak rather than as a start-of-turn effect for each token in range.
+
+1. Generate a list of tokens that are with 30 feet that can see the the source token
+2. Pop message reminding of the option to be voluntarily blinded with option to bail out
+3. Roll saves for each affected, keeping track of failures and superFailures and play VFX on targets
+4. Inflict damage to failures
+5. Inflict damage to superfailures
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

@@ -1,0 +1,127 @@
+{
+  "name": "Death Gaze",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/evil-eye-eerie-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>When a creature that can see %TOKENNAME%&rsquo;s eyes starts its turn within 30 feet of the %TOKENNAME%, the %TOKENNAME%&nbsp;can force it to make a DC 13 <strong>CON Save</strong> if the %TOKENNAME%&nbsp;isn&rsquo;t incapacitated and can see the creature.</p>\n<p>A creature takes&nbsp;<strong>16 (3d10) psychic</strong>&nbsp;damage on a failed save.</p>\n<p>If the saving throw <strong>fails by 5 or more</strong>, the creature is <strong>reduced to 0 hit points</strong>, unless it is <strong>immune to the frightened </strong>condition.</p>\n<p>Unless surprised, a creature can avert its eyes to avoid the saving throw at the start of its turn, becoming effectively @JournalEntry[lIPpTxLdMS9z2G94]{Blinded} with respect to %TOKENNAME%.&nbsp; If the creature looks at&nbsp;%TOKENNAME%&nbsp;in the meantime, it must immediately make the saving throw.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> This is automated, it does nit require pre-targeting, but ensure that characters that are averting their eyes have the Blinded effect before casting this spell.</p>\n<p>However, it is implmented as a bonus action for the Bodak to use vs all tokens that can see it at one time, rather than a beginning of turn.&nbsp; This is a change from RAW and requires checking to see which actors may be averting their eyes.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Volo's Guide to Monsters pg 127",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": "Target with 30 feet can see the Bodak"
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": 13,
+      "scaling": "con"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<em><strong>Death Gaze.</strong></em>",
+      "fullName": "Death Gaze."
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Death Gaze",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Death_Gaze.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * \n * 1. Generate a list of tokens that are with 30 feet that can see the the source token\n * 2. Pop message reminding of the option to be voluntarily blinded with option to bail out\n * 3. Roll saves for each affected, keeping track of failures and superFailures\n * 4. Inflict damage to failures\n * 5. Inflict damage to superfailures\n * \n * 11/05/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst SAVE_DC = aActor.data.data.attributes.spelldc;\nconst SAVE_TYPE = \"con\"\nconst FLAVOR = `${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> to partially resisit \n                    <b>${aItem.name}</b>`;\nconst DAMAGE_TYPE = \"psychic\";\nconst DAMAGE_DICE = `3d10`;\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\n// if (args[0] === \"on\") await doOn({traceLvl:TL});                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\n// if (args[0] === \"each\") doEach({traceLvl:TL});\t\t\t\t\t     // DAE everyround\n// DamageBonus must return a function to the caller\n// if (args[0]?.tag === \"DamageBonus\") return(doBonusDamage({traceLvl:TL}));   \n// if (args[0] === \"off\") await doOff({traceLvl:TL});                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------\n    // Get the range from the item card\n    //\n    const ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n    const MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS)\n    let chatMessage = await game.messages.get(args[args.length - 1].itemCardId);\n    //----------------------------------------------------------------------------------\n    // Build a list of in-range targets that can see the source token\n    //\n    let rangeOpts = {\n        exclude: \"self\",    // self, friendly, or none (self is default)\n        direction: \"t2o\",       // t2o or o2t (Origin to Target) (t2o is default) \n        chkSight: true,         // Boolean (false is default)\n        chkBlind: true,         // Boolean (false is default)\n        traceLvl: TL,           // Trace level, integer typically 0 to 5\n    }\n    let targets = await jez.inRangeTargets(aToken, MAX_RANGE, rangeOpts);\n    if (targets.length === 0) return jez.badNews(`No effectable targets in range`, \"i\")\n    if (TL > 1) for (let i = 0; i < targets.length; i++) jez.trace(`${FNAME} | Targeting: ${targets[i].name}`)\n    //------------------------------------------------------------------------------------------\n    // Prepare for and pop a simple dialog asking if preconditions were met\n    //\n    const Q_TITLE = `Proceed with Death Gaze?`\n    let qText = `Death Gaze allows actors to avert their eyes (become blinded) to avoid this \n    effect.  This dialog allows the effect to be cancelled if any of the following want to\n    be voluntarily become blinded for this round, click \"No\"; otherwise \"Yes\" to continue.<br><br>`\n    for (let i = 0; i < targets.length; i++) qText += `- ${targets[i].name}<br>`\n    qText += `<br>`\n    let confirmation = await Dialog.confirm({ title: Q_TITLE, content: qText, });\n    if (!confirmation) {\n        if (TL > 3) jez.trace(`${TAG} Dialog choice was no.`)\n        msg = `Effect cancelled, so that Blinded condition can be applied or other adjustments made.`\n        postResults(msg)\n        return jez.badNews(`Effect canceled, so that Blinded can be applied.`, \"i\")\n    }\n    //------------------------------------------------------------------------------------------\n    // Roll saving throws, keep track of saves made, fail, superFail\n    //\n    let failSaves = []  // Array to contain the tokens that failed their saving throws\n    let madeSaves = []  // Array to contain the tokens that made their saving throws\n    let superFailSaves = []\n    let madeNames = \"\"\n    let failNames = \"\"\n    let superFailNames = \"\"\n    if (TL > 1) jez.trace(`${TAG} ${targets.length} affectable tokens`)\n    for (let i = 0; i < targets.length; i++) {\n        let tToken = targets[i];\n        let tActor = tToken?.actor;\n        let save = (await tActor.rollAbilitySave(SAVE_TYPE,\n            { FLAVOR, chatMessage: false, fastforward: true }));\n        console.log(`==> save.total ${save.total} SAVE_DC, ${SAVE_DC}, ${SAVE_DC - save.total}`)\n        if (save.total < SAVE_DC && save.total + 5 >= SAVE_DC) {\n            failSaves.push(tToken)\n            failNames += `<b>${tToken.name}</b>, ${save.total} (${save._formula})<br>`\n            runVFX(\"fail\", tToken)\n        } else\n            if (save.total + 5 < SAVE_DC) {\n                const COND_IMMUNITIES = tActor.data.data.traits.ci.value\n                if (COND_IMMUNITIES.includes('frightened')) {\n                    if (TL > 1) jez.trace(`${TAG} ==> ${tToken.name} is immune to frightened!!!`)\n                    failSaves.push(tToken)\n                    failNames += `<b>${tToken.name}</b>, ${save.total} (${save._formula})<br>`\n                    runVFX(\"fail\", tToken)\n                } else {\n                    superFailSaves.push(tToken)\n                    superFailNames += `<b>${tToken.name}</b>, ${save.total} (${save._formula})<br>`\n                    runVFX(\"superFail\", tToken)\n                }\n            } else\n                if (save.total >= SAVE_DC) {\n                    madeNames += `<b>${tToken.name}</b>, ${save.total} (${save._formula})<br>`\n                    madeSaves.push(tToken)\n                }\n        await jez.wait(500) // Add a bit of dramatic pause\n    }\n    if (TL > 1) jez.trace(`${TAG} Results`, \"Made Saves\", madeSaves, \"Failed Saves\",\n        failSaves, \"Super Failures\", superFailSaves)\n    //----------------------------------------------------------------------------------\n    // Roll the damage Dice\n    //\n    let damageRoll = new Roll(`${DAMAGE_DICE}`).evaluate({ async: false });\n    if (TL > 1) jez.trace(`${TAG} Damage Rolled ${damageRoll.total}`, damageRoll)\n    game.dice3d?.showForRoll(damageRoll);\n    //----------------------------------------------------------------------------------\n    // Apply damage to those that failed saving throws\n    //\n    if (TL > 2) jez.trace(`${TAG} Applying damage to failed saves`)\n    new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll, DAMAGE_TYPE, [], damageRoll,\n        { flavor: `Damage from ${aItem.name}`, itemCardId: args[0].itemCardId });\n    MidiQOL.applyTokenDamage([{ damage: damageRoll.total, type: DAMAGE_TYPE }],\n        damageRoll.total, new Set(failSaves), aItem, new Set());\n    //----------------------------------------------------------------------------------\n    // Apply huge damage to those that super failed saving throws\n    //\n    if (TL > 2) jez.trace(`${TAG} Applying huge damage to super failed saves`)\n    new MidiQOL.DamageOnlyWorkflow(aActor, aToken, damageRoll, DAMAGE_TYPE, [], damageRoll,\n        { flavor: `Damage from ${aItem.name}`, itemCardId: args[0].itemCardId });\n    MidiQOL.applyTokenDamage([{ damage: 1000, type: DAMAGE_TYPE }],\n        10000, new Set(superFailSaves), aItem, new Set());\n    //----------------------------------------------------------------------------------\n    // Add results to chat card\n    //\n    await jez.wait(100)\n    let msg1 = \"\";\n    if (madeNames) {\n        msg1 = `<b><u>Successful Save</u></b><br>${madeNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkgreen\", fSize: 14, msg: msg1, tag: \"saves\" })\n    }\n    if (failNames) {\n        msg1 = `<b><u>Failed Save</u></b><br>${failNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"darkred\", fSize: 14, msg: msg1, tag: \"saves\" })\n    }\n    if (superFailNames) {\n        msg1 = `<b><u>Utterly Failed Save</u></b><br>${superFailNames}`\n        await jez.wait(100)\n        jez.addMessage(chatMessage, { color: \"purple\", fSize: 14, msg: msg1, tag: \"saves\" })\n    }\n    await jez.wait(100)\n    msg = `Total of ${targets.length} target(s), rolling ${SAVE_TYPE.toUpperCase()} save vs DC ${SAVE_DC}.<br>`\n    jez.addMessage(chatMessage, { color: \"darkblue\", fSize: 14, msg: msg, tag: \"saves\" })\n\n    // if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)\n    // msg = `Maybe say something useful...`\n    // postResults(msg)\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/***************************************************************************************************\n * Play the VFX for the fire effect, type is \"heal\" or \"fire\" and nothing else\n ***************************************************************************************************/\nasync function runVFX(type, token5e) {\n    let vfxEffect = \"\"\n    switch (type) {\n        case \"fail\": vfxEffect = \"jb2a.markers.02.dark_bluewhite\"; break\n        case \"superFail\": vfxEffect = \"jb2a.divine_smite.target.dark_purple\"; break\n        default: return\n    }\n    new Sequence()\n        .effect()\n        .file(vfxEffect)\n        .atLocation(token5e)\n        .scaleToObject(1.0)\n        // .scale(0.5)\n        .opacity(1)\n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
