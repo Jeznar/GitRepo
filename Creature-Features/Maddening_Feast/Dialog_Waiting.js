@@ -6,7 +6,7 @@
  * 
  ***/
 
-const myPromise = await new Promise((resolve, reject) => {
+const myPromise = await new Promise((myResolve, myReject) => {
     let e = new Dialog({
         title: 'Title',
         content: 'Text',
@@ -16,8 +16,7 @@ const myPromise = await new Promise((resolve, reject) => {
                 label: "Go for it!",
                 callback: (html) => { 
                     console.log('Choosing to go')
-                    console.log(html)
-                    resolve("picked go")   // Returns value in promise
+                    myResolve("Picked go")   // Returns value in promise
                 }
             },
             no: {
@@ -25,7 +24,7 @@ const myPromise = await new Promise((resolve, reject) => {
                 label: "Had enough!",
                 callback: () => { 
                     console.log('Opting to abort')
-                    resolve("Picked no")  // Returns value in promise
+                    myResolve("Picked no")  // Returns value in promise
                 }
             },
         }

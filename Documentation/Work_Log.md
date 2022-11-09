@@ -363,6 +363,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.09 Changes to jez.pickCheckListArray to allow it to be effectively await'ed (synchronicity), remaining dialog functions were not updates, though jez.pickCheckListArray was documented where changed to help in future.
 
+22.11.09 Created Maddening Feast which does some pre-target shenanigans to set the targets and then uses the item card to perform the rest of the spell.  Uses 'Called before the item is rolled' setting to force evaluation before the item card rolls.  It uses  args[0].macroPass !== 'preItemRoll' to validate the config.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

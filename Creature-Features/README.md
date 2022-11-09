@@ -44,6 +44,7 @@ I'll try to document functions as I add them to the repository.
 * **Knock Down** -- Implements a dog/wolf's bite and knock down
 * **[Life Drain](#life-drain)** -- Wraith's Life Drain Ability
 * **[Maddening Touch](#maddening-touch)** -- Allip's main melee attack.
+* **[Maddening Feast](#maddening-feast)** -- Implements Bheur Hag's ability
 * **[Magic Resistance](#magic-resistance)** -- Grants advantage on saves vs magic
 * **[Nightmare Haunting](#nightmare-haunting)** -- Nighthag's haunting ability.
 * **[Paralyzing Touch](#paralyzing-touch)** -- A Lich's primary attack
@@ -542,6 +543,16 @@ I tried using `-@flags.dae.damageApplied` but that ended up generating a zero wh
 
 ---
 
+### **Maddening Feast**
+
+This one includes a macro that has the user select targets from a dialog and then sets them before allowing the item card to complete.  
+This is my second item that it runs **Called before the item is rolled (*)** and sets the targets that are subsequently used by the item card.  
+
+Macro includes a check *args[0].macroPass !== "preItemRoll"* to assure the correct configuration.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
 
 ### **Maddening Touch**
 

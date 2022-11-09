@@ -1,0 +1,222 @@
+{
+  "name": "Maddening Feast",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/items/inventory/teeth.jpg",
+  "data": {
+    "description": {
+      "value": "<p>%TOKENNAME% feasts on the corpse of one enemy within 5 feet of her that died within the past minute.</p>\n<p>Each creature of&nbsp;%TOKENNAME%<span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">&nbsp;choice that is within </span><strong style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">60 feet </strong><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">of her and able to see her must succeed on a </span><strong style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">WIS Save </strong><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">or be @JournalEntry[tjg0x0jXlwvbdI9h]{Frightened} of her for 1 minute.</span></p>\n<p>While frightened in this way, a creature is @JournalEntry[1etZSeEDtWQrHUYM]{Incapacitated}, can&rsquo;t understand what others say, can&rsquo;t read, and speaks only in gibberish; the DM controls the creature&rsquo;s movement, which is erratic.</p>\n<section class=\"secret\">\n<p>A creature can <strong>repeat </strong>the saving throw at the <strong>end of each of its turns</strong>, ending the effect on itself on a success. If a creature&rsquo;s saving throw is successful or the effect ends for it, the creature is<strong> immune to the hag&rsquo;s Maddening Feast for the next 24 hours.</strong></p>\n<p>Saving throw is nominally a 15 DC</p>\n</section>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Volo's Guide to Monsters pg 160",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 15,
+      "scaling": "flat"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "properties": {
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false
+    },
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "6r8olqgtlb8k0b3s",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Frightened",
+          "priority": "20"
+        },
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Incapacitated",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 2,
+          "value": "turn=end,\nlabel=Save against Yeti's Chilling Gaze,\nsaveDC=15,\nsaveAbility=wis,\nsaveRemove=true,\nsaveMagic=true,\nrollType=save",
+          "priority": "20"
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60,
+        "rounds": 10
+      },
+      "icon": "systems/dnd5e/icons/items/inventory/teeth.jpg",
+      "label": "Maddening Feast",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "multi",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": [
+        "macro.CE",
+        "macro.CE",
+        "flags.midi-qol.OverTime",
+        "macro.itemMacro"
+      ]
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<strong>Maddening Feast.</strong>",
+      "fullName": "Maddening Feast."
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[preItemRoll]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Maddening Feast",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Maddening_Feast.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *   %TOKENNAME% feasts on the corpse of one enemy within 5 feet of her that died within the past \n *   minute. \n * \n *   Each creature of %TOKENNAME% choice that is within 60 feet of her and able to see her must  \n *   succeed on a DC15 WIS Save or be Frightened of her for 1 minute.\n * \n *   While frightened in this way, a creature is  Incapacitated, can't understand what others say, \n *   can't read, and speaks only in gibberish; the DM controls the creature's movement, which is \n *   erratic.\n * \n *   A creature can repeat the saving throw at the end of each of its turns, ending the effect on \n *   itself on a success. If a creature's saving throw is successful or the effect ends for it, \n *   the creature is immune to the hag's Maddening Feast for the next 24 hours.\n * \n * 11/09/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\nconst IMMUNE_COND = \"Immune - Maddening Feast\"\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // Remove any preset targets\n    //\n    game.user.updateTokenTargets()\n    //------------------------------------------------------------------------------------------\n    // Prepare for and pop a simple dialog asking if preconditions were met\n    //\n    const Q_TITLE = `Can ${aToken.name} Feast?`\n    const Q_TEXT = `To qualify to feast, ${aToken.name} must be within 5 feet of a corpse that \n    died within the past minute and spend her action gourging on the bloody flesh. Are these \n    conditions met?<br><br>`\n    let confirmation = await Dialog.confirm({ title: Q_TITLE, content: Q_TEXT, });\n    if (!confirmation) {\n        msg = `${aToken.name} looks confusedly in the general direction of the GM and wonders\n        what she is expected to feast upon?<br><br>No effect, action can not be performed.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n            msg: msg, title: `Can not complete action`, token: aToken\n        })\n        return jez.badNews(`Preconditions not met, skipping ${aItem.name} effects.`, \"w\")\n    }\n    //----------------------------------------------------------------------------------------------\n    // Obtain the range of the effect\n    //\n    const RANGE = jez.getRange(aItem, ALLOWED_UNITS) + 3 // Adding a bit of fudge\n    if (!RANGE) return jez.badNews(`Could not retrieve useable range (in feet) for ${aItem.name}`)\n    //------------------------------------------------------------------------------------------\n    // Build a list of tokens within range that can see the feast occuring, excluding any that \n    // have immunity.\n    //\n    let parms = {\n        exclude: \"Self\",        // self, friendly, or none (self is default)\n        direction: \"t2o\",       // t2o or o2t (Origin to Target) (t2o is default) \n        chkSight: true,         // Boolean (false is default)\n        chkBlind: true,         // Boolean (false is default)\n        traceLvl: 0,            // Trace level, integer typically 0 to 5\n    }\n    let candidateIds = []\n    let candidates = await jez.inRangeTargets(aToken, RANGE, parms);\n    if (candidates.length === 0) {\n        msg = `${aToken.name} sadly realizes that nothing and no one is in range for ${aItem.name}.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n            msg: msg, title: `No affectable targets`, token: aToken\n        })\n        return jez.badNews(`No effectable targets in range`, \"i\")\n    }\n    for (let i = 0; i < candidates.length; i++) {\n        immuneEffect = candidates[i].actor.effects.find(ef => ef.data.label === IMMUNE_COND)\n        if (TL > 2) jez.trace(`${TAG} ${candidates[i].name} Immune Effect`, immuneEffect)\n        if (immuneEffect) \n            jez.trace(`${FNAME} | Immunity: ${candidates[i].name} (${candidates[i].id})`, candidates[i])\n        else {\n            jez.trace(`${FNAME} | Targeting: ${candidates[i].name} (${candidates[i].id})`, candidates[i])\n            candidateIds.push(`${candidates[i].name} (${candidates[i].id})`)\n        }\n    }\n    if (candidateIds.length === 0) {\n        msg = `${aToken.name} sadly realizes that nothing and no one can be affected by ${aItem.name}.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n            msg: msg, title: `No affectable targets`, token: aToken\n        })\n        return jez.badNews(`No effectable targets in range`, \"i\")\n    }\n    //------------------------------------------------------------------------------------------\n    // Call function to pop a dialog and select targets to be affected.\n    //\n    await popDialog();\n    async function popDialog() {\n        const Q_TITLE = \"Select Tokens to be Affected\"\n        const Q_TEXT = `Check all the creatures that ${aToken.name} wants to affect with\n        ${aItem.name}.`\n        await jez.pickCheckListArray(Q_TITLE, Q_TEXT, callBack, candidateIds.sort());\n        return\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Following is the call back function\n    //\n    async function callBack(selection) {\n        let targets = []\n        let targetIds = []\n        if (selection === null) return\n        if (selection.length === 0) { popDialog(); return }\n        //-------------------------------------------------------------------------------------------\n        // Build targetedArray of token IDs from all those tasty token descriptors selected.\n        // The selection items should be of form: Token Name (Q4XTwd4lR76Afu6B)\n        //\n        for (let i = 0; i < selection.length; i++) {\n            msg += `${i + 1}) ${selection[i]}<br>`\n            const ELEMENTS = selection[i].split(\"(\")                    // Make array of elements\n            const THIS_ID = ELEMENTS[ELEMENTS.length - 1].slice(0, -1)  // Slice out the ID we need     \n            if (TL > 3) jez.trace(`${TAG} | Target ID ${i}`, THIS_ID)\n            targetIds.push(THIS_ID)\n            targets.push(canvas.tokens.placeables.find(ef => ef.id === THIS_ID))\n        }\n        //-------------------------------------------------------------------------------------------\n        // Fire off a VFX on each of the targets\n        //\n        const COLOR = jez.getRandomRuneColor()\n        const SCHOOL = `necromancy`\n        for (let i = 0; i < targets.length; i++) {\n            if (TL > 3) jez.trace(`${TAG} Targeting: ${targets[i].name}`, targets[i])\n            if (TL > 4) jez.trace(`${TAG} School: ${SCHOOL}, Color: ${COLOR}`)\n            jez.runRuneVFX(targets[i], SCHOOL, COLOR)\n        }\n        //----------------------------------------------------------------------------------------------\n        // Update the selected targets so item hits correct tokens.\n        //\n        game.user.updateTokenTargets(targetIds)\n    }\n    //-----------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOff(options = {}) {\n    const FUNCNAME = \"doOff()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //---------------------------------------------------------------------------------------------\n    // Apply our CE Immune effect modifing key aspects\n    //\n    let effectData = game.dfreds.effectInterface.findEffectByName(\"Immune\").convertToObject();\n    if (TL > 3) jez.trace(`${TAG} effectData >>>`, effectData)\n    effectData.description = \"Immune to Maddening Feast effects, for now...\"\n    effectData.name = IMMUNE_COND\n    effectData.flags.dae = { specialDuration : [ \"longRest\" ] }\n    if (TL > 2) jez.trace(`${TAG} Apply affect to ${aToken.name}`)\n    await game.dfreds.effectInterface.addEffectWith({\n        effectData: effectData,\n        uuid: aToken.actor.uuid, \n        origin: aItem.uuid\n    });\n    immuneEffect = aToken.actor.effects.find(ef => ef.data.label === IMMUNE_COND)\n    if (!immuneEffect) return jez.badNews(`Immune effect didn't stick...`, \"e\")\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    if (TL > 3) jez.trace(`${TAG} | More Detailed Trace Info.`)\n\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.NiHsD1oOZcfkGCeK"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
