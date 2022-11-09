@@ -361,6 +361,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.05 Bodak's death gaze affecting all tokens who can see it and generating compact roll summary.
 
+22.11.09 Changes to jez.pickCheckListArray to allow it to be effectively await'ed (synchronicity), remaining dialog functions were not updates, though jez.pickCheckListArray was documented where changed to help in future.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

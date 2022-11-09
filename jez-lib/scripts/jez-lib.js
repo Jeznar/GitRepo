@@ -355,6 +355,7 @@ class jez {
     }
     /***************************************************************************************
      * Create and process check box dialog, passing array onto specified callback function
+     * 11/09/22 Added code to allow this function to be aeait'ed (synchronicity!)
      * 
      * Font Awesome Icons: https://fontawesome.com/icons
      * 
@@ -399,47 +400,46 @@ class jez {
 `   // Back tick on its on line to make the console output better formatted
         }
         template += `</div></div>`
-        // jez.log(template)
-
         let selections = []
-        new Dialog({
-            title: queryTitle,
-            content: template,
-            buttons: {
-                ok: {
-                    icon: '<i class="fas fa-check"></i>',
-                    label: 'Selected Only',
-                    callback: async (html) => {
-                        // jez.log("html contents", html)
-
-                        html.find("[name=selectedLine]:checked").each(function () {
-                            //jez.log($(this).val());
-                            selections.push($(this).val())
-                        })
-                        pickCallBack(selections)
+        //------------------------------------------------------------------------------------
+        //
+        const myPromise = await new Promise((myResolve, myReject) => {  // Added to allow synchronicity
+            new Dialog({
+                title: queryTitle,
+                content: template,
+                buttons: {
+                    ok: {
+                        icon: '<i class="fas fa-check"></i>',
+                        label: 'Selected Only',
+                        callback: async (html) => {
+                            html.find("[name=selectedLine]:checked").each(function () {
+                                selections.push($(this).val())
+                            })
+                            await pickCallBack(selections)  // Changed for synchronicity
+                            myResolve("Picked ok")          // Added for synchronicity
+                        },
+                    },
+                    all: {
+                        icon: '<i class="fas fa-check-double"></i>',
+                        label: 'All Displayed',
+                        callback: async (html) => {
+                            await pickCallBack(queryOptions)// Changed for synchronicity
+                            myResolve("Picked all")         // Added for synchronicity
+                        },
+                    },
+                    cancel: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Cancel',
+                        callback: async (html) => {
+                            await pickCallBack(null)        // Changed for synchronicity
+                            myResolve("Picked cancel")      // Added for synchronicity
+                        },
                     },
                 },
-                all: {
-                    icon: '<i class="fas fa-check-double"></i>',
-                    label: 'All Displayed',
-                    callback: async (html) => {
-                        //jez.log("Selected All", queryOptions)
-                        pickCallBack(queryOptions)
-                    },
-                },
-                cancel: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: 'Cancel',
-                    callback: async (html) => {
-                        console.log('canceled')
-                        pickCallBack(null)
-                    },
-                },
-            },
-            default: 'cancel',
-        }).render(true)
-        // jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
-        return;
+                default: 'cancel',
+            }).render(true)
+        })                                                  // Added for synchronicity
+        return (myPromise);                                 // changed for synchronicity
     }
     /***************************************************************************************
      * Create and process selection dialog, passing it onto specified callback function
