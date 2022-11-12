@@ -53,6 +53,7 @@ I'll try to document functions as I add them to the repository.
 * **[Quasit Shape Change](#quasit-shape-change)** -- Quasit's ability to change form and speed
 * **[Ravenous Tenacity](#ravenous-tenacity)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Retched Spittle](#retched-spittle)** -- Ilya's ability per MandyMod in her Kresk extension.
+* **[Rooooo-glog](#Rooooo-glog)** -- Bullywug Croaker ability
 * **[Scare Quasit](#scare-quasit)** -- Quasit special attack that forces a save or frightened with followup save each turn
 * **[Shapechange, Baba Lysaga](#shapechange-baba-lysaga)** -- Simply states the ability
 * **[Slow, Golem](#slow-golem)** -- Golem slow ability mimicing the spell effect
@@ -653,6 +654,24 @@ Here's the decription of the ability:
 
 This ability has the user place a targeting, makes con checks for those in the area of effect (not necessarily DC13, it is calculated, so different stats and CR can change it). It also uses DAE's on each to make saving throws at appropriate times for those poisoned. 
 
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Rooooo-glog**
+
+Bullywug Croaker ability
+
+Similar, but different from Glaaar-Pat, this macro runs as a normal "OnUse" macro (after effects), it ignores any preselected targets, in fact, it clears them, for clarity.
+
+1. Builds a list of in range targets
+2. Exclude non "bullywug" subtype tokens
+3. Roll 4d4 for healing (This is a homebrew change)
+4. Grant the remaining targets temp hit points
+5. Play a randomly delayed VFX on the targets
+
+This takes advantage of midi's ability to grant temphp taking into account the existing if any temphp to an array of tokens (that's pretty cool). Also runs VFX on an array of tokens.
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
