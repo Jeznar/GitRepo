@@ -35,6 +35,7 @@ I'll try to document functions as I add them to the repository.
 * **[Fear of Fire](#fear-of-fire)** -- Fear of fire ability (Abominable Yeti)
 * **[Frightening Gaze](#frightening-gaze)** -- One of a Lich's legendary actions
 * **[Gauth Eye Rays](#gauth-eye-rays)** -- Gauth's Eye Beam ability
+* **[Glaaar-Pat](#glaar-pat)** -- Bullywug Croaker ability
 * **[Grasping Root](#grasping-root)** -- Tree Blight's (aka Wintersplinter) grasping root ability.
 * **[Gray Ooze](#gray-ooze)** -- Gray Ooze Abilities
 * **[Healing Touch](#healing-touch)** -- The Abbot's lay on hands like ability
@@ -427,6 +428,21 @@ This item also applies the CUB Condition: Paralyzed via a DAE effect.
 Implements Gauth Eye Rays using library function jez.fireRay() call.
 
 This is a rather complex macro, with lots of possible results.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Glaaar-Pat**
+
+Bullywug Croaker ability
+
+Mimicking Maddening Feast, this macro is intended to be 'Called before the item is rolled' it:
+
+1. Builds a list of in range targets
+2. Presents that list in a dialog for the user to specify the actual targets
+3. Sets the targets in accordance with the above
+4. Terminates to allow the Item card configuration to perform the actual damage & apply effect
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 

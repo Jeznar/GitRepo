@@ -1,0 +1,205 @@
+{
+  "name": "Glaaar-pat",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/rip-sky-2.jpg",
+  "data": {
+    "description": {
+      "value": "<section class=\"secret\">\n<p><em>Croaker ability -- 3/day</em></p>\n<p><em>DC12 Save</em></p>\n<p>9 (2d8) psychic damage on a failed save</p>\n</section>\n<p>%TOKENNAME% sings a song of marshy doom.</p>\n<p>Each chosen creature within <strong>30 feet </strong>of %TOKENNAME%&nbsp;that can hear the song must make a <strong>WIS Save</strong>, taking&nbsp; <strong>psychic damage</strong> on a failed save, or half as much damage on a successful one.</p>\n<p>A creature that fails this saving throw also has disadvantage on <strong>CON Saves</strong> until the end of its next turn.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Ghosts of Saltmarsh",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 3,
+      "max": "3",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [
+        [
+          "2d8[psychic]",
+          "psychic"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 12,
+      "scaling": "wis"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "properties": {
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false
+    },
+    "attunement": null,
+    "proficient": false
+  },
+  "effects": [
+    {
+      "_id": "5v2ul4exxo2vxuiz",
+      "changes": [
+        {
+          "key": "flags.midi-qol.disadvantage.ability.save.con",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/spells/rip-sky-2.jpg",
+      "label": "Glaaar-pat",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnEnd"
+          ],
+          "transfer": false
+        },
+        "core": {
+          "statusId": "true"
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "flags.midi-qol.disadvantage.ability.save.con"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<strong>Glaaar-pat (3/Day).</strong>",
+      "fullName": "Glaaar-pat (3/Day)."
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[preItemRoll]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": true,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Glaaar-pat",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Glaaar-pat.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Mimicking Maddening Feast, this macro is intended to be 'Called before the item is rolled' it:\n * 1. Builds a list of in range targets\n * 2. Presents that list in a dialog for the user to specify the actual targets\n * 3. Sets the targets in accordance with the above\n * 4. Terminates to allow the Item card configuration to perform the actual damage & apply effect\n * \n * Description of thr spell effect:\n * \n *   Croaker ability -- 3/day\n *   DC12 Save\n *   9 (2d8) psychic damage on a failed save\n * \n *   %TOKENNAME% sings a song of marshy doom.\n * \n *   Each chosen creature within 30 feet of %TOKENNAME% that can hear the song must make a WIS Save, \n *   taking  psychic damage on a failed save, or half as much damage on a successful one.\n * \n *   A creature that fails this saving throw also has disadvantage on CON Saves until the end of its \n *   next turn.\n * \n * 11/12/22 0.1 Creation of Macro from Maddening_Feast.0.1.js\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\n// if (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // Make sure we are running as a preItemRoll macro\n    //\n    if (args[0].macroPass !== \"preItemRoll\") {\n        msg = `${aToken.name}'s ${aItem.name} is likely incorrectly configured.  Check that the \n         On Use Macros field is set to \"Called before the item is rolled.\"\n         <br><br>No effect, action can not be performed.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n            msg: msg, title: `Configuration Problem`, token: aToken\n        })\n        return jez.badNews(`This macro must run preItemRoll, not ${args[0].macroPass}.`, \"e\")\n    }\n    //----------------------------------------------------------------------------------------------\n    // Remove any preset targets\n    //\n    game.user.updateTokenTargets()\n    //----------------------------------------------------------------------------------------------\n    // Obtain the range of the effect\n    //\n    let range = jez.getRange(aItem, ALLOWED_UNITS) ?? 30\n    // if (!range) return jez.badNews(`Could not retrieve useable range (in feet) for ${aItem.name}`)\n    range += 3 // Add a bit of fudge\n    //----------------------------------------------------------------------------------------------\n    // Build a list of tokens within range that can see the feast occuring, excluding any that \n    // have immunity.\n    //\n    let candidateIds = await getCandidates(range, { traceLvl: 0 })\n    if (!candidateIds) return false\n    //----------------------------------------------------------------------------------------------\n    // Add some VFX\n    //\n    runVFX(aToken)\n    //----------------------------------------------------------------------------------------------\n    // Call function to pop a dialog and select targets to be affected.\n    //\n    await popDialog();\n    async function popDialog() {\n        const Q_TITLE = \"Select Tokens to be Affected\"\n        const Q_TEXT = `Check all the creatures that ${aToken.name} wants to affect with\n        ${aItem.name}.`\n        await jez.pickCheckListArray(Q_TITLE, Q_TEXT, callBack, candidateIds.sort());\n        return\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Following is the call back function\n    //\n    async function callBack(selection) {\n        let targets = []\n        let targetIds = []\n        if (selection === null) return\n        if (selection.length === 0) { popDialog(); return }\n        //-------------------------------------------------------------------------------------------\n        // Build targetedArray of token IDs from all those tasty token descriptors selected.\n        // The selection items should be of form: Token Name (Q4XTwd4lR76Afu6B)\n        //\n        for (let i = 0; i < selection.length; i++) {\n            msg += `${i + 1}) ${selection[i]}<br>`\n            const ELEMENTS = selection[i].split(\"(\")                    // Make array of elements\n            const THIS_ID = ELEMENTS[ELEMENTS.length - 1].slice(0, -1)  // Slice out the ID we need     \n            if (TL > 3) jez.trace(`${TAG} | Target ID ${i}`, THIS_ID)\n            targetIds.push(THIS_ID)\n            targets.push(canvas.tokens.placeables.find(ef => ef.id === THIS_ID))\n        }\n        //-------------------------------------------------------------------------------------------\n        // Fire off a VFX on each of the targets\n        //\n        const COLOR = jez.getRandomRuneColor()\n        const SCHOOL = `evocation`\n        for (let i = 0; i < targets.length; i++) {\n            if (TL > 3) jez.trace(`${TAG} Targeting: ${targets[i].name}`, targets[i])\n            if (TL > 4) jez.trace(`${TAG} School: ${SCHOOL}, Color: ${COLOR}`)\n            jez.runRuneVFX(targets[i], SCHOOL, COLOR)\n        }\n        //----------------------------------------------------------------------------------------------\n        // Update the selected targets so item hits correct tokens.\n        //\n        game.user.updateTokenTargets(targetIds)\n    }\n    //-----------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Build and return a list of candate token Ids\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function getCandidates(RANGE, options = {}) {\n    const FUNCNAME = \"getCandidates(RANGE, options = {})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"RANGE\", RANGE, \"options\", options);\n    //---------------------------------------------------------------------------------------------\n    // Variables for this function\n    //\n    let parms = {\n        exclude: \"Self\",        // self, friendly, or none (self is default)\n        direction: \"t2o\",       // t2o or o2t (Origin to Target) (t2o is default) \n        chkHear: true,          // Exclude targets with no \"line of sound\" to actor\n        chkDeaf: true,          // Exclude targets that have the Deafened effect\n        traceLvl: TL,            // Trace level, integer typically 0 to 5 or TL\n    }\n    let candidateIds = []\n    let candidates = null\n    //---------------------------------------------------------------------------------------------\n    // Get Array of Token5e objects in range\n    //\n    candidates = await jez.inRangeTargets(aToken, RANGE, parms);\n    if (candidates.length === 0) {\n        msg = `${aToken.name} sadly realizes that nothing and no one is in range for ${aItem.name}.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n            msg: msg, title: `No affectable targets`, token: aToken\n        })\n        return jez.badNews(`No effectable targets in range`, \"i\")\n    }\n    //---------------------------------------------------------------------------------------------\n    // Build candiate identifier strings from the Token5e array and return it\n    //\n    for (let i = 0; i < candidates.length; i++) {\n        jez.trace(`${FNAME} | Targeting: ${candidates[i].name} (${candidates[i].id})`, candidates[i])\n        candidateIds.push(`${candidates[i].name} (${candidates[i].id})`)\n    }\n    return (candidateIds)\n}\n/***************************************************************************************************\n * Launch the VFX effects\n ***************************************************************************************************/\n async function runVFX(token) {\n    new Sequence()\n       .effect()\n       .file(\"jb2a.template_circle.out_pulse.01.burst.greenorange\")\n       .attachTo(token)\n       .scale(2.2)\n       .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.luk2shpikcsy00kq"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
