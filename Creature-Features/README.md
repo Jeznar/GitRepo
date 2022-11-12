@@ -20,6 +20,7 @@ I'll try to document functions as I add them to the repository.
 * **[Claw Quasit](#claw-quasit)** -- Quasit attack that forces a save or poisoned with followup save each turn
 * **[Clay Golem Haste](#clay-golem-haste)** -- Applies a DAE Effect
 * **[Clay Golem Slam](#clay-golem-slam)** -- Reduces targets hit points by amount of damage inflicted
+* **[Croaked Decree](#croaked-decree)** -- Bullywug Royal ability
 * **[Cold Breath (Yeti)](#cold-breath-yeti)** -- Yeti's cold breath cone attack
 * **[Consuming Bite](#consuming-bite)** -- Ilya's ability per MandyMod in her Kresk extension.
 * **[Constrict](#constrict)** -- Vine Blight's Constrict ability.
@@ -256,6 +257,14 @@ Simple macro that applies a DAE effect to implement Golem's haste ability.
 ### **Clay Golem Slam**
 
 Simple macro that applies a DAE effect to reduce target's max hit points by same amount as damage inflicted.
+
+*[Back to the Table of Contents](#abilities-in-this-repo)*
+
+---
+
+### **Croaked Decree**
+
+Minor variation on **[Glaaar-Pat](#glaar-pat)**
 
 *[Back to the Table of Contents](#abilities-in-this-repo)*
 
