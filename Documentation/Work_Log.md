@@ -375,6 +375,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.14 Creation of TokenUpdate runAsGM now used by library call moveToken to address permissions problem.
 
+22.11.14 Fix for Electrify.js: Saving throw for applied effect added (it just wasn't included before)
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
