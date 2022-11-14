@@ -1038,7 +1038,7 @@ class jez {
      * move is a positive value, toward if negative, after a delay in milliseconds
      ***************************************************************************************************/
     static async moveToken(anchorToken, movingToken, move, delay) {
-        const FUNCNAME = "moveToken(anchorToken, movingToken, move)";
+        const FUNCNAME = "moveToken(anchorToken, movingToken, move, delay)";
         let moveArray = [-3, -2, -1, 0, 1, 2, 3]
         const GRID_UNIT = canvas.scene.data.grid;
         let distBetweenTokens = jez.getDistance5e(anchorToken, movingToken);
@@ -1066,7 +1066,17 @@ class jez {
         }
         let squareCorner = moveSpaces(move)
         await jez.wait(delay)
-        await movingToken.document.update(squareCorner)
+        //----------------------------------------------------------------------------------------------
+        // Obtain the code for TokenUpdate which must be runAsGM enabled.
+        // 
+        const TokenUpdate = game.macros.find(i => i.name === "TokenUpdate");
+        if (!TokenUpdate) return jez.badNews(`REQUIRED: Missing TokenUpdate GM Macro!`,"e");
+        let AdvancedMacros = getProperty(TokenUpdate.data.flags, "advanced-macros");
+        if (!AdvancedMacros) return jez.badNews(`REQUIRED: Macro requires AdvancedMacros Module!`,'e');
+        else if (!AdvancedMacros.runAsGM) return jez.badNews(`REQUIRED: TokenUpdate "Execute As GM" must be checked.`,'e');
+        await TokenUpdate.execute(movingToken.id, squareCorner);
+        // Following line dies with a permission error for normal players.
+        // await movingToken.document.update(squareCorner)
         return (true)
         //----------------------------------------------------------------------------------------------
         // Count of spaces to move 1, 2 or 3

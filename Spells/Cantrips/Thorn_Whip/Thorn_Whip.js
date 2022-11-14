@@ -75,14 +75,15 @@ const MACRONAME = "Thorn_Whip.0.3"
      return;
  }
  // ---------------------------------------------------------------------------------------
- // Check target size.  Must be Large or smaller
+ // Check target size.  Must be Large or smaller and pull (move) it closer 
  //
  if (targetSize > 4) {
      msg = `<b>${target.data.name}</b> is too big (${targetSizeString}) to be pulled by this spell.`
      await postResults(msg);
      return;
  }
- jez.moveToken(aToken, tToken, -2, 2500)
+//  jez.moveToken(aToken, tToken, -2, 2500)
+jez.moveToken(aToken, tToken, -2, 2500)
  // ---------------------------------------------------------------------------------------
  // Post message with success
  //

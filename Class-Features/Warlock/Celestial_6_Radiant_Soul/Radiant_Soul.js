@@ -37,9 +37,6 @@ let msg = "";
 if (args[0]?.tag === "DamageBonus") {
     let damFunc = doBonusDamage()
     jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`,damFunc);
-    jez.log("")
-    jez.log("")
-    jez.log("")
     return damFunc    // DAE Damage Bonus
 }
 /***************************************************************************************************
