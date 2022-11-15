@@ -17,14 +17,11 @@ const MACRONAME = "Stolen_Shadow.0.1.js"
  * - warpgate spawn a shadow with appropriate mods to the token
  * - Add the new token to combat tracker and force initiative count 20
  * 
- * 
- * 
- * 
  * 11/15/22 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 4;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`${TAG} === Starting ===`);
@@ -162,22 +159,21 @@ async function doOnUse(options = {}) {
     //-----------------------------------------------------------------------------------------------
     // warpgate spawn a shadow with appropriate mods to the token
     //
-    spawnShadow(aToken, tToken, {traceLvl: TL})
-
-
+    const shadowID = await spawnShadow(aToken, tToken, {traceLvl: TL})
+    //await jez.wait(3000)
+    let shadowToken = await canvas.tokens.placeables.find(ef => ef.id === shadowID[0])
+    if (TL > 2) jez.trace(`${TAG} Shadow Info`,
+        `shadowID    ==>`, shadowID,
+        `shadowToken ==>`, shadowToken)
     //-----------------------------------------------------------------------------------------------
     // Add the new token to combat tracker and force initiative count 20    
     //
-
-    //-----------------------------------------------------------------------------------------------
-
+    await shadowToken.toggleCombat();
+    shadowToken.combatant.update({initiative: 20})
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)
-
-
-    msg = `Maybe say something useful...`
+    msg = `${tToken.name}'s shadow has been stripped away and is seemingly independent and angry.`
     postResults(msg)
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return true;
@@ -193,6 +189,8 @@ async function spawnShadow(aToken, tToken, options = {}) {
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "aToken", aToken, "tToken", tToken,
         "options", options);
+    if (TL > 2) jez.trace(`${TAG} Interesting Values`, 
+        "tToken.data.img ==> ", tToken.data.img);
     //--------------------------------------------------------------------------------------------------
     // Build the dataObject for our summon call
     //
@@ -210,6 +208,18 @@ async function spawnShadow(aToken, tToken, options = {}) {
         width: 1,                           // Width of token to be summoned, 1 is the default
         traceLvl: TL                        // Trace level, matching calling function decent choice
     }
+    argObj.updates = {
+        actor: {
+            name: `Shadow of ${tToken.name}`,
+            // 'data.attributes.hp': { value: 66, max: 66 }
+        },
+        token: { 
+            name: `Shadow of ${tToken.name}`,
+            img: tToken.data.img,
+            tint: "#404040",
+            alpha: 0.5                         // AKA Opacity
+        },
+     }
     //--------------------------------------------------------------------------------------------------
     // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
     // to update the img attribute or set basic image to match this item

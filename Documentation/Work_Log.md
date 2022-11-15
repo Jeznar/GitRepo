@@ -377,7 +377,9 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.14 Fix for Electrify.js: Saving throw for applied effect added (it just wasn't included before)
 
-22.11.15 Created Legendary Action: Stolen_Shadow_in_Ravenloft.  This warpgates in a shadow, manipulates its token, adds it to combat and sets the initative.
+22.11.15 Created Legendary Action: Stolen_Shadow_in_Ravenloft.  This warpgates in a shadow, manipulates its token, adds it to combat and sets the inititative.
+
+22.11.15 Created Shadow's Drain Strength ability.
 
 [Link back to my Documentation Listing](README.md) 
 
