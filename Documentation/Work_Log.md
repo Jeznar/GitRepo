@@ -383,6 +383,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.16 Created Lair Actions, Strahd and updated the D&D Helpers regeneration.js script to not prompt for regeneration on non-wounded tokens.
 
+22.11.16 Built several demons along with their (relatively) simple abilities: Abyssal Chicken, Cackler, Manes, Maw Demon
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
