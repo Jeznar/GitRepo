@@ -82,9 +82,9 @@ async function doOnUse(options = {}) {
         templateName: MINION,
         name: aItem.name,                   // Name of action (message only), typically aItem.name
         outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
-        scale: 0.3,							// Default value but needs tuning at times
+        scale: 0.5,							// Default value but needs tuning at times
         source: aToken,                     // Coords for source (with a center), typically aToken
-        width: 1,                           // Width of token to be summoned, 1 is the default
+        width: 0.5,                           // Width of token to be summoned, 1 is the default
         traceLvl: TL                        // Trace level, matching calling function decent choice
     }
     //--------------------------------------------------------------------------------------------------
