@@ -1,3 +1,5 @@
+// 11.16.22 Jez Modified to check current health against max health, exit if not wounded
+//
 import { logger } from '../logger.js';
 import { MODULE } from '../module.js';
 import { queueUpdate } from './update-queue.js';
@@ -109,6 +111,14 @@ export class Regeneration {
   static _executeRegen(token, feature) {
 
     const regen = Regeneration._parseRegenFeature(feature);
+
+    //-----------------------------------------------------------------------------------------------------------------------------
+    // Addition to make sure the potential regen'ed token is actually below max health -Jez
+    //
+    if (token.actor.data.data.attributes.hp.value >= token.actor.data.data.attributes.hp.max) return
+    //
+    // End of addition -Jez
+    //-----------------------------------------------------------------------------------------------------------------------------
 
     if (!regen) return;
 

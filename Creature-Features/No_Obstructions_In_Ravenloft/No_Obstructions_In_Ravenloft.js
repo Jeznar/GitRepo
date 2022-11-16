@@ -1,28 +1,22 @@
-const MACRONAME = "Stolen_Shadow.0.2.js"
+const MACRONAME = "No_Obstructions_In_Ravenloft.0.1.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Strahd's Lair Ability to steal and control a shadow.
+ * Strahd's Lair Ability to pass through obstructions.  This is intended to be run from a Lair 
+ * Action token. All it does is mark the effect on Strahd and remove it at the appropriate time.
  * 
- *   Strahd targets one Medium or smaller creature that casts a shadow. The target's shadow must be 
- *   visible to Strahd and within 30 feet of him. If the target fails a DC 17 Charisma saving throw, 
- *   its shadow detaches from it and becomes a shadow that obeys Strahd's commands, acting on 
- *   initiative count 20. A greater restoration spell or a remove curse spell cast on the target 
- *   restores its natural shadow, but only if its undead shadow has been destroyed.
+ *   Until initiative count 20 of the next round, Strahd can pass through solid walls, doors, 
+ *   ceilings, and floors as if they weren't there.
  * 
  * This macro runs as an OnUse macro and assumes the item card does nothing other than launchng it.
  * 
- * - Make sure one, in range, visible token is targeted.
- * - Check for presence of debuff EFFECT_NAME that serves as an immunity marker
- * - Roll and check save, exiting on success
- * - Apply EFFECT_NAME to the target 
- * - warpgate spawn a shadow with appropriate mods to the token
- * - Add the new token to combat tracker and force initiative count 20
+ * - Find the OWNER of the lair action (Strahd)
+ * - Apply EFFECT_NAME to OWNER
+ * - Post Appropriate message
  * 
- * 11/15/22 0.1 Creation of Macro
- * 11/15/22 0.2 Modification to allow it to be cast from a Lair Action token anchoring to Strahd
+ * 11/16/22 0.1 Creation of Macro from Stolen_Shadow.0.2.js
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`${TAG} === Starting ===`);
@@ -43,16 +37,12 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 // Set Macro specific globals
 //
 const ALLOWED_UNITS = ["", "ft", "any"];    // Assume blank and any is feet
-const EFFECT_NAME = `Stolen Shadow`
-const SAVE_DC = aActor.getRollData().attributes.spelldc;
-const SAVE_TYPE = "cha";
-const MINION = `Shadow`
+const EFFECT_NAME = `No Obstructions`
+const EFFECT_ICON = 'Icons_JGB/Monster_Features/VIP_Pass.png'
 const OWNER = "Strahd"
 if (TL > 2) jez.trace(`${TAG} Variable Values`,
-    `ALLOWED_UNITS ==>`, ALLOWED_UNITS,
     `EFFECT_NAME   ==>`, EFFECT_NAME,
-    `SAVE_DC       ==>`, SAVE_DC,
-    `SAVE_TYPE     ==>`, SAVE_TYPE,
+    `EFFECT_ICON   ==>`, EFFECT_ICON,
     `MINION        ==>`, MINION);
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
@@ -89,16 +79,6 @@ async function doOnUse(options = {}) {
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
     await jez.wait(100)
     //-----------------------------------------------------------------------------------------------
-    //  Make sure one, in range, visible token is targeted.
-    //
-    if (args[0].targets.length !== 1) {     // If not exactly one target 
-        msg = `Target exactly one target. ${args[0]?.targets?.length} targeted.`
-        postResults(msg)
-        return jez.badNews(msg, "w")
-    }
-    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    let tActor = tToken?.actor;
-    //-----------------------------------------------------------------------------------------------
     //  Need to find a token named OWNER which will be used as the origin token (oToken)
     //
     let oToken = canvas.tokens.placeables.find(ef => ef.name === OWNER)
@@ -109,85 +89,43 @@ async function doOnUse(options = {}) {
         return jez.badNews(msg, "w")
     }
     //-----------------------------------------------------------------------------------------------
-    //  Target is in range?
-    //
-    const MAX_RANGE = 30 // jez.getRange(aItem, ALLOWED_UNITS)
-    const DISTANCE = jez.getDistance5e(oToken, tToken)
-    if (DISTANCE > MAX_RANGE) {
-        msg = `${tToken.name} is ${DISTANCE} away, max range is ${MAX_RANGE} feet.`
-        postResults(msg)
-        return jez.badNews(msg, "i")
-    }
-    if (TL > 2) jez.trace(`${TAG} Variable Values`,
-        `tToken ==>`, tToken,
-        `tActor ==>`, tActor,
-        `MAX_RANGE ==>`, MAX_RANGE,
-        `DISTANCE ==>`, DISTANCE)
-    //-----------------------------------------------------------------------------------------------
-    // Target is visible?
-    //
-    let ray = new Ray(oToken.center, tToken.center)
-    let badLoS = canvas.walls.checkCollision(ray, { type: "sight", mode: "any" })
-    if (badLoS) {
-        msg = `${oToken.name}'s line of sight blocked to ${tToken.name}`
-        postResults(msg)
-        return jez.badNews(msg, "i")
-    }
-    if (jezcon.hasCE("Blinded", oToken.actor.uuid, { traceLvl: 0 })) {
-        msg = `${oToken.name} is blinded, can not see ${tToken.name}`
-        postResults(msg)
-        return jez.badNews(msg, "i")
-    }
-    //-----------------------------------------------------------------------------------------------
-    // Check size of target
-    //
-    const TARGET_SIZE_OBJ = await jez.getSize(tToken)
-    if (TARGET_SIZE_OBJ.value > 3) {
-        msg = `${tToken.name} is to large to have its shadow stolen.`
-        postResults(msg)
-        return jez.badNews(msg, "i")
-    }
-    //-----------------------------------------------------------------------------------------------
     // Check for presence of debuff EFFECT that serves as an immunity marker
     //
-    if (jezcon.hasCE(EFFECT_NAME, tToken.actor.uuid, { traceLvl: 0 })) {
-        msg = `${tToken.name}'s shadow already stolen`
+    if (jezcon.hasCE(EFFECT_NAME, oToken.actor.uuid, { traceLvl: 0 })) {
+        msg = `${oToken.name} already has the ${EFFECT_NAME} effect.`
         postResults(msg)
         return jez.badNews(msg, "i")
     }
     //-----------------------------------------------------------------------------------------------
-    // Roll and check save, exiting on success
+    // Define and apply EFFECT to the ORIGIN 
     //
-    let save = await tToken.actor.rollAbilitySave(SAVE_TYPE, { chatMessage: true, fastForward: true })
-    if (save.total >= SAVE_DC) {
-        msg = `${tToken.name} resisted the ${aItem.name} effect.`
-        postResults(msg)
-        return
-    }
-    //-----------------------------------------------------------------------------------------------
-    // Apply EFFECT to the target 
-    //
-    console.log(`LAST_ARG.targetUuids`, LAST_ARG.targetUuids)
+    let specDur = ["turnStartSource", "longRest", "shortRest"]
+    let effectData = {
+        label: EFFECT_NAME,
+        icon: EFFECT_ICON,
+        origin: LAST_ARG.uuid,
+        disabled: false,
+        duration: { rounds: 1, startRound: GAME_RND },
+        flags: { 
+            dae: { 
+                itemData: aItem, 
+                specialDuration: specDur 
+            },
+            isConvenient: true,
+            isCustomConvenient: true,
+            convenientDescription: `${oToken.name} can pass through solid walls, doors, ceilings, and floors as if not there.`
+        },
+        changes: [
+            { key: `macro.tokenMagic`, mode: jez.CUSTOM, value:`distortion`, priority: 20 },
+        ]
+    };
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: oToken.actor.uuid, effects: [effectData] });
     await jezcon.addCondition(EFFECT_NAME, LAST_ARG.targetUuids,
-        { allowDups: false, replaceEx: true, origin: aActor.uuid, overlay: false, traceLvl: TL })
-    //-----------------------------------------------------------------------------------------------
-    // warpgate spawn a shadow with appropriate mods to the token
-    //
-    const shadowID = await spawnShadow(tToken, {traceLvl: TL})
-    //await jez.wait(3000)
-    let shadowToken = await canvas.tokens.placeables.find(ef => ef.id === shadowID[0])
-    if (TL > 2) jez.trace(`${TAG} Shadow Info`,
-        `shadowID    ==>`, shadowID,
-        `shadowToken ==>`, shadowToken)
-    //-----------------------------------------------------------------------------------------------
-    // Add the new token to combat tracker and force initiative count 20    
-    //
-    await shadowToken.toggleCombat();
-    shadowToken.combatant.update({initiative: 20})
+        { allowDups: false, replaceEx: true, origin: oToken.actor.uuid, overlay: false, traceLvl: TL })
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    msg = `${tToken.name}'s shadow has been stripped away and is seemingly independent and angry.`
+    msg = `${oToken.name} can now pass through solid walls, doors, ceilings, and floors as if not there.`;
     postResults(msg)
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return true;
@@ -195,13 +133,13 @@ async function doOnUse(options = {}) {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Use warpgate though library call to spawn in the shadow.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-async function spawnShadow(tToken, options = {}) {
+async function spawnShadow(aToken, tToken, options = {}) {
     const FUNCNAME = "doOnUse()";
     const FNAME = FUNCNAME.split("(")[0]
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "tToken", tToken,
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "aToken", aToken, "tToken", tToken,
         "options", options);
     if (TL > 2) jez.trace(`${TAG} Interesting Values`, 
         "tToken.data.img ==> ", tToken.data.img);
@@ -218,7 +156,7 @@ async function spawnShadow(tToken, options = {}) {
         name: aItem.name,                   // Name of action (message only), typically aItem.name
         outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
         scale: 0.5,							// Default value but needs tuning at times
-        source: tToken,                     // Coords for source (with a center)
+        source: tToken,                     // Coords for source (with a center), typically aToken
         width: 1,                           // Width of token to be summoned, 1 is the default
         traceLvl: TL                        // Trace level, matching calling function decent choice
     }

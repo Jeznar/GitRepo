@@ -381,6 +381,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.15 Created Shadow's Drain Strength ability.
 
+22.11.16 Created Lair Actions, Strahd and updated the D&D Helpers regeneration.js script to not prompt for regeneration on non-wounded tokens.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
