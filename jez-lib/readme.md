@@ -197,6 +197,7 @@ Following block of code summons demonCnt demons to the field, adds them to comba
 ```
 </details>
 
+See related function: [combatInitiative(SUBJECT, options = {})](#combatinitiativesubject-options--)
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -204,12 +205,38 @@ Following block of code summons demonCnt demons to the field, adds them to comba
 
 ### combatInitiative(SUBJECT, options = {})
 
-Wrapper around a run as GM to delete an item, ostensibly an effect (though likely anything with a UUID can be affected), by UUID asGM.
+Roll initiative(s) for token(s) specified in SUBJECT that don't already have initiative values. This function depends on a call to runAsGM macro: **RollInitiativeAsGM**.
+
+**SUBJECT** can be an atomic value or an array of any of these data types:
+
+- Token5e Data Object
+- TokenDocument5e Data Object
+- Token ID
+- Token Document UUID
+ 
+**Options** has two defined fields:
+
+- traceLvl: Trace Level for this function call.
+- formula: formula passed to Roll function, if not using default, this might be a "20" if forcing the initiative roll result.
+
+<details> <summary>Sample Call, Summoning and rolling initiatives</summary>
+
+Following block of code summons demonCnt demons to the field, adds them to combat, rolls initiative, and makes a space delimited list of the resultant token.id's for the summoned tokens.
 
 ```javascript
-if (oldEffect) jez.deleteEffectAsGM(OLD_UUID, { traceLvl: TL })
+    let demonUuids = ""
+    for (let i = 1; i <= demonCnt; i++) {
+        let dUuid = await summonCritter(demonList[SEL_DEMON].data, i, { traceLvl: TL })
+        await jez.combatAddRemove('Add', dUuid, { traceLvl: TL })               // Add demon to combat
+        await jez.wait(100)
+        await jez.combatInitiative([ dUuid ], { formula: null, traceLvl: 0 })   // Roll demon initiative
+        if (TL > 2) jez.trace(`${TAG} Demon UUID ${i}`, dUuid)
+        if (demonUuids) demonUuids += ' ' + dUuid; else demonUuids += dUuid
+    }
 ```
-Nothing is returned and no error handling is performed. 
+</details>
+
+See related function: [combatAddRemove(ACTION, SUBJECT, options = {})](#combataddremoveaction-subject-options--)
 
 [*Back to Functions list*](#functions-in-this-module)
 
