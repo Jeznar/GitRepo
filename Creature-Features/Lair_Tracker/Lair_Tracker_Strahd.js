@@ -1,8 +1,9 @@
-const MACRONAME = "Lair_Tracker_Strahd.0.1.js"
+const MACRONAME = "Lair_Tracker_Strahd.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Spawn in the Lair Action token for Strahd, then put it into combat at 20 initiative.
  * 
  * 11/15/22 0.1 Creation of Macro
+ * 11/19/22 0.2 Replace direct calls with jez.lib calls: jez.combatAddRemove & jez.combatInitiative
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -48,16 +49,13 @@ async function doOnUse(options = {}) {
     //-----------------------------------------------------------------------------------------------
     //  Spawn in the Lair Token
     //
-    const lairTokenID = await spawnToken(aToken, {traceLvl: TL})
-    let lairTokenToken = await canvas.tokens.placeables.find(ef => ef.id === lairTokenID[0])
-    if (TL > 2) jez.trace(`${TAG} lairToken Info`,
-        `lairTokenID    ==>`, lairTokenID,
-        `lairTokenToken ==>`, lairTokenToken)
+    const LAIR_TOKEN_ID = await spawnToken(aToken, {traceLvl: TL})
     //-----------------------------------------------------------------------------------------------
-    //  Do the thing and the other thing
+    //  Add the lair tracker to combat tracker and force an initiative roll to 20
     //
-    if (!lairTokenToken.combatant) await lairTokenToken.toggleCombat();
-    lairTokenToken.combatant.update({initiative: 20})
+    await jez.combatAddRemove('Add', LAIR_TOKEN_ID, { traceLvl: TL })         // Add to combat
+    await jez.wait(100)                                                       // Allow add to finish
+    await jez.combatInitiative(LAIR_TOKEN_ID, { formula: "20", traceLvl: 0 }) // Force 20 initiative
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Use warpgate though library call to spawn in the token.

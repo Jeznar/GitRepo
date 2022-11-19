@@ -216,23 +216,24 @@ Roll initiative(s) for token(s) specified in SUBJECT that don't already have ini
  
 **Options** has two defined fields:
 
-- traceLvl: Trace Level for this function call.
 - formula: formula passed to Roll function, if not using default, this might be a "20" if forcing the initiative roll result.
+- traceLvl: Trace Level for this function call.
 
-<details> <summary>Sample Call, Summoning and rolling initiatives</summary>
+<details> <summary>Sample Call, Summoning and Forcing 20 Initiative</summary>
 
-Following block of code summons demonCnt demons to the field, adds them to combat, rolls initiative, and makes a space delimited list of the resultant token.id's for the summoned tokens.
+Following block of code summons a lair tracker token belonging to aToken (using a not shown function) and then forces it to roll a 20 initiative.
 
 ```javascript
-    let demonUuids = ""
-    for (let i = 1; i <= demonCnt; i++) {
-        let dUuid = await summonCritter(demonList[SEL_DEMON].data, i, { traceLvl: TL })
-        await jez.combatAddRemove('Add', dUuid, { traceLvl: TL })               // Add demon to combat
-        await jez.wait(100)
-        await jez.combatInitiative([ dUuid ], { formula: null, traceLvl: 0 })   // Roll demon initiative
-        if (TL > 2) jez.trace(`${TAG} Demon UUID ${i}`, dUuid)
-        if (demonUuids) demonUuids += ' ' + dUuid; else demonUuids += dUuid
-    }
+//-----------------------------------------------------------------------------------------------
+//  Spawn in the Lair Token
+//
+const LAIR_TOKEN_ID = await spawnToken(aToken, {traceLvl: TL})
+//-----------------------------------------------------------------------------------------------
+//  Add the lair tracker to combat tracker and force an initiative roll to 20
+//
+await jez.combatAddRemove('Add', LAIR_TOKEN_ID, { traceLvl: TL })         // Add to combat
+await jez.wait(100)                                                       // Allow add to finish
+await jez.combatInitiative(LAIR_TOKEN_ID, { formula: "20", traceLvl: 0 }) // Force 20 initiative
 ```
 </details>
 

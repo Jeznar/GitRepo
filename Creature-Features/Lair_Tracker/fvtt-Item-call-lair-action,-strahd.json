@@ -1,0 +1,127 @@
+{
+  "name": "Call Lair Action, Strahd",
+  "type": "feat",
+  "img": "Icons_JGB/Actions/Lair_Action.png",
+  "data": {
+    "description": {
+      "value": "<p>Strahd Summons a token to the field that marks 20 in the combat tracker as a reminder to use lair actions. </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "special",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Call Lair Action",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Lair_Tracker_Strahd.0.2.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Spawn in the Lair Action token for Strahd, then put it into combat at 20 initiative.\n * \n * 11/15/22 0.1 Creation of Macro\n * 11/19/22 0.2 Replace direct calls with jez.lib calls: jez.combatAddRemove & jez.combatInitiative\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst MINION = `Lair Action, Strahd`\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //-----------------------------------------------------------------------------------------------\n    //  Spawn in the Lair Token\n    //\n    const LAIR_TOKEN_ID = await spawnToken(aToken, {traceLvl: TL})\n    //-----------------------------------------------------------------------------------------------\n    //  Add the lair tracker to combat tracker and force an initiative roll to 20\n    //\n    await jez.combatAddRemove('Add', LAIR_TOKEN_ID, { traceLvl: TL })         // Add to combat\n    await jez.wait(100)                                                       // Allow add to finish\n    await jez.combatInitiative(LAIR_TOKEN_ID, { formula: \"20\", traceLvl: 0 }) // Force 20 initiative\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Use warpgate though library call to spawn in the token.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\n async function spawnToken(aToken, options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"aToken\", aToken, \n        \"options\", options);\n    //--------------------------------------------------------------------------------------------------\n    // Build the dataObject for our summon call\n    //\n    let argObj = {\n        defaultRange: 100,                  // Defaults to 30, but this varies per spell\n        duration: 1000,                     // Duration of the intro VFX\n        introTime: 1000,                    // Amount of time to wait for Intro VFX\n        introVFX: '~Explosion/Explosion_01_${color}_400x400.webm', // default introVFX file\n        minionName: MINION,\n        templateName: MINION,\n        name: aItem.name,                   // Name of action (message only), typically aItem.name\n        outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file\n        scale: 0.5,\t\t\t\t\t\t\t// Default value but needs tuning at times\n        source: aToken,                     // Coords for source (with a center), typically aToken\n        width: 0.5,                           // Width of token to be summoned, 1 is the default\n        traceLvl: TL                        // Trace level, matching calling function decent choice\n    }\n    //--------------------------------------------------------------------------------------------------\n    // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it\n    // to update the img attribute or set basic image to match this item\n    //\n    let summonData = await game.actors.getName(MINION)\n    argObj.img = summonData ? summonData.img : aItem.img\n    //--------------------------------------------------------------------------------------------------\n    // Do the actual summon\n    //\n    return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.pnuwlXC1e9t1iIwe"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

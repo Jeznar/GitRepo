@@ -389,6 +389,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.19 Built jez.combatAddRemove(...) & jez.combatInitiative(...).  Integrated them into Summon Lesser Demon
 
+22.11.19 Added two new library calls to Summon Greater Demon and Lair)Tracker_Strahd, later forcing a 20 initiative.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

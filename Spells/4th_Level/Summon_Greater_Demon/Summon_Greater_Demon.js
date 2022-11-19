@@ -1,4 +1,4 @@
-const MACRONAME = "Summon_Greater_Demon.0.1.js"
+const MACRONAME = "Summon_Greater_Demon.0.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Automate Summon Greater Demon, based directly on Conjure_Elemental.0.1.js
  * 
@@ -10,6 +10,7 @@ const MACRONAME = "Summon_Greater_Demon.0.1.js"
  * 
  * 07/21/22 0.1 Creation of Macro
  * 11/16/22 0.2 Fix dialog text and add summoned demon to the combat tracker
+ * 11/19/22 0.3 Replace direct calls with jez.lib calls: jez.combatAddRemove & jez.combatInitiative
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TL = 0;                               // Trace Level for this macro
@@ -186,13 +187,6 @@ async function summonDemon(html, mode, SEL_DEMON, demonType) {
     let summonData = demonList[SEL_DEMON].data
     if (TL > 3) jez.trace(`${TAG} Variable values`,"summons",summons,"width",width,
         "summonData",summonData)
-    //----------------------------------------------------------------------------------------------
-    // Grab the RunAsGM Macros
-    //
-    const GM_TOGGLE_COMBAT = jez.getMacroRunAsGM("ToggleCombatAsGM")
-    if (!GM_TOGGLE_COMBAT) { return false }
-    const GM_ROLL_INITIATIVE = jez.getMacroRunAsGM("RollInitiativeAsGM")
-    if (!GM_ROLL_INITIATIVE) { return false }
     //-----------------------------------------------------------------------------------------------
     const TEXT_SUPPLIED = html.find("[name=TEXT_SUPPLIED]")[0].value;
     if (TL > 1) jez.trace(`${TAG} Name supplied: "${TEXT_SUPPLIED}"`)
@@ -275,28 +269,9 @@ async function summonDemon(html, mode, SEL_DEMON, demonType) {
     // Add the newly summoned demon to the combat tracker and roll initiative
     //
     if (TL > 1) jez.trace(`${TAG} Id of the summoned elemental token`, demonId)
-    let dToken = await canvas.tokens.placeables.find(ef => ef.id === demonId[0])
-    if (TL > 2) jez.trace(`${TAG} demon Info`,
-        `demonId    ==>`, demonId,
-        `dToken ==>`, dToken)
-    // await dToken.toggleCombat();    
-    await GM_TOGGLE_COMBAT.execute(dToken.document.uuid)
+    await jez.combatAddRemove('Add', demonId[0], { traceLvl: TL })           // Add demon to combat
     await jez.wait(100)
-    /**
-     * Roll initiative for one or multiple Combatants within the Combat document
-     * @param {string|string[]} ids     A Combatant id or Array of ids for which to roll
-     * @param {object} [options={}]     Additional options which modify how initiative rolls are created or presented.
-     * @param {string|null} [options.formula]         A non-default initiative formula to roll. Otherwise the system default is used.
-     * @param {boolean} [options.updateTurn=true]     Update the Combat turn after adding new initiative scores to keep the turn on the same Combatant.
-     * @param {object} [options.messageOptions={}]    Additional options with which to customize created Chat Messages
-     * @return {Promise<Combat>}        A promise which resolves to the updated Combat document once updates are complete.
-     * 
-     * async rollInitiative(ids, {formula=null, updateTurn=true, messageOptions={}}={})
-     **/
-    //  let combatDoc = await game.combat.rollInitiative(dToken.combatant.id, {formula: null, updateTurn: true, 
-    //     messageOptions: { rollMode: CONST.DICE_ROLL_MODES.PRIVATE }})
-    // if (TL > 2) jez.trace(`${TAG} combatDoc ==>`,combatDoc)
-    await GM_ROLL_INITIATIVE.execute(dToken.combatant.id)
+    await jez.combatInitiative(demonId[0], { formula: null, traceLvl: 0 })   // Roll demon initiative
     //--------------------------------------------------------------------------------------------------
     // Post completion message to item card
     //

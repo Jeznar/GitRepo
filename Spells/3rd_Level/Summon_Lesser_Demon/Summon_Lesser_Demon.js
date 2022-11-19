@@ -131,8 +131,8 @@ async function doOnUse(options = {}) {
     let rollObj = new Roll(`1d6`).evaluate({ async: false });
     await game.dice3d?.showForRoll(rollObj);
     if (TL > 1) jez.trace(`${TAG} d6 Roll to pick category of demon`, rollObj.total);
-    // switch (rollObj.total) {
-        switch (1) {
+    switch (rollObj.total) {
+        // switch (1) {
         case 1:
         case 2: demonCnt = 2; demonCR = 1; break
         case 3:
@@ -223,7 +223,6 @@ async function pickDemonCallBack(selection) {
     const TAG = `${MACRO} ${FNAME} |`
     if (TL === 1) jez.trace(`${TAG} --- Starting --- ${MACRO} ${FNAME} ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${MACRO} ${FUNCNAME} ---`, "selection", selection);
-    let combatantIds = []
     //----------------------------------------------------------------------------------------------
     if (selection === undefined) {  // If nothing was selected, spin the dialog again
         callRadioDialog(demonArray)
@@ -242,9 +241,9 @@ async function pickDemonCallBack(selection) {
     let demonUuids = ""
     for (let i = 1; i <= demonCnt; i++) {
         let dUuid = await summonCritter(demonList[SEL_DEMON].data, i, { traceLvl: TL })
-        await jez.combatAddRemove('Add', dUuid, { traceLvl: TL })           // Add new demon to combat
+        await jez.combatAddRemove('Add', dUuid, { traceLvl: TL })               // Add demon to combat
         await jez.wait(100)
-        await jez.combatInitiative([ dUuid ], { formula: null, traceLvl: 0 })  // Roll demon initiative
+        await jez.combatInitiative([ dUuid ], { formula: null, traceLvl: 0 })   // Roll demon initiative
         if (TL > 2) jez.trace(`${TAG} Demon UUID ${i}`, dUuid)
         if (demonUuids) demonUuids += ' ' + dUuid; else demonUuids += dUuid
     }
