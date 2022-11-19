@@ -29,14 +29,14 @@ A second set of functions is located in jez-con.js.  These are all focused on ma
 The functions currently included in this module are (all need to be proceeded by **jez.** when called):
 
 * **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
-* **[badNews(message, \<badness\>)](#badNewsmessage-badness)** -- Displays warning message on console and ui then returns false
+* **[badNews(message, \<badness\>)](#badnewsmessage-badnews)** -- Displays warning message on console and ui then returns false
 * **[createEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Creates an embedded document, wraps a RunAsGM function
-* **[combatAddRemove(ACTION, SUBJECT, options = {})](#combataddremove-action-subject-options---)** -- Add/Remove/Toggle Token in combat tracker
-* **[combatInitiative(SUBJECT, options = {})](#combatinitiative-subject-options---)** Roll token's initiative if not already rolled
-* **[deleteEffectAsGM(UUID, options = {})](#deleteeffectasgm-uuid-options---)** GM wrapped macro to delete an entity by UUID
+* **[combatAddRemove(ACTION, SUBJECT, options = {})](#combataddremoveaction-subject-options--)** -- Add/Remove/Toggle Token in combat tracker
+* **[combatInitiative(SUBJECT, options = {})](#combatinitiativesubject-options--)** Roll token's initiative if not already rolled
+* **[deleteEffectAsGM(UUID, options = {})](#deleteeffectasgmuuid-options--)** GM wrapped macro to delete an entity by UUID
 * **[deleteEmbeddedDocs(type, ids)](#embeddeddoc-functions)** -- Deletes an embedded document, wraps a RunAsGM function
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
-* **[fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {})]($fireray-target-token-active-token-optons---)** -- Executes one beholder style beam
+* **[fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {})](#fireraytarget_token-active_token-options--)** -- Executes one beholder style beam
 * **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
