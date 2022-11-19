@@ -1,8 +1,8 @@
-const MACRONAME = "Death_Burst.0.1.js"
+const MACRONAME = "Last_Laugh.0.1.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * When Ice Mephit dies, it explodes in a burst of jagged ice. Each creature within 5 ft. of it must 
- * make a DC 10 Dexterity saving throw, taking 4 (1d8) slashing damage on a failed save, or half as 
- * much damage on a successful one.
+ * When the cackler dies, it releases a dying laugh that scars the minds of other nearby creatures.
+ * Each creature within 10 feet of the cackler must succeed on a DC 11 WIS Save or take 2 (1d4) 
+ * psychic damage.
  *  
  * This macro MUST be configured to run "Called before item is rolled" on the item card.  It does 
  * three things:
@@ -10,7 +10,7 @@ const MACRONAME = "Death_Burst.0.1.js"
  *   2. Build a list of valid targets within range
  *   3. Sets the targeted tokens to match the list created.
  * 
- * 11/06/22 0.1 Creation of Macro from Death_Throes.0.1.js
+ * 11/16/22 0.1 Creation of Macro from Death_Burst.0.1.js
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -108,8 +108,8 @@ if (TL>1) jez.trace(`${TAG} === Finished ===`);
  async function runVFX(token) {
     new Sequence()
        .effect()
-       .file("jb2a.impact_themed.ice_shard.blue")
+       .file("jb2a.template_circle.out_pulse.01.burst.purplepink")
        .attachTo(token)
-       .scale(1.5)
+       .scale(0.9)
        .play();
 }

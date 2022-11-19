@@ -28,6 +28,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Speak with Plants](#speak-with-plants)
 * [Spirit Guardians](#spirit-guardians)
 * [Summon Fey](#summon-fey)
+* [Summon Lesser Demon](#summon-lesser-demon)
 * [Thunder Step](#thunder-step)
 * [Tidal Wave](#tidal-wave)
 * [Vampiric Touch](#vampiric-touch) (ASE)
@@ -377,6 +378,22 @@ Spell imported from earlier automation, does a bunch of things I have forgotten 
 
 ![Tricksy.gif](Summon_Fey/Summon_Fey-Tricksy.gif)
 </details>
+
+[*Back to 3rd Level Spell List*](#3rd-level-spells)
+
+---
+
+### Summon Lesser Demon
+
+This does a number of interesting things.  Perhaps the most notable is adding the summoned critters and rolling initiative so that players can use it without permission issues.
+
+Automate Summon Lesser Demon, based directly on Summon_Greater_Demon.0.1.js. Key things that this macro accomplishes:
+
+1. Roll a d6 to determine the CR & Qty of demon to summon
+2. Build list of available summons (scan sidebar), verifying existence of each
+3. Dialog to select a specific creature to summon
+4. Place summoned creatures, including making creature "hostile" (use warpgate)
+5. Mod concentration to run ItemMacro doEach with a list of summoned tokens. **doEach**: loop through summons, despawn any defeated, drop conc if none remain active, **doOff**: despawn any remaining demons
 
 [*Back to 3rd Level Spell List*](#3rd-level-spells)
 

@@ -147,6 +147,7 @@ Since there should eventually be an enormous number of spells in this repo, this
 * [Speak with Plants](3rd_Level#speak-with-plants)
 * [Spirit Guardians](3rd_Level#spirit-guardians)
 * [Summon Fey](3rd_Level#summon-fey)
+* [Summon Lesser Demon](3rd_Level#summon-lesser-demon)
 * [Thunder Step](3rd_Level#thunder-step)
 * [Tidal Wave](3rd_Level#tidal-wave)
 * [Vampiric Touch](3rd_Level#vampiric-touch) (ASE)

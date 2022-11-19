@@ -385,6 +385,10 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.16 Built several demons along with their (relatively) simple abilities: Abyssal Chicken, Cackler, Manes, Maw Demon
 
+22.11.18 Built Summon Lesser Demon along with RunAsGM macros: ToggleCombatAsGM and RollInitiativeAsGM
+
+22.11.19 Built jez.combatAddRemove(...) & jez.combatInitiative(...).  Integrated them into Summon Lesser Demon
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

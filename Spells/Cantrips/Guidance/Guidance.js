@@ -112,7 +112,6 @@ async function preCheck() {
         //----------------------------------------------------------------------------------------------
         // Remove concentrating from originating token
         //
-        // TODO
         let concentratingEffect = aToken.actor.effects.find(ef => ef.data.label === "Concentrating");
         if (concentratingEffect) await concentratingEffect.delete();
         return(false)

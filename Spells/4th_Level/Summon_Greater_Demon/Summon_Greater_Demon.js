@@ -9,9 +9,10 @@ const MACRONAME = "Summon_Greater_Demon.0.1.js"
  * - Place timer effect on summoned demon to delete itself at end of spell duration. Dismiss_Token perhaps?
  * 
  * 07/21/22 0.1 Creation of Macro
+ * 11/16/22 0.2 Fix dialog text and add summoned demon to the combat tracker
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
@@ -102,9 +103,7 @@ async function doOnUse() {
     // Build and pop selection dialog
     //
     let title = `Select Desired Demon to Summon`
-    msg = `Demon must be summoned within 10 feet of a source (10-foot cube) of its demon 
-    component (air, earth, fire, or water).<br><br>
-    See: </span><a style="box-sizing: border-box; user-select: text; font-size: 13px;" 
+    msg = `See: </span><a style="box-sizing: border-box; user-select: text; font-size: 13px;" 
     href="https://www.dndbeyond.com/spells/summon-greater-demon" target="_blank" rel="noopener">
     D&amp;D Beyond Description</a> for spell details.<br><br>
     Options listed below are all unlinked NPC Demons in the Actor Directory.  Others are available
@@ -187,6 +186,13 @@ async function summonDemon(html, mode, SEL_DEMON, demonType) {
     let summonData = demonList[SEL_DEMON].data
     if (TL > 3) jez.trace(`${TAG} Variable values`,"summons",summons,"width",width,
         "summonData",summonData)
+    //----------------------------------------------------------------------------------------------
+    // Grab the RunAsGM Macros
+    //
+    const GM_TOGGLE_COMBAT = jez.getMacroRunAsGM("ToggleCombatAsGM")
+    if (!GM_TOGGLE_COMBAT) { return false }
+    const GM_ROLL_INITIATIVE = jez.getMacroRunAsGM("RollInitiativeAsGM")
+    if (!GM_ROLL_INITIATIVE) { return false }
     //-----------------------------------------------------------------------------------------------
     const TEXT_SUPPLIED = html.find("[name=TEXT_SUPPLIED]")[0].value;
     if (TL > 1) jez.trace(`${TAG} Name supplied: "${TEXT_SUPPLIED}"`)
@@ -221,12 +227,14 @@ async function summonDemon(html, mode, SEL_DEMON, demonType) {
     //--------------------------------------------------------------------------------------------------
     // Do the actual summon
     //
-    let elementalId = await jez.spawnAt(summons, aToken, aActor, aItem, argObj)
+    let demonId = await jez.spawnAt(summons, aToken, aActor, aItem, argObj)
+    if (TL > 2) jez.trace(`${TAG} demon Id ==>`,demonId)
     //--------------------------------------------------------------------------------------------------
     // Build a UUID that will be slapped on the concentrating effect for doOff call.  Should look like:
     //   Scene.MzEyYTVkOTQ4NmZk.Token.cBMsqVwfwf1MxRxV
-    let elemementalUuid = `Scene.${game.scenes.viewed.id}.Token.${elementalId}`
-    modConcentratingEffect(aToken, elemementalUuid)
+    let demonUuid = `Scene.${game.scenes.viewed.id}.Token.${demonId}`
+    if (TL > 2) jez.trace(`${TAG} demonUuid ==>`,demonUuid)
+    modConcentratingEffect(aToken, demonUuid)
     //--------------------------------------------------------------------------------------------------
     // Convert Item Card's duration into seconds, if supported units, otherwise go with 3600
     //
@@ -258,11 +266,37 @@ async function summonDemon(html, mode, SEL_DEMON, demonType) {
             convenientDescription: CE_DESC 
         },
         changes: [
-            { key: `macro.execute`, mode: jez.CUSTOM, value: `Dismiss_Tokens ${elemementalUuid}`, priority: 20 },
+            { key: `macro.execute`, mode: jez.CUSTOM, value: `Dismiss_Tokens ${demonUuid}`, priority: 20 },
             { key: `macro.itemMacro`, mode: jez.OVERRIDE, value: VALUE, priority: 20 }
         ]
     };
-    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: elemementalUuid, effects: [effectData] });
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: demonUuid, effects: [effectData] });
+    //--------------------------------------------------------------------------------------------------
+    // Add the newly summoned demon to the combat tracker and roll initiative
+    //
+    if (TL > 1) jez.trace(`${TAG} Id of the summoned elemental token`, demonId)
+    let dToken = await canvas.tokens.placeables.find(ef => ef.id === demonId[0])
+    if (TL > 2) jez.trace(`${TAG} demon Info`,
+        `demonId    ==>`, demonId,
+        `dToken ==>`, dToken)
+    // await dToken.toggleCombat();    
+    await GM_TOGGLE_COMBAT.execute(dToken.document.uuid)
+    await jez.wait(100)
+    /**
+     * Roll initiative for one or multiple Combatants within the Combat document
+     * @param {string|string[]} ids     A Combatant id or Array of ids for which to roll
+     * @param {object} [options={}]     Additional options which modify how initiative rolls are created or presented.
+     * @param {string|null} [options.formula]         A non-default initiative formula to roll. Otherwise the system default is used.
+     * @param {boolean} [options.updateTurn=true]     Update the Combat turn after adding new initiative scores to keep the turn on the same Combatant.
+     * @param {object} [options.messageOptions={}]    Additional options with which to customize created Chat Messages
+     * @return {Promise<Combat>}        A promise which resolves to the updated Combat document once updates are complete.
+     * 
+     * async rollInitiative(ids, {formula=null, updateTurn=true, messageOptions={}}={})
+     **/
+    //  let combatDoc = await game.combat.rollInitiative(dToken.combatant.id, {formula: null, updateTurn: true, 
+    //     messageOptions: { rollMode: CONST.DICE_ROLL_MODES.PRIVATE }})
+    // if (TL > 2) jez.trace(`${TAG} combatDoc ==>`,combatDoc)
+    await GM_ROLL_INITIATIVE.execute(dToken.combatant.id)
     //--------------------------------------------------------------------------------------------------
     // Post completion message to item card
     //

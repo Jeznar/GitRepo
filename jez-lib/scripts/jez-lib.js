@@ -34,7 +34,7 @@ class jez {
 
     /***************************************************************************************************
      * TRC
-     * 
+     *  
      * DEPRICATED 7/2022 -- Use trace instead
      * 
      * This is a variation on the log function that requires the first parameter to be an integer that
@@ -43,6 +43,7 @@ class jez {
      * jez.trc(1, trcLvl, "Post this message to the console", variable)
      ***************************************************************************************************/
     static trc(level, threshold, ...parms) {
+        return  // Forced silence 11.17.22
         if (level > threshold) return false
         return jez.writeTrcLog(" T R C ", ...parms)
     }
@@ -3392,7 +3393,250 @@ class jez {
                 .play()
         }
     }
-
-
+    /***************************************************************************************************
+     * Add/Remove/Toggle combat state, defined by ACTION, for the tokens specified by SUBJECT.
+     * 
+     * ACTTION can be: "Add", "Remove", or "Toggle"
+     * 
+     * SUBJECT can be an atomic value or an array of any of these data types:
+     *  - Token5e Data Object
+     *  - TokenDocument5e Data Object
+     *  - Token ID
+     *  - Token Document UUID
+     * 
+     * Options has one defined field:
+     *  - traceLvl: Trace Level for this function call.
+     *
+     ***************************************************************************************************/
+    static async combatAddRemove(ACTION, SUBJECT, options = {}) {
+        const FUNCNAME = "jez.combatAddRemove(ACTION, SUBJECT, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.lib ${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        const ALLOWED_ACTIONS = ["Add", "Remove", "Toggle"]
+        if (TL === 2) jez.trace(`${TAG} --- Starting --- ${FNAME} ---`);
+        if (TL > 2) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+            "ACTION  ==>", ACTION, "SUBJECT ==>", SUBJECT, "options ==>", options);
+        //----------------------------------------------------------------------------------------------
+        // Grab the RunAsGM Macros
+        //
+        const GM_TOGGLE_COMBAT = jez.getMacroRunAsGM("ToggleCombatAsGM")
+        if (!GM_TOGGLE_COMBAT) { return false }
+        //----------------------------------------------------------------------------------------------
+        // Validate ACTION is one of allowed actions
+        //
+        if (!ALLOWED_ACTIONS.includes(ACTION))
+            if (TL > 2) jez.trace(`${TAG} Action Choosen:`, ACTION)
+            else return jez.badNews(`${TAG} Unsupported Action, ${ACTION}, must be in:`, ALLOWED_ACTIONS)
+        //----------------------------------------------------------------------------------------------
+        // Validate SUBJECT received, it can be a single or array of the following types:
+        // Token5e data object, token.document.uuid, token.id (all must be same type)
+        //
+        if (jez.typeOf(SUBJECT) === "array")   // Processing an array of critters
+            for (let i = 0; i < SUBJECT.length; i++) processOneEntity(ACTION, SUBJECT[i], { traceLvl: TL })
+        else processOneEntity(ACTION, SUBJECT, { traceLvl: TL })
+        //----------------------------------------------------------------------------------------------
+        // Release any selected (controlled) objects to keep them from being affected by this macro
+        // This is needed as toggleCombat() will affect all controlled tokens.
+        //
+        await canvas.tokens.releaseAll()
+        //----------------------------------------------------------------------------------------------
+        // Process a single entity, may need to call for each element of an array
+        //
+        async function processOneEntity(ACTION, SUBJECT, options = {}) {
+            const FUNCNAME = "processOneEntity(ACTION, SUBJECT, options = {})";
+            const FNAME = FUNCNAME.split("(")[0]
+            const TAG = `jez.lib ${FNAME} |`
+            const TL = options.traceLvl ?? 0
+            if (TL === 2) jez.trace(`${TAG} --- Starting --- ${FNAME} ---`);
+            if (TL > 2) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+                "ACTION  ==>", ACTION, "SUBJECT ==>", SUBJECT, "options ==>", options);
+            //----------------------------------------------------------------------------------------------
+            // Set Boolean Flow Control constants based on Action setting
+            //
+            const COMBAT_ADD = (ACTION === "Add") ? true : false;
+            const COMBAT_REM = (ACTION === "Remove") ? true : false;
+            const COMBAT_TOG = (ACTION === "Toggle") ? true : false;
+            //----------------------------------------------------------------------------------------------
+            // Determine the type of Subject
+            //
+            // let subjectType = jez.typeOf(SUBJECT)
+            let subjectType = ""
+            if (jez.typeOf(SUBJECT) === "object") {
+                if (SUBJECT?.constructor?.name === "Token5e") subjectType = `Token5e`
+                if (SUBJECT?.constructor?.name === "TokenDocument5e") subjectType = `TokenDocument5e`
+            } else if (jez.typeOf(SUBJECT) === "string") {
+                if (SUBJECT.length === 16) subjectType = `token.id`
+                else if (SUBJECT.length === 45) subjectType = `token.document.uuid`
+                else subjectType = `Garbage`
+            } else subjectType = `Garbage`
+            if (TL > 0) jez.trace(`${TAG} Processing ${subjectType}`, SUBJECT)
+            if (subjectType === 'Garbage') return jez.badNews(`Seemingly passed some icky junk: ${SUBJECT}`)
+            //----------------------------------------------------------------------------------------------
+            // Need to convert SUBJECT into a _token.document.uuid
+            //
+            let subjectDocumentUuid = ""
+            let dToken
+            switch (subjectType) {
+                case 'Token5e':
+                    subjectDocumentUuid = SUBJECT.document.uuid
+                    dToken = SUBJECT
+                    break;
+                case 'TokenDocument5e':
+                    subjectDocumentUuid = SUBJECT.uuid
+                    dToken = SUBJECT._object
+                    break;
+                case 'token.id':
+                    dToken = await canvas.tokens.placeables.find(ef => ef.id === SUBJECT)
+                    subjectDocumentUuid = dToken.document.uuid
+                    break;
+                case 'token.document.uuid':
+                    subjectDocumentUuid = SUBJECT
+                    let dTokenDocument5e = await fromUuid(SUBJECT)
+                    dToken = dTokenDocument5e._object
+                    break;
+                default:
+                    return jez.badNews(`This should not happen! Choked on ${SUBJECT}`)
+            }
+            if (TL > 0) jez.trace(`${TAG} token.document.uuid ${subjectDocumentUuid}`, dToken)
+            //----------------------------------------------------------------------------------------------
+            // Determine if the subject is currently in combat
+            //
+            let inCombat = false
+            if (dToken?.combatant?.id) inCombat = true
+            if (TL <= 1) jez.trace(`${TAG} ${dToken.name} in combat?`, inCombat)
+            if (TL > 1) jez.trace(`${TAG} Adding to combat`,
+                "inCombat ==>", inCombat,
+                "dToken.name ==>", dToken.name,
+                "COMBAT_ADD ==>", COMBAT_ADD,
+                "COMBAT_REM ==>", COMBAT_REM,
+                "COMBAT_TOG ==>", COMBAT_TOG,
+                "subjectDocumentUuid ==>", subjectDocumentUuid)
+            //----------------------------------------------------------------------------------------------
+            // Toggle combat if not in combat and Action is Add
+            //
+            if (COMBAT_ADD && !inCombat) await GM_TOGGLE_COMBAT.execute(subjectDocumentUuid)
+            //----------------------------------------------------------------------------------------------
+            // Toggle combat if not in combat and Action is Remove
+            //
+            if (COMBAT_REM && inCombat) await GM_TOGGLE_COMBAT.execute(subjectDocumentUuid)
+            //----------------------------------------------------------------------------------------------
+            // Toggle combat if Action is Toggle
+            //
+            if (COMBAT_TOG) await GM_TOGGLE_COMBAT.execute(subjectDocumentUuid)
+        }
+    }
+    /***************************************************************************************************
+     * Roll initatives for passed token(s) (SUBJECT) this can be an atomic value or an array of any of 
+     * these data types:
+     *  - Token5e Data Object
+     *  - TokenDocument5e Data Object
+     *  - Token ID
+     *  - Token Document UUID
+     * 
+     * Options has two defined fields:
+     *  - traceLvl: Trace Level for this function call.
+     *  - formula: forumla passed to Roll function, if not using default, this might be a "20" if
+     *    forcing the initiative roll result.
+     * 
+     * This function will roll initiative for the tokens that are in combat and don't currently have an
+     * initiative value. 
+     ***************************************************************************************************/
+    static async combatInitiative(SUBJECT, options = {}) {
+        const FUNCNAME = "jez.combatInitiative(SUBJECT, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.lib ${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        const FORMULA = options.formula ?? null  // Used to force a roll result, e.g. 20
+        if (TL === 2) jez.trace(`${TAG} --- Starting --- ${FNAME} ---`);
+        if (TL > 2) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+            "SUBJECT ==>", SUBJECT, "options ==>", options);
+        //----------------------------------------------------------------------------------------------
+        // Define Variables
+        //
+        let combatantIds = []
+        //----------------------------------------------------------------------------------------------
+        // Grab the RunAsGM Macros
+        //
+        const GM_ROLL_INITIATIVE = jez.getMacroRunAsGM("RollInitiativeAsGM")
+        if (!GM_ROLL_INITIATIVE) { return false }
+        //----------------------------------------------------------------------------------------------
+        // Validate SUBJECT received, it can be a single or array of the following types:
+        // Token5e data object, Token Document obj, token.document.uuid, token.id (all must be same type)
+        // and build array of combatant Ids.
+        //
+        if (jez.typeOf(SUBJECT) === "array")   // Processing an array of critters
+            for (let i = 0; i < SUBJECT.length; i++) {
+                combatantIds.push(await processOneEntity(SUBJECT[i], { traceLvl: TL }))
+            }
+        else {
+            combatantIds.push(await processOneEntity(SUBJECT, { traceLvl: TL }))
+        }
+        //----------------------------------------------------------------------------------------------
+        // Make call to roll initiatives
+        //
+        await GM_ROLL_INITIATIVE.execute(combatantIds, FORMULA)
+        //----------------------------------------------------------------------------------------------
+        // Process a single entity, may need to call for each element of an array
+        //
+        async function processOneEntity(SUBJECT, options = {}) {
+            const FUNCNAME = "processOneEntity(SUBJECT, options = {})";
+            const FNAME = FUNCNAME.split("(")[0]
+            const TAG = `jez-lib ${FNAME} |`
+            const TL = options.traceLvl ?? 0
+            if (TL === 2) jez.trace(`${TAG} --- Starting --- ${FNAME} ---`);
+            if (TL > 2) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+                "SUBJECT ==>", SUBJECT, "options ==>", options);
+            //----------------------------------------------------------------------------------------------
+            // Determine the type of Subject
+            //
+            // let subjectType = jez.typeOf(SUBJECT)
+            let subjectType = ""
+            if (jez.typeOf(SUBJECT) === "object") {
+                if (SUBJECT?.constructor?.name === "Token5e") subjectType = `Token5e`
+                if (SUBJECT?.constructor?.name === "TokenDocument5e") subjectType = `TokenDocument5e`
+            } else if (jez.typeOf(SUBJECT) === "string") {
+                if (SUBJECT.length === 16) subjectType = `token.id`
+                else if (SUBJECT.length === 45) subjectType = `token.document.uuid`
+                else subjectType = `Garbage`
+            } else subjectType = `Garbage`
+            if (TL > 0) jez.trace(`${TAG} Processing ${subjectType}`, SUBJECT)
+            if (subjectType === 'Garbage') return jez.badNews(`Seemingly passed some icky junk: ${SUBJECT}`)
+            //----------------------------------------------------------------------------------------------
+            // Need to extract a combatantId from SUBJECT data
+            //
+            let combatantId
+            let initiative
+            switch (subjectType) {
+                case 'Token5e':
+                    if (!SUBJECT?.combatant?.id) return (null)
+                    combatantId = SUBJECT?.combatant?.id
+                    initiative = SUBJECT?.combatant?.data?.initiative
+                    break;
+                case 'TokenDocument5e':
+                    if (!SUBJECT?.combatant?.id) return (null)
+                    combatantId = SUBJECT?.combatant?.id
+                    initiative = SUBJECT?.combatant?.data?.initiative
+                    break;
+                case 'token.id':
+                    let dToken = await canvas.tokens.placeables.find(ef => ef.id === SUBJECT)
+                    if (!dToken?.combatant?.id) return (null)
+                    combatantId = dToken?.combatant?.id
+                    initiative = dToken?.combatant?.data?.initiative
+                    break;
+                case 'token.document.uuid':
+                    let dTokenDocument5e = await fromUuid(SUBJECT)
+                    if (!dTokenDocument5e?.combatant?.id) return (null)
+                    combatantId = dTokenDocument5e?.combatant?.id
+                    initiative = dTokenDocument5e?.combatant?.data?.initiative
+                    break;
+                default:
+                    return jez.badNews(`This should not happen! Choked on ${SUBJECT}`)
+            }
+            if (initiative) return (null)
+            if (TL > 0) jez.trace(`${TAG} combatantId`, combatantId)
+            return (combatantId)
+        }
+    }
 } // END OF class jez
 Object.freeze(jez);
