@@ -1036,10 +1036,13 @@ class jez {
     }
     /***************************************************************************************************
      * Move the movingToken up to the number of spaces specified as move away from the amchorToken if 
-     * move is a positive value, toward if negative, after a delay in milliseconds
+     * move is a positive value, toward if negative, after a delay in milliseconds.
+     * 
+     * If the path foro the movement is obstructed for movement, a message is posted to the chat log and '
+     * a false is returned.
      ***************************************************************************************************/
     static async moveToken(anchorToken, movingToken, move, delay, options={}) {
-        const FUNCNAME = "jez.moveToken(anchorToken, movingToken, move, delay, options={})";
+        const FUNCNAME = "moveToken(anchorToken, movingToken, move, delay, options={})";
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.lib ${FNAME} |`
         const TL = options.traceLvl ?? 0
@@ -1077,6 +1080,14 @@ class jez {
         if (!moveArray.includes(move)) 
             return jez.badNews(`Move distance requested, ${move} not supported by ${FUNCNAME}`);
         let squareCorner = moveSpaces(move, {traceLvl: TL})
+        if (!squareCorner) {
+        jez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: movingToken.data.img, 
+            title: `${movingToken.name} path obstructed`, 
+            msg: `${movingToken.name} path obstructed for the intended movement of ${move} spaces.
+                 GM needs to adjudicate the result.`, 
+            token: movingToken})
+            return(false)
+        }
         if (TL > 2) jez.trace(`${TAG} Square Corner`, squareCorner)
         await jez.wait(delay)
         //----------------------------------------------------------------------------------------------
@@ -1092,7 +1103,8 @@ class jez {
         // await movingToken.document.update(squareCorner)
         return (true)
         //----------------------------------------------------------------------------------------------
-        // Count of spaces to move 1, 2 or 3
+        // Count of spaces to move 1, 2 or 3, return the squarecorner of destination or false if the 
+        // path was obstructed.
         //----------------------------------------------------------------------------------------------
         function moveSpaces(count, options={}) {
             const FUNCNAME = "moveSpaces(count, options={})";
@@ -1115,8 +1127,22 @@ class jez {
             // Build array of potential squares
             //
             let destSqrArray = buildSquareArray(Math.abs(count), {traceLvl: TL});
-            for (let i = 1; i < destSqrArray.length; i++) // Add distances 
+            //---------------------------------------------------------------------------------------------------
+            // Add distance between the coords to array
+            //
+            for (let i = 1; i < destSqrArray.length; i++) 
                 destSqrArray[i].dist = canvas.grid.measureDistance(destSqrArray[i], anchorToken.center);
+            if (TL > 2) jez.trace(`${TAG} Destination Square Array`, destSqrArray);
+            //---------------------------------------------------------------------------------------------------
+            // Add path clear (or not) to the array
+            //
+            for (let i = 1; i < destSqrArray.length; i++) {
+                let ray = new Ray(movingToken.center, destSqrArray[i])
+                destSqrArray[i].clear = true
+                let badLoM = canvas.walls.checkCollision(ray)
+                if (TL > 2) jez.trace(`${TAG} badLoM`, badLoM);
+                if (badLoM) destSqrArray[i].clear = false
+            }
             if (TL > 2) jez.trace(`${TAG} Destination Square Array`, destSqrArray);
             //---------------------------------------------------------------------------------------------------
             // Find the greatest move square
@@ -1127,12 +1153,19 @@ class jez {
             }
             if (TL > 2) jez.trace(`${TAG} Max & Min Distances`, 
                 "minDist ==>",minDist, "minIdx  ==>", minIdx,
-                "maxDist ==>",maxDist, "maxIdx  ==>",maxIdx);
+                "maxDist ==>",maxDist, "maxIdx  ==>", maxIdx);
             //---------------------------------------------------------------------------------------------------
-            // Set the square corner value
+            // Get index of maximum move in appropriate direction
             //
             let index = minIdx                  // Assume pull, pick closest space
             if (count > 0) index = maxIdx       // Change to furthest if pushing
+            //---------------------------------------------------------------------------------------------------
+            // If path is obstructed, return false
+            //
+            if (!destSqrArray[index].clear) return(false)
+            //---------------------------------------------------------------------------------------------------
+            // Calculate and return the square corner
+            //
             let fudge = GRID_UNIT / 2;
             if (movingToken.data.width > 1) fudge = GRID_UNIT / 2 * movingToken.data.width;
             let squareCorner = {};
