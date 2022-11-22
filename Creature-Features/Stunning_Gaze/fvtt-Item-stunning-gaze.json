@@ -1,0 +1,233 @@
+{
+  "name": "Stunning Gaze",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/skills/emerald_11.jpg",
+  "data": {
+    "description": {
+      "value": "<p>When a creature that can see the %TOKENNAME%'s central eye starts its turn within 30 feet, the %TOKENNAME%&nbsp;can force it to make a <strong>WIS Save</strong> if %TOKENNAME% isn&rsquo;t incapacitated and can see the creature. A creature that fails the save is @JournalEntry[Ch02WiipJvf69EDN]{Stunned} until the start of its next turn.</p>\n<p>Unless surprised, a creature can avert its eyes (making the creature effectively @JournalEntry[lIPpTxLdMS9z2G94]{Blinded} relative to&nbsp;<span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">%TOKENNAME%</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">) </span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">&nbsp;at the start of its turn to avoid the saving throw. </span></p>\n<p><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">If the creature does so, it can&rsquo;t see </span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">%TOKENNAME%</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">&nbsp;until the start of its next turn, when it can avert its eyes again. If the creature looks at&nbsp;</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">%TOKENNAME%</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">&nbsp;in the meantime, it must immediately make the save.</span></p>\n<hr />\n<p><strong>FoundryVTT</strong>: Targets averting eyes can be manually marked with the blinded effect. A dialog will offer all in range tokens that have a line of sight to the Gauth and then proceed with saves and apply appropriate effects.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Volo's Guide to Monsters pg 125",
+    "activation": {
+      "type": "none",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 30,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 14,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "akjokel1naixspev",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 2,
+          "value": "Stunned",
+          "priority": "0"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/skills/emerald_11.jpg",
+      "label": "Stunning Gaze",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnStart"
+          ],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.CE"
+    },
+    {
+      "_id": "x5gzdgkhb2degjrv",
+      "changes": [
+        {
+          "key": "macro.CE",
+          "mode": 0,
+          "value": "Stunned",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "systems/dnd5e/icons/skills/emerald_11.jpg",
+      "label": "Stunning Gaze",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [
+            "turnStart"
+          ],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "macro.CE"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<em><strong>Stunning Gaze.</strong></em>",
+      "fullName": "Stunning Gaze."
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]Run_RuneVFX_onTargets,[preItemRoll]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "core": {
+      "sourceId": "Item.EXlqqiapGUzE35Dc"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Stunning Gaze",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Stunning_Gaze.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *   When a creature that can see the Eye Tyrant's central eye starts its turn within 30 feet, the \n *   Eye Tyrant can force it to make a WIS Save if Eye Tyrant isn't incapacitated and can see the \n *   creature. A creature that fails the save is  Stunned until the start of its next turn.\n * \n *   Unless surprised, a creature can avert its eyes (making the creature effectively  Blinded \n *   relative to Eye Tyrant)  at the start of its turn to avoid the saving throw.\n * \n *   If the creature does so, it can't see Eye Tyrant until the start of its next turn, when it can \n *   avert its eyes again. If the creature looks at Eye Tyrant in the meantime, it must immediately \n *   make the save.\n * \n * 11/19/22 0.1 Creation of Macro from Maddening_Feast.0.1.js\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\nconst IMMUNE_COND = \"Immune - Maddening Feast\"\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //----------------------------------------------------------------------------------------------\n    // Make sure we are running as a preItemRoll macro\n    //\n    if (args[0].macroPass !== \"preItemRoll\") {\n         msg = `${aToken.name}'s ${aItem.name} is likely incorrectly configured.  Check that the \n         On Use Macros field is set to \"Called before the item is rolled.\"\n         <br><br>No effect, action can not be performed.`\n         jez.postMessage({\n             color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n             msg: msg, title: `Configuration Problem`, token: aToken\n         })\n         return jez.badNews(`This macro must run preItemRoll, not ${args[0].macroPass}.`, \"e\")\n    }\n    //----------------------------------------------------------------------------------------------\n    // Remove any preset targets\n    //\n    game.user.updateTokenTargets()\n    //------------------------------------------------------------------------------------------\n    // Prepare for and pop a simple dialog asking if preconditions were met\n    //\n    // const Q_TITLE = `Can ${aToken.name} Feast?`\n    // const Q_TEXT = `To qualify to feast, ${aToken.name} must be within 5 feet of a corpse that \n    // died within the past minute and spend her action gourging on the bloody flesh. Are these \n    // conditions met?<br><br>`\n    // let confirmation = await Dialog.confirm({ title: Q_TITLE, content: Q_TEXT, });\n    // if (!confirmation) {\n    //     msg = `${aToken.name} looks confusedly in the general direction of the GM and wonders\n    //     what she is expected to feast upon?<br><br>No effect, action can not be performed.`\n    //     jez.postMessage({\n    //         color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n    //         msg: msg, title: `Can not complete action`, token: aToken\n    //     })\n    //     return jez.badNews(`Preconditions not met, skipping ${aItem.name} effects.`, \"w\")\n    // }\n    //----------------------------------------------------------------------------------------------\n    // Obtain the range of the effect\n    //\n    const RANGE = jez.getRange(aItem, ALLOWED_UNITS) + 3 // Adding a bit of fudge\n    if (!RANGE) return jez.badNews(`Could not retrieve useable range (in feet) for ${aItem.name}`)\n    //------------------------------------------------------------------------------------------\n    // Build a list of tokens within range that can see the feast occuring, excluding any that \n    // have immunity.\n    //\n    let parms = {\n        exclude: \"Self\",        // self, friendly, or none (self is default)\n        direction: \"t2o\",       // t2o or o2t (Origin to Target) (t2o is default) \n        chkSight: true,         // Boolean (false is default)\n        chkBlind: true,         // Boolean (false is default)\n        traceLvl: 0,            // Trace level, integer typically 0 to 5\n    }\n    let candidateIds = []\n    let candidates = await jez.inRangeTargets(aToken, RANGE, parms);\n    if (candidates.length === 0) {\n        msg = `${aToken.name} sadly realizes that nothing and no one is in range for ${aItem.name}.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n            msg: msg, title: `No affectable targets`, token: aToken\n        })\n        return jez.badNews(`No effectable targets in range`, \"i\")\n    }\n    for (let i = 0; i < candidates.length; i++) {\n        immuneEffect = candidates[i].actor.effects.find(ef => ef.data.label === IMMUNE_COND)\n        if (TL > 2) jez.trace(`${TAG} ${candidates[i].name} Immune Effect`, immuneEffect)\n        if (immuneEffect) \n            jez.trace(`${FNAME} | Immunity: ${candidates[i].name} (${candidates[i].id})`, candidates[i])\n        else {\n            jez.trace(`${FNAME} | Targeting: ${candidates[i].name} (${candidates[i].id})`, candidates[i])\n            candidateIds.push(`${candidates[i].name} (${candidates[i].id})`)\n        }\n    }\n    if (candidateIds.length === 0) {\n        msg = `${aToken.name} sadly realizes that nothing and no one can be affected by ${aItem.name}.`\n        jez.postMessage({\n            color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img,\n            msg: msg, title: `No affectable targets`, token: aToken\n        })\n        return jez.badNews(`No effectable targets in range`, \"i\")\n    }\n    //------------------------------------------------------------------------------------------\n    // Call function to pop a dialog and select targets to be affected.\n    //\n    await popDialog();\n    async function popDialog() {\n        const Q_TITLE = `Which can see ${aToken.name}`\n        const Q_TEXT = `Check all the creatures that can see ${aToken.name}.  This allows players \n        to toggle on the blinded effect, if they are averting their eyes.`\n        await jez.pickCheckListArray(Q_TITLE, Q_TEXT, callBack, candidateIds.sort());\n        return\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Following is the call back function\n    //\n    async function callBack(selection) {\n        let targets = []\n        let targetIds = []\n        if (selection === null) return\n        if (selection.length === 0) { popDialog(); return }\n        //-------------------------------------------------------------------------------------------\n        // Build targetedArray of token IDs from all those tasty token descriptors selected.\n        // The selection items should be of form: Token Name (Q4XTwd4lR76Afu6B)\n        //\n        for (let i = 0; i < selection.length; i++) {\n            msg += `${i + 1}) ${selection[i]}<br>`\n            const ELEMENTS = selection[i].split(\"(\")                    // Make array of elements\n            const THIS_ID = ELEMENTS[ELEMENTS.length - 1].slice(0, -1)  // Slice out the ID we need     \n            if (TL > 3) jez.trace(`${TAG} | Target ID ${i}`, THIS_ID)\n            targetIds.push(THIS_ID)\n            targets.push(canvas.tokens.placeables.find(ef => ef.id === THIS_ID))\n        }\n        //-------------------------------------------------------------------------------------------\n        // Fire off a VFX on each of the targets\n        //\n        const COLOR = jez.getRandomRuneColor()\n        const SCHOOL = `necromancy`\n        for (let i = 0; i < targets.length; i++) {\n            if (TL > 3) jez.trace(`${TAG} Targeting: ${targets[i].name}`, targets[i])\n            if (TL > 4) jez.trace(`${TAG} School: ${SCHOOL}, Color: ${COLOR}`)\n            jez.runRuneVFX(targets[i], SCHOOL, COLOR)\n        }\n        //----------------------------------------------------------------------------------------------\n        // Update the selected targets so item hits correct tokens.\n        //\n        game.user.updateTokenTargets(targetIds)\n    }\n    //-----------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOff(options = {}) {\n    const FUNCNAME = \"doOff()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //---------------------------------------------------------------------------------------------\n    // Apply our CE Immune effect modifing key aspects\n    //\n    let effectData = game.dfreds.effectInterface.findEffectByName(\"Immune\").convertToObject();\n    if (TL > 3) jez.trace(`${TAG} effectData >>>`, effectData)\n    effectData.description = \"Immune to Maddening Feast effects, for now...\"\n    effectData.name = IMMUNE_COND\n    effectData.flags.dae = { specialDuration : [ \"longRest\" ] }\n    if (TL > 2) jez.trace(`${TAG} Apply affect to ${aToken.name}`)\n    await game.dfreds.effectInterface.addEffectWith({\n        effectData: effectData,\n        uuid: aToken.actor.uuid, \n        origin: aItem.uuid\n    });\n    immuneEffect = aToken.actor.effects.find(ef => ef.data.label === IMMUNE_COND)\n    if (!immuneEffect) return jez.badNews(`Immune effect didn't stick...`, \"e\")\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    if (TL > 3) jez.trace(`${TAG} | More Detailed Trace Info.`)\n\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

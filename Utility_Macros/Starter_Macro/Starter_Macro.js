@@ -78,7 +78,7 @@ async function preCheck() {
  * This runs on actor that has the affected applied to it.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function doOn(options={}) {
-    const FUNCNAME = "doOn()";
+    const FUNCNAME = "doOn(options={})";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
@@ -95,7 +95,7 @@ async function doOn(options={}) {
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOnUse(options={}) {
-    const FUNCNAME = "doOnUse()";
+    const FUNCNAME = "doOnUse(options={})";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
@@ -121,7 +121,7 @@ async function doOn(options={}) {
  * Perform the code that runs when this macro is invoked each round by DAE
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doEach(options={}) {
-    const FUNCNAME = "doEach()";
+    const FUNCNAME = "doEach(options={})";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
@@ -139,7 +139,7 @@ async function doOn(options={}) {
  * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doBonusDamage(options={}) {
-    const FUNCNAME = "doBonusDamage()";
+    const FUNCNAME = "doBonusDamage(options={})";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
@@ -159,7 +159,7 @@ async function doOn(options={}) {
  * This runs on actor that has the affected removed from it.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  async function doOff(options={}) {
-    const FUNCNAME = "doOff()";
+    const FUNCNAME = "doOff(options={})";
     const FNAME = FUNCNAME.split("(")[0] 
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0

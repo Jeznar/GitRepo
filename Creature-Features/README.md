@@ -63,6 +63,7 @@ I'll try to document functions as I add them to the repository.
 * **[Summon Swarm of Insects](#summon-swarm-of-insects)** -- Calls for 1d4 Swarms of Insects
 * **[Standing Stone Lightning Strike](#standing-stone-lightning-strike)** -- Ability to use from journal to implement an effect on Yester Hill.
 * **[Stench](#stench)** Ghast's Stench effect
+* **Stunning Gaze** Gauth's gaze built from Maddening_Feast.0.1.js
 * **[Stunning Screech](#stunning-screech)** -- Implements the Vrock's surprisingly complex ability
 * **Portent (Arabelle)** -- Portent slightly modified for Arabelle
 * **[Threat Display](#threat-display)** -- Potential Frightened Application
@@ -814,23 +815,17 @@ This one uses the information stored in CE's Stunned effect to build a custom ef
 
 ---
 
-### **Stunning Screech**
+### **Threat Display**
 
-This is a homebrew freature I cooked up for Galahad (others might know him as Lancelot), a GSD my party of Travelers in Barovia befriended in Durst Manor. Following is my description of the ability:
+This is a homebrew feature I cooked up for Galahad (others might know him as Lancelot), a GSD my party of Travelers in Barovia befriended in Durst Manor. Following is my description of the ability:
 
 > As a bonus action, force a creature within 15 feet make a wisdom saving throw vs Caster DC or become  Frightened until the end of the creature's next turn. The targeted creature must hear the treat for it to be effective.
 > 
-> If the target is smaller, the save is made with diadvantage.  If the target is two categories larger, it has advantage.  If it is three or more larger, it is immune.
+> If the target is smaller, the save is made with disadvantage.  If the target is two categories larger, it has advantage.  If it is three or more larger, it is immune.
 > 
-> Creatures affected by the unwavering loyalty trait automatically succed on this saving throw. Once a creature has saved against this effect it is immune for the combat.
+> Creatures affected by the unwavering loyalty trait automatically succeed on this saving throw. Once a creature has saved against this effect it is immune for the combat.
 
 The macro manages immunities cause by saves, checks size differences, performs the appropriate save. Finally, it places the appropriate effect on the target.
-
-*[Back to the Table of Contents](#abilities-in-this-repo)*
-
----
-
-### **Threat Display**
 
 Item that performs a WIS save on the target placing a Frightened condition for 1 turn on failures. If the actor is larger than the target it has advantage.  If it is 2 size categories smaller it has disadvantage.  If it is 3 or more smaller it auto-fails.
 

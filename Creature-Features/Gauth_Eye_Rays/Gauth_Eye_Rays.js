@@ -170,7 +170,7 @@ async function doOnUse(options = {}) {
                         { key: `data.attributes.movement.burrow`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },
                     ]    
                 }
-                msg = await jez.fireRay(targetArray[i], aToken, options);
+                msg = await jez.fireRay(targetArray[i], aToken, options); 
                 break;
             case 3:
                 rayName = "Fire Ray"
