@@ -6,7 +6,8 @@ const MACRONAME = "Produce_Flame.0.4.js"
  * now uses a helper macro from the Items directory that is copied to the actor.
  * 
  * 06/06/22 0.2 Conversion of Crymic code to my style (sort of) and FoundryVTT 9.x 
- * 11/21/22 0.4 Attach flame animation with .attachTo(target) not .atLocation(target)
+ * 11/21/22 0.4 Attach flame animation with .attachTo(target) not .atLocation(target) &
+ *              Update the associated DAE effect to handle lighting
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -145,12 +146,12 @@ async function doOff(options = {}) {
   //     "brightLight": 0,
   //     "lightColor": ""
   //   });
-  //   await jez.deleteItems(TEMP_SPELL_NAME, "spell", aToken);
-  //   if (TL > 1) jez.trace(`${TAG} end VFX_NAME`, VFX_NAME)
-  //   Sequencer.EffectManager.endEffects({ name: VFX_NAME });
-  //   if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
-  //   return;
-  }
+  await jez.deleteItems(TEMP_SPELL_NAME, "spell", aToken);
+  if (TL > 1) jez.trace(`${TAG} end VFX_NAME`, VFX_NAME)
+  Sequencer.EffectManager.endEffects({ name: VFX_NAME });
+  if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
+  return;
+}
   /***************************************************************************************************
    * Run VFX
    ***************************************************************************************************/
