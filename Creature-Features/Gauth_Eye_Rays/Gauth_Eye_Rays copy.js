@@ -1,15 +1,14 @@
-const MACRONAME = "Gauth_Eye_Rays.0.2.js"
+const MACRONAME = "Gauth_Eye_Rays.0.1.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * This macro implements the Gauth's eye rays, slightly modified from RAW, in that this one fires
  * rays at up to 3 targets, if less than 3 are selected the extra(s) are directed at the first target 
  * that is the one with index value 0 (I don't know hich that will be...)
  * 
  * 10/28/22 0.1 Creation of Macro
- * 11/22/22 0.2 Add saving throw to Pushing Ray
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`${TAG} === Starting ===`);
@@ -29,9 +28,10 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-const RAY_COUNT = 1     // 3 or less
-const RAY_NAME_ARRAY = [ "Devour Magic Ray", "Enervation Ray", "Pushing Ray", "Fire Ray", "Paralyzing Ray", "Sleep Ray" ]
-const RAY_TYPE_COUNT = RAY_NAME_ARRAY.length
+const RAY_TYPE_COUNT = 6
+const RAY_COUNT = 3
+const RAY_NAME_ARRAY = [ "Devour Magic Ray", "Enervation Ray", "Pushing Ray", "Fire Ray", 
+    "Paralyzing Ray", "Sleep Ray" ]
 let rayArray = []
 const DELAY = 1500  // Time between ray attacks
 const SAVE_DC = aActor.data.data.attributes.spelldc;
@@ -106,8 +106,7 @@ async function doOnUse(options = {}) {
           }
         rayArray.push(rolledRay)
     }
-    // function rollRay() { return (Math.floor(Math.random() * RAY_TYPE_COUNT)) }
-    function rollRay() { return (2) }   // -Jez Test
+    function rollRay() { return (Math.floor(Math.random() * RAY_TYPE_COUNT)) }
     //-----------------------------------------------------------------------------------------------
     // Log Assignments for Debugging Purposes
     //
@@ -158,11 +157,11 @@ async function doOnUse(options = {}) {
                     RayName: rayName,
                     VFXColor: "yellow",
                     ceDesc: `Pushed back up to 15 feet and speed reduced by half by ${aToken.name}'s ${rayName}`,
-                    traceLvl: 5,
+                    traceLvl: TL,
                     saveType: "str",
                     icon: "Icons_JGB/Conditions/slow1.png",                  
                     effectName: rayName,
-                    pushBack: 3,
+                    pushBack: 15,
                     changes: [
                         { key: `data.attributes.movement.walk`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },
                         { key: `data.attributes.movement.swim`, mode: jez.MULTIPLY, value: 0.5, priority: 20 },

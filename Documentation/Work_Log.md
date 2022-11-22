@@ -395,6 +395,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.22 Fix Produce Flame to attach VFX to a token using .attachTo(target) not .atLocation(target) & Update the associated DAE effect to handle lighting
 
+22.11.11 Fix to jex.moveToken to move adjacent token away
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

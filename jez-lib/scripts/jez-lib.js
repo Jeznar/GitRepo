@@ -1038,8 +1038,21 @@ class jez {
      * Move the movingToken up to the number of spaces specified as move away from the amchorToken if 
      * move is a positive value, toward if negative, after a delay in milliseconds
      ***************************************************************************************************/
-    static async moveToken(anchorToken, movingToken, move, delay) {
-        const FUNCNAME = "moveToken(anchorToken, movingToken, move, delay)";
+    static async moveToken(anchorToken, movingToken, move, delay, options={}) {
+        const FUNCNAME = "jez.moveToken(anchorToken, movingToken, move, delay, options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.lib ${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL > 0) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+            "anchorToken ==>", anchorToken,
+            'movingToken ==>', movingToken,
+            'move        ==>', move,
+            'delay       ==>', delay,
+            "options     ==>", options);
+        //---------------------------------------------------------------------------------------------------
+        // Set Function specific variables
+        //
         let moveArray = [-3, -2, -1, 0, 1, 2, 3]
         const GRID_UNIT = canvas.scene.data.grid;
         let distBetweenTokens = jez.getDistance5e(anchorToken, movingToken);
@@ -1052,29 +1065,28 @@ class jez {
         //----------------------------------------------------------------------------------------------
         // Adjust move distance if necessary because tokens are already too close.
         // 
-        if (distBetweenTokens <= 5) return (true)                   // Don't do anything if adjacent
+        if (distBetweenTokens <= 5 && move < 0) return (true)       // Bail if adjacent && Pull
         if (move === -3 && distBetweenTokens < 20) move = -2        // 4 spaces apart, can move 3
         if (move === -2 && distBetweenTokens < 15) move = -1        // 3 spaces apart, can move 2
-        if (move === -1 && distBetweenTokens < 10) move = 0        // 2 spaces apart, can move 1
+        if (move === -1 && distBetweenTokens < 10) move = 0         // 2 spaces apart, can move 1
         if (move === 0) return (true)                               // Move = 0 is the trivial case
+        if (TL > 2) jez.trace(`${TAG} After adjusting distance, move ==>`,move)
         //----------------------------------------------------------------------------------------------
         // Validity check on move
         // 
-        if (!moveArray.includes(move)) {
-            let msg = `Move distance requested, ${move} not supported by ${FUNCNAME}`;
-            ui.notifications.error(msg);
-            return (false);
-        }
-        let squareCorner = moveSpaces(move)
+        if (!moveArray.includes(move)) 
+            return jez.badNews(`Move distance requested, ${move} not supported by ${FUNCNAME}`);
+        let squareCorner = moveSpaces(move, {traceLvl: TL})
+        if (TL > 2) jez.trace(`${TAG} Square Corner`, squareCorner)
         await jez.wait(delay)
         //----------------------------------------------------------------------------------------------
         // Obtain the code for TokenUpdate which must be runAsGM enabled.
         // 
         const TokenUpdate = game.macros.find(i => i.name === "TokenUpdate");
-        if (!TokenUpdate) return jez.badNews(`REQUIRED: Missing TokenUpdate GM Macro!`,"e");
+        if (!TokenUpdate) return jez.badNews(`REQUIRED: Missing TokenUpdate GM Macro!`, "e");
         let AdvancedMacros = getProperty(TokenUpdate.data.flags, "advanced-macros");
-        if (!AdvancedMacros) return jez.badNews(`REQUIRED: Macro requires AdvancedMacros Module!`,'e');
-        else if (!AdvancedMacros.runAsGM) return jez.badNews(`REQUIRED: TokenUpdate "Execute As GM" must be checked.`,'e');
+        if (!AdvancedMacros) return jez.badNews(`REQUIRED: Macro requires AdvancedMacros Module!`, 'e');
+        else if (!AdvancedMacros.runAsGM) return jez.badNews(`REQUIRED: TokenUpdate "Execute As GM" must be checked.`, 'e');
         await TokenUpdate.execute(movingToken.id, squareCorner);
         // Following line dies with a permission error for normal players.
         // await movingToken.document.update(squareCorner)
@@ -1082,30 +1094,64 @@ class jez {
         //----------------------------------------------------------------------------------------------
         // Count of spaces to move 1, 2 or 3
         //----------------------------------------------------------------------------------------------
-        function moveSpaces(count) {
+        function moveSpaces(count, options={}) {
+            const FUNCNAME = "moveSpaces(count, options={})";
+            const FNAME = FUNCNAME.split("(")[0]
+            const TAG = `jez.lib ${FNAME} |`
+            const TL = options.traceLvl ?? 0
+            if (TL > 0) jez.trace(`${TAG} --- Starting ---`);
+            if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+                "count   ==>", count,
+                "options ==>", options);
+            //---------------------------------------------------------------------------------------------------
+            // Set Function specific variables
+            //
             let dist = [];
             let minDist = 99999999999;
             let maxDist = 0;
             let minIdx = 0;
             let maxIdx = 0;
-            let destSqrArray = buildSquareArray(Math.abs(count));
-
+            //---------------------------------------------------------------------------------------------------
+            // Build array of potential squares
+            //
+            let destSqrArray = buildSquareArray(Math.abs(count), {traceLvl: TL});
+            for (let i = 1; i < destSqrArray.length; i++) // Add distances 
+                destSqrArray[i].dist = canvas.grid.measureDistance(destSqrArray[i], anchorToken.center);
+            if (TL > 2) jez.trace(`${TAG} Destination Square Array`, destSqrArray);
+            //---------------------------------------------------------------------------------------------------
+            // Find the greatest move square
+            //
             for (let i = 1; i < destSqrArray.length; i++) {
-                dist[i] = canvas.grid.measureDistance(destSqrArray[i], anchorToken.center);
-                if (dist[i] < minDist) { minDist = dist[i]; minIdx = i; }
-                if (dist[i] > maxDist) { maxDist = dist[i]; maxIdx = i; }
+                if (destSqrArray[i].dist < minDist) { minDist = destSqrArray[i].dist; minIdx = i; }
+                if (destSqrArray[i].dist > maxDist) { maxDist = destSqrArray[i].dist; maxIdx = i; }
             }
-            let index = minIdx                 // Assume pull, pick closest space
+            if (TL > 2) jez.trace(`${TAG} Max & Min Distances`, 
+                "minDist ==>",minDist, "minIdx  ==>", minIdx,
+                "maxDist ==>",maxDist, "maxIdx  ==>",maxIdx);
+            //---------------------------------------------------------------------------------------------------
+            // Set the square corner value
+            //
+            let index = minIdx                  // Assume pull, pick closest space
             if (count > 0) index = maxIdx       // Change to furthest if pushing
             let fudge = GRID_UNIT / 2;
-            if (movingToken.data.width > 1)
-                fudge = GRID_UNIT / 2 * movingToken.data.width;
+            if (movingToken.data.width > 1) fudge = GRID_UNIT / 2 * movingToken.data.width;
             let squareCorner = {};
             squareCorner.x = destSqrArray[index].x - fudge;
             squareCorner.y = destSqrArray[index].y - fudge;
             return squareCorner;
         }
-        function buildSquareArray(size) {
+        function buildSquareArray(size, options={}) {
+            const FUNCNAME = "buildSquareArray(size, options={})";
+            const FNAME = FUNCNAME.split("(")[0]
+            const TAG = `jez.lib ${FNAME} |`
+            const TL = options.traceLvl ?? 0
+            if (TL > 0) jez.trace(`${TAG} --- Starting ---`);
+            if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+                'size    ==>', size,
+                "options ==>", options);
+            //---------------------------------------------------------------------------------------------------
+            // Set Function specific variables
+            //
             let destSqrArray = [];     // destination Square array
             if (size === 0) return destSqrArray;
             //----------------------------------------------------------------------------------------------
@@ -1182,6 +1228,7 @@ class jez {
             //----------------------------------------------------------------------------------------------
             if (size === 3) {
                 for (let i = 1; i <= 16; i++) destSqrArray[i] = {};
+                // Find y coords
                 destSqrArray[1].y = destSqrArray[2].y = destSqrArray[3].y = Y - 3 * GRID_UNIT;
                 destSqrArray[4].y = destSqrArray[5].y = Y - 2 * GRID_UNIT;
                 destSqrArray[6].y = destSqrArray[7].y = Y - 1 * GRID_UNIT;
@@ -1189,7 +1236,7 @@ class jez {
                 destSqrArray[10].y = destSqrArray[11].y = Y + 1 * GRID_UNIT;
                 destSqrArray[12].y = destSqrArray[13].y = Y + 2 * GRID_UNIT;
                 destSqrArray[14].y = destSqrArray[15].y = destSqrArray[16].y = Y + 3 * GRID_UNIT;
-
+                // Find x coords
                 destSqrArray[6].x = destSqrArray[8].x = destSqrArray[10].x = X - 3 * GRID_UNIT;
                 destSqrArray[4].x = destSqrArray[12].x = X - 2 * GRID_UNIT;
                 destSqrArray[1].x = destSqrArray[14].x = X - 1 * GRID_UNIT;
@@ -3348,13 +3395,15 @@ class jez {
         //-----------------------------------------------------------------------------------------------
         // If push back indicated by settings of options parameter, push the target back 15.  
         //
-        if (PUSH_BACK) {
+        if (PUSH_BACK && !saved) {
             let distance = 0
-            // Values of 1,2,3 are fine, just use as cound of spaces to push back
-            if ((PUSH_BACK === 1 || PUSH_BACK === 2 || PUSH_BACK === 3)) distance = PUSH_BACK
+            // Values of 1,2,3 are fine, just use as count of spaces to push back
+            const ALLOWED_PUSH_BACK = [ 3, 2, 1, 0, -1, -2, -3 ]
+            if (ALLOWED_PUSH_BACK.includes(PUSH_BACK)) distance = PUSH_BACK
             // Other values should be distance in feet, so divide by 5 and make an integer
             else distance = Math.ceil(PUSH_BACK / 5)
-            if (distance !== 0 && distance !== 1 && distance !== 2 && distance !== 3)
+            if (TL > 2) jez.trace(`${TAG}`,`distance  ==>`,distance,'PUSH_BACK ==>',PUSH_BACK)
+            if (!ALLOWED_PUSH_BACK.includes(distance))
                 return jez.badNews(`${TAG} Unsupported knockback distance, ${distance}`, "e")
             if (TL > 1) jez.trace(`${TAG} Pushback ${TARGET_TOKEN.name} ${distance} spaces from ${ACTIVE_TOKEN.name}`,
                 "ACTIVE_TOKEN", ACTIVE_TOKEN, "TARGET_TOKEN", TARGET_TOKEN)
