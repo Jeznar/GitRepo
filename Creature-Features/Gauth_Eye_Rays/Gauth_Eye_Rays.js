@@ -9,7 +9,7 @@ const MACRONAME = "Gauth_Eye_Rays.0.2.js"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`${TAG} === Starting ===`);
@@ -29,7 +29,7 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-const RAY_COUNT = 1     // 3 or less
+const RAY_COUNT = 3     // 3 or less
 const RAY_NAME_ARRAY = [ "Devour Magic Ray", "Enervation Ray", "Pushing Ray", "Fire Ray", "Paralyzing Ray", "Sleep Ray" ]
 const RAY_TYPE_COUNT = RAY_NAME_ARRAY.length
 let rayArray = []
@@ -106,8 +106,8 @@ async function doOnUse(options = {}) {
           }
         rayArray.push(rolledRay)
     }
-    // function rollRay() { return (Math.floor(Math.random() * RAY_TYPE_COUNT)) }
-    function rollRay() { return (2) }   // -Jez Test
+    function rollRay() { return (Math.floor(Math.random() * RAY_TYPE_COUNT)) }
+    // function rollRay() { return (2) }   // -Jez Test
     //-----------------------------------------------------------------------------------------------
     // Log Assignments for Debugging Purposes
     //
