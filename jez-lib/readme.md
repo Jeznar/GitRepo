@@ -94,8 +94,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **[warpCrossHairs(...)](#warpcrosshairs)** -- Put a range display on warpgate summons 
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
 * **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
-* **[getItemUses(item, options = {})](#getitemusesitem5e-options--)** -- Returns item use data object
-* **[setItemUses(item, uses, options = {})](#getitemusesitem5e-options--)** -- Sets the number of uses for specified item
+* **[getItemUses(item, options = {})](#getitemusesitem-options--)** -- Returns item use data object
+* **[setItemUses(item, uses, options = {})](#getitemusesitem-options--)** -- Sets the number of uses for specified item
                                 
 More about many of these in the following sections. 
 
