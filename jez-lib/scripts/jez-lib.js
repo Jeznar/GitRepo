@@ -159,7 +159,7 @@ class jez {
         await jez.wait(100);
         await ui.chat.scrollBottom();
         // jez.log(`-------------- Finished ${FUNCNAME}-----------`);
-        return(RC);
+        return (RC);
     }
 
     /***************************************************************************************************
@@ -1041,7 +1041,7 @@ class jez {
      * If the path foro the movement is obstructed for movement, a message is posted to the chat log and '
      * a false is returned.
      ***************************************************************************************************/
-    static async moveToken(anchorToken, movingToken, move, delay, options={}) {
+    static async moveToken(anchorToken, movingToken, move, delay, options = {}) {
         const FUNCNAME = "moveToken(anchorToken, movingToken, move, delay, options={})";
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.lib ${FNAME} |`
@@ -1073,20 +1073,22 @@ class jez {
         if (move === -2 && distBetweenTokens < 15) move = -1        // 3 spaces apart, can move 2
         if (move === -1 && distBetweenTokens < 10) move = 0         // 2 spaces apart, can move 1
         if (move === 0) return (true)                               // Move = 0 is the trivial case
-        if (TL > 2) jez.trace(`${TAG} After adjusting distance, move ==>`,move)
+        if (TL > 2) jez.trace(`${TAG} After adjusting distance, move ==>`, move)
         //----------------------------------------------------------------------------------------------
         // Validity check on move
         // 
-        if (!moveArray.includes(move)) 
+        if (!moveArray.includes(move))
             return jez.badNews(`Move distance requested, ${move} not supported by ${FUNCNAME}`);
-        let squareCorner = moveSpaces(move, {traceLvl: TL})
+        let squareCorner = moveSpaces(move, { traceLvl: TL })
         if (!squareCorner) {
-        jez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: movingToken.data.img, 
-            title: `${movingToken.name} path obstructed`, 
-            msg: `${movingToken.name} path obstructed for the intended movement of ${move} spaces.
-                 GM needs to adjudicate the result.`, 
-            token: movingToken})
-            return(false)
+            jez.postMessage({
+                color: jez.randomDarkColor(), fSize: 14, icon: movingToken.data.img,
+                title: `${movingToken.name} path obstructed`,
+                msg: `${movingToken.name} path obstructed for the intended movement of ${move} spaces.
+                 GM needs to adjudicate the result.`,
+                token: movingToken
+            })
+            return (false)
         }
         if (TL > 2) jez.trace(`${TAG} Square Corner`, squareCorner)
         await jez.wait(delay)
@@ -1106,7 +1108,7 @@ class jez {
         // Count of spaces to move 1, 2 or 3, return the squarecorner of destination or false if the 
         // path was obstructed.
         //----------------------------------------------------------------------------------------------
-        function moveSpaces(count, options={}) {
+        function moveSpaces(count, options = {}) {
             const FUNCNAME = "moveSpaces(count, options={})";
             const FNAME = FUNCNAME.split("(")[0]
             const TAG = `jez.lib ${FNAME} |`
@@ -1126,11 +1128,11 @@ class jez {
             //---------------------------------------------------------------------------------------------------
             // Build array of potential squares
             //
-            let destSqrArray = buildSquareArray(Math.abs(count), {traceLvl: TL});
+            let destSqrArray = buildSquareArray(Math.abs(count), { traceLvl: TL });
             //---------------------------------------------------------------------------------------------------
             // Add distance between the coords to array
             //
-            for (let i = 1; i < destSqrArray.length; i++) 
+            for (let i = 1; i < destSqrArray.length; i++)
                 destSqrArray[i].dist = canvas.grid.measureDistance(destSqrArray[i], anchorToken.center);
             if (TL > 2) jez.trace(`${TAG} Destination Square Array`, destSqrArray);
             //---------------------------------------------------------------------------------------------------
@@ -1151,9 +1153,9 @@ class jez {
                 if (destSqrArray[i].dist < minDist) { minDist = destSqrArray[i].dist; minIdx = i; }
                 if (destSqrArray[i].dist > maxDist) { maxDist = destSqrArray[i].dist; maxIdx = i; }
             }
-            if (TL > 2) jez.trace(`${TAG} Max & Min Distances`, 
-                "minDist ==>",minDist, "minIdx  ==>", minIdx,
-                "maxDist ==>",maxDist, "maxIdx  ==>", maxIdx);
+            if (TL > 2) jez.trace(`${TAG} Max & Min Distances`,
+                "minDist ==>", minDist, "minIdx  ==>", minIdx,
+                "maxDist ==>", maxDist, "maxIdx  ==>", maxIdx);
             //---------------------------------------------------------------------------------------------------
             // Get index of maximum move in appropriate direction
             //
@@ -1162,7 +1164,7 @@ class jez {
             //---------------------------------------------------------------------------------------------------
             // If path is obstructed, return false
             //
-            if (!destSqrArray[index].clear) return(false)
+            if (!destSqrArray[index].clear) return (false)
             //---------------------------------------------------------------------------------------------------
             // Calculate and return the square corner
             //
@@ -1173,7 +1175,7 @@ class jez {
             squareCorner.y = destSqrArray[index].y - fudge;
             return squareCorner;
         }
-        function buildSquareArray(size, options={}) {
+        function buildSquareArray(size, options = {}) {
             const FUNCNAME = "buildSquareArray(size, options={})";
             const FNAME = FUNCNAME.split("(")[0]
             const TAG = `jez.lib ${FNAME} |`
@@ -3114,14 +3116,14 @@ class jez {
             // not just at the center of the token being checked
             //
             const WIDTH = token.w // The number of screen units wide the token is 
-            const TOKEN_SIZE = Math.round(GRID_DISTANCE*WIDTH/GRID_SIZE)
-            const FUDGE = (TOKEN_SIZE - 5)/2
-            if (TL>4) jez.trace(`${TAG} ${token.name} size is ${TOKEN_SIZE} feet, fudge is ${FUDGE}`)
+            const TOKEN_SIZE = Math.round(GRID_DISTANCE * WIDTH / GRID_SIZE)
+            const FUDGE = (TOKEN_SIZE - 5) / 2
+            if (TL > 4) jez.trace(`${TAG} ${token.name} size is ${TOKEN_SIZE} feet, fudge is ${FUDGE}`)
             //-------------------------------------------------------------------------------------------
             // Check distance
             //
             if (!(optVal.exclude === "none") && (origin.name === token.name)) return;   // Active token 
-            if (TL>4) jez.trace(`${TAG} ${token.name} distance is ${jez.getDistance5e(origin, token)}`)
+            if (TL > 4) jez.trace(`${TAG} ${token.name} distance is ${jez.getDistance5e(origin, token)}`)
             if (jez.getDistance5e(origin, token) > RANGE + FUDGE) return;               // Out of range 
             //-------------------------------------------------------------------------------------------
             // Maybe check if the target token has same disposition as the caster
@@ -3431,11 +3433,11 @@ class jez {
         if (PUSH_BACK && !saved) {
             let distance = 0
             // Values of 1,2,3 are fine, just use as count of spaces to push back
-            const ALLOWED_PUSH_BACK = [ 3, 2, 1, 0, -1, -2, -3 ]
+            const ALLOWED_PUSH_BACK = [3, 2, 1, 0, -1, -2, -3]
             if (ALLOWED_PUSH_BACK.includes(PUSH_BACK)) distance = PUSH_BACK
             // Other values should be distance in feet, so divide by 5 and make an integer
             else distance = Math.ceil(PUSH_BACK / 5)
-            if (TL > 2) jez.trace(`${TAG}`,`distance  ==>`,distance,'PUSH_BACK ==>',PUSH_BACK)
+            if (TL > 2) jez.trace(`${TAG}`, `distance  ==>`, distance, 'PUSH_BACK ==>', PUSH_BACK)
             if (!ALLOWED_PUSH_BACK.includes(distance))
                 return jez.badNews(`${TAG} Unsupported knockback distance, ${distance}`, "e")
             if (TL > 1) jez.trace(`${TAG} Pushback ${TARGET_TOKEN.name} ${distance} spaces from ${ACTIVE_TOKEN.name}`,
@@ -3450,7 +3452,7 @@ class jez {
         else msg = `<b>${TARGET_TOKEN.name}</b> failed to save versus <b>${RAY_NAME}</b>; rolling a 
         ${saveRoll} ${SAVE_TYPE.toUpperCase()} save vs ${SAVE_DC} DC. ${ceDesc}`
         if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
-        return(msg);
+        return (msg);
         /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
         * Run VFX from the aToken to the provded tToken, using the provided color.
         *
@@ -3719,6 +3721,54 @@ class jez {
             if (TL > 0) jez.trace(`${TAG} combatantId`, combatantId)
             return (combatantId)
         }
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Return the Item Use field from the passed item5e data object (yes, this is trivial)
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static getItemUses(item5e, options = {}) {
+        const FUNCNAME = "jez.getItemUses(options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.lib ${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+            "item5e  ==>", item5e, "options ==>", options);
+        //-----------------------------------------------------------------------------------------------
+        // Nab the data field and return it
+        //
+        if (TL > 2) jez.trace(`${TAG} item5e`, item5e)
+        const ITEM_USES = (item5e.data?.uses) ? item5e.data.uses : false
+        if (TL > 1) jez.trace(`${TAG} Item_Uses`, ITEM_USES)
+        return ITEM_USES;
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Return the Item Use field from the passed item5e data object (yes, this is trivial)
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async setItemUses(itemObj, USES, options = {}) {
+        const FUNCNAME = "jez.setItemUses(options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.lib ${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
+            "itemObj  ==>", itemObj, "USES", USES, "options ==>", options);
+        //-----------------------------------------------------------------------------------------------
+        // Did we receive an item5e?  if it wasn't, maybe it is one of the funky item obj data blocks 
+        // that we can convert to an item5e to update it.
+        //
+        let item5e = null
+        if (typeof (itemObj) === "object") {                    // Hopefully we have an Item5e
+            if (itemObj.constructor.name === "Item5e") item5e = itemObj
+            else {
+                item5e = await fromUuid(itemObj.uuid)
+                if (item5e.constructor.name !== "Item5e") return jez.badNews(`Item ${item5e?.name} is 
+                not an Item5e`, 'e')
+            }
+        }
+        //-----------------------------------------------------------------------------------------------
+        // Nab the data field and return it
+        //
+        await item5e.update({ "data.uses.value": USES });
     }
 } // END OF class jez
 Object.freeze(jez);
