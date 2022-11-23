@@ -82,7 +82,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
 * **[setCEDescAsGM()](#setcedescasgmsubject-effectname-description-optionobj--)** -- Wrapper for setCEDesc() adding RunAsGM.
-* **[setItemUses(item, uses, options = {})](#setitemusesitem-options--)** -- Sets the number of uses for specified item
+* **[setItemUses(item, uses, options = {})](#setitemusesitem-uses-options--)** -- Sets the number of uses for specified item
 * **[spawnAt(MINION, aToken, aActor, aItem, argObj)](#spawnatminion-atoken-aactor-aitem-argobj)** -- this one is ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.* **[suppressTokenMoldRenaming(\<delay = 500\>, \<{traceLvl:1}\>)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** -- Suppresses token-mold renaming for specified number of milliseconds
 * **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
 * **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
@@ -543,8 +543,8 @@ per: "day"
 value: 1
 ~~~
 
-See related function: **[setItemUses(item, uses, options = {})](#setitemusesitemuses-options--)**
-
+See related function: **[setItemUses(item, uses, options = {})](#setitemusesitem-uses-options--)**
+           
 [*Back to Functions list*](#functions-in-this-module)
 
 --- 
