@@ -3725,19 +3725,32 @@ class jez {
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * Return the Item Use field from the passed item5e data object (yes, this is trivial)
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static getItemUses(item5e, options = {}) {
+    static async getItemUses(itemObj, options = {}) {
         const FUNCNAME = "jez.getItemUses(options={})";
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.lib ${FNAME} |`
         const TL = options.traceLvl ?? 0
         if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
         if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
-            "item5e  ==>", item5e, "options ==>", options);
+            "itemObj ==>", itemObj, "options ==>", options);
+        //-----------------------------------------------------------------------------------------------
+        // Did we receive an item5e?  if it wasn't, maybe it is one of the funky item obj data blocks 
+        // that we can convert to an item5e to update it.
+        //
+        let item5e = null
+        if (typeof (itemObj) === "object") {                    // Hopefully we have an Item5e
+            if (itemObj.constructor.name === "Item5e") item5e = itemObj
+            else {
+                item5e = await fromUuid(itemObj.uuid)
+                if (item5e.constructor.name !== "Item5e") return jez.badNews(`Item ${item5e?.name} is 
+                not an Item5e`, 'e')
+            }
+        }
         //-----------------------------------------------------------------------------------------------
         // Nab the data field and return it
         //
         if (TL > 2) jez.trace(`${TAG} item5e`, item5e)
-        const ITEM_USES = (item5e.data?.uses) ? item5e.data.uses : false
+        const ITEM_USES = (item5e.data?.data?.uses) ? item5e.data.data.uses : false
         if (TL > 1) jez.trace(`${TAG} Item_Uses`, ITEM_USES)
         return ITEM_USES;
     }

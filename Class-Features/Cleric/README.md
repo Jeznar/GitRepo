@@ -30,6 +30,8 @@ Key operations:
 5. Decrement the resource
 6. Update the item card in chat
 
+As of version 0.2 this has been revised to work with NPCs, substituting item uses for Channel Divinity charges.
+
 ---
 
 ### Channel Divinity: Turn Undead
