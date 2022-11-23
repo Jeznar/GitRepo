@@ -2,11 +2,35 @@
 
 Standard Cleric
 
-* [Channel Divinity: Turn Undead](#Cleric/channel-divinity-turn-undead)
+* [Channel Divinity: True Strike](#channel-divinity-true-strike)
+* [Channel Divinity: Turn Undead](#channel-divinity-turn-undead)
 
 [*Back to All Class Features*](../README.md)
 
 ## Feature Notes
+
+### Channel Divinity: True Strike
+
+This is my import of Crymic's [Channel Divinity](https://www.patreon.com/posts/channel-divinity-71778568), dated 11/1/22.  I have added some trace statements, changed variable names to my convention and commented out what totally looks like unneeded code, presumably cruft from development.
+
+This ability hinges on the use of Midi [flags.midi-qol.onUseMacroName](https://gitlab.com/tposney/midi-qol#onuse-macroper-item-and-damage-bonus-macro-actor-special-traits-fields) feature to trigger the macro at the correct spot in the workflow. This is done with a DAE effect on the otherwise passive and empty (except the ItemMacro).  The effect is defined as:
+
+* **Attribute Key**: flags.midi-qol.onUseMacroName
+* **Change Mode**: custom
+* **Effect Value**: ItemMacro.Channel Divinity: Guided Strike,preCheckHits
+
+The effect value must match the name of the item defining tis ability so that the macro can be found to execute.
+
+Key operations:
+
+1. Make sure actor has required resource (Channel Divinity) defined with charges
+2. Make sure action triggered by an attack action and that it is being executed *preCheckHits*
+3. Pop a dialog to ask if ability should be used
+4. Add the 10 bonus to the attack roll before it is evaluated/announced
+5. Decrement the resource
+6. Update the item card in chat
+
+---
 
 ### Channel Divinity: Turn Undead
 

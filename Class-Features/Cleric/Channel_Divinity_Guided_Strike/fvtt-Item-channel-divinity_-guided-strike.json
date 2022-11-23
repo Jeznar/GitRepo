@@ -1,0 +1,181 @@
+{
+  "name": "Channel Divinity: Guided Strike",
+  "type": "feat",
+  "img": "Icons_JGB/Spells/0th_Level/Guided_Strike.png",
+  "data": {
+    "description": {
+      "value": "<p>You can use your <strong>Channel Divinity</strong> to strike with supernatural accuracy. When you make an attack roll, you can use your Channel Divinity to gain a <strong>+10 bonus</strong> to the roll.</p>\n<p>You make this choice after you see the roll, but before the DM says whether the attack hits or misses.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is automated with a dialog that pops on attacks if proper resource is available.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": 0
+  },
+  "effects": [
+    {
+      "_id": "ei0fqrpg557juauo",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro.Channel Divinity: Guided Strike,preCheckHits",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Spells/0th_Level/Guided_Strike.png",
+      "label": "Channel Divinity: Guided Strike",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "flags.midi-qol.onUseMacroName"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "fumbleThreshold": null,
+      "effectActivation": false,
+      "onUseMacroName": ""
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Channel Divinity: Guided Strike",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Channel_Divinity_Guided_Strike.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Imported from Crymic code, dated 11/1/22\n * \n * 11/01/22 0.1 Creation of Macro from Crymic's Code\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ \nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the VERSION number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL>1) jez.trace(`${TAG} === Starting ===`);\nif (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;         \nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); \nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor; \n//\n// Set the value for the Active Item (aItem)\nlet aItem;         \nif (args[0]?.item) aItem = args[0]?.item; \nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\nif (TL > 2) jez.trace(`${TAG} Active Item, ${aItem.name}`,aItem)\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst VERSION = Math.floor(game.VERSION);\nconst ACTOR_DATA = await aActor.getRollData();\nconst RESOURCE_NAME = \"Channel Divinity\";\nconst GUIDED = aActor.itemTypes.feat.find(item => [\"guided strike\"].some(x => \n    (item.name).toLowerCase().includes(x)));\nif (TL > 2) jez.trace(`${TAG} Macro Variables`,\n    \"VERSION ==>\", VERSION,\n    \"ACTOR_DATA ==>\", ACTOR_DATA,\n    \"RESOURCE_NAME ==>\", RESOURCE_NAME,\n    \"GUIDED ==>\", GUIDED)\n//---------------------------------------------------------------------------------------------------\n// Make sure we have guided strike\n//\nif (!GUIDED) return jez.badNews(`${TAG} Looking for an item named Guided Strike, cannot find it`,'e')\n//---------------------------------------------------------------------------------------------------\n// If triggered by something other than an attack (mwak, msak, rwak, rsak).  Does this ever happen?\n//\nif (![\"ak\"].some(i => (VERSION > 9 ?\n    aItem.system.actionType :\n    aItem.data.actionType).toLowerCase().includes(i))) {\n    if (VERSION > 9) jez.trace(`${TAG} Triggered by an ${aItem.system.actionType} action.`, 'i')\n    if (VERSION <= 9) jez.trace(`${TAG} Triggered by an ${aItem.data.actionType} action.`, 'i')\n    return {};\n}\n//---------------------------------------------------------------------------------------------------\n// Deal with casting resource\n//\nlet resourceList = [{ name: \"primary\" }, { name: \"secondary\" }, { name: \"tertiary\" }];\nlet resourceValues = Object.values(ACTOR_DATA.resources);\nlet resourceTable = mergeObject(resourceList, resourceValues);\nlet findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());\nif (!findResourceSlot) return jez.badNews(`${TAG} ${RESOURCE_NAME} Resources is missing on \n    ${aToken.name}, Add it.`);\nlet resourceSlot = findResourceSlot.name;\nlet curtRes = ACTOR_DATA.resources[resourceSlot].value;\nlet curtMax = ACTOR_DATA.resources[resourceSlot].max;\nif (curtRes < 1) return console.warn(GUIDED.name, curtRes, `out of resources`);\nif (TL > 2) jez.trace(`${TAG} Resource Values`,\n    \"resourceList ==>\", resourceList,\n    \"resourceTable ==>\", resourceTable,\n    \"findResourceSlot ==>\", findResourceSlot,\n    \"curtRes ==>\", curtRes,\n    \"curtMax ==>\", curtMax)\n//---------------------------------------------------------------------------------------------------\n// If Executing as a preCheckHits do the following...\n//\nif (LAST_ARG.macroPass === \"preCheckHits\") {\n    let workflow = await MidiQOL.Workflow.getWorkflow(LAST_ARG.uuid);\n    //-----------------------------------------------------------------------------------------------\n    // Pop and wait for a dialog to determine if this ability should be used.\n    //\n    let guidingStrike = await new Promise((resolve) => {\n        let the_content = `<p>Attack Roll Total: \n        <span style=\"font-weight:800;color: ${LAST_ARG.attackD20 === 1 ? \"red\" : \n            LAST_ARG.attackD20 === 20 ? \"green\" : \"black\"}\">\n        ${LAST_ARG.attackTotal}</span> <small>[ ${LAST_ARG.attackRoll.result} ]</small></p><p>\n        Do you wish to Channel Divinity to guide your attack? [${curtRes}/${curtMax}]</p>`;\n        new Dialog({\n            title: GUIDED.name,\n            content: the_content,\n            buttons: {\n                use: {\n                    label: ` Use Resource`, icon: `<img src=\"${VERSION > 9 ? GUIDED.img : GUIDED.data.img}\"\n                    width=\"30px\" height=\"30px\">`, callback: async () => resolve(true)\n                },\n                skip: {\n                    label: \" Normal Attack\", icon: `<img src=\"${aItem.img}\"\n                    width=\"30px\" height=\"30px\">`, callback: () => resolve(false)\n                }\n            },\n            default: \"Skip\"\n        }).render(true);\n    });\n    //-----------------------------------------------------------------------------------------------\n    // If dialog returned false, that's all just return\n    //\n    if (!guidingStrike) return {};  \n    //-----------------------------------------------------------------------------------------------\n    // Add the bonus (10) to the attack roll \n    //\n    // console.warn(GUIDED.name, `Original Attack Data =>`, `Attack Total:`, LAST_ARG.attackTotal);\n    let newAttackRoll = await new Roll(`${LAST_ARG.attackRoll.result} + 10`).evaluate({ async: true });\n    if (TL > 2) jez.trace(`${TAG} Attack Rolls, before and after`,\n        `Before ==>`, LAST_ARG.attackTotal,\n        `After ==>`, newAttackRoll._total)\n    // console.warn(GUIDED.name, `Adjusted Attack Data =>`, `Attack Total:`, newAttackRoll.total);\n    //-----------------------------------------------------------------------------------------------\n    // Manipulate the Fumble and Critical results (reason?)\n    //\n    // if (TL > 2) jez.trace(`${TAG} original workflow info: isFumble ${workflow.isFumble} workflow.isCritical ${workflow.isCritical}`)\n    // workflow.isFumble = false;\n    // workflow.isCritical = false;\n    // if (LAST_ARG.attackD20 === 1) {\n    //     workflow.isFumble = true\n    // } else if (LAST_ARG.attackD20 === 20) {\n    //     workflow.isCritical = true;\n    // } else {\n    //     workflow.attackRoll = newAttackRoll;\n    //     workflow.attackTotal = newAttackRoll.total;\n    // }\n    // if (TL > 2) jez.trace(`${TAG} final workflow info: isFumble ${workflow.isFumble} workflow.isCritical ${workflow.isCritical}`)\n    //-----------------------------------------------------------------------------------------------\n    // Adjust workflow attackroll html based on midi setting for rollAlternate\n    //\n    if (TL > 2) jez.trace(`${TAG} Perhaps adjust workflow.attackRollHTML based on \n        ${MidiQOL.configSettings().rollAlternate}`)\n    switch (MidiQOL.configSettings().rollAlternate) {\n        case \"formula\":\n        case \"formulaadv\": workflow.attackRollHTML = await newAttackRoll.render(\n            { template: \"modules/midi-qol/templates/rollAlternate.html\" }); break;\n        case \"adv\":\n        case \"off\":\n        default: workflow.attackRollHTML = await newAttackRoll.render(); // \"off\"\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Decrement our resource\n    //\n    let updates = {};\n    let resources = VERSION > 9 ? `system.resources.${resourceSlot}.value` :\n        `data.resources.${resourceSlot}.value`;\n    updates[resources] = curtRes - 1;\n    await aActor.update(updates);\n    await jez.wait(300);\n    //-----------------------------------------------------------------------------------------------\n    // Update the item card\n    //\n    let the_message = `<em>${GUIDED.name}.<br>${aToken.name} strikes with supernatural accuracy!</em>`;\n    let chatMessage = game.messages.get(LAST_ARG.itemCardId);\n    let content = await duplicate(VERSION > 9 ? chatMessage.content : chatMessage.data.content);\n    let searchString = /<div class=\"midi-qol-saves-display\">[\\s\\S]*<div class=\"end-midi-qol-saves-display\">/g;\n    let replaceString = `<div class=\"midi-qol-saves-display\"><div class=\"end-midi-qol-saves-display\"><hr>${the_message}`;\n    content = content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "favtab": {
+      "isFavorite": true
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    },
+    "core": {
+      "sourceId": "Item.65jRBa2ksWFbFFKB"
+    }
+  }
+}

@@ -30,7 +30,9 @@ Abilities shared across multiple classes.
 
 This is the standard [Cleric class](https://www.dndbeyond.com/classes/cleric).  I am only concerned with very basic abilities as I only have NPC clerics in my campaign.
 
+* [Channel Divinity: True Strike](Cleric#channel-divinity-true-strike)
 * [Channel Divinity: Turn Undead](Cleric#channel-divinity-turn-undead)
+
 
 [*Back to Classes with Features list*](#classes-with-features)
 

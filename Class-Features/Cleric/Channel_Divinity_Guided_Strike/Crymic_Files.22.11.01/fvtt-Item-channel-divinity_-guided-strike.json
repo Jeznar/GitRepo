@@ -1,0 +1,181 @@
+{
+  "name": "Channel Divinity: Guided Strike",
+  "type": "feat",
+  "img": "icons/skills/melee/strike-weapons-orange.webp",
+  "data": {
+    "description": {
+      "value": "<p>You can use your Channel Divinity to strike with supernatural accuracy. When you make an attack roll, you can use your Channel Divinity to gain a +10 bonus to the roll. You make this choice after you see the roll, but before the DM says whether the attack hits or misses.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "",
+      "cost": null,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [
+    {
+      "_id": "ei0fqrpg557juauo",
+      "changes": [
+        {
+          "key": "flags.midi-qol.onUseMacroName",
+          "mode": 0,
+          "value": "ItemMacro.Channel Divinity: Guided Strike,preCheckHits",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/skills/melee/strike-weapons-orange.webp",
+      "label": "Channel Divinity: Guided Strike",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": "flags.midi-qol.onUseMacroName"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "fumbleThreshold": null,
+      "effectActivation": false,
+      "onUseMacroName": ""
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Guided Strike",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nconst lastArg = args[args.length - 1];\nconst version = Math.floor(game.version);\nconst tokenD = canvas.tokens.get(lastArg.tokenId);\nconst actorD = tokenD.actor;\nconst actorData = await actorD.getRollData();\nconst guided = actorD.itemTypes.feat.find(item => [\"guided strike\"].some(x => (item.name).toLowerCase().includes(x)));\nconst itemD = lastArg.item;\nif (!guided) return ui.notifications.error(`Looking for an item named Guided Strike, cannot find it.`);\nconst target = canvas.tokens.get(lastArg.targets[0].id);\nif (![\"ak\"].some(i => (version > 9 ? itemD.system.actionType : itemD.data.actionType).toLowerCase().includes(i))) return {};\nconst resourceName = \"Channel Divinity\";\nlet resourceList = [{ name: \"primary\" }, { name: \"secondary\" }, { name: \"tertiary\" }];\nlet resourceValues = Object.values(actorData.resources);\nlet resourceTable = mergeObject(resourceList, resourceValues);\nlet findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === resourceName.toLowerCase());\nif (!findResourceSlot) return ui.notifications.error(`${resourceName} Resources is missing on ${tokenD.name}, Add it.`);\nlet resourceSlot = findResourceSlot.name;\nlet curtRes = actorData.resources[resourceSlot].value;\nlet curtMax = actorData.resources[resourceSlot].max;\nif (curtRes < 1) return console.warn(guided.name, curtRes, `out of resources`);\nif (lastArg.macroPass === \"preCheckHits\") {\n    let workflow = await MidiQOL.Workflow.getWorkflow(lastArg.uuid);\n    let guidingStrike = await new Promise((resolve) => {\n        let the_content = `<p>Attack Roll Total: <span style=\"font-weight:800;color: ${lastArg.attackD20 === 1 ? \"red\" : lastArg.attackD20 === 20 ? \"green\" : \"black\"}\">${lastArg.attackTotal}</span> <small>[ ${lastArg.attackRoll.result} ]</small></p><p>Do you wish to Channel Divinity to guide your attack? [${curtRes}/${curtMax}]</p>`;\n        new Dialog({\n            title: guided.name,\n            content: the_content,\n            buttons: {\n                use: {\n                    label: `Attack`, icon: `<img src=\"${version > 9 ? guided.img : guided.data.img}\" width=\"30px\" height=\"30px\">`, callback: async () => resolve(true)\n                },\n                skip: {\n                    label: \"Skip\", callback: () => resolve(false)\n                }\n            },\n            default: \"Skip\"\n        }).render(true);\n    });\n    if (!guidingStrike) return {};\n    console.warn(guided.name, `Original Attack Data =>`, `Attack Total:`, lastArg.attackTotal);\n    let newAttackRoll = await new Roll(`${lastArg.attackRoll.result} + 10`).evaluate({ async: true });\n    console.warn(guided.name, `Adjusted Attack Data =>`, `Attack Total:`, newAttackRoll.total);\n    workflow.isFumble = false;\n    workflow.isCritical = false;\n    if (lastArg.attackD20 === 1) {\n        workflow.isFumble = true\n    } else if (lastArg.attackD20 === 20) {\n        workflow.isCritical = true;\n    } else {\n        workflow.attackRoll = newAttackRoll;\n        workflow.attackTotal = newAttackRoll.total;\n    }\n    switch (MidiQOL.configSettings().rollAlternate) {\n        case \"formula\":\n        case \"formulaadv\": workflow.attackRollHTML = await newAttackRoll.render({ template: \"modules/midi-qol/templates/rollAlternate.html\" }); break;\n        case \"adv\":\n        case \"off\":\n        default: workflow.attackRollHTML = await newAttackRoll.render(); // \"off\"\n    }\n    let updates = {};\n    let resources = version > 9 ? `system.resources.${resourceSlot}.value` : `data.resources.${resourceSlot}.value`;\n    updates[resources] = curtRes - 1;\n    await actorD.update(updates);\n    await wait(300);\n    let the_message = `<em>${guided.name}.<br>${tokenD.name} strikes with supernatural accuracy!</em>`;\n    let chatMessage = game.messages.get(lastArg.itemCardId);\n    let content = await duplicate(version > 9 ? chatMessage.content : chatMessage.data.content);\n    let searchString = /<div class=\"midi-qol-saves-display\">[\\s\\S]*<div class=\"end-midi-qol-saves-display\">/g;\n    let replaceString = `<div class=\"midi-qol-saves-display\"><div class=\"end-midi-qol-saves-display\"><hr>${the_message}`;\n    content = content.replace(searchString, replaceString);\n    await chatMessage.update({ content: content });\n    await ui.chat.scrollBottom();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "favtab": {
+      "isFavorite": true
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    },
+    "core": {
+      "sourceId": "Item.65jRBa2ksWFbFFKB"
+    }
+  }
+}
