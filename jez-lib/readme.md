@@ -44,6 +44,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
+* **[getItemUses(item, options = {})](#getitemusesitem-options--)** -- Returns item use data object
 * **[getMacroRunAsGM(macroName)](#getmacrorunasgmmacroname)** -- Obtains a run as GM macro or issues error
 * **[getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
 * **[getRange(itemD, allowedUnits)](#getrangeaitem-allowedunits)** -- Returns the maximum range for specified item.
@@ -81,6 +82,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
 * **[setCEDescAsGM()](#setcedescasgmsubject-effectname-description-optionobj--)** -- Wrapper for setCEDesc() adding RunAsGM.
+* **[setItemUses(item, uses, options = {})](#setitemusesitem-options--)** -- Sets the number of uses for specified item
 * **[spawnAt(MINION, aToken, aActor, aItem, argObj)](#spawnatminion-atoken-aactor-aitem-argobj)** -- this one is ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.* **[suppressTokenMoldRenaming(\<delay = 500\>, \<{traceLvl:1}\>)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** -- Suppresses token-mold renaming for specified number of milliseconds
 * **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
 * **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
@@ -94,36 +96,10 @@ The functions currently included in this module are (all need to be proceeded by
 * **[warpCrossHairs(...)](#warpcrosshairs)** -- Put a range display on warpgate summons 
 * **[wait(ms)](#waitms)** -- Waits for specified milliseconds.
 * **[writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** -- Worker function for **trc** and **log**.
-* **[getItemUses(item, options = {})](#getitemusesitem-options--)** -- Returns item use data object
-* **[setItemUses(item, uses, options = {})](#getitemusesitem-options--)** -- Sets the number of uses for specified item
+
+
                                 
 More about many of these in the following sections. 
-
----
-
-### getItemUses(item, options = {})
-
-Returns the item use data object for specified item.  Typical returned value:
-
-~~~javascript
-max: 2
-per: "day"
-value: 1
-~~~
-
-See related function:
-
-[*Back to Functions list*](#functions-in-this-module)
-
----
-
-### setItemUses(item, uses, options = {})
-
-Updates the value field of uses within the passed item to be uses.
-
-See related function:
-
-[*Back to Functions list*](#functions-in-this-module)
 
 ---
 
@@ -552,6 +528,22 @@ Related Function: **[setCEDesc()](#setcedescsubject-effectname-description-optio
 This function returns the distance between two placeable entities (e.g. tokens) in the D&D 5E alternate rule set where diagonal movement is charged as 5-10-5-10-5 feet of movement.  The returned value will be evenly divisible by 5.
 
 I snarfed the logic from Vance Cole's lovely Distance macro, which can be found at: [macros/distance.js](https://github.com/VanceCole/macros/blob/master/distance.js) 
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getItemUses(item, options = {})
+
+Returns the item use data object for specified item.  Typical returned value:
+
+~~~javascript
+max: 2
+per: "day"
+value: 1
+~~~
+
+See related function: **[setItemUses(item, uses, options = {})](#setitemusesitem-options--)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -1765,6 +1757,16 @@ return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 
 ![Summon_Portal.gif](images/Summon_Portal.gif)
 </details>
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### setItemUses(item, uses, options = {})
+
+Updates the value field of uses within the passed item to be uses.
+
+See related function: **[getItemUses(item, options = {})](#getitemusesitem-options--)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
