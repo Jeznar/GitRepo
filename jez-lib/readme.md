@@ -543,7 +543,7 @@ per: "day"
 value: 1
 ~~~
 
-See related function: **[setItemUses(item, uses, options = {})](#setitemusesitem-options--)**
+See related function: **[setItemUses(item, uses, options = {})](#setitemusesitemuses-options--)**
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -1766,7 +1766,7 @@ return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 
 Updates the value field of uses within the passed item to be uses.
 
-See related function: **[getItemUses(item, options = {})](#getitemusesitem-options--)**
+See related function: **[getItemUses(item, options = {})](#getitemusesitem-options--)**     
 
 [*Back to Functions list*](#functions-in-this-module)
 
