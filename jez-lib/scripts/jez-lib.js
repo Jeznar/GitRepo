@@ -1798,10 +1798,18 @@ class jez {
                 default: badness = 3
             }
         }
-        console.log(`BadNews | ${message}`)
-        if (badness < 2) ui.notifications.info(`INFO: ${message}`)
-        else if (badness === 2) ui.notifications.warn(`WARN: ${message}`)
-        else ui.notifications.error(`ERROR: ${message}`)
+        if (badness < 2) {
+            ui.notifications.info(`INFO: ${message}`)
+            console.log(`jez.BadNews | ${message}`)
+        }
+        else if (badness === 2) {
+            ui.notifications.warn(`WARN: ${message}`)
+            console.warn(`jez.BadNews | ${message}`)
+        }
+        else {
+            ui.notifications.error(`ERROR: ${message}`)
+            console.error(`jez.BadNews | ${message}`)
+        }
         return (false)
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0

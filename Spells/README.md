@@ -220,6 +220,7 @@ Since there should eventually be an enormous number of spells in this repo, this
 * [Magnificent Mansion](7th_Level#magnificent-mansion)
 * [Mirage Arcane](#mirage_arcane)
 * [Plane Shift (Self Only)](7th_Level#plane-shift-self-only)
+* [Prismatic Spray](7th_Level#prismatic-spray)
 * [Teleport](7th_Level#teleport)
 
 [*Back to Spell Level List*](#spells)

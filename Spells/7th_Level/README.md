@@ -7,6 +7,7 @@ Spells will have notes on elements that I think are interesting.  In some cases 
 * [Magnificent Mansion](#magnificent-mansion)
 * [Mirage Arcane](#mirage_arcane)
 * [Plane Shift](#plane-shift-self-only)
+* [Prismatic Spray](#prismatic-spray)
 * [Teleport](#teleport)
 
 [*Back to List of All Spells*](../README.md)
@@ -39,9 +40,17 @@ This spell is handled manually by the GM/Players.  The only change is an update 
 
 ### Plane Shift (Self Only)
 
-This is a self-only variation of the RAW spell. It is simply a VFX and hiding of the casting token.
+This is a self-only variation of the RAW spell. It is simply a VFX and hiding of the casting token. Including 7 different beam types and VFX's that adjust their playrate so they all take equal amounts of time.
 
 ![Plane_Shift/Plane_Shift.gif](Plane_Shift/Plane_Shift.gif)
+
+[*Back to 7th Level Spell List*](#7th-level-spells)
+
+---
+
+### Prismatic Spray
+
+This spell includes an onUse ItemMacro macro that implements most aspects of the RAW spell.
 
 [*Back to 7th Level Spell List*](#7th-level-spells)
 
