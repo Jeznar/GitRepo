@@ -54,11 +54,11 @@ let rayArray = []
 const DELAY = 1500  // Time between ray attacks
 const SAVE_DC = aActor.data.data.attributes.spelldc;
 const GAME_RND = game.combat ? game.combat.round : 0;
-const DICE_DELAY = 500
+const DICE_DELAY = 250
 const BEAM_NAME_ARRAY = ["Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet", "Special"]
 const BEAM_TYPE_COUNT = BEAM_NAME_ARRAY.length
 const VFX_PATH = 'modules/jb2a_patreon/Library/2nd_Level/Scorching_Ray'
-const VFX_DURATION = 10  // Duration of VFX effects in seconds
+const VFX_DURATION = 12  // Duration of VFX effects in seconds
 const BEAM_VFX = [
     `${VFX_PATH}/ScorchingRay_01_Regular_Red_30ft_1600x400.webm`,
     `${VFX_PATH}/ScorchingRay_01_Regular_Orange_30ft_1600x400.webm`,
@@ -413,11 +413,12 @@ async function runVFX(aToken, tToken, VFX_FILENAME, options = {}) {
     const DURATION = TEXTURE.baseTexture.resource.source.duration;
     if (TL > 2) jez.trace(`${DURATION} second duration for ${FILE_NAME}`)
     const PLAY_BACK_RATE = DURATION / VFX_DURATION // Find rate needed for desired VFX_DURATION
+    if (TL > 1) jez.trace(`${TAG} DURATION ${DURATION} / VFX_DURATION ${VFX_DURATION} = 
+        PLAY_BACK_RATE ${PLAY_BACK_RATE}`)
     //-----------------------------------------------------------------------------------------------
     // Launch the VFX
     new Sequence()
         .effect()
-        //.file("jb2a.scorching_ray.01.rainbow02")
         .file(VFX_FILENAME)
         .template({ startPoint: 100, endPoint: 100 }) // Adjusts the start/end points just a bit
         .playbackRate(PLAY_BACK_RATE)

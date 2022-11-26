@@ -4,11 +4,11 @@
   "img": "Icons_JGB/Items/Rod_of_the_Pact_Keeper.png",
   "data": {
     "description": {
-      "value": "<p><em>Rod, uncommon (+1), rare (+2), or very rare (+3) (requires attunement by a warlock)</em></p>\n<p>While holding this rod, you gain a bonus to spell attack rolls and to the saving throw DCs of your warlock spells. The bonus is determined by the rod’s rarity.</p>\n<p>In addition, you can regain one warlock spell slot as an action while holding the rod. You can’t use this property again until you finish a long rest.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>The rod can be used to consume its daily charge, but the warlock's player needs to manually return the spell slot.</p>",
+      "value": "<p><em>Rod, uncommon (+1), rare (+2), or very rare (+3) (requires attunement by a warlock)</em></p>\n<p>While holding this rod, you gain a <strong>bonus to spell attack rolls</strong> and to the <strong>saving throw DCs</strong> of your warlock spells. The bonus is determined by the rod&rsquo;s rarity.</p>\n<p>In addition, you can <strong>regain one warlock spell slot </strong>as an action while holding the rod. You can&rsquo;t use this property again until you finish a long rest.</p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>The rod can be used to consume its daily charge it will then increase the available pact spell slots up to maximum.&nbsp; If already at maximum, it will refund its own item use count.</p>\n<p>The bonus is applied to all spells, so be careful you multi-classers.</p>",
       "chat": "",
       "unidentified": ""
     },
-    "source": "",
+    "source": "Dungeon Master's Guide pg 197",
     "quantity": 1,
     "weight": 0,
     "price": 0,
@@ -97,7 +97,7 @@
         {
           "key": "data.bonuses.spell.dc",
           "mode": 2,
-          "value": "+1+",
+          "value": "+1",
           "priority": "20"
         }
       ],
@@ -113,7 +113,9 @@
           "stackable": "none",
           "macroRepeat": "none",
           "specialDuration": [],
-          "transfer": true
+          "transfer": true,
+          "selfTarget": false,
+          "durationExpression": ""
         },
         "dnd5e-helpers": {
           "rest-effect": "Ignore"
@@ -128,17 +130,20 @@
           "height": false,
           "hidden": false,
           "hostile": false,
-          "onlyOnce": false
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
         }
       },
-      "tint": null,
+      "tint": "",
       "selectedKey": [
         "data.bonuses.spell.attack",
         "data.bonuses.spell.dc"
       ]
     }
   ],
-  "sort": 0,
   "flags": {
     "magicitems": {
       "enabled": false,
@@ -155,16 +160,36 @@
       "sorting": "l"
     },
     "midi-qol": {
-      "onUseMacroName": "Run_RuneVFX_onSelf"
+      "onUseMacroName": "[postActiveEffects]Run_RuneVFX_onSelf,[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "core": {
       "sourceId": "Item.Fwe12YnnppxgyiIa"
     },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Rod of the Pact Keeper +1",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Rod_of_the_Pact_Keeper.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Implements the once per long rest ability of the Rod.\n * \n *   In addition, you can regain 1 warlock spell slot as an action while holding the rod. You can't \n *   use this property again until you finish a long rest.\n * \n * Specifically it acts on the Pact spell count.\n * \n * 11/26/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.trace(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\n\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-----------------------------------------------------------------------------------------------\n    // Obtain our actors current and maxium pact slots.\n    //\n    let pactSlotsMax = aActor.data.data?.spells?.pact?.max\n    let pactSlotsCur = aActor.data.data?.spells?.pact?.value\n    if (TL > 1) jez.trace(`${TAG} Initial Pact Slots`,\n        `pactSlotsMax`, pactSlotsMax, \"pactSlotsCur\", pactSlotsCur)\n    //-----------------------------------------------------------------------------------------------\n    // If we don't have slots, post angry message and return\n    //\n    if (!pactSlotsMax) {\n        let rc = await refundUsage(aItem, { traceLvl: TL })\n        if (rc) postResults(`${aToken.name} doesn't have pact spell slots.<br><br>Refunded \n            usage of ${aItem.name}.`)\n        else postResults(`${aToken.name} doesn't have pact spell slots.<br><br>Could not refund \n            usage of ${aItem.name}.`)\n        return jez.badNews(`${TAG} ${aToken.name} does not have Pact spell slots.`, 'e')\n    }\n    //-----------------------------------------------------------------------------------------------\n    // If we are already full, post appropriate message\n    //\n    if (pactSlotsCur >= pactSlotsMax) {\n        let rc = await refundUsage(aItem, { traceLvl: TL })\n        if (rc) postResults(`${aToken.name} is already at max pact spell slots.<br><br>Refunded \n            usage of ${aItem.name}.`)\n        else postResults(`${aToken.name} is already at max pact spell slots.<br><br>Could not refund \n            usage of ${aItem.name}.`)\n        return jez.badNews(`${TAG} ${aToken.name} already has max ${pactSlotsCur} spell slots.`, 'i')\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Increment the slot count and update actor\n    //\n    let rc = await aActor.update({ 'data.spells.pact.value': pactSlotsCur + 1 });\n    if (TL > 1) jez.trace(`${TAG} return from update call`, rc)\n    //-----------------------------------------------------------------------------------------------\n    // Say goodbye!\n    //\n    msg = `${aToken.name} has had a pact spell slot restored.`\n    postResults(msg)\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Attempt to refund daily usage on the item, returning true on success, false on failure\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function refundUsage(itemObj, options = {}) {\n    const FUNCNAME = \"refundUsage(item, options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"itemObj\", itemObj, \n        \"options\", options);\n    //-----------------------------------------------------------------------------------------------\n    // Did we receive an item5e?  if it wasn't, maybe it is one of the funky item obj data blocks \n    // that we can convert to an item5e to update it.\n    //\n    let item5e = null\n    if (typeof (itemObj) === \"object\") {                    // Hopefully we have an Item5e\n        if (itemObj.constructor.name === \"Item5e\") item5e = itemObj\n        else {\n            item5e = await fromUuid(itemObj.uuid)\n            if (item5e.constructor.name !== \"Item5e\") return jez.badNews(`Item ${item5e?.name} is \n                not an Item5e`, 'e')\n        }\n    }\n    //-----------------------------------------------------------------------------------------------\n    // Grab the item use data, if any\n    //\n    if (TL > 1) jez.trace(`${TAG} Extract use data from item`,item5e)\n    let usesMax = item5e.data.data?.uses?.max\n    let usesVal = item5e.data.data?.uses?.value\n    if (TL > 1) jez.trace(`${TAG} Daily Item Use Info`,\"usesMax\",usesMax,\"usesVal\",usesVal)\n    if (!usesMax) return(false)             // Do we have usage slots defined?\n    if (usesVal >= usesMax) return(false)   // Are we at less than maximum slots\n    //-----------------------------------------------------------------------------------------------\n    // Increment uses value and update the item\n    //\n    let itemUpdate = { 'data.uses.value': ++usesVal }\n    let rc = await item5e.update(itemUpdate)\n    if (TL > 1) jez.trace(`${TAG} Returned from item update`,rc)\n    return(true)\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
     }
   }
 }

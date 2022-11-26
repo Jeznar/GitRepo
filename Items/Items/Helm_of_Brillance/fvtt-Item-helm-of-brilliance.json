@@ -1,0 +1,324 @@
+{
+  "name": "Helm of Brilliance",
+  "type": "equipment",
+  "img": "Icons_JGB/Items/Helm_of_Brilliance.png",
+  "data": {
+    "description": {
+      "value": "<p><em>Wondrous item, very rare (requires attunement)</em></p>\n<p>This dazzling helm is set with 1d10 diamonds, 2d10 rubies, 3d10 fire opals, and 4d10 opals. Any gem pried from the helm crumbles to dust. When all the gems are removed or destroyed, the helm loses its magic.</p>\n<p>See <a href=\"https://www.dndbeyond.com/sources/dmg/magic-items-e-n#HelmofBrilliance\" target=\"_blank\" rel=\"noopener\">D&amp;D Beyond</a> for more information.</p>\n<hr />\n<p><strong>Gem Count</strong> (for manual tracking)</p>\n<ul>\n<li>Opals (daylight):&nbsp;</li>\n<li>Fire Opals (fireball, blazing weapon):</li>\n<li>Diamonds (prismatic spray, light &amp; undead aura):</li>\n<li>Ruby (wall of fire, fire resistance):</li>\n</ul>\n<hr />\n<p><strong>FoundryVTT</strong>: Gem counts to be tracked manually.&nbsp; Diamond and Fire Opal Effects handled manually as well.</p>\n<p>If the helm has<strong> no more Rubys</strong>, suspend or remove the <em>Helm of Brillince: Ruby</em> DAE effect.</p>\n<p>If there are&nbsp;<strong style=\"font-family: var(--font-primary); box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">no more&nbsp;<span style=\"color: #000000; font-size: 14px;\">Diamonds</span>&nbsp;</strong><span style=\"font-family: var(--font-primary); box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">or</span><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\"> </span><strong style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">undead within 30 feet,</strong><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\"> the </span><em style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\">Helm of Brilliance: Undead Near (Light)</em><span style=\"font-family: var(--font-primary); font-size: var(--font-size-14);\"> DAE effect should be suspended to remove the light it creates.</span></p>\n<p><strong>Add the at-will spell</strong>: @Item[5aSmr3EllXKID8yu]{Blazing Weapon} to spell book to implement the blazing weapon element of this item. Delete the spell if there are no more&nbsp;<strong style=\"font-family: var(--font-primary); box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">Fire Opals.</strong></p>\n<p>Incoming fire damage not automated:&nbsp;Roll a d20 if you are wearing the helm and take <strong>fire damage as a result of a failed save against a spell</strong>. On a roll of 1, the helm emits beams of light from its remaining gems. Each creature within 60 feet of the helm other than you must succeed on a <strong>DC 17 Dex Save </strong>or be struck by a beam, taking radiant damage equal to the number of gems in the helm. The helm and its gems are then destroyed</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 2,
+    "equipped": false,
+    "rarity": "veryRare",
+    "identified": true,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": null,
+      "type": "clothing",
+      "dex": null
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "baseItem": "",
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": true
+  },
+  "effects": [
+    {
+      "_id": "Toa4pwTGZ0TsHGMM",
+      "changes": [
+        {
+          "key": "flags.midi-qol.DR.fire",
+          "mode": 2,
+          "value": "1",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Items/Helm_of_Brilliance.png",
+      "label": "Helm of Brilliance: Ruby",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true,
+          "selfTarget": false,
+          "durationExpression": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "displayTemp": false
+        },
+        "core": {
+          "statusId": ""
+        }
+      },
+      "tint": null,
+      "selectedKey": "flags.midi-qol.DR.fire"
+    },
+    {
+      "_id": "am8zv02a3drse8wj",
+      "changes": [
+        {
+          "key": "flags.midi-qol.OverTime",
+          "mode": 5,
+          "value": "turn=start,\nlabel=Wounded,\ndamageRoll=1d6,\ndamageType=radiant",
+          "priority": "50"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Items/Helm_of_Brilliance.png",
+      "label": "Helm of Brilliance: Undead Damage",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": true,
+          "aura": "All",
+          "radius": 30,
+          "alignment": "",
+          "type": "undead",
+          "ignoreSelf": true,
+          "height": false,
+          "hidden": false,
+          "displayTemp": true,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "#007e9e",
+      "selectedKey": "flags.midi-qol.OverTime"
+    },
+    {
+      "_id": "wza60w01keqtyzph",
+      "changes": [
+        {
+          "key": "ATL.light.dim",
+          "mode": 2,
+          "value": "30",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Items/Helm_of_Brilliance.png",
+      "label": "Helm of Brilliance: Undead Near (Light)",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "#016698",
+      "selectedKey": "ATL.light.dim"
+    }
+  ],
+  "flags": {
+    "magicitems": {
+      "enabled": true,
+      "equipped": true,
+      "attuned": true,
+      "charges": "40",
+      "chargeType": "c2",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "a",
+      "spells": {
+        "0": {
+          "id": "zRMlWOFY36wZYPNF",
+          "name": "Daylight",
+          "pack": "world",
+          "img": "Icons_JGB/Spells/3rd_Level/Daylight.png",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "1",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": true,
+          "dc": "18",
+          "uses": 6
+        },
+        "1": {
+          "id": "bOJw97SYiWlMxR1A",
+          "name": "Fireball",
+          "pack": "world",
+          "img": "Icons_JGB/Spells/3rd_Level/Fireball/fireball-orange-2.jpg",
+          "baseLevel": "3",
+          "level": "3",
+          "consumption": "1",
+          "upcast": "3",
+          "upcastCost": "1",
+          "flatDc": true,
+          "dc": "18",
+          "uses": 9
+        },
+        "2": {
+          "id": "Rmgs0dNHBEWEuYh6",
+          "name": "Prismatic Spray",
+          "pack": "world",
+          "img": "icons/magic/light/projectile-beams-salvo-yellow.webp",
+          "baseLevel": "7",
+          "level": "7",
+          "consumption": "1",
+          "upcast": "7",
+          "upcastCost": "1",
+          "flatDc": true,
+          "dc": "18",
+          "uses": 9
+        },
+        "3": {
+          "id": "enyGm115JdXliVrH",
+          "name": "Wall of Fire (ASE)",
+          "pack": "world",
+          "img": "/systems/dnd5e/icons/spells/fog-orange-3.jpg",
+          "baseLevel": "4",
+          "level": "4",
+          "consumption": "1",
+          "upcast": "4",
+          "upcastCost": "1",
+          "flatDc": true,
+          "dc": "18",
+          "uses": 10
+        }
+      },
+      "destroyCheck": "d1",
+      "destroyType": "dt1",
+      "feats": {},
+      "tables": {},
+      "uses": 10
+    },
+    "core": {
+      "sourceId": "Item.FnXs2ehVxiF3KxAw"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
