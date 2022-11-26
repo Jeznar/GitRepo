@@ -409,6 +409,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.26 Rod of the Pact Keeper revised to grant additional pact spell slot and do some other checks.
 
+22.11.26 Changes to jez.pickRadioListArray copying those in jez.pickCheckListArray to allow it to be effectively await'ed (synchronicity).
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

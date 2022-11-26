@@ -1170,7 +1170,9 @@ The parameter expected by this function are:
 1. **pickCallBack** --  a function to be used as a callback that will receive selection,
 1. **queryOptions** -- An array of strings to be offered as choices in the dialog.
 
-Here is an example use:
+On 11/26/22 updated to allow it to be awaited and altered to return the selected item to calling function.
+
+<details> <summary>Here is an example use.</summary>
 
 ~~~javascript
 async function pickFlavorCallBack(selection) { ... }
@@ -1188,8 +1190,22 @@ for (let i = 0; i < aActor.items.contents.length; i++) {
 
 jez.pickRadioListArray(queryTitle, queryText, pickFlavorCallBack, actorItems.sort());
 ~~~
+</details>
+
+<details> <summary>Sample Dialog from above.</summary>
 
 ![pickRadioListArray_example](images/pickRadioListArray_example.png)
+</details>
+
+<details> <summary>A second example.</summary>
+
+~~~javascript
+const queryTitle = "Select Item in Question"
+const queryText = "Pick one from the list"
+let rc = await jez.pickRadioListArray(queryTitle, queryText, pickRadioCallBack, actorItems.sort());
+jez.log(` ==> Done!`,rc);
+~~~
+</details>
 
 Refer to [pickFromListArray(...)](#pickfromlistarrayquerytitle-querytext-pickcallback-queryoptions), the previous function, for an example of a call back function and explanation of return values, which are the same.
 

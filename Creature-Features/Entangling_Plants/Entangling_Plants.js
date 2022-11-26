@@ -1,4 +1,4 @@
-const MACRONAME = "Entangling_Plants"
+const MACRONAME = "Entangling_Plants.0.3.js"
 /*****************************************************************************************
  * Vine Blight's Entangling Plant ability
  *
@@ -17,31 +17,42 @@ const MACRONAME = "Entangling_Plants"
  * 
  * 02/14/22 0.1 Creation of Macro
  * 05/03/22 0.2 Updated for FoundryVTT 9.x
+ * 11/26/22 0.3 Updated to better manage effect duration and use (*0 is key change)
+ *              `data.attributes.movement.all`, mode: jez.CUSTOM, value: '*0'
  *****************************************************************************************/
-// COOL-THING: Manages two VFX sets, one on targets, one on caster
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
+ const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 0;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //---------------------------------------------------------------------------------------------------
+ if (TL>1) jez.trace(`${TAG} === Starting ===`);
+ if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ const LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+ //---------------------------------------------------------------------------------------------------
+ // Set the value for the Active Token (aToken)
+ let aToken;         
+ if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+ else aToken = game.actors.get(LAST_ARG.tokenId);
+ let aActor = aToken.actor; 
+ //
+ // Set the value for the Active Item (aItem)
+ let aItem;         
+ if (args[0]?.item) aItem = args[0]?.item; 
+ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+ //---------------------------------------------------------------------------------------------------
+ // Set Macro specific globals
+ //
 const SAVE_TYPE = "str"
 const SAVE_DC = args[0]?.tag === "OnUse" ? aActor.data.data.attributes.spelldc : args[2] // Second arg should be save DC
-let msg = "";
 let immuneNames = [];
 let failSaves = []  // Array to contain the tokens that failed their saving throws
 let madeSaves = []  // Array to contain the tokens that made their saving throws
 let madeNames = ""
 let failNames = ""
-const DEBUFF_NAME = "Restrained by Entangling Plants" // aItem.name || "Nature's Wraith";
+const FLAG_NAME = `${MACRO}-Restrained-UUIDs-${aToken.id}`
+const DEBUFF_NAME = `Restrained by Entangling Plants - ${aToken.id}` 
 const DEBUFF_ICON = "modules/combat-utility-belt/icons/restrained.svg"
 const GAME_RND = game.combat ? game.combat.round : 0;
-
 const VFX_TARGET_LOOP = "modules/jb2a_patreon/Library/1st_Level/Entangle/Entangle_01_Green_400x400.webm"
 const VFX_TARGET_OPACITY = 0.8;
 const VFX_TARGET_SCALE = 0.4;
@@ -55,10 +66,10 @@ const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName("Restrained").id}]
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                   // DAE removal
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
+if (args[0] === "off") await doOff({traceLvl:TL});                   // DAE removal
+if (args[0] === "on") await doOn({traceLvl:TL});                   // DAE removal
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
+if (args[0] === "each") doEach({traceLvl:TL});					    // DAE removal
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
 /***************************************************************************************************
@@ -68,14 +79,44 @@ return;
 /***************************************************************************************************
  * Perform the code that runs when this macro is removed by DAE, set Off
  ***************************************************************************************************/
-async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+async function doOff(options={}) {
+    const FUNCNAME = "doOff(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    //-----------------------------------------------------------------------------------------------
     Sequencer.EffectManager.endEffects({ name: `${MACRO}-${aToken.id}`, object: aToken });
-    //----------------------------------------------------------------------------------
-    // If this is invoked on a target (not origin token) reture without more VFX
+    //-----------------------------------------------------------------------------------------------
+    // If we are running on the originating actor, clean up any tokens affected
     //
-    const ORIGIN_ARRAY = LAST_ARG.origin.split(".")    
+    if (LAST_ARG.origin.split('.')[3] === aToken.id) {
+        if (TL > 1) jez.trace(`${TAG} Running on origin token`)
+        //-------------------------------------------------------------------------------------------
+        // Grab the list of restrained actors and release them
+        //
+        const RESTRAINED_EFFECT_FLAG = await DAE.getFlag(aToken.actor, FLAG_NAME);
+        const RESTRAINED_EFFECT_ARRAY = RESTRAINED_EFFECT_FLAG.split(" ")
+        await DAE.unsetFlag(aToken.actor, FLAG_NAME);
+        for (let i = 0; i < RESTRAINED_EFFECT_ARRAY.length; i++) {
+            if (TL > 1) jez.trace(`${TAG} Attempt to release ${RESTRAINED_EFFECT_ARRAY[i]}`)
+            let token = await fromUuid(RESTRAINED_EFFECT_ARRAY[i])
+            let debuffEffect = await token._actor.effects.find(i => i.data.label === DEBUFF_NAME);
+            if (TL > 1) jez.trace(`${TAG} debuffEffect ${debuffEffect.name}`, debuffEffect)
+            if (debuffEffect) {
+                jez.log(`${token.name} ${DEBUFF_NAME} found on ${token.name}, removing.`)
+                let rtn = await MidiQOL.socket().executeAsGM("removeEffects",
+                    {actorUuid:token._actor.uuid, effects: [debuffEffect.id] });
+                jez.log(`${token.name} Result of removal`, rtn)
+            } else jez.log(`${token.name} ${DEBUFF_NAME} missing on ${token.name}`)
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+    // If this is invoked on a target (not origin token) return without more VFX
+    //
+    const ORIGIN_ARRAY = LAST_ARG.origin.split(".")   
+    if (TL>1) jez.trace(`${TAG} ORIGIN_ARRAY`,ORIGIN_ARRAY) 
     if (aToken.id !== ORIGIN_ARRAY[3]) return;  // Don't apply the VFX to target tokens
     new Sequence()
     .effect()
@@ -168,6 +209,10 @@ async function doOnUse() {
     let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
+    // Clear previously restrained Tokens
+    //
+    await DAE.unsetFlag(aToken.actor, FLAG_NAME);
+    //----------------------------------------------------------------------------------------------
     // Grab the max range of this item
     //
     const ALLOWED_UNITS = ["", "ft", "any"];
@@ -215,8 +260,16 @@ async function doOnUse() {
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
 async function pickCheckCallBack(selection) {
+    const FUNCNAME = "doOn(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    //-----------------------------------------------------------------------------------------------
+    // Function specific values
+    //
     let tokenId = null
     let tokensIdsToSave = []
+    let restrainedUuids = ""
     //----------------------------------------------------------------------------------------------
     // Build an array of the token IDs that correspond with the tokens that are going to be forced
     // to roll saving throws. The names embedded in the selection array are followed by  a tokenId 
@@ -249,6 +302,9 @@ async function pickCheckCallBack(selection) {
             failNames += `<b>${token5esToSave[i].name}</b>: ${save.total} (${save._formula})<br>`
             runVfxToken(token5esToSave[i])
             applyRestrained(token5esToSave[i])
+            if (TL>1) jez.trace(`${TAG} ${i} restrained: ${token5esToSave[i].name}`,token5esToSave[i].document.uuid)
+            if (!restrainedUuids) restrainedUuids = token5esToSave[i].document.uuid
+            else restrainedUuids += ' ' + token5esToSave[i].document.uuid
         } else {
             jez.log(`${token5esToSave[i].name} saved: ${SAVE_TYPE}${save.total} vs ${SAVE_DC}`)
             madeSaves.push(token5esToSave[i])
@@ -280,6 +336,10 @@ async function pickCheckCallBack(selection) {
             token: aToken
         })
     }
+    //-----------------------------------------------------------------------------------------
+    // Add the restrained UUID information to flag on actong token
+    //
+    await DAE.setFlag(aToken.actor, FLAG_NAME, restrainedUuids);
 }
 
 /***************************************************************************************************
@@ -289,40 +349,36 @@ async function applyRestrained(token5e) {
     //----------------------------------------------------------------------------------------------
     // Apply new Restrained effect
     //
+    let ceDesc = `${aToken.name} is Restrained by entangling roots, may use action to make a ${SAVE_DC}DC STR check to end.` 
     let restrainedEffect = [{
         label: DEBUFF_NAME,
         icon: DEBUFF_ICON,
-        // origin: aActor.uuid,
         origin: LAST_ARG.uuid,
-        flags: { dae: { itemData: aItem, macroRepeat: "startEveryTurn", token: token5e.uuid } },
+        flags: { 
+            dae: { itemData: aItem, macroRepeat: "startEveryTurn", token: token5e.uuid },
+            convenientDescription: ceDesc 
+         },
         disabled: false,
         duration: { rounds: 10, startRound: GAME_RND },
         changes: [
-            { key: `flags.VariantEncumbrance.speed`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.walk`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.swim`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.fly`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.climb`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `data.attributes.movement.burrow`, mode: DOWNGRADE, value: 1, priority: 20 },
-            { key: `flags.midi-qol.disadvantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },
-            { key: `flags.midi-qol.grants.advantage.attack.all`, mode: OVERRIDE, value: 1, priority: 20 },
-            { key: `flags.midi-qol.disadvantage.ability.save.dex`, mode: OVERRIDE, value: 1, priority: 20 },
-            { key: "macro.itemMacro", mode: CUSTOM, value: `@token ${SAVE_DC}`, priority: 20 }
-            // The value needs to have the id of the partner token and the name of the effect
-            // { key: `macro.itemMacro`, mode: CUSTOM, value: `${aToken.id} ${GRAPPLING_COND}`, priority: 20 },
+            { key: `data.attributes.movement.all`, mode: jez.CUSTOM, value: '*0', priority: 20 },
+            { key: `flags.midi-qol.disadvantage.attack.all`, mode: jez.OVERRIDE, value: 1, priority: 20 },
+            { key: `flags.midi-qol.grants.advantage.attack.all`, mode: jez.OVERRIDE, value: 1, priority: 20 },
+            { key: `flags.midi-qol.disadvantage.ability.save.dex`, mode: jez.OVERRIDE, value: 1, priority: 20 },
+            { key: "macro.itemMacro", mode: jez.CUSTOM, value: `@token ${SAVE_DC}`, priority: 20 }
         ]
     }]
     //----------------------------------------------------------------------------------------------
     // Check to see if already restrained by this ability, if so, remove it before applying again
     //
-    jez.log(`XXX${token5e.name} token5e.actor.effects`, token5e.actor.effects)
+    jez.log(`${token5e.name} token5e.actor.effects`, token5e.actor.effects)
     let debuffEffect = await token5e.actor.effects.find(i => i.data.label === DEBUFF_NAME);
     //let debuffEffect = token5e.actor.effects.find(i => i.value.data.label === DEBUFF_NAME);
     if (debuffEffect) {
-        jez.log(`XXX${token5e.name} ${DEBUFF_NAME} found on ${token5e.name}, removing existing copy.`)
+        jez.log(`${token5e.name} ${DEBUFF_NAME} found on ${token5e.name}, removing existing copy.`)
         let rtn = await MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:token5e.actor.uuid, effects: [debuffEffect.id] });
-        jez.log(`XXX${token5e.name} Result of removal`, rtn)
-    } else jez.log(`XXX${token5e.name} ${DEBUFF_NAME} missing on ${token5e.name}`)
+        jez.log(`${token5e.name} Result of removal`, rtn)
+    } else jez.log(`${token5e.name} ${DEBUFF_NAME} missing on ${token5e.name}`)
 
     //----------------------------------------------------------------------------------------------
     // Apply the fresh debuff

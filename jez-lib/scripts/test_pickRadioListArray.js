@@ -6,20 +6,20 @@ const MACRONAME = "test_pickRadioListArray"
  * of all the actor's Weapons and Equipment to choose from. 
  * 
  *******************************************************************************************/
- const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
- jez.log(`------------- Starting ${MACRONAME} --------------------`)
- for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
- const lastArg = args[args.length - 1];
- let aActor;         // Acting actor, creature that invoked the macro
- let aToken;         // Acting token, token for creature that invoked the macro
- let aItem;          // Active Item information, item invoking this macro
- if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
- if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
- if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
- jez.log("------- Global Values Set -------",
-     `Active Token (aToken) ${aToken?.name}`, aToken,
-     `Active Actor (aActor) ${aActor?.name}`, aActor,
-     `Active Item (aItem) ${aItem?.name}`, aItem)
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+jez.log(`------------- Starting ${MACRONAME} --------------------`)
+for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const lastArg = args[args.length - 1];
+let aActor;         // Acting actor, creature that invoked the macro
+let aToken;         // Acting token, token for creature that invoked the macro
+let aItem;          // Active Item information, item invoking this macro
+if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
+if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
+if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
+jez.log("------- Global Values Set -------",
+    `Active Token (aToken) ${aToken?.name}`, aToken,
+    `Active Actor (aActor) ${aActor?.name}`, aActor,
+    `Active Item (aItem) ${aItem?.name}`, aItem)
 //----------------------------------------------------------------------------------
 //
 let actorItems = [];
@@ -40,7 +40,9 @@ for (let i = 0; i < actorItems.length; i++) {
 //
 const queryTitle = "Select Item in Question"
 const queryText = "Pick one from the list"
-jez.pickRadioListArray(queryTitle, queryText, pickRadioCallBack, actorItems.sort());
+let rc = await jez.pickRadioListArray(queryTitle, queryText, pickRadioCallBack, actorItems.sort());
+// let rc = await pickRadioListArray(queryTitle, queryText, pickRadioCallBack, actorItems.sort());
+jez.log(` ==> Done!`,rc);
 return
 //----------------------------------------------------------------------------------
 //

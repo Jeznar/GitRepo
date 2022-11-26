@@ -356,7 +356,7 @@ class jez {
     }
     /***************************************************************************************
      * Create and process check box dialog, passing array onto specified callback function
-     * 11/09/22 Added code to allow this function to be aeait'ed (synchronicity!)
+     * 11/09/22 Added code to allow this function to be await'ed (synchronicity!)
      * 
      * Font Awesome Icons: https://fontawesome.com/icons
      * 
@@ -515,6 +515,9 @@ class jez {
     }
     /***************************************************************************************
      * Create and process radio button dialog, passing it onto specified callback function
+     * 11/28/22 Added code to allow this function to be await'ed (synchronicity!)
+     * 
+     * Returns the selection
      * 
      * const queryTitle = "Select Item in Question"
      * const queryText = "Pick one from following list"
@@ -527,6 +530,7 @@ class jez {
      *   pickRadioListArray(queryTitle, queryText, pickRadioCallBack, actorItems.sort());
      ***************************************************************************************/
     static async pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions) {
+        // async function pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions) {
         const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
         // jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
         // `queryTitle`, queryTitle,
@@ -542,51 +546,54 @@ class jez {
         }
         if (!queryTitle || !queryText || !queryOptions) {
             msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
-           but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
+               but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             ui.notifications.error(msg);
             console.log(msg);
             return
         }
         let template = `
-    <div>
-    <label>${queryText}</label>
-    <div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">
-    `   // Back tick on its on line to make the console output better formatted
+        <div>
+        <label>${queryText}</label>
+        <div class="form-group" style="font-size: 14px; padding: 5px; border: 2px solid silver; margin: 5px;">
+        `   // Back tick on its on line to make the console output better formatted
         for (let option of queryOptions) {
             template += `<input type="radio" id="${option}" name="selectedLine" value="${option}"> <label for="${option}">${option}</label><br>
-    `   // Back tick on its on line to make the console output better formatted
+        `   // Back tick on its on line to make the console output better formatted
         }
         template += `</div></div>`
         // jez.log(template)
-
-        new Dialog({
-            title: queryTitle,
-            content: template,
-            buttons: {
-                ok: {
-                    icon: '<i class="fas fa-check"></i>',
-                    label: 'OK',
-                    callback: async (html) => {
-                        // jez.log("html contents", html)
-                        const SELECTED_OPTION = html.find("[name=selectedLine]:checked").val();
-                        // jez.log("Radio Button Selection", SELECTED_OPTION)
-                        // jez.log('selected option', SELECTED_OPTION)
-                        await pickCallBack(SELECTED_OPTION) // Trying await before the call back -Jez
+        //------------------------------------------------------------------------------------
+        //
+        const myPromise = await new Promise((myResolve, myReject) => {  // Added to allow synchronicity
+            new Dialog({
+                title: queryTitle,
+                content: template,
+                buttons: {
+                    ok: {
+                        icon: '<i class="fas fa-check"></i>',
+                        label: 'OK',
+                        callback: async (html) => {
+                            // jez.log("html contents", html)
+                            const SELECTED_OPTION = html.find("[name=selectedLine]:checked").val();
+                            // jez.log("Radio Button Selection", SELECTED_OPTION)
+                            // jez.log('selected option', SELECTED_OPTION)
+                            await pickCallBack(SELECTED_OPTION) // Changed for synchronicity
+                            myResolve(SELECTED_OPTION)              // Added for synchronicity
+                        },
+                    },
+                    cancel: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Cancel',
+                        callback: async (html) => {
+                            await pickCallBack(null)        // Changed for synchronicity
+                            myResolve("Picked cancel")      // Added for synchronicity
+                        },
                     },
                 },
-                cancel: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: 'Cancel',
-                    callback: async (html) => {
-                        // jez.log('canceled')
-                        pickCallBack(null)
-                    },
-                },
-            },
-            default: 'cancel',
-        }).render(true)
-        // jez.log(`--------Finished ${FUNCNAME}----------------------------------------`)
-        return;
+                default: 'cancel',
+            }).render(true)
+        })                                                  // Added for synchronicity
+        return (myPromise);                                 // changed for synchronicity
     }
     /***************************************************************************************************
      * getSize of passed token and return an object with information about that token's size.   
