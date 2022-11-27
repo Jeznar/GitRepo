@@ -413,6 +413,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.27 Rewrote Summon_Fey.0.2.js to make it work without Automated Evocations which has been deactivated. It does all the steps of RAW including putting the summoned Fey into combat at correct spot.
 
+22.11.27 Lesser Restoration moved into my format, now uses a radio dialog and finds effects that contain the substrings, not just exact matches
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
