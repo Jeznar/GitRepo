@@ -368,9 +368,11 @@ This spell does a couple of interesting things.
 
 ### Summon Fey
 
-Spell imported from earlier automation, does a bunch of things I have forgotten -- so no useful info here.
+Rewritten 11/26/22 to use jez.spawnAt(...) (warpgate / sequencer wrapper library function) to do the heavy lifting in place of Automated Evocations which has been deactivated.  
 
 <details> <summary>Spell in use.</summary>
+
+The videos show the AE based function.  The new one is somewhat different.
 
 ![Fuming.gif](Summon_Fey/Summon_Fey-Fuming.gif)
 

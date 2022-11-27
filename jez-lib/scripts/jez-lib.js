@@ -3646,7 +3646,7 @@ class jez {
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.lib ${FNAME} |`
         const TL = options.traceLvl ?? 0
-        const FORMULA = options.formula ?? null  // Used to force a roll result, e.g. 20
+        let formula = options.formula ?? null  // Used to force a roll result, e.g. 20
         if (TL === 2) jez.trace(`${TAG} --- Starting --- ${FNAME} ---`);
         if (TL > 2) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
             "SUBJECT ==>", SUBJECT, "options ==>", options);
@@ -3659,6 +3659,10 @@ class jez {
         //
         const GM_ROLL_INITIATIVE = jez.getMacroRunAsGM("RollInitiativeAsGM")
         if (!GM_ROLL_INITIATIVE) { return false }
+        //----------------------------------------------------------------------------------------------
+        // If input Formula is a number, flip it to a string
+        //
+        if(typeof formula === 'number' ) formula = formula.toString();
         //----------------------------------------------------------------------------------------------
         // Validate SUBJECT received, it can be a single or array of the following types:
         // Token5e data object, Token Document obj, token.document.uuid, token.id (all must be same type)
@@ -3674,7 +3678,7 @@ class jez {
         //----------------------------------------------------------------------------------------------
         // Make call to roll initiatives
         //
-        await GM_ROLL_INITIATIVE.execute(combatantIds, FORMULA)
+        await GM_ROLL_INITIATIVE.execute(combatantIds, formula)
         //----------------------------------------------------------------------------------------------
         // Process a single entity, may need to call for each element of an array
         //
