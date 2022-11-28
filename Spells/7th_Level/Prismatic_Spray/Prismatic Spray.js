@@ -1,4 +1,4 @@
-const MACRONAME = "Prismatic_Spray.0.1.js"
+const MACRONAME = "Prismatic_Spray.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * This macro implements Prismatic Spray.
  *
@@ -26,6 +26,7 @@ const MACRONAME = "Prismatic_Spray.0.1.js"
  *   8. Special. The target is struck by two rays. Roll twice more, rerolling any 8.
  *
  * 11/24/22 0.1 Creation of Macro from Gauth_Eye_Rays.0.2.js
+ * 11/29/22 0.2 Add tracking of savng throws vs beam 6 & 7
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -54,7 +55,7 @@ let rayArray = []
 const DELAY = 1500  // Time between ray attacks
 const SAVE_DC = aActor.data.data.attributes.spelldc;
 const GAME_RND = game.combat ? game.combat.round : 0;
-const DICE_DELAY = 250
+const DICE_DELAY = 400
 const BEAM_NAME_ARRAY = ["Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet", "Special"]
 const BEAM_TYPE_COUNT = BEAM_NAME_ARRAY.length
 const VFX_PATH = 'modules/jb2a_patreon/Library/2nd_Level/Scorching_Ray'
@@ -75,6 +76,7 @@ const JRNL_PETRIFIED = `@JournalEntry[${game.journal.getName("Restrained").id}]{
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use
+if (args[0] === "off") await doOff({traceLvl:5});                   // DAE removal
 if (TL > 1) jez.trace(`=== Finished === ${MACRONAME} ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
@@ -193,6 +195,7 @@ async function fireBeam(aToken, tToken, beamIdx, options = {}) {
     if (TL > 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 2) jez.trace(`${TAG} Parameters`, "aToken ", aToken, "tToken ", tToken,
         "beamIdx", beamIdx, "options", options)
+    await jez.wait(DICE_DELAY)
     //-----------------------------------------------------------------------------------------------
     // Set Function Variables
     //
@@ -312,9 +315,11 @@ async function zapTarget(ACTIVE_TOKEN, TARGET_TOKEN, SAVED, DAMAGE_TYPE, BEAM_ID
     // Actually do something, to tokens that failed.
     //
     if (!SAVED) {
-        let overTimeValue = `turn=end,label=Indigo Paralysis,saveDC=${SAVE_DC},saveAbility=con`
+        const LABEL = `Indigo Beam from ${aToken.id} ${GAME_RND}`
+        // let overTimeValue = `turn=end,label=Indigo Paralysis,saveDC=${SAVE_DC},saveAbility=con,macro=Prismatic_Spray_Helper`
+        let overTimeValue = `turn=end,label=${LABEL},saveDC=${SAVE_DC},saveAbility=con,saveRemove=false,macro=Prismatic_Spray_Helper`
         let effectData = {
-            label: `Affected by Indigo Beam`,
+            label: LABEL,
             icon: aItem.img,
             origin: LAST_ARG.uuid,
             disabled: false,
@@ -326,11 +331,12 @@ async function zapTarget(ACTIVE_TOKEN, TARGET_TOKEN, SAVED, DAMAGE_TYPE, BEAM_ID
             },
             changes: [
                 { key: `macro.CE`, mode: jez.ADD, value: "Paralyzed", priority: 20 },
-                { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeValue, priority: 20 }
+                { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeValue, priority: 20 },
+                { key: "macro.itemMacro", mode: jez.CUSTOM, value: LABEL, priority: 20 }
             ]
         };
+        await jez.wait(DICE_DELAY)
         await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:TARGET_TOKEN.actor.uuid, effects: [effectData] });
-
     }
     //-----------------------------------------------------------------------------------------------
     // Post an appropriate message
@@ -360,9 +366,12 @@ async function zapTarget(ACTIVE_TOKEN, TARGET_TOKEN, SAVED, DAMAGE_TYPE, BEAM_ID
     // Actually do something, to tokens that failed.
     //
     if (!SAVED) {
-        let overTimeValue = `turn=end,label=Violet Blinded,saveDC=${SAVE_DC},saveAbility=wis`
+        const LABEL = `Violet Beam from ${aToken.id} ${GAME_RND}`
+        // let overTimeValue = `turn=end,label=Violet Blinded,saveDC=${SAVE_DC},saveAbility=wis,macro=Prismatic_Spray_Helper` 
+        let overTimeValue = `turn=end,label=${LABEL},saveDC=${SAVE_DC},saveAbility=wis,saveRemove=false,macro=Prismatic_Spray_Helper` 
         let effectData = {
-            label: `Affected by Violet Beam`,
+            // label: `Affected by Violet Beam`,
+            label: LABEL,
             icon: aItem.img,
             origin: LAST_ARG.uuid,
             disabled: false,
@@ -374,9 +383,11 @@ async function zapTarget(ACTIVE_TOKEN, TARGET_TOKEN, SAVED, DAMAGE_TYPE, BEAM_ID
             },
             changes: [
                 { key: `macro.CE`, mode: jez.ADD, value: "Blinded", priority: 20 },
-                { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeValue, priority: 20 }
+                { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeValue, priority: 20 },
+                { key: "macro.itemMacro", mode: jez.CUSTOM, value: LABEL, priority: 20 }
             ]
         };
+        await jez.wait(DICE_DELAY)
         await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:TARGET_TOKEN.actor.uuid, effects: [effectData] });
 
     }
@@ -411,7 +422,7 @@ async function runVFX(aToken, tToken, VFX_FILENAME, options = {}) {
     //
     const TEXTURE = await loadTexture(VFX_FILENAME);
     const DURATION = TEXTURE.baseTexture.resource.source.duration;
-    if (TL > 2) jez.trace(`${DURATION} second duration for ${FILE_NAME}`)
+    if (TL > 2) jez.trace(`${DURATION} second duration for ${VFX_FILENAME}`)
     const PLAY_BACK_RATE = DURATION / VFX_DURATION // Find rate needed for desired VFX_DURATION
     if (TL > 1) jez.trace(`${TAG} DURATION ${DURATION} / VFX_DURATION ${VFX_DURATION} = 
         PLAY_BACK_RATE ${PLAY_BACK_RATE}`)
@@ -425,4 +436,39 @@ async function runVFX(aToken, tToken, VFX_FILENAME, options = {}) {
         .atLocation(aToken)
         .stretchTo(tToken)
         .play()
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Clean up the flag used to store information for beam indigo (6) & violet (7)
+ * 
+ * Args should contain data like:
+ *   args[0] : off                  // Has to be "off" for this function to be called
+ *   args[1] : Violet               // Color of beam, either Indigo or Violet
+ *   args[2] : Beam                 // Always the word "Beam"
+ *   args[3] : from                 // Always the word "from"
+ *   args[4] : TCma6bPCS0YnA6Kc     // Token ID of origin actor's token
+ *   args[5] : 16                   // Gane Round spell effect started
+ *   args[6] : {diff: true, render: true, action: 'delete', embedded: {...}}, combat-utility-belt: {...},...}
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ async function doOff(options={}) {
+    const FUNCNAME = "doOff(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    //-----------------------------------------------------------------------------------------------
+    // Build the name of flag
+    //
+    const FLAG_NAME = `${args[1]}.${args[4]}.${args[5]}` // Indigo.TCma6bPCS0YnA6Kc.9
+    if (TL>2) jez.trace(`${TAG} | FLAG_NAME`, FLAG_NAME)
+    //-----------------------------------------------------------------------------------------------
+    // Attempt to unset the flag
+    //
+    if (TL>2) jez.trace(`${TAG} | aActor`, aActor)
+    await DAE.unsetFlag(aActor, FLAG_NAME)
+    //-----------------------------------------------------------------------------------------------
+    // 
+    //
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
+    return;
 }

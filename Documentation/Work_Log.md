@@ -421,6 +421,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.28 Created Octopus Tentacle using cut down Grapple to apply the grappled/grappling and create an escape action.
 
+22.11.28 Updated Prismatic spray to track the 3 saves before 3 failures aspects of Indigo and Violet Beams
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
