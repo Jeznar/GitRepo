@@ -72,7 +72,7 @@ Imported from older work without further investigation or documentation.
 
 ### Lay on Hands
 
-Imported from older work without further investigation or documentation.
+Rewritten to use item's Limited Uses as a fall back to a PC resource, enabling the use of this feature for NPCs
 
 [*Back to top of document*](#paladin)
 

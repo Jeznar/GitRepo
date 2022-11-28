@@ -102,7 +102,7 @@ async function doOn(options={}) {
     if (TL===1) jez.trace(`${TAG} --- Starting ---`);
     if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
     await jez.wait(100)
-    //----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
     if (!await preCheck()) return(false);
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;

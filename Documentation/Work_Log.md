@@ -415,6 +415,10 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.11.27 Lesser Restoration moved into my format, now uses a radio dialog and finds effects that contain the substrings, not just exact matches
 
+22.11.27 Rewrite of Lay On Hands to use item's Limited Uses as a fall back to a PC resource, enabling the use of this feature for NPCs
+
+22.11.28 Created Octopus's Ink Cloud to place and manage an overhead tile representing the ink cloud.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
