@@ -77,7 +77,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[pickRadioListArray(queryTitle, queryText, pickCallBack, queryOptions)](#pickRadioListArrayquerytitle-querytext-pickcallback-queryoptions)** -- Pops a selection dialog offering a radio button list.  User's selection is passed to the specified callback function.
 * **[postMessage(msgParm)](#postmessagemsgparm)** -- Posts a new message to the **Chat Log**
 * **[randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
-* **[refundSpellSlot(token5e, SPELL_LEVEL, options = {})](#refundspellslottoken5e-spelllevel-options--)** -- Refunds a spell slot
+* **[refundSpellSlot(token5e, SPELL_LEVEL, options = {})](#refundspellslottoken5e-spell_level-options--)** -- Refunds a spell slot
 * **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring)** -- Returns updated string and count of replacements in an object.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
