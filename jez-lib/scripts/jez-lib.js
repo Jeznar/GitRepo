@@ -3662,7 +3662,7 @@ class jez {
         //----------------------------------------------------------------------------------------------
         // If input Formula is a number, flip it to a string
         //
-        if(typeof formula === 'number' ) formula = formula.toString();
+        if (typeof formula === 'number') formula = formula.toString();
         //----------------------------------------------------------------------------------------------
         // Validate SUBJECT received, it can be a single or array of the following types:
         // Token5e data object, Token Document obj, token.document.uuid, token.id (all must be same type)
@@ -3801,6 +3801,92 @@ class jez {
         // Nab the data field and return it
         //
         await item5e.update({ "data.uses.value": USES });
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Refund a spellSlot and post appropriate message.  This function recognizes warlocks and uses their
+     * pact slots instead of normal spell slots.  
+     * 
+     * It checks to make sure that the refunded slot will not put the actor above their max, but it can
+     * refund a spell slot that wasn't actually used.  Unless specified, it posts a chat card explaining
+     * what it has done.
+     * 
+     * Inputs:
+     * ------
+     * token5e: Token5e data object whose actor should receive the refund
+     * SPELL_LEVEL: level of spell to refund.  Often this should be: args[args.length - 1].spellLevel
+     * options: data object with three potential members:
+     *  1. traceLvl: Trace level for execution, typically TL or 0, defaults to 0
+     *  2. quiet: Boolean that supresses the chatcard when true, defaults to false
+     *  3. spellName: Name of spell for chatcard, defaults to blank 
+     * 
+     * Sample Call
+     * -----------
+     * const LAST_ARG = args[args.length - 1]
+     * jez.refundSpellSlot(aActor, LAST_ARG.spellLevel, {traceLvl:TL, quiet:false, spellName:aItem.name})
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async refundSpellSlot(token5e, SPELL_LEVEL, options = {}) {
+        const FUNCNAME = "doEach(options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.lib ${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        const QUIET = options.quiet ?? false
+        const SPELL_NAME = options.spellName ?? ""
+        const VERSION = Math.floor(game.VERSION);
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"token5e",token5e,
+            "SPELL_LEVEL",SPELL_LEVEL, "options", options);
+        //-----------------------------------------------------------------------------------------------
+        // Define some values
+        //
+        let actor5e = token5e.actor
+        const ACTOR_DATA = actor5e.data.data
+        const CASTING_STAT = ACTOR_DATA.attributes.spellcasting
+        if (TL > 2) jez.trace(`${TAG} Actor Data`, `ACTOR_DATA`, ACTOR_DATA, `CASTING_STAT`, CASTING_STAT)
+        let spellUpdate = {};
+        let spellSlot;
+        let spellSlotMsg = ""
+        //-----------------------------------------------------------------------------------------------
+        // Handle warlocks a bit special
+        //
+        if ((actor5e._classes?.warlock) && (CASTING_STAT === "cha")) {
+            if (TL > 1) jez.trace(`${TAG} Processing as warlock`)
+            spellSlot = "pact";
+            spellSlotMsg = "Pact"
+        }
+        else {
+            if (TL > 1) jez.trace(`${TAG} Processing as not warlock`)
+            spellSlot = "spell" + SPELL_LEVEL;
+            spellSlotMsg = `Level ${SPELL_LEVEL}`
+        }
+        //-----------------------------------------------------------------------------------------------
+        // Make sure we are not already at max spell slots. If we are just return.
+        //
+        const MAX_SLOTS = ACTOR_DATA.spells[spellSlot].max
+        if (TL > 2) jez.trace(`${TAG} Max slots for ${spellSlot}`, MAX_SLOTS)
+        if (ACTOR_DATA.spells[spellSlot].value >= ACTOR_DATA.spells[spellSlot].max)
+            return false
+        //-----------------------------------------------------------------------------------------------
+        // Get spell slot data
+        //
+        if (TL > 2) jez.trace(`${TAG} spellSlot`, spellSlot)
+        let currentSlot = ACTOR_DATA.spells[spellSlot].value;
+        if (TL > 2) jez.trace(`${TAG} currentSlot`, currentSlot)
+        spellUpdate[`${VERSION > 9 ? "system" : "data"}.spells.${spellSlot}.value`] = currentSlot + 1;
+        await actor5e.update(spellUpdate);
+        //-----------------------------------------------------------------------------------------------
+        // Build and post message if not in QUIET mode
+        //
+        const TITLE = (SPELL_NAME) ? `Refunded ${SPELL_NAME} Slot` : 'Refunded Spell Slot'
+        let msg = `Refunded <b>${spellSlotMsg}</b> spell slot to <b>${token5e.name}</b>. If spell was cast 
+    without using a spell slot, please manually correct available spells.`
+        if (!QUIET) {
+            if (TL > 1) jez.trace(`${TAG} ${msg}`)
+            jez.postMessage({
+                color: jez.randomDarkColor(), fSize: 14, icon: 'Icons_JGB/Misc/Jez.png',
+                msg: msg, title: TITLE, token: null
+            })
+        } else if (TL > 1) jez.trace(`${TAG} Quiet!`, msg)
+        return true
     }
 } // END OF class jez
 Object.freeze(jez);

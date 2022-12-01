@@ -1,0 +1,229 @@
+{
+  "name": "Spirit Shroud",
+  "type": "spell",
+  "img": "icons/magic/death/undead-ghost-scream-teal.webp",
+  "data": {
+    "description": {
+      "value": "<p>You call forth spirits of the dead, which flit around you for the spell’s duration. The spirits are intangible and invulnerable.</p>\n<p>Until the spell ends, any attack you make deals 1d8 extra damage when you hit a creature within 10 feet of you. This damage is radiant, necrotic, or cold (your choice when you cast the spell). Any creature that takes this damage can’t regain hit points until the start of your next turn.</p>\n<p>In addition, any creature of your choice that you can see that starts its turn within 10 feet of you has its speed reduced by 10 feet until the start of your next turn.</p>\n<p><em><strong>At Higher Levels.</strong></em> When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d8 for every two slot levels above 3rd.</p>",
+      "chat": "<p>You call forth spirits of the dead, which flit around you for the spell’s duration. The spirits are intangible and invulnerable.</p>\n<p>Until the spell ends, any attack you make deals 1d8 extra damage when you hit a creature within 10 feet of you. This damage is radiant, necrotic, or cold (your choice when you cast the spell). Any creature that takes this damage can’t regain hit points until the start of your next turn.</p>\n<p>In addition, any creature of your choice that you can see that starts its turn within 10 feet of you has its speed reduced by 10 feet until the start of your next turn.</p>\n<p><em><strong>At Higher Levels.</strong></em> When you cast this spell using a spell slot of 4th level or higher, the damage increases by 1d8 for every two slot levels above 3rd.</p>",
+      "unidentified": ""
+    },
+    "source": "Tasha’s Cauldron of Everything pg 108",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "nec",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": false
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "1d8"
+    }
+  },
+  "effects": [
+    {
+      "_id": "fqbk2lwjgjzzzt07",
+      "changes": [
+        {
+          "key": "data.attributes.movement.all",
+          "mode": 0,
+          "value": "-10",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "icons/magic/death/undead-ghost-scream-teal.webp",
+      "label": "Spirit Shroud",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "noneName",
+          "durationExpression": "",
+          "macroRepeat": "startEveryTurn",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": true,
+          "aura": "Enemy",
+          "radius": 10,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": true,
+          "height": true,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": true,
+          "onlyOnce": true
+        }
+      },
+      "tint": "",
+      "selectedKey": "data.attributes.movement.all"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "id": 5833696,
+      "definitionId": 718581,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 67,
+          "pageNumber": 108,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage",
+        "Debuff"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Compendium.world.ddb-darklands-spells.mVAN9sYvlP0LgXqX"
+    },
+    "enhanced-terrain-layer": {
+      "multiple": 1,
+      "min": 0,
+      "max": 0,
+      "environment": ""
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false,
+      "fumbleThreshold": null
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "favtab": {
+      "isFavorite": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Spirit Shroud",
+          "type": "script",
+          "author": "Tyd5yiqWrRZMvG30",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "//######################################\n//## https://www.patreon.com/crymic\n//#####################################\nasync function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }\nconst lastArg = args[args.length - 1];\nconst version = Math.floor(game.version);\nlet tactor;\nif (lastArg.tokenId) tactor = canvas.tokens.get(lastArg.tokenId).actor;\nelse tactor = game.actors.get(lastArg.actorId);\nconst tokenD = canvas.tokens.get(lastArg.tokenId);\nconst itemD = lastArg.item;\nconst gameRound = game.combat ? game.combat.round : 0;\n\nif (lastArg.tag === \"OnUse\") {\n    const spellLevel = Math.floor((lastArg.spellLevel - 1) / 2);\n    const title = `Choose your Damage Type:`;\n    const menuOptions = {};\n    menuOptions[\"buttons\"] = [\n        { label: \"Select\", value: true },\n        { label: \"Cancel\", value: false }\n    ];\n    menuOptions[\"inputs\"] = [\n        { type: \"radio\", label: \"Cold Damage\", value: \"cold\", options: \"damageType\" },\n        { type: \"radio\", label: \"Necrotic Damage\", value: \"necrotic\", options: \"damageType\" },\n        { type: \"radio\", label: \"Radiant Damage\", value: \"radiant\", options: \"damageType\" }\n    ];\n    let choices = await warpgate.menu(menuOptions, { title, options: { height: \"100%\" } });\n    let spellButtons = choices.buttons;\n    if (!spellButtons) {\n        let effect = tactor.effects.find(i => (version > 9 ? i.label : i.data.label) === \"Concentrating\");\n        if (effect) await MidiQOL.socket().executeAsGM(\"removeEffects\", { actorUuid: tactor.uuid, effects: [effect.id] });\n        let spellUpdate = {};\n        let spellSlot;\n        if ((actorData.classes?.warlock) && (castingStat === \"cha\")) spellSlot = \"pact\";\n        else spellSlot = \"spell\" + lastArg.spellLevel;\n        let currentSlot = actorData.spells[spellSlot].value;\n        spellUpdate[`${version > 9 ? \"system\" : \"data\"}.spells.${spellSlot}.value`] = currentSlot + 1;\n        await tactor.update(spellUpdate);\n    }\n    let damageChoice = choices.inputs.filter(Boolean)[0];\n    let effectData = [{\n        changes: [\n            { key: \"flags.dnd5e.DamageBonusMacro\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: `ItemMacro.${itemD.name}`, priority: 20 },\n            { key: \"flags.midi-qol.spiritShroud.name\", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: itemD.name, priority: 20 },\n            { key: \"flags.midi-qol.spiritShroud.uuid\", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: lastArg.uuid, priority: 20 },\n            { key: \"flags.midi-qol.spiritShroud.level\", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: spellLevel, priority: 20 },\n            { key: \"flags.midi-qol.spiritShroud.type\", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: damageChoice, priority: 20 }\n        ],\n        origin: lastArg.uuid,\n        disabled: false,\n        duration: { rounds: 10, startRound: gameRound, startTime: game.time.worldTime },\n        flags: {\n            dae: { itemData: itemD }\n        },\n        label: itemD.name\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tactor.uuid, effects: effectData });\n} else if (args[0].tag === \"DamageBonus\") {\n    let targetList = lastArg.hitTargets.map(i => i.id);\n    let findTarget = MidiQOL.findNearby(null, tokenD, 10, null).find(i => targetList.includes(i.id));\n    if (!findTarget) return {};\n    let itemList = await tactor.itemTypes.weapon.concat(tactor.itemTypes.spell);\n    let attackList = itemList.reduce((list, item) => {\n        if (![\"ak\"].some(i => (version > 9 ? item.system.actionType : item.data.data.actionType).toLowerCase().includes(i))) return list;\n        else list.push(item.name.toLowerCase());\n        return list;\n    }, []);\n    let legalAttack = attackList.some(i => (itemD.name.toLowerCase()).toLowerCase().includes(i));\n    if (!legalAttack) return {};\n    const spellName = getProperty((version > 9 ? tactor.flags : tactor.data.flags), \"midi-qol.spiritShroud.name\");\n    const spellDice = getProperty((version > 9 ? tactor.flags : tactor.data.flags), \"midi-qol.spiritShroud.level\");\n    const spellOrigin = getProperty((version > 9 ? tactor.flags : tactor.data.flags), \"midi-qol.spiritShroud.uuid\");\n    const damageType = getProperty((version > 9 ? tactor.flags : tactor.data.flags), \"midi-qol.spiritShroud.type\");\n    let effectData = {\n        changes: [\n            { key: \"data.traits.di.value\", mode: CONST.ACTIVE_EFFECT_MODES.CUSTOM, value: `healing`, priority: 20 }\n        ],\n        origin: spellOrigin,\n        disabled: false,\n        transfer: false,\n        flags: { dae: { stackable: \"noneOirign\", specialDuration: [\"turnStartSource\"] } },\n        duration: { rounds: 1, turns: 1, startRound: gameRound, startTime: game.time.worldTime },\n        icon: \"icons/skills/wounds/blood-cells-vessel-red-orange.webp\",\n        label: `Healing Debuff`\n    }\n    let effect = findTarget.actor.effects.find(i => (version > 9 ? i.label : i.data.label) === \"Healing Debuff\");\n    if (!effect) await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: findTarget.actor.uuid, effects: [effectData] });\n    let damageDice = await new game.dnd5e.dice.DamageRoll(`${spellDice}d8[${damageType}]`, tactor.getRollData(), { critical: lastArg.isCritical }).evaluate({ async: true });\n    return { damageRoll: damageDice.formula, flavor: `(${spellName} (${CONFIG.DND5E.damageTypes[damageType]}))`, damageList: lastArg.damageList, itemCardId: lastArg.itemCardId };\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "darklands",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.3"
+    }
+  }
+}
