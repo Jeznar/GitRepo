@@ -1239,13 +1239,9 @@ Here are examples:
 
 ~~~javascript
 jez.postMessage({color:"purple", fSize:18, icon:"icons/vtt-512.png", msg:"or so, Sheldon said...", title:"Bazinga!!!" })
-
-jez.postMessage({color: "dodgerblue", 
-                fSize: 14, 
-                icon: aToken.data.img, 
-                msg: "This is direct from the acting token", 
-                title: `${aToken.name} says...`, 
-                token: aToken})
+let title = `${aToken.name} says...`
+let msg = "This is direct from the acting token"
+jez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: aToken.data.img, msg: msg, title: title, token: aToken})
 
 ~~~
 
@@ -1295,7 +1291,7 @@ Sample Call
 
 ~~~javascript
 const LAST_ARG = args[args.length - 1]
-jez.refundSpellSlot(aActor, LAST_ARG.spellLevel, {traceLvl:TL, quiet:false, spellName:aItem.name})
+jez.refundSpellSlot(aToken, LAST_ARG.spellLevel, {traceLvl:TL, quiet:false, spellName:aItem.name})
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)
