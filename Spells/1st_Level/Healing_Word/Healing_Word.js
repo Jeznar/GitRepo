@@ -147,6 +147,7 @@ function checkType(token5e, typeArray) {
         .file("modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_02_Regular_BlueWhite_Loop_600x600.webm")
         .attachTo(token)
         .playbackRate(0.25)
+        .repeats(2,1000,2000)
         .scaleToObject(2)
         .fadeOut(400)   
         .opacity(1)
