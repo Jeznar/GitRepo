@@ -1,10 +1,11 @@
-const MACRONAME = "Starter_Macro.0.3.js"
+const MACRONAME = "Starter_Macro.0.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
  * 06/29/22 0.2 Update to use jez.trc
  * 07/08/22 0.3 Update to use jez.trace
+ * 12/01/22 0.4 Update to include jez.refundSpellSlot call
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -13,18 +14,14 @@ let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL>1) jez.trace(`${TAG} === Starting ===`);
 if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
 //---------------------------------------------------------------------------------------------------
-// Set the value for the Active Token (aToken)
-let aToken;         
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-else aToken = game.actors.get(LAST_ARG.tokenId);
+// Set standard variables
+let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
 let aActor = aToken.actor; 
-//
-// Set the value for the Active Item (aItem)
-let aItem;         
-if (args[0]?.item) aItem = args[0]?.item; 
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+const VERSION = Math.floor(game.VERSION);
+const GAME_RND = game.combat ? game.combat.round : 0;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
@@ -47,9 +44,11 @@ if (TL>1) jez.trace(`${TAG} === Finished ===`);
  * Check the setup of things.  Post bad message and return false fr bad, true for ok!
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function preCheck() {
-    if (args[0].targets.length !== 1)       // If not exactly one target 
+    if (args[0].targets.length !== 1) {      // If not exactly one target 
+        jez.refundSpellSlot(aToken, L_ARG.spellLevel, { traceLvl: 0, quiet: false, spellName: aItem.name })
         return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`,"w");
-    if (LAST_ARG.hitTargets.length === 0)   // If target was missed, return
+    }
+    if (L_ARG.hitTargets.length === 0)   // If target was missed, return
         return jez.badNews(`Target was missed.`, "w")
     /*if (args[0].failedSaveUuids.length !== 1) {  // If target made its save, return
         msg = `Saving throw succeeded.  ${aItem.name} has no effect.`

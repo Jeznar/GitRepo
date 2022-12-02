@@ -425,6 +425,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.01 Added library function jez.refundSpellSlot
 
+22.12.02 Cure Wounds now refunds spell slot when cast with no targets selected.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

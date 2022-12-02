@@ -10,7 +10,7 @@ const MACRONAME = "Spirit_Shroud.0.1.js"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the VERSION number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`${TAG} === Starting ===`);
@@ -106,61 +106,9 @@ async function doOnUse(options = {}) {
         if (effect) await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: tActor.uuid, effects: [effect.id] });
         // 
         if (TL > 1) jez.trace(`${TAG} Refund spell slot.`)
-        let spellUpdate = {};
-        let spellSlot;
-        let spellSlotMsg = ""
-        if (TL > 1) jez.trace(`${TAG} aActor.data.data`,aActor.data.data)
-
-        if ((aActor.data.data.classes?.warlock) && (castingStat === "cha")) { 
-            if (TL > 1) jez.trace(`${TAG} Processing as warlock`)
-            spellSlot = "pact"; 
-            spellSlotMsg = "Pact"
-        }
-        else { 
-            if (TL > 1) jez.trace(`${TAG} Processing as not warlock`)
-            spellSlot = "spell" + LAST_ARG.spellLevel;
-            spellSlotMsg = `Level ${LAST_ARG.spellLevel}`
-        }
-        if (TL > 2) jez.trace(`${TAG} spellSlot`,spellSlot)
-        let currentSlot = aActor.data.data.spells[spellSlot].value;
-        if (TL > 2) jez.trace(`${TAG} currentSlot`,currentSlot)
-        spellUpdate[`${VERSION > 9 ? "system" : "data"}.spells.${spellSlot}.value`] = currentSlot + 1;
-        await aActor.update(spellUpdate);
-        msg = `Refunded <b>${spellSlotMsg}</b> spell slot to <b>${aToken.name}</b>. If spell was cast 
-        without using a spell slot, please manually correct available spells.`
-        postResults(msg)
+        jez.refundSpellSlot(aToken, LAST_ARG.spellLevel, { traceLvl: TL, quiet: false, spellName: aItem.name })
         return
     }
-    //-----------------------------------------------------------------------------------------------
-    // Launch VFX around caster (runVFX)
-    //
-    let color = ""
-    switch (damageChoice) {
-        case "cold":
-            color = "modules/jb2a_patreon/Library/3rd_Level/Spirit_Guardians/SpiritGuardiansSpirits_01_Light_Orange_600x600.webm"
-            break;
-        case necrotic:
-            color = ""
-            break;
-        case necrotic:
-            color = ""
-            break;
-        default:
-        // code block
-    }
-
-
-    modules/jb2a_patreon/Library/3rd_Level/Spirit_Guardians/SpiritGuardiansSpirits_01_Dark_Red_600x600.webm
-    const VFX_FILE = `modules/jb2a_patreon/Library/3rd_Level/Spirit_Guardians/SpiritGuardiansSpirits_01_Dark_Purple_600x600.webm`
-    new Sequence()
-        .effect()
-            .file(VFX_FILE)
-            .attachTo(aToken)
-            .scale(1)
-            .opacity(1)
-            .persist()
-            .name(EFFECT_NAME)
-        .play();
     //-----------------------------------------------------------------------------------------------
     // Build and apply the effect on caster
     //
@@ -199,6 +147,33 @@ async function doOnUse(options = {}) {
         let choices = await warpgate.menu(menuOptions, { title, options: { height: "100%" } });
         return choices;
     }
+    //-----------------------------------------------------------------------------------------------
+    // Launch VFX around caster (runVFX)
+    //
+    let color = ""
+    switch (damageChoice) {
+        case "cold":
+            color = "Light_Blue"
+            break;
+        case "necrotic":
+            color = "Dark_Red"
+            break;
+        case "radiant":
+            color = "Light_Orange"
+            break;
+        default:
+            color = `Dark_Purple`
+    }
+    const VFX_FILE = `modules/jb2a_patreon/Library/3rd_Level/Spirit_Guardians/SpiritGuardiansSpirits_01_${color}_600x600.webm`
+    new Sequence()
+        .effect()
+            .file(VFX_FILE)
+            .attachTo(aToken)
+            .scale(1)
+            .opacity(1)
+            .persist()
+            .name(EFFECT_NAME)
+        .play();
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
 * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
