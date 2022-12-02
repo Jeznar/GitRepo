@@ -427,6 +427,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.02 Cure Wounds now refunds spell slot when cast with no targets selected.
 
+22.12.02 Created Healing Word macro based on Cure wounds and added VFX to both using .playbackRate() and .repeats() calls to make them more impactful
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

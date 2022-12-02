@@ -1,14 +1,12 @@
-const MACRONAME = "Cure_Wounds.0.3.js"
+const MACRONAME = "Healing_Word.0.1.js"
 /*****************************************************************************************
  * Make sure only one target was targeted and run a runVFX on that target
  * 
- * 03/30/22 0.1 Creation of Macro
- * 05/22/22 0.2 Added message about need to manually backout ineligible heals
- * 12/02/22 0.3 Changed to refund spell slot on cast that has no target
+ * 12/02/22 0.1 Creation from Cure_Wounds.0.3.js
  *****************************************************************************************/
  const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
  const TAG = `${MACRO} |`
- const TL = 5;                               // Trace Level for this macro
+ const TL = 0;                               // Trace Level for this macro
  let msg = "";                               // Global message string
  //---------------------------------------------------------------------------------------------------
  if (TL>1) jez.trace(`${TAG} === Starting ===`);
@@ -27,11 +25,6 @@ const MACRONAME = "Cure_Wounds.0.3.js"
 //--------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-// if (args[0].macroPass !== "preItemRoll") {
-//     if (TL>0) jez.trace(`${TAG} Running ${args[0].macroPass}`);
-//     doPreItemRoll({traceLvl:TL})
-//     return
-// }
 if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
 if (TL>1) jez.trace(`${TAG} === Finished ===`);
 /***************************************************************************************************
@@ -83,7 +76,8 @@ async function doOnUse(options={}) {
     //-----------------------------------------------------------------------------------------------
     // Launch our VFX
     //
-    jez.runRuneVFX(tToken, jez.getSpellSchool(aItem), "yellow")
+    jez.runRuneVFX(aToken, jez.getSpellSchool(aItem), "yellow")
+    runVFX(tToken)
     if (TL>1) jez.trace(`${TAG} --- Finished ---`);
  }
 /***************************************************************************************************
@@ -143,4 +137,18 @@ function checkType(token5e, typeArray) {
     jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+}
+/***************************************************************************************************
+ * Launch the VFX effects
+ ***************************************************************************************************/
+ async function runVFX(token) {
+    new Sequence()
+        .effect()
+        .file("modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_02_Regular_BlueWhite_Loop_600x600.webm")
+        .attachTo(token)
+        .playbackRate(0.25)
+        .scaleToObject(2)
+        .fadeOut(400)   
+        .opacity(1)
+        .play();
 }
