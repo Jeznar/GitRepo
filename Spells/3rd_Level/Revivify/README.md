@@ -4,7 +4,7 @@
   "img": "/systems/dnd5e/icons/spells/heal-sky-2.jpg",
   "data": {
     "description": {
-      "value": "<p>You touch a creature that has died within the last minute. That creature returns to life with 1 hit point. This spell can&rsquo;t return to life a creature that has died of old age, nor can it restore any missing body parts.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell is automated.&nbsp; Player needs to confirm pre-reqs and proper handling of material component.</p>",
+      "value": "<p>You touch a creature that has died within the last minute. That creature returns to life with 1 hit point. This spell can’t return to life a creature that has died of old age, nor can it restore any missing body parts.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Since this spell is such a special occasion spell, it is handled manually within the VTT.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -36,7 +36,7 @@
     },
     "consume": {
       "type": "material",
-      "target": "DBEhr0hC6FXBhd88",
+      "target": "",
       "amount": 1
     },
     "ability": "",

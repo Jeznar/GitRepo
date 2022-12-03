@@ -429,6 +429,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.02 Created Healing Word macro based on Cure wounds and added VFX to both using .playbackRate() and .repeats() calls to make them more impactful
 
+22.12.03 Automated Revivify including refunding spell slot, healing target (runAsGM ActorUpdate), marking it prone.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

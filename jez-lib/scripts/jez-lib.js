@@ -378,7 +378,7 @@ class jez {
         //     `pickCallBack`, pickCallBack,
         //     `queryOptions`, queryOptions);
         let msg = ""
-        if (typeof (pickCallBack) != "function") {
+        if (pickCallBack && typeof (pickCallBack) != "function") {
             msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
             ui.notifications.error(msg);
             // jez.log(msg);
@@ -416,24 +416,27 @@ class jez {
                             html.find("[name=selectedLine]:checked").each(function () {
                                 selections.push($(this).val())
                             })
-                            await pickCallBack(selections)  // Changed for synchronicity
-                            myResolve("Picked ok")          // Added for synchronicity
+                            if (pickCallBack) await pickCallBack(selections)  // Changed for synchronicity
+                            // myResolve("Picked ok")          // Added for synchronicity
+                            myResolve(selections)          // Added for synchronicity
                         },
                     },
                     all: {
                         icon: '<i class="fas fa-check-double"></i>',
                         label: 'All Displayed',
                         callback: async (html) => {
-                            await pickCallBack(queryOptions)// Changed for synchronicity
-                            myResolve("Picked all")         // Added for synchronicity
+                            if (pickCallBack) await pickCallBack(queryOptions)// Changed for synchronicity
+                            // myResolve("Picked all")         // Added for synchronicity
+                            myResolve(queryOptions)         // Added for synchronicity
                         },
                     },
                     cancel: {
                         icon: '<i class="fas fa-times"></i>',
                         label: 'Cancel',
                         callback: async (html) => {
-                            await pickCallBack(null)        // Changed for synchronicity
-                            myResolve("Picked cancel")      // Added for synchronicity
+                            if (pickCallBack) await pickCallBack(null)        // Changed for synchronicity
+                            // myResolve("Picked cancel")      // Added for synchronicity
+                            myResolve(null)      // Added for synchronicity
                         },
                     },
                 },
