@@ -1,9 +1,10 @@
-const MACRONAME = "Swap_Senses.0.2.js"
+const MACRONAME = "Swap_Senses.0.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Swap vision from the active token to the actor specified by ID doOnUse() and reverse doOff()
  * 
  * 08/30/22 0.1 Creation of Macro
  * 09/02/22 0.2 Add support for CHAIN_MASTER_VOICE
+ * 12/04/22 0.3 Added message & avoid error message when familiar is not found in scene 
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
@@ -70,6 +71,7 @@ async function doOnUse(options = {}) {
     if (!famToken) {
         if (TL > 1) jez.trace(`${TAG} Cleaning up, since familiar is MIA`);
         deleteTempSpells({ traceLvl: TL })
+        postResults(`Could not find familiar`)
         let existingEffect = aActor.effects.find(ef => ef.data.label.startsWith("Swap Senses "))
         if (existingEffect) existingEffect.delete()
         return
@@ -194,6 +196,7 @@ async function deleteTempSpells(options = {}) {
     let itemFound = null
     while (itemFound = aActor.items.find(item => item.data.name.startsWith(NEW_SPELL_PREFIX) &&
         item.type === "spell" && item.data.data.preparation.mode === "atwill")) {
+        await jez.wait(100) // Let things settle a moment
         await itemFound.delete();
         jez.badNews(`At-Will Spell "${itemFound.name}" has been deleted from ${aToken.name}'s spell book`, 'i')
         await jez.wait(50)

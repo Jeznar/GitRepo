@@ -1,4 +1,4 @@
-const MACRONAME = "Hex-Move.0.4.js"
+const MACRONAME = "Hex-Move.0.5.js"
 /*****************************************************************************************
  * Basic Structure for a rather complete macro
  * 
@@ -6,22 +6,29 @@ const MACRONAME = "Hex-Move.0.4.js"
  * 07/10/22 0.2 Move the hex if the taregt is missing and confirmed in a dialog
  * 07/31/22 0.3 Add convenientDescription
  * 11/01/22 0.4 Dealing with player permission issue clering old hex from corpse
+ * 12/04/22 0.5 Handling missing base hex effect
  *****************************************************************************************/
-const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
-const MAC = MACRONAME.split("-")[0]     // Extra short form of the MACRONAME
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
-let msg = "";
-const FLAG = MAC    // Name of the DAE Flag    
-const TL = 0;   
+const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+const TAG = `${MACRO} |`
+const TL = 0;                               // Trace Level for this macro
+let msg = "";                               // Global message string
+//---------------------------------------------------------------------------------------------------
+if (TL > 1) jez.trace(`${TAG} === Starting ===`);
+if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+//---------------------------------------------------------------------------------------------------
+// Set standard variables
+let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+let aActor = aToken.actor;
+let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+const VERSION = Math.floor(game.VERSION);
+const GAME_RND = game.combat ? game.combat.round : 0;
+//---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
+const MAC = MACRONAME.split("-")[0]                 // Extra short form of the MACRONAME
+const FLAG = MAC                                    // Name of the DAE Flag    
+// const NEW_ITEM_NAME = `${aToken.name} ${}` // Name of item in actor's spell book
 //----------------------------------------------------------------------------------
 // Run the preCheck function to make sure things are setup as best I can check them
 //
@@ -29,8 +36,8 @@ if (!preCheck()) return;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-jez.log(`============== Finishing === ${MACRONAME} =================`);
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
+if (TL>1) jez.trace(`${TAG} === Finished ===`);
 return;
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -42,7 +49,7 @@ return;
 function preCheck() {
     if (args[0].targets.length !== 1) {     // If not exactly one target, return
         msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-        postResults();
+        postResults(msg);
         return (false);
     }
     return (true)
@@ -50,26 +57,43 @@ function preCheck() {
 /***************************************************************************************************
  * Post results to the chat card
  ***************************************************************************************************/
-function postResults() {
-    jez.log(msg);
+function postResults(msg) {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
-async function doOnUse() {
-    const FUNCNAME = "doOnUse()";
+async function doOnUse(options={}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    //-----------------------------------------------------------------------------------------------
+    // set the target data object
+    //
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
-    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
+    //----------------------------------------------------------------------------------------------
+    // Is Hex currenty active?  If not, delete this action and quit
+    //
+    const HEX_EFFECT = await aToken.actor.effects.find(i => i.data.label === "Hex");
+    if (HEX_EFFECT) {
+        if (TL > 1) jez.trace(`${TAG} ${aToken.name} has an active hex`)
+    }
+    else {
+        if (TL > 1) jez.trace(`${TAG} ${aToken.name} does not have an active hex`)
+        await jez.deleteItems(aItem.name, "spell", aActor);
+        jez.badNews(`${aToken.name} has no active hex, deleting ${aItem.name}`, 'i')
+        return
+    }
     //----------------------------------------------------------------------------------------------
     // Obtain the existing hexMark
     //
     let oldHexMark = getProperty(aToken.actor.data.flags, "midi-qol.hexMark")
-    jez.log("hexMark target:", oldHexMark)
+    if (TL>1) jez.trace(`${TAG} hexMark target:`, oldHexMark)
     //----------------------------------------------------------------------------------------------
     // Get the token for the old hex target
     //
@@ -83,7 +107,7 @@ async function doOnUse() {
             title: 'Previous Hex Target is Missing!',
             content: content,
         });
-        console.log("***** targetDead", targetDead)
+        if (TL>0) jez.trace(`${TAG} ***** targetDead`, targetDead)
         if (!targetDead) {
             msg = `The token that had the old hex is still alive.  Sorry, can not move hex.`
             ui.notifications.warn(msg);
@@ -95,19 +119,24 @@ async function doOnUse() {
     // Verify the old hex mark is actually, you know, dead
     //
     if (oToken) {
-        jez.log(`${oToken.name} was the old hex target`, oToken)
-        jez.log("oToken.actor.data.data.attributes.hp.value", oToken.actor.data.data.attributes.hp.value)
+        if (TL > 1) jez.trace(`${TAG} ${oToken.name} was the old hex target`, oToken)
+        if (TL > 2) jez.trace(`${TAG} oToken.actor.data.data.attributes.hp.value`, oToken.actor.data.data.attributes.hp.value)
         if (oToken.actor.data.data.attributes.hp.value !== 0) {
             msg = `Perhaps sadly, ${oToken.name} is alive!  The hex may not be moved.`
             ui.notifications.warn(msg);
             postResults(msg);
             return (false);
-        } else jez.log(`Yea? ${oToken.name} is dead and can have hex moved`)
+        } else if (TL>1) jez.trace(`${TAG} Yea? ${oToken.name} is dead and can have hex moved`)
     }
     //----------------------------------------------------------------------------------------------
     // Stash the token ID of the new target into the DAE Flag
     //
+    if (TL > 3) jez.trace(`${TAG} Flag setting data`,
+        `aActor   `, aActor,
+        `FLAG     `, FLAG,
+        `tToken.id`, tToken?.id)
     await DAE.setFlag(aToken.actor, FLAG, tToken.id)
+    if (TL > 1) jez.trace(`${TAG} Flag Value`,await DAE.getFlag(aToken.actor, FLAG))
     //----------------------------------------------------------------------------------------------
     // Update the hexMark to the token ID in the effect data
     //
@@ -120,16 +149,16 @@ async function doOnUse() {
      * @param {*} value         The value to be assigned
      * @return {boolean}        Whether the value was changed from its previous value
      */
-    setProperty(aToken.actor.data.flags, "midi-qol.hexMark", newHexMark)
-
+    let rc = setProperty(aToken.actor.data.flags, "midi-qol.hexMark", newHexMark)
+    if (TL > 1) jez.trace(`${TAG} setProperty returned`,rc)
     //----------------------------------------------------------------------------------------------
     // Get the data of the original hex on the target, then delete it.
     //
     let oldEffect = null
     if (oToken) {
         oldEffect = await oToken.actor.effects.find(i => i.data.label === FLAG);
-        jez.log(`**** ${FLAG} found?`, oldEffect)
-        jez.log(`**** Effect UUID`, oldEffect.uuid) // Scene.MzEyYTVkOTQ4NmZk.Token.KVTYA7FwushIK9h9.ActiveEffect.ztlq9s7jopvvevn9
+        if (TL>1) jez.trace(`${TAG} **** ${FLAG} found?`, oldEffect)
+        if (TL>1) jez.trace(`${TAG} **** Effect UUID`, oldEffect.uuid) // Scene.MzEyYTVkOTQ4NmZk.Token.KVTYA7FwushIK9h9.ActiveEffect.ztlq9s7jopvvevn9
         if (!oldEffect) {
             msg = `${FLAG} sadly not found on ${oToken.name}.`
             ui.notifications.error(msg);
@@ -137,6 +166,9 @@ async function doOnUse() {
             return (false);
         }
     }
+    //----------------------------------------------------------------------------------------------
+    // Set a bunch of values
+    //
     //let icon = aItem.img
     let origin = oldEffect?.data?.origin ? oldEffect?.data?.origin : args[0].uuid;
     const LEVEL = args[0].spellLevel;
@@ -148,7 +180,7 @@ async function doOnUse() {
     let startTime = oldEffect?.data?.duration?.startTime ? oldEffect?.data?.duration?.startTime : game.time.worldTime
     let itemData = oldEffect?.data?.flags?.dae?.itemData ? oldEffect?.data?.flags?.dae?.itemData : aItem
     let spellLevel = oldEffect?.data?.flags?.dae?.spellLevel ? oldEffect?.data?.flags?.dae?.spellLevel : args[0].spellLevel
-    const hexEffect = await aToken.actor.effects.find(i => i.data.label === "Hex");
+    // const HEX_EFFECT = await aToken.actor.effects.find(i => i.data.label === "Hex");
     const concEffect = await aToken.actor.effects.find(i => i.data.label === "Concentrating");
     let concId = oldEffect?.data?.flags?.dae?.concId ? oldEffect?.data?.flags?.dae?.concId : concEffect.id
     const OLD_UUID = oldEffect?.uuid
@@ -220,13 +252,13 @@ async function doOnUse() {
                     itemData: aItem,
                     spellLevel: LEVEL,
                     tokenId: aToken.id,
-                    hexId: hexEffect,
+                    hexId: HEX_EFFECT,
                     concId: concId
                 },
                 convenientDescription: C_DESC
 
             },
-            changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: ADD, value: 1, priority: 20 }]
+            changes: [{ key: `flags.midi-qol.disadvantage.ability.check.${ability}`, mode: jez.ADD, value: 1, priority: 20 }]
         };
         await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
         //----------------------------------------------------------------------------------------------
@@ -235,7 +267,7 @@ async function doOnUse() {
         msg = `Hex removed from ${oToken?.name}'s corpse. <b>${tToken.name}</b>'s ${ability.toUpperCase()} is now hexed,
     and will make stat checks at disadvantage.`
         postResults(msg)
-        jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+        if (TL>1) jez.trace(`${TAG} --- Finished ---`);
         return (true);
     }
 }
@@ -266,7 +298,7 @@ async function vfxPlayHex(token, optionObj) {
     const OPACITY = optionObj?.opacity ?? 1.0
     //const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Explosion/Explosion_*_${color}_400x400.webm`
     const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Token_Stage/TokenStageHex01_04_Regular_${color}_400x400.webm`
-    jez.log("VFX_FILE", VFX_FILE)
+    if (TL>1) jez.trace(`${TAG} VFX_FILE`, VFX_FILE)
     new Sequence()
         .effect()
         .file(VFX_FILE)
@@ -274,7 +306,7 @@ async function vfxPlayHex(token, optionObj) {
         .center()
         // .scale(SCALE)
         .scaleToObject(SCALE)
-        .repeats(8,2000,3000)
+        .repeats(8, 2000, 3000)
         .opacity(OPACITY)
         .play()
 }

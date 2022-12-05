@@ -431,6 +431,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.03 Automated Revivify including refunding spell slot, healing target (runAsGM ActorUpdate), marking it prone.
 
+22.12.05 Thunderstep rewritten to be a one step macro that allows picking of and relocation of a "buddy" and inflicts RAW damage.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
