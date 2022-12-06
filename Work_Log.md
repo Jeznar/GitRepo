@@ -435,6 +435,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.06 Automated Fiert Teleportation to be a one step macro that selects *buddies*, moves them and handles damage.
 
+22.12.06 Update to Light: Update log and chase player permission issue deleting/adding effect
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

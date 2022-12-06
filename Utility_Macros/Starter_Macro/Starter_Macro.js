@@ -44,10 +44,12 @@ if (TL>1) jez.trace(`${TAG} === Finished ===`);
  * Check the setup of things.  Post bad message and return false fr bad, true for ok!
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 async function preCheck() {
-    msg = `Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`
-    jez.refundSpellSlot(aToken, L_ARG.spellLevel, { traceLvl: 0, quiet: false, spellName: aItem.name })
-    postResults(msg)
-    return jez.badNews(msg, "w");
+    if (args[0].targets.length !== 1) {
+        msg = `Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`
+        postResults(msg)
+        return jez.badNews(msg, "w");
+    }
+    return true
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Post results to the chat card
@@ -61,7 +63,7 @@ async function preCheck() {
     //-----------------------------------------------------------------------------------------------
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    if (TL>1) jez.trace(`${TAG}--- Finished ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is removed by DAE, set On
