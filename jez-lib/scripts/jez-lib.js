@@ -589,7 +589,7 @@ class jez {
                         label: 'Cancel',
                         callback: async (html) => {
                             await pickCallBack(null)        // Changed for synchronicity
-                            myResolve("Picked cancel")      // Added for synchronicity
+                            myResolve(null)      // Added for synchronicity
                         },
                     },
                 },

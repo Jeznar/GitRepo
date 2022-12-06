@@ -433,6 +433,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.05 Thunderstep rewritten to be a one step macro that allows picking of and relocation of a "buddy" and inflicts RAW damage.
 
+22.12.06 Automated Fiert Teleportation to be a one step macro that selects *buddies*, moves them and handles damage.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
