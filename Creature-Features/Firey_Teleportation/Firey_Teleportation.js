@@ -1,14 +1,15 @@
-const MACRONAME = "Firey_Teleportation.0.1.js"
+const MACRONAME = "Firey_Teleportation.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * 
+ *
  * RAW Description
  * ---------------
- *   The spirit and each willing creature of your choice within 5 feet of it teleport up to 15 feet 
- *   to unoccupied spaces you can see. Then each creature within 5 feet of the space that the spirit 
- *   left must succeed on a Dexterity saving throw against your spell save DC or take 1d6 + 
+ *   The spirit and each willing creature of your choice within 5 feet of it teleport up to 15 feet
+ *   to unoccupied spaces you can see. Then each creature within 5 feet of the space that the spirit
+ *   left must succeed on a Dexterity saving throw against your spell save DC or take 1d6 +
  *   Proficency Bonus (PB) fire damage. (No damage on save)
- * 
+ *
  * 12/05/22 0.1 Creation of Macro from Thunder_Step.0.1.js
+ * 12/06/22 0.2 Add temporary markers to spots choosen for teleport destinations
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -39,6 +40,9 @@ const MAX_DISTANCE = (ITEM_RANGE) ? ITEM_RANGE : 15
 // Music circle: "modules/jb2a_patreon/Library/Generic/Marker/MusicMarker_01_Regular_GreenOrange_400x400.webm"
 const VFX_DAMAGE = "jb2a.fireball.explosion.orange"
 const VFX_OUT = "modules/jb2a_patreon/Library/Generic/Impact/ImpactMusicNote01_01_Regular_GreenYellow_400x400.webm"
+const VFX_PRIME_TARGET = "Icons_JGB/Misc/Targeting/Targeting-Green.png"
+const VFX_SECOND_TARGET = "Icons_JGB/Misc/Check_Mark/Check_Icon-Green.png"
+let destVFXNames = [];
 const VFX_OPACITY = 0.5;
 const VFX_SCALE = 0.5;
 //---------------------------------------------------------------------------------------------------
@@ -132,12 +136,12 @@ async function doOnUse(options = {}) {
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    if (bTokenArray.length === 0) msg = `In a burst of flames <b>${aToken.name}</b> has teleported 
+    if (bTokenArray.length === 0) msg = `In a burst of flames <b>${aToken.name}</b> has teleported
     away, damaging creatures that had been within 5 feet of it.`
-    if (bTokenArray.length === 1) msg = `In a burst of flames <b>${aToken.name}</b> has teleported 
+    if (bTokenArray.length === 1) msg = `In a burst of flames <b>${aToken.name}</b> has teleported
     away bringing ${bTokenArray[0].name} with it and damaging creatures that had been within 5 feet.`
-    if (bTokenArray.length > 1) msg = `In a burst of flames <b>${aToken.name}</b> has teleported 
-    away bringing ${bTokenArray.length} willing creatures with it and damaging creatures that had 
+    if (bTokenArray.length > 1) msg = `In a burst of flames <b>${aToken.name}</b> has teleported
+    away bringing ${bTokenArray.length} willing creatures with it and damaging creatures that had
     been within 5 feet.`
     postResults(msg)
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
@@ -154,17 +158,17 @@ async function pickTeleportBuddies(options = {}) {
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
     //-----------------------------------------------------------------------------------------------
-    // 
+    //
     //
     const queryTitle = "Select Willing Creature(s) to Teleport";
     const queryText = `<p>Click on as many <i>willing</i> creatures as ${aToken.name} will bring along,
-    then click the <b>Selected</b> button, or click the <b>All Displayed</b> button to teleport all in 
+    then click the <b>Selected</b> button, or click the <b>All Displayed</b> button to teleport all in
     range. Click the <b>Cancel</b> button or the <b>Selected</b> button to bring along no creatures.</p>
     <p>The using player needs to make sure each creature selected is <i>willing</i>.</p>`;
     let adjTokNames = [];
     let buddyObjArray = [];
     //-----------------------------------------------------------------------------------------------
-    // 
+    //
     //
     let ADJ_TOK_OBJS = await jez.inRangeTargets(aToken, 8, { direction: "o2t", traceLvl: 0, chkSight: true });
     if (TL > 1) jez.trace(`${TAG} `,ADJ_TOK_OBJS)
@@ -197,7 +201,7 @@ async function pickTeleportBuddies(options = {}) {
  * requires Warpgate, Sequencer, and JB2A patreon module
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 async function doTeleport(aToken, bTokenArray, options = {}) {
-    const FUNCNAME = "runVFX(options={})";
+    const FUNCNAME = "doTeleport(aToken, bTokenArray, options = {})";
     const FNAME = FUNCNAME.split("(")[0]
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
@@ -205,19 +209,43 @@ async function doTeleport(aToken, bTokenArray, options = {}) {
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'aToken', aToken,
         'bTokenArray', bTokenArray, "options", options);
     //-----------------------------------------------------------------------------------------------
+    // Function variables
+    //
+    let markerName = ""
+    //-----------------------------------------------------------------------------------------------
     // Pick spot for the active token
     //
     let destination = await teleport(aToken, aToken.center, MAX_DISTANCE)
     if (TL > 1) jez.trace(`${TAG} First teleport spot picked`, destination)
     if (!destination) return null
+    markerName = `${MACRO}-${aToken.id}-${destination.x}x-${destination.y}y-0`
+    destinantionVFX(destination, markerName, VFX_PRIME_TARGET)
+    //destVFXNames.push(markerName)
     //-----------------------------------------------------------------------------------------------
     // Pick spot for the buddy token(s), if any
     //
-    if (bTokenArray.length === 0) return (destination)
-    for (let i = 0; i < bTokenArray.length; i++) {
-        let bDestination = await teleport(bTokenArray[i], destination, 5)
-        if (TL > 1) jez.trace(`${TAG} ${i+1} teleport spot picked`, bDestination)
+    if (bTokenArray.length > 0) {
+        for (let i = 0; i < bTokenArray.length; i++) {
+            let bDestination = await teleport(bTokenArray[i], destination, 5)
+            if (TL > 1) jez.trace(`${TAG} ${i + 1} teleport spot picked`, bDestination)
+            markerName = `${MACRO}-${bTokenArray[i].id}-${bDestination.x}x-${bDestination.y}y-${i+1}`
+            destinantionVFX(bDestination, markerName, VFX_SECOND_TARGET)
+        }
     }
+    //-----------------------------------------------------------------------------------------------
+    // Delete the temporary targeting markers, if any
+    //
+    if (TL > 1) jez.trace(`${TAG} Delete the temporary marker VFX`,destVFXNames);
+    for (let i = 0; i < destVFXNames.length; i++) {
+        if (TL > 1) jez.trace(`${TAG} Deleting #${i} ${destVFXNames[i]}`);
+        // await jez.wait(2000)
+        if (TL > 1) jez.trace(`${TAG} calling Sequencer.EffectManager.endEffects({ name: ${destVFXNames[i]} })`)
+        let rc = await Sequencer.EffectManager.endEffects({ name: destVFXNames[i] });
+        if (TL > 1) jez.trace(`${TAG} Sequencer.EffectManager.endEffects returned`, rc)
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Thats all folks
+    //
     return (destination)
     //-----------------------------------------------------------------------------------------------
     // Local teleport function
@@ -312,7 +340,7 @@ async function runVFX(token, location, options = {}) {
     await seq.play();
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Play the damage VFX 
+ * Play the damage VFX
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 async function damageVFX(coords) {
     // Fireball VFX file : jb2a.fireball.explosion.orange
@@ -324,9 +352,26 @@ async function damageVFX(coords) {
         .scale(VFX_SCALE)
         .opacity(VFX_OPACITY)
         .duration(4000)
-        // .name(VFX_NAME)          // Give the effect a uniqueish name
         .fadeIn(1000)            // Fade in for specified time in milliseconds
         .fadeOut(1000)           // Fade out for specified time in milliseconds
+        .play()
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Start the destinantion space targeted VFX
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ async function destinantionVFX(coords, VFX_NAME, VFX_FILE) {
+    // Fireball VFX file : jb2a.fireball.explosion.orange
+    destVFXNames.push(VFX_NAME)
+    new Sequence()
+        .effect()
+        .file(VFX_FILE)
+        .atLocation(coords)
+        .scale(0.35)
+        .opacity(0.3)
+        .name(VFX_NAME)          // Give the effect a uniqueish name
+        .fadeIn(1000)            // Fade in for specified time in milliseconds
+        .fadeOut(1000)           // Fade out for specified time in milliseconds
+        .persist()
         .play()
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
