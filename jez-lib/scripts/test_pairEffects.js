@@ -11,6 +11,9 @@ let u2 = 'Scene.MzEyYTVkOTQ4NmZk.Token.TT7tOMHvlW1Lfm6g.ActiveEffect.pmp81ar2m5h
 // pairEffects(s1, e1, s2, e2)
 jez.pairEffects(u1, u2)
 
+
+jez.pairEffects(aActor, "Concentrating", target.actor, spellItem.name) 
+
 /**************************************************************************************************************
  * Add a macro execute line calling the macro "Remove_Paired_Effect" which must exist in the macro folder to
  * named effect on the pair of tokens supplied.
@@ -75,9 +78,9 @@ async function pairEffects(...args) {
         // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
         //
         actor1 = jez.getActor5eDataObj(subject1)
-        if (!actor1) return (ui.notfications.error("First subject not a token, actor, tokenId or actorId"))
+        if (!actor1) return jez.badNews("First subject not a token, actor, tokenId or actorId","e")
         actor2 = jez.getActor5eDataObj(subject2)
-        if (!actor2) return (ui.notfications.error("Second subject not a token, actor, tokenId or actorId"))
+        if (!actor2) return jez.badNews("Second subject not a token, actor, tokenId or actorId","e")
         //---------------------------------------------------------------------------------------------------------
         // Grab the effect data from the first token if we were handed a name and not a data object
         //

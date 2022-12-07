@@ -1,8 +1,9 @@
-const MACRONAME = "Fire_Shield"
+const MACRONAME = "Fire_Shield.0.2.js"
 /*****************************************************************************************
  * Implments Fire Shield!
  * 
  * 04/11/22 0.1 Creation of Macro
+ * 12/07/22 0.2 change ui.notification & ui.notfications (typo) to jez.badNews calls
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -70,7 +71,6 @@ if (args[0] === "off") {
     // Create and post removal of item message
     //
     msg = `Fire Shield has been removed from ${aToken.name}'s inventory.`
-    //ui.notifications.info(msg);
     jez.postMessage({
         color: jez.randomDarkColor(), fSize: 13, icon: aToken.data.img,
         msg: msg, title: `Fire Shield Removed`, token: aToken
@@ -97,9 +97,7 @@ async function deleteTempItems() {
     let item = aActor.items.getName("Fire Shield (Hot)")            // Seek Hot Shield
     if (!item) item = aActor.items.getName("Fire Shield (Cold)")    // Seek Cold Shield
     if (item) {                                                     // Found one!
-        msg = `Deleted temporary inventory item: ${item.name}`      // Set notification message
-        ui.notifications.info(msg);
-        jez.log(msg);
+        jez.badNews(`Deleted temporary inventory item: ${item.name}`,"i");
         await aActor.deleteEmbeddedDocuments("Item", [item.id])     // Delete the item     
         await jez.wait(100)
         await deleteTempItems()                                     // Look for another one
@@ -151,15 +149,14 @@ async function setResistance(token5e, flavor) {
 async function createTempItem(token5e, flavor) {
     await token5e.actor.createEmbeddedDocuments("Item", [defineItem(flavor)])
     if (!(flavor === "cold" || flavor === "hot")) {
-        msg = `Parameter passed to defineItem(flavor), '${flavor},' is not supported.`
-        ui.notfications.error(msg)
+        jez.badNews(`Parameter passed to defineItem(flavor), '${flavor},' is not supported.`,"e")
         return(false)
     }
     let damageType = "cold"
     if (flavor === "cold") damageType = "fire";
     let itemName = `Fire Shield (${flavor})`
     msg = `${itemName}, has been added to ${token5e.name}'s inventory.`
-    ui.notifications.info(msg);
+    jez.badNews(msg,"i");
     msg += ` Use this item every time ${token5e.name} is hit by a melee attack from adjacent space.
     <br><br>${token5e.name} is now resistant to ${damageType} damage.`
     jez.postMessage({
@@ -175,8 +172,7 @@ async function createTempItem(token5e, flavor) {
  function defineItem(flavor) {
      jez.log(`defineItem(flavor)`, flavor)
     if (!(flavor === "cold" || flavor === "hot")) {
-        msg = `Parameter passed to defineItem(flavor), '${flavor},' is not supported.`
-        ui.notfications.error(msg)
+        jez.badNews(`Parameter passed to defineItem(flavor), '${flavor},' is not supported.`,"e")
         return(false)
     }
     let color = "orange"
@@ -270,8 +266,7 @@ new Sequence()
 function runVFX(token5e, flavor) {
     jez.log(`runVFX(token5e, flavor)`, "token5e", token5e, "flavor", flavor)
     if (!(flavor === "cold" || flavor === "hot")) {
-        msg = `Flavor parameter passed to runVFX(token5e, flavor), '${flavor},' is bad.`
-        ui.notfications.error(msg)
+        jez.badNews(`Flavor parm in runVFX(token5e, flavor), '${flavor},' is bad.`,"e")
         return(false)
     }
     let color = "yellow"

@@ -121,9 +121,7 @@ class jez {
                 if (msgParm.token?.constructor.name !== "Token5e") {
                     let msg = `Coding error. Speaking Token (${msgParm?.token?.name}) is a 
                                ${msgParm.token?.constructor.name} must be a Token5e`
-                    ui.notifications.error(msg)
-                    // jez.log(msg)
-                    return (null)
+                    return jez.badNews(msg,"e")
                 }
             }
             const CHAT = {
@@ -186,10 +184,9 @@ class jez {
         // chatMessage must be a ChatMessage object
         //
         if (chatMessage?.constructor.name !== "ChatMessage") {
-            let errMsg = `Coding error. Chat message passed (${chatMessage}) is a ${chatMessage?.constructor.name}, must be ChatMessage.`
-            console.log("--- ERROR ---", errMsg)
-            ui.notifications.error(errMsg)
-            return (false)
+            let errMsg = `Coding error: message (${chatMessage}) is a ${chatMessage?.constructor.name},
+                must be ChatMessage.`
+            return jez.badNews(errMsg,"e")
         }
         //-----------------------------------------------------------------------------------------------
         // chatMsg will be a simple string unless msgParm is an object
@@ -205,8 +202,7 @@ class jez {
             }
             chatMsg = `<div class="card-buttons"><p style="color:${CHAT.color};font-size:${CHAT.fSize}px">${CHAT.msg}</p></div>`
             if (!allowedTags.includes(CHAT.tag)) {
-                ui.notifications.error(`Coding error. ${CHAT.tag} is not a defined anchor word`)
-                return (false)
+                return jez.badNews(`Coding error. ${CHAT.tag} is not a defined anchor word`,"e")
             }
             chatTag = CHAT.tag
         }
@@ -249,8 +245,7 @@ class jez {
         if (!allowedUnits.includes(unit)) {
             let msg = `Unit ${unit} not in allowed units`
             // jez.log(msg, allowedUnits);
-            ui.notifications.warn(msg);
-            return (null);
+            return jez.badNews(msg,'w')
         }
         return (range);
     }
@@ -316,18 +311,10 @@ class jez {
         //----------------------------------------------------------------------------------------------
         // Check the types of parameters passed 
         //
-        if (sel?.constructor.name !== "Token5e") {
-            let msg = `Coding error. Selection (${sel}) is a ${sel?.constructor.name} must be a Token5e`
-            ui.notifications.error(msg)
-            console.log(msg)
-            return (null)
-        }
-        if (typeof (range) !== "number") {
-            let msg = `Coding error. Range (${range}) is a ${typeof (range)} must be a number`
-            ui.notifications.error(msg)
-            console.log(msg)
-            return (null)
-        }
+        if (sel?.constructor.name !== "Token5e") 
+            return jez.badNews(`Selection (${sel}) is a ${sel?.constructor.name} must be a Token5e`,"e")
+        if (typeof (range) !== "number") 
+            return jez.badNews(`Range (${range}) is a ${typeof (range)} must be a number`,"e")
         //----------------------------------------------------------------------------------------------
         // Perform the interesting bits
         //
@@ -378,18 +365,12 @@ class jez {
         //     `pickCallBack`, pickCallBack,
         //     `queryOptions`, queryOptions);
         let msg = ""
-        if (pickCallBack && typeof (pickCallBack) != "function") {
-            msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
-            ui.notifications.error(msg);
-            // jez.log(msg);
-            return
-        }
+        if (pickCallBack && typeof (pickCallBack) != "function")
+            return jez.badNews(`pickCallBack invalid pickCallBack, ${typeof (pickCallBack)}`,'e')
         if (!queryTitle || !queryText || !queryOptions) {
             msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
-   but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
-            ui.notifications.error(msg);
-            // jez.log(msg);
-            return
+but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
+            return jez.badNews(msg,"e")
         }
         let template = `
 <div>
@@ -454,28 +435,13 @@ class jez {
      * queryOptions array of strings to be offered as choices
      ***************************************************************************************/
     static async pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions) {
-        const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
-        // jez.log("---------Starting ---${FUNCNAME}-------------------------------------------",
-        //     `queryTitle`, queryTitle,
-        //     `queryText`, queryText,
-        //     `pickCallBack`, pickCallBack,
-        //     `queryOptions`, queryOptions);
-        let msg = ""
-
-        if (typeof (pickCallBack) != "function") {
-            msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
-            ui.notifications.error(msg);
-            console.log(msg);
-            return
-        }
-
-        if (!queryTitle || !queryText || !queryOptions) {
-            msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
-               but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
-            ui.notifications.error(msg);
-            console.log(msg);
-            return
-        }
+        // const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
+        // let msg = ""
+        if (typeof (pickCallBack) != "function") 
+            return jez.badNews(`pickFromList invalid pickCallBack, ${typeof (pickCallBack)}`,'e')
+        if (!queryTitle || !queryText || !queryOptions)
+            return jez.badNews(`pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
+               but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`,'e')
 
         let template = `
     <div>
@@ -541,19 +507,12 @@ class jez {
         // `pickCallBack`, pickCallBack,
         // `queryOptions`, queryOptions);
         let msg = ""
-        if (typeof (pickCallBack) != "function") {
-            msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
-            ui.notifications.error(msg);
-            console.log(msg);
-            return
-        }
-        if (!queryTitle || !queryText || !queryOptions) {
-            msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
-               but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
-            ui.notifications.error(msg);
-            console.log(msg);
-            return
-        }
+        if (typeof (pickCallBack) != "function") 
+            return jez.badNews(`pickFromList invalid pickCallBack, it is a ${typeof (pickCallBack)}`,'e')
+        if (!queryTitle || !queryText || !queryOptions) 
+            return jez.badNews(`pickFromList args should be (queryTitle, queryText, pickCallBack, [queryOptions]),
+               mot: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`,'e')
+
         let template = `
         <div>
         <label>${queryText}</label>
@@ -630,13 +589,7 @@ class jez {
         let token1SizeString = token1.document._actor.data.data.traits.size;
         let token1SizeObject = new CreatureSizes(token1SizeString);
         let token1Size = token1SizeObject.value;  // Returns 0 on failure to match size string
-        if (!token1Size) {
-            let message = `Size of ${token1.name}, ${token1SizeString} failed to parse.<br>`;
-            jez.// jez.log(message);
-                ui.notifications.error(message);
-            return (false);
-        }
-        // jez.log(` Token1: ${token1SizeString} ${token1Size}`)
+        if (!token1Size) jez.badNews(`Size of ${token1.name}, ${token1SizeString} failed to parse.`,'e')
         return (token1SizeObject)
     }
     /*************************************************************************************
@@ -662,12 +615,8 @@ class jez {
      * Get token5e object based on ID passed
      ***************************************************************************************************/
     static getTokenById(tokenId) {
-        if ((typeof (tokenId) != "string") || (tokenId.length !== 16)) {
-            let msg = `Parameter passed to jez.getTokenById(tokenId) is not an ID: ${tokenId}`
-            ui.notifications.error(msg)
-            // jez.log(msg)
-            return (false)
-        }
+        if ((typeof (tokenId) != "string") || (tokenId.length !== 16)) 
+            jez.badNews(`Parameter jez.getTokenById(tokenId) is not an ID: ${tokenId}`,'e')
         return (canvas.tokens.placeables.find(ef => ef.id === tokenId));
     }
     /***************************************************************************************************
@@ -678,18 +627,11 @@ class jez {
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else {
-                let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
-                ui.notifications.error(msg)
-                // jez.log(msg)
-                return (false)
-            }
+            else return jez.badNews(`Subject is type '${typeof (subject)}' must be Token5e or Actor5e`,'e')
         } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
         else {
-            let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
-            ui.notifications.error(msg)
-            // jez.log(msg)
-            return (false)
+            let msg = `Subject in jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
+            return jez.badNews(msg,'e')
         }
         return (actor5e.data.data.attributes.spellcasting)
     }
@@ -701,19 +643,10 @@ class jez {
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else {
-                let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
-                ui.notifications.error(msg)
-                // jez.log(msg)
-                return (false)
-            }
-        } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
-        else {
-            let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
-            ui.notifications.error(msg)
-            // jez.log(msg)
-            return (false)
-        }
+            else return jez.badNews(`jez.getCastStat(subject) subject type '${typeof (subject)}' not Token5e or Actor5e`,'e')
+        } 
+        else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
+        else return jez.badNews(`jez.getCastStat(subject) parm is not a Token5e, Actor5e, or Token.id: ${subject}`,'e')
         return (actor5e.data.data.attributes.spelldc)
     }
     /***************************************************************************************************
@@ -729,35 +662,20 @@ class jez {
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else {
-                let msg = `Object passed to jez.getCastStat(subject,statParm) is type '${typeof (subject)}' must be a Token5e or Actor5e`
-                ui.notifications.error(msg)
-                console.log(msg)
-                return (false)
-            }
+            else return jez.badNews( `jez.getStatMod(...) parm is type '${typeof (subject)}' must be a Token5e or Actor5e`,'e')
         } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
         else {
-            let msg = `Subject parm passed to jez.getCastStat(subject,statParm) is not a Token5e, Actor5e, or Token.id: ${subject}`
-            ui.notifications.error(msg)
-            console.log(msg)
-            return (false)
+            let msg = `getStatMod(subject,statParm) subject parm is not a Token5e, Actor5e, or Token.id: ${subject}`
+            return(msg, 'e')
         }
         //----------------------------------------------------------------------------------------------
         // Validate the statParm parameter and stash it into "stat"
         //
-        if ((typeof (statParm) !== "string") || (statParm.length !== 3)) {
-            let msg = `Stat parameter passed to jez.getCastStat(subject, statParm) is invalid: ${statParm}`
-            ui.notifications.error(msg)
-            console.log(msg)
-            return (false)
-        }
+        if ((typeof (statParm) !== "string") || (statParm.length !== 3)) 
+            return jez.badNews(`jez.getStatMod(subject, statParm) statParm is invalid: ${statParm}`,'e')
         stat = statParm.toLowerCase();
-        if (!STAT_ARRAY.includes(stat)) {
-            let msg = `Stat parameter passed to jez.getCastStat(subject, statParm) is invalid: ${statParm}`
-            ui.notifications.error(msg)
-            console.log(msg)
-            return (false)
-        }
+        if (!STAT_ARRAY.includes(stat))
+            return jez.badNews(`jez.getStatMod(subject, statParm) statParm is invalid: ${statParm}`,'e')
         //----------------------------------------------------------------------------------------------
         // Fetch and return that modifier
         //
@@ -779,19 +697,9 @@ class jez {
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else {
-                let msg = `Object passed to jez.getCastStat(subject) is type '${typeof (subject)}' must be a Token5e or Actor5e`
-                ui.notifications.error(msg)
-                console.log(msg)
-                return (false)
-            }
+            else return jez.badNews(`jez.getProfMod(subject) parm is '${typeof (subject)}' must be Token5e or Actor5e`,'e')
         } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
-        else {
-            let msg = `Parameter passed to jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
-            ui.notifications.error(msg)
-            console.log(msg)
-            return (false)
-        }
+        else return jez.badNews(`jez.getProfMod(subject) parm is not Token5e, Actor5e, or Token.id: ${subject}`,'e')
         return (actor5e.data.data.attributes.prof)
     }
     /***************************************************************************************************
@@ -803,7 +711,7 @@ class jez {
      * Maybe that is a cool way to do the same thing?
      ***************************************************************************************************/
     static getCharLevel(subject) {
-        let trcLvl = 4
+        let trcLvl = 0
         //----------------------------------------------------------------------------------------------
         // Convert the passed parameter to Actor5e
         //
@@ -811,22 +719,10 @@ class jez {
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else {
-                let msg = `Object passed to jez.getCharacterLevel(subject) is type '${typeof (subject)}' 
-            must be a Token5e or Actor5e`
-                ui.notifications.error(msg)
-                console.log(msg)
-                return (false)
-            }
-        } else if ((typeof (subject) === "string") && (subject.length === 16))
-            actor5e = jez.getTokenById(subject).actor
-        else {
-            let msg = `Parameter passed to jez.getCharacterLevel(subject) is not a Token5e, Actor5e, or 
-        Token.id: ${subject}`
-            ui.notifications.error(msg)
-            console.log(msg)
-            return (false)
+            else return jez.badNews(`jez.getCharLevel(subject) parm is type '${typeof (subject)}' not Token5e or Actor5e`, 'e')
         }
+        else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
+        else return jez.badNews(`Parameter passed to jez.getCharacterLevel(subject) parm is not Token5e, Actor5e, or Token.id: ${subject}`, 'e')
         //----------------------------------------------------------------------------------------------
         // Find the Actor5e's character level.
         //
@@ -880,10 +776,8 @@ class jez {
                 if (subject.constructor.name === "Actor5e") actor5e = subject
                 else {
                     message = `Object passed to jez.deleteItems(...) is type 
-                '${typeof (subject)}' must be a Token5e or Actor5e`
-                    ui.notifications.error(message)
-                    console.log(message)
-                    return (false)
+                        '${typeof (subject)}' must be a Token5e or Actor5e`
+                    return jez.badNews(message,"e")
                 }
             }
         } else {
@@ -891,10 +785,8 @@ class jez {
                 actor5e = jez.getTokenById(subject).actor
             else {
                 message = `Subject parm passed to jez.deleteItems(...) is not a Token5e, 
-            Actor5e, or Token.id: ${subject}`
-                ui.notifications.error(message)
-                console.log(message)
-                return (false)
+                    Actor5e, or Token.id: ${subject}`
+                return jez.badNews(message,"e")
             }
         }
         //----------------------------------------------------------------------------------------------
@@ -902,21 +794,17 @@ class jez {
         //
         if (typeof (type) != "string") {
             message = `Type parm passed to jez.deleteItems(...) is '${typeof (type)}'.  It
-        must be a string identifying a FoundryVTT item type (e.g. spell, weapon).`
-            ui.notifications.error(message)
-            console.log(message)
-            return (false)
+                must be a string identifying a FoundryVTT item type (e.g. spell, weapon).`
+            return jez.badNews(message,"e")
         }
         //----------------------------------------------------------------------------------------------
         // Look for matches and delete them.  Generating a message for each deletion
         //
         while (itemFound = actor5e.items.find(item => item.data.name === itemName &&
             item.type === type)) {
-            // jez.log("itemFound", itemFound)
             await itemFound.delete();
             message = `Deleted ${type}: "${itemName}"`      // Set notification message
-            ui.notifications.info(message);
-            // jez.log(message);
+            jez.badNews(message,"i");
         }
     }
     /***************************************************************************************************
@@ -1342,8 +1230,7 @@ class jez {
         let itemObj = game.items.getName(ItemName)
         if (!itemObj) {
             let msg = `Failed to find ${ItemName} in the Items Directory`
-            ui.notifications.error(msg);
-            // postResults(msg)
+            jez.badNews(msg,"e");
             return (false)
         }
         return (token5e.actor.createEmbeddedDocuments("Item", [itemObj.data]))
@@ -1394,8 +1281,7 @@ class jez {
         let aActorItem = await jez.itemFindOnActor(token5e, itemName, itemType)
         if (!aActorItem) {
             let msg = `Failed to find ${itemName} on ${token5e.name}`
-            ui.notifications.error(msg);
-            // postResults(msg)
+            jez.badNews(msg,"e");
             return (false)
         }
         //----------------------------------------------------------------------------------------------
@@ -1439,7 +1325,7 @@ class jez {
         const TAG = `${FNAME} |`
         const TL = 0
         if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`);
         //-----------------------------------------------------------------------------------------------
         // Process the args to see what we have.  Two is effect.uuid mode, Four is older, others are bad
         //
@@ -1505,7 +1391,7 @@ class jez {
      **************************************************************************************************************/
     static async pairEffects(...args) {
         const FUNCNAME = "jez.pairEffects(...args)"
-        let trcLvl = 0;
+        let trcLvl = 5;
         jez.trc(3, trcLvl, `=== Called ${FUNCNAME} ===`)
         for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `jez.pairEffects | args[${i}]`, args[i]);
         if (args.length !== 2 && args.length !== 4)
@@ -1526,7 +1412,7 @@ class jez {
         // Make sure the macro that will be called later exists.  Throw an error and return if not
         //
         let pairingMacro = game.macros.find(i => i.name === "Remove_Paired_Effect");
-        if (!pairingMacro) return ui.notifications.error("REQUIRED: Remove_Paired_Effect macro is missing.");
+        if (!pairingMacro) return jez.badNews("REQUIRED: Remove_Paired_Effect macro is missing.","e");
         //---------------------------------------------------------------------------------------------------------
         // Execute with two or four arguments
         //
@@ -1553,9 +1439,9 @@ class jez {
             // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
             //
             actor1 = jez.getActor5eDataObj(subject1)
-            if (!actor1) return (ui.notfications.error("First subject not a token, actor, tokenId or actorId"))
+            if (!actor1) return jez.badNews("First subject not a token, actor, tokenId or actorId","e")
             actor2 = jez.getActor5eDataObj(subject2)
-            if (!actor2) return (ui.notfications.error("Second subject not a token, actor, tokenId or actorId"))
+            if (!actor2) return jez.badNews("Second subject not a token, actor, tokenId or actorId","e")
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the first token if we were handed a name and not a data object
             //
@@ -1605,15 +1491,23 @@ class jez {
      * Function to return the Actor5e data associated with the passed parameter.
      *
      * Parameters
-     *  - subject: actor, token, or token Id to be searched
+     *  - subject: actor, token, token.id, actor.uuid to be searched (actor.id allowed as a legacy
+     *             option, but warning issued as it fetches actor in side bar for unlinked token)
+     *  - options: object that can set traceLvl
      *********1*********2*********3*********4*********5*********6*********7*********8*********9**********/
-    static getActor5eDataObj(subject) {
-        let mes = ""
+    static async getActor5eDataObj(subject, options={}) {
+        const FUNCNAME = "getActor5eDataObj(subject, options={})";
+        const FNAME = FUNCNAME.split("(")[0] 
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+        //-----------------------------------------------------------------------------------------------
+        // function variables
+        //
         let actor5e = null
-        const FUNCNAME = "jez.getActor5eDataObj(subject)"
-        //(`${FUNCNAME} received`, subject)
         //----------------------------------------------------------------------------------------------
-        // Validate the subject parameter, stashing it into "actor5e" variable, returning false is bad
+        // Validate the subject parameter, stashing it into "actor5e" variable, returning false if bad
         //
         if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") {
@@ -1625,33 +1519,49 @@ class jez {
                     actor5e = subject
                     return (actor5e)
                 }
-                else {
-                    mes = `Object passed to ${FUNCNAME} is type "${typeof (subject)}" must be Token5e or Actor5e`
-                    ui.notifications.error(mes)
-                    // jez.log(mes)
-                    return (false)
-                }
+                else return jez.badNews(`${TAG} subject "${typeof (subject)}" not Token5e or Actor5e`, "e")
             }
         }
-        else {                  // subject is not an object maybe it is 16 char string? 
-            // jez.log("subject is not an object maybe it is 16 char string?", subject)
+        else {                  // subject is not an object maybe it is a char string? 
+            // 
+            if (TL > 2) jez.trace(`${TAG} subject '${subject}' might be a UUID?`)
+            if ((typeof (subject) === "string") && (subject.length > 16)) {
+                // Unlinked Actor UUID:  Scene.MzEyYTVkOTQ4NmZk.Token.yibY6FvT68UOu8LI
+                // Linked Actor UUID:    Actor.SWpOylFL0LiqEzWN
+                const ATOMS = subject.split('.')
+                if (ATOMS[0] === "Scene" && ATOMS[2] === "Token") { // Unlinked UUID
+                    if (TL > 2) jez.trace(`${TAG} Process unlinked UUID: ${subject}`)
+                    let tokenDocument5e = await fromUuid(subject)
+                    if (TL > 2) jez.trace(`${TAG} tokenDocument5e`, tokenDocument5e)
+                    actor5e = tokenDocument5e._actor
+                    if (TL > 2) jez.trace(`${TAG} actor5e`, actor5e)
+                    if (actor5e) return actor5e
+                }
+                if (ATOMS[0] === "Actor" ) {                          // Linked UUID
+                    if (TL > 2) jez.trace(`${TAG} Process linked UUID: ${subject}`)
+                    actor5e = await fromUuid(subject)
+                    if (actor5e) return actor5e
+                }
+            }
+            // 
+            if (TL > 2) jez.trace(`${TAG} subject '${subject}' might be an 16 character id?`)
             if ((typeof (subject) === "string") && (subject.length === 16)) {
                 actor5e = jez.getTokenById(subject)?.actor// Maybe string is a token id?
                 if (actor5e) return (actor5e)             // Subject is a token ID 
                 actor5e = canvas.tokens.placeables.find(ef => ef.data.actorId === subject).actor
-                if (actor5e) return (actor5e)             // Subject is an actorID embedded in a scene token 
+                if (actor5e) {                            // Subject is an actorID embedded in a scene token 
+                    jez.badNews(`${TAG} '${subject}' is an actor.id, indeterminent for unlinked tokens`,"w")
+                    return (actor5e)             
+                }
                 actor5e = game.actors.get(subject)        // Maybe string is an actor id?
-                if (actor5e) return (actor5e)             // Subject is an actor ID 
-                mes = `Subject parm passed to ${FUNCNAME} looks like an id but does not map to a token or actor: ${subject}`
-                ui.notifications.error(mes)
-                // jez.log(mes)
-                return (false)
+                if (actor5e) {                            // Subject is an actor ID 
+                    jez.badNews(`${TAG} '${subject}' is an actor.id, indeterminent for unlinked tokens`,"w")
+                    return (actor5e)             
+                }
+                return jez.badNews(`${TAG} subject looks like an id but does not map to a token or actor: ${subject}`, "e")
             }
-            else {                                      // Oh fudge, subject is something unrecognized
-                mes = `Subject parm passed to ${FUNCNAME} is not a Token5e, Actor5e, Token.id, or Actor.id: ${subject}`
-                ui.notifications.error(mes)
-                // jez.log(mes)
-                return (false)
+            else {                                        // Oh fudge, subject is something unrecognized
+                return jez.badNews(`${TAG} subject not Token5e, Actor5e, Token.id, or Actor.id: ${subject}`, "e")
             }
         }
     }
@@ -1680,50 +1590,43 @@ class jez {
                 let tokens = effect.split(".")
                 if (tokens.length != 4) {
                     mes = `BAD NEWS: ${FUNCNAME}'s effect tokenized to ${tokens.length} elements`
-                    ui.notifications.error(mes); jez.log(mes); return (false)
+                    return jez.badNews(mes,"e")
                 }
                 if (tokens[1].length != 16) {
                     mes = `BAD NEWS: Second token of ${FUNCNAME}'s effect was invalid length (tokens[1].length)`
-                    ui.notifications.error(mes); jez.log(mes); return (false)
+                    return jez.badNews(mes,"e")
+                    
                 }
                 if (tokens[2] != "ActiveEffect") {
                     mes = `BAD NEWS: Third token of ${FUNCNAME}'s effect was not 'ActiveEffect'`
-                    ui.notifications.error(mes); jez.log(mes); return (false)
+                    return jez.badNews(mes,"e")
                 }
                 if (tokens[3].length != 16) {
                     mes = `BAD NEWS: Forth token of ${FUNCNAME}'s effect was invalid length (tokens[1].length)`
-                    ui.notifications.error(mes); jez.log(mes); return (false)
+                    return jez.badNews(mes,"e")
                 }
                 effectUuid = effect
-                // jez.log(`effectUuid directly provided`, effectUuid)
             }
             else {
                 mes = `BAD NEWS: effect is not a valid UUID and no subject provided.`
-                ui.notifications.error(mes); jez.log(mes); return (false)
+                return jez.badNews(mes,"e")
             }
         }
         else {  // Must have been passed a subject, so see if parameters are valid
             //------------------------------------------------------------------------------------------
             // Obtain an Actor5e data object from subject
             //
-            // jez.log(`Calling jez.getActor5eDataObj(subject) with`, subject)
             let actor5e = jez.getActor5eDataObj(subject)
-            if (!actor5e) {
-                mes = `BAD NEWS: actor data object not found for subject parm in ${FUNCNAME}`
-                ui.notifications.error(mes); jez.log(mes); return (false)
-            }
+            if (!actor5e) return jez.badNews(`actor data obj not found for ${FUNCNAME} subject`,'e')
             //------------------------------------------------------------------------------------------
             // effect needs to be an id (16 character string) or a string providing name of effect
             //
-            if (typeof (effect) != "string") {
-                mes = `BAD NEWS: Subject parameter of ${FUNCNAME}'s effect needs to be a string, is a ${typeof (effect)}`
-                ui.notifications.error(mes); jez.log(mes); return (false)
-            }
+            if (typeof (effect) != "string") 
+                return jez.badNews(`${FUNCNAME}'s effect needs to be a string, is a ${typeof (effect)}`,"e")
             //------------------------------------------------------------------------------------------
             // Assemble a UUID (which may have a name string embedded in place of an actual id)
             //
             effectUuid = `Actor.${actor5e.id}.ActiveEffect.${effect}`
-            // jez.log(`effectUuid from data pair`, effectUuid)
         }
         //----------------------------------------------------------------------------------------------
         // Now that things are validated, fetch the actor's data
@@ -1734,9 +1637,8 @@ class jez {
         let actor5e = jez.getActor5eDataObj(ACTOR_ID)
         if (!actor5e) {
             mes = `BAD NEWS: ${FUNCNAME} could not find actor from ID ${ACTOR_ID}`
-            ui.notifications.error(mes); jez.log(mes); return (false)
+            return jez.badNews(mes,"e")
         }
-        // jez.log(`Actor5e ${actor5e.name}`, actor5e)
         //----------------------------------------------------------------------------------------------
         // 
         //
@@ -1745,10 +1647,8 @@ class jez {
         //let effectData = await actor5e.effects.find(i => i.name === tokens[3]);
         if (!effectData) {
             mes = `BAD NEWS: ${FUNCNAME} could not find "${tokens[3]}" on ${actor5e.name}`
-            ui.notifications.error(mes); jez.log(mes); return (false)
+            return jez.badNews(mes,"e")
         }
-        // jez.log(`Effect ${effectData.name}`, effectData)
-        // jez.log(`-------------- Finished --- ${FUNCNAME} -----------------`);
         return (effectData)
     }
 
@@ -1798,7 +1698,7 @@ class jez {
         if (typeof message !== "string") {
             let msg = `The message paramater passed to badNews must be a string.  Bad, bad, programmer.`
             console.log(msg, message)
-            ui.notifications.error(`ERROR: ${msg}`)
+            ui.notifications.error(`ERROR: ${msg}`,msg)
             return (false)
         }
         if (typeof badness === "string") {
@@ -1839,9 +1739,7 @@ class jez {
      * matches = itemMgmt_itemCount(tActor.items.contents, nameOfItem, typeOfItem)   // matches on actor
      * if (matches > 1) {
      *    msg = `Item for "${nameOfItem}" of type "${typeOfItem}" not unique in Item Directory.`
-     *    console.log(msg)
-     *    ui.notifications.warn(msg)
-     *    return (false)
+     *    return jez.badNews(msg,"w")
      * }
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
     static itemMgmt_itemCount(array, name, type) {

@@ -1,4 +1,4 @@
-const MACRONAME = "Ensnaring_Strike_0.4.js"
+const MACRONAME = "Ensnaring_Strike_0.5.js"
 /*******************************************************************************************
  * Implement Ensnaring Strike
  * 
@@ -27,6 +27,7 @@ const MACRONAME = "Ensnaring_Strike_0.4.js"
  * 12/28/21 0.2 JGB Continued Development
  * 12/28/21 0.3 JGB Add dialog to make skill check to escape an option
  * 07/29/22 0.4 JGB Add convenientDescription, fixed bug from Midi change, paired effect
+ * 12/06/22 0.5 JGB Problem discovered: Error: User Joe M. lacks permission to update Token 
  *******************************************************************************************/
 const DEBUG = true;
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -382,7 +383,8 @@ async function doBonusDamage() {
     //
     // await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [CONC.id] });
     await jez.wait(100)
-    jez.pairEffects(aActor, "Concentrating", target.actor, spellItem.name)
+    log(`jez.pairEffects(aActor, "Concentrating", target.actor, ${spellItem.name})`)
+    jez.pairEffectsAsGM(aActor, "Concentrating", target.actor, spellItem.name) // --> Permission problem for players
     log("--------------doBonusDamage---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
     return {
         damageRoll: `${spellLevel}d6[${damageType}]`,

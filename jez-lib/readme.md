@@ -490,7 +490,7 @@ A series of functions that return simple integer values or false on errors with 
 #### And Two more
 Two additional get functions intended to make handling the overloaded inputs a bit easier to code:
 
-- **jez.getActor5eDataObj(subject)** -- Function to return the Actor5e data associated with the passed parameter. The subject can be  actor5e data object, token5e data object, token Id or actor Id
+- **jez.getActor5eDataObj(subject)** -- Function to return the Actor5e data associated with the passed parameter. The subject can be  actor5e data object, token5e data object, token.id or actor.uuid. Also accepts actor.id with a warning as it returns the sidebar actor for unlinked tokens.
 - **getEffectDataObj(effect, subject)** -- Function to return the Effect data object identified by arguments. The **effect** parameter can be either a string naming the effect, an id or a uuid, e.g. 52 character string: `Actor.i9vqeZXzvIcdZ3BU.ActiveEffect.DmvGS7OsCz3HoggP`. **Subject** (optional) identifies the actor with effect in question, it just be a type supported by getActor5eDataObj, this parameter is not required if effect is a UUID.
 
 [*Back to Functions list*](#functions-in-this-module)
@@ -1003,7 +1003,7 @@ Add a macro execute line calling the macro "Remove_Paired_Effect" which must exi
 
 Note: This operates on effect by name which can result in unexpected results if multiple effects on a an actor have the same name.  Not generally an issue, but it might be.
 
-* **subject1** & **subject2** are types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.id)
+* **subject1** & **subject2** are types supported by jez.getActor5eDataObj (actor5e, token5e, token5e.id, actor5e.uuid)
 * **effectName1** & **effectName2** are strings that name effects on their respective token actors.
 
 <details> <summary>Simple Example (that fails for players)</summary>
