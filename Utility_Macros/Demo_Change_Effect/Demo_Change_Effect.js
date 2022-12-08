@@ -1,4 +1,4 @@
-let MACRONAME = "Demo_Change_Effect.js"
+let MACRONAME = "Demo_Change_Effect.0.2.js"
 /*****************************************************************************************
  * Demonstrate changing of an existing condition.  
  * 
@@ -8,6 +8,7 @@ let MACRONAME = "Demo_Change_Effect.js"
  *  3. Change the condition to include an OverTime save and damage element. 
  * 
  * 02/22/22 0.1 Creation of Macro
+ * 12/07.22 0.2 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -121,7 +122,7 @@ saveRemove=true, damageRoll=${NUM_DICE}d10, saveMagic=true, damageType=psychic`
   // Grab the data for the two effects to be paired
   //
   await jez.wait(100)
-  jez.pairEffects(tToken.actor, CONDITION1, aActor, CONDITION2)
+  jez.pairEffectsAsGM(tToken.actor, CONDITION1, aActor, CONDITION2)
   jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
   return (true);
 }

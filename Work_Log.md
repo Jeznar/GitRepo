@@ -443,6 +443,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.08 Updated Crown of Madness: Swapped effect.update to jez.setCEDescAsGM to fix permission issue
 
+22.12.08 Updated a swarm of macros to use pairEffectsAsGM to resolve permission issues
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

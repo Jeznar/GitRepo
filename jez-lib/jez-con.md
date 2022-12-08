@@ -220,6 +220,47 @@ for (let i = 0; i < failSaves.length; i++) {
 ~~~
 </details>
 
+<details> <summary>Example from Wrathful Smite</summary>
+
+This one adds an overTime effect to an array of target tokens and builds a list of UUIDs for subsequent removal by a modified concentration effect. 
+
+The base effect needs the following changes:
+
+1. Add macroRepeat at the startEveryTurn: flags.dae = { macroRepeat: "startEveryTurn" }
+2. Add CEDesc: flags.convenientDescription: CE_DESC
+3. Add itemMacro call: { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `'${aToken.name}' ${SAVE_DC}`, priority: 20 }
+
+~~~javascript
+//----------------------------------------------------------------------------------------------------------
+// Chill a moment then fetch, modify and apply the CE "frightened" effect.
+//
+// const SAVE_DC = aToken.actor.data.data.attributes.spelldc;
+// const CE_DESC = `Disadvantage on ability checks and attack rolls while ${aToken.name} is visible and may not approach.`
+//
+await jez.wait(100);
+// Retrieve as an object, the "Frightened" Convenient Effect for modification
+let effectData = game.dfreds.effectInterface.findEffectByName("Frightened").convertToObject();
+if (TL > 3) jez.trace(`${TAG} effectData obtained`, effectData)
+// Add the startEveryTurn
+effectData.flags.dae.macroRepeat ="startEveryTurn"
+// Change the convenient description to one specific to this spell
+const CE_DESC = `Disadvantage on ability checks and attack rolls while ${aToken.name} is visible and may not approach.`
+effectData.description = CE_DESC
+// Define the new effect line
+effectData.changes.push(
+    { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `'${aToken.name}' ${SAVE_DC}`, priority: 20 },
+)
+if (TL > 3) jez.trace(`${TAG} effectData changes`, effectData)
+await jez.wait(100);
+// Slap the updated CE onto our targeted actor
+await game.dfreds.effectInterface.addEffectWith({
+    effectData: effectData,
+    uuid: tActor.uuid,
+    origin: itemUuid,
+});
+if (TL > 1) jez.trace(`${FNAME} | Active Effect Frightened updated!`);
+~~~
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 

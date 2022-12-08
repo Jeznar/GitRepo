@@ -1,4 +1,4 @@
-const MACRONAME = "Wrathful_Smite.0.3.js"
+const MACRONAME = "Wrathful_Smite.0.4.js"
 /*****************************************************************************************
  * Implment Wrathful Smite!
  * 
@@ -7,25 +7,26 @@ const MACRONAME = "Wrathful_Smite.0.3.js"
  * 01/25/22 0.1 Add headers and VFX
  * 05/04/22 0.2 Update for Foundry 9.x
  * 08/01/22 0.3 Fix to accomodate change in Midi (flags.midi-qol.itemDetails needs OVERIDE)
+ * 12/08/22 0.4 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
  *****************************************************************************************/
- const MACRO = MACRONAME.split(".")[0]      // Trim of the version number and extension
- const TL = 0;                              // Trace Level for this macro
- let msg = "";                              // Global message string
- //---------------------------------------------------------------------------------------------------
- if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
- if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+const MACRO = MACRONAME.split(".")[0]      // Trim of the version number and extension
+const TL = 0;                              // Trace Level for this macro
+let msg = "";                              // Global message string
+//---------------------------------------------------------------------------------------------------
+if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
+if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 //---------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
-let aToken;         
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
+let aToken;
+if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
 else aToken = game.actors.get(LAST_ARG.tokenId);
 if (TL > 3) jez.trace(`aToken`, aToken);
-let aActor = aToken.actor; 
+let aActor = aToken.actor;
 //
 // Set the value for the Active Item (aItem)
-let aItem;         
-if (args[0]?.item) aItem = args[0]?.item; 
+let aItem;
+if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 if (TL > 3) jez.trace(`aItem`, aItem);
 //---------------------------------------------------------------------------------------------------
@@ -49,8 +50,8 @@ if (TL > 3) jez.trace(`Forking....${args[0]?.tag}`, args[0]);
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE everyround
 // DamageBonus must return a function to the caller
-if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
-if (TL>1) jez.trace(`=== Starting === ${MACRONAME} ===`);
+if (args[0]?.tag === "DamageBonus") return (doBonusDamage());
+if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -90,33 +91,33 @@ async function doOnUse() {
         origin: LAST_ARG.uuid,
         disabled: false,
         duration: { rounds: 1, seconds: 6, startRound: gameRound, startTime: game.time.worldTime },
-        flags: { 
+        flags: {
             dae: { itemData: aItem, specialDuration: ["DamageDealt"] },
             convenientDescription: CE_DESC
         },
         icon: aItem.img,
         label: aItem.name
     }];
-    await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:aToken.actor.uuid, effects: effectData });
+    await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: effectData });
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
- async function doBonusDamage() {
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function doBonusDamage() {
     const FUNCNAME = "doBonusDamage()";
-    const FNAME = FUNCNAME.split("(")[0] 
+    const FNAME = FUNCNAME.split("(")[0]
     const TAG = `${MACRO} ${FNAME} |`
-    if (TL>1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);
     //-----------------------------------------------------------------------------------------------
-    // Comments, perhaps
+    // 
     //
     if (!["mwak"].includes(LAST_ARG.item.data.actionType)) return {};
     let tToken = canvas.tokens.get(LAST_ARG.hitTargets[0].id);
     let tActor = tToken.actor
     let itemUuid = getProperty(LAST_ARG.actor.flags, "midi-qol.itemDetails");
-    if (TL>2) jez.trace(`${TAG} itemUuid`,itemUuid);
+    if (TL > 2) jez.trace(`${TAG} itemUuid`, itemUuid);
     let sItem = await fromUuid(itemUuid);
-    if (TL>2) jez.trace(`${TAG} sItem`,sItem);
+    if (TL > 2) jez.trace(`${TAG} sItem`, sItem);
     let aItem = LAST_ARG.item;
     let numDice = LAST_ARG.isCritical ? 2 : 1;
     let saveOptions = tToken.actor.data.type === "character" ? { chatMessage: false, fastForward: false } : { chatMessage: false, fastForward: true };
@@ -140,36 +141,51 @@ async function doOnUse() {
     //     
     if (save.total < SAVE_DC) {
         saveSuccess = "fails";
-        if (TL>2) jez.trace("Next Frightened condition", tToken.actor)
-        await jezcon.addCondition("Frightened", LAST_ARG.targetUuids, 
-        {allowDups: true, replaceEx: false, origin: sItem.uuid, overlay: false, traceLvl: 5 }) 
-        if (TL>2) jez.trace("Added Frightened condition", tToken.actor)
         //----------------------------------------------------------------------------------------------------------
-        // Chill a bit and then pair the effects
+        // Chill a moment then fetch, modify and apply the CE "frightened" effect.
+        //
+        // const SAVE_DC = aToken.actor.data.data.attributes.spelldc;
+        // const CE_DESC = `Disadvantage on ability checks and attack rolls while ${aToken.name} is visible and may not approach.`
+        //
+        // The base effect needs the following changes:
+        //  1. Add macroRepeat at the startEveryTurn: flags.dae = { macroRepeat: "startEveryTurn" }
+        //  2. Add CEDesc: flags.convenientDescription: CE_DESC
+        //  3. Add itemMacro call: { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `'${aToken.name}' ${SAVE_DC}`, priority: 20 }
         //
         await jez.wait(100);
-        jez.pairEffects(aActor, "Concentrating", tActor, "Frightened")
-        //----------------------------------------------------------------------------------------------------------
-        // Chill again and update the frightened effect
-        //
-        await jez.wait(100);
-        let effect = await tActor.effects.find(i => i.data.label === "Frightened");
-        if (!effect) return jez.badNews(`Could not find Frightened on ${tToken.name}`,"e")
-        effect.data.flags.dae = { macroRepeat: "startEveryTurn" }
+        // Retrieve as an object, the "Frightened" Convenient Effect for modification
+        let effectData = game.dfreds.effectInterface.findEffectByName("Frightened").convertToObject();
+        if (TL > 3) jez.trace(`${TAG} effectData obtained`, effectData)
+        // Add the startEveryTurn
+        effectData.flags.dae.macroRepeat ="startEveryTurn"
+        // Change the convenient description to one specific to this spell
         const CE_DESC = `Disadvantage on ability checks and attack rolls while ${aToken.name} is visible and may not approach.`
-        effect.data.flags.convenientDescription = CE_DESC
-        await effect.data.update({ flags: effect.data.flags });
-        await jez.wait(50)
-        effect.data.changes.push(
+        effectData.description = CE_DESC
+        // Define the new effect line
+        effectData.changes.push(
             { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `'${aToken.name}' ${SAVE_DC}`, priority: 20 },
-            // { key: "flags.midi-qol.itemDetails", mode: jez.OVERRIDE, value: `${LAST_ARG.uuid}`, priority: 20 },
         )
-        // Update the change into game data
-                const RESULT = await effect.update({ 'changes': effect.data.changes });
-        if (RESULT && TL>1) jez.trace(`${FNAME} | Active Effect Frightened updated!`, RESULT);
+        if (TL > 3) jez.trace(`${TAG} effectData changes`, effectData)
+        await jez.wait(100);
+        // Slap the updated CE onto our targeted actor
+        await game.dfreds.effectInterface.addEffectWith({
+            effectData: effectData,
+            uuid: tActor.uuid,
+            origin: itemUuid,
+        });
+        if (TL > 1) jez.trace(`${FNAME} | Active Effect Frightened updated!`);
     } else {
-        await MidiQOL.socket().executeAsGM("removeEffects",{actorUuid:aToken.actor.uuid, effects: [conc.id] });
+        await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [conc.id] });
     }
+    //----------------------------------------------------------------------------------------------------------
+    // Chill a bit and then pair the effects
+    //
+    await jez.wait(100);
+    jez.pairEffectsAsGM(aActor, "Concentrating", tActor, "Frightened")
+
+    //-----------------------------------------------------------------------------------------------
+    // Do mysterious stuff to chat card
+    //
     await jez.wait(500);
     let msgHistory = [];
     game.messages.reduce((list, message) => {
@@ -222,21 +238,21 @@ async function doEach() {
     // If we're attempting a check, do it!
     //
     if (confirmation) {
-        if (TL>2) jez.trace(`${TAG} Attempting Saving Throw`);
+        if (TL > 2) jez.trace(`${TAG} Attempting Saving Throw`);
         let check = (await aActor.rollAbilityTest("wis",
             { flavor: "Flavor Text", chatMessage: true, fastforward: true })).total;
         if (check >= SAVE_DC) {
-            if (TL>2) jez.trace(`${TAG} Successful Saving Throw, ${check} vs DC${SAVE_DC}`);
-            await jezcon.remove("Frightened", aActor.uuid, {traceLvl: 5});
+            if (TL > 2) jez.trace(`${TAG} Successful Saving Throw, ${check} vs DC${SAVE_DC}`);
+            await jezcon.remove("Frightened", aActor.uuid, { traceLvl: 5 });
             bubbleForAll(aToken.id, `${oTokenName} isn't that frightening after all!`, true, true)
         } else {
-            if (TL>2) jez.trace(`${TAG} Failed Saving Throw, ${check} vs DC${SAVE_DC}`);
+            if (TL > 2) jez.trace(`${TAG} Failed Saving Throw, ${check} vs DC${SAVE_DC}`);
             bubbleForAll(aToken.id, `${oTokenName} is just too frightening.`, true, true)
         }
     } else {
-        if (TL>2) jez.trace(`${TAG} Skipping Saving Throw`);
+        if (TL > 2) jez.trace(`${TAG} Skipping Saving Throw`);
         bubbleForAll(aToken.id, `Maybe if I stay away from ${oTokenName}?`, true, true)
     }
-    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }

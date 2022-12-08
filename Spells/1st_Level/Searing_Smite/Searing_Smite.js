@@ -1,4 +1,4 @@
-const MACRONAME = "Searing_Smite.0.3.js"
+const MACRONAME = "Searing_Smite.0.4.js"
 /*****************************************************************************************
  * Original downloaded from https://www.patreon.com/posts/searing-smite-56611523
  * 
@@ -6,6 +6,7 @@ const MACRONAME = "Searing_Smite.0.3.js"
  * 12/27/21 0.1 JGB Add lighting effect for the "on fire" victim
  * 01/25/22 0.2 JGB Add VFX
  * 05/05/22 0.3 Change ATL.dimLight etc. to ATL.light.dim etc. for 9.x
+ * 12/08/22 0.4 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
  *****************************************************************************************/
  const DEBUG = true;
  const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
@@ -119,7 +120,7 @@ if (lastArg.tag === "DamageBonus") {
     //
     // await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [CONC.id] });
     await jez.wait(100)
-    jez.pairEffects(aToken.actor, "Concentrating", target.actor, spellItem.name)
+    jez.pairEffectsAsGM(aToken.actor, "Concentrating", target.actor, spellItem.name)
     //-------------------------------------------------------------------------------------------------------------
     // Return the damage function
     //

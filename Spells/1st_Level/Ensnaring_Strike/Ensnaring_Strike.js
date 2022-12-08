@@ -1,4 +1,4 @@
-const MACRONAME = "Ensnaring_Strike_0.5.js"
+const MACRONAME = "Ensnaring_Strike_0.6.js"
 /*******************************************************************************************
  * Implement Ensnaring Strike
  * 
@@ -28,59 +28,39 @@ const MACRONAME = "Ensnaring_Strike_0.5.js"
  * 12/28/21 0.3 JGB Add dialog to make skill check to escape an option
  * 07/29/22 0.4 JGB Add convenientDescription, fixed bug from Midi change, paired effect
  * 12/06/22 0.5 JGB Problem discovered: Error: User Joe M. lacks permission to update Token 
+ * 12/08/22 0.6 JGB Several problems addresed
  *******************************************************************************************/
-const DEBUG = true;
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-// const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
-
+ const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 0;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //---------------------------------------------------------------------------------------------------
+ if (TL>1) jez.trace(`${TAG} === Starting ===`);
+ if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+ //---------------------------------------------------------------------------------------------------
+ // Set standard variables
+ let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+ let aActor = aToken.actor; 
+ let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+ const VERSION = Math.floor(game.VERSION);
+ const GAME_RND = game.combat ? game.combat.round : 0;
+ //---------------------------------------------------------------------------------------------------
+ // Set Macro specific globals
+ //
 const DEBUFF_NAME = "Restrained" // aItem.name || "Nature's Wraith";
 const DEBUFF_ICON = "modules/combat-utility-belt/icons/restrained.svg"
 const SAVE_TYPE = "str"
 const JOURNAL_RESTRAINED = "<b>@JournalEntry[CZWEqV2uG9aDWJnD]{restrained}</b>"
-log("---------------------------------------------------------------------------",
-    "Starting", `${MACRONAME} or ${MACRO}`);
-for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-
-let gameRound = game.combat ? game.combat.round : 0;
-
-//---------------------------------------------------------------------------------------
-// Set some global variables and constants
-//
-let msg = "";
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-
-//---------------------------------------------------------------------------------------
-// Define some additional handy global variables that I need often.  Not all will be used
-// in this macro, but I want them here for future use/reference.
-//
-// See https://gitlab.com/tposney/dae#lastarg for info on what is included in lastArg
-//
-const lastArg = args[args.length - 1];
-if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
-if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
-let spellLevel = lastArg?.spellLevel;
-
-log("------- Obtained Global Values -------",
-    `Active Token (aToken) ${aToken.name}`, aToken,
-    `Active Actor (aActor) ${aActor.name}`, aActor,
-    `Active Item (aItem) ${aItem.name}`, aItem,
-    "spellLevel", spellLevel);
-
 //-------------------------------------------------------------------------------
 // Depending on where invoked call appropriate function to do the work
 //
-if (args[0]?.tag === "OnUse") await doOnUse();      // Midi ItemMacro On Use
-if (args[0] === "on") await doOn();          		        // DAE Application
-if (args[0] === "each") await doEach();					    // DAE removal
-if (args[0]?.tag === "DamageBonus") await doBonusDamage();    // DAE Damage Bonus
-
-log("---------------------------------------------------------------------------",
-    "Finishing", MACRONAME);
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});      
+if (args[0] === "on") await doOn({traceLvl:TL});          	
+if (args[0] === "each") await doEach({traceLvl:TL});		
+if (args[0]?.tag === "DamageBonus") await doBonusDamage({traceLvl:TL}); 
+if (TL>1) jez.trace(`${TAG} === Finished ===`);
 return;
-
 /***************************************************************************************
 *    END_OF_MAIN_MACRO_BODY
 *                                END_OF_MAIN_MACRO_BODY
@@ -89,25 +69,32 @@ return;
 /**************************************************************************************
 * Execute code for a ItemMacro onUse
 ***************************************************************************************/
-async function doOnUse() {
-    const FUNCNAME = "doOnUse()";
-    let saveDC = aToken.actor.data.data.attributes.spelldc;
-    log("---------------------------------------------------------------------------",
-        "Starting", `${MACRONAME} ${FUNCNAME}`,
-        "saveDC", saveDC);
-
+async function doOnUse(options={}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    await jez.wait(100)
+    //-----------------------------------------------------------------------------------------------
+    //
+    const SAVE_DC = aToken.actor.data.data.attributes.spelldc;
+    const SPELL_LVL = L_ARG.spellLevel
+    //-----------------------------------------------------------------------------------------------
+    //
     let effectData = [{
         changes: [
             { key: "flags.dnd5e.DamageBonusMacro", mode: jez.CUSTOM, value: `ItemMacro.${aItem.name}`, priority: 20 },
-            { key: "flags.midi-qol.spellLevel", mode: jez.OVERRIDE, value: `${spellLevel}`, priority: 20 },
-            { key: "flags.midi-qol.spellId", mode: jez.OVERRIDE, value: `${lastArg.uuid}`, priority: 20 },
+            { key: "flags.midi-qol.spellLevel", mode: jez.OVERRIDE, value: `${SPELL_LVL}`, priority: 20 },
+            { key: "flags.midi-qol.spellId", mode: jez.OVERRIDE, value: `${L_ARG.uuid}`, priority: 20 },
         ],
-        origin: lastArg.uuid,
+        origin: L_ARG.uuid,
         disabled: false,
-        duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
+        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         flags: { 
             dae: { itemData: aItem, specialDuration: ["DamageDealt"] },
-            convenientDescription: `Next weapon attack forces DC${saveDC} STR Save or be Restrained and take DoT`
+            convenientDescription: `Next weapon attack forces DC${SAVE_DC} STR Save or be Restrained and take DoT`
          },
         icon: aItem.img,
         label: aItem.name
@@ -119,243 +106,180 @@ async function doOnUse() {
     //
     msg = `<p style="color:blue;font-size:14px;">
         <b>${aToken.name}</b> will attemt to apply ${JOURNAL_RESTRAINED} on next hit.  
-        Target may make a <b>DC${saveDC}</b> ${CONFIG.DND5E.abilities[SAVE_TYPE]} save to avoid.
+        Target may make a <b>DC${SAVE_DC}</b> ${CONFIG.DND5E.abilities[SAVE_TYPE]} save to avoid.
         </p>`
     postResults(msg);
-    log("---------------------------------------------------------------------------",
-        `Finished`, `${MACRONAME} ${FUNCNAME}`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return;
 }
-
-/****************************************************************************************
- * Execute code for a DAE Macro application (on) 
- ***************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    let saveDC = args[1];
-    log("--------------On----------------------",
-        "Starting", `${MACRONAME} ${FUNCNAME}`,
-        `aActor ${aActor.name}`, aActor,
-        `aToken ${aToken.name}`, aToken,
-        `saveDC`, saveDC);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Perform the code that runs when this macro is removed by DAE, set On
+ * This runs on actor that has the affected applied to it.
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+async function doOn(options={}) {
+    const FUNCNAME = "doOn(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    //-----------------------------------------------------------------------------------------------
+    //
+    const SAVE_DC = args[1];
     //---------------------------------------------------------------------------------------
     // If the target is large or larger, it should have advantage on its save
     //
     let targetSize = getSizeInfo(aToken);
     let adv = false;
     let flavor = `<b>${aToken.name}</b> attempts a 
-    ${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${saveDC}</b> save to avoid <b>${DEBUFF_NAME}</b>
+    ${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> save to avoid <b>${DEBUFF_NAME}</b>
     effect from ensnaring strike.`;
-    log(`${aToken.name} is ${targetSize.nameStr} with a value of ${targetSize.value}`)
+    if (TL > 1) jez.trace(`${TAG} ${aToken.name} is ${targetSize.nameStr} with a value of ${targetSize.value}`)
     if (targetSize.value > 3) {
         adv = true
         flavor += `<br><br>Roll is made with <b>advantage</b> as ${aToken.name} is <b>${targetSize.nameStr}</b>`;
     }
-    log(`*** Make save with advantage? ${adv}`, flavor);
+    if (TL > 1) jez.trace(`${TAG} *** Make save with advantage? ${adv}`, flavor);
     //---------------------------------------------------------------------------------------
     // Have the target roll its saving throw
     //
     let save = null
     if (adv) save = (await aActor.rollAbilitySave(SAVE_TYPE, { flavor: flavor, advantage: "true", chatMessage: true, fastforward: true })).total;
     else save = (await aActor.rollAbilitySave(SAVE_TYPE, { flavor: flavor, chatMessage: true, fastforward: true })).total;
-    log("Result of save roll", save);
-    if (save >= saveDC) {
-        log(`save was made with a ${save}`);
+    if (TL > 1) jez.trace(`${TAG} Result of save roll`, save);
+    if (save >= SAVE_DC) {
+        if (TL > 1) jez.trace(`${TAG} save was made with a ${save}`);
         postResults(`save was made`);
         // remove the effect.
-    } else log(`save failed with a ${save}`);
+    } else if (TL > 1) jez.trace(`${TAG} save failed with a ${save}`);
     //---------------------------------------------------------------------------------------
     // If the target made the save remove the recently aplied effect
     //
-    if (save >= saveDC) {
-        msg = `${aToken.name} made its save.  Rolling ${save} vs ${saveDC} DC.`;
-        log(msg)
-        await wait(500)   // This pause allows the debuff to be placed by DAE before removal
-        log("After a brief pause, tToken.data", aToken.data)
+    if (save >= SAVE_DC) {
+        msg = `${aToken.name} made its save.  Rolling ${save} vs ${SAVE_DC} DC.`;
+        if (TL>0) jez.trace(`${TAG} ${msg}`)
+        await jez.wait(500)   // This pause allows the debuff to be placed by DAE before removal
+        if (TL > 1) jez.trace(`${TAG} After a brief pause, tToken.data`, aToken.data)
         //----------------------------------------------------------------------------------
         // Check for debuff matching DEBUFF_NAME.  If it exists, remove it.
         //
-        log(" aToken.data.effects", aToken.data.actorData.effects)
+        if (TL > 1) jez.trace(`${TAG}  aToken.data.effects`, aToken.data.actorData.effects)
+        let existingEffect = aActor.effects.find(ef => ef.data.label === DEBUFF_NAME) ?? null;
+
+        if (existingEffect) {
+            msg = `${aToken.name} has ${DEBUFF_NAME} effect`;
+            if (TL>0) jez.trace(`${TAG} ${msg}`, existingEffect);
+            await existingEffect.delete();
+        } else {
+            msg = `${aToken.name} lacked ${DEBUFF_NAME} effect.`;
+            if (TL>0) jez.trace(`${TAG} ${msg}`)
+        }
+    }
+    else {
+        msg = `${aToken.name} failed its save.  Rolling ${save} vs DC${SAVE_DC}.`;
+        if (TL>0) jez.trace(`${TAG} ${msg}`)
+    }
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
+    return;
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Perform the code that runs when this macro is invoked each round by DAE
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function doEach(options = {}) {
+    const FUNCNAME = "doEach(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    //-----------------------------------------------------------------------------------------------
+    //
+    const SAVE_DC = args[1];
+    //-----------------------------------------------------------------------------------------------
+    // Ask if ability check should be used to attempt to break the vines
+    // 
+    let confirmation = await Dialog.confirm({
+        title: '${aToken.name} Spend Action to Break Vines?',
+        content: `<p>The nasty vines are keeping <b>${aToken.name}</b> restrained.  
+        Would you like to use your action this round to attempt to break the vines making a 
+        <b>DC${SAVE_DC} Strength</b> check?</p>
+        <p>If so click <b>Yes</b>.</p>  
+        <p>If not click <b>No</b>.</p>`,
+    });
+    console.log(`confirmation`, confirmation)
+    //-----------------------------------------------------------------------------------------------
+    // If ignoring the vines, log it and return
+    // 
+    if (!confirmation) { // Actor is ignoring the vines
+        if (TL > 0) jez.trace(`${TAG} "Ignoring the vines"`)
+        return
+    }
+    //-----------------------------------------------------------------------------------------------
+    // Attempt escape
+    // 
+    if (TL > 0) jez.trace(`${TAG} "Attempting to break the vines"`)
+    let flavor = `${aToken.name} uses this turn's <b>action</b> to attempt a 
+        ${CONFIG.DND5E.abilities[SAVE_TYPE]} check vs <b>DC${SAVE_DC}</b> to end the 
+        <b>${DEBUFF_NAME}</b> effect from ensnaring strike.`; // doesn't do anything -- midi sets
+    let check = (await aActor.rollAbilityTest(SAVE_TYPE, {
+        flavor: flavor,
+        chatMessage: true,
+        fastforward: true
+    })).total;
+    if (TL > 1) jez.trace(`${TAG} Result of check roll`, check);
+    //---------------------------------------------------------------------------------------
+    // If the target made the save remove the effect
+    //
+    if (check >= SAVE_DC) {
+        msg = `${aToken.name} made its check.  Rolling ${check} vs ${SAVE_DC} DC.`;
+        if (TL > 0) jez.trace(`${TAG} ${msg}`);
+        //----------------------------------------------------------------------------------
+        // Check for debuff matching DEBUFF_NAME.  If it exists, remove it.
+        //
+        if (TL > 1) jez.trace(`${TAG}  aToken.data.effects`, aToken.data.actorData.effects);
         let existingEffect = aActor.effects.find(ef => ef.data.label === DEBUFF_NAME) ?? null;
 
         if (existingEffect) {
             msg = `${aToken.name} has ${DEBUFF_NAME} effect: `;
-            log(msg, existingEffect);
+            if (TL > 0) jez.trace(`${TAG} ${msg}`, existingEffect)
             await existingEffect.delete();
         } else {
             msg = `${aToken.name} lacked ${DEBUFF_NAME} effect.`;
-            log(msg);
+            if (TL > 0) jez.trace(`${TAG} ${msg}`)
         }
     }
     else {
-        msg = `${aToken.name} failed its save.  Rolling ${save} vs DC${saveDC}.`;
-        log(msg);
+        msg = `${aToken.name} failed its check.  Rolling ${check} vs DC${SAVE_DC}.`;
+        if (TL > 0) jez.trace(`${TAG} ${msg}`)
     }
-
-    log("--------------On----------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return;
-}
-
-/****************************************************************************************
- * Execute code for a DAE Macro application (on) - nothing other than place holding
- ***************************************************************************************/
-async function doEach() {
-    const FUNCNAME = "doEach()";
-    let saveDC = args[1];
-    log("--------------doEach---------------------",
-        "Starting", `${MACRONAME} ${FUNCNAME}`,
-        `aActor ${aActor.name}`, aActor,
-        `aToken ${aToken.name}`, aToken,
-        `saveDC`, saveDC);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-
     //---------------------------------------------------------------------------------------
-    // Have the target roll a strength check (rollAbilityTest)
-    // 
-    const dialogTitle = "Make a choice of how to use your action"
-    const dialogText = `The nasty vines are keeping <b>${aToken.name}</b> restrained.  
-        Would you like to use your action this round to attempt to break the vines 
-        (<b>DC${saveDC} Strength</b> check), or simply ignore them and do something else 
-        with your action?<br><br>`
-    const buttonOne = "Break Vines"
-    const buttonTwo = "Ignore Vines"
-    await popSimpleDialog(dialogTitle, dialogText, doEachCallBack, buttonOne, buttonTwo)
-
-    // do any clean up
-    log("--------------doEach---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    // Thats all
+    //
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
 }
 
-/****************************************************************************************
- * Create and process selection dialog, passing it onto specified callback function
- ***************************************************************************************/
-async function popSimpleDialog(dialogTitle, dialogText, callBackFunc, buttonOne, buttonTwo) {
-    const FUNCNAME = "popSimpleDialog(dialogTitle, dialogText, callBackFunc, buttonOne, buttonTwo)";
-    log("---------------------------------------------------------------------------",
-        `Starting`, `${MACRONAME} ${FUNCNAME}`,
-        `dialogTitle`, dialogTitle,
-        `dialogText`, dialogText,
-        `buttonOne`, buttonOne,
-        `buttonTwo`, buttonTwo);
-
-    if (!dialogTitle || !dialogText || !buttonOne || !buttonTwo) {
-        let msg = `pickFromList arguments should be (dialogTitle, dialogText, callBackFunc, buttonOne, buttonTwo),
-                   but yours are: ${dialogTitle}, ${dialogText}, ${callBackFunc}, ${buttonOne}, ${buttonTwo}`;
-        ui.notifications.error(msg);
-        log(msg);
-        return
-    }
-
-    new Dialog({
-        title: dialogTitle,
-        content: dialogText,
-        buttons: {
-            button1: {
-                icon: '<i class="fas fa-check"></i>',
-                label: buttonOne,
-                callback: async () => {
-                    log(`selected button 1: ${buttonOne}`)
-                    callBackFunc(true) 
-                },
-            },
-            button2: {
-                icon: '<i class="fas fa-times"></i>',
-                label: 'Ignore Vines',
-                callback: async () => {
-                    log('canceled')
-                    callBackFunc(false)
-                },
-            },
-        },
-        default: 'button2'
-    }).render(true)
-
-    log("---------------------------------------------------------------------------",
-        `Finished`, `${MACRONAME} ${FUNCNAME}`);
-    return;
-}
-
-/****************************************************************************************
- * Callback to be executed when user chooses to attempt a skill test to get out of vines
- ***************************************************************************************/
-async function doEachCallBack(doCheck) {
-    const FUNCNAME = "doEachCallBack(doCheck)";
-    log("---------------------------------------------------------------------------",
-        `Starting`, `${MACRONAME} ${FUNCNAME}`,
-        `doCheck`, doCheck);
-
-    if (doCheck) { // Actor is attempting to break the vines
-        let saveDC = args[1];
-
-        let flavor = `${aToken.name} uses this turn's <b>action</b> to attempt a 
-        ${CONFIG.DND5E.abilities[SAVE_TYPE]} check vs <b>DC${saveDC}</b> to end the 
-        <b>${DEBUFF_NAME}</b> effect from ensnaring strike.`;
-        let check = (await aActor.rollAbilityTest(SAVE_TYPE, {
-            flavor: flavor,
-            chatMessage: true,
-            fastforward: true
-        })).total;
-        log("Result of check roll", check);
-        //---------------------------------------------------------------------------------------
-        // If the target made the save remove the effect
-        //
-        if (check >= saveDC) {
-            msg = `${aToken.name} made its check.  Rolling ${check} vs ${saveDC} DC.`;
-            log(msg);
-            //----------------------------------------------------------------------------------
-            // Check for debuff matching DEBUFF_NAME.  If it exists, remove it.
-            //
-            log(" aToken.data.effects", aToken.data.actorData.effects);
-            let existingEffect = aActor.effects.find(ef => ef.data.label === DEBUFF_NAME) ?? null;
-
-            if (existingEffect) {
-                msg = `${aToken.name} has ${DEBUFF_NAME} effect: `;
-                log(msg, existingEffect);
-                await existingEffect.delete();
-            } else {
-                msg = `${aToken.name} lacked ${DEBUFF_NAME} effect.`;
-                log(msg);
-            }
-        }
-        else {
-            msg = `${aToken.name} failed its check.  Rolling ${check} vs DC${saveDC}.`;
-            log(msg);
-        }
-    }
-    else { // Actor is ignoring the vines
-        msg = "Ignoring the vines"
-        log(msg)
-    }
-    log("---------------------------------------------------------------------------",
-        `Finished`, `${MACRONAME} ${FUNCNAME}`);
-}
-/****************************************************************************************
- * Execute code for a DAE Macro dobonusdamage
- ***************************************************************************************/
-async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    log("--------------doBonusDamage---------------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    for (let i = 0; i < args.length; i++) log(`  args[${i}]`, args[i]);
-    // do any clean up
-
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+async function doBonusDamage(options = {}) {
+    const FUNCNAME = "doBonusDamage(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL > 0) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    //-----------------------------------------------------------------------------------------------
     if (!oneTarget()) return;
-
-    if (!["mwak"].includes(lastArg.item.data.actionType)) return {};
-    let target = canvas.tokens.get(lastArg.hitTargets[0].id);
-    log("target",target)
-    let spellLevel = getProperty(lastArg.actor.flags, "midi-qol.spellLevel");
-    log("spellLevel",spellLevel)
-    let saveDC = aToken.actor.data.data.attributes.spelldc;
-    log("saveDC",saveDC)
-    let spellUuid = getProperty(lastArg.actor.flags, "midi-qol.spellId");
-    log("spellUuid",spellUuid)
-    let spellItem = await fromUuid(getProperty(lastArg.actor.flags, "midi-qol.spellId"));
-    log("spellItem",spellItem)
+    if (!["mwak"].includes(L_ARG.item.data.actionType)) return {};
+    let target = canvas.tokens.get(L_ARG.hitTargets[0].id);
+    let spellLevel = getProperty(L_ARG.actor.flags, "midi-qol.spellLevel");
+    const SAVE_DC = aToken.actor.data.data.attributes.spelldc;
+    let spellUuid = getProperty(L_ARG.actor.flags, "midi-qol.spellId");
+    let spellItem = await fromUuid(getProperty(L_ARG.actor.flags, "midi-qol.spellId"));
     let damageType = "piercing";
-    log("damageType",damageType)
-    //---------------------------------------------------------------------------------------
+    if (TL > 1) jez.trace(`${TAG} Input Info`, "target    ", target, "spellLevel", spellLevel,
+        "SAVE_DC   ", SAVE_DC, "spellUuid ", spellUuid, "spellItem ", spellItem, "damageType", damageType)
+    //-----------------------------------------------------------------------------------------------
     // Apply the debuff to the target
     //
     let value = `turn=start,label="Ensnaring Strike",damageRoll=${spellLevel}d6,damageType=${damageType}`
@@ -363,7 +287,7 @@ async function doBonusDamage() {
         changes: [
             { key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: value, priority: 20 },
             { key: "data.attributes.movement.walk", mode: jez.OVERRIDE, value: 1, priority: 20 },
-            { key: "macro.itemMacro", mode: jez.CUSTOM, value: saveDC, priority: 20 },
+            { key: "macro.itemMacro", mode: jez.CUSTOM, value: SAVE_DC, priority: 20 },
             { key: "macro.CE", mode: jez.CUSTOM, value: "Restrained", priority: 20 },
         ],
         origin: spellUuid,
@@ -372,7 +296,7 @@ async function doBonusDamage() {
             convenientDescription: `${DEBUFF_NAME} and taking Damage over Time`        
         },
         disabled: false,
-        duration: { rounds: 10, seconds: 60, startRound: gameRound, startTime: game.time.worldTime },
+        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         icon: spellItem.img,
         label: spellItem.name
     }];
@@ -383,121 +307,48 @@ async function doBonusDamage() {
     //
     // await MidiQOL.socket().executeAsGM("removeEffects", { actorUuid: aToken.actor.uuid, effects: [CONC.id] });
     await jez.wait(100)
-    log(`jez.pairEffects(aActor, "Concentrating", target.actor, ${spellItem.name})`)
+    if (TL > 1) jez.trace(`${TAG} jez.pairEffectsAsGM(aActor, "Concentrating", target.actor, ${spellItem.name})`)
     jez.pairEffectsAsGM(aActor, "Concentrating", target.actor, spellItem.name) // --> Permission problem for players
-    log("--------------doBonusDamage---------------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return {
         damageRoll: `${spellLevel}d6[${damageType}]`,
         flavor: `(Ensnaring Strike (${CONFIG.DND5E.damageTypes[damageType]}))`
     };
 }
-
-/****************************************************************************************
- * Fetch and return the save type and target number
- ***************************************************************************************/
-function getSaveInfo(tToken) {
-    let saveDC = args[1];
-    let tarDexSaveMod = tToken.document._actor.data.data.abilities.dex.save;
-    let tarStrSaveMod = tToken.document._actor.data.data.abilities.str.save;
-
-    //---------------------------------------------------------------------------------------
-    // Determine target's prefered stat for the save, and make save roll
-    //
-    let saveType = "";
-    if (tarDexSaveMod > tarStrSaveMod) {
-        log(`saveDC ${saveDC} - ${tToken.name} prefers Dex save, with a ${tarDexSaveMod} mod vs ${tarStrSaveMod}`);
-        saveType = "dex";
-    } else {
-        log(`saveDC ${saveDC} - ${tToken.name} prefers Str save, with a ${tarStrSaveMod} mod vs ${tarDexSaveMod}`);
-        saveType = "str";
-    }
-    return { saveType, saveDC };
-}
-
-
 /************************************************************************
  * Verify exactly one target selected, boolean return
 *************************************************************************/
 function oneTarget() {
-    if (!game.user.targets) {
-        msg = `Targeted nothing, must target single token to be acted upon`;
-        ui.notifications.warn(msg);
-        log(msg);
-        return (false);
-    }
-    if (game.user.targets.ids.length != 1) {
-        msg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;
-        ui.notifications.warn(msg);
-        log(msg);
-        return (false);
-    }
-    log(` targeting one target`);
+    if (!game.user.targets) 
+        return jez.badNews(`Targeted nothing, must target single token to be acted upon`,'w')
+    if (game.user.targets.ids.length != 1) 
+        return jez.badNews(`Target a single token. Targeted ${game.user.targets.ids.length} tokens`,'w')
+    if (TL > 1) jez.trace(`${TAG}  targeting one target`);
     return (true);
 }
-
-/***************************************************************************************
- * Post the results to chat card
- ***************************************************************************************/
-async function postResults(resultsString) {
-    const FUNCNAME = "postResults(resultsString)";
-    log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-    log(`Starting ${MACRONAME} ${FUNCNAME}`, `resultsString`, resultsString);
-
-    // let chatmsg = await game.messages.get(itemCard.id)
-    let chatmsg = game.messages.get(args[0].itemCardId);
-    let content = await duplicate(chatmsg.data.content);
-    log(` chatmsg: `, chatmsg);
-    const searchString = /<div class="end-midi-qol-saves-display">/g;
-    const replaceString = `<div class="end-midi-qol-saves-display">${resultsString}`;
-    // log("============================ content before", content)
-    content = await content.replace(searchString, replaceString);
-    // log("============================ content after", content)
-    await chatmsg.update({ content: content });
-    await ui.chat.scrollBottom();
-
-    log("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
-        `Finished`, `${MACRONAME} ${FUNCNAME}`);
-    return;
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Post results to the chat card
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>2) jez.trace("postResults Parameters","msg",msg)
+    //-----------------------------------------------------------------------------------------------
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
 }
-
 /****************************************************************************************
-* DEBUG Logging
-* 
-* If passed an odd number of arguments, put the first on a line by itself in the log,
-* otherwise print them to the log seperated by a colon.  
-* 
-* If more than two arguments, add numbered continuation lines. 
-***************************************************************************************/
-function log(...parms) {
-    if (!DEBUG) return;             // If DEBUG is false or null, then simply return
-    let numParms = parms.length;    // Number of parameters received
-    let i = 0;                      // Loop counter
-    let lines = 1;                  // Line counter 
-
-    if (numParms % 2) {  // Odd number of arguments
-        console.log(parms[i++])
-        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], ":", parms[i + 1]);
-    } else {            // Even number of arguments
-        console.log(parms[i], ":", parms[i + 1]);
-        i = 2;
-        for (i; i < numParms; i = i + 2) console.log(` ${lines++})`, parms[i], ":", parms[i + 1]);
-    }
-}
-
-/****************************************************************************************
- * Tricksy little sleep implementation
- ***************************************************************************************/
-async function wait(ms) { return new Promise(resolve => { setTimeout(resolve, ms); }); }
-
-/****************************************************************************************
-* Return an object describing the size of a passed TokenID.  The object will contain:
-*   this.key     - short form of size used as a key to obtain other info
-*   this.value   - numeric value of size, 1 is tiny, 6 is gargantuan, 0 is error case
-*   this.namestr - size string in lowercase, e.g. medium
-*   this.nameStr - size string in mixedcase, e.g. Gargantuan
+ * Return an object describing the size of a passed TokenID.  The object will contain:
+ *   this.key     - short form of size used as a key to obtain other info
+ *   this.value   - numeric value of size, 1 is tiny, 6 is gargantuan, 0 is error case
+ *   this.namestr - size string in lowercase, e.g. medium
+ *   this.nameStr - size string in mixedcase, e.g. Gargantuan
  ***************************************************************************************/
 function getSizeInfo(token5E) {
-    log("getSizeInfo(token5E)", token5E)
+    if (TL>1) jez.trace(`${TAG} (getSizeInfo(token5E)`, token5E)
     class CreatureSizeInfos {
         constructor(size) {
             this.key = size;

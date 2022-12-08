@@ -159,7 +159,6 @@ async function doOff(options = {}) {
     //
     await jez.wait(100)
     jez.pairEffectsAsGM(aToken.id, "Concentrating", tToken.id, EFFECT_NAME)
-    //jez.pairEffects(aToken, "Concentrating", tToken, EFFECT_NAME)
     //-----------------------------------------------------------------------------------------------
     // Update the convenientDescription of the Concentrating effect to describe the spell
     //

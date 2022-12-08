@@ -6,7 +6,7 @@ jez.log(MACRONAME)
  * 01/25/22 0.1 Creation of Macro
  * 01/26/22 0.2 Add VFX
  * 08/01/22 0.3 Fix to accomodate change in Midi (flags.midi-qol.itemDetails needs OVERIDE)
- * 12/07.22 0.4 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
+ * 12/07/22 0.4 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log("")

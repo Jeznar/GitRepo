@@ -1,10 +1,11 @@
-const MACRONAME = "Phantasmal_Killer.0.3.js"
+const MACRONAME = "Phantasmal_Killer.0.4.js"
 /*****************************************************************************************
  * Phantasmal Killer leveraging Midi-qol for overtime damage and saves
  * 
  * 02/19/22 0.1 Creation of Macro
  * 06/08/22 0.2 General update to more current form and bug chase
  * 07/28/22 0.3 Effect removal bug fixed, CE description added, bubble speech added
+ * 12/07.22 0.4 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -112,7 +113,7 @@ async function doOnUse() {
     // Grab the data for the two effects to be paired
     //
     await jez.wait(200)
-    jez.pairEffects(aToken, "Concentrating", tToken, CONDITION)
+    jez.pairEffectsAsGM(aToken, "Concentrating", tToken, CONDITION)
     //-------------------------------------------------------------------------------------------------------------
     // Post Completion message
     //
