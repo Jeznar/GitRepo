@@ -77,9 +77,9 @@ async function pairEffects(...args) {
         //---------------------------------------------------------------------------------------------------------
         // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
         //
-        actor1 = jez.getActor5eDataObj(subject1)
+        actor1 = await jez.getActor5eDataObj(subject1)
         if (!actor1) return jez.badNews("First subject not a token, actor, tokenId or actorId","e")
-        actor2 = jez.getActor5eDataObj(subject2)
+        actor2 = await jez.getActor5eDataObj(subject2)
         if (!actor2) return jez.badNews("Second subject not a token, actor, tokenId or actorId","e")
         //---------------------------------------------------------------------------------------------------------
         // Grab the effect data from the first token if we were handed a name and not a data object

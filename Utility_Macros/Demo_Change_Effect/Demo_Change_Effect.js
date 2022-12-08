@@ -88,35 +88,6 @@ async function doOnUse() {
   effect.data.changes.push({ key: `flags.midi-qol.OverTime`, mode: jez.OVERRIDE, value: overTimeVal, priority: 20 })
   jez.log(`effect.data.changes 2`, effect.data.changes)
   //----------------------------------------------------------------------------------
-  // Exercise jez.getActor5eDataObj function (Not directly relevant to this macro)
-  //
-  /*let x = null
-  x = jez.getActor5eDataObj(aToken)
-  jez.log(`aToken to ${x.name}`,x)
-  x = jez.getActor5eDataObj(aActor)
-  jez.log(`aActor to ${x.name}`,x)
-  x = jez.getActor5eDataObj(aToken.id)
-  jez.log(`aToken.id to ${x.name}`,x)
-  x = jez.getActor5eDataObj(aActor.id)
-  jez.log(`aActor.id to ${x.name}`,x)*/
-  //x = jez.getActor5eDataObj("ABCDEF012345678")
-  //jez.log(`garbage input returned`, x)
-  //----------------------------------------------------------------------------------
-  // Exercise jez.getEffectDataObj function (Not directly relevant to this macro)
-  //
-  /*x = await jez.getEffectDataObj(CONDITION1, tToken)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken`,x)
-    x = await jez.getEffectDataObj(CONDITION1, aActor)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken`,x)
-  x = await jez.getEffectDataObj(CONDITION1, aToken.id)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken.id`,x)
-  x = await jez.getEffectDataObj(CONDITION1, aActor.id)
-  jez.log(`Effect Data Obj for ${CONDITION1} on ${tToken.name}, tToken.id`,x)
-  x = await jez.getEffectDataObj(CONDITION2, aToken)
-  jez.log(`Effect Data Obj for ${CONDITION2} on ${aToken.name}`,x)
-  x = await jez.getEffectDataObj("Actor.i9vqeZXzvIcdZ3BU.ActiveEffect.DmvGS7OsCz3HoggP")
-  jez.log(`Effect Data Obj for direct UUID`,x)*/
-  //----------------------------------------------------------------------------------
   // Apply the modification to existing effect
   //
   const result = await effect.update({ 'changes': effect.data.changes });

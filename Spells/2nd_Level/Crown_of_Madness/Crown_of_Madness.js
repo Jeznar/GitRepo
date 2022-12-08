@@ -1,9 +1,10 @@
-const MACRONAME = "Crown_of_Madness.0.2.js"
+const MACRONAME = "Crown_of_Madness.0.4.js"
 /*****************************************************************************************
- * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
  * 08/01/22 0.2 Add convenientDescription
+ * 12/07.22 0.3 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
+ * 12/08/22 0.4 Swapped effect.update to jez.setCEDescAsGM to fix permission issue
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log(`============== Starting === ${MACRONAME} =================`);
@@ -28,9 +29,9 @@ if ((args[0]?.tag === "OnUse") && !preCheck()) return;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
+if (args[0] === "off") await doOff({traceLvl:TL});             // DAE removal
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});    // Midi ItemMacro On Use
+if (args[0] === "each") doEach({traceLvl:TL});				   // DAE removal
 jez.log(`============== Finishing === ${MACRONAME} =================`);
 return;
 /***************************************************************************************************
@@ -84,9 +85,11 @@ async function doOff() {
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  ***************************************************************************************************/
-async function doOnUse() {
+async function doOnUse(options={}) {
     const FUNCNAME = "doOnUse()";
     const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
     jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
@@ -131,12 +134,12 @@ async function doOnUse() {
     // Modify recently created effect to have a convenientDescription
     //
     await jez.wait(500)
-    if (TL > 1) jez.trace(`${MACRO} ${FNAME} | ==> ${tToken.name}`, tToken)
+    if (TL > 1) jez.trace(`${TAG} ==> ${tToken.name}`, tToken)
     let effect = await tToken.actor.effects.find(i => i.data.label === "Crown of Madness");
-    if (TL > 3) jez.trace(`${MACRO} ${FNAME} | Effect`, effect)
+    if (TL > 3) jez.trace(`${TAG} Effect`, effect)
     if (!effect) return jez.badNews(`Could not find "Crown of Madness" effect on ${tToken.name}`, "e")
-    const C_DESC = `${aToken.name} can force to attack creature in melee range`
-    await effect.update({ flags: { convenientDescription: C_DESC } });
+    const C_DESC = `${aToken.name} can force attack on creature in melee range`
+    await jez.setCEDescAsGM(tToken.id, "Crown of Madness", C_DESC, { traceLvl: TL });
     //--------------------------------------------------------------------------------------------
     // Add results to the chat card
     //
@@ -146,12 +149,12 @@ async function doOnUse() {
     // Pair the new debuff with concentration
     //  
     await jez.wait(250)
-    jez.pairEffects(aActor, "Concentrating", tToken.actor, "Crown of Madness")
+    jez.pairEffectsAsGM(aActor, "Concentrating", tToken.actor, "Crown of Madness")
     //-------------------------------------------------------------------------------------------------------------
     // Pair the new debuff with concentration
     //  
     await jez.wait(250)
-    jez.pairEffects(aActor, "Concentrating", aActor, "Crown of Madness")
+    jez.pairEffectsAsGM(aActor, "Concentrating", aActor, "Crown of Madness")
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }

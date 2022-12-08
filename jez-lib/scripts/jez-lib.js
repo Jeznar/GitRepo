@@ -1363,8 +1363,8 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         function getSubjectId(subject) {
             const TAG = `${FNAME} getSubjectId |`
             if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
-                if (subject.constructor.name === "Token5e" || subject.constructor.name === "Actor5e")
-                    return (subject.id)
+                if (subject.constructor.name === "Token5e" ) return (subject.id)
+                if (subject.constructor.name === "Actor5e" ) return (subject.uuid)
                 return jez.badNews(`${TAG} subject (${subject.name}) is object but not Token5e or Actor5e`)
             }
             if ((typeof (subject) === "string") && (subject.length === 16)) return (subject)
@@ -1373,6 +1373,11 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //-----------------------------------------------------------------------------------------------
         // If we are in uuidMode, call the runAsGM wrapper macro with the two arguments and quit
         //
+        if (TL > 1) jez.trace(`${TAG} Inputs to GM_PAIR_EFFECTS.execute`,
+            'subject1', subject1,
+            'effectName1', effectName1,
+            'subject2', subject2,
+            'effectName2', effectName2)
         GM_PAIR_EFFECTS.execute(subject1, effectName1, subject2, effectName2)
     }
     /**************************************************************************************************************
@@ -1391,9 +1396,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      **************************************************************************************************************/
     static async pairEffects(...args) {
         const FUNCNAME = "jez.pairEffects(...args)"
-        let trcLvl = 5;
-        jez.trc(3, trcLvl, `=== Called ${FUNCNAME} ===`)
-        for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `jez.pairEffects | args[${i}]`, args[i]);
+        const TL = 2;
+        const TAG = `jez.pairEffects |`
+        if (TL>0) jez.trace(`${TAG} === Called ${FUNCNAME} ===`)
+        if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`${TAG} args[${i}]`, args[i]);
         if (args.length !== 2 && args.length !== 4)
             return jez.badNews(`Bad Argument count (${args.length}) provided to ${FUNCNAME}`)
         let subject1 = args[0]
@@ -1420,49 +1426,49 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the first token if we were handed a name and not a data object
             // UUID will be of the form: Scene.MzEyYTVkOTQ4NmZk.Token.pcAVMUbbnGZ1lz4h.ActiveEffect.1u3e6c1os77qhwha
-            jez.trc(3, trcLvl, "effectUuid1", effectUuid1)
+            if (TL>2) jez.trace(`${TAG} effectUuid1`, effectUuid1)
             if (jez.isEffectUUID(effectUuid1)) {
                 effectData1 = await fromUuid(effectUuid1)
-                jez.trc(3, trcLvl, `jez.pairEffects | effectData1 from UUID`, effectData1)
+                if (TL>2) jez.trace(`${TAG} effectData1 from UUID`, effectData1)
             } else return jez.badNews(`effectData1 must be a UUID`, "error")
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the second token
             //
-            jez.trc(3, trcLvl, "effectUuid2", effectUuid2)
+            if (TL>2) jez.trace(`${TAG} effectUuid2`, effectUuid2)
             if (jez.isEffectUUID(effectUuid2)) {
                 effectData2 = await fromUuid(effectUuid2)
-                jez.trc(2, trcLvl, `jez.pairEffects | effectData2 from UUID`, effectData2)
+                if (TL>2) jez.trace(`${TAG} effectData2 from UUID`, effectData2)
             } else return jez.badNews(`effectData1 must be a UUID`, "error")
         }
         else {
             //---------------------------------------------------------------------------------------------------------
             // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
             //
-            actor1 = jez.getActor5eDataObj(subject1)
+            actor1 = await jez.getActor5eDataObj(subject1)
             if (!actor1) return jez.badNews("First subject not a token, actor, tokenId or actorId","e")
-            actor2 = jez.getActor5eDataObj(subject2)
+            actor2 = await jez.getActor5eDataObj(subject2)
             if (!actor2) return jez.badNews("Second subject not a token, actor, tokenId or actorId","e")
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the first token if we were handed a name and not a data object
             //
-            jez.trc(3, trcLvl, "effectName1", effectName1)
+            if (TL>2) jez.trace(`${TAG} effectName1`, effectName1)
             effectData1 = effectName1
             if (effectName1?.constructor.name !== "ActiveEffect5e") {
-                jez.trc(3, trcLvl, `jez.pairEffects | Seeking ${effectName1} in actor1.effects`, actor1.effects)
+                if (TL>2) jez.trace(`${TAG} Seeking ${effectName1} in actor1.effects`, actor1.effects)
                 effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
-                jez.trc(3, trcLvl, `jez.pairEffects | effectData1`, effectData1)
+                if (TL>2) jez.trace(`${TAG} effectData1`, effectData1)
                 if (!effectData1)
                     return jez.badNews(`${effectName1} not found on ${actor1.name}.  Effects not paired.`, "warn")
             }
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the second token
             //
-            jez.trc(3, trcLvl, "effectName2", effectName2)
+            if (TL>2) jez.trace(`${TAG} effectName2`, effectName2)
             effectData2 = effectName2
             if (effectName2?.constructor.name !== "ActiveEffect5e") {
-                jez.trc(3, trcLvl, `jez.pairEffects | Seeking ${effectName2} in actor2.effects`, actor2.effects)
+                if (TL>2) jez.trace(`${TAG} Seeking ${effectName2} in actor2.effects`, actor2.effects)
                 effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
-                jez.trc(3, trcLvl, `jez.pairEffects | effectData2`, effectData2)
+                if (TL>2) jez.trace(`${TAG} effectData2`, effectData2)
                 if (!effectData2)
                     return jez.badNews(`${effectName2} not found on ${actor2.name}.  Effects not paired.`, "warn")
             }
@@ -1470,16 +1476,16 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //---------------------------------------------------------------------------------------------------------
         // Add the actual pairings
         //
-        jez.trc(2, trcLvl, "*************", 'actor1', actor1, 'actor2', actor2, 'effectData1', effectData1, 'effectData2', effectData2)
+        if (TL>2) jez.trace(`${TAG} *************`, 'actor1', actor1, 'actor2', actor2, 'effectData1', effectData1, 'effectData2', effectData2)
         await addPairing(effectData2, actor1, effectData1)
         await addPairing(effectData1, actor2, effectData2)
         //---------------------------------------------------------------------------------------------------------
         // Define a function to do the actual pairing
         //
         async function addPairing(effectChanged, tokenPaired, effectPaired) {
-            let trcLvl = 0
-            jez.trc(2, trcLvl, `jez.pairEffects |addPairing(effectChanged, tokenPaired, effectPaired)`)
-            jez.trc(2, trcLvl, "jez.pairEffects", "effectChanged", effectChanged, "tokenPaired", tokenPaired, "effectPaired", effectPaired)
+            let TL = 0
+            if (TL>2) jez.trace(`${TAG} addPairing(effectChanged, tokenPaired, effectPaired)`,
+                "effectChanged", effectChanged, "tokenPaired", tokenPaired, "effectPaired", effectPaired)
             let value = `Remove_Paired_Effect ${tokenPaired?.id} ${effectPaired.uuid}`
             if (uuidMode) value = `Remove_Paired_Effect ${effectPaired.uuid}`
             effectChanged.data.changes.push({ key: `macro.execute`, mode: jez.CUSTOM, value: value, priority: 20 })
@@ -1616,7 +1622,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             //------------------------------------------------------------------------------------------
             // Obtain an Actor5e data object from subject
             //
-            let actor5e = jez.getActor5eDataObj(subject)
+            let actor5e = await jez.getActor5eDataObj(subject)
             if (!actor5e) return jez.badNews(`actor data obj not found for ${FUNCNAME} subject`,'e')
             //------------------------------------------------------------------------------------------
             // effect needs to be an id (16 character string) or a string providing name of effect
@@ -1634,7 +1640,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         // jez.log(`effectUuid`, effectUuid)
         let tokens = effectUuid.split(".")
         const ACTOR_ID = tokens[1]
-        let actor5e = jez.getActor5eDataObj(ACTOR_ID)
+        let actor5e = await jez.getActor5eDataObj(ACTOR_ID)
         if (!actor5e) {
             mes = `BAD NEWS: ${FUNCNAME} could not find actor from ID ${ACTOR_ID}`
             return jez.badNews(mes,"e")

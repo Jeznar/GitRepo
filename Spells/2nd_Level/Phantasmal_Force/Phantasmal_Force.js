@@ -1,4 +1,4 @@
-const MACRONAME = "Phantasmal_Force.0.1.js"
+const MACRONAME = "Phantasmal_Force.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Does some house keeping for the Phantasmal Force Spell.  Specifically:
  * 
@@ -12,6 +12,7 @@ const MACRONAME = "Phantasmal_Force.0.1.js"
  * 
  * 
  * 10/20/22 0.1 Creation of Macro
+ * 12/07/22 0.2 Changed getActor5eDataObj to await to correspond with jezlib change
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -166,7 +167,7 @@ async function doOnUse(options = {}) {
         //---------------------------------------------------------------------------------------------------
         // Set function variables
         //
-        sActor = jez.getActor5eDataObj(subject)
+        sActor = await jez.getActor5eDataObj(subject)
         //----------------------------------------------------------------------------------------------
         // Seach the token to find the just added effect
         //
@@ -227,7 +228,7 @@ async function summonToken(tToken) {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 async function clearEffect(subject, effectName, options = {}) {
     const TL = options.traceLvl ?? 0
-    sActor = jez.getActor5eDataObj(subject)
+    sActor = await jez.getActor5eDataObj(subject)
     const EFFECT = await aToken.actor.effects.find(i => i.data.label === effectName);
     if (TL > 1) jez.trace(`${TAG} Attempting to clear ${effectName} from ${subject.name}`, EFFECT)
     if (EFFECT) await EFFECT.delete()

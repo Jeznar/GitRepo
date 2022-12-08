@@ -1,4 +1,4 @@
-const MACRONAME = "Blinding_Smite.0.3"
+const MACRONAME = "Blinding_Smite.0.4"
 jez.log(MACRONAME)
 /*****************************************************************************************
  * Implment Branding Smite!
@@ -6,6 +6,7 @@ jez.log(MACRONAME)
  * 01/25/22 0.1 Creation of Macro
  * 01/26/22 0.2 Add VFX
  * 08/01/22 0.3 Fix to accomodate change in Midi (flags.midi-qol.itemDetails needs OVERIDE)
+ * 12/07.22 0.4 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log("")
@@ -171,7 +172,7 @@ async function doOnUse() {
         // Chill a bit and then pair the effects
         //
         await jez.wait(100);
-        jez.pairEffects(aActor, "Concentrating", tToken.actor, "Blinded")
+        jez.pairEffectsAsGM(aActor, "Concentrating", tToken.actor, "Blinded")
         //-------------------------------------------------------------------------------------------------------------
         // Dig through the chat history, to find the message that should have new message added...but don't use it?
         //

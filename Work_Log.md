@@ -441,6 +441,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.07 Updated jez.getActor5eDataObj() to accept actor.uuid and warn on actor.id
 
+22.12.08 Updated Crown of Madness: Swapped effect.update to jez.setCEDescAsGM to fix permission issue
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

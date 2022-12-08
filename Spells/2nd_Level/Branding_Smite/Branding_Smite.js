@@ -1,4 +1,4 @@
-const MACRONAME = "Branding_Smite.0.7.js"
+const MACRONAME = "Branding_Smite.0.8.js"
 /*****************************************************************************************
  * Implment Branding Smite!
  * 
@@ -6,6 +6,7 @@ const MACRONAME = "Branding_Smite.0.7.js"
  * 01/26/22 0.5 Add VFX
  * 05/05/22 0.6 Change ATL.dimLight etc. to ATL.light.dim etc. for 9.x
  * 08/01/22 0.7 Fix to accomodate change in Midi (flags.midi-qol.itemDetails needs OVERIDE)
+ * 12/07.22 0.8 Swapped jez.pairEffects to jez.pairEffectsAsGM to fix permission issue
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 jez.log("")
@@ -173,7 +174,7 @@ async function doBonusDamage() {
         // Pair the new debuff with concentration
         //  
         await jez.wait(200)
-        jez.pairEffects(aActor, "Concentrating", tToken.actor, "Branded")
+        jez.pairEffectsAsGM(aActor, "Concentrating", tToken.actor, "Branded")
         //-------------------------------------------------------------------------------------------------------------
         // Dig through the chat history, to find the message that should have new message added...but don't use it?
         //

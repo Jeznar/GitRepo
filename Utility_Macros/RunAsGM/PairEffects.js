@@ -6,8 +6,8 @@ const MACRONAME = "PairEffects.0.2.js"
  * 
  * 07/05/22 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-// jez.trace(`${MACRONAME} ${args.length} arguments`)
-// for (let i = 0; i < args.length; i++) jez.trace(`==> PairEffects | args[${i}]`, args[i]);
+jez.trace(`${MACRONAME} ${args.length} arguments`)
+for (let i = 0; i < args.length; i++) jez.trace(`==> PairEffects | args[${i}]`, args[i]);
 switch (args.length) {
     case 2: jez.pairEffects(args[0], args[1]); break;
     case 4: jez.pairEffects(args[0], args[1], args[2], args[3]); break;
