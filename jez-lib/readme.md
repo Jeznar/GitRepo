@@ -42,7 +42,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
 * **[getCEDesc()](#getcedescsubject-effectname-optionobj--)** -- Converts passed subject and returns Actor5e object.
 * **[getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
-* **[getClassLevel(subject, className, options = {})](#getCharacterLevel)** -- Returns the subject's specific class level
+* **[getClassLevel(subject, className, options = {})](#get-functions)** -- Returns the subject's specific class level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
 * **[getItemUses(item, options = {})](#getitemusesitem-options--)** -- Returns item use data object
