@@ -755,6 +755,75 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (!charLevel) charLevel = actor5e.data.data.details.cr
         return (charLevel)
     }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Obtain and return the character class level of the passed token, actor or token.id.
+     * 
+     * className should be a string such as: wizard, druid, etc (case insensitive)
+     * 
+     * If the subject is an NPC the subject's level will be returned on the assumption that NPCs are 
+     * pure characters of the named class. 
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static getClassLevel(subject, className, options = {}) {
+        const FUNCNAME = "getClassLevel(subject, className, options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL > 0) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting with ---`,
+            'subject', subject, 'className', className, 'options', options);
+        //----------------------------------------------------------------------------------------------
+        // Convert the passed parameter to Actor5e
+        //
+        let actor5e = null
+        if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
+            if (subject.constructor.name === "Token5e") actor5e = subject.actor
+            else if (subject.constructor.name === "Actor5e") actor5e = subject
+            else return jez.badNews(`jez.getClassLevel(...) subject received '${typeof (subject)}' not 
+            Token5e or Actor5e`, 'e')
+        }
+        else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
+        else return jez.badNews(`Parameter passed to jez.getCharacterLevel(subject) parm is not 
+            Token5e, Actor5e, or Token.id: ${subject}`, 'e')
+        //----------------------------------------------------------------------------------------------
+        // Find the Actor5e's character level.
+        //
+        // actor.data.data.classes -- Deprecated 9.x
+        // actor.data.document?._classes -- as of 9.x
+        //
+        let charLevel = 0
+        let targetClassName = className.toLowerCase()
+        let classLevel = 0
+        // PC's can have multiple classes, add them all up
+        if (TL > 1) jez.trace(`${TAG} *** actor5e.data.document`, actor5e.data.document)
+        if (TL > 1) jez.trace(`${TAG} *** actor5e.data.document?._classes`, actor5e.data.document?._classes)
+        if (actor5e.data.document?._classes) {
+            if (TL > 1) jez.trace(`${TAG} ==> Found data in actor5e.data.document?._classes`, actor5e.data.document?._classes)
+            for (const CLASS in actor5e.data.document?._classes) {
+                let level = parseInt(actor5e.data.document._classes?.[CLASS]?.data?.data?.levels)
+                if (TL > 2) jez.trace(`${TAG} Class: ${CLASS} Level: ${level}`)
+                if (CLASS === targetClassName) classLevel += level
+                charLevel += level
+            }
+        }
+        else {
+            if (TL > 0) jez.trace(`${TAG} ==> Trying for classes actor5e.classes`, actor5e.classes)
+            for (const CLASS in actor5e.classes) {
+                let level = parseInt(actor5e.classes?.[CLASS]?.data?.data?.levels)
+                if (TL > 2) jez.trace(`${TAG} Class: ${CLASS} Level: ${level}`)
+                if (CLASS === targetClassName) classLevel += level
+                charLevel += level
+            }
+        }
+        // NPC's don't have classes, use CR instead (and hope they are pure classes)
+        if (!charLevel) {
+            charLevel = actor5e.data.data.details.cr
+            classLevel = charLevel
+        }
+        return (classLevel)
+    }
+
+
+
     /***************************************************************************************
      * Function to delete all copies of a named item of a given type from actor
      *

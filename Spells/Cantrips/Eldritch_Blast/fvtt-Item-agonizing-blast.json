@@ -1,0 +1,234 @@
+{
+  "name": "Agonizing Blast",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/fireball-eerie-1.jpg",
+  "data": {
+    "description": {
+      "value": "<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">A beam of crackling energy streaks toward a creature within range. Make a ranged spell attack against the target. On a hit, the target takes <strong>1d10 force plus charaisma modifer </strong>damage.</p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">The spell creates more than one beam when you reach higher levels:</p>\n<ul>\n<li style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">2 beams at <strong>5th</strong> level,</li>\n<li style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">3 beams at <strong>11th</strong> level, and</li>\n<li style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">4 beams at <strong>17th</strong> level.</li>\n</ul>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\">You can direct the beams at the same target or at different ones. Make a separate attack roll for each beam.</p>\n<p style=\"box-sizing:border-box;user-select:text;line-height:1.4;color:#191813;font-size:13px\"><strong>FoundryVTT</strong>: Use this ability once per beam.</p>",
+      "chat": "<p>You hurl a mote of fire at a creature or object within range. Make a ranged spell attack against the target. On a hit, the target takes 1d10 fire damage. A flammable object hit by this spell ignites if it isn't being worn or carried.</p>\n<p>This spell's damage increases by 1d10 when you reach 5th level (2d10), 11th level (3d10), and 17th level (4d10).</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 242",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 120,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "rsak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "1d10+@mod",
+          "force"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 0,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": "1d10"
+    }
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 136818,
+      "definitionId": 2103,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 242,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Damage"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_68b6mer7s0n"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "criticalThreshold": "20",
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "fumbleThreshold": null,
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.1eANhQ4Bn1rABIPo"
+    },
+    "autoanimations": {
+      "killAnim": false,
+      "options": {
+        "ammo": false,
+        "overrideAuto": false
+      },
+      "override": true,
+      "allSounds": {
+        "item": {
+          "enableAudio": false
+        }
+      },
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "below": false,
+      "autoOverride": {
+        "enable": false
+      },
+      "version": 4,
+      "audio": {
+        "a01": {
+          "enable": false,
+          "file": "",
+          "delay": 0,
+          "volume": 0.25
+        },
+        "e01": {
+          "enable": false,
+          "file": "",
+          "delay": 0,
+          "volume": 0.25
+        }
+      }
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Agonizing Blast",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Agonizing_Blast.0.3.js\"\n/*****************************************************************************************\n * 01/01/22 0.1 Creation of Macro\n * 02/08/22 0.2 Now calls library functions\n * 12/09/22 0.3 Update logging to current style\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 1;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set standard variables\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\n//----------------------------------------------------------------------------------\n// Run the preCheck function to make sure things are setup as best I can check them\n//\nif (!preCheck()) return;\n//---------------------------------------------------------------------------------------------------\n// Set the target\n//\nlet tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\nlet tActor = tToken?.actor;\n//----------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({traceLvl:TL}); // Midi ItemMacro On Use\nif (TL>0) jez.trace(`${TAG} --- Finished ---`);\nreturn;\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************\n * Check the setup of things.  Setting the global errorMsg and returning true for ok!\n ***************************************************************************************************/\nfunction preCheck() {\n    //----------------------------------------------------------------------------------------------\n    // Make sure exactly one token is targeted\n    //\n    if (game.user.targets.ids.length != 1) {\n        msg = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;\n        return jez.badNews(msg, \"w\");\n    }\n    //----------------------------------------------------------------------------------------------\n    // Obtain the range of active ability and make sure units are ok\n    //\n    let maxRange = jez.getRange(aItem, ALLOWED_UNITS)\n    if (!maxRange) {\n        msg = `Range is 0 or incorrect units on ${aItem.name}`;\n        return jez.badNews(msg, \"w\");\n    }\n    //----------------------------------------------------------------------------------------------\n    // Make sure the target is in range\n    //\n    if (!jez.inRange(aToken, canvas.tokens.get(args[0]?.targets[0]?.id), maxRange)) {\n        msg = `Target is not in range for ${aItem.name}`;\n        return jez.badNews(msg, \"w\");\n    }\n    return (true)\n}\n/***************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n ***************************************************************************************************/\nasync function doOnUse(options={}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\"options\",options);\n    await jez.wait(100)\n    //-----------------------------------------------------------------------------------------------\n    // Set function variables\n    //\n    const PREFIX = \"EldritchBlast_01_\"\n    let color = \"\";\n    switch (Math.floor(Math.random() * 3)) {\n        case 0: color = \"Dark_Green\"; break;\n        case 1: color = \"Dark_Purple\"; break;\n        case 2: color = \"Dark_Red\"; break;\n        default: ui.notifications.error(\"Value was not 0, 1, or 2\")\n    }\n    if (TL>1) jez.trace(`${TAG} Values Set`, \n        \"PREFIX   \", PREFIX,\n        \"Color    \", color,\n        \"File Name\", fileName)\n    let fileName = PREFIX + color + fileSuffix(aToken, tToken, {traceLvl:TL})\n    //-----------------------------------------------------------------------------------------------\n    // Launch the VFX\n    new Sequence()\n        .effect()\n        .file(`modules/jb2a_patreon/Library/Cantrip/Eldritch_Blast/${fileName}`)\n        .atLocation(aToken)\n        .stretchTo(args[0].targets[0])\n        .missed(args[0].hitTargets.length === 0)\n        .play()\n    if (TL>0) jez.trace(`${TAG} --- Finished ---`);\n    return (true);\n}\n/***************************************************************************************************\n * Return the distance to the target\n ***************************************************************************************************/\nfunction fileSuffix(token1, token2, options={}) {\n    const FUNCNAME = \"fileSuffix(token1, token2, options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\n        'token1 ', token1, 'token2 ', token2, \"options\",options);\n    //-----------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    let dist = canvas.grid.measureDistance(token1, token2).toFixed(0);\n    let suffix = \"\";\n    if (dist < 15) suffix = \"_05ft_600x400.webm\"\n    else if (dist < 30) suffix = \"_15ft_1000x400.webm\"\n    else if (dist < 60) suffix = \"_30ft_1600x400.webm\"\n    else if (dist < 90) suffix = \"_60ft_2800x400.webm\"\n    else if (dist <= 130) suffix = \"_90ft_4000x400.webm\"\n    if (TL>1) jez.trace(`${TAG} fileSuffix values`, 'dist  ', dist, \"suffix\", suffix);\n    return (suffix)\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

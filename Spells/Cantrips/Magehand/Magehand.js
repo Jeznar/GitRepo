@@ -1,5 +1,5 @@
-const MACRONAME = "Magehand.0.6.js"
-/*****************************************************************************************
+const MACRONAME = "Magehand.0.7.js"
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * This macro just posts a msg providing basic instructions to teh spell card.
  * 
  * 12/02/21 0.1 Creation
@@ -10,28 +10,33 @@ const MACRONAME = "Magehand.0.6.js"
  *              warning.
  * 07/15/22 0.5 Update to use warpgate.spawnAt with range limitation and suppress tokenmold
  * 07/15/22 0.6 Build library function to generalize the warpgate.spawnAt thang
- *****************************************************************************************/
- const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
-let msg = "";
-const TL = 5;
-const LAST_ARG = args[args.length - 1];
-//---------------------------------------------------------------------------------------------------
-// Set the value for the Active Token (aToken)
-let aToken;
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
-else aToken = game.actors.get(LAST_ARG.tokenId);
-let aActor = aToken.actor;
-//
-// Set the value for the Active Item (aItem)
-let aItem;
-if (args[0]?.item) aItem = args[0]?.item;
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+ * 12/09/22 0.7 Despawn (delete, dismiss) one existing magehand from this actor
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+ const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 0;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //---------------------------------------------------------------------------------------------------
+ if (TL>0) jez.trace(`${TAG} === Starting ===`);
+ if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+ //---------------------------------------------------------------------------------------------------
+ // Set standard variables
+ let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+ let aActor = aToken.actor; 
+ let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+ const VERSION = Math.floor(game.VERSION);
+ const GAME_RND = game.combat ? game.combat.round : 0;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-jez.log(`Beginning ${MACRONAME}`);
 const MINION = "Magehand"
 const MINION_NAME = `${aToken.name}'s Magehand`
+//-------------------------------------------------------------------------------------------------
+// Search for pre-existing magehand, if found, despawn it.
+//
+let previousSummon = canvas.tokens.placeables.find(ef => ef.name === MINION_NAME)
+if (previousSummon) warpgate.dismiss(previousSummon.id, game.scenes.viewed.id)
 //--------------------------------------------------------------------------------------------------
 // Portals need the same color for pre and post effects, so get that set here. Even though only used
 // when we are doing portals.  This is needed to force the same choice for pre and post VFX.
@@ -88,7 +93,7 @@ if (TL > 2)
     for (let key in argObj) jez.trace(`${MACRO} | argObj.${key}`, argObj[key])
 //-------------------------------------------------------------------------------------------------
 jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
-//-------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Post message
 //
 let chatMessage = game.messages.get(args[args.length - 1].itemCardId);

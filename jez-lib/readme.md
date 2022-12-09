@@ -42,6 +42,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
 * **[getCEDesc()](#getcedescsubject-effectname-optionobj--)** -- Converts passed subject and returns Actor5e object.
 * **[getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
+* **[getClassLevel(subject, className, options = {})](#getCharacterLevel)** -- Returns the subject's specific class level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
 * **[getItemUses(item, options = {})](#getitemusesitem-options--)** -- Returns item use data object
@@ -477,6 +478,7 @@ A series of functions that return simple integer values or false on errors with 
 - **jez.getCastMod(subject)** -- Returns the subject's casting stat modifier
 - **jez.getCastStat(subject)** -- Returns the subject's casting stat string (e.g. "int")
 - **jez.getCharLevel(subject)** -- Returns the subject's character level (useful for Cantrip scaling)
+- **jez.getClassLevel(subject, className, options = {})** -- For PCs returns the class level of the character's named class.  For NPCs returns the character level.
 - **jez.getStatMod(subject,stat)** -- Returns the subject's modifier for passed stat string
 - **jez.getSpellDC(subject)** -- Returns the subject's spell save DC
 - **jez.getProfMod(subject)** -- Returns the subject's proficiency modifier
@@ -485,6 +487,7 @@ A series of functions that return simple integer values or false on errors with 
 #### Parameters
 * Subject: Token5e or Actor5e object or 16 character id of a token
 * Stat: A string from: "str", "dex", "con", "int", "wis", "chr"
+* ClassName: A string naming a character class, e.g. "Druid", "wizard", "FIGHTER"
 * SubjectId: 16 character identifier for a token in the current scene
 
 #### And Two more

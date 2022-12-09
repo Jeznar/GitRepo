@@ -12,11 +12,11 @@ const TAG = `${MACRO} |`
 const TL = 1;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
-if (TL>1) jez.trace(`${TAG} === Starting ===`);
-if (TL>2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
-const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+if (TL>0) jez.trace(`${TAG} === Starting ===`);
+if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
 // Set standard variables
+const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
 let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
 let aActor = aToken.actor; 
 let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
@@ -106,7 +106,7 @@ async function doOn(options={}) {
 
     msg = `Maybe say something useful...`
     postResults(msg)
-    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
+    if (TL>0) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0

@@ -1,5 +1,11 @@
-const MACRONAME = "Find_Familiar.1.8.js"
+const MACRONAME = "Find_Familiar.1.7.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Built directly on the Find Familiar spell with the addition of:
+ * 
+ * 1. Use of a Wild Shape charge
+ * 2. Adding existance timer to the summon
+ * 3. Change of type to Fey for the summoned critter.
+ * 
  * Look in the sidebar for creatures that can serve as fams and provide a list of options for
  * the find fam spell. Then, execute the summon with jez.spawnAt (WarpGate)
  * 
@@ -11,17 +17,7 @@ const MACRONAME = "Find_Familiar.1.8.js"
  * Familiars have unique names, i.e. there is only one "bat," "raven," etc.
  * Feature CHAIN_MASTER_PACT, if present results in message reminding that this is not automated.
 
- * 08/18/22 1.0 Creation
- * 08/29/22 1.1 Update familiar's name to use just the caster's first name token
- *              Set size of token being summoned to match the summoned creature (lib call does not 
- *                  support less than size 1)
- * 08/30/22 1.2 Add effect to caster that deletes summoned familiar when it is removed
- * 08/30/22 1.3 Added shortcut selection triggered by aItem.name containing a "-" character
- * 08/31/22 1.4 Teach the code to modify saving throws for CHAIN_MASTER_PACT familiar
- * 09/01/22 1.5 Genralize handling of CHAIN_MASTER_PACT familiar savingthrow change
- * 09/02/22 1.6 Add support for CHAIN_MASTER_VOICE
- * 09/03/22 1.7 Change the disposition of familiar to match the summoner's disposition
- * 12/09/22 1.8 Remove extra macro.itemmacro that causes error on familiar dismissal
+ * 12/09/22 0.1 Creation from Find_Familiar.1.7.js
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
@@ -40,19 +36,16 @@ if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
 if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
 //---------------------------------------------------------------------------------------------------
-// Set the value for the Active Token (aToken)
-let aToken;
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
-else aToken = game.actors.get(LAST_ARG.tokenId);
-let aActor = aToken.actor;
-const FIRST_NAME_TOKEN = aToken.name.split(" ")[0]     // Grab the first word from the selection
-//
-// Set the value for the Active Item (aItem)
-let aItem;
-if (args[0]?.item) aItem = args[0]?.item;
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+// Set standard variables
+let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+let aActor = aToken.actor; 
+let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+const VERSION = Math.floor(game.VERSION);
+const GAME_RND = game.combat ? game.combat.round : 0;
 //---------------------------------------------------------------------------------------------------
+// Set Macro specific globals
 //
+const FIRST_NAME_TOKEN = aToken.name.split(" ")[0]     // Grab the first word from the selection
 let famNames = []   // Global array to hold the list of familiar names
 const FLAG_NAME = "familiar_name"
 const FAM_NAME = DAE.getFlag(aActor, FLAG_NAME)
@@ -425,7 +418,7 @@ async function addWatchdogEffect(tokenId, famName) {
         },
         changes: [
             { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenId}`, priority: 20 },
-            // { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `0`, priority: 20 },
+            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `0`, priority: 20 },
         ]
     };
     if (TL > 1) jez.trace(`${FNAME} | effectData`, effectData);

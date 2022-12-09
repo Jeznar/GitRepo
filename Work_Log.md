@@ -445,6 +445,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.08 Updated a swarm of macros to use pairEffectsAsGM to resolve permission issues
 
+22.12.09 Added getClassLevel to jez.lib and a bunch of player spell cleanup
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

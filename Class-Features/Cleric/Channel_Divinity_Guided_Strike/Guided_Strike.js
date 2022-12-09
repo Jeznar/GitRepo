@@ -40,6 +40,7 @@ if (TL > 2) jez.trace(`${TAG} Macro Variables`,
     "RESOURCE_NAME ", RESOURCE_NAME,
     "GUIDED        ", GUIDED,
     "IS_NPC        ", IS_NPC)
+let resourceSlot = null
 //---------------------------------------------------------------------------------------------------
 // Make sure we have guided strike
 //
@@ -57,8 +58,6 @@ if (!["ak"].some(i => (VERSION > 9 ?
 //---------------------------------------------------------------------------------------------------
 // Deal with casting resource -- this needs to consider NPC and PC data structures
 //
-console.log('aItem ==>', aItem)
-console.log('GUIDED==>',GUIDED)
 let curtRes, curtMax
 if (IS_NPC) {   // Process resources for an NPC
     const ITEM_USES = await jez.getItemUses(GUIDED, { traceLvl: 5 })
@@ -73,7 +72,7 @@ else {
     let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
     if (!findResourceSlot) return jez.badNews(`${TAG} ${RESOURCE_NAME} Resources is missing on 
         ${aToken.name}, Add it.`);
-    let resourceSlot = findResourceSlot.name;
+    resourceSlot = findResourceSlot.name;
     curtRes = ACTOR_DATA.resources[resourceSlot].value;
     curtMax = ACTOR_DATA.resources[resourceSlot].max;
     if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`,

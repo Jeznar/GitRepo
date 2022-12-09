@@ -1,42 +1,39 @@
-const MACRONAME = "Celestial_6th:Radiant_Soul.0.2.js"
+const MACRONAME = "Celestial_6th:Radiant_Soul.0.3.js"
 /*****************************************************************************************
  * Wildfire Druid 6th Level Ability,  based very much on my rewrite of Hex, which 
  * borrowed heavily from Crymic's code
  * 
  * 03/15/22 Creation of Macro
  * 07/01/22 Chasing "<Warlock> is not a Celestial" bug caused by FoundryVTT 9.x
+ * 12/09/22 0.3 Update logging to current style
  *****************************************************************************************/
-const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
+ const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 0;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //---------------------------------------------------------------------------------------------------
+ if (TL>0) jez.trace(`${TAG} === Starting ===`);
+ if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+ //---------------------------------------------------------------------------------------------------
+ // Set standard variables
+ let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+ let aActor = aToken.actor; 
+ let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+ const VERSION = Math.floor(game.VERSION);
+ const GAME_RND = game.combat ? game.combat.round : 0;
+ //---------------------------------------------------------------------------------------------------
+ // Set Macro specific globals
+ //
 const ABILITY_NAME = "Radiant Soul"
 const FLAG = MACRO                      // Name of the DAE Flag  
 const MIN_LVL = 6    
-let trcLvl = 4;
-jez.log("")
-jez.log("")
-jez.log("")
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} !!!`);
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
-    else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
-    else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item;
-    else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-let msg = "";
-//------------------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-//if ((args[0]?.tag === "OnUse") && !preCheck()) return;
 //------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "DamageBonus") {
-    let damFunc = doBonusDamage()
-    jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`,damFunc);
+    let damFunc = doBonusDamage({traceLvl:TL})
+    if (TL>1) jez.trace(`${TAG} === Finished === ${MACRONAME} ===`,damFunc);
     return damFunc    // DAE Damage Bonus
 }
 /***************************************************************************************************
@@ -47,19 +44,23 @@ if (args[0]?.tag === "DamageBonus") {
  * Post results to the chat card
  ***************************************************************************************************/
 function postResults() {
-    jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro BonusDamage
  ***************************************************************************************************/
-async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
+async function doBonusDamage(options={}) {
+    const FUNCNAME = "doBonusDamage(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    //-----------------------------------------------------------------------------------------------
     const NUM_DICE = 1
     const DIE_TYPE = "d8"
     let dmgType = "";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
     //---------------------------------------------------------------------------------------------
     // Make sure the user is at least a level ${MIN_LVL} warlock of subclass celestial
     //
@@ -68,21 +69,21 @@ async function doBonusDamage() {
     //   FROM: aToken.actor.data.data.classes?.warlock?.levels
     //   TO:   aToken.actor.data.document?._classes?.warlock?.data?.data?.levels
     let warlockLevel = aToken.actor.data.document?._classes?.warlock?.data?.data?.levels
-    jez.trc(3,trcLvl,`${aToken.name} is warlock level ${warlockLevel}`,warlockLevel)
+    if (TL>1) jez.trace(`${TAG} ${aToken.name} is warlock level ${warlockLevel}`,warlockLevel)
     if ((warlockLevel < MIN_LVL || !warlockLevel)) {
         msg = `<b>${aToken.name}</b> is a level "${warlockLevel}" 
         warlock, must be at least level ${MIN_LVL} for <b>${ABILITY_NAME}</b> to be used.`
         jez.postMessage({color: "dodgerblue", fSize: 14, icon: aToken.data.img, msg: msg, 
                 title: `${aToken.name} is not a Lvl ${MIN_LVL}+ Warlock`, token: aToken})
         return {}
-    } else jez.trc(4,trcLvl,`Passed text of warlockLevel ${warlockLevel}`)
+    } else if (TL>1) jez.trace(`${TAG} Passed test of warlockLevel ${warlockLevel}`)
 
     // ----------------------------------------------------------------------------------------------
     // As of FoundryVTT 9.x the location of subclass moved
     //   FROM: aToken.actor.data.data.classes?.warlock?.subclass
     //   TO:   aToken.actor.data.document._classes?.warlock?.data?.data?.subclass
     let subClass = aToken.actor.data.document._classes?.warlock?.data?.data?.subclass
-    jez.trc(3,trcLvl,`${aToken.name} is subclass ${subClass}`)
+    if (TL>1) jez.trace(`${TAG} ${aToken.name} is subclass ${subClass}`)
     if (subClass.toLowerCase() !== "celestial") {
         msg = `<b>${aToken.name}</b> is subclass "${subClass}", 
         must be "Celestial" for <b>${ABILITY_NAME}</b> to be used.`
@@ -96,22 +97,23 @@ async function doBonusDamage() {
     //
     if (args[0].targets.length === 0) return {}
     const tToken = canvas.tokens.get(args[0].targets[0].id); 
-    jez.log("tToken", tToken)
     //---------------------------------------------------------------------------------------------
     // If action type wasn't a spell attack (msak or rsak) then return a null function
     //
     let actionType = aItem.data.actionType
-    jez.log("actionType", actionType)
-    if (actionType==="rsak" || actionType==="msak" || actionType==="save" ) jez.log("continuing...")
+    if (TL > 1) jez.trace(`${TAG} actionType`, actionType)
+    if (actionType === "rsak" || actionType === "msak" || actionType === "save") {
+        if (TL > 1) jez.trace(`${TAG} continuing...`)
+    }
     else return {};
     //if (!["sak"].some(actionType => (aItem.data.actionType || "").includes(actionType))) return {};
     //---------------------------------------------------------------------------------------------
     // If the attack didn't have a type of "fire" or "radiant" then return a null function, 
     // otherwise send back a valid extra damage function.
     //
-    jez.log("Checking for fire or radiant danage")
+    if (TL>1) jez.trace(`${TAG} Checking for fire or radiant damage`, aItem.data.damage.parts)
     for(const damageLine of aItem.data.damage.parts) {
-        jez.log("Damage Line", damageLine )
+        if (TL>1) jez.trace(`${TAG} Damage Line`, damageLine )
         if (damageLine[1] === "fire") {
             dmgType = "fire"
             break;
@@ -124,7 +126,7 @@ async function doBonusDamage() {
     if (dmgType !== "fire" && dmgType !== "radiant") return {}
     let chrMod = jez.getStatMod(aToken,"cha")
     runVFX(dmgType, tToken) 
-    jez.trc(2,trcLvl,`--- Finishing --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finishing --- ${MACRONAME} ${FUNCNAME} ---`);
     return {
         //damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,
         damageRoll: `${chrMod}[${dmgType}]`,
@@ -135,17 +137,22 @@ async function doBonusDamage() {
 /***************************************************************************************************
  * Play the VFX for the fire effect, type is "heal" or "fire" and nothing else
  ***************************************************************************************************/
- async function runVFX(type, token5e) {
-    const FUNCNAME = "runVFX(type, token5e)"
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(3,trcLvl,"Parameters","type",type,"token5e",token5e)
+async function runVFX(type, token5e, options = {}) {
+    const FUNCNAME = "runVFX(type, token5e, options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "type", type, "token5e", token5e,
+        "options", options);
+    //-----------------------------------------------------------------------------------------------
     let vfxEffect = ""
     switch (type) {
         case "radiant": vfxEffect = "jb2a.template_circle.out_pulse.02.burst.tealyellow"; break
         case "fire": vfxEffect = "jb2a.explosion.01.orange"; break
         default: return
     }
-    jez.log("vfxEffect",vfxEffect)
+    if (TL>1) jez.trace(`${TAG} vfxEffect`,vfxEffect)
     await jez.wait(2000)
     new Sequence()
     .effect()
@@ -154,5 +161,5 @@ async function doBonusDamage() {
         .scale(0.3)
         .opacity(1)
     .play();
-    jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
  }
