@@ -264,7 +264,7 @@ async function doTeleport(aToken, bToken, options = {}) {
     }
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Perform the code that runs when this macro is invoked each round by DAE
+ * 
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 async function runVFX(token, location, options = {}) {
     const FUNCNAME = "runVFX(options={})";
