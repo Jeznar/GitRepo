@@ -425,7 +425,7 @@ async function addWatchdogEffect(tokenId, famName) {
         },
         changes: [
             { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenId}`, priority: 20 },
-            // { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `0`, priority: 20 },
+            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `0`, priority: 20 },
         ]
     };
     if (TL > 1) jez.trace(`${FNAME} | effectData`, effectData);

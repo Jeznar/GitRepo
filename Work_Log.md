@@ -447,6 +447,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.09 Added getClassLevel to jez.lib and a bunch of player spell cleanup
 
+22.12.10 Created Poison Spray macro that runs a VFX that handles saves as misses for the VFX bolt.  Also misc cleanups.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

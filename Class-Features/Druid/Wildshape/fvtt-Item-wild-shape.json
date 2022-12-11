@@ -1,0 +1,143 @@
+{
+  "name": "Wild Shape",
+  "type": "feat",
+  "img": "/systems/dnd5e/icons/skills/green_13.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Starting at 2nd level, you can use your action to magically assume the shape of a beast that you have seen before. You can use this feature twice. You regain expended uses when you finish a short or long rest.</p>\n<p>Your druid level determines the beasts you can transform into, as shown in the Beast Shapes table. At 2nd level, for example, you can transform into any beast that has a challenge rating of 1/4 or lower that doesn't have a flying or swimming speed.</p>\n<h4><strong>Beast Shapes</strong></h4>\n<table style=\"width: 100%; height: 68px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 17px;\">\n<td style=\"width: 4.85833%; height: 17px;\"><strong>Level</strong></td>\n<td style=\"width: 7.52292%; height: 17px;\"><strong>Max. CR</strong></td>\n<td style=\"width: 25.9396%; height: 17px;\"><strong>Limitations</strong></td>\n<td style=\"width: 60.7459%; height: 17px;\"><strong>Example</strong></td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"width: 4.85833%; height: 17px;\">2nd</td>\n<td style=\"width: 7.52292%; height: 17px;\">1/4</td>\n<td style=\"width: 25.9396%; height: 17px;\">No flying or swimming speed</td>\n<td style=\"width: 60.7459%; height: 17px;\">@Actor[woX5Hi8IvaB1y50W]{Wolf}</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"width: 4.85833%; height: 17px;\">4th</td>\n<td style=\"width: 7.52292%; height: 17px;\">1/2</td>\n<td style=\"width: 25.9396%; height: 17px;\">No flying speed</td>\n<td style=\"width: 60.7459%; height: 17px;\">@Actor[1oagxmLPjjO3ZQAI]{Crocodile}</td>\n</tr>\n<tr style=\"height: 17px;\">\n<td style=\"width: 4.85833%; height: 17px;\">8th</td>\n<td style=\"width: 7.52292%; height: 17px;\">1</td>\n<td style=\"width: 25.9396%; height: 17px;\">--</td>\n<td style=\"width: 60.7459%; height: 17px;\">@Actor[VlOzLP80Jpu0e2Bx]{Giant Eagle}</td>\n</tr>\n</tbody>\n</table>\n<p>You can stay in a beast shape for a number of hours equal to half your druid level (rounded down). You then revert to your normal form unless you expend another use of this feature. You can revert to your normal form earlier by using a bonus action on your turn. You automatically revert if you fall unconscious, drop to 0 hit points, or die.</p>\n<p>See <a href=\"https://www.dndbeyond.com/sources/phb/druid#WildShape\" target=\"_blank\" rel=\"noopener\">D&amp;D Beyond</a> for more details.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "PHB pg. 66",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": "self"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": "",
+      "type": "sr"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": "",
+      "value": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell",
+      "value": ""
+    },
+    "requirements": "Druid 2",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.dnd5e.classfeatures.swK0r5TOIxredxWS"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Wild Shape",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Wild_Shape.0.4.js\"\n/*****************************************************************************************\n * Macro just appends some general info to the item card created by Wild Shape\n * \n * 12/02/21 0.1 Creation of Macro\n * 12/10/22 0.4 Add timer watchdog and use of resource by name not position\n *****************************************************************************************/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n//---------------------------------------------------------------------------------------------------\n// If we are running doOff on Base Token, exit now!\n//\nif (args[0] === \"off\" && args[1] === args[args.length - 1].actorUuid) return\n//---------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#L_ARG for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst SPELL_NAME = `Wild Shape`\nconst ACTOR_DATA = await aActor.getRollData();\nconst RESOURCE_NAME = \"Wildshapes\";\nconst IS_NPC = (aToken.document._actor.data.type === \"npc\") ? true : false;\nconst CLASS_LEVEL = jez.getClassLevel(aToken, 'Druid', { traceLvl: TL })\nconst DURATION = CLASS_LEVEL * 1800 // Seconds\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\nreturn;\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //---------------------------------------------------------------------------------------------------\n    // Ask if a resource should be consumed \n    //\n    const Q_TITLE = `Consume Resource?`\n    let qText = `<p>${aToken.name} is using <b>${SPELL_NAME}</b> to change shape.  This typically \n    consumes one charge of <b>Wildshape.</b></p>\n    <p>If you want to spend the charge (or use the NPC alternative), click <b>\"Yes\"</b>.</p>\n    <p>If you want to bypass spending the charge (with GM permission) click <b>\"No\"</b>.</p>\n    <p>If you want to cancel the spell click <b>\"Close\"</b> (top right of dialog).</p>`\n    const SPEND_RESOURCE = await Dialog.confirm({ title: Q_TITLE, content: qText, });\n    console.log('SPEND_RESOURCE', SPEND_RESOURCE)\n    if (SPEND_RESOURCE === null) return jez.badNews(`${SPELL_NAME} cancelled by player.`, 'i')\n    //---------------------------------------------------------------------------------------------------\n    // Deal with casting resource -- this needs to consider NPC and PC data structures\n    //\n    if (SPEND_RESOURCE) {\n        const CONTINUE = await spendResource({ traceLvl: TL })\n        if (!CONTINUE) return jez.badNews(`${SPELL_NAME} cancelled for lack of WildShapes`, 'w')\n    }\n    //---------------------------------------------------------------------------------------------------\n    // Apply Watchdog Timer effect to actor to track shape duration\n    //\n    addWatchdogEffect(DURATION, { traceLvl: TL })\n    //---------------------------------------------------------------------------------------------------\n    // Create summary message to be dislayed\n    //\n    if (SPEND_RESOURCE) msg = `<p style=\"color:Green;\"><b>${aToken.name}</b> has used a charge of \n    <b>${aItem.name}</b> to shift into a new form</p>`\n    else msg = `<p style=\"color:DarkGreen;\"><b>${aToken.name}</b> has shifted into a new form without using \n    a charge of <b>${aItem.name}</b></p>`\n    msg += `<em>An actor from the <b>Actor's Directory</b> can be dropped on <b>${aToken.name}'s</b> open \n    character sheet and the popup window used to complete the transformation. End the transformation with \n    <b>Restore Transformation</b> from the top of the hybrid character sheet.  Any carry over damage needs \n    to be handled manually.</em>`;\n    //---------------------------------------------------------------------------------------------------\n    // Bubble message\n    //\n    msg = `My player should finish my shape shift!`\n    bubbleForAll(aToken.id, msg, true, true)\n    //---------------------------------------------------------------------------------------------------\n    // Report results of operation\n    //\n    postResults(msg);\n    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Spend the resource\n * \n * Returns an array of the options available\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function spendResource(options = {}) {\n    const FUNCNAME = \"spendResource(options = {})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //---------------------------------------------------------------------------------------------------\n    // Function variables\n    //\n    let resourceSlot = null\n    let curtRes, curtMax\n    //--------------------------------------------------------------------------------------------\n    //\n    if (IS_NPC) {   // Process resources for an NPC\n        const ITEM_USES = await jez.getItemUses(FEATURE, { traceLvl: TL })\n        if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, \"ITEM_USES\", ITEM_USES)\n        curtRes = ITEM_USES.value;\n        curtMax = ITEM_USES.max;\n    }\n    else {\n        let resourceList = [{ name: \"primary\" }, { name: \"secondary\" }, { name: \"tertiary\" }];\n        let resourceValues = Object.values(ACTOR_DATA.resources);\n        let resourceTable = mergeObject(resourceList, resourceValues);\n        let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());\n        if (!findResourceSlot) return jez.badNews(`${TAG} ${RESOURCE_NAME} Resource is missing on \n        ${aToken.name}, Please add it.`);\n        resourceSlot = findResourceSlot.name;\n        curtRes = ACTOR_DATA.resources[resourceSlot].value;\n        curtMax = ACTOR_DATA.resources[resourceSlot].max;\n        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`,\n            \"resourceList     \", resourceList,\n            \"resourceTable    \", resourceTable,\n            \"findResourceSlot \", findResourceSlot)\n    }\n    if (TL > 2) jez.trace(`${TAG} Resource Values`,\n        \"curtRes \", curtRes,\n        \"curtMax \", curtMax)\n    if (curtRes < 1) return false;\n    //-----------------------------------------------------------------------------------------------\n    // Decrement our resource -- this needs to consider NPC and PC data structures\n    //\n    if (IS_NPC) {   // Decrement resource for an NPC\n        jez.setItemUses(FEATURE, curtRes - 1, { traceLvl: TL })\n    }\n    else {          // Decrement resource for a PC\n        let updates = {};\n        let resources = VERSION > 9 ? `system.resources.${resourceSlot}.value` :\n            `data.resources.${resourceSlot}.value`;\n        updates[resources] = curtRes - 1;\n        await aActor.update(updates);\n    }\n    await jez.wait(300);\n    return true\n}\n/***************************************************************************************************\n * Add an effect to the using actor that can perform additional actions on the summoned actor.\n * \n * Expected input is a single token id and the name of the familiar\n ***************************************************************************************************/\nasync function addWatchdogEffect(seconds, options = {}) {\n    const FUNCNAME = \"addWatchdogEffect(tokenId)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} Starting --- `);\n    if (TL > 1) jez.trace(`${TAG} Starting ---`, 'seconds', seconds, 'options', options);\n    //------------------------------------------------------------------------------------------------\n    // \n    //\n    //------------------------------------------------------------------------------------------------\n    // Proceed with adding watchdog\n    //\n    const CE_DESC = `Wildshape can be maintained for up to ${seconds / 3600} hours`\n    let effectData = {\n        label: SPELL_NAME,\n        icon: null,\n        origin: L_ARG.uuid,\n        disabled: false,\n        duration: {\n            rounds: seconds / 6, startRound: GAME_RND,\n            seconds: seconds, startTime: game.time.worldTime,\n            token: aToken.uuid, stackable: false\n        },\n        flags: {\n            dae: { macroRepeat: \"none\" },\n            convenientDescription: CE_DESC\n        },\n        changes: [\n            // { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenId}`, priority: 20 },\n            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `${aActor.uuid}`, priority: 20 },\n        ]\n    };\n    if (TL > 1) jez.trace(`${FNAME} | MidiQOL.socket().executeAsGM(\"createEffects\"`, \"aToken.actor.uuid\",\n        aToken.actor.uuid, \"effectData\", effectData);\n    await MidiQOL.socket().executeAsGM(\"createEffects\",\n        { actorUuid: aToken.actor.uuid, effects: [effectData] });\n    if (TL > 0) jez.trace(`---  Finished --- ${MACRO} ${FNAME} ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOff(options = {}) {\n    const FUNCNAME = \"doOff(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //-----------------------------------------------------------------------------------------------\n    // Determine if we are runing on base or transformed actor\n    //\n    const BASE_UUID = args[1]\n    await jezcon.remove(SPELL_NAME, BASE_UUID, {traceLvl: TL});\n    //-----------------------------------------------------------------------------------------------\n    // Change back to original form\n    //\n    await aActor.revertOriginalForm();\n    //---------------------------------------------------------------------------------------------------\n    // Bubble message\n    //\n    msg = `Now, that feels more natural!`\n    bubbleForAll(aToken.id, msg, true, true)\n    //---------------------------------------------------------------------------------------------------\n    // Post Completion message\n    //\n    let title = `Revert to natural shape`\n    msg = `${SPELL_NAME} has expired (or been removed).`;\n    jez.postMessage({color: jez.randomDarkColor(), fSize: 14, \n        icon: aToken.data.img, msg: msg, title: title, token: aToken})\n    if (TL > 3) jez.trace(`${TAG} | More Detailed Trace Info.`)\n\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

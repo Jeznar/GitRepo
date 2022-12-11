@@ -1,6 +1,5 @@
-const MACRONAME = "Shillelagh.0.3.js"
-jez.log(MACRONAME)
-/*****************************************************************************************
+const MACRONAME = "Shillelagh.0.4.js"
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Create/manage a limited duration item for the Shillelagh spell
  * 
  * Description: The wood of a club or quarterstaff you are holding is imbued with nature's 
@@ -12,87 +11,80 @@ jez.log(MACRONAME)
  * 12/31/21 0.1 Creation of Macro
  * 05/17/22 0.2 Update for Foundry 9.x and VFX
  * 08/02/22 0.3 Add convenientDescription
- *****************************************************************************************/
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log(`----------- Starting ${MACRONAME}--------------------------`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-const lastArg = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
-if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
+ * 12/10/22 0.4 Updated logging to quiet the log and used library functions
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+ const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 0;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ if (TL>0) jez.trace(`${TAG} === Starting ===`);
+ if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ // Set standard variables
+ //
+ const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+ let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+ let aActor = aToken.actor; 
+ let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+ const VERSION = Math.floor(game.VERSION);
+ const GAME_RND = game.combat ? game.combat.round : 0;
+//-----------------------------------------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
 const EFFECT_NAME = "Shillelagh"
 const EFFECT_ICON = "Icons_JGB/Weapons/quarterstaff-shillelagh.jpg"
 const MACRO_HELPER = `${MACRO}_Helper_DAE`;
 let attackItem = "Shillelagh";
-let msg = "";
-let errorMsg = "";
 let baseWeapon = ""; // The base weapon turned into a Shillelagh
-//----------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-if (!await preCheck()) {
-    jez.log(errorMsg)
-    ui.notifications.error(errorMsg)
-    return;
-}
-//----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//----------------------------------------------------------------------------------
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
+if (args[0] === "off") await doOff({traceLvl:TL});                   // DAE removal
+//-----------------------------------------------------------------------------------------------------------------------------------
 // All Done
 //
-jez.log(`--------------------Finishing ${MACRONAME}---------------------------------------`)
-/***************************************************************************************************
+if (TL>1) jez.trace(`${TAG} === Finished ===`);
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
- ***************************************************************************************************/
-async function preCheck() {
-    // Check anything important...
-    if (typeof errorMsg === undefined) {
-        let errorMsg = 'global variable "errorMsg" is not defined, but required'
-        jez.log(errorMsg)
-        ui.notifications.error(errorMsg)
-    }
-    if (!game.macros.getName(MACRO_HELPER)) {
-        errorMsg = `Could not locate required macro: ${MACRO_HELPER}`
-        return (false)
-    }
-    jez.log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
-    return (true)
-}
-/***************************************************************************************************
+ ***********************************************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  * Return false if the spell failed.
- ***************************************************************************************************/
-async function doOnUse() {
-    const FUNCNAME = "doOnUse()";
-    jez.log("--------------OnUse-----------------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    //-------------------------------------------------------------------------------
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
+async function doOnUse(options={}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    await jez.wait(100)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Initial checks and settings
+    //
+    if (!game.macros.getName(MACRO_HELPER)) return jez.badNews(`${TAG} Could not locate required macro: ${MACRO_HELPER}`)
+    let clubD = await jez.itemFindOnActor(aToken, "Club", "weapon");
+    // if (hasItem("Club", aActor)) baseWeapon = "Club"
+    if (clubD) baseWeapon = "Club"
+    let staffD = await jez.itemFindOnActor(aToken, "Quarterstaff", "weapon");
+    // if (hasItem("Quarterstaff", aActor)) baseWeapon = "Quarterstaff"
+    if (staffD) baseWeapon = "Quarterstaff"
+    if (!baseWeapon) return jez.badNews(`${TAG} ${aToken.name} has nether a Quarterstaff nor Club. Spell Failed.`,'w')
+    await jez.deleteItems(`${attackItem} Club`, "weapon", aActor);
+    await jez.deleteItems(`${attackItem} Quarterstaff`, "weapon", aActor);
+    //-------------------------------------------------------------------------------------------------------------------------------
     // If the buff already exists, remove it before adding another one
     //
     let existingEffect = aActor.effects.find(ef => ef.data.label === EFFECT_NAME) ?? null;
-    jez.log("existingEffect", existingEffect)
     if (existingEffect) await existingEffect.delete();
-    //----------------------------------------------------------------------------------
-    // Run the preCheckOnUse function which checks inventory and sets attackItem
-    //
-    if (!await preCheckOnUse()) {
-        jez.log(errorMsg)
-        ui.notifications.error(errorMsg)
-        return;
-    }
-    //----------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Launch Rune VFX
     //
     jez.runRuneVFX(aToken, jez.getSpellSchool(aItem))
-    //----------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Set base weapon dependent variables
     //
     let descValue = ""
@@ -117,11 +109,11 @@ async function doOnUse() {
         damVersatile = "1d10+@mod"
         propVer = "true"
     }
-    jez.log("--- Weapon Properties ---",
-        "propVer", propVer,
+    if (TL>1) jez.trace(`${TAG} --- Weapon Properties ---`,
+        "propVer     ", propVer,
         "damVersatile", damVersatile,
-        "descValue", descValue)
-    //-------------------------------------------------------------------------------
+        "descValue   ", descValue)
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Create an effect on the caster to trigger the doOff action to remove temp weap
     //
     const CE_DESC = `Held Staff or Club is imbued with nature's power.`
@@ -138,11 +130,12 @@ async function doOnUse() {
         duration: { rounds: 10, turns: 10, startRound: gameRound, seconds: 60, startTime: game.time.worldTime },
         changes: [
             { key: "macro.execute", mode: jez.CUSTOM, value: value, priority: 20 },
+            // { key: `macro.itemMacro`, mode: jez.ADD, value: `Not Used`, priority: 20 },
         ]
     };
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aActor.uuid, effects: [effectData] });
-    jez.log(`applied ${MACRO} effect`, effectData);
-    //-------------------------------------------------------------------------------
+    if (TL>1) jez.trace(`${TAG} applied ${MACRO} effect`, effectData);
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Build the item data for the action to be created, a new weapon in inventory
     //
     let itemData = [{
@@ -178,106 +171,44 @@ async function doOnUse() {
         <p><b>FoundryVTT</b>: Use newly created item <b>${attackItem}</b> in INVENTORY 
         tab to attack with the temporary weapon.</p>`
     postResults(msg);
-    //---------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Pop a system notification about the item being added to inventory.
     //
     msg = `Created "${attackItem}" in inventory.  It can now be used for melee attacks.`
     ui.notifications.info(msg);
-    jez.log("--------------OnUse-----------------", "Finished", `${MACRONAME} ${FUNCNAME}`);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return (true);
 }
-/***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
- ***************************************************************************************************/
- async function preCheckOnUse() {
-    // Check anything important...
-    if (hasItem("Club", aActor)) baseWeapon = "Club" 
-    if (hasItem("Quarterstaff", aActor)) baseWeapon = "Quarterstaff"
-
-    if (!baseWeapon) {
-        errorMsg = `${aToken.name} has nether a Quarterstaff nor Club. Spell Failed.`
-        jez.log("PreCheckonUse failed")
-        return (false)
-    }  
-
-    jez.log("---- preCheckOnUse ----","attackItem",attackItem )
-    jez.log("PreCheckonUse passed")
-    return (true)
-}
-
-
-
-/*************************************************************************
- * Check to see if target has named effect. Return boolean result
- *************************************************************************/
-function hasEffect(target, effect) {
-    const FUNCNAME = "hasEffect(target, effect)";
-    jez.log("--------------hasEffect-----------", "Starting", `${MACRONAME} ${FUNCNAME}`,
-    "target", target, "effect", effect);
-    jez.log("target.actor.data.effects", target.actor.data.effects);
- 
-    let existingEffect = aActor.effects.find(ef => ef.data.label === effect) ?? null; 
-    jez.log("existingEffect", existingEffect)
-
-    // if (target.actor.effects.find(ef => ef.data.label === effect)) {
-    if (existingEffect) {
-        let message = `${target.name} already has ${effect} effect`;
-        // ui.notifications.info(message);
-        jez.log(message);
-        return(true);
-    } else {
-        jez.log(` ${target.name} needs ${effect} effect added`);
-        return(false)
-    }
-}
-
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- ***************************************************************************************************/
- async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
-    jez.log("--------------Bonus Damage-----------", "Starting", `${MACRONAME} ${FUNCNAME}`);
-    jez.log("The do On Use code")
-    jez.log("--------------Bonus Damage-----------", "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return (true);
-}
-/***************************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Post the results to chat card
- ***************************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
-
-    let chatMessage = game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    jez.log(`chatMessage: `,chatMessage);
-    const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
-    const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
-    return;
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
+ function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>2) jez.trace("postResults Parameters","msg",msg)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
 }
-
-/***************************************************************************************
-* Function to determine if passed actor has a specific item, returning a boolean result
-*
-* Parameters
-*  - itemName: A string naming the item to be found in actor's inventory
-*  - actor: Optional actor to be searched, defaults to actor launching this macro
-***************************************************************************************/
-function hasItem(itemName, actor) {
-    const FUNCNAME = "hasItem";
-    jez.log("-------hasItem(itemName, actor)------", "Starting", `${MACRONAME} ${FUNCNAME}`,
-    "itemName", itemName, `actor ${actor.name}`, actor);
-
-    // If actor was not passed, pick up the actor invoking this macro
-    actor = actor ? actor : canvas.tokens.get(args[0].tokenId).actor;
-
-    let item = actor.items.find(item => item.data.name == itemName)
-    if (item == null || item == undefined) {
-        jez.log(`${actor.name} does not have ${itemName}, ${FUNCNAME} returning false`);
-         return(false);
-    }
-    jez.log(`${actor.name} has ${itemName}, ${FUNCNAME} returning true`);
-    return(true);
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Perform the code that runs when this macro is removed by DAE, set Off
+ * This runs on actor that has the affected removed from it.
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
+ async function doOff(options={}) {
+    const FUNCNAME = "doOff(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    await jez.deleteItems(`${attackItem} Club`, "weapon", aActor);
+    await jez.deleteItems(`${attackItem} Quarterstaff`, "weapon", aActor);
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
+    return;
 }

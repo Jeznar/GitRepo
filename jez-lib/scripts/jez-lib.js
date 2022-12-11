@@ -2456,7 +2456,6 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (TL === 1) jez.trace(`--- Called --- ${FNAME} ---`);
         if (TL > 1) jez.trace(`--- Called --- ${FUNCNAME} ---`, "UUID", UUID, "options", options);
         const A = jez.DELETE_EFFECT_MACRO
-        console.log(`A is ${typeof A}`, A)
         const DELETE_EFFECT_MACRO = jez.getMacroRunAsGM(jez.DELETE_EFFECT_MACRO)
         if (!DELETE_EFFECT_MACRO) return false
         if (TL > 2) jez.trace(`${FNAME} | Calling DELETE_EFFECT_MACRO`, DELETE_EFFECT_MACRO);

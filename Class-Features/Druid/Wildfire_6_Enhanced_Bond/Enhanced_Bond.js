@@ -1,43 +1,37 @@
-const MACRONAME = "Wildfire-6th:Enhanced_Bond.js"
+const MACRONAME = "Wildfire-6th:Enhanced_Bond.0.2.js"
 /*****************************************************************************************
  * Wildfire Druid 6th Level Ability,  based very much on my rewrite of Hex, which 
  * borrowed heavily from Crymic's code
  * 
- * 03/15/22 Creation of Macro
+ * 03/15/22 0.1 Creation of Macro
+ * 12/10/22 0.2 Update to use current logging and shush the log noise.
  *****************************************************************************************/
-const MACRO = MACRONAME.split(".")[0]   // Trim of the version number and extension
-const FLAG = MACRO                      // Name of the DAE Flag       
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
-else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
-else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item;
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
-let msg = "";
-
+ const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 0;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ if (TL>0) jez.trace(`${TAG} === Starting ===`);
+ if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ // Set standard variables
+ const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+ let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+ let aActor = aToken.actor; 
+ let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+ const VERSION = Math.floor(game.VERSION);
+ const GAME_RND = game.combat ? game.combat.round : 0;
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ // Set Macro specific globals
+ //
 const ITEM_NAME = "Hex - Move"                          // Base name of the helper item
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
 const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book
 //------------------------------------------------------------------------------------------
-// Run the preCheck function to make sure things are setup as best I can check them
-//
-//if ((args[0]?.tag === "OnUse") && !preCheck()) return;
-//------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-//if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
-//if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-if (args[0]?.tag === "DamageBonus") return (doBonusDamage());    // DAE Damage Bonus
-jez.log(`============== Finishing === ${MACRONAME} =================`);
+if (args[0]?.tag === "DamageBonus") return (doBonusDamage({traceLvl:TL}));    // DAE Damage Bonus
+if (TL>1) jez.trace(`${TAG} === Finished ===`);
 return;
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
@@ -47,23 +41,30 @@ return;
  * Post results to the chat card
  ***************************************************************************************************/
 function postResults() {
-    jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
-/***************************************************************************************************
- * Perform the code that runs when this macro is invoked as an ItemMacro BonusDamage
- ***************************************************************************************************/
-async function doBonusDamage() {
-    const FUNCNAME = "doBonusDamage()";
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Perform the code that runs when this macro is invoked as an ItemMacro "doBonusDamage"
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
+ async function doBonusDamage(options={}) {
+    const FUNCNAME = "doBonusDamage(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL>0) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Function Values
+    //
     const NUM_DICE = 1
     const DIE_TYPE = "d8"
     let dmgType = "";
-    jez.log(`-------------- Starting --- ${MACRONAME} --- ${FUNCNAME} -----------------`);
-    //let rc = await familiarPresent()
-    //jez.log("Returned value from seach for familiar:", rc)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Check for presence of familiar
+    //
     if (!await familiarPresent()) {
-        jez.log("Familiar is not present, sorry, no special effects")
+        if (TL>1) jez.trace(`${TAG} Familiar is not present, sorry, no special effects`)
         return{};
     }
     //---------------------------------------------------------------------------------------------
@@ -72,13 +73,13 @@ async function doBonusDamage() {
     //
     if (args[0].targets.length === 0) return {}
     const tToken = canvas.tokens.get(args[0].targets[0].id); 
-    jez.log("tToken", tToken)
+    if (TL>1) jez.trace(`${TAG} tToken`, tToken)
     //---------------------------------------------------------------------------------------------
     // If action type was "heal" return a proper healing function
     //
     if (aItem.data.actionType === "heal") {
         runVFX("heal", tToken) 
-        jez.log("Healing detected", aItem.data.actionType)
+        if (TL>1) jez.trace(`${TAG} Healing detected`, aItem.data.actionType)
         dmgType = "healing"
         return {
             damageRoll: `${NUM_DICE}${DIE_TYPE}[${dmgType}]`,
@@ -118,17 +119,14 @@ async function familiarPresent() {
     //
     let i = 0;
     const MINION = await jez.familiarNameGet(aToken.actor)
-    jez.log("MINION", MINION)
-    //jez.log('Familar name being searched for', MINION)
+    if (TL>1) jez.trace(`${TAG} MINION`, MINION)
     for (let critter of game.scenes.viewed.data.tokens) {
-        //jez.log(` Creature ${i++}`, critter.data.name);
-        //jez.log(`critter ${critter.name}`,critter)
         if (critter.data.name === MINION) {
-            jez.log("heading on back from function familiarPresent() with TRUE")
+            if (TL>1) jez.trace(`${TAG} heading on back from function familiarPresent() with TRUE`)
             if (critter._actor.data.data.attributes.hp.value > 0) return(true)
         }
     }
-    jez.log(`Could not find active ${MINION} in the current scene, returning FALSE`)
+    if (TL>1) jez.trace(`${TAG} Could not find active ${MINION} in the current scene, returning FALSE`)
     return(false)
 }
 /***************************************************************************************************

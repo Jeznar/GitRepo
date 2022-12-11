@@ -1,5 +1,5 @@
 {
-  "name": "Find Familiar",
+  "name": "Find Familiar - Imp",
   "type": "spell",
   "img": "/systems/dnd5e/icons/spells/wild-eerie-2.jpg",
   "data": {
@@ -94,7 +94,7 @@
       "macro": {
         "data": {
           "_id": null,
-          "name": "Find Familiar",
+          "name": "Find Familiar - Imp",
           "type": "script",
           "author": "ZjFlOWYxZjM5ZTZj",
           "img": "icons/svg/dice-target.svg",
