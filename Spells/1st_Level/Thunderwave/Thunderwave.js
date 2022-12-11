@@ -53,7 +53,7 @@ if (failCount === 0) return jez.badNews(`No creatures failed their saving throw.
 for (let i = 0; i < args[0].failedSaves.length; i++) {
     if (TL>1) jez.trace(`${TAG} ${i}) ${args[0].failedSaves[i].name} ${args[0].failedSaves[i].id}`, args[0].failedSaves);
     let tToken = canvas.tokens.get(args[0].failedSaves[i].id);  
-    jez.moveToken(aToken, tToken, 2, 1500)
+    await jez.moveToken(aToken, tToken, 2, 250)
     // knockback(aToken, tToken, 10, {traceLvl:TL});
 }
 //-----------------------------------------------------------------------------------------------------------------------------------

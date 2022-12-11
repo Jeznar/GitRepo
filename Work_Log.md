@@ -453,6 +453,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.10 Thunderwave updated to handle movement of victims with jezlib function: jez.moveToken
 
+22.12.10 Added Barkskin Macro that manages a VFX and use pairEffectsAsGM to link the effect back to concentrating
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
