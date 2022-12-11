@@ -451,6 +451,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.10 Created Purify Food and Drink macro to play a more complex VFX at a tile location
 
+22.12.10 Thunderwave updated to handle movement of victims with jezlib function: jez.moveToken
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
