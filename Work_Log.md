@@ -427,33 +427,37 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.02 Cure Wounds now refunds spell slot when cast with no targets selected.
 
-22.12.02 Created Healing Word macro based on Cure wounds and added VFX to both using .playbackRate() and .repeats() calls to make them more impactful
+22.12.02 Created **Healing Word** macro based on **Cure Wounds** and added VFX to both using **.playbackRate()** and **.repeats()** calls to make them more impactful
 
-22.12.03 Automated Revivify including refunding spell slot, healing target (runAsGM ActorUpdate), marking it prone.
+22.12.03 Automated **Revivify** including refunding spell slot, healing target (runAsGM ActorUpdate), marking it prone.
 
-22.12.05 Thunderstep rewritten to be a one step macro that allows picking of and relocation of a "buddy" and inflicts RAW damage.
+22.12.05 **Thunderstep** rewritten to be a one step macro that allows picking of and relocation of a "buddy" and inflicts RAW damage.
 
-22.12.06 Automated Fiert Teleportation to be a one step macro that selects *buddies*, moves them and handles damage.
+22.12.06 Automated **Fiery Teleportation** to be a one step macro that selects *buddies*, moves them and handles damage.
 
-22.12.06 Update to Light: Update log and chase player permission issue deleting/adding effect
+22.12.06 Update to **Light**: Update log and chase player permission issue deleting/adding effect
 
-22.12.06 Thunderstep & Fiery Teleport updated to display target destinations to help avoid collisions.
+22.12.06 **Thunderstep** & **Fiery Teleport** updated to display target destinations to help avoid collisions.
 
-22.12.07 Updated jez.getActor5eDataObj() to accept actor.uuid and warn on actor.id
+22.12.07 Updated **jez.getActor5eDataObj()** to accept actor.uuid and warn on actor.id
 
-22.12.08 Updated Crown of Madness: Swapped effect.update to jez.setCEDescAsGM to fix permission issue
+22.12.08 Updated Crown of Madness: Swapped effect.update to **jez.setCEDescAsGM** to fix permission issue
 
-22.12.08 Updated a swarm of macros to use pairEffectsAsGM to resolve permission issues
+22.12.08 Updated a swarm of macros to use **pairEffectsAsGM **to resolve permission issues
 
-22.12.09 Added getClassLevel to jez.lib and a bunch of player spell cleanup
+22.12.09 Added **getClassLevel** to jez.lib and a bunch of player spell cleanup
 
-22.12.10 Created Poison Spray macro that runs a VFX that handles saves as misses for the VFX bolt.  Also misc cleanups.
+22.12.10 Created **Poison Spray** macro that runs a VFX that handles saves as misses for the VFX bolt.  Also misc cleanups.
 
-22.12.10 Created Purify Food and Drink macro to play a more complex VFX at a tile location
+22.12.11 Created **Purify Food and Drink** macro to play a more complex VFX at a tile location
 
-22.12.10 Thunderwave updated to handle movement of victims with jezlib function: jez.moveToken
+22.12.11 **Thunderwave** updated to handle movement of victims with jezlib function: jez.moveToken
 
-22.12.10 Added Barkskin Macro that manages a VFX and use pairEffectsAsGM to link the effect back to concentrating
+22.12.11 Added **Barkskin** Macro that manages a VFX and use pairEffectsAsGM to link the effect back to concentrating
+
+22.12.11 Updated scripts that include .stretchTo clauses that might also need **.missed** calls: **Dissonant_Whispers.js**, **Ray_of_Enfeeblement.js**, **Ray_of_Sickness.js**
+
+
 
 [Link back to my Documentation Listing](README.md) 
 

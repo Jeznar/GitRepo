@@ -1,4 +1,4 @@
-const MACRONAME = "Ray_of_Sickness"
+const MACRONAME = "Ray_of_Sickness.0.4.js"
 /*****************************************************************************************
  * Built from Crymic's macro of the same name.  I added my structure, naming conventions,
  * and a VFX.
@@ -6,128 +6,116 @@ const MACRONAME = "Ray_of_Sickness"
  * 02/19/22 0.1 Creation of Macro
  * 05/02/22 0.2 Update for Foundry 9.x
  * 07/31/22 0.3 Convert to a CE appplication of effect
+ * 12/12/22 0.4 Add missed VFX and update logging
  *****************************************************************************************/
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; else aActor = game.actors.get(LAST_ARG.actorId);
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); else aToken = game.actors.get(LAST_ARG.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-const CUSTOM = 0, MULTIPLY = 1, ADD = 2, DOWNGRADE = 3, UPGRADE = 4, OVERRIDE = 5;
-let msg = "";
+ const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+ const TAG = `${MACRO} |`
+ const TL = 0;                               // Trace Level for this macro
+ let msg = "";                               // Global message string
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ if (TL>0) jez.trace(`${TAG} === Starting ===`);
+ if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ // Set standard variables
+ //
+ const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+ let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+ let aActor = aToken.actor; 
+ let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+ const VERSION = Math.floor(game.VERSION);
+ const GAME_RND = game.combat ? game.combat.round : 0;
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ // Set Macro specific globals
+ //
 const POISONED_JRNL = `@JournalEntry[${game.journal.getName("Poisoned").id}]{Poisoned}`
-
-if ((args[0]?.tag === "OnUse") && !preCheck()) return;
-
-//----------------------------------------------------------------------------------
+const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
+const SAVE_TYPE = "con";
+//-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-if (args[0] === "each") doEach();					    // DAE removal
-if (args[0]?.tag === "DamageBonus") doBonusDamage();    // DAE Damage Bonus
-jez.log(`============== Finishing === ${MACRONAME} =================`);
-jez.log("")
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
+if (TL>1) jez.trace(`${TAG} === Finished ===`);
 return;
-/***************************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************/
-
-/***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
- ***************************************************************************************************/
-function preCheck() {
-    // Check anything important...
-    jez.log('All looks good, to quote Jean-Luc, "MAKE IT SO!"')
-    return (true)
+ ***********************************************************************************************************************************
+  * Check the setup of things.  Post bad message and return false fr bad, true for ok!
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function preCheck() {
+    if (args[0].targets.length !== 1)
+        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, 'w')
+    return true
 }
-
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set Off
- * 
- * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects
- ***************************************************************************************************/
-async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("Something could have been here")
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Post results to the chat card
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
+function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL>1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>2) jez.trace("postResults Parameters","msg",msg)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL>1) jez.trace(`${TAG} --- Finished ---`);
 }
-
-/***************************************************************************************************
- * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log("A place for things to be done");
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return;
-}
-/***************************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- ***************************************************************************************************/
-async function doOnUse() {
-    const FUNCNAME = "doOnUse()";
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
+async function doOnUse(options={}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    await jez.wait(100)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    if (!await preCheck()) return(false);
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
     let tActor = tToken?.actor;
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-
-
-    jez.log(`First Targeted Token (tToken) of ${args[0].targets?.length}, ${tToken?.name}`, tToken);
-    jez.log(`First Targeted Actor (tActor) ${tActor?.name}`, tActor)
-
-    runVFX(aToken, tToken)
-
-    const GAME_RND = game.combat ? game.combat.round : 0;
-    const SPELL_DC = aToken.actor.data.data.attributes.spelldc;
-    const SAVE_TYPE = "con";
-    let save = await MidiQOL.socket().executeAsGM("rollAbility", { request: "save", targetUuid: tToken.actor.uuid, ability: SAVE_TYPE, options: { chatMessage: false, fastForward: true } });
-    let success = "saves";
-    let chatMessage = await game.messages.get(LAST_ARG.itemCardId);
-    if (save.total < SPELL_DC) {
-        success = "fails";
-        //  let effectData = {
-        //      label: "Poisoned",
-        //      icon: "modules/combat-utility-belt/icons/poisoned.svg",
-        //      origin: LAST_ARG.uuid,
-        //      disabled: false,
-        //      duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
-        //      flags: { 
-        //         dae: { itemData: aItem, specialDuration: ['turnEndSource'] },
-        //         convenientDescription: C_DESC
-        //     },
-        //      changes: [
-        //         { key: `flags.midi-qol.disadvantage.attack.all`, mode: 2, value: 1, priority: 20 },
-        //         { key: `flags.midi-qol.disadvantage.skill.check.all`, mode: 2, value: 1, priority: 20 },
-        //         { key: `flags.midi-qol.disadvantage.ability.check.all`, mode: 2, value: 1, priority: 20 }]
-        //  };
-        //  let effect = tToken.actor.effects.find(ef => ef.data.label === game.i18n.localize("Poisoned"));
-        //  if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: tToken.actor.uuid, effects: [effectData] });
-        // ---------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Check for a miss and fire of the VFX
+    //
+    const MISSED = (L_ARG.hitTargets.length === 0) ? true : false
+    runVFX(aToken, tToken, MISSED)
+    if (MISSED) {
+        msg = `${aToken.name}'s Ray of Sickness has missed ${tToken.name}.`
+        postResults(msg)
+        return jez.badNews(msg,'i')
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Apply effect
+    //
+    let save = await MidiQOL.socket().executeAsGM("rollAbility", { request: "save", targetUuid: tActor.uuid, ability: SAVE_TYPE, 
+        options: { chatMessage: true, fastForward: true } });
+    const SUCCESS = (save.total < SPELL_DC) ? false : true
+    if (TL>1) jez.trace(`${TAG} Saved?`, SUCCESS)
+    let chatMessage = await game.messages.get(L_ARG.itemCardId);
+    if (!SUCCESS) {
+        //---------------------------------------------------------------------------------------------------------------------------
         // Obtain and modify CE condition to be applied
         //
         let effect = game.dfreds.effectInterface.findEffectByName("Poisoned").convertToObject();
         if (effect.flags?.dae) effect.flags.dae.specialDuration.push(SPECDUR)
         else effect.flags.dae = { specialDuration: ['turnEndSource'] } 
+        if (TL>1) jez.trace(`${TAG} Adding effect parms`, 'effect', effect, 'tActor.uuid', tActor.uuid, 'aActor.uuid', aActor.uuid)
         game.dfreds.effectInterface.addEffectWith({effectData:effect, uuid:tActor.uuid, origin:aActor.uuid });
-        //----------------------------------------------------------------------------------------------
-        // Post a message to the chatcard with results
+        //---------------------------------------------------------------------------------------------------------------------------
+        // Post a new message to the chatcard with results
         //
-        msg = `${tToken.name} is ${POISONED_JRNL} until the end of its next turn`
-        //let chatMessage = game.messages.get(args[args.length - 1].itemCardId);
+        msg = `${tToken.name} is ${POISONED_JRNL} until the end of ${aToken.name}'s next turn`
         jez.addMessage(chatMessage, { color: "mediumseagreen", fSize: 14, msg: msg, tag: "saves" })
         await jez.wait(250)
     }
-    let saveResult = `<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${tToken.id}">${tToken.name} ${success} with a ${save.total}</div><img src="${tToken.data.img}" width="30" height="30" style="border:0px"></div>`;
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Update the item chat card
+    //
+    const SAVE_MSG = (SUCCESS) ? "saves" : "fails"
+    let saveResult = `<div class="midi-qol-flex-container"><div class="midi-qol-target-npc midi-qol-target-name" id="${tToken.id}">${tToken.name} ${SAVE_MSG} with a ${save.total}</div><img src="${tToken.data.img}" width="30" height="30" style="border:0px"></div>`;
     let saveMessage = `<div class="midi-qol-nobox midi-qol-bigger-text">${CONFIG.DND5E.abilities[SAVE_TYPE]} Saving Throw: DC ${SPELL_DC}</div><div class="midi-qol-nobox">${saveResult}</div>`;
     let content = await duplicate(chatMessage.data.content);
     let searchString = /<div class="midi-qol-saves-display">[\s\S]*<div class="end-midi-qol-saves-display">/g;
@@ -135,37 +123,23 @@ async function doOnUse() {
     content = await content.replace(searchString, replaceString);
     await chatMessage.update({ content: content });
     await ui.chat.scrollBottom();
-
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    return (true);
-}
-/***************************************************************************************************
- * Check the setup of things.  Setting the global errorMsg and returning true for ok!
- ***************************************************************************************************/
-function preCheck() {
-    if (args[0].targets.length !== 1) {     // If not exactly one target, return
-        msg = `Must target exactly one target.  ${args[0].targets.length} were targeted.`
-        ui.notifications.warn(msg)
-        jez.log(msg)
-        return (false);
-    }
-    if (LAST_ARG.hitTargets.length === 0) {  // If target was missed, return
-        msg = `Target was missed.`
-        ui.notifications.info(msg)
-        return (false);
-    }
-    return (true)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // All done
+    //
+    if (TL>0) jez.trace(`${TAG} --- Finished ---`);
+    return (SUCCESS);
 }
 /***************************************************************************************************
  * 
  ***************************************************************************************************/
 // COOL-THING: Run the VFX -- Beam from originator to the target
-async function runVFX(token1, token2) {
+async function runVFX(token1, token2, miss) {
     const VFX_FILE = "modules/jb2a_patreon/Library/Cantrip/Ray_Of_Frost/RayOfFrost_01_Regular_Green_30ft_1600x400.webm"
     new Sequence()
         .effect()
         .atLocation(token1)
         .stretchTo(token2)
+        .missed(miss)
         .file(VFX_FILE)
         .play();
 }
