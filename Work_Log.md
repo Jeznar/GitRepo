@@ -457,9 +457,9 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.11 Updated scripts that include .stretchTo clauses that might also need **.missed** calls: **Dissonant_Whispers.js**, **Ray_of_Enfeeblement.js**, **Ray_of_Sickness.js**
 
-22.12.12 **Flaming Sphere** updated to current logging, changed attack item to be on the sphere, general cleanup
+22.12.12 **Flaming Sphere** updated to current logging, changed attack item to be on the sphere, general cleanup.
 
-
+22.12.13 **Plant Growth** automated by placement of a pair of tiles to mark the area affected by the spell.
 
 [Link back to my Documentation Listing](README.md) 
 

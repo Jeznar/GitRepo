@@ -1,0 +1,145 @@
+{
+  "name": "Plant Growth",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/leaf-acid-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>This spell channels vitality into plants within a specific area. There are two possible uses for the spell, granting either immediate or long-term benefits.</p>\n<p>If you <strong>cast this spell using 1 action</strong>, choose a point within range. All normal plants in a 100-foot radius centered on that point become thick and overgrown. A creature moving through the area must spend<span style=\"text-decoration: underline;\"> 4 feet of movement for every 1 foot it moves</span>. You can exclude one or more areas of any size within the spell&rsquo;s area from being affected.</p>\n<p>If you <strong>cast this spell over 8 hours</strong>, you enrich the land. All plants in a half-mile radius centered on a point within range become enriched for 1 year. The plants yield twice the normal amount of food when harvested.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This spell provides a dialog to select the mode of operation.&nbsp; If teh 1-Action version is choosen, a tile VFX will be placed marking the area of plant growth.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, pg. 266  Plant Growth",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": "or 8 hours"
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 150,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 3,
+    "school": "trs",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "always",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "core": {
+      "sourceId": "Item.NDE2ODc3ZmU2ZGE4"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Plant Growth",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Plant_Growth.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * This macro asks the user if they are using the instant or long termm version of this spell.  If it is the instant version, \n * a tile with a green transmutation effect will be placed as a marker, if the 8 hour version is used, the macro ends and the GM\n * will need to handle the effects.\n * \n * 12/12/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL>0) jez.trace(`${TAG} === Starting ===`);\nif (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor; \nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\nconst ALLOWED_UNITS = [\"\", \"ft\", \"any\"];\nconst MAX_RANGE = jez.getRange(aItem, ALLOWED_UNITS) ?? 150\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\n\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use\nif (TL>1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n function postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL>1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>2) jez.trace(\"postResults Parameters\",\"msg\",msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL>1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n async function doOnUse(options={}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\"options\",options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Simple dialog to select the mode of this spell to be used\n    //\n    const Q_TITLE = `One Action Version of Plant Growth?`\n    let qText = `<p>Plant Growth can be used in a single action mode which will cause existing plants to grow wildly or as an eight hour \n    casting to greatly enhance the fertility of the sole in an area.</p>\n    <p>If you want to cast the single action version, please click the <b>\"Yes\"</b> button.</p>\n    <p>If you want to cast the 8 hour version, please click the <b>\"Yes\"</b> button.</p>`\n    let confirmation = await Dialog.confirm({ title: Q_TITLE, content: qText, });\n    if (!confirmation) {\n        if (TL > 3) jez.trace(`${TAG} Dialog choice was no.`)\n        msg = `Casting will continue for up to eight hours.`\n        postResults(msg)\n        return false\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Pick a spot for the effect and place it\n    //\n    const EFFECT_CENTER = await crossHairs(aToken, MAX_RANGE, {traceLvl:TL})\n    placeTile(EFFECT_CENTER, {traceLvl:TL})\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)\n\n\n    msg = `Maybe say something useful...`\n    postResults(msg)\n    if (TL>0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Pick a spot for the center of the spell\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n async function crossHairs(origin, range,  options={}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,'origin', origin, 'range', range, \"options\",options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    //\n    let cachedDistance = 0;\n    const ICON = aItem.img\n    const WARN = 'Icons_JGB/Misc/Warning.webm'\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    //\n    const checkDistance = async (crosshairs) => {\n        while (crosshairs.inFlight) {\n            //wait for initial render\n            await jez.wait(100);\n            const ray = new Ray(origin, crosshairs);\n            const distance = canvas.grid.measureDistances([{ ray }], { gridSpaces: true })[0];\n            //only update if the distance has changed\n            if (cachedDistance !== distance) {\n                cachedDistance = distance;\n                if (distance > range) crosshairs.icon = WARN;\n                else crosshairs.icon = ICON;\n                crosshairs.draw();\n                crosshairs.label = `${distance}/150 ft`;\n            }\n        }\n    }\n    const location = await warpgate.crosshairs.show(\n        {\n            // swap between targeting the grid square vs intersection based on token5e's size\n            interval: 1,\n            size: 1,\n            icon: ICON,\n            label: '0/150 ft.',\n        },\n        { show: checkDistance },\n    );\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    //\n    if (TL > 1) jez.trace(`${TAG} location ==>`, location)\n    if (location.cancelled || cachedDistance > range) {\n        if (TL>1) jez.trace(`${TAG} Location selected: ${location.x}, ${location.y} is out of range`, location)\n        return;\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    //\n    if (TL>1) jez.trace(`${TAG} Place effect at: ${location.x}, ${location.y}`, location)\n    // runVFX(location, { traceLvl: TL })\n    return location\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Place a tile\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \nasync function placeTile(center, options={}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'center', center, \"options\",options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    //\n    const IMAGE1 = \"modules/jb2a_patreon/Library/Generic/Magic_Signs/TransmutationCircleIntro_02_Dark_Green_800x800.webm\"\n    const IMAGE2 = \"modules/jb2a_patreon/Library/Generic/Magic_Signs/TransmutationCircleLoop_02_Dark_Green_800x800.webm\"\n    const GRID_SIZE = canvas.scene.data.grid;   // Stash the grid size\n    const EFFECT_SIZE = 40                      // Effect diameter\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Build the data object for the tile to be created\n    //\n    let tileProps = {\n        x: center.x - GRID_SIZE * EFFECT_SIZE/2,     \n        y: center.y - GRID_SIZE * EFFECT_SIZE/2,\n        img: IMAGE1,\n        width: GRID_SIZE*EFFECT_SIZE,                     // VFX should occupy 2 tiles across\n        height: GRID_SIZE*EFFECT_SIZE,                    // ditto\n        overhead: false,\n        occlusion: {\n            alpha: 1,\n            mode: 3,\n        },\n        alpha: 0.3                            // Opacity of our placed tile 0 to 1.0  \n    };\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Call library function to create the new tile, catching the id returned.  \n    //\n    const TILE_ID1 = await jez.tileCreate(tileProps)\n    if (TL>1) jez.trace(`${TAG} Tile ID1`,TILE_ID1)\n    await jez.wait(2000)\n    tileProps.img = IMAGE2\n    const TILE_ID2 = await jez.tileCreate(tileProps)\n    await jez.wait(1000)\n    jez.tileDelete(TILE_ID1, {traceLvl:TL})\n    if (TL>1) jez.trace(`${TAG} Tile ID1`,TILE_ID2)\n    return TILE_ID2\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
