@@ -1,10 +1,10 @@
 {
   "name": "Speak with Plants",
   "type": "spell",
-  "img": "/systems/dnd5e/icons/spells/leaf-jade-1.jpg",
+  "img": "Icons_JGB/Spells/3rd_Level/Speak_with_Plants.png",
   "data": {
     "description": {
-      "value": "<p>You imbue plants within 30 feet of you with limited sentience and animation, giving them the ability to communicate with you and follow your simple commands. You can question plants about events in the spell's area within the past day, gaining information about creatures that have passed, weather, and other circumstances.</p>\n<p><a href=\"https://www.dndbeyond.com/spells/speak-with-plants\" target=\"_blank\" rel=\"noopener\">See D&amp;D Beyond for Additional Effects</a></p>\n<hr />\n<p> </p>",
+      "value": "<p>You imbue plants within 30 feet of you with limited sentience and animation, giving them the ability to communicate with you and follow your simple commands. You can question plants about events in the spell's area within the past day, gaining information about creatures that have passed, weather, and other circumstances.</p>\n<p><a href=\"https://www.dndbeyond.com/spells/speak-with-plants\" target=\"_blank\" rel=\"noopener\">See D&amp;D Beyond for Additional Effects</a></p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>&nbsp; A DAE effect is placed on the caster to mark this as active.</p>",
       "chat": "<p>You imbue plants within 30 feet of you with limited sentience and animation, giving them the ability to communicate with you and follow your simple commands. You can question plants about events in the spell's area within the past day, gaining information about creatures that have passed, weather, and other circumstances.</p>\n<p>You can also turn difficult terrain caused by plant growth (such as thickets and undergrowth) into ordinary terrain that lasts for the duration. Or you can turn ordinary terrain where plants are present into difficult terrain that lasts for the duration, causing vines and branches to hinder pursuers, for example.</p>\n<p>Plants might be able to perform other tasks on your behalf, at the GM's discretion. The spell doesn't enable plants to uproot themselves and move about, but they can freely move branches, tendrils, and stalks.</p>\n<p>If a plant creature is in the area, you can communicate with it as if you shared a common language, but you gain no magical ability to influence it.</p>\n<p>This spell can cause the plants created by the <strong>entangle</strong> spell to release a restrained creature.</p>",
       "unidentified": ""
     },
@@ -149,7 +149,7 @@
     "exportSource": {
       "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "9.269",
+      "coreVersion": "9.280",
       "systemVersion": "1.6.2"
     }
   }

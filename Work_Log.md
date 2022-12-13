@@ -461,6 +461,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.13 **Plant Growth** automated by placement of a pair of tiles to mark the area affected by the spell.
 
+22.12.13 **Fire Shield** update logging and set a target requirement for the temp item
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
