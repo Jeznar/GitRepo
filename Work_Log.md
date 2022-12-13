@@ -463,6 +463,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.13 **Fire Shield** update logging and set a target requirement for the temp item
 
+22.12.13 **Fire Shield** added refund on close dialog choice and converted doOn to doOnUse
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -121,7 +121,7 @@ class jez {
                 if (msgParm.token?.constructor.name !== "Token5e") {
                     let msg = `Coding error. Speaking Token (${msgParm?.token?.name}) is a 
                                ${msgParm.token?.constructor.name} must be a Token5e`
-                    return jez.badNews(msg,"e")
+                    return jez.badNews(msg, "e")
                 }
             }
             const CHAT = {
@@ -186,7 +186,7 @@ class jez {
         if (chatMessage?.constructor.name !== "ChatMessage") {
             let errMsg = `Coding error: message (${chatMessage}) is a ${chatMessage?.constructor.name},
                 must be ChatMessage.`
-            return jez.badNews(errMsg,"e")
+            return jez.badNews(errMsg, "e")
         }
         //-----------------------------------------------------------------------------------------------
         // chatMsg will be a simple string unless msgParm is an object
@@ -202,7 +202,7 @@ class jez {
             }
             chatMsg = `<div class="card-buttons"><p style="color:${CHAT.color};font-size:${CHAT.fSize}px">${CHAT.msg}</p></div>`
             if (!allowedTags.includes(CHAT.tag)) {
-                return jez.badNews(`Coding error. ${CHAT.tag} is not a defined anchor word`,"e")
+                return jez.badNews(`Coding error. ${CHAT.tag} is not a defined anchor word`, "e")
             }
             chatTag = CHAT.tag
         }
@@ -245,7 +245,7 @@ class jez {
         if (!allowedUnits.includes(unit)) {
             let msg = `Unit ${unit} not in allowed units`
             // jez.log(msg, allowedUnits);
-            return jez.badNews(msg,'w')
+            return jez.badNews(msg, 'w')
         }
         return (range);
     }
@@ -311,10 +311,10 @@ class jez {
         //----------------------------------------------------------------------------------------------
         // Check the types of parameters passed 
         //
-        if (sel?.constructor.name !== "Token5e") 
-            return jez.badNews(`Selection (${sel}) is a ${sel?.constructor.name} must be a Token5e`,"e")
-        if (typeof (range) !== "number") 
-            return jez.badNews(`Range (${range}) is a ${typeof (range)} must be a number`,"e")
+        if (sel?.constructor.name !== "Token5e")
+            return jez.badNews(`Selection (${sel}) is a ${sel?.constructor.name} must be a Token5e`, "e")
+        if (typeof (range) !== "number")
+            return jez.badNews(`Range (${range}) is a ${typeof (range)} must be a number`, "e")
         //----------------------------------------------------------------------------------------------
         // Perform the interesting bits
         //
@@ -366,11 +366,11 @@ class jez {
         //     `queryOptions`, queryOptions);
         let msg = ""
         if (pickCallBack && typeof (pickCallBack) != "function")
-            return jez.badNews(`pickCallBack invalid pickCallBack, ${typeof (pickCallBack)}`,'e')
+            return jez.badNews(`pickCallBack invalid pickCallBack, ${typeof (pickCallBack)}`, 'e')
         if (!queryTitle || !queryText || !queryOptions) {
             msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
 but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
-            return jez.badNews(msg,"e")
+            return jez.badNews(msg, "e")
         }
         let template = `
 <div>
@@ -437,11 +437,11 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
     static async pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions) {
         // const FUNCNAME = "jez.pickFromList(queryTitle, queryText, ...queryOptions)";
         // let msg = ""
-        if (typeof (pickCallBack) != "function") 
-            return jez.badNews(`pickFromList invalid pickCallBack, ${typeof (pickCallBack)}`,'e')
+        if (typeof (pickCallBack) != "function")
+            return jez.badNews(`pickFromList invalid pickCallBack, ${typeof (pickCallBack)}`, 'e')
         if (!queryTitle || !queryText || !queryOptions)
             return jez.badNews(`pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
-               but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`,'e')
+               but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`, 'e')
 
         let template = `
     <div>
@@ -507,11 +507,11 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         // `pickCallBack`, pickCallBack,
         // `queryOptions`, queryOptions);
         let msg = ""
-        if (typeof (pickCallBack) != "function") 
-            return jez.badNews(`pickFromList invalid pickCallBack, it is a ${typeof (pickCallBack)}`,'e')
-        if (!queryTitle || !queryText || !queryOptions) 
+        if (typeof (pickCallBack) != "function")
+            return jez.badNews(`pickFromList invalid pickCallBack, it is a ${typeof (pickCallBack)}`, 'e')
+        if (!queryTitle || !queryText || !queryOptions)
             return jez.badNews(`pickFromList args should be (queryTitle, queryText, pickCallBack, [queryOptions]),
-               mot: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`,'e')
+               mot: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`, 'e')
 
         let template = `
         <div>
@@ -589,7 +589,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         let token1SizeString = token1.document._actor.data.data.traits.size;
         let token1SizeObject = new CreatureSizes(token1SizeString);
         let token1Size = token1SizeObject.value;  // Returns 0 on failure to match size string
-        if (!token1Size) jez.badNews(`Size of ${token1.name}, ${token1SizeString} failed to parse.`,'e')
+        if (!token1Size) jez.badNews(`Size of ${token1.name}, ${token1SizeString} failed to parse.`, 'e')
         return (token1SizeObject)
     }
     /*************************************************************************************
@@ -615,8 +615,8 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      * Get token5e object based on ID passed
      ***************************************************************************************************/
     static getTokenById(tokenId) {
-        if ((typeof (tokenId) != "string") || (tokenId.length !== 16)) 
-            jez.badNews(`Parameter jez.getTokenById(tokenId) is not an ID: ${tokenId}`,'e')
+        if ((typeof (tokenId) != "string") || (tokenId.length !== 16))
+            jez.badNews(`Parameter jez.getTokenById(tokenId) is not an ID: ${tokenId}`, 'e')
         return (canvas.tokens.placeables.find(ef => ef.id === tokenId));
     }
     /***************************************************************************************************
@@ -627,11 +627,11 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else return jez.badNews(`Subject is type '${typeof (subject)}' must be Token5e or Actor5e`,'e')
+            else return jez.badNews(`Subject is type '${typeof (subject)}' must be Token5e or Actor5e`, 'e')
         } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
         else {
             let msg = `Subject in jez.getCastStat(subject) is not a Token5e, Actor5e, or Token.id: ${subject}`
-            return jez.badNews(msg,'e')
+            return jez.badNews(msg, 'e')
         }
         return (actor5e.data.data.attributes.spellcasting)
     }
@@ -643,10 +643,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else return jez.badNews(`jez.getCastStat(subject) subject type '${typeof (subject)}' not Token5e or Actor5e`,'e')
-        } 
+            else return jez.badNews(`jez.getCastStat(subject) subject type '${typeof (subject)}' not Token5e or Actor5e`, 'e')
+        }
         else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
-        else return jez.badNews(`jez.getCastStat(subject) parm is not a Token5e, Actor5e, or Token.id: ${subject}`,'e')
+        else return jez.badNews(`jez.getCastStat(subject) parm is not a Token5e, Actor5e, or Token.id: ${subject}`, 'e')
         return (actor5e.data.data.attributes.spelldc)
     }
     /***************************************************************************************************
@@ -662,20 +662,20 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else return jez.badNews( `jez.getStatMod(...) parm is type '${typeof (subject)}' must be a Token5e or Actor5e`,'e')
+            else return jez.badNews(`jez.getStatMod(...) parm is type '${typeof (subject)}' must be a Token5e or Actor5e`, 'e')
         } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
         else {
             let msg = `getStatMod(subject,statParm) subject parm is not a Token5e, Actor5e, or Token.id: ${subject}`
-            return(msg, 'e')
+            return (msg, 'e')
         }
         //----------------------------------------------------------------------------------------------
         // Validate the statParm parameter and stash it into "stat"
         //
-        if ((typeof (statParm) !== "string") || (statParm.length !== 3)) 
-            return jez.badNews(`jez.getStatMod(subject, statParm) statParm is invalid: ${statParm}`,'e')
+        if ((typeof (statParm) !== "string") || (statParm.length !== 3))
+            return jez.badNews(`jez.getStatMod(subject, statParm) statParm is invalid: ${statParm}`, 'e')
         stat = statParm.toLowerCase();
         if (!STAT_ARRAY.includes(stat))
-            return jez.badNews(`jez.getStatMod(subject, statParm) statParm is invalid: ${statParm}`,'e')
+            return jez.badNews(`jez.getStatMod(subject, statParm) statParm is invalid: ${statParm}`, 'e')
         //----------------------------------------------------------------------------------------------
         // Fetch and return that modifier
         //
@@ -697,9 +697,9 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (typeof (subject) === "object") { // Hopefully we have a Token5e or Actor5e
             if (subject.constructor.name === "Token5e") actor5e = subject.actor
             else if (subject.constructor.name === "Actor5e") actor5e = subject
-            else return jez.badNews(`jez.getProfMod(subject) parm is '${typeof (subject)}' must be Token5e or Actor5e`,'e')
+            else return jez.badNews(`jez.getProfMod(subject) parm is '${typeof (subject)}' must be Token5e or Actor5e`, 'e')
         } else if ((typeof (subject) === "string") && (subject.length === 16)) actor5e = jez.getTokenById(subject).actor
-        else return jez.badNews(`jez.getProfMod(subject) parm is not Token5e, Actor5e, or Token.id: ${subject}`,'e')
+        else return jez.badNews(`jez.getProfMod(subject) parm is not Token5e, Actor5e, or Token.id: ${subject}`, 'e')
         return (actor5e.data.data.attributes.prof)
     }
     /***************************************************************************************************
@@ -846,7 +846,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
                 else {
                     message = `Object passed to jez.deleteItems(...) is type 
                         '${typeof (subject)}' must be a Token5e or Actor5e`
-                    return jez.badNews(message,"e")
+                    return jez.badNews(message, "e")
                 }
             }
         } else {
@@ -855,7 +855,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             else {
                 message = `Subject parm passed to jez.deleteItems(...) is not a Token5e, 
                     Actor5e, or Token.id: ${subject}`
-                return jez.badNews(message,"e")
+                return jez.badNews(message, "e")
             }
         }
         //----------------------------------------------------------------------------------------------
@@ -864,7 +864,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (typeof (type) != "string") {
             message = `Type parm passed to jez.deleteItems(...) is '${typeof (type)}'.  It
                 must be a string identifying a FoundryVTT item type (e.g. spell, weapon).`
-            return jez.badNews(message,"e")
+            return jez.badNews(message, "e")
         }
         //----------------------------------------------------------------------------------------------
         // Look for matches and delete them.  Generating a message for each deletion
@@ -873,7 +873,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             item.type === type)) {
             await itemFound.delete();
             message = `Deleted ${type}: "${itemName}"`      // Set notification message
-            jez.badNews(message,"i");
+            jez.badNews(message, "i");
         }
     }
     /***************************************************************************************************
@@ -1299,7 +1299,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         let itemObj = game.items.getName(ItemName)
         if (!itemObj) {
             let msg = `Failed to find ${ItemName} in the Items Directory`
-            jez.badNews(msg,"e");
+            jez.badNews(msg, "e");
             return (false)
         }
         return (token5e.actor.createEmbeddedDocuments("Item", [itemObj.data]))
@@ -1350,7 +1350,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         let aActorItem = await jez.itemFindOnActor(token5e, itemName, itemType)
         if (!aActorItem) {
             let msg = `Failed to find ${itemName} on ${token5e.name}`
-            jez.badNews(msg,"e");
+            jez.badNews(msg, "e");
             return (false)
         }
         //----------------------------------------------------------------------------------------------
@@ -1432,8 +1432,8 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         function getSubjectId(subject) {
             const TAG = `${FNAME} getSubjectId |`
             if (typeof (subject) === "object") {                   // Hopefully we have a Token5e or Actor5e
-                if (subject.constructor.name === "Token5e" ) return (subject.id)
-                if (subject.constructor.name === "Actor5e" ) return (subject.uuid)
+                if (subject.constructor.name === "Token5e") return (subject.id)
+                if (subject.constructor.name === "Actor5e") return (subject.uuid)
                 return jez.badNews(`${TAG} subject (${subject.name}) is object but not Token5e or Actor5e`)
             }
             if ((typeof (subject) === "string") && (subject.length === 16)) return (subject)
@@ -1467,8 +1467,8 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         const FUNCNAME = "jez.pairEffects(...args)"
         const TL = 2;
         const TAG = `jez.pairEffects |`
-        if (TL>0) jez.trace(`${TAG} === Called ${FUNCNAME} ===`)
-        if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`${TAG} args[${i}]`, args[i]);
+        if (TL > 0) jez.trace(`${TAG} === Called ${FUNCNAME} ===`)
+        if (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`${TAG} args[${i}]`, args[i]);
         if (args.length !== 2 && args.length !== 4)
             return jez.badNews(`Bad Argument count (${args.length}) provided to ${FUNCNAME}`)
         let subject1 = args[0]
@@ -1487,7 +1487,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         // Make sure the macro that will be called later exists.  Throw an error and return if not
         //
         let pairingMacro = game.macros.find(i => i.name === "Remove_Paired_Effect");
-        if (!pairingMacro) return jez.badNews("REQUIRED: Remove_Paired_Effect macro is missing.","e");
+        if (!pairingMacro) return jez.badNews("REQUIRED: Remove_Paired_Effect macro is missing.", "e");
         //---------------------------------------------------------------------------------------------------------
         // Execute with two or four arguments
         //
@@ -1495,18 +1495,18 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the first token if we were handed a name and not a data object
             // UUID will be of the form: Scene.MzEyYTVkOTQ4NmZk.Token.pcAVMUbbnGZ1lz4h.ActiveEffect.1u3e6c1os77qhwha
-            if (TL>2) jez.trace(`${TAG} effectUuid1`, effectUuid1)
+            if (TL > 2) jez.trace(`${TAG} effectUuid1`, effectUuid1)
             if (jez.isEffectUUID(effectUuid1)) {
                 effectData1 = await fromUuid(effectUuid1)
-                if (TL>2) jez.trace(`${TAG} effectData1 from UUID`, effectData1)
+                if (TL > 2) jez.trace(`${TAG} effectData1 from UUID`, effectData1)
             } else return jez.badNews(`effectData1 must be a UUID`, "error")
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the second token
             //
-            if (TL>2) jez.trace(`${TAG} effectUuid2`, effectUuid2)
+            if (TL > 2) jez.trace(`${TAG} effectUuid2`, effectUuid2)
             if (jez.isEffectUUID(effectUuid2)) {
                 effectData2 = await fromUuid(effectUuid2)
-                if (TL>2) jez.trace(`${TAG} effectData2 from UUID`, effectData2)
+                if (TL > 2) jez.trace(`${TAG} effectData2 from UUID`, effectData2)
             } else return jez.badNews(`effectData1 must be a UUID`, "error")
         }
         else {
@@ -1514,30 +1514,30 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             // Convert subject1 and subject2 into actor objects, throw an error and return if conversion fails
             //
             actor1 = await jez.getActor5eDataObj(subject1)
-            if (!actor1) return jez.badNews("First subject not a token, actor, tokenId or actorId","e")
+            if (!actor1) return jez.badNews("First subject not a token, actor, tokenId or actorId", "e")
             actor2 = await jez.getActor5eDataObj(subject2)
-            if (!actor2) return jez.badNews("Second subject not a token, actor, tokenId or actorId","e")
+            if (!actor2) return jez.badNews("Second subject not a token, actor, tokenId or actorId", "e")
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the first token if we were handed a name and not a data object
             //
-            if (TL>2) jez.trace(`${TAG} effectName1`, effectName1)
+            if (TL > 2) jez.trace(`${TAG} effectName1`, effectName1)
             effectData1 = effectName1
             if (effectName1?.constructor.name !== "ActiveEffect5e") {
-                if (TL>2) jez.trace(`${TAG} Seeking ${effectName1} in actor1.effects`, actor1.effects)
+                if (TL > 2) jez.trace(`${TAG} Seeking ${effectName1} in actor1.effects`, actor1.effects)
                 effectData1 = await actor1.effects.find(i => i.data.label === effectName1);
-                if (TL>2) jez.trace(`${TAG} effectData1`, effectData1)
+                if (TL > 2) jez.trace(`${TAG} effectData1`, effectData1)
                 if (!effectData1)
                     return jez.badNews(`${effectName1} not found on ${actor1.name}.  Effects not paired.`, "warn")
             }
             //---------------------------------------------------------------------------------------------------------
             // Grab the effect data from the second token
             //
-            if (TL>2) jez.trace(`${TAG} effectName2`, effectName2)
+            if (TL > 2) jez.trace(`${TAG} effectName2`, effectName2)
             effectData2 = effectName2
             if (effectName2?.constructor.name !== "ActiveEffect5e") {
-                if (TL>2) jez.trace(`${TAG} Seeking ${effectName2} in actor2.effects`, actor2.effects)
+                if (TL > 2) jez.trace(`${TAG} Seeking ${effectName2} in actor2.effects`, actor2.effects)
                 effectData2 = await actor2.effects.find(i => i.data.label === effectName2);
-                if (TL>2) jez.trace(`${TAG} effectData2`, effectData2)
+                if (TL > 2) jez.trace(`${TAG} effectData2`, effectData2)
                 if (!effectData2)
                     return jez.badNews(`${effectName2} not found on ${actor2.name}.  Effects not paired.`, "warn")
             }
@@ -1545,7 +1545,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //---------------------------------------------------------------------------------------------------------
         // Add the actual pairings
         //
-        if (TL>2) jez.trace(`${TAG} *************`, 'actor1', actor1, 'actor2', actor2, 'effectData1', effectData1, 'effectData2', effectData2)
+        if (TL > 2) jez.trace(`${TAG} *************`, 'actor1', actor1, 'actor2', actor2, 'effectData1', effectData1, 'effectData2', effectData2)
         await addPairing(effectData2, actor1, effectData1)
         await addPairing(effectData1, actor2, effectData2)
         //---------------------------------------------------------------------------------------------------------
@@ -1553,7 +1553,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //
         async function addPairing(effectChanged, tokenPaired, effectPaired) {
             let TL = 0
-            if (TL>2) jez.trace(`${TAG} addPairing(effectChanged, tokenPaired, effectPaired)`,
+            if (TL > 2) jez.trace(`${TAG} addPairing(effectChanged, tokenPaired, effectPaired)`,
                 "effectChanged", effectChanged, "tokenPaired", tokenPaired, "effectPaired", effectPaired)
             let value = `Remove_Paired_Effect ${tokenPaired?.id} ${effectPaired.uuid}`
             if (uuidMode) value = `Remove_Paired_Effect ${effectPaired.uuid}`
@@ -1570,13 +1570,13 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *             option, but warning issued as it fetches actor in side bar for unlinked token)
      *  - options: object that can set traceLvl
      *********1*********2*********3*********4*********5*********6*********7*********8*********9**********/
-    static async getActor5eDataObj(subject, options={}) {
+    static async getActor5eDataObj(subject, options = {}) {
         const FUNCNAME = "getActor5eDataObj(subject, options={})";
-        const FNAME = FUNCNAME.split("(")[0] 
+        const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.${FNAME} |`
         const TL = options.traceLvl ?? 0
-        if (TL===1) jez.trace(`${TAG} --- Starting ---`);
-        if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
         //-----------------------------------------------------------------------------------------------
         // function variables
         //
@@ -1612,7 +1612,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
                     if (TL > 2) jez.trace(`${TAG} actor5e`, actor5e)
                     if (actor5e) return actor5e
                 }
-                if (ATOMS[0] === "Actor" ) {                          // Linked UUID
+                if (ATOMS[0] === "Actor") {                          // Linked UUID
                     if (TL > 2) jez.trace(`${TAG} Process linked UUID: ${subject}`)
                     actor5e = await fromUuid(subject)
                     if (actor5e) return actor5e
@@ -1625,13 +1625,13 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
                 if (actor5e) return (actor5e)             // Subject is a token ID 
                 actor5e = canvas.tokens.placeables.find(ef => ef.data.actorId === subject).actor
                 if (actor5e) {                            // Subject is an actorID embedded in a scene token 
-                    jez.badNews(`${TAG} '${subject}' is an actor.id, indeterminent for unlinked tokens`,"w")
-                    return (actor5e)             
+                    jez.badNews(`${TAG} '${subject}' is an actor.id, indeterminent for unlinked tokens`, "w")
+                    return (actor5e)
                 }
                 actor5e = game.actors.get(subject)        // Maybe string is an actor id?
                 if (actor5e) {                            // Subject is an actor ID 
-                    jez.badNews(`${TAG} '${subject}' is an actor.id, indeterminent for unlinked tokens`,"w")
-                    return (actor5e)             
+                    jez.badNews(`${TAG} '${subject}' is an actor.id, indeterminent for unlinked tokens`, "w")
+                    return (actor5e)
                 }
                 return jez.badNews(`${TAG} subject looks like an id but does not map to a token or actor: ${subject}`, "e")
             }
@@ -1665,26 +1665,26 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
                 let tokens = effect.split(".")
                 if (tokens.length != 4) {
                     mes = `BAD NEWS: ${FUNCNAME}'s effect tokenized to ${tokens.length} elements`
-                    return jez.badNews(mes,"e")
+                    return jez.badNews(mes, "e")
                 }
                 if (tokens[1].length != 16) {
                     mes = `BAD NEWS: Second token of ${FUNCNAME}'s effect was invalid length (tokens[1].length)`
-                    return jez.badNews(mes,"e")
-                    
+                    return jez.badNews(mes, "e")
+
                 }
                 if (tokens[2] != "ActiveEffect") {
                     mes = `BAD NEWS: Third token of ${FUNCNAME}'s effect was not 'ActiveEffect'`
-                    return jez.badNews(mes,"e")
+                    return jez.badNews(mes, "e")
                 }
                 if (tokens[3].length != 16) {
                     mes = `BAD NEWS: Forth token of ${FUNCNAME}'s effect was invalid length (tokens[1].length)`
-                    return jez.badNews(mes,"e")
+                    return jez.badNews(mes, "e")
                 }
                 effectUuid = effect
             }
             else {
                 mes = `BAD NEWS: effect is not a valid UUID and no subject provided.`
-                return jez.badNews(mes,"e")
+                return jez.badNews(mes, "e")
             }
         }
         else {  // Must have been passed a subject, so see if parameters are valid
@@ -1692,12 +1692,12 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             // Obtain an Actor5e data object from subject
             //
             let actor5e = await jez.getActor5eDataObj(subject)
-            if (!actor5e) return jez.badNews(`actor data obj not found for ${FUNCNAME} subject`,'e')
+            if (!actor5e) return jez.badNews(`actor data obj not found for ${FUNCNAME} subject`, 'e')
             //------------------------------------------------------------------------------------------
             // effect needs to be an id (16 character string) or a string providing name of effect
             //
-            if (typeof (effect) != "string") 
-                return jez.badNews(`${FUNCNAME}'s effect needs to be a string, is a ${typeof (effect)}`,"e")
+            if (typeof (effect) != "string")
+                return jez.badNews(`${FUNCNAME}'s effect needs to be a string, is a ${typeof (effect)}`, "e")
             //------------------------------------------------------------------------------------------
             // Assemble a UUID (which may have a name string embedded in place of an actual id)
             //
@@ -1712,7 +1712,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         let actor5e = await jez.getActor5eDataObj(ACTOR_ID)
         if (!actor5e) {
             mes = `BAD NEWS: ${FUNCNAME} could not find actor from ID ${ACTOR_ID}`
-            return jez.badNews(mes,"e")
+            return jez.badNews(mes, "e")
         }
         //----------------------------------------------------------------------------------------------
         // 
@@ -1722,7 +1722,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //let effectData = await actor5e.effects.find(i => i.name === tokens[3]);
         if (!effectData) {
             mes = `BAD NEWS: ${FUNCNAME} could not find "${tokens[3]}" on ${actor5e.name}`
-            return jez.badNews(mes,"e")
+            return jez.badNews(mes, "e")
         }
         return (effectData)
     }
@@ -1773,7 +1773,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (typeof message !== "string") {
             let msg = `The message paramater passed to badNews must be a string.  Bad, bad, programmer.`
             console.log(msg, message)
-            ui.notifications.error(`ERROR: ${msg}`,msg)
+            ui.notifications.error(`ERROR: ${msg}`, msg)
             return (false)
         }
         if (typeof badness === "string") {
@@ -2771,7 +2771,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         return location
     }
 
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
      * Function to spawn in a token at a position to be selected within this function.  Key calls are
      * made to: 
      *  (1) jez.warpCrosshairs() which rides on warpgate.crosshairs.show()
@@ -2783,8 +2783,9 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      * MINION is a string defining the name of the MINION
      * aToken token5e data object for the reference token (from which range is measured)
      * ARGS is a whopper of an object that can contain multiple values, read code or README
-     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
     static async spawnAt(MINION, aToken, aActor, aItem, ARGS) {
+        // async function spawnAt(MINION, aToken, aActor, aItem, ARGS) {
         const FUNCNAME = "jez.spawnAt(MINION, ARGS)";
         const FNAME = FUNCNAME.split("(")[0]
         const TL = ARGS?.traceLvl ?? 0
@@ -2795,7 +2796,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             jez.trace(`${FNAME} |`)
             for (let key in ARGS) jez.trace(`${FNAME} | ARGS.${key}`, ARGS[key])
         }
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Create the defVal object 
         //
         let defVal = {
@@ -2827,7 +2828,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             waitForSuppress: 100,               // Time (in ms) to wait of for Suppression to being
             width: 1                            // Width of token to be summoned
         }
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Create dataObj (data object) from the passed ARGS and the defVal object 
         //
         let dataObj = {
@@ -2857,7 +2858,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             waitForSuppress: ARGS.waitForSuppress ?? defVal.waitForSuppress,
             width: ARGS.width ?? defVal.width,
         }
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Second Pass on defaults, using inputs that may have been passed into our function. 
         // The callbacks need to be recomputed based on varous inputs now established.
         //
@@ -2893,7 +2894,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             jez.trace(`${FNAME} |`)
             for (let key in defVal) jez.trace(`${FNAME} | defVal.${key}`, defVal[key])
         }
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // If not provided with ARGS.allowedColors, build the array of allowed color values based on
         // the introVFX / outroVFX names with special treatment for known types defaulting to a "*"
         //
@@ -2920,7 +2921,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
                     "OrangeYellow", "Yellow", "*"];
             else dataObj.allowedColorsOutro = ["*"];
         }
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // If ARGS.snap is null, set snap to appropriate value based on width. Odd width should have 
         // snap = -1 to center the summon in a square, even width should be 1 to place on an intersection
         //
@@ -2932,50 +2933,72 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         dataObj.callbacks = ARGS.callbacks ?? defVal.callbacks
         dataObj.updates = ARGS.updates ?? defVal.updates
         dataObj.suppressTokenMold = Math.max(dataObj.introTime + 500, dataObj.suppressTokenMold)
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Depending on TL print out the dataObj to the console
         //
         if (TL > 2) {
             jez.trace(`${FNAME} |`)
             for (let key in dataObj) jez.trace(`${FNAME} | dataObj.${key}`, dataObj[key])
         }
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Make sure that warpgate module is active
         //
-        if (!game.modules.get(REQUIRED_MODULE))
-            return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
+        if (!game.modules.get(REQUIRED_MODULE)) return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
         else if (TL > 1) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Make sure that dataObj.templateName exists in actor directory and stash its data object
         //
         let summonData = await game.actors.getName(dataObj.templateName)
-        if (!summonData) return jez.badNews(`${FNAME} | Could not find ${dataObj.templateName} in Actor
-        directory (sidebar), please fix`, "error")
+        if (!summonData) return jez.badNews(`${FNAME} | Could not find ${dataObj.templateName} in Actor directory, please fix`, "error")
         else if (TL > 1) jez.trace(`${FNAME} | Found ${summonData} continuing...`, summonData)
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Get and set maximum sumoning range
         //
         const MAX_RANGE = jez.getRange(aItem, dataObj.allowedUnits) ?? dataObj.defaultRange
         if (TL > 1) jez.trace(`${FNAME} | Set MAX_RANGE`, MAX_RANGE);
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Obtain location for spawn
         //
         let { x, y } = await jez.warpCrosshairs(dataObj.source, MAX_RANGE, dataObj.img, dataObj.name,
             { width: dataObj.width }, dataObj.snap, { traceLvl: TL })
+        if (!x || !y) return jez.badNews(`Selected out of range.`, 'w')
         if (TL > 1) jez.trace(`${FNAME} | Set location for spawn to ${x}, ${y}`);
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Suppress Token Mold for a wee bit
         //
         jez.suppressTokenMoldRenaming(dataObj.suppressTokenMold)
         await jez.wait(dataObj.waitForSuppress)
-        //-----------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
         // Execute the summon
         //
         if (TL > 3) jez.trace("Calling warpgate.spawnAt(...)", "x", x, "y", y,
             "dataObj.templateName", dataObj.templateName, "dataObj.updates", dataObj.updates,
             "dataObj.callbacks", dataObj.callbacks, "dataObj.options", dataObj.options)
-        return (await warpgate.spawnAt({ x, y }, dataObj.templateName, dataObj.updates, dataObj.callbacks,
-            dataObj.options));
+        return (await warpgate.spawnAt({ x, y }, dataObj.templateName, dataObj.updates, dataObj.callbacks, dataObj.options));
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * Cancel (drop, delete) concentrating effect if any on passed token's actor
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static async dropConcentrating(token5e, options = {}) {
+        const FUNCNAME = "doOn(options={})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'token5e', token5e, 'options', options);
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Function Variables
+        //
+        const EFFECT_NAME = "Concentrating"
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Seach the token to find the just added concentrating effect
+        //
+        await jez.wait(50)
+        const EFFECT = await token5e.actor.effects.find(ef => ef.data.label === EFFECT_NAME) ?? null;
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Define the desired modification to existing effect. 
+        //    
+        if (EFFECT) await jez.deleteEffectAsGM(EFFECT.uuid, { traceLvl: TL })
     }
 
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********
@@ -3808,8 +3831,8 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         const SPELL_NAME = options.spellName ?? ""
         const VERSION = Math.floor(game.VERSION);
         if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"token5e",token5e,
-            "SPELL_LEVEL",SPELL_LEVEL, "options", options);
+        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "token5e", token5e,
+            "SPELL_LEVEL", SPELL_LEVEL, "options", options);
         //-----------------------------------------------------------------------------------------------
         // Define some values
         //

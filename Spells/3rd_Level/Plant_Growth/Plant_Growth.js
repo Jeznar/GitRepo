@@ -1,10 +1,11 @@
-const MACRONAME = "Plant_Growth.0.1.js"
+const MACRONAME = "Plant_Growth.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * This macro asks the user if they are using the instant or long termm version of this spell.  If it is the instant version, 
  * a tile with a green transmutation effect will be placed as a marker, if the 8 hour version is used, the macro ends and the GM
  * will need to handle the effects.
  * 
  * 12/12/22 0.1 Creation of Macro
+ * 12/13/22 0.2 Added check for cancellation at dialog and refund of spell slot
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -71,8 +72,15 @@ if (TL>1) jez.trace(`${TAG} === Finished ===`);
     <p>If you want to cast the single action version, please click the <b>"Yes"</b> button.</p>
     <p>If you want to cast the 8 hour version, please click the <b>"Yes"</b> button.</p>`
     let confirmation = await Dialog.confirm({ title: Q_TITLE, content: qText, });
+    if (confirmation === null) {
+        if (TL > 3) jez.trace(`${TAG} Dialog choice was Close.`,confirmation)
+        jez.refundSpellSlot(aToken, L_ARG.spellLevel, { traceLvl: TL, quiet: false, spellName: aItem.name })
+        msg = `Spell casting was cancelled.`
+        postResults(msg)
+        return false
+    }
     if (!confirmation) {
-        if (TL > 3) jez.trace(`${TAG} Dialog choice was no.`)
+        if (TL > 3) jez.trace(`${TAG} Dialog choice was no.`,confirmation)
         msg = `Casting will continue for up to eight hours.`
         postResults(msg)
         return false
@@ -83,12 +91,10 @@ if (TL>1) jez.trace(`${TAG} === Finished ===`);
     const EFFECT_CENTER = await crossHairs(aToken, MAX_RANGE, {traceLvl:TL})
     placeTile(EFFECT_CENTER, {traceLvl:TL})
     //-------------------------------------------------------------------------------------------------------------------------------
-    // Comments, perhaps
+    // Thats all
     //
-    if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)
-
-
-    msg = `Maybe say something useful...`
+    msg = `All normal plants in affected area become thick and overgrown. A creature moving through the area must spend 4 feet of 
+    movement for every 1 foot it moves. ${aToken.name} can exclude one or more areas of any size within from being affected.`
     postResults(msg)
     if (TL>0) jez.trace(`${TAG} --- Finished ---`);
     return true;

@@ -1,10 +1,11 @@
-const MACRONAME = "Fire_Shield.0.3.js"
+const MACRONAME = "Fire_Shield.0.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Implments Fire Shield!
  * 
  * 04/11/22 0.1 Creation of Macro
  * 12/07/22 0.2 change ui.notification & ui.notfications (typo) to jez.badNews calls
  * 12/13/22 0.3 Update logging and set a target requirement for the temp item
+ * 12/13/22 0.4 Added refund on close dialog choice and converted doOn to doOnUse
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -29,14 +30,11 @@ const VFX_NAME = `${MACRO}-${aToken.id}`
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "on") await doOn({ traceLvl: TL });                     // DAE Application
+if (args[0]?.tag === "OnUse") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use
 if (args[0] === "off") await doOff({ traceLvl: TL });                   // DAE removal
 if (TL > 1) jez.trace(`${TAG} === Finished ===`);
-
 //-----------------------------------------------------------------------------------------------------------------------------------
 //
-
-
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -54,6 +52,66 @@ function postResults(msg) {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 
+ async function doOnUse(options={}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0] 
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL===1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,"options",options);
+    await jez.wait(100)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    await jez.deleteItems("Fire Shield (Hot)", "weapon", aActor);
+    await jez.deleteItems("Fire Shield (Cold)", "weapon", aActor);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Pop the dialog to select shield type
+    //
+    let choiceMade = false
+    new Dialog({
+        title: "Hot or Cold Shield",
+        buttons: {
+            one: {
+                label: "Hot",
+                callback: async () => {
+                    choiceMade = true
+                    runVFX(aToken, "hot")                 // Launch the VFX
+                    await createTempItem(aToken, "hot")   // Create the temporary item
+                    await setResistance(aToken, "cold")   // Set appropriate resistance
+                }
+            },
+            two: {
+                label: "Cold",
+                callback: async () => {
+                    choiceMade = true
+                    runVFX(aToken, "cold")                // Launch the VFX
+                    await createTempItem(aToken, "cold")  // Create the temporary item
+                    await setResistance(aToken, "fire")   // Set appropriate resistance
+                }
+            },
+        },
+        default: 'Hot',
+        close: async () => {
+            if (TL > 1) jez.trace(`${TAG} Hot or Cold dialog was closed`)
+            if (!choiceMade) {
+                jez.refundSpellSlot(aToken, L_ARG.spellLevel, { traceLvl: TL, quiet: false, spellName: aItem.name })
+                postResults(`Spell casting was cancelled.`)
+                await jez.wait(100)
+                const EFFECT = await aToken.actor.effects.find(ef => ef.data.label === "Fire Shield") ?? null;
+                if (EFFECT) await jez.deleteEffectAsGM(EFFECT.uuid, { traceLvl: TL })
+            }
+        }
+    }).render(true);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
+    return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is removed by DAE, set On
@@ -79,7 +137,7 @@ async function doOn(options = {}) {
             one: {
                 label: "Hot",
                 callback: async () => {
-                    runVFX(aToken, "hot")           // Launch the VFX
+                    runVFX(aToken, "hot")                 // Launch the VFX
                     await createTempItem(aToken, "hot")   // Create the temporary item
                     await setResistance(aToken, "cold")   // Set appropriate resistance
                 }
@@ -87,11 +145,19 @@ async function doOn(options = {}) {
             two: {
                 label: "Cold",
                 callback: async () => {
-                    runVFX(aToken, "cold")          // Launch the VFX
+                    runVFX(aToken, "cold")                // Launch the VFX
                     await createTempItem(aToken, "cold")  // Create the temporary item
                     await setResistance(aToken, "fire")   // Set appropriate resistance
                 }
             },
+        },
+        default: 'Hot',
+        close: async () => {
+            if (TL > 1) jez.trace(`${TAG} Hot or Cold dialog was closed`)
+            jez.refundSpellSlot(aToken, L_ARG.spellLevel, { traceLvl: TL, quiet: false, spellName: aItem.name })
+            await jez.wait(100)
+            const EFFECT = await token5e.actor.effects.find(ef => ef.data.label === "Fire Shield") ?? null;
+            if (EFFECT) await jez.deleteEffectAsGM(EFFECT.uuid, { traceLvl: TL })
         }
     }).render(true);
     //-------------------------------------------------------------------------------------------------------------------------------
