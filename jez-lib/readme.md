@@ -1390,9 +1390,9 @@ Checks the availaibility of named resource on passed actor.
 
 #### Inputs Required:
 
-* **actor5eUuid**: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+* **actor5eUuid**: Actor UUID e.g. `Actor.qvVZIQGyCMvDJFtG` (linked) or `Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG` (unlinked)
 * **resourceName**: String that must match (exactly) one of a PC's predefined resource slots
-* **aItemUuid**: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+* **aItemUuid**: Item UUID on the calling macro, e.g. `Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf`
 * **options**: Two supported option fields.
 
 #### Options
@@ -1435,9 +1435,9 @@ For PCs, increment the verified resource but not past max.
 
 #### Inputs Required:
 
-* **actor5eUuid**: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+* **actor5eUuid**: Actor UUID e.g. `Actor.qvVZIQGyCMvDJFtG` (linked) or `Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG` (unlinked)
 * **resourceName**: String that must match (exactly) one of a PC's predefined resource slots
-* **aItemUuid**: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+* **aItemUuid**: Item UUID on the calling macro, e.g. `Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf`
 * **options**: Two supported option fields.
 
 #### Options
@@ -1482,9 +1482,9 @@ For PCs, decrement resource, verifying it exists and at least a value of 1.
 
 #### Inputs Required:
 
-* **actor5eUuid**: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+* **actor5eUuid**: Actor UUID e.g. `Actor.qvVZIQGyCMvDJFtG` (linked) or `Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG` (unlinked)
 * **resourceName**: String that must match (exactly) one of a PC's predefined resource slots
-* **aItemUuid**: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+* **aItemUuid**: Item UUID on the calling macro, e.g. `Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf`
 * **options**: Two supported option fields.
 
 #### Options
@@ -1495,9 +1495,9 @@ For PCs, decrement resource, verifying it exists and at least a value of 1.
 #### Return values
 
 * **Null**: actor is a NPC making this irrelevant
-* **True**: PC actor's resource successfully decrimented
+* **True**: PC actor's resource successfully decremented
 * **False**: PC actor's resource was not found (not set on actor)
-* **Zero**: PC actor's resource was already zero (or below), and could not be decrimented.
+* **Zero**: PC actor's resource was already zero (or below), and could not be decremented.
 
 <details> <summary>**Sample Use**</summary>
 
