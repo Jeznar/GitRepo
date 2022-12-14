@@ -4,7 +4,7 @@
   "img": "Icons_JGB/Spells/2nd_Level/Lesser_Restoration.png",
   "data": {
     "description": {
-      "value": "<p>You touch a creature and can end either one disease or one condition afflicting it. The condition can be blinded, deafened, paralyzed, or poisoned.</p>",
+      "value": "<p>You touch a creature and can end either one disease or one condition afflicting it. The condition can be blinded, deafened, paralyzed, or poisoned.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> This is automated.</p>",
       "chat": "<p>You touch a creature and can end either one disease or one condition afflicting it. The condition can be blinded, deafened, paralyzed, or poisoned.</p>",
       "unidentified": ""
     },
@@ -22,7 +22,7 @@
       "value": null,
       "width": null,
       "units": "touch",
-      "type": ""
+      "type": "creature"
     },
     "range": {
       "value": null,

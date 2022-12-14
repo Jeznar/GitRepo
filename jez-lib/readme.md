@@ -63,6 +63,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **isEffectUUID(string)** -- Determines if string looks like an ActiveEffect's UUID, returning a boolean.
 * **isActor5e(obj)** -- Returns true if obj is an Actor5e object, otherwise false.
 * **[isEqual(obj1, obj2)](#isEqualobj1-obj2)** -- Somewhat simple minded object comparison function based on one found online.
+* **[isNPC(actorUuid, options = {})](#isnpcactorUuid-options--))** -- Returns boolean, true if provided UUID is a NPC
+* **[isPC(actorUuid, options = {})](#ispcactorUuid-options--))** -- Returns boolean, true if provided UUID is a PC
 * **isToken5e(obj)** -- Returns true if obj is an Token5e object, otherwise false.
 * **[itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
 * **[itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
@@ -80,6 +82,9 @@ The functions currently included in this module are (all need to be proceeded by
 * **[randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
 * **[refundSpellSlot(token5e, SPELL_LEVEL, options = {})](#refundspellslottoken5e-spell_level-options--)** -- Refunds a spell slot
 * **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring)** -- Returns updated string and count of replacements in an object.
+* **[resourceAvail(actor5eUuid, resourceName, aItemUuid, options = {})](#resourceavail(actor5eUuid-resourcename-aitemuuid--options--)))** -- Checks the availaibility of named resource on passed actor.
+* **[resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {})](#resourcerefund(actor5eUuid-resourcename-aitemuuid--options--)))** -- For PCs, increment the verified resource but not past max.
+* **[resourceSpend(actor5eUuid, resourceName, aItemUuid, options = {})](#resourcespend(actor5eUuid-resourcename-aitemuuid--options--)))** -- For PCs, decrement resource, verifying it exists and at least a value of 1.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
@@ -809,6 +814,44 @@ Somewhat simple minded object comparison function based on one found online.
 
 ---
 
+### isNPC(actorUuid, options = {})
+
+Returns true if the actor identified by actorUuid is a NPC, false otherwise.
+
+<details> <summary>**Sample isNPC Use**</summary>
+
+This is an async function, so be sure to await the result.
+
+~~~javascript
+...
+if (await jez.isNPC(aActor.uuid, { traceLvl: 0 })) console.log(`${aToken.name} is an NPC`)
+~~~
+
+</details>
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### isPC(actorUuid, options = {})
+
+Returns true if the actor identified by actorUuid is a PC, false otherwise.
+
+<details> <summary>**Sample isNPC Use**</summary>
+
+This is an async function, so be sure to await the result.
+
+~~~javascript
+...
+if (await jez.isPC(aActor.uuid, { traceLvl: 0 })) console.log(`${aToken.name} is a PC`)
+~~~
+
+</details>
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
 ### Item Functions
 
 A set of functions built to standardize how I handle copying items from the Item Directory to actors and manipulate them.  Parameters used by these are listed below along with their meanings.
@@ -1336,6 +1379,148 @@ if (descObj.count > 0)
     console.log(`Replaced "%TOKENNAME%" with ${tActor.data.token.name} ${descObj.count} time(s)`)
 itemDescription = descObj.string
 ~~~
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### resourceAvail(actor5eUuid, resourceName, aItemUuid, options = {})
+
+Checks the availaibility of named resource on passed actor. 
+
+#### Inputs Required:
+
+* **actor5eUuid**: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+* **resourceName**: String that must match (exactly) one of a PC's predefined resource slots
+* **aItemUuid**: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+* **options**: Two supported option fields.
+
+#### Options
+
+- **traceLvl**: Integer controlling verbosity of logging.  Default is 0 which is silent
+- **quiet**: boolean value.  Default is false which enables display of error messages.  True suppresses them.
+
+#### Return values
+
+* **Positive integer**: 1 or more charges is available on a PC/NPC
+* **Zero**: 0 charges are available on a PC/NPC
+* **False**: named resource does not exist on a PC/NPC
+* **Null**: The actor is a NPC and none of the above passed tests
+
+<details> <summary>**Sample Use**</summary>
+
+This is an async function, so be sure to await the result.
+
+~~~javascript
+const RES_AVAIL = await jez.resourceAvail(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+if (RES_AVAIL > 0) console.log(`Actor has charges remaining`, RES_AVAIL)
+else switch (RES_AVAIL) {
+    case null: console.log(`Actor is an NPC and for some reason the resource exists (should not happen)`); break
+    case false: console.log(`${RESOURCE_NAME} for PC or limited uses on ${aItem.name} for NPC not defined`); break
+    case 0: console.log(`${RESOURCE_NAME} for PC or limited uses on ${aItem.name} already exhausted`); break
+    default: return jez.badNews()`resourceAvail returned unexpected value ${RES_AVAIL}`
+}
+if (TL > 1) jez.trace(`${TAG} resourceAvail result`, RES_AVAIL)
+~~~
+
+</details>
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {})
+
+For PCs, increment the verified resource but not past max.
+
+#### Inputs Required:
+
+* **actor5eUuid**: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+* **resourceName**: String that must match (exactly) one of a PC's predefined resource slots
+* **aItemUuid**: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+* **options**: Two supported option fields.
+
+#### Options
+
+- **traceLvl**: Integer controlling verbosity of logging.  Default is 0 which is silent
+- **quiet**: boolean value.  Default is false which enables display of error messages.  True suppresses them.
+
+#### Return values
+
+* **Null**: actor is a NPC making this irrelevant
+* **True**: PC actor's resource successfully incremented
+* **False**: PC actor's resource was not found (not set on actor)
+* **Zero**: PC actor's resource was already at (or above) max
+
+<details> <summary>**Sample Use**</summary>
+
+This is an async function, so be sure to await the result.
+
+~~~javascript
+const CONTINUE = await jez.resourceRefund(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+switch (CONTINUE) {
+    case null: console.log(`Actor is an NPC, can't increment a resource`); break
+    case true: console.log(`Actor is a PC & resource incremented`); break
+    case false: console.log(`Actor is a PC but doesn't have the resource defined`); break
+    case 0: console.log(`Actor is a PC but resource is already at maximum charges`); break
+    default: return jez.badNews()`resourceRefund returned unexpected value ${CONTINUE}`
+}
+if (TL > 1) jez.trace(`${TAG} resourceRefund result`, CONTINUE)
+if (CONTINUE === false) return jez.badNews(`${SPELL_NAME} cancelled for lack of defined ${RESOURCE_NAME}`, 'w')
+if (CONTINUE === 0) return jez.badNews(`${SPELL_NAME} cancelled for ${RESOURCE_NAME} charges, already at maximum`, 'w')
+~~~
+
+</details>
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### resourceSpend(actor5eUuid, resourceName, aItemUuid, options = {})
+
+For PCs, decrement resource, verifying it exists and at least a value of 1.
+
+#### Inputs Required:
+
+* **actor5eUuid**: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+* **resourceName**: String that must match (exactly) one of a PC's predefined resource slots
+* **aItemUuid**: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+* **options**: Two supported option fields.
+
+#### Options
+
+- **traceLvl**: Integer controlling verbosity of logging.  Default is 0 which is silent
+- **quiet**: boolean value.  Default is false which enables display of error messages.  True suppresses them.
+
+#### Return values
+
+* **Null**: actor is a NPC making this irrelevant
+* **True**: PC actor's resource successfully decrimented
+* **False**: PC actor's resource was not found (not set on actor)
+* **Zero**: PC actor's resource was already zero (or below), and could not be decrimented.
+
+<details> <summary>**Sample Use**</summary>
+
+This is an async function, so be sure to await the result.
+
+~~~javascript
+if (TL > 1) jez.trace(`${TAG} Time to use a resource`)
+if (SPEND_RESOURCE) {
+    const CONTINUE = await jez.resourceSpend(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+    switch (CONTINUE) {
+        case null: console.log(`Actor is an NPC, can't decrement a resource`); break
+        case true: console.log(`Actor is a PC & resource decrimented`); break
+        case false: console.log(`Actor is a PC but doesn't have the resource defined`); break
+        case 0: console.log(`Actor is a PC but resource has no available charges`); break
+        default: return jez.badNews()`resourceSpend returned unexpected value ${CONTINUE}`
+    }
+    if (TL > 1) jez.trace(`${TAG} resourceSpend result`, CONTINUE)
+    if (CONTINUE === false) return jez.badNews(`${SPELL_NAME} cancelled for lack of defined ${RESOURCE_NAME}`, 'w')
+    if (CONTINUE === 0) return jez.badNews(`${SPELL_NAME} cancelled for lack of ${RESOURCE_NAME} charges`, 'w')
+}
+~~~
+
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 

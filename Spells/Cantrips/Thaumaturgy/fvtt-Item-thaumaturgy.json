@@ -4,7 +4,7 @@
   "img": "/systems/dnd5e/icons/spells/explosion-royal-1.jpg",
   "data": {
     "description": {
-      "value": "<p>You manifest a minor wonder, a sign of supernatural power, within range. You create one of the following magical effects within range:</p>\n<ul>\n<li>Your <strong>voice booms</strong> up to three times as loud as normal for 1 minute.</li>\n<li>You cause <strong>flames to flicker</strong>, brighten, dim, or change color for 1 minute.</li>\n<li>You cause <strong>harmless tremors</strong> in the ground for 1 minute.</li>\n<li>You create an instantaneous <strong>sound</strong> that originates from a point of your choice within range, such as a rumble of thunder, the cry of a raven, or ominous whispers.</li>\n<li>You instantaneously cause an<strong> unlocked door or window </strong>to fly open or slam shut.</li>\n<li>You alter the <strong>appearance of your eyes </strong>for 1 minute.</li>\n</ul>\n<p>If you cast this spell multiple times, you can have up to three of its 1-minute effects active at a time, and you can dismiss such an effect as an action.</p>",
+      "value": "<p>You manifest a minor wonder, a sign of supernatural power, within range. You create one of the following magical effects within range:</p>\n<ul>\n<li>Your <strong>voice booms</strong> up to three times as loud as normal for 1 minute.</li>\n<li>You cause <strong>flames to flicker</strong>, brighten, dim, or change color for 1 minute.</li>\n<li>You cause <strong>harmless tremors</strong> in the ground for 1 minute.</li>\n<li>You create an instantaneous <strong>sound</strong> that originates from a point of your choice within range, such as a rumble of thunder, the cry of a raven, or ominous whispers.</li>\n<li>You instantaneously cause an<strong> unlocked door or window </strong>to fly open or slam shut.</li>\n<li>You alter the <strong>appearance of your eyes </strong>for 1 minute.</li>\n</ul>\n<p>If you cast this spell multiple times, you can have up to three of its 1-minute effects active at a time, and you can dismiss such an effect as an action.</p>\n<hr style=\"border-top: 1px solid var(--color-border-light-primary); border-bottom: 1px solid var(--color-border-light-highlight);\" />\n<p style=\"box-sizing: inherit; outline: 0px; margin-top: 0px; margin-bottom: 0px; caret-color: #000000; font-family: Roboto, Helvetica, sans-serif; text-size-adjust: auto;\"><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-family: Signika, sans-serif; font-size: 13px;\">FoundryVTT</strong><span style=\"color: #191813; font-family: Signika, sans-serif; font-size: 13px;\">: This is not automated.</span></p>",
       "chat": "",
       "unidentified": ""
     },
@@ -83,7 +83,6 @@
     }
   },
   "effects": [],
-  "sort": 0,
   "flags": {
     "enhancedcombathud": {
       "set1p": false,
@@ -91,7 +90,8 @@
       "set3p": false
     },
     "midi-qol": {
-      "onUseMacroName": "Run_RuneVFX_onSelf"
+      "onUseMacroName": "[postActiveEffects]Run_RuneVFX_onSelf",
+      "effectActivation": false
     },
     "betterCurses": {
       "isCurse": false,
@@ -102,11 +102,25 @@
       "msak": false,
       "rsak": false
     },
+    "core": {
+      "sourceId": "Item.wqUyUkwG8Ds85GvF"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
     }
   }
 }

@@ -4,7 +4,7 @@
   "img": "Icons_JGB/Spells/1st%20Level/searing_smite.png",
   "data": {
     "description": {
-      "value": "<p>The next time you hit a creature with a melee weapon attack during the spell’s duration, your weapon flares with white-hot intensity, and the attack deals an <strong>extra 1d6 fire </strong>damage to the target and causes the target to ignite in flames.</p>\n<p>At the start of each of its turns until the spell ends, the target must make a Constitution saving throw. <strong>On a failed save, it takes 1d6 fire</strong> damage. On a successful save, the spell ends.</p>\n<p>If the target or a creature within 5 feet of it uses an action to put out the flames, or if some other effect douses the flames (such as the target being submerged in water), the spell ends.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the initial extra damage dealt by the attack <span style=\"text-decoration:underline\">increases by 1d6 for each slot.</span></p>\n<p><a href=\"https://www.dndbeyond.com/spells/searing-smite\" target=\"_blank\" rel=\"noopener\">D&amp;DBeyond</a></p>",
+      "value": "<p>The next time you hit a creature with a melee weapon attack during the spell&rsquo;s duration, your weapon flares with white-hot intensity, and the attack deals an <strong>extra 1d6 fire </strong>damage to the target and causes the target to ignite in flames.</p>\n<p>At the start of each of its turns until the spell ends, the target must make a Constitution saving throw. <strong>On a failed save, it takes 1d6 fire</strong> damage. On a successful save, the spell ends.</p>\n<p>If the target or a creature within 5 feet of it uses an action to put out the flames, or if some other effect douses the flames (such as the target being submerged in water), the spell ends.</p>\n<p><strong>At Higher Levels.</strong>&nbsp;When you cast this spell using a spell slot of 2nd level or higher, the initial extra damage dealt by the attack <span style=\"text-decoration: underline;\">increases by 1d6 for each slot.</span></p>\n<p><a href=\"https://www.dndbeyond.com/spells/searing-smite\" target=\"_blank\" rel=\"noopener\">D&amp;DBeyond</a></p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is automated.</p>",
       "chat": "<p>The next time you hit a creature with a melee weapon attack during the spell’s duration, your weapon flares with white-hot intensity, and the attack deals an extra 1d6 fire damage to the target and causes the target to ignite in flames. At the start of each of its turns until the spell ends, the target must make a Constitution saving throw. On a failed save, it takes 1d6 fire damage. On a successful save, the spell ends. If the target or a creature within 5 feet of it uses an action to put out the flames, or if some other effect douses the flames (such as the target being submerged in water), the spell ends.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the initial extra damage dealt by the attack increases by 1d6 for each slot.</p>",
       "unidentified": ""
     },
@@ -30,9 +30,9 @@
       "units": "self"
     },
     "uses": {
-      "value": 0,
-      "max": "0",
-      "per": ""
+      "value": 1,
+      "max": "1",
+      "per": "lr"
     },
     "consume": {
       "type": "",
@@ -74,8 +74,8 @@
       "supply": 0
     },
     "preparation": {
-      "mode": "prepared",
-      "prepared": true
+      "mode": "innate",
+      "prepared": false
     },
     "scaling": {
       "mode": "level",

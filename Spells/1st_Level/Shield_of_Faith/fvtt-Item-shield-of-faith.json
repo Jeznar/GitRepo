@@ -4,7 +4,7 @@
   "img": "Icons_JGB/Spells/1st%20Level/Shield_Yellow.png",
   "data": {
     "description": {
-      "value": "<p>A shimmering field appears and surrounds a creature of your choice within range, granting it a +2 bonus to AC for the duration.</p>",
+      "value": "<p>A shimmering field appears and surrounds a creature of your choice within range, granting it a +2 bonus to AC for the duration.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is automated.</p>",
       "chat": "<p>A shimmering field appears and surrounds a creature of your choice within range, granting it a +2 bonus to AC for the duration.</p>",
       "unidentified": ""
     },

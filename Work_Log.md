@@ -465,6 +465,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.13 **Fire Shield** added refund on close dialog choice and converted doOn to doOnUse
 
+22.12.14 Created jez-lib functions for: resourceAvail(), resourceRefund(), resourceSpend(), isNPC() and isPC() to make it easier to deal with PC resources by name rather than slot position.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

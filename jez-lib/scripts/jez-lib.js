@@ -3886,5 +3886,303 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         } else if (TL > 1) jez.trace(`${TAG} Quiet!`, msg)
         return true
     }
+
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * isNPC(actorUuid) - Returns true if the identified actor is a NPC, false otherwise
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static async isNPC(actorUuid, options = {}) {
+        const FUNCNAME = "isNPC(actorUuid, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actorUuid', actorUuid, "options", options);
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Function variables
+        //
+        const ACTOR_DATA = await fromUuid(actorUuid)
+        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'ACTOR_DATA', ACTOR_DATA)
+        const IS_NPC = (jez.isActor5e(ACTOR_DATA)) ? false : true
+        if (TL > 1) jez.trace(`${TAG} IS_NPC`, IS_NPC)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        //
+        return IS_NPC
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * isPC(actorUuid) - Returns true if the identified actor is a PC (not a NPC), false otherwise
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static async isPC(actorUuid, options = {}) {
+        const FUNCNAME = "isPC(actorUuid, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actorUuid', actorUuid, "options", options);
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Function variables
+        //
+        const ACTOR_DATA = await fromUuid(actorUuid)
+        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'ACTOR_DATA', ACTOR_DATA)
+        const IS_PC = (jez.isActor5e(ACTOR_DATA)) ? true : false
+        // const IS_PC = (ACTOR_DATA?._actor?.type === "character") ? true : false
+        if (TL > 1) jez.trace(`${TAG} IS_PC`, IS_PC)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        //
+        return IS_PC
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * resourceSpend((actor5eUuid, resourceName, aItemUuid) - For PCs, decrement resource, verifying it exists and at least a value of 1.
+     * 
+     * Inputs Required:
+     *  - actor5eUuid: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+     *  - resourceName: String that must match (exactly) one of a PC's predefined resource slots
+     *  - aItemUuid: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+     *  - options: Two supported option fields.
+     * 
+     * Options
+     *  - traceLvl: Integer controlling verbosity of logging.  Default is 0 which is silent
+     *  - quiet: boolean value.  Default is false which enables display of error messages.  True suppresses them.
+     *  
+     * Return values:
+     *  - Null: actor is a NPC making this irrelevant
+     *  - True: PC actor's resource successfully decrimented
+     *  - False: PC actor's resource was not found (not set on actor)
+     *  - Zero: PC actor's resource was already zero (or below), and could not be decrimented
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static async resourceSpend(actor5eUuid, resourceName, aItemUuid, options = {}) {
+        const FUNCNAME = "resourceSpend(actor5eUuid, resourceName, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        const QUIET = options.quiet ?? false
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actor5eUuid', actor5eUuid, 'resourceName', resourceName,
+            'aItemUuid', aItemUuid, "options", options);
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Function variables
+        //
+        let aItem = await fromUuid(aItemUuid)
+        let actor5e = await fromUuid(actor5eUuid)
+        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'aItem  ', aItem, 'actor5e', actor5e)
+        const IS_NPC = await jez.isNPC(actor5eUuid, { traceLvl: 0 })
+        const RESOURCE_NAME = resourceName
+        //-------------------------------------------------------------------------------------------------------------------------------
+        //
+        if (IS_NPC) {
+            if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as NPC`)
+            const ITEM_USES = await jez.getItemUses(aItem, { traceLvl: TL })
+            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
+            if (ITEM_USES.max) return null // If max charges isn't set, this item is not set up correctly
+            if (!QUIET) jez.badNews(`Make sure limited daily uses are configured for ${aItem.name}.`, 'i')
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Set variables for this function
+        //
+        let resourceSlot = null
+        const ACTOR_DATA = await actor5e.getRollData();
+        let usesVal, usesMax
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Figure our which slot has our resource and get the current and maximum value
+        //
+        if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as PC`)
+        let resourceList = [{ name: "primary" }, { name: "secondary" }, { name: "tertiary" }];
+        let resourceValues = Object.values(ACTOR_DATA.resources);
+        let resourceTable = mergeObject(resourceList, resourceValues);
+        let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
+        if (!findResourceSlot) {
+            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${aToken.name}, Please add it.`, 'i');
+            return false
+        }
+        resourceSlot = findResourceSlot.name;
+        usesVal = ACTOR_DATA.resources[resourceSlot].value;
+        usesMax = ACTOR_DATA.resources[resourceSlot].max;
+        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`, "resourceList     ", resourceList,
+            "resourceTable    ", resourceTable, "findResourceSlot ", findResourceSlot,
+            'usesVal          ', usesVal, 'usesMax          ', usesMax)
+        console.log(`Marco...`)
+        if (usesVal < 1) {
+            console.log(`There are no ${RESOURCE_NAME} charges available.`)
+            if (!QUIET) jez.badNews(`There are no ${RESOURCE_NAME} charges available.`, 'i');
+            console.log(`There are no ${RESOURCE_NAME} charges available.`)
+            return 0
+        }
+        console.log(`...Polo`)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Decrement our resource 
+        //
+        console.log(`Decrement resource`)
+        let updates = {};
+        let resources = `data.resources.${resourceSlot}.value`;
+        updates[resources] = usesVal - 1;
+        console.log(`updates`, updates)
+        await actor5e.update(updates);
+        return true
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * resourceRefund (actor5eUuid, resourceName, aItemUuid) - For PCs, increment the verified resource but not past max.
+     * 
+     * Inputs Required:
+     *  - actor5eUuid: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+     *  - resourceName: String that must match (exactly) one of a PC's predefined resource slots
+     *  - aItemUuid: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+     *  - options: Two supported option fields.
+     * 
+     * Options
+     *  - traceLvl: Integer controlling verbosity of logging.  Default is 0 which is silent
+     *  - quiet: boolean value.  Default is false which enables display of error messages.  True suppresses them.
+     *  
+     *  Return values:
+     *  - Null: actor is a NPC making this irrelevant
+     *  - True: PC actor's resource successfully incremented
+     *  - False: PC actor's resource was not found (not set on actor)
+     *  - Zero: PC actor's resource was already at (or above) max
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static async resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {}) {
+        const FUNCNAME = "resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        const QUIET = options.quiet ?? false
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actor5eUuid', actor5eUuid, 'resourceName', resourceName,
+            'aItemUuid', aItemUuid, "options", options);
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Function variables
+        //
+        let aItem = await fromUuid(aItemUuid)
+        let actor5e = await fromUuid(actor5eUuid)
+        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'aItem  ', aItem, 'actor5e', actor5e)
+        const IS_NPC = await jez.isNPC(actor5eUuid, { traceLvl: 0 })
+        const RESOURCE_NAME = resourceName
+        //-------------------------------------------------------------------------------------------------------------------------------
+        //
+        if (IS_NPC) {
+            if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as NPC`)
+            const ITEM_USES = await jez.getItemUses(aItem, { traceLvl: TL })
+            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
+            if (ITEM_USES.max) return null
+            if (!QUIET) jez.badNews(`Make sure limited daily uses are configured for ${aItem.name}.`, 'i')
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------------------------
+        //
+        let resourceSlot = null
+        const ACTOR_DATA = await actor5e.getRollData();
+        let usesVal, usesMax
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Figure our which slot has our resource and get the current and maximum value
+        //
+        if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as PC`)
+        let resourceList = [{ name: "primary" }, { name: "secondary" }, { name: "tertiary" }];
+        let resourceValues = Object.values(ACTOR_DATA.resources);
+        let resourceTable = mergeObject(resourceList, resourceValues);
+        let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
+        if (!findResourceSlot) {
+            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${aToken.name}, Please add it.`);
+            return false
+        }
+        resourceSlot = findResourceSlot.name;
+        usesVal = ACTOR_DATA.resources[resourceSlot].value;
+        usesMax = ACTOR_DATA.resources[resourceSlot].max;
+        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`, "resourceList     ", resourceList,
+            "resourceTable    ", resourceTable, "findResourceSlot ", findResourceSlot,
+            'usesVal          ', usesVal, 'usesMax          ', usesMax)
+        if (usesVal >= usesMax) {
+            if (!QUIET) jez.badNews(`Already at maximum ${RESOURCE_NAME} charges.`);
+            return 0
+        }
+        // }
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Increment our resource 
+        //
+        let updates = {};
+        let resources = `data.resources.${resourceSlot}.value`;
+        updates[resources] = usesVal + 1;
+        await actor5e.update(updates);
+        return true
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * resourceAvail(actorUuid, actor5eUuid, aItemUuid) - Checks the availaibility of named resource on passed actor. 
+     * 
+     * Inputs Required:
+     *  - actor5eUuid: Actor UUID e.g. 'Actor.qvVZIQGyCMvDJFtG' (linked) or 'Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG' (unlinked)
+     *  - resourceName: String that must match (exactly) one of a PC's predefined resource slots
+     *  - aItemUuid: Item UUID on the calling macro, e.g. "Scene.MzEyYTVkOTQ4NmZk.Token.HNjb9QaxP5K1V1NG.Item.9vm3k6d26nbuqezf"
+     *  - options: Two supported option fields.
+     * 
+     * Options
+     *  - traceLvl: Integer controlling verbosity of logging.  Default is 0 which is silent
+     *  - quiet: boolean value.  Default is false which enables display of error messages.  True suppresses them.
+     * 
+     * Return values:
+     *  - Positive integer: 1 or more charges is available on a PC/NPC
+     *  - Zero: 0 charges are available on a PC/NPC
+     *  - False: named resource does not exist on a PC/NPC
+     *  - Null: The actor is a NPC and none of the above passed tests
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static async resourceAvail(actor5eUuid, resourceName, aItemUuid, options = {}) {
+        const FUNCNAME = "resourceAvail(actor5eUuid, resourceName, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        const QUIET = options.quiet ?? false
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actor5eUuid', actor5eUuid, 'resourceName', resourceName,
+            'aItemUuid', aItemUuid, "options", options);
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Function variables
+        //
+        let aItem = await fromUuid(aItemUuid)
+        let actor5e = await fromUuid(actor5eUuid)
+        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'aItem  ', aItem, 'actor5e', actor5e)
+        const IS_NPC = await jez.isNPC(actor5eUuid, { traceLvl: 0 })
+        const RESOURCE_NAME = resourceName
+        //-------------------------------------------------------------------------------------------------------------------------------
+        //
+        if (IS_NPC) {
+            if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as NPC`)
+            const ITEM_USES = await jez.getItemUses(aItem, { traceLvl: TL })
+            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
+            // ITEM_USES: { max: 3, per: "day", value: 3 }
+            if (ITEM_USES?.value > 0) return ITEM_USES.value
+            if (ITEM_USES?.value <= 0) return 0
+            if (ITEM_USES.max) return false // If max charges isn't set, this item is not set up correctly
+            if (!QUIET) jez.badNews(`Make sure limited daily uses are configured for ${aItem.name}.`, 'i')
+            return null;
+        }
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Set variables for this function
+        //
+        let resourceSlot = null
+        const ACTOR_DATA = await actor5e.getRollData();
+        let usesVal, usesMax
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Figure our which slot has our resource and get the current and maximum value
+        //
+        if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as PC`)
+        let resourceList = [{ name: "primary" }, { name: "secondary" }, { name: "tertiary" }];
+        let resourceValues = Object.values(ACTOR_DATA.resources);
+        let resourceTable = mergeObject(resourceList, resourceValues);
+        let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
+        if (!findResourceSlot) {
+            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${aToken.name}, Please add it.`);
+            return false
+        }
+        resourceSlot = findResourceSlot.name;
+        usesVal = ACTOR_DATA.resources[resourceSlot].value;
+        usesMax = ACTOR_DATA.resources[resourceSlot].max;
+        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`, "resourceList     ", resourceList,
+            "resourceTable    ", resourceTable, "findResourceSlot ", findResourceSlot,
+            'usesVal          ', usesVal, 'usesMax          ', usesMax)
+        if (usesVal < 1) {
+            if (!QUIET) jez.badNews(`There are no ${RESOURCE_NAME} charges available.`);
+            return 0
+        }
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Decrement our resource 
+        //
+        return usesMax
+    }
 } // END OF class jez
 Object.freeze(jez);
