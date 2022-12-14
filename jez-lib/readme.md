@@ -82,9 +82,9 @@ The functions currently included in this module are (all need to be proceeded by
 * **[randomDarkColor()](#randomdarkcolor)** -- Returns the name of a color from a list.
 * **[refundSpellSlot(token5e, SPELL_LEVEL, options = {})](#refundspellslottoken5e-spell_level-options--)** -- Refunds a spell slot
 * **[replaceSubString(string, substring, newSubstring)](#replaceSubStringstring-substring-newSubstring)** -- Returns updated string and count of replacements in an object.
-* **[resourceAvail(actor5eUuid, resourceName, aItemUuid, options = {})](#resourceavail(actor5eUuid-resourcename-aitemuuid--options--)))** -- Checks the availaibility of named resource on passed actor.
-* **[resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {})](#resourcerefund(actor5eUuid-resourcename-aitemuuid--options--)))** -- For PCs, increment the verified resource but not past max.
-* **[resourceSpend(actor5eUuid, resourceName, aItemUuid, options = {})](#resourcespend(actor5eUuid-resourcename-aitemuuid--options--)))** -- For PCs, decrement resource, verifying it exists and at least a value of 1.
+* **[resourceAvail(actor5eUuid, resourceName, aItemUuid, options = {})](#resourceavailactor5eUuid-resourcename-aitemuuid-options--)))** -- Checks the availaibility of named resource on passed actor.
+* **[resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {})](#resourcerefundactor5eUuid-resourcename-aitemuuid-options--)))** -- For PCs, increment the verified resource but not past max.
+* **[resourceSpend(actor5eUuid, resourceName, aItemUuid, options = {})](#resourcespendactor5eUuid-resourcename-aitemuuid-options--)))** -- For PCs, decrement resource, verifying it exists and at least a value of 1.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
 * **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
