@@ -475,7 +475,9 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 * Wild_Companion 12/15
 * Wild_Shape 12/15
 
-22.12.16 Update to resourceAvail(), resourceRefund(), resourceSpend() return -1 (truthy) instead of null (falsy) got NPCs
+22.12.15 Update to resourceAvail(), resourceRefund(), resourceSpend() return -1 (truthy) instead of null (falsy) got NPCs
+
+22.12.15 **Nature's Wraith**: Update style and add call to resourceSpend 
 
 [Link back to my Documentation Listing](README.md) 
 
