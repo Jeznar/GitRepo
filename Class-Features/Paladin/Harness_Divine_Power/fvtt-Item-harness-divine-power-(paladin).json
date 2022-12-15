@@ -1,0 +1,137 @@
+{
+  "name": "Harness Divine Power (Paladin)",
+  "type": "feat",
+  "img": "icons/magic/holy/chalice-glowing-gold.webp",
+  "data": {
+    "description": {
+      "value": "<p><span style=\"color: #191813; font-size: 13px;\">You can expend a use of your Channel Divinity to fuel your spells. As a bonus action, you touch your holy symbol, utter a prayer, and regain one expended spell slot, the level of which can be no higher than half your proficiency bonus (rounded up). </span></p>\n<p><span style=\"color: #191813; font-size: 13px;\">The number of times you can use this feature is based on the level you&rsquo;ve reached in this class: 3rd level, once; 7th level, twice; and 15th level, thrice. You regain all expended uses when you finish a long rest.</span></p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is automated.</p>\n<p><strong>Setup</strong>: For PCs, the actor must have a resource named&nbsp;<em>Channel Divinity&nbsp;</em>defined on their character sheet (and it has to have a postive value).&nbsp; NPCs need to set this up with limited daily uses (also, its not been tested...)</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "bonus",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": "self"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "util",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "enhancedcombathud": {
+      "set1s": false,
+      "set2s": false,
+      "set3s": false
+    },
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Harness Divine Power (Paladin)",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Harness_Divine_Power.0.4.js\";\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Crymic Macro that failed out of the box, subsequently heavily updated.\n * \n *  Use Midi-qol + Item Macro. That will trigger resouce consumption.\n * \n * 12/21/21 0.1 JGB Imported Crymic's code and began debugging\n * 12/22/21 0.2 JGB Add code to handle the no-selection, selection on the dialog\n * 12/??/22 0.3 JGB Unknown changes\n * 12/14/22 0.4 JGB Update to use library functions to handle resource usage (NPC side not tested)\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3**/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst SPELL_NAME = `Harness Divine Power`\nconst ACTOR_DATA = await aActor.getRollData();\nconst RESOURCE_NAME = \"Channel Divinity\";\nconst IS_NPC = (aToken.document._actor.data.type === \"npc\") ? true : false;\nconst PROF = Math.ceil(ACTOR_DATA.prof / 2);\nlet spendResource\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    await jez.wait(100)\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Ask if a resource should be consumed \n    //\n    const Q_TITLE = `Consume Resource?`\n    let qText = `<p>${aToken.name} is using <b>${SPELL_NAME}</b> to Restore a Spell Slot. This typically\n    consumes a <b>${RESOURCE_NAME}</b> charge.</b></p>\n    <p>If you want to spend the charge (or use the NPC alternative), click <b>\"Yes\"</b>.</p>\n    <p>If you want to bypass spending the charge (with GM permission) click <b>\"No\"</b>.</p>\n    <p>If you want to cancel the spell click <b>\"Close\"</b> (top right of dialog).</p>`\n    spendResource = await Dialog.confirm({ title: Q_TITLE, content: qText, });\n    if (TL > 1) jez.trace(`${TAG} spendResource`, spendResource)\n    if (spendResource === null) return jez.badNews(`${SPELL_NAME} cancelled by player.`, 'i')\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Deal with casting resource \n    //\n    let spendResult\n    if (spendResource) {\n        if (TL > 1) jez.trace(`${TAG} Time to use a resource`)\n        spendResult = await jez.resourceSpend(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: true })\n        switch (spendResult) {\n            case null: console.log(`${aToken.name} is an NPC, can't decrement a resource`); break\n            case true: console.log(`${aToken.name} is a PC & ${RESOURCE_NAME} resource decrimented`); break\n            case false:\n                // False indicates no resource configured on a PC --> exit this script\n                console.log(`${aToken.name} is a PC but doesn't have ${RESOURCE_NAME} resource defined`);\n                msg = `${aToken.name} is not configured with the '${RESOURCE_NAME}' resource to empower this effect.`\n                postResults(msg)\n                return jez.badNews(`${SPELL_NAME} cancelled for lack of defined '${RESOURCE_NAME}'`, 'w')\n            case 0:\n                // 0 indicates no charges remaining for resource on a PC --> exit this script\n                console.log(`${aToken.name} has no available charges of ${RESOURCE_NAME}`);\n                msg = `${aToken.name} lacks the needed charge of '${RESOURCE_NAME}' to empower this effect.`\n                postResults(msg)\n                return jez.badNews(`${SPELL_NAME} cancelled for lack of '${RESOURCE_NAME}' charges`, 'i')\n            default: return jez.badNews()`resourceSpend returned unexpected value ${CONTINUE}`\n        }\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Dialog to choose spell slot restored\n    //\n    await restoreSlot({ traceLvl: TL });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // All done\n    //\n    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Restore a spell slot, maybe\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \nasync function restoreSlot(options={}) {\n    const FUNCNAME = \"restoreSlot(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\"options\",options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Function variables\n    //\n    let inputText = \"\";\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Make sure we are a caster of some sort\n    //\n    if (aActor.data.data.spells.spell1.max === 0) return jez.badNews(`No spell slots found on ${aActor.data.token.name}`,'e');\n    if (TL > 1) jez.trace(`${TAG} ${aActor.data.token.name} has spell slots`);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Do we have any restorable slots?  If so go about restoring, otherwise get on out of here, perhaps refunding a charge\n    //\n    if (hasAvailableSlot(actor)) {\n        // Get options for available slots\n        for (let i = 1; i <= PROF; i++) {\n            let chosenSpellSlots = getSpellSlots(aActor, i);\n            let minSlots = chosenSpellSlots.value;\n            let maxSlots = chosenSpellSlots.max;\n            if (TL > 1)\n                jez.trace(`${TAG} ${i} Spell slots ${minSlots} / ${maxSlots}`, chosenSpellSlots);\n            if (minSlots != maxSlots) {\n                inputText += `<div class=\"form-group\"><label for=\"spell${i}\">\n                    Spell Slot Level ${i} [${minSlots}/${maxSlots}]</label>\n                    <input id=\"spell${i}\" name=\"spellSlot\" value=\"${i}\" \n                    type=\"radio\"></div>`;\n            }\n        }\n        //---------------------------------------------------------------------------------------------------------------------------\n        // \n        //\n        if (TL > 1) jez.trace(`${TAG} Build a dialog`);\n        new Dialog({\n            title: aItem.name,\n            content: `<form><p>Choose 1 spell slot to restore</p><hr>${inputText}</form>`,\n            buttons: {\n                recover: {\n                    icon: '<i class=\"fas fa-check\"></i>',\n                    label: \"Recover\",\n                    callback: dialogCallback(spellRefund, aActor)\n                }\n            }\n        }).render(true);\n    } else {\n        if (TL > 1) jez.trace(`${TAG} No spell slots to restore.  Was a resource spent? ${spendResource}, if so refund it.`)\n        let refundResult\n        if (spendResource) {\n            refundResult = await jez.resourceRefund(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: true })\n            switch (refundResult) {\n                case null: console.log(`${aToken.name} is an NPC, can't increment a resource`); break\n                case true: console.log(`${aToken.name} is a PC & ${RESOURCE_NAME} resource incremented`); break\n                case false: return jez.badNews(`This bit of code should be unreachable`, 'e');\n                case 0: \n                    msg = `${aToken.name} is already at maximum charges of '${RESOURCE_NAME}', can not be refunded`\n                    console.log(msg)\n                    postResults(msg)\n                    return jez.badNews(msg, 'i')\n                default: return jez.badNews()`resourceRefund returned unexpected value ${refundResult}`\n            }\n            if (TL > 1) jez.trace(`${TAG} resourceRefund result`, refundResult)\n        }\n        msg = `${aToken.name} is not missing any spell slots. Use cancelled`\n        postResults(msg)\n    }\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Callback Function for the dialog\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction dialogCallback(spellRefund, aActor) {\n    return async (html) => {\n        let selected_slot = html.find('input[name=\"spellSlot\"]:checked');\n        let slot = \"\";\n        let num = \"\";\n        let msg = \"\";\n        for (let i = 0; i < selected_slot.length; i++) {\n            slot = selected_slot[i].id;\n            num = selected_slot[i].value;\n            if (TL > 1) jez.trace(`${TAG} ${i} slot ${slot} ${num}`)\n        }\n        let refunded = await spellRefund(aActor, slot)\n        if (TL > 1) jez.trace(`${TAG} Refunded`, refunded);\n        if (refunded) {\n            if (TL > 1) jez.trace(`${TAG} Refunding spell level ${slot} to ${aActor.data.token.name}`)\n            msg = `<div><b>${aActor.data.token.name}</b> regains 1 spell slot, <b>Level ${num}</b>.</div>`;\n            runVFX(aToken, parseInt(num))\n            postResults(msg);\n        } else {\n            msg = `<b>${aActor.data.token.name}</b> did not select a spell level to recover. <b>No action taken.</b>`\n            if (TL > 1) jez.trace(`${TAG}`,msg);\n            postResults(msg);\n            ui.notifications.warn(msg);\n        }\n    };\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Determine if the actor has an available spell slot\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction hasAvailableSlot(aActor) {\n    const FUNCNAME = \"hasAvailableSlot(aActor)\";\n    if (TL>1) jez.trace(`${FUNCNAME} --`, \"aActor\", aActor);\n    for (let slot in aActor.data.data.spells)\n        if (aActor.data.data.spells[slot].value < aActor.data.data.spells[slot].max) return true;\n    return false;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Determine how many slots of a given level the actor has\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction getSpellSlots(aActor, level) {\n    const FUNCNAME = \"getSpellSlots(aActor, level)\";\n    if (TL>1) jez.trace(`${FUNCNAME} ---`, \"aActor\", aActor, \"level\", level);\n    return aActor.data.data.spells[`spell${level}`];\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Increase the number of slots at a given level for the actor.\n * \n * Return boolean, true for success.  Be careful if spellevel is falsey\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function spellRefund(aActor, spellLevel) {\n    const FUNCNAME = \"spellRefund(aActor, spellLevel)\";\n    if (TL>1) jez.trace(`${FUNCNAME} ---`, \"aActor\", aActor, \"spellLevel\", spellLevel);\n    if (spellLevel) {\n        let actor_data = duplicate(aActor.data._source);\n        // actor_data.data.spells[`${spellLevel}`].value = actor_data.data.spells[`${spellLevel}`].value + 1;\n        actor_data.data.spells[`${spellLevel}`].value++;\n        await aActor.update(actor_data);\n        if (TL>1) jez.trace(`${FUNCNAME} Refunded a level ${spellLevel} slot.`)\n        return (true)\n    }\n    if (TL>1) jez.trace(`${FUNCNAME} No spell level was selected`)\n    return (false)\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Launch the VFX effects\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\n async function runVFX(token, repeats) {\n    new Sequence()\n        .effect()\n        .file(\"modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_Orange_Caster_400x400.webm\")\n        .attachTo(token)\n        .repeats(repeats,1000,2000)\n        .scaleToObject(2.0)\n        .opacity(1)\n        .play();\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

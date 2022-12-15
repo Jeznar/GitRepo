@@ -1405,7 +1405,7 @@ Checks the availaibility of named resource on passed actor.
 * **Positive integer**: 1 or more charges is available on a PC/NPC
 * **Zero**: 0 charges are available on a PC/NPC
 * **False**: named resource does not exist on a PC/NPC
-* **Null**: The actor is a NPC and none of the above passed tests
+* **-1**: The actor is a NPC and none of the above passed tests
 
 <details> <summary>**Sample Use**</summary>
 
@@ -1447,9 +1447,9 @@ For PCs, increment the verified resource but not past max.
 
 #### Return values
 
-* **Null**: actor is a NPC making this irrelevant
+* **-1**: actor is a NPC making this irrelevant
 * **True**: PC actor's resource successfully incremented
-* **False**: PC actor's resource was not found (not set on actor)
+* **False**: resource was not found (not set on actor)
 * **Zero**: PC actor's resource was already at (or above) max
 
 <details> <summary>**Sample Use**</summary>
@@ -1494,9 +1494,9 @@ For PCs, decrement resource, verifying it exists and at least a value of 1.
 
 #### Return values
 
-* **Null**: actor is a NPC making this irrelevant
+* **-1**: actor is a NPC making this irrelevant
 * **True**: PC actor's resource successfully decremented
-* **False**: PC actor's resource was not found (not set on actor)
+* **False**: resource was not found (not set on actor)
 * **Zero**: PC actor's resource was already zero (or below), and could not be decremented.
 
 <details> <summary>**Sample Use**</summary>

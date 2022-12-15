@@ -3944,10 +3944,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *  - quiet: boolean value.  Default is false which enables display of error messages.  True suppresses them.
      *  
      * Return values:
-     *  - Null: actor is a NPC making this irrelevant
-     *  - True: PC actor's resource successfully decrimented
-     *  - False: PC actor's resource was not found (not set on actor)
-     *  - Zero: PC actor's resource was already zero (or below), and could not be decrimented
+     *  - -1:    actor is a NPC making this irrelevant
+     *  - True:  PC actor's resource successfully decrimented
+     *  - False: Resource was not found (not set on actor)
+     *  - Zero:  PC actor's resource was already zero (or below), and could not be decrimented
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
     static async resourceSpend(actor5eUuid, resourceName, aItemUuid, options = {}) {
         const FUNCNAME = "resourceSpend(actor5eUuid, resourceName, options = {})";
@@ -3971,10 +3971,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (IS_NPC) {
             if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as NPC`)
             const ITEM_USES = await jez.getItemUses(aItem, { traceLvl: TL })
-            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
-            if (ITEM_USES.max) return null // If max charges isn't set, this item is not set up correctly
+            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${actor5e.name}`, "ITEM_USES", ITEM_USES)
+            if (ITEM_USES.max) return false // If max charges isn't set, this item is not set up correctly
             if (!QUIET) jez.badNews(`Make sure limited daily uses are configured for ${aItem.name}.`, 'i')
-            return null;
+            return -1;
         }
         //-------------------------------------------------------------------------------------------------------------------------------
         // Set variables for this function
@@ -3997,25 +3997,21 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         resourceSlot = findResourceSlot.name;
         usesVal = ACTOR_DATA.resources[resourceSlot].value;
         usesMax = ACTOR_DATA.resources[resourceSlot].max;
-        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`, "resourceList     ", resourceList,
+        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${actor5e.name}`, "resourceList     ", resourceList,
             "resourceTable    ", resourceTable, "findResourceSlot ", findResourceSlot,
             'usesVal          ', usesVal, 'usesMax          ', usesMax)
-        console.log(`Marco...`)
         if (usesVal < 1) {
             console.log(`There are no ${RESOURCE_NAME} charges available.`)
             if (!QUIET) jez.badNews(`There are no ${RESOURCE_NAME} charges available.`, 'i');
             console.log(`There are no ${RESOURCE_NAME} charges available.`)
             return 0
         }
-        console.log(`...Polo`)
         //-------------------------------------------------------------------------------------------------------------------------------
         // Decrement our resource 
         //
-        console.log(`Decrement resource`)
         let updates = {};
         let resources = `data.resources.${resourceSlot}.value`;
         updates[resources] = usesVal - 1;
-        console.log(`updates`, updates)
         await actor5e.update(updates);
         return true
     }
@@ -4033,10 +4029,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *  - quiet: boolean value.  Default is false which enables display of error messages.  True suppresses them.
      *  
      *  Return values:
-     *  - Null: actor is a NPC making this irrelevant
-     *  - True: PC actor's resource successfully incremented
-     *  - False: PC actor's resource was not found (not set on actor)
-     *  - Zero: PC actor's resource was already at (or above) max
+     *  - -1:    actor is a NPC making this irrelevant
+     *  - True:  PC actor's resource successfully incremented
+     *  - False: resource was not found (not set on actor)
+     *  - Zero:  actor's resource was already at (or above) max
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
     static async resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {}) {
         const FUNCNAME = "resourceRefund(actor5eUuid, resourceName, aItemUuid, options = {})";
@@ -4060,10 +4056,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (IS_NPC) {
             if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as NPC`)
             const ITEM_USES = await jez.getItemUses(aItem, { traceLvl: TL })
-            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
-            if (ITEM_USES.max) return null
+            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${actor5e.name}`, "ITEM_USES", ITEM_USES)
+            if (ITEM_USES.max) return false
             if (!QUIET) jez.badNews(`Make sure limited daily uses are configured for ${aItem.name}.`, 'i')
-            return null;
+            return -1;
         }
         //-------------------------------------------------------------------------------------------------------------------------------
         //
@@ -4079,13 +4075,13 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         let resourceTable = mergeObject(resourceList, resourceValues);
         let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
         if (!findResourceSlot) {
-            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${aToken.name}, Please add it.`);
+            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${actor5e.name}, Please add it.`);
             return false
         }
         resourceSlot = findResourceSlot.name;
         usesVal = ACTOR_DATA.resources[resourceSlot].value;
         usesMax = ACTOR_DATA.resources[resourceSlot].max;
-        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`, "resourceList     ", resourceList,
+        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${actor5e.name}`, "resourceList     ", resourceList,
             "resourceTable    ", resourceTable, "findResourceSlot ", findResourceSlot,
             'usesVal          ', usesVal, 'usesMax          ', usesMax)
         if (usesVal >= usesMax) {
@@ -4119,7 +4115,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *  - Positive integer: 1 or more charges is available on a PC/NPC
      *  - Zero: 0 charges are available on a PC/NPC
      *  - False: named resource does not exist on a PC/NPC
-     *  - Null: The actor is a NPC and none of the above passed tests
+     *  - -1: The actor is a NPC and none of the above passed tests
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
     static async resourceAvail(actor5eUuid, resourceName, aItemUuid, options = {}) {
         const FUNCNAME = "resourceAvail(actor5eUuid, resourceName, options = {})";
@@ -4143,13 +4139,13 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (IS_NPC) {
             if (TL > 2) jez.trace(`${TAG} Processing ${actor5e.name} as NPC`)
             const ITEM_USES = await jez.getItemUses(aItem, { traceLvl: TL })
-            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
+            if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${actor5e.name}`, "ITEM_USES", ITEM_USES)
             // ITEM_USES: { max: 3, per: "day", value: 3 }
             if (ITEM_USES?.value > 0) return ITEM_USES.value
             if (ITEM_USES?.value <= 0) return 0
             if (ITEM_USES.max) return false // If max charges isn't set, this item is not set up correctly
             if (!QUIET) jez.badNews(`Make sure limited daily uses are configured for ${aItem.name}.`, 'i')
-            return null;
+            return -1;
         }
         //-------------------------------------------------------------------------------------------------------------------------------
         // Set variables for this function
@@ -4166,13 +4162,13 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         let resourceTable = mergeObject(resourceList, resourceValues);
         let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
         if (!findResourceSlot) {
-            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${aToken.name}, Please add it.`);
+            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${actor5e.name}, Please add it.`);
             return false
         }
         resourceSlot = findResourceSlot.name;
         usesVal = ACTOR_DATA.resources[resourceSlot].value;
         usesMax = ACTOR_DATA.resources[resourceSlot].max;
-        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`, "resourceList     ", resourceList,
+        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${actor5e.name}`, "resourceList     ", resourceList,
             "resourceTable    ", resourceTable, "findResourceSlot ", findResourceSlot,
             'usesVal          ', usesVal, 'usesMax          ', usesMax)
         if (usesVal < 1) {

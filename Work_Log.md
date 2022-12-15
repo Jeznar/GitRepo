@@ -467,6 +467,16 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.14 Created jez-lib functions for: resourceAvail(), resourceRefund(), resourceSpend(), isNPC() and isPC() to make it easier to deal with PC resources by name rather than slot position.
 
+22.12.14 Update spells that consume resources to use new jez-lib functions:
+
+* Harness\_Divine_Power 12/14
+* Turn the Faithless 12/14
+* Summon\_Wildfire_Spirit
+* Wild_Companion
+* Wild_Shape
+
+22.12.16 Update to resourceAvail(), resourceRefund(), resourceSpend() return -1 (truthy) instead of null (falsy) got NPCs
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
