@@ -9,10 +9,10 @@ const MACRONAME = "Turn_the_Faithless.0.6.js";
  * 05/04/22 0.4 Update for Foundry 9.x
  * 08/02/22 0.5 Add convenientDescription
  * 12/14/22 0.6 Update to use library functions to handle resource usage (NPC side not tested)
- *******************************************************************************************/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3**/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 1;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //-----------------------------------------------------------------------------------------------------------------------------------
 if (TL > 0) jez.trace(`${TAG} === Starting ===`);
@@ -74,12 +74,20 @@ spendResource = await Dialog.confirm({ title: Q_TITLE, content: qText, });
 if (TL > 1) jez.trace(`${TAG} spendResource`, spendResource)
 if (spendResource === null) return jez.badNews(`${SPELL_NAME} cancelled by player.`, 'i')
 //-------------------------------------------------------------------------------------------------------------------------------
+// run the VFX
+//
+runVFX(aToken)
+//-------------------------------------------------------------------------------------------------------------------------------
 // If choice was made to spend a charge, it needs to be decrimented, also make sure we had a charge to spend
 //
 if (spendResource) {
     if (TL > 1) jez.trace(`${TAG} Time to use a resource`)
     let spendResult = await jez.resourceSpend(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
-    if (spendResult === false || spendResult === 0) return jez.postResults(`Sepend Result ${spendResult}`)
+    if (spendResult === false || spendResult === 0) {
+        if (spendResult === false) msg = `${aToken.name} does not have the required resource, '${RESOURCE_NAME}' configured.`
+        if (spendResult === 0) msg = `${aToken.name} doesn't have available charges of '${RESOURCE_NAME}'.`
+        return postResults(msg)
+    }
 }
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Get Spell Range from item card
@@ -229,4 +237,17 @@ function postResults(msg) {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
     if (TL > 1) jez.trace(`${TAG}--- Finished ---`);
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Launch the VFX effects
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+ async function runVFX(token) {
+    new Sequence()
+        .effect()
+        .file("modules/jb2a_patreon/Library/TMFX/OutPulse/Circle/OutPulse_04_Circle_Normal_500.webm")
+        .attachTo(token)
+        .scale(2.5)
+        .repeats(3,1000,2000)
+        .opacity(1)
+        .play();
 }

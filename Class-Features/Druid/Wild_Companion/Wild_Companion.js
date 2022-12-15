@@ -1,5 +1,5 @@
-const MACRONAME = "Wild_Companion.0.1.js"
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+const MACRONAME = "Wild_Companion.0.2.js"
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Built directly on the Find Familiar spell with the addition of:
  * 
  * 1. Use of a Wild Shape charge
@@ -22,7 +22,8 @@ const MACRONAME = "Wild_Companion.0.1.js"
  * Feature CHAIN_MASTER_PACT, if present results in message reminding that this is not automated.
 
  * 12/09/22 0.1 Creation from Find_Familiar.1.7.js
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ * 12/14/22 0.2 Update to use library functions to handle resource usage (NPC side not tested)
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
 const TL = 0;                               // Trace Level for this macro
@@ -35,11 +36,11 @@ const SPELL_NAME = `Wild Companion`
 const TEMPLATE_SPELL = "%%Swap Senses (Familiar)%%" // Name as expected in Items Directory 
 
 let msg = "";                               // Global message string
-//---------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
 if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1];
-//---------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------
 // Set standard variables
 const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
 let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
@@ -47,14 +48,15 @@ let aActor = aToken.actor;
 let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
 const VERSION = Math.floor(game.VERSION);
 const GAME_RND = game.combat ? game.combat.round : 0;
-//---------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
 const FIRST_NAME_TOKEN = aToken.name.split(" ")[0]     // Grab the first word from the selection
 let famNames = []   // Global array to hold the list of familiar names
 const FLAG_NAME = "familiar_name"
 const FAM_NAME = DAE.getFlag(aActor, FLAG_NAME)
-//---------------------------------------------------------------------------------------------------
+let spendResource = ""
+//---------------------------------------------------------------------------------------------------------------------------------
 // Values needed for use of the resource (Wildshapes)
 //
 const ACTOR_DATA = await aActor.getRollData();
@@ -65,19 +67,19 @@ if (TL > 2) jez.trace(`${TAG} Macro Variables`,
     "ACTOR_DATA    ", ACTOR_DATA,
     "RESOURCE_NAME ", RESOURCE_NAME,
     "IS_NPC        ", IS_NPC)
-//---------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff({ traceLvl: TL });                           // DAE removal
 if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });  // Midi ItemMacro On Use
 // jez.log(`============== Finishing === ${MACRONAME} =================`);
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********
+ ***********************************************************************************************************************************
  * Post results to the chat card
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 function postResults(msg) {
     const FUNCNAME = "postResults(msg)";
     const FNAME = FUNCNAME.split("(")[0]
@@ -100,7 +102,7 @@ async function doOnUse(options = {}) {
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
     await jez.wait(100)
-    //---------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Make sure we have required FEATURE
     //
     // Note the feature being searched must be coded here in lower case
@@ -109,7 +111,7 @@ async function doOnUse(options = {}) {
         (item.name).toLowerCase().includes(x)));
     if (TL > 1) jez.trace(`${TAG} FEATURE ${FEATURE?.name}`, FEATURE)
     if (!FEATURE) return jez.badNews(`${TAG} Missing item "${SPELL_NAME}" feature`, 'e')
-    //------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Prepare for and pop a simple dialog asking if resource should be used
     //
     const Q_TITLE = `Consume Resource?`
@@ -118,30 +120,44 @@ async function doOnUse(options = {}) {
     <p>If you want to spend the charge (or use the NPC alternative), click <b>"Yes"</b>.</p>
     <p>If you want to bypass spending the charge (with GM permission) click <b>"No"</b>.</p>
     <p>If you want to cancel the spell click <b>"Close"</b> (top right of dialog).</p>`
-    const SPEND_RESOURCE = await Dialog.confirm({ title: Q_TITLE, content: qText, });
-    console.log('SPEND_RESOURCE', SPEND_RESOURCE)
-    if (SPEND_RESOURCE === null) return jez.badNews(`${SPELL_NAME} cancelled by player.`,'i')
-    //---------------------------------------------------------------------------------------------------
+    spendResource = await Dialog.confirm({ title: Q_TITLE, content: qText, });
+    if (spendResource === null) return jez.badNews(`${SPELL_NAME} cancelled by player.`,'i')
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Deal with casting resource -- this needs to consider NPC and PC data structures
     //
-    if (SPEND_RESOURCE) {
-        const CONTINUE = await spendResource({ traceLvl: TL })
-        if (!CONTINUE) return jez.badNews(`${SPELL_NAME} cancelled for lack of WildShapes`,'w')
+    let spendResult
+    if (spendResource) {
+        if (TL > 1) jez.trace(`${TAG} Time to use a resource`)
+        spendResult = await jez.resourceSpend(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+        if (!spendResult) return 
     }
-    //---------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Obtain the list of familiars that can be choosen from
     // 
     famOpts = getFamiliarOptions({ traceLvl: TL })
-    if (!famOpts) return jez.badNews(`No familiars to choose from found`, "e")
-    //---------------------------------------------------------------------------------------------------
+    if (!famOpts) {
+        let rc
+        if (spendResource) rc = await jez.resourceRefund(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+        if (rc) msg = `Refunded ${RESOURCE_NAME} Charge (${rc})`
+        else msg = `Could not refunded ${RESOURCE_NAME} Charge (${rc})`
+        postResults(msg)
+        return jez.badNews(`No familiars to choose from found`, "e")
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Build an array of familiar names, sort it and make sure they are unique
     //
     for (let i = 0; i < famOpts.length; i++) famNames.push(famOpts[i].name)
     famNames = famNames.sort()
     for (let i = 1; i < famNames.length; i++)
-        if (famNames[i - 1] === famNames[i])
+        if (famNames[i - 1] === famNames[i]) {
+            let rc
+            if (spendResource) rc = await jez.resourceRefund(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+            if (rc) msg = `Refunded ${RESOURCE_NAME} Charge (${rc})`
+            else msg = `Could not refunded ${RESOURCE_NAME} Charge (${rc})`
+            postResults(msg)
             return jez.badNews(`Duplicate familiar option (${famNames[i]} found, not allowed)`, "e")
-    //---------------------------------------------------------------------------------------------------
+        }
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Check to see if aItem.name contains a shortcut selection for familiar to be summoned.  That is
     // a string folling the last dash character (if any) in aItem.name
     //
@@ -156,73 +172,73 @@ async function doOnUse(options = {}) {
             shortCutFamName = ""
         }
     }
-    //-----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // If we have more than one familiar choice and no shortcut, setup and run a dialog to select the 
     // familiar; otherwise skip dialog and proceed
     //
     if (famNames.length > 1 && !shortCutFamName) popDialog1(famNames, { traceLvl: TL })
     else callBack1(shortCutFamName)
 }
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Spend the resource
- * 
- * Returns an array of the options available
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-async function spendResource(options = {}) {
-    const FUNCNAME = "spendResource(options = {})";
-    const FNAME = FUNCNAME.split("(")[0]
-    const TAG = `${MACRO} ${FNAME} |`
-    const TL = options.traceLvl ?? 0
-    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
-    //---------------------------------------------------------------------------------------------------
-    // Function variables
-    //
-    let resourceSlot = null
-    let curtRes, curtMax
-    //--------------------------------------------------------------------------------------------
-    //
-    if (IS_NPC) {   // Process resources for an NPC
-        const ITEM_USES = await jez.getItemUses(FEATURE, { traceLvl: TL })
-        if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
-        curtRes = ITEM_USES.value;
-        curtMax = ITEM_USES.max;
-    }
-    else {
-        let resourceList = [{ name: "primary" }, { name: "secondary" }, { name: "tertiary" }];
-        let resourceValues = Object.values(ACTOR_DATA.resources);
-        let resourceTable = mergeObject(resourceList, resourceValues);
-        let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
-        if (!findResourceSlot) return jez.badNews(`${TAG} ${RESOURCE_NAME} Resource is missing on 
-        ${aToken.name}, Please add it.`);
-        resourceSlot = findResourceSlot.name;
-        curtRes = ACTOR_DATA.resources[resourceSlot].value;
-        curtMax = ACTOR_DATA.resources[resourceSlot].max;
-        if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`,
-            "resourceList     ", resourceList,
-            "resourceTable    ", resourceTable,
-            "findResourceSlot ", findResourceSlot)
-    }
-    if (TL > 2) jez.trace(`${TAG} Resource Values`,
-        "curtRes ", curtRes,
-        "curtMax ", curtMax)
-    if (curtRes < 1) return false;
-    //-----------------------------------------------------------------------------------------------
-    // Decrement our resource -- this needs to consider NPC and PC data structures
-    //
-    if (IS_NPC) {   // Decrement resource for an NPC
-        jez.setItemUses(FEATURE, curtRes - 1, { traceLvl: TL })
-    }
-    else {          // Decrement resource for a PC
-        let updates = {};
-        let resources = VERSION > 9 ? `system.resources.${resourceSlot}.value` :
-            `data.resources.${resourceSlot}.value`;
-        updates[resources] = curtRes - 1;
-        await aActor.update(updates);
-    }
-    await jez.wait(300);
-    return true
-}
+// /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+//  * Spend the resource
+//  * 
+//  * Returns an array of the options available
+//  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+// async function spendResource(options = {}) {
+//     const FUNCNAME = "spendResource(options = {})";
+//     const FNAME = FUNCNAME.split("(")[0]
+//     const TAG = `${MACRO} ${FNAME} |`
+//     const TL = options.traceLvl ?? 0
+//     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+//     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+//     //---------------------------------------------------------------------------------------------------
+//     // Function variables
+//     //
+//     let resourceSlot = null
+//     let curtRes, curtMax
+//     //--------------------------------------------------------------------------------------------
+//     //
+//     if (IS_NPC) {   // Process resources for an NPC
+//         const ITEM_USES = await jez.getItemUses(FEATURE, { traceLvl: TL })
+//         if (TL > 2) jez.trace(`${TAG} Resource Values for NPC: ${aToken.name}`, "ITEM_USES", ITEM_USES)
+//         curtRes = ITEM_USES.value;
+//         curtMax = ITEM_USES.max;
+//     }
+//     else {
+//         let resourceList = [{ name: "primary" }, { name: "secondary" }, { name: "tertiary" }];
+//         let resourceValues = Object.values(ACTOR_DATA.resources);
+//         let resourceTable = mergeObject(resourceList, resourceValues);
+//         let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
+//         if (!findResourceSlot) return jez.badNews(`${TAG} ${RESOURCE_NAME} Resource is missing on 
+//         ${aToken.name}, Please add it.`);
+//         resourceSlot = findResourceSlot.name;
+//         curtRes = ACTOR_DATA.resources[resourceSlot].value;
+//         curtMax = ACTOR_DATA.resources[resourceSlot].max;
+//         if (TL > 2) jez.trace(`${TAG} Resource Values for PC: ${aToken.name}`,
+//             "resourceList     ", resourceList,
+//             "resourceTable    ", resourceTable,
+//             "findResourceSlot ", findResourceSlot)
+//     }
+//     if (TL > 2) jez.trace(`${TAG} Resource Values`,
+//         "curtRes ", curtRes,
+//         "curtMax ", curtMax)
+//     if (curtRes < 1) return false;
+//     //-----------------------------------------------------------------------------------------------
+//     // Decrement our resource -- this needs to consider NPC and PC data structures
+//     //
+//     if (IS_NPC) {   // Decrement resource for an NPC
+//         jez.setItemUses(FEATURE, curtRes - 1, { traceLvl: TL })
+//     }
+//     else {          // Decrement resource for a PC
+//         let updates = {};
+//         let resources = VERSION > 9 ? `system.resources.${resourceSlot}.value` :
+//             `data.resources.${resourceSlot}.value`;
+//         updates[resources] = curtRes - 1;
+//         await aActor.update(updates);
+//     }
+//     await jez.wait(300);
+//     return true
+// }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Grab Familiar Options
  * 
@@ -316,26 +332,33 @@ async function popDialog1(famNames, options = {}) {
     // 
     const queryTitle = "What form for Familiar?"
     const queryText = "Select the form for the familiar from drop down list"
-    jez.pickFromListArray(queryTitle, queryText, callBack1, famNames);
+    await jez.pickFromListArray(queryTitle, queryText, callBack1, famNames);
 }
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Process the selection from the dialog offering list of familiar forms.
  * 
- **********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 async function callBack1(itemSelected) {
     const FUNCNAME = "callBack1(itemSelected)";
     const FNAME = FUNCNAME.split("(")[0]
     const TAG = `${MACRO} ${FNAME} |`
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "itemSelected", itemSelected);
-    //-----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     //
     if (TL > 1) jez.trace(`${TAG} itemCallBack: Item "${itemSelected}" selected in the dialog`)
-    //--------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // If cancel button was selected on the preceding dialog, null is returned ==> Terminate
     //
-    if (itemSelected === null) return;
-    //--------------------------------------------------------------------------------------------
+    if (itemSelected === null) {
+        let rc
+        if (spendResource) rc = await jez.resourceRefund(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+        if (rc) msg = `Refunded ${RESOURCE_NAME} Charge (${rc})`
+        else msg = `Could not refunded ${RESOURCE_NAME} Charge (${rc})`
+        postResults(msg)
+        return;
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------
     // If nothing was selected call preceding function and terminate this one
     //
     if (!itemSelected) {
@@ -343,7 +366,7 @@ async function callBack1(itemSelected) {
         popDialog1(famNames, { traceLvl: TL })
         return;
     }
-    //--------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // If an existing Find_Familiar effect exists on calling actor, delete it
     //
     existingEffect = aActor.effects.find(ef => ef.data.label === SPELL_NAME)
@@ -356,7 +379,7 @@ async function callBack1(itemSelected) {
             title: `Existing Familiar Dismissed`, token: aToken
         })
     }
-    //--------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Build basic data object for the summon
     //
     if (TL > 1) jez.trace(`${TAG} Actually summon the familiar ${itemSelected}`)
@@ -375,7 +398,7 @@ async function callBack1(itemSelected) {
         templateName: itemSelected,         // Name of the actor in the actor directory
         traceLvl: 0
     }
-    //-----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // If a temp ability to swap senses for this familiar exists, delete it
     //
     let itemFound = aActor.items.find(item => item.data.name === NEW_SPELL && item.type === "spell")
@@ -384,7 +407,7 @@ async function callBack1(itemSelected) {
         msg = `"${NEW_SPELL}" has been deleted from ${aToken.name}'s spell book`
         jez.badNews(msg, "i");
     }
-    //--------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
     // to update the img and width attributes or set basic image to match this item
     //
@@ -392,12 +415,12 @@ async function callBack1(itemSelected) {
     argObj.img = summonData ? summonData.img : aItem.img
     argObj.width = summonData ? summonData.data.token.width : 1
     if (TL > 2) jez.trace(`${TAG} argObj`, argObj)
-    //--------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Does the caster have the CHAIN_MASTER_VOICE feature?  Set boolean appropriately
     //
     // let chainMasterVoice = false   // Boolean flag indicating caster has CHAIN_MASTER_VOICE invocation
     // if (aActor.items.find(i => i.name === CHAIN_MASTER_VOICE)) chainMasterVoice = true
-    //--------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Create an updates object that will mutate the disposition of the familiar to match master's
     //
     if (TL > 1) jez.trace(`${TAG} Building a custom update object for familiar to mutate disposition`)
@@ -418,7 +441,7 @@ async function callBack1(itemSelected) {
         },
         embedded: { Item: {} } // Need an empty entry here to hold one or more additions
     }
-    //--------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Does the caster have the CHAIN_MASTER_PACT feature, and thus needs special treatment?
     //
     let chainMasterPact = false   // Boolean flag indicating caster has CHAIN_MASTER_PACT invocation
@@ -427,7 +450,7 @@ async function callBack1(itemSelected) {
         jez.badNews(`Features provided by ${CHAIN_MASTER_PACT} are not automated other than save DC`, "i")
         const SPELL_DC = jez.getSpellDC(aActor)
         if (TL > 1) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} has ${CHAIN_MASTER_PACT}`)
-        // ---------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------------------------
         // Does the familiar being summoned have weapon/spell item(s) with a flat saving throw?
         // If so build an array containingthe names of those items.
         //
@@ -441,7 +464,7 @@ async function callBack1(itemSelected) {
                 }
             }
         }
-        // ---------------------------------------------------------------------------------------------       
+        //---------------------------------------------------------------------------------------------------------------------------  
         // If one or more items contain flat saving throws, craft a custom update data structure
         //
         if (saveItems.length > 0) {
@@ -453,25 +476,25 @@ async function callBack1(itemSelected) {
         }
     }
     else if (TL > 2) jez.trace(`${TAG} ${FIRST_NAME_TOKEN} lacks ${CHAIN_MASTER_PACT}`)
-    //--------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Do the actual summon
     //
     let fTokenId = await jez.spawnAt(itemSelected, aToken, aActor, aItem, argObj)
     if (TL > 1) jez.trace(`${TAG} Token ID of summoned familiar`, fTokenId)
-    //--------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Add watchdog effect to the summoning token 
     //
     const CLASS_LEVEL = jez.getClassLevel(aToken, 'Druid', { traceLvl: TL })
     const DURATION = CLASS_LEVEL * 1800
     addWatchdogEffect(fTokenId, famName, DURATION, {traceLvl: TL})
-    //-------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Add the Swap Senses 'spell' to spell book
     // 
     if (copyEditItem(aToken, famName, NEW_SPELL)) {
         msg = `An At-Will Spell "${NEW_SPELL}" has been added to ${aToken.name}`
         jez.badNews(msg, "i");
     }
-    //-----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Add some additional items to the familiar if they are not already present
     //
     let fToken = canvas.tokens.placeables.find(ef => ef.id === fTokenId[0]) // fToken: Familiar Token
@@ -483,26 +506,25 @@ async function callBack1(itemSelected) {
         await copyItem(fToken, "feat", "Familiar - Pact of the Chain Master", { traceLvl: TL })
     if (chainMasterPact)
         await copyItem(fToken, "feat", "Familiar - Voice of the Chain Master", { traceLvl: TL })
-    //-----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Add timer to delete the summoned  creature at the appropriate time:
     // RAW: "familiar disappears after a number of hours equal to half your druid level."
     //
     await addTimerEffect(fToken.actor.uuid, famName, DURATION, {traceLvl:TL})
-    //-----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Post message about the summons
     //
-    msg = `<b>${aToken.name}</b> has summoned ${famName} in the form of a ${itemSelected} as their 
-    familiar.`
+    msg = `<b>${aToken.name}</b> has summoned ${famName} in the form of a ${itemSelected} as their familiar.`
     postResults(msg)
     return
 }
-/***************************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Add an effect to our recently summoned familiar to delete itself at the end of the spell duration
  * 
  *                 >>> This is not actually needed as WatchDog handles duration <<<
  * 
  * Expected input is a single token id and the name of the familiar
- ***************************************************************************************************/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 async function addTimerEffect(familiarUuid, famName, seconds, options = {}) {
     const FUNCNAME = "addTimerEffect(familiarUuid, famName, seconds, options = {})";
     const FNAME = FUNCNAME.split("(")[0]
@@ -614,7 +636,6 @@ async function copyEditItem(token5e, familiarName, NEW_SPELL) {
         postResults(msg)
         return (false)
     }
-    console.log('Item5E fetched by Name', itemObj)
     await replaceItem(token5e.actor, itemObj)
     //----------------------------------------------------------------------------------------------
     if (TL > 1) jez.trace(`${TAG} Edit the item on ${aToken.name}'s actor, `)

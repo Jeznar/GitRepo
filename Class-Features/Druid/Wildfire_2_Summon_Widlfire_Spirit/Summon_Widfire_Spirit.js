@@ -1,4 +1,4 @@
-const MACRONAME = "Summon_Wildfire_Spirit.0.7.js"
+const MACRONAME = "Summon_Wildfire_Spirit.0.8.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Implemention of Summon Wildfire Spirit.  Based on macro Jon baked. 
  * 
@@ -14,12 +14,12 @@ const MACRONAME = "Summon_Wildfire_Spirit.0.7.js"
  * 11/29/21 0.1 Add headers, debug and use of Summoner Module
  * 11/29/21 0.2 Try to make the macro actually, you know, work
  * 11/29/21 0.3 Cleanup the mostly working code
- * 11/29/21 0.4 Add use of a resource which is checked and decremented, on further study 
- *              this was implemented by setting Resource Consumption of details page to
- *              resource.secondry.value (also primary and tertiary available)
+ * 11/29/21 0.4 Add use of a resource which is checked and decremented, on further study this was implemented by setting Resource 
+ *              Consumption of details page to resource.secondry.value (also primary and tertiary available)
  * 12/01/21 0.5 Fix maxHP added fixed 13 but should have been 5
  * 03/16/22 0.6 Update to use WARPGATE and add to GitRepo (also fix bug of graphic failing)
  * 12/10/22 0.7 Add timer watchdog, use of resource by name not position, and insert it into combat tracker
+ * 12/15/22 0.8 Update to use library functions to handle resource usage (NPC side not tested)
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3**/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -103,14 +103,17 @@ async function doOnUse(options = {}) {
   //
   let oldEffect = await aActor.effects.find(ef => ef.data.label === SPELL_NAME) ?? null; // Added a null case.
   if (oldEffect) await jez.deleteEffectAsGM(oldEffect.uuid, { traceLvl: TL })
-  if (TL > 1) jez.trace(`${TAG} oldEffect`,oldEffect)
+  if (TL > 1) jez.trace(`${TAG} oldEffect`, oldEffect)
   //-------------------------------------------------------------------------------------------------------------------------------
   // Deal with casting resource -- this needs to consider NPC and PC data structures
   //
   if (SPEND_RESOURCE) {
-    const CONTINUE = await spendResource({ traceLvl: TL })
-    if (!CONTINUE) return jez.badNews(`${SPELL_NAME} cancelled for lack of WildShapes`, 'w')
+    if (TL > 1) jez.trace(`${TAG} Time to use a resource`)
+    let spendResult = await jez.resourceSpend(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+    if (!spendResult) return
   }
+  // const CONTINUE = await spendResource({ traceLvl: TL })
+  // if (!CONTINUE) return jez.badNews(`${SPELL_NAME} cancelled for lack of WildShapes`, 'w')
   //-------------------------------------------------------------------------------------------------------------------------------
   // Set the maximum hit points for the summoned familiar
   //
