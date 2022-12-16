@@ -227,8 +227,9 @@ Roll initiative(s) for token(s) specified in SUBJECT that don't already have ini
  
 **Options** has two defined fields:
 
-- formula: formula passed to Roll function, if not using default, this might be a "20" if forcing the initiative roll result.
-- traceLvl: Trace Level for this function call.
+- **formula**: formula passed to Roll function, if not using default, this might be a "20" if forcing the initiative roll result.
+- **traceLvl**: Trace Level for this function call.
+- **reroll**: Boolean that if true will force a roll for combatants regardless of having an initiative default is false.
 
 <details> <summary>Sample Call, Summoning and Forcing 20 Initiative</summary>
 

@@ -3631,23 +3631,27 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *  - Token ID
      *  - Token Document UUID
      * 
-     * Options has two defined fields:
+     * Options has three defined fields:
      *  - traceLvl: Trace Level for this function call.
      *  - formula: forumla passed to Roll function, if not using default, this might be a "20" if
      *    forcing the initiative roll result.
+     * - reroll: Boolean that if true will force a roll for combatants regardless of having an initiative
+     *   default is false.
      * 
      * This function will roll initiative for the tokens that are in combat and don't currently have an
      * initiative value. 
      ***************************************************************************************************/
     static async combatInitiative(SUBJECT, options = {}) {
-        const FUNCNAME = "jez.combatInitiative(SUBJECT, options = {})";
+    // async function combatInitiative(SUBJECT, options = {}) {
+        const FUNCNAME = "combatInitiative(SUBJECT, options = {})";
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.lib ${FNAME} |`
         const TL = options.traceLvl ?? 0
+        const REROLL = options.reroll ?? false
         let formula = options.formula ?? null  // Used to force a roll result, e.g. 20
         if (TL === 2) jez.trace(`${TAG} --- Starting --- ${FNAME} ---`);
         if (TL > 2) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
-            "SUBJECT ==>", SUBJECT, "options ==>", options);
+            "SUBJECT ==>", SUBJECT, "options ==>", options, 'TL', TL, 'REROLL', REROLL);
         //----------------------------------------------------------------------------------------------
         // Define Variables
         //
@@ -3668,14 +3672,15 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //
         if (jez.typeOf(SUBJECT) === "array")   // Processing an array of critters
             for (let i = 0; i < SUBJECT.length; i++) {
-                combatantIds.push(await processOneEntity(SUBJECT[i], { traceLvl: TL }))
+                combatantIds.push(await processOneEntity(SUBJECT[i], { traceLvl: TL, reroll: REROLL }))
             }
         else {
-            combatantIds.push(await processOneEntity(SUBJECT, { traceLvl: TL }))
+            combatantIds.push(await processOneEntity(SUBJECT, { traceLvl: TL, reroll: REROLL }))
         }
         //----------------------------------------------------------------------------------------------
         // Make call to roll initiatives
         //
+        if (TL > 2) jez.trace(`${TAG} Call GM_ROLL_INITIATIVE`,'combatantIds',combatantIds,'formula',formula)
         await GM_ROLL_INITIATIVE.execute(combatantIds, formula)
         //----------------------------------------------------------------------------------------------
         // Process a single entity, may need to call for each element of an array
@@ -3685,9 +3690,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             const FNAME = FUNCNAME.split("(")[0]
             const TAG = `jez-lib ${FNAME} |`
             const TL = options.traceLvl ?? 0
+            const REROLL = options.reroll ?? false
             if (TL === 2) jez.trace(`${TAG} --- Starting --- ${FNAME} ---`);
             if (TL > 2) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
-                "SUBJECT ==>", SUBJECT, "options ==>", options);
+                "SUBJECT ==>", SUBJECT, "options ==>", options, 'TL', TL, 'REROLL', REROLL);
             //----------------------------------------------------------------------------------------------
             // Determine the type of Subject
             //
@@ -3734,71 +3740,14 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
                 default:
                     return jez.badNews(`This should not happen! Choked on ${SUBJECT}`)
             }
-            if (initiative) return (null)
+            if (initiative && !REROLL) {
+                if (TL > 2) jez.trace(`${TAG} Skipping ${dToken.name} already has an initiatve ${initiative} value and REROLL not specified`)
+                return (null)
+            }
             if (TL > 0) jez.trace(`${TAG} combatantId`, combatantId)
+            if (TL > 2) jez.trace(`${TAG} Returning combatantId (${combatantId}) to roll initiatve`)
             return (combatantId)
         }
-    }
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-     * Return the Item Use field from the passed item5e data object (yes, this is trivial)
-     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async getItemUses(itemObj, options = {}) {
-        const FUNCNAME = "jez.getItemUses(options={})";
-        const FNAME = FUNCNAME.split("(")[0]
-        const TAG = `jez.lib ${FNAME} |`
-        const TL = options.traceLvl ?? 0
-        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
-            "itemObj ==>", itemObj, "options ==>", options);
-        //-----------------------------------------------------------------------------------------------
-        // Did we receive an item5e?  if it wasn't, maybe it is one of the funky item obj data blocks 
-        // that we can convert to an item5e to update it.
-        //
-        let item5e = null
-        if (typeof (itemObj) === "object") {                    // Hopefully we have an Item5e
-            if (itemObj.constructor.name === "Item5e") item5e = itemObj
-            else {
-                item5e = await fromUuid(itemObj.uuid)
-                if (item5e.constructor.name !== "Item5e") return jez.badNews(`Item ${item5e?.name} is 
-                not an Item5e`, 'e')
-            }
-        }
-        //-----------------------------------------------------------------------------------------------
-        // Nab the data field and return it
-        //
-        if (TL > 2) jez.trace(`${TAG} item5e`, item5e)
-        const ITEM_USES = (item5e.data?.data?.uses) ? item5e.data.data.uses : false
-        if (TL > 1) jez.trace(`${TAG} Item_Uses`, ITEM_USES)
-        return ITEM_USES;
-    }
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
-     * Return the Item Use field from the passed item5e data object (yes, this is trivial)
-     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async setItemUses(itemObj, USES, options = {}) {
-        const FUNCNAME = "jez.setItemUses(options={})";
-        const FNAME = FUNCNAME.split("(")[0]
-        const TAG = `jez.lib ${FNAME} |`
-        const TL = options.traceLvl ?? 0
-        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-        if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,
-            "itemObj  ==>", itemObj, "USES", USES, "options ==>", options);
-        //-----------------------------------------------------------------------------------------------
-        // Did we receive an item5e?  if it wasn't, maybe it is one of the funky item obj data blocks 
-        // that we can convert to an item5e to update it.
-        //
-        let item5e = null
-        if (typeof (itemObj) === "object") {                    // Hopefully we have an Item5e
-            if (itemObj.constructor.name === "Item5e") item5e = itemObj
-            else {
-                item5e = await fromUuid(itemObj.uuid)
-                if (item5e.constructor.name !== "Item5e") return jez.badNews(`Item ${item5e?.name} is 
-                not an Item5e`, 'e')
-            }
-        }
-        //-----------------------------------------------------------------------------------------------
-        // Nab the data field and return it
-        //
-        await item5e.update({ "data.uses.value": USES });
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
      * Refund a spellSlot and post appropriate message.  This function recognizes warlocks and uses their
