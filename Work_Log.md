@@ -481,6 +481,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.16 Added **reroll** option to **jez.combatInitiative(SUBJECT, options = {})** to allow forcing init roll even if subject has an initiative score already.
 
+22.12.16 **Protection from Evil and Good** updated style and added pairEffectsAsGM (using doOnUse which was previously not used)
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
