@@ -1,10 +1,10 @@
 {
   "name": "Polymorph",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/link-eerie-2.jpg",
+  "img": "icons/magic/control/energy-stream-link-large-teal.webp",
   "data": {
     "description": {
-      "value": "<p>This spell transforms a creature that you can see within range into a new form. An unwilling creature must make a <strong>Wisdom saving throw </strong>to avoid the effect. The spell has no effect on a Shapechanger or a creature with 0 Hit Points.</p>\n<p>The transformation lasts for the Duration, or until the target drops to 0 Hit Points or dies. The new form can be any beast whose <strong>Challenge rating is equal to or less than the target&rsquo;s</strong> (or the target&rsquo;s level, if it doesn&rsquo;t have a c⁠hallenge rating). The target&rsquo;s game s⁠tatistics, including mental Ability Scores, are replaced by the Statistics of the chosen beast. It retains its Alignment and personality.</p>\n<p>The target assumes the Hit Points of its new form. When it reverts to its normal form, the creature returns to the number of hit po⁠ints it had before it transformed. If it reverts as a result of dropping to 0 h⁠it points, any excess damage carries over to its normal form. As long as the excess damage doesn&rsquo;t reduce the creature&rsquo;s normal form to 0 hit poin⁠ts, it isn&rsquo;t knocked Unconscious.</p>\n<p>The creature is <strong>limited in the Actions</strong> it can perform by the Nature of its new form, and it <strong>can&rsquo;t speak</strong>, <strong>cast Spells</strong>, or take any other <strong>action that requires hands or s⁠peech</strong>.</p>\n<p><span style=\"text-decoration: underline;\">The target&rsquo;s gear melds into the new form</span>. The creature can&rsquo;t activate, use, wield, or otherwise benefit from any of its Equipment.</p>",
+      "value": "<p>This spell transforms a creature that you can see within range into a new form. An unwilling creature must make a <strong>Wisdom saving throw </strong>to avoid the effect. The spell has no effect on a Shapechanger or a creature with 0 Hit Points.</p>\n<p>The transformation lasts for the Duration, or until the target drops to 0 Hit Points or dies. The new form can be any beast whose <strong>Challenge rating is equal to or less than the target&rsquo;s</strong> (or the target&rsquo;s level, if it doesn&rsquo;t have a c⁠hallenge rating). The target&rsquo;s game s⁠tatistics, including mental Ability Scores, are replaced by the Statistics of the chosen beast. It retains its Alignment and personality.</p>\n<p>The target assumes the Hit Points of its new form. When it reverts to its normal form, the creature returns to the number of hit po⁠ints it had before it transformed. If it reverts as a result of dropping to 0 h⁠it points, any excess damage carries over to its normal form. As long as the excess damage doesn&rsquo;t reduce the creature&rsquo;s normal form to 0 hit poin⁠ts, it isn&rsquo;t knocked Unconscious.</p>\n<p>The creature is <strong>limited in the Actions</strong> it can perform by the Nature of its new form, and it <strong>can&rsquo;t speak</strong>, <strong>cast Spells</strong>, or take any other <strong>action that requires hands or s⁠peech</strong>.</p>\n<p><span style=\"text-decoration: underline;\">The target&rsquo;s gear melds into the new form</span>. The creature can&rsquo;t activate, use, wield, or otherwise benefit from any of its Equipment.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: This is largely automated, player or GM will need to drop a token for desired shape onto the polymorphed creature's sheet.&nbsp; Also any damage beyond o needs to be transferred to the base token and the change reverted when the new shape&nbsp;<em>dies.</em></p>",
       "chat": "",
       "unidentified": ""
     },
@@ -40,7 +40,7 @@
       "amount": null
     },
     "ability": "",
-    "actionType": "save",
+    "actionType": "other",
     "attackBonus": 0,
     "chatFlavor": "",
     "critical": {
@@ -54,7 +54,7 @@
     },
     "formula": "",
     "save": {
-      "ability": "wis",
+      "ability": "",
       "dc": 0,
       "scaling": "spell"
     },
@@ -75,13 +75,14 @@
       "supply": 0
     },
     "preparation": {
-      "mode": "prepared",
-      "prepared": false
+      "mode": "always",
+      "prepared": true
     },
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "attunement": null
   },
   "effects": [
     {
@@ -125,11 +126,10 @@
           "onlyOnce": false
         }
       },
-      "tint": "",
+      "tint": null,
       "selectedKey": "flags.gm-notes.notes"
     }
   ],
-  "sort": 0,
   "flags": {
     "enhancedcombathud": {
       "set1p": false,
@@ -137,16 +137,47 @@
       "set3p": false
     },
     "midi-qol": {
-      "onUseMacroName": ""
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
     },
     "core": {
       "sourceId": "Item.OWFlYjA0ODRiOGRh"
     },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Polymorph",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Polymorph.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * \n * \n * 12/16/21 0.1 Creation of Macro from \"Wild_Shape.0.5.js\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n    //-------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n    //-------------------------------------------------------------------------------------------------------------------------------\n// If we are running doOff on Base Token, exit now!\n//\n// if (args[0] === \"off\" && args[1] === args[args.length - 1].actorUuid) return\n    //-------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#L_ARG for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n    //-------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst SPELL_NAME = `Polymorph`\nconst DURATION = 3600 // Seconds\nconst SAVE_DC = aActor.getRollData().attributes.spelldc;\nconst SAVE_TYPE = \"wis\"\n    //-------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\nreturn;\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function preCheck() {\n    if (args[0].targets.length !== 1)\n        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, 'w')\n    return true\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    if (!await preCheck()) return (false);\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Ask if a resource should be consumed \n    //\n    const Q_TITLE = `Is Target Willing to be Polymorphed?`\n    let qText = `<p>${aToken.name} is using <b>${SPELL_NAME}</b> to polymorph ${tToken.name}.  The Target can resist the change, \n    attemptng a ${SAVE_DC}DC WIS Save, or it can simply accept the change.</p>\n    <p>If the target wants to attempt a save, click <b>\"Yes\"</b>.</p>\n    <p>If the target wants to accept the polymorph, click <b>\"No\"</b>.</p>\n    <p>If you want to cancel the spell click <b>\"Close\"</b> (top right of dialog).</p>`\n    const TRY_SAVE = await Dialog.confirm({ title: Q_TITLE, content: qText, });\n    if (TRY_SAVE === null) return jez.badNews(`${SPELL_NAME} cancelled by player.`, 'i')\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Run RuneVFX on caster\n    //\n    const COLOR = jez.getRandomRuneColor()\n    jez.runRuneVFX(aToken, jez.getSpellSchool(aItem), COLOR)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Deal with casting resource -- this needs to consider NPC and PC data structures\n    //\n    if (TRY_SAVE) {\n        if (TL > 1) jez.trace(`${TAG} Creature needs to attempt save`)\n        let flavor = `<b>${tToken.name}</b> attempts ${CONFIG.DND5E.abilities[SAVE_TYPE]} <b>DC${SAVE_DC}</b> \n        save to resist effect from <b>${aItem.name}</b>`;\n        let optionsObj = { flavor: flavor, chatMessage: true, fastforward: true }\n        let saveObj = (await tToken.actor.rollAbilitySave(SAVE_TYPE, optionsObj));\n        const SAVED = (saveObj.total < SAVE_DC) ? false : true\n        //---------------------------------------------------------------------------------------------------------------------------\n        if (SAVED) {\n            jez.dropConcentrating(aToken, { traceLvl: TL })\n            msg = `<p style=\"font-size:14px;color:FireBrick;\">${tToken.name} has resisted <b>${aItem.name}</b>, no effect</p>`;\n            postResults(msg);\n            return\n        }\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Run RuneVFX on target if not the caster and affect is being applied\n    //\n    if (tToken.id != aToken.id) {\n        await jez.wait(500)\n        jez.runRuneVFX(tToken, jez.getSpellSchool(aItem), COLOR)\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // If save failed or effect accepted, post message about how to complete the polymorph\n    //\n    msg = `Players needs to finish my shape shift! (not automated)`\n    bubbleForAll(tToken.id, msg, true, true)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Apply Watchdog Timer effect to actor to track shape duration\n    //\n    addWatchdogEffect(tToken, DURATION, { traceLvl: TL })\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Pair our new effect with Concentrating\n    //\n    await jez.wait(200)\n    jez.pairEffectsAsGM(aActor, \"Concentrating\", tToken.actor, SPELL_NAME)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Report results of operation\n    //\n    msg = `<p style=\"font-size:14px;color:DarkBlue;\"><b>${aToken.name}</b> has used <b>${aItem.name}</b> to shift \n    ${tToken.name}  into a new form</p>\n    <p style=\"font-size:14px;color:DarkBlue;\"><em>An actor from the <b>Actor's Directory</b> can be dropped on \n    <b>${tToken.name}'s</b> open character sheet and the popup window used to complete the transformation. End the transformation \n    with <b>Restore Transformation</b> from the top of the hybrid character sheet.  Any carry over damage needs to be handled \n    manually.</em>`;\n    postResults(msg);\n    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Add an effect to the using actor that can perform additional actions on the summoned actor.\n * \n * Expected input is a single token id and the name of the familiar\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function addWatchdogEffect(target, seconds, options = {}) {\n    const FUNCNAME = \"addWatchdogEffect(tokenId)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} Starting --- `);\n    if (TL > 1) jez.trace(`${TAG} Starting ---`, 'target', target, 'seconds', seconds, 'options', options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Proceed with adding watchdog\n    //\n    const CE_DESC = `Polymorph lasts for an hour or to zero hit points`\n    let effectData = {\n        label: SPELL_NAME,\n        icon: aItem.img,\n        origin: L_ARG.uuid,\n        disabled: false,\n        duration: {\n            rounds: seconds / 6, startRound: GAME_RND,\n            seconds: seconds, startTime: game.time.worldTime,\n            // token: aToken.uuid, stackable: false\n        },\n        flags: {\n            dae: { macroRepeat: \"none\" },\n            convenientDescription: CE_DESC\n        },\n        changes: [\n            // { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${tokenId}`, priority: 20 },\n            { key: `macro.itemMacro`, mode: jez.CUSTOM, value: `${aActor.uuid}`, priority: 20 },\n        ]\n    };\n    if (TL > 1) jez.trace(`${FNAME} | MidiQOL.socket().executeAsGM(\"createEffects\"`, \"aToken.actor.uuid\",\n        aToken.actor.uuid, \"effectData\", effectData);\n    await MidiQOL.socket().executeAsGM(\"createEffects\",{ actorUuid: target.actor.uuid, effects: [effectData] });\n    if (TL > 0) jez.trace(`---  Finished --- ${MACRO} ${FNAME} ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOff(options = {}) {\n    const FUNCNAME = \"doOff(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Determine if we are runing on base or transformed actor\n    //\n    const BASE_UUID = args[1]\n    await jezcon.remove(SPELL_NAME, BASE_UUID, {traceLvl: TL});\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Change back to original form\n    //\n    await aActor.revertOriginalForm();\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Bubble message\n    //\n    msg = `Now, that feels more natural!`\n    bubbleForAll(aToken.id, msg, true, true)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Post Completion message\n    //\n    let title = `Revert to natural shape`\n    msg = `${SPELL_NAME} has expired (or been removed).`;\n    jez.postMessage({color: jez.randomDarkColor(), fSize: 14, \n        icon: aToken.data.img, msg: msg, title: title, token: aToken})\n    if (TL > 3) jez.trace(`${TAG} | More Detailed Trace Info.`)\n\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
     }
   }
 }

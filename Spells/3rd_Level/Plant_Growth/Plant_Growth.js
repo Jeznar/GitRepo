@@ -70,7 +70,7 @@ if (TL>1) jez.trace(`${TAG} === Finished ===`);
     let qText = `<p>Plant Growth can be used in a single action mode which will cause existing plants to grow wildly or as an eight hour 
     casting to greatly enhance the fertility of the sole in an area.</p>
     <p>If you want to cast the single action version, please click the <b>"Yes"</b> button.</p>
-    <p>If you want to cast the 8 hour version, please click the <b>"Yes"</b> button.</p>`
+    <p>If you want to cast the 8 hour version, please click the <b>"No"</b> button.</p>`
     let confirmation = await Dialog.confirm({ title: Q_TITLE, content: qText, });
     if (confirmation === null) {
         if (TL > 3) jez.trace(`${TAG} Dialog choice was Close.`,confirmation)

@@ -1,0 +1,199 @@
+{
+  "name": "Befuddling Curse",
+  "type": "spell",
+  "img": "icons/magic/control/hypnosis-mesmerism-eye.webp",
+  "data": {
+    "description": {
+      "value": "<p>You befuddle a creature's mind, swapping the position of two things it can see that are of the same size and category (for example, two medium creatures or two gargantuan buildings).</p>\n<p>The&nbsp; target creature must make a <strong>Wisdom saving throw</strong>. On failure, it is unaware the two things have been swapped.</p>\n<p>Each time the creature:</p>\n<ul>\n<li>interacts with,</li>\n<li>attacks,</li>\n<li>or is attacked by a swapped targets,</li>\n</ul>\n<p>it can <strong>repeat</strong> its saving throw against the effect.</p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>This spell places a marker on the afflicted.&nbsp; Other elements must be handled manually.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": 1,
+      "units": "minute"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 1,
+    "school": "enc",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": true,
+      "ritual": false,
+      "concentration": true
+    },
+    "materials": {
+      "value": "something from the target creature (such as blood, hair, or scales) which the spell consumes",
+      "consumed": true,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "always",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "none",
+      "formula": ""
+    }
+  },
+  "effects": [
+    {
+      "_id": "J4b3WbKRMFais31M",
+      "changes": [
+        {
+          "key": "flags.gm-notes.notes",
+          "mode": 0,
+          "value": "DC@attributes.spelldc WIS Save to End",
+          "priority": "20"
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 0,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": 60
+      },
+      "icon": "icons/magic/control/hypnosis-mesmerism-eye.webp",
+      "label": "Befuddling Curse",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "stackable": "none",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "flags.gm-notes.notes",
+        "macro.itemMacro"
+      ]
+    }
+  ],
+  "flags": {
+    "midi-qol": {
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false
+    },
+    "core": {
+      "sourceId": "Item.yigozspKq6RgIX2W"
+    },
+    "enhancedcombathud": {
+      "set1p": false,
+      "set2p": false,
+      "set3p": false
+    },
+    "betterCurses": {
+      "isCurse": false,
+      "curseName": "Befuddled",
+      "formula": "",
+      "mwak": false,
+      "rwak": false,
+      "msak": false,
+      "rsak": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Befuddling Curse",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Befuddling_Curse.0.2.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Befuddling Curse.  Post a simple message to the chat card describing the effect\n * \n * Description: You befuddle a creature's mind, swapping the position of two things it can\n *   see that are of the same size and category (for example, two medium creatures or two \n *   gargantuan buildings).\n * \n *   The target creature must make a Wisdom saving throw. On failure, it is unaware the \n *   two things have been swapped.\n * \n *   Each time the creature:\n *     1. interacts with,\n *     2. attacks,\n *     3. or is attacked by a swapped targets,\n *   it can repeat its saving throw against the effect.\n * \n * 01/11/22 0.1 Creation of Macro\n * 12/16/22 0.2 Update style and chase odd exit bug that triggers error based on targeted tokens\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n const MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\n const TAG = `${MACRO} |`\n const TL = 1;                               // Trace Level for this macro\n let msg = \"\";                               // Global message string\n //-----------------------------------------------------------------------------------------------------------------------------------\n if (TL>0) jez.trace(`${TAG} === Starting ===`);\n if (TL>1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n //-----------------------------------------------------------------------------------------------------------------------------------\n // Set standard variables\n //\n const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\n let aActor = aToken.actor; \n let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\n const VERSION = Math.floor(game.VERSION);\n const GAME_RND = game.combat ? game.combat.round : 0;\n //-----------------------------------------------------------------------------------------------------------------------------------\n // Set Macro specific globals\n //\nlet SAVE_DC = aItem.data.save.dc;\nlet SAVE_ABILITY = aItem.data.save.ability\nconst VFX_NAME = `${MACRO}-${aToken.id}`\nconst VFX_LOOP = \"modules/jb2a_patreon/Library/Generic/Butterflies/Butterflies_01_Bright_Yellow_Many_400x400.webm\";\nconst VFX_OPACITY = 0.9;\nconst VFX_SCALE = 0.6;\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0] === \"on\") await doOn({traceLvl:TL});                     // DAE Application\nif (args[0]?.tag === \"OnUse\") await doOnUse({traceLvl:TL});          // Midi ItemMacro On Use\nif (args[0] === \"each\") doEach({traceLvl:TL});\t\t\t\t\t     // DAE everyround\n// DamageBonus must return a function to the caller\nif (args[0]?.tag === \"DamageBonus\") return(doBonusDamage({traceLvl:TL}));   \nif (args[0] === \"off\") await doOff({traceLvl:TL});                   // DAE removal\nif (TL>1) jez.trace(`${TAG} === Finished ===`);\nreturn;\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\n async function preCheck() {\n    if (args[0].targets.length !== 1)\n        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, 'w')\n    return true\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n async function doOnUse(options={}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\"options\",options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    if (!await preCheck()) return(false);\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // https://www.w3schools.com/tags/ref_colornames.asp\n    //\n    // \n    if (args[0].saves.length !== 0) {   // Target must have saved (This should never occur)\n        if (TL>1) jez.trace(`${TAG} ${tToken.name} saved (This should never occur)`)\n        msg =  `<p style=\"color:Indigo;font-size:14px;\">\n                ${tToken.name} made its save and is unaffected by ${aItem.name}.\n                </p>`\n    } else {                            // Target failed save\n        if (TL>1) jez.trace(`${TAG} ${tToken.name} failed`)\n        msg = `<p style=\"color:DarkViolet;font-size:14px;\">\n        <b>${tToken.name}</b> failed its save and is now affected by ${aItem.name}.\n\n        The <b>DC${SAVE_DC} ${SAVE_ABILITY.toUpperCase()}</b> save <u>may be repeated</u>,  \n        each time ${tToken.name}: \n        <ol style=\"color:Indigo;font-size:14px;\">\n          <li>interacts with,</li>\n          <li>attacks,</li>\n          <li>or is attacked</li>\n        </ol>\n        <p style=\"color:DarkViolet;font-size:14px;\">by a swapped target</p>\n        </p>`\n    }\n    postResults(msg);\n    if (TL>0) jez.trace(`${TAG} --- Finished ---`);\n    return (true);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is removed by DAE, set On\n * This runs on actor that has the affected applied to it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n async function doOn(options={}) {\n    const FUNCNAME = \"doOn(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL>0) jez.trace(`${TAG} --- Starting ---`);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    //\n    new Sequence()\n    .effect()\n        .file(VFX_LOOP)\n        .attachTo(aToken)\n        .scale(VFX_SCALE)\n        .opacity(VFX_OPACITY)  \n        .persist()\n        .name(VFX_NAME)         // Give the effect a uniqueish name\n        .fadeIn(1000)            // Fade in for specified time in milliseconds\n        .fadeOut(1000)           // Fade out for specified time in milliseconds\n        .extraEndDuration(800)  // Time padding on exit to connect to Outro effect\n    .play()\n    if (TL>1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n async function doOff(options={}) {\n    const FUNCNAME = \"doOff(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL===1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`,\"options\",options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Comments, perhaps\n    //\n    await Sequencer.EffectManager.endEffects({ name: VFX_NAME, object: aToken._object });\n    if (TL>1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ \n function postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0] \n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL>1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL>2) jez.trace(\"postResults Parameters\",\"msg\",msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL>1) jez.trace(`${TAG} --- Finished ---`);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

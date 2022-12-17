@@ -1,5 +1,5 @@
-const MACRONAME = "Alter_Self.0.5.js"
-/*****************************************************************************************
+const MACRONAME = "Alter_Self.0.6.js"
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Alter Self
  * 
  * Present a dialog that allows caster to choose one of the three effects, one has three 
@@ -19,25 +19,27 @@ const MACRONAME = "Alter_Self.0.5.js"
  * 05/02/22 0.3 Update for Foundry 9.x
  * 05/16/22 0.4 Update (again) for Foundry 9.x
  * 08/01/22 0.5 Added convenientDescriptions
- *****************************************************************************************/
-const DEBUG = true;
-const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-jez.log(`============== Starting === ${MACRONAME} =================`);
-for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
-const lastArg = args[args.length - 1];
-let aActor;         // Acting actor, creature that invoked the macro
-let aToken;         // Acting token, token for creature that invoked the macro
-let aItem;          // Active Item information, item invoking this macro
-if (lastArg.tokenId) aActor = canvas.tokens.get(lastArg.tokenId).actor; else aActor = game.actors.get(lastArg.actorId);
-if (lastArg.tokenId) aToken = canvas.tokens.get(lastArg.tokenId); else aToken = game.actors.get(lastArg.tokenId);
-if (args[0]?.item) aItem = args[0]?.item; else aItem = lastArg.efData?.flags?.dae?.itemData;
-jez.log("------- Global Values Set -------",
-    `Active Token (aToken) ${aToken?.name}`, aToken,
-    `Active Actor (aActor) ${aActor?.name}`, aActor,
-    `Active Item (aItem) ${aItem?.name}`, aItem)
-let msg = "";
-let errorMsg = "";
-let gameRound = game.combat ? game.combat.round : 0;
+ * 12/17/22 0.6 Update logging and general style
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
+const TAG = `${MACRO} |`
+const TL = 0;                               // Trace Level for this macro
+let msg = "";                               // Global message string
+//-----------------------------------------------------------------------------------------------------------------------------------
+if (TL > 0) jez.trace(`${TAG} === Starting ===`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
+//-----------------------------------------------------------------------------------------------------------------------------------
+// Set standard variables
+//
+const L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
+let aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)
+let aActor = aToken.actor;
+let aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData
+const VERSION = Math.floor(game.VERSION);
+const GAME_RND = game.combat ? game.combat.round : 0;
+//-----------------------------------------------------------------------------------------------------------------------------------
+// Set Macro specific globals
+//
 const FIRST_BUFF = aItem.name;
 const AQUATIC_BUFF = "Acquatic Adaptation"
 const AQUATIC_IMG = "Icons_JGB/Spells/2nd_Level/Aquatic_Adaptation.png"
@@ -48,56 +50,86 @@ const WEAP_IMG = "Icons_JGB/Monster_Features/claws.png"
 const WEAP_NAME = "Natural Weapon (Alter Self)"
 const MACRO_HELPER = "Alter_Self_Helper"
 const UPDATE_EFFECT_NAME = "Update Alter Self Effect"
-let chatCard = null;
-//----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0] === "off") await doOff();                   // DAE removal
-if (args[0] === "on") await doOn();                     // DAE Application
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-jez.log(`============== Finishing === ${MACRONAME} =================`);
-/***************************************************************************************************
+if (args[0] === "on") await doOn({ traceLvl: TL });                     // DAE Application
+if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use
+if (args[0] === "off") await doOff({ traceLvl: TL });                   // DAE removal
+if (TL > 1) jez.trace(`${TAG} === Finished ===`);
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ***************************************************************************************************
+ ***********************************************************************************************************************************
+ * Post results to the chat card
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+function postResults(msg) {
+    const FUNCNAME = "postResults(msg)";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 2) jez.trace("postResults Parameters", "msg", msg)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
+    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is removed by DAE, set Off
- * 
- * https://github.com/fantasycalendar/FoundryVTT-Sequencer/wiki/Sequencer-Effect-Manager#end-effects
- ***************************************************************************************************/
- async function doOff() {
-    const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+ * This runs on actor that has the affected removed from it.
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function doOff(options = {}) {
+    const FUNCNAME = "doOff(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
     let oldEffect = null;
-    jez.log(`Removing: >${AQUATIC_BUFF}< if present`)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    if (TL > 1) jez.trace(`${TAG} Removing: >${AQUATIC_BUFF}< if present`)
     oldEffect = aActor.effects.find(ef => ef.data.label === AQUATIC_BUFF) ?? null; // Added a null case.
     await oldEffect?.delete();
-    jez.log(`Removing: >${CHANGE_BUFF}< if present`)
+    if (TL > 1) jez.trace(`${TAG} Removing: >${CHANGE_BUFF}< if present`)
     oldEffect = aActor.effects.find(ef => ef.data.label === CHANGE_BUFF) ?? null; // Added a null case.
     await oldEffect?.delete();
-    jez.log(`Removing: >${WEAP_BUFF}< if present`)
+    if (TL > 1) jez.trace(`${TAG} Removing: >${WEAP_BUFF}< if present`)
     oldEffect = aActor.effects.find(ef => ef.data.label === WEAP_BUFF) ?? null; // Added a null case.
     await oldEffect?.delete();
-    jez.log(`Deleting: >${WEAP_NAME}< if present`)
-    //await jezDeleteItem(WEAP_NAME);
+    if (TL > 1) jez.trace(`${TAG} Deleting: >${WEAP_NAME}< if present`)
     await jez.deleteItems(WEAP_NAME, "weapon", aActor);
-    jez.log(`Deleting: >${UPDATE_EFFECT_NAME}< if present`)
-    //await jezDeleteItem(UPDATE_EFFECT_NAME);   
+    if (TL > 1) jez.trace(`${TAG} Deleting: >${UPDATE_EFFECT_NAME}< if present`)
     await jez.deleteItems(UPDATE_EFFECT_NAME, "spell", aActor);
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
-  }
-/***************************************************************************************************
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is removed by DAE, set On
- ***************************************************************************************************/
-async function doOn() {
-    const FUNCNAME = "doOn()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    jez.log(`Deleting: >${WEAP_NAME}< if present`)
+ * This runs on actor that has the affected applied to it.
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function doOn(options = {}) {
+    const FUNCNAME = "doOn(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL > 0) jez.trace(`${TAG} --- Starting ---`);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    if (TL > 1) jez.trace(`${TAG} Deleting: >${WEAP_NAME}< if present`)
     await jez.deleteItems(WEAP_NAME, "weapon", aActor);
-    jez.log(`Deleting: >${UPDATE_EFFECT_NAME}< if present`)
+    if (TL > 1) jez.trace(`${TAG} Deleting: >${UPDATE_EFFECT_NAME}< if present`)
     await jez.deleteItems(UPDATE_EFFECT_NAME, "spell", aActor);
-    //----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Build the dialog variables
     //
     const alterOptions = [
@@ -109,145 +141,170 @@ async function doOn() {
     ]
     const queryTitle = "Select Item in Question"
     const queryText = "Pick one from drop down list"
-    //----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Pop the dialog and connect to callback
     //
     pickFromListArray(queryTitle, queryText, pickItemCallBack, alterOptions);
-    //----------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Modify recently created effect to have a convenientDescription
     //
     let effect = await aToken.actor.effects.find(i => i.data.label === FIRST_BUFF);
-    if (!effect) return jez.badNews(`Could not find ${FIRST_BUFF} effect on ${aToken.name}`,"e")
+    if (!effect) return jez.badNews(`Could not find ${FIRST_BUFF} effect on ${aToken.name}`, "e")
     const C_DESC = `With an Action may alter certain elements of body or appearance`
     await effect.update({ flags: { convenientDescription: C_DESC } });
-    //
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
 }
-/***************************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- ***************************************************************************************************/
- async function doOnUse() {
-    const FUNCNAME = "doOnUse()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function doOnUse(options = {}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    await jez.wait(100)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //
     createEffectUpdate()
     // https://www.w3schools.com/tags/ref_colornames.asp
-    msg = `<p style="color:blue;font-size:14px;">
+    msg = `<p style="color:blue;font-size:14px;"> 
     ${aToken.name} is using magic to change appearance and some features.<br><br>
     ${aToken.name} will be able to change this effect each turn at the cost of an action.`
     postResults(msg);
-    
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return (true);
 }
-
-/***************************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Callback function to handle menu choice.
- ***************************************************************************************************/
-async function pickItemCallBack(selection) {
-    jez.log("pickItemCallBack", selection)
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function pickItemCallBack(selection, options = {}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'selection', selection, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //
     if (!selection) return;
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //
     let choice = selection.split(" ")[0];     // Trim off the version number and extension
-    jez.log(`Selection: ${choice}!`)
+    if (TL > 1) jez.trace(`${TAG} Selection: ${choice}!`)
     let concEffect = aActor.effects.find(ef => ef.data.label === "Concentrating");
     let remainingSecs = concEffect ? concEffect?.data.duration.seconds : 3600
-    jez.log(`Proceed with ${choice} for ${remainingSecs} seconds`, concEffect)
+    if (TL > 1) jez.trace(`${TAG} Proceed with ${choice} for ${remainingSecs} seconds`, concEffect)
     let effectData = null;
     let cardImg = null;
 
     let ceDesc
     switch (choice) {
         case "Aquatic":
-            jez.log(`acquire gills and fins`)
+            if (TL > 1) jez.trace(`${TAG} acquire gills and fins`)
             ceDesc = `Now has gills and fins, can breathe underwater and gains swimming speed equal to walking.`
             let swimSpeed = aActor.data.data.attributes.movement?.walk || 1;
             effectData = {
-                label: AQUATIC_BUFF, 
+                label: AQUATIC_BUFF,
                 icon: AQUATIC_IMG,
-                origin: lastArg.uuid,
+                origin: L_ARG.uuid,
                 disabled: false,
                 duration: { seconds: remainingSecs, startTime: game.time.worldTime },
                 flags: { convenientDescription: ceDesc },
                 changes: [
-                    {key: `data.attributes.movement.swim`, mode: jez.UPGRADE, value: swimSpeed, priority: 20},
-                    {key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Water Breathing", priority: 20},
+                    { key: `data.attributes.movement.swim`, mode: jez.UPGRADE, value: swimSpeed, priority: 20 },
+                    { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Water Breathing", priority: 20 },
                 ]
             };
-            jez.log(`Add effect ${aItem.name} to ${aToken.name}`)  
-            await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:aToken.actor.uuid, effects: [effectData] });
-            msg=`${aToken.name} has alterered shape to adapt to an aquatic environment.  ${aToken.name} now has water 
+            if (TL > 1) jez.trace(`${TAG} Add effect ${aItem.name} to ${aToken.name}`)
+            await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });
+            msg = `${aToken.name} has alterered shape to adapt to an aquatic environment.  ${aToken.name} now has water 
             breathing and a swim speed equal to walking speed.`;
             cardImg = AQUATIC_IMG;
             break;
         case "Change":
-            jez.log(`Change visual appearance`)
+            if (TL > 1) jez.trace(`${TAG} Change visual appearance`)
             ceDesc = `Altered visual appearance`
             effectData = {
-                label: CHANGE_BUFF, 
+                label: CHANGE_BUFF,
                 icon: CHANGE_IMG,
-                origin: lastArg.uuid,
+                origin: L_ARG.uuid,
                 disabled: false,
                 duration: { seconds: remainingSecs, startTime: game.time.worldTime },
                 flags: { convenientDescription: ceDesc },
                 changes: [
-                    {key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Physical Appearance Changed", priority: 20},
+                    { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: "Physical Appearance Changed", priority: 20 },
                 ]
             };
-            jez.log(`Add effect ${aItem.name} to ${aToken.name}`)  
-            await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:aToken.actor.uuid, effects: [effectData] });
-            msg=`${aToken.name} has altered various aspects of physical appearance.`;
+            if (TL > 1) jez.trace(`${TAG} Add effect ${aItem.name} to ${aToken.name}`)
+            await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });
+            msg = `${aToken.name} has altered various aspects of physical appearance.`;
             cardImg = CHANGE_IMG;
             break;
         case "Slashing":
         case "Piercing":
         case "Bludgeoning":
-            jez.log(`Natural Weapon with damage type: ${choice.toLowerCase()}`)
+            if (TL > 1) jez.trace(`${TAG} Natural Weapon with damage type: ${choice.toLowerCase()}`)
             ceDesc = `Has sprouted natural weapons`
             effectData = {
-                label: WEAP_BUFF, 
+                label: WEAP_BUFF,
                 icon: WEAP_IMG,
-                origin: lastArg.uuid,
+                origin: L_ARG.uuid,
                 disabled: false,
                 duration: { seconds: remainingSecs, startTime: game.time.worldTime },
                 flags: { convenientDescription: ceDesc },
                 changes: [
-                    {key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: `Natural ${choice} Weapon Added`, priority: 20},
-                    {key: `data.traits.weaponProf.custom`, mode: jez.CUSTOM, value: `${WEAP_NAME}`, priority: 20},                  
+                    { key: `flags.gm-notes.notes`, mode: jez.CUSTOM, value: `Natural ${choice} Weapon Added`, priority: 20 },
+                    { key: `data.traits.weaponProf.custom`, mode: jez.CUSTOM, value: `${WEAP_NAME}`, priority: 20 },
                 ]
             };
-            jez.log(`Add effect ${aItem.name} to ${aToken.name}`)  
-            await MidiQOL.socket().executeAsGM("createEffects",{actorUuid:aToken.actor.uuid, effects: [effectData] });
+            if (TL > 1) jez.trace(`${TAG} Add effect ${aItem.name} to ${aToken.name}`)
+            await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });
             createWeapon(choice)
-            msg=`${aToken.name} has created a ${choice} natural weapon.<br><br>
+            msg = `${aToken.name} has created a ${choice} natural weapon.<br><br>
             <b>FoundryVTT:</b> A new temporary item has been created in Inventory:Weapons, on ${aToken.name}'s sheet, 
             that can be used for attacks.`;
             cardImg = WEAP_IMG;
             break;
         default:
-            errorMsg = `Disturbingly, reached end of switch without a match for ==>${choice}<==`
-            ui.notifications.error(msg);
-            jez.log(errorMsg)
+            jez.badNews(`Disturbingly, reached end of switch without a match for ==>${choice}<==`,'e')
             return (choice)
     }
     msg += "<br><br>This effect may be altered each turn at the cost of an action."
-    jezPostMessage({color:"purple", fSize:14, msg:msg, title:"Alter Self Effect", icon:cardImg })
-    return(choice)
+    // jezPostMessage({ color: "purple", fSize: 14, msg: msg, title: "Alter Self Effect", icon: cardImg })
+    jez.postMessage({color: jez.randomDarkColor(), fSize: 14, icon: cardImg, msg: msg, title: "Alter Self Effect", token: aToken})
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
+    return (choice)
 }
-
-/****************************************************************************************
- * Create and instant and rather temprary item in inventory to represent the natural weap
- ****************************************************************************************/
-async function createWeapon(damType) {
-    const FUNCNAME = `createWeapon(${damType})`;
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Create an instant and rather temprary item in inventory to represent the natural weap
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function createWeapon(damType, options = {}) {
+    const FUNCNAME = "doOn(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
     let strMod = aActor.data.data.abilities.str.mod
     let dexMod = aActor.data.data.abilities.dex.mod
     let bestMod = "str"
     if (dexMod > strMod) bestMod = "dex"
-    jez.log("Pick skill type", "strMod", strMod, "dexMod", dexMod, "bestMod ==>", bestMod)
-
+    if (TL > 1) jez.trace(`${TAG} Pick skill type`, "strMod", strMod, "dexMod", dexMod, "bestMod ==>", bestMod)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
     let descValue = `Use claws, fangs, spines, horns, or a different natural weapon 
     of your choice.<br><br>
     Your unarmed strike with this weapon deals <b>1d6+1 ${damType}</b> damage, you are 
@@ -268,7 +325,7 @@ async function createWeapon(damType) {
                 "parts": [[`1d6 +1 +@mod`, `${damType.toLowerCase()}`]],  // Set base damage
 
             },
-            "description": {"value": descValue },
+            "description": { "value": descValue },
             "equipped": true,
             "prof": { "hasProficiency": true },
             "proficient": true,
@@ -283,27 +340,34 @@ async function createWeapon(damType) {
         "effects": []
     }];
     await aActor.createEmbeddedDocuments("Item", itemData);
-
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
 }
-/****************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Create and instant and rather temprary item in inventory to represent the natural weap
- ****************************************************************************************/
- async function createEffectUpdate() {
-    const FUNCNAME = `createEffectUpdate()`;
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
-    let descValue = `<b>${aToken.name}</b> may spend an action to update the effect(s) of 
-    their current <b>Alter Self</b> spell.`
-    jez.log("descValue", descValue)
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function createEffectUpdate(options = {}) {
+    const FUNCNAME = "doOn(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    let descValue = `<b>${aToken.name}</b> may spend an action to update the effect(s) of their current <b>Alter Self</b> spell.`
+    if (TL > 1) jez.trace(`${TAG} descValue`, descValue)
     let itemData = [{
         "data": {
             "ability": "",
             "actionType": "util",
             "activation": {
                 "condition": "Must have pre-existing Alter Self effect.",
-                "type" : "action",
-                "cost" : 1,
+                "type": "action",
+                "cost": 1,
             },
             "description": { "value": descValue },
             "formula": "",
@@ -325,39 +389,43 @@ async function createWeapon(damType) {
         "name": UPDATE_EFFECT_NAME,
         "type": "spell",
     }];
-    jez.log("itemData",itemData)
+    if (TL > 1) jez.trace(`${TAG} itemData`, itemData)
     await aActor.createEmbeddedDocuments("Item", itemData);
-
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
- }
-/****************************************************************************************
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Create and process selection dialog, passing it onto specified callback function
- ***************************************************************************************/
- function pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions) {
-    const FUNCNAME = "pickFromList(queryTitle, queryText, ...queryOptions)";
-    jez.log("---------------------------------------------------------------------------",
-        `Starting`, `${MACRONAME} ${FUNCNAME}`,
-        `queryTitle`, queryTitle,
-        `queryText`, queryText,
-        `pickCallBack`, pickCallBack,
-        `queryOptions`, queryOptions);
-
-    if (typeof(pickCallBack)!="function" ) {
-        let msg = `pickFromList given invalid pickCallBack, it is a ${typeof(pickCallBack)}`
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+function pickFromListArray(queryTitle, queryText, pickCallBack, queryOptions, options = {}) {
+    const FUNCNAME = "doOn(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, `queryTitle  `, queryTitle, `queryText   `, queryText,
+        `pickCallBack`, pickCallBack, `queryOptions`, queryOptions, "options     ", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    if (typeof (pickCallBack) != "function") {
+        let msg = `pickFromList given invalid pickCallBack, it is a ${typeof (pickCallBack)}`
         ui.notifications.error(msg);
-        jez.log(msg);
+        if (TL > 1) jez.trace(`${TAG} ${msg}`);
         return
-    }   
-
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
     if (!queryTitle || !queryText || !queryOptions) {
         let msg = `pickFromList arguments should be (queryTitle, queryText, pickCallBack, [queryOptions]),
                    but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         ui.notifications.error(msg);
-        jez.log(msg);
+        if (TL > 1) jez.trace(`${TAG} ${msg}`);
         return
     }
-
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
     let template = `
     <div>
     <div class="form-group">
@@ -368,7 +436,8 @@ async function createWeapon(damType) {
     }
     template += `</select>
     </div></div>`
-
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
     new Dialog({
         title: queryTitle,
         content: template,
@@ -378,7 +447,7 @@ async function createWeapon(damType) {
                 label: 'OK',
                 callback: async (html) => {
                     const selectedOption = html.find('#selectedOption')[0].value
-                    jez.log('selected option', selectedOption)
+                    if (TL > 1) jez.trace(`${TAG} selected option`, selectedOption)
                     pickCallBack(selectedOption)
                 },
             },
@@ -386,84 +455,16 @@ async function createWeapon(damType) {
                 icon: '<i class="fas fa-times"></i>',
                 label: 'Cancel',
                 callback: async (html) => {
-                    jez.log('canceled')
+                    if (TL > 1) jez.trace(`${TAG} canceled`)
                     pickCallBack(null)
                 },
             },
         },
         default: 'cancel',
     }).render(true)
-
-    jez.log("---------------------------------------------------------------------------",
-        `Finished`, `${MACRONAME} ${FUNCNAME}`);
-        return;
-}
-/***************************************************************************************
- * Function to delete an item from actor
- *
- * Parameters
- *  - itemName: A string naming the item to be found in actor's inventory
- *  - actor: Optional actor to be searched, defaults to actor launching this macro
- ***************************************************************************************/
-/*async function jezDeleteItem(itemName, actor) {
-    const FUNCNAME = "deleteItem(itemName, actor)";
-    let defActor = null;
-    if (lastArg.tokenId) defActor = canvas.tokens.get(lastArg.tokenId).actor; 
-    else defActor = game.actors.get(lastArg.actorId);
-    actor = actor ? actor : defActor; // Set actor if not supplied
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`,
-        "itemName", itemName, `actor ${actor?.name}`, actor);
-
-    if (!jezIsActor5e(actor)) {
-        errorMsg = `Obtained actor argument is not of type Actor5E (${actor?.constructor.name})`
-        jez.log(errorMsg)
-        jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} ==> FALSE --------------`);
-        return (false);
-    }
-    let item = actor.items.find(item => item.data.name === itemName && 
-        (item.type === "weapon" || item.type === "spell"))
-    if (item == null || item == undefined) {
-        errorMsg = `${actor.name} does not have ${itemName}`
-        jez.log(errorMsg);
-        jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} ==> FALSE --------------`);
-        return (false);
-    }
-    await aActor.deleteOwnedItem(item._id);
-    jez.log(`${actor.name} had (past tense) ${item.name}`, item);
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} ==> TRUE -----------------`);
-    return (true);
-}*/
-/***************************************************************************************************
- * Return true if passed argument is of object type "Token5e"
- ***************************************************************************************************/
- function jezIsActor5e(obj) {
-    if (obj?.constructor.name === "Actor5e") return(true)
-    return(false)
-}
-/***************************************************************************************************
- * Obtain the Actor5e objext corresponding to the passed ID
- ***************************************************************************************************/
-function jezGetActor5EfromID(passedID) {
-    let myActor = game.actors.get(passedID)
-    jez.log(`Obtained actor ${myActor.name}`, myActor)
-    return(myActor)
-}
-/***************************************************************************************************
- * Post the results to chat card
- ***************************************************************************************************/
- async function postResults(resultsString) {
-    const lastArg = args[args.length - 1];
-
-    let chatMessage = game.messages.get(lastArg.itemCardId);
-    let content = await duplicate(chatMessage.data.content);
-    jez.log(`chatMessage: `,chatMessage);
-    //const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
-    //const replaceString = `<div class="midi-qol-other-roll"><div class="end-midi-qol-other-roll">${resultsString}`;
-    const searchString = /<div class="end-midi-qol-saves-display">/g;
-    const replaceString = `<div class="end-midi-qol-saves-display">${resultsString}`;
-    content = await content.replace(searchString, replaceString);
-    await chatMessage.update({ content: content });
-    await ui.chat.scrollBottom();
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
 }
 /***************************************************************************************************
@@ -475,42 +476,40 @@ function jezGetActor5EfromID(passedID) {
  *  jezPostMessage({color:"purple", fSize:18, msg:"Bazinga", title:"Sheldon says..." })
  * 
  ***************************************************************************************************/
-async function jezPostMessage(msgParm) {
-    const FUNCNAME = "postChatMessage(msgParm)";
-    jez.log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`,
-        "msgParm", msgParm);
-    let typeOfParm = typeof (msgParm)
-    switch (typeOfParm) {
-        case "string":
-            await ChatMessage.create({ content: msgParm });
-            break;
-        case "object":
-            let chat = {} 
-            chat.title = msgParm?.title || "Generic Chat Message"
-            chat.fSize = msgParm?.fSize || 12
-            chat.color = msgParm?.color || "black"   
-            chat.icon  = msgParm?.icon  || "icons/vtt-512.png"   
-            chat.msg   = msgParm?.msg   || "Maybe say something useful..."  
-            chatCard = `
-            <div class="dnd5e chat-card item-card midi-qol-item-card">
-                <header class="card-header flexrow">
-                    <img src="${chat.icon}" title="${chat.title}" width="36" height="36">
-                    <h3 class="item-name">${chat.title}</h3>
-                </header>
-                <div class="card-buttons">
-                    <p style="color:${chat.color};font-size:${chat.fSize}px">
-                        ${chat.msg}</p>
-                </div>
-            </div>`
-            await ChatMessage.create({ content: chatCard });
-            break;
-        default:
-            errorMsg`Icky Poo Poo!  Parameter passed was neither a string nor object (${typeOfParm})`
-            jez.log(errorMsg, msgParm)
-            ui.notifications.error(errorMsg)
-    }
-    await jez.wait(100);
-    await ui.chat.scrollBottom();
-    jez.log(`--------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
-    return;
-}
+// async function jezPostMessage(msgParm) {
+//     const FUNCNAME = "postChatMessage(msgParm)";
+//     if (TL > 1) jez.trace(`${TAG} --------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`,
+//         "msgParm", msgParm);
+//     let typeOfParm = typeof (msgParm)
+//     switch (typeOfParm) {
+//         case "string":
+//             await ChatMessage.create({ content: msgParm });
+//             break;
+//         case "object":
+//             let chat = {}
+//             chat.title = msgParm?.title || "Generic Chat Message"
+//             chat.fSize = msgParm?.fSize || 12
+//             chat.color = msgParm?.color || "black"
+//             chat.icon = msgParm?.icon || "icons/vtt-512.png"
+//             chat.msg = msgParm?.msg || "Maybe say something useful..."
+//             chatCard = `
+//             <div class="dnd5e chat-card item-card midi-qol-item-card">
+//                 <header class="card-header flexrow">
+//                     <img src="${chat.icon}" title="${chat.title}" width="36" height="36">
+//                     <h3 class="item-name">${chat.title}</h3>
+//                 </header>
+//                 <div class="card-buttons">
+//                     <p style="color:${chat.color};font-size:${chat.fSize}px">
+//                         ${chat.msg}</p>
+//                 </div>
+//             </div>`
+//             await ChatMessage.create({ content: chatCard });
+//             break;
+//         default:
+//             ui.notifications.error('Bas Stuff')
+//     }
+//     await jez.wait(100);
+//     await ui.chat.scrollBottom();
+//     if (TL > 1) jez.trace(`${TAG} --------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
+//     return;
+// }

@@ -4,7 +4,7 @@
   "img": "/systems/dnd5e/icons/spells/wind-grasp-sky-2.jpg",
   "data": {
     "description": {
-      "value": "<p>This spell creates an invisible, mindless, shapeless, Medium force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has:</p>\n<ul>\n<li>AC 10,</li>\n<li>1 hit point, and a</li>\n<li>Strength of 2, and</li>\n<li>it can't attack.</li>\n</ul>\n<p>If it drops to 0 hit points, the spell ends.</p>\n<p>Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command.</p>\n<p>If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends.</p>",
+      "value": "<p>This spell creates an invisible, mindless, shapeless, Medium force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has:</p>\n<ul>\n<li>AC 10,</li>\n<li>1 hit point, and a</li>\n<li>Strength of 2, and</li>\n<li>it can't attack.</li>\n</ul>\n<p>If it drops to 0 hit points, the spell ends.</p>\n<p>Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command.</p>\n<p>If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends.</p>\n<hr />\n<p><strong>FoundryVTT:</strong> This spell is automated .</p>\n<p><strong>Note:&nbsp;</strong>More than one servant may be active simultaneosly</p>",
       "chat": "<p>This spell creates an invisible, mindless, shapeless, Medium force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has AC 10, 1 hit point, and a Strength of 2, and it can't attack. If it drops to 0 hit points, the spell ends.</p>\n<p>Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command.</p>\n<p>If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends.</p>",
       "unidentified": ""
     },
@@ -169,7 +169,7 @@
     "exportSource": {
       "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "9.269",
+      "coreVersion": "9.280",
       "systemVersion": "1.6.2"
     }
   }

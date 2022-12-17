@@ -483,6 +483,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.16 **Protection from Evil and Good** updated style and added pairEffectsAsGM (using doOnUse which was previously not used)
 
+22.12.17 Updated a bunch of spells for minor issues (all of the spells on PC sheets)
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
