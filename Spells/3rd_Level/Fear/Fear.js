@@ -97,11 +97,10 @@ async function doOnUse(options = {}) {
         if (TL > 2) jez.trace(`${TAG}  ${i + 1}) ${failSaves[i].name}`, failSaves[i])
         applyFear(failSaves[i], SAVE_TYPE, SAVE_DC);
     }
-
     //-----------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
-    msg = `Maybe say something useful...`
+    msg = `${aToken.name} projects a phantasmal image of her/his target's worst fears.`
     postResults(msg)
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return true;

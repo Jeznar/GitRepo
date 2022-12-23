@@ -60,12 +60,6 @@ new Sequence()
     .play();
 
 return;
-
-
-
-
-
-
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -129,8 +123,7 @@ async function doOn() {
 
 
     // https://www.w3schools.com/tags/ref_colornames.asp
-    msg = `<p style="color:blue;font-size:14px;">
-    Maybe say something useful...</p>`
+    msg = `<p style="color:blue;font-size:14px;">${aToken.name} fires magic missles.</p>`
     postResults(msg);
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);

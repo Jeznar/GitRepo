@@ -194,9 +194,6 @@ async function doOnUse(options = {}) {
     msg = `Total of ${targets.length} target(s), rolling ${SAVE_TYPE.toUpperCase()} save vs DC ${SAVE_DC}.<br>`
     jez.addMessage(chatMessage, { color: "darkblue", fSize: 14, msg: msg, tag: "saves" })
 
-    // if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)
-    // msg = `Maybe say something useful...`
-    // postResults(msg)
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }

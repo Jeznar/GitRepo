@@ -106,7 +106,7 @@ async function doOnUse(options = {}) {
     if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)
     //-------------------------------------------------------------------------------------------------------------------------------
     // 
-    msg = `Maybe say something useful...`
+    msg = `Say something useful...`
     postResults(msg)
     if (TL > 0) jez.trace(`${TAG} --- Finished ---`);
     return true;

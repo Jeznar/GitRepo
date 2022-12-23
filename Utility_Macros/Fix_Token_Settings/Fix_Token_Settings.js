@@ -138,10 +138,6 @@ async function doOn() {
     // Comments, perhaps
     //
     if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)
-
-
-    msg = `Maybe say something useful...`
-    postResults(msg)
     if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }

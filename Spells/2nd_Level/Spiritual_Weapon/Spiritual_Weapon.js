@@ -85,7 +85,8 @@ async function doOnUse() {
     let houndInfo = await summonHound()
     jez.log("Hound Info", houndInfo)
     addWatchdogEffect(houndInfo);
-    msg = `Maybe say something useful...${houndInfo}`
+    msg = `${aToken.name} creates a floating, spectral weapon. It can can make a melee spell attack 
+    against a creature within 5 feet.`
     postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);

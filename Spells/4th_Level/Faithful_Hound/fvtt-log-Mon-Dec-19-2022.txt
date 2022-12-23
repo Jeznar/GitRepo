@@ -1,0 +1,89 @@
+[12/19/2022, 2:50:00 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs----------------- These are NPCs------------------
+---------------------------
+[12/19/2022, 2:50:00 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs----------------- These are NPCs------------------
+---------------------------
+[12/19/2022, 2:50:26 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs-----------------Olivia Ironlocke These are NPCs------------------
+---------------------------
+[12/19/2022, 2:50:26 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs-----------------Olivia Ironlocke These are NPCs------------------
+---------------------------
+[12/19/2022, 2:54:05 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie Minion
+---------------------------
+[12/19/2022, 2:54:05 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs-----------------Olivia Ironlocke These are NPCs------------------
+---------------------------
+[12/19/2022, 2:56:59 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie Minion
+---------------------------
+[12/19/2022, 2:56:59 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs-----------------Olivia Ironlocke These are NPCs------------------
+---------------------------
+[12/19/2022, 3:00:36 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie Minion
+---------------------------
+[12/19/2022, 3:00:36 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs-----------------Olivia Ironlocke These are NPCs------------------
+---------------------------
+[12/19/2022, 3:01:25 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs----------------- These are NPCs------------------
+---------------------------
+[12/19/2022, 3:01:31 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs----------------- These are NPCs------------------
+---------------------------
+[12/19/2022, 3:02:32 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs----------------- These are NPCs------------------Zombie
+---------------------------
+[12/19/2022, 3:02:55 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie Minion
+---------------------------
+[12/19/2022, 3:02:55 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie
+---------------------------
+[12/19/2022, 3:03:15 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie
+---------------------------
+[12/19/2022, 3:03:15 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie
+---------------------------
+[12/19/2022, 3:03:43 PM] GM
+Token Check PC/NPC Status Checked 2 tokens These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie
+---------------------------
+[12/19/2022, 3:03:43 PM] GM
+Actor Check PC/NPC Status Checked 2 actors These are PCs-----------------Olivia Ironlocke These are NPCs------------------Zombie
+---------------------------
+[12/19/2022, 3:04:12 PM] GM
+Token Check PC/NPC Status Checked 7 tokens These are PCs-----------------Minnie McWizardOlivia Ironlocke These are NPCs------------------Strahd ZombieZombie ThrallBarovian ZombieZombie MinionZombie
+---------------------------
+[12/19/2022, 3:04:12 PM] GM
+Actor Check PC/NPC Status Checked 4 actors These are PCs-----------------AmendOlivia Ironlocke These are NPCs------------------Giant EagleZombie
+---------------------------
+[12/19/2022, 3:04:59 PM] GM
+Token Check PC/NPC Status Checked 7 tokens These are PCs-----------------Minnie McWizardOlivia Ironlocke These are NPCs------------------Strahd ZombieZombie ThrallBarovian ZombieZombie MinionZombie
+---------------------------
+[12/19/2022, 3:04:59 PM] GM
+Actor Check PC/NPC Status Checked 4 actors These are PCs-----------------AmendOlivia Ironlocke These are NPCs------------------Giant EagleZombie
+---------------------------
+[12/19/2022, 3:08:49 PM] GM
+Select Something, Peas Need to select at least one token for test_isPC&NPC to work
+---------------------------
+[12/19/2022, 3:08:58 PM] GM
+Token Check PC/NPC Status Checked 7 tokens These are PCs-----------------Minnie McWizardOlivia Ironlocke These are NPCs------------------Zombie ThrallZombieStrahd ZombieBarovian ZombieZombie Minion
+---------------------------
+[12/19/2022, 3:08:58 PM] GM
+Actor Check PC/NPC Status Checked 4 actors These are PCs-----------------AmendOlivia Ironlocke These are NPCs------------------Giant EagleZombie
+---------------------------
+[12/19/2022, 3:09:31 PM] GM
+Token Check PC/NPC Status Checked 7 tokens These are PCs-----------------Minnie McWizardOlivia Ironlocke These are NPCs------------------Zombie ThrallZombieStrahd ZombieBarovian ZombieZombie Minion
+---------------------------
+[12/19/2022, 3:09:31 PM] GM
+Actor Check PC/NPC Status Checked 4 actors These are PCs-----------------AmendOlivia Ironlocke These are NPCs------------------Giant EagleZombie
+---------------------------
+[12/19/2022, 3:09:33 PM] GM
+Token Check PC/NPC Status Checked 7 tokens These are PCs-----------------Minnie McWizardOlivia Ironlocke These are NPCs------------------Zombie ThrallZombieStrahd ZombieBarovian ZombieZombie Minion
+---------------------------
+[12/19/2022, 3:09:33 PM] GM
+Actor Check PC/NPC Status Checked 4 actors These are PCs-----------------AmendOlivia Ironlocke These are NPCs------------------Giant EagleZombie

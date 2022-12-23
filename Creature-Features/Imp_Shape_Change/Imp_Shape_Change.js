@@ -79,10 +79,6 @@ if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
     const queryText = `Pick a form for ${aToken.name} from the list below`
     jez.pickRadioListArray(queryTitle, queryText, pickShapeCallBack, SHAPES);
 
-    // if (TL>3) jez.trace(`${TAG} More Detailed Trace Info.`)
-    // msg = `Maybe say something useful...`
-    // postResults(msg)
-    // if (TL>1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0

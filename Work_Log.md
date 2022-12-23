@@ -485,6 +485,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.17 Updated a bunch of spells for minor issues (all of the spells on PC sheets)
 
+22.12.23 **Inspiring Leader** rewritten to offer a selection dialog, manage a tracking buff and use MidiQOL.DamageOnlyWorkflow to apply the temp healing (temp HP).
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -3642,7 +3642,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      * initiative value. 
      ***************************************************************************************************/
     static async combatInitiative(SUBJECT, options = {}) {
-    // async function combatInitiative(SUBJECT, options = {}) {
+        // async function combatInitiative(SUBJECT, options = {}) {
         const FUNCNAME = "combatInitiative(SUBJECT, options = {})";
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.lib ${FNAME} |`
@@ -3680,7 +3680,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //----------------------------------------------------------------------------------------------
         // Make call to roll initiatives
         //
-        if (TL > 2) jez.trace(`${TAG} Call GM_ROLL_INITIATIVE`,'combatantIds',combatantIds,'formula',formula)
+        if (TL > 2) jez.trace(`${TAG} Call GM_ROLL_INITIATIVE`, 'combatantIds', combatantIds, 'formula', formula)
         await GM_ROLL_INITIATIVE.execute(combatantIds, formula)
         //----------------------------------------------------------------------------------------------
         // Process a single entity, may need to call for each element of an array
@@ -3835,28 +3835,6 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         } else if (TL > 1) jez.trace(`${TAG} Quiet!`, msg)
         return true
     }
-
-    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
-     * isNPC(actorUuid) - Returns true if the identified actor is a NPC, false otherwise
-     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
-    static async isNPC(actorUuid, options = {}) {
-        const FUNCNAME = "isNPC(actorUuid, options = {})";
-        const FNAME = FUNCNAME.split("(")[0]
-        const TAG = `jez.${FNAME} |`
-        const TL = options.traceLvl ?? 0
-        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-        if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actorUuid', actorUuid, "options", options);
-        //-------------------------------------------------------------------------------------------------------------------------------
-        // Function variables
-        //
-        const ACTOR_DATA = await fromUuid(actorUuid)
-        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'ACTOR_DATA', ACTOR_DATA)
-        const IS_NPC = (jez.isActor5e(ACTOR_DATA)) ? false : true
-        if (TL > 1) jez.trace(`${TAG} IS_NPC`, IS_NPC)
-        //-------------------------------------------------------------------------------------------------------------------------------
-        //
-        return IS_NPC
-    }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
      * isPC(actorUuid) - Returns true if the identified actor is a PC (not a NPC), false otherwise
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
@@ -3868,16 +3846,54 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
         if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actorUuid', actorUuid, "options", options);
         //-------------------------------------------------------------------------------------------------------------------------------
-        // Function variables
+        // Fetch the data block for our Uuid
         //
-        const ACTOR_DATA = await fromUuid(actorUuid)
-        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'ACTOR_DATA', ACTOR_DATA)
-        const IS_PC = (jez.isActor5e(ACTOR_DATA)) ? true : false
-        // const IS_PC = (ACTOR_DATA?._actor?.type === "character") ? true : false
-        if (TL > 1) jez.trace(`${TAG} IS_PC`, IS_PC)
+        const OBJ = await fromUuid(actorUuid)
+        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'OBJ', OBJ)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Do we have a Actor5e, TokenDocument5e object, or a problem?
+        //
+        const IS_ACTOR5E = (OBJ?.constructor.name === "Actor5e") ? true : false
+        const IS_TOKENDOCUMENT5E = (OBJ?.constructor.name === "TokenDocument5e") ? true : false
+        if (!IS_ACTOR5E && !IS_TOKENDOCUMENT5E) return jez.badNews(`${TAG} Bad object type: ${OBJ?.constructor.name}`)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Set actor5e based on whether it is an Actor5e or TokenDosument5e
+        //
+        const ACTOR_TYPE = (IS_ACTOR5E) ? OBJ.type : OBJ.actor.type
+        if (TL > 1) jez.trace(`${TAG} ACTOR_TYPE`, ACTOR_TYPE)
         //-------------------------------------------------------------------------------------------------------------------------------
         //
-        return IS_PC
+        return (ACTOR_TYPE === "character") ? true : false
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * isPC(actorUuid) - Returns true if the identified actor is a PC (not a NPC), false otherwise
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static async isNPC(actorUuid, options = {}) {
+        const FUNCNAME = "isNPC(actorUuid, options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.trace(`${TAG} --- Starting ${FUNCNAME}`, 'actorUuid', actorUuid, "options", options);
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Fetch the data block for our Uuid
+        //
+        const OBJ = await fromUuid(actorUuid)
+        if (TL > 1) jez.trace(`${TAG} Data Accessed`, 'OBJ', OBJ)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Do we have a Actor5e, TokenDocument5e object, or a problem?
+        //
+        const IS_ACTOR5E = (OBJ?.constructor.name === "Actor5e") ? true : false
+        const IS_TOKENDOCUMENT5E = (OBJ?.constructor.name === "TokenDocument5e") ? true : false
+        if (!IS_ACTOR5E && !IS_TOKENDOCUMENT5E) return jez.badNews(`${TAG} Bad object type: ${OBJ?.constructor.name}`)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        // Set actor5e based on whether it is an Actor5e or TokenDosument5e
+        //
+        const ACTOR_TYPE = (IS_ACTOR5E) ? OBJ.type : OBJ.actor.type
+        if (TL > 1) jez.trace(`${TAG} ACTOR_TYPE`, ACTOR_TYPE)
+        //-------------------------------------------------------------------------------------------------------------------------------
+        //
+        return (ACTOR_TYPE === "npc") ? true : false
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
      * resourceSpend((actor5eUuid, resourceName, aItemUuid) - For PCs, decrement resource, verifying it exists and at least a value of 1.
@@ -4128,6 +4144,20 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         // Decrement our resource 
         //
         return usesMax
+    }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+     * Check return the count of Tokens selected, posting message if none were.  This is intended for utility macros.
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+    static selectedTokens(MACRO) {
+        if (canvas.tokens.controlled.length === 0) {
+            let msg = `Need to select at least one token for ${MACRO} to work`
+            jez.postMessage({
+                color: jez.randomDarkColor(), fSize: 14, icon: 'Icons_JGB/Misc/Jez.png', title: 'Select Something, Peas', msg: msg
+            })
+            jez.badNews(msg, 'w')
+            return 0
+        }
+        else return canvas.tokens.controlled.length
     }
 } // END OF class jez
 Object.freeze(jez);

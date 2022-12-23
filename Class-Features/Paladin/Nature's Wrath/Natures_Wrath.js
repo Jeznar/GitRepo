@@ -135,14 +135,15 @@ async function doOnUse(options={}) {
         //
         runVFX(tToken)
     } else {
-        postResults(`${tToken.name} avoided the effect.`);
+        postResults(`${tToken.name} avoids spectral vines that spring up and grasping for him/her. The vines quickly fade away.`);
         if (TL > 1) jez.trace(`${TAG} save succeeded with a ${save}`);
         return
     }
     //-------------------------------------------------------------------------------------------------------------------------------
     // Thats all folks
     //
-    msg = `Maybe say something useful...`
+    msg = `${aToken.name} invokes primeval forces to ensnare a foe. Spectral vines spring up and reach for ${tToken.name}, 
+    restraining it.`
     postResults(msg);
     if (TL>0) jez.trace(`${TAG} --- Finished ---`);
     return;

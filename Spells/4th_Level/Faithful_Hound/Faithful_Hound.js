@@ -86,7 +86,7 @@ async function doOnUse() {
     let houndInfo = await summonHound()
     jez.log("Hound Info", houndInfo)
     addWatchdogEffect(houndInfo);
-    msg = `Maybe say something useful...${houndInfo}`
+    msg = `${aToken.name} conjures a phantom watchdog in an unoccupied space.`
     postResults(msg)
     jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);

@@ -4,7 +4,7 @@
   "img": "icons/magic/unholy/hand-light-pink.webp",
   "data": {
     "description": {
-      "value": "<h4 id=\"occultist-12-class-features-tradition-of-the-witch-witchs-touch\">Starting at 6th level, whenever you cast a spell with a range of touch (including through your familiar), you can add one of the following modifiers to the spell:</h4>\n<ul>\n<li><strong>Bolster</strong> -- It grants one affected target temporary hit points equal to your castng modifier. Only one creature can have these temporary hit points at a time.</li>\n<li><strong>Wither</strong> -- It deals additional damage equal to your casting modifier to one affected creature.</li>\n<li><strong>Curse</strong> -- Subtracts 1d4 from the target's next attack roll or saving throw before the start of your next turn.</li>\n<li>\n<div>\n<div><strong>Bless</strong> -- Add 1d4 to target's next attack roll or saving throw before</div>\n<div>the start of your next turn.</div>\n</div>\n</li>\n</ul>\n<p>You can also confer these effects to another spell with a range longer than touch by making its range touch, or confer these effects as an action without casting a spell by touching a target (making a melee spell attack to do if the target is an unwilling creature). If you make the range of a curse spell touch, you no longer need the material component for the spell.</p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>Limitation of only one bless at a time is not automated.</p>",
+      "value": "<h4 id=\"occultist-12-class-features-tradition-of-the-witch-witchs-touch\">Starting at 6th level, whenever you cast a spell with a range of touch (including through your familiar), you can add one of the following modifiers to the spell:</h4>\n<ul>\n<li><strong>Bolster</strong> -- It grants one affected target temporary hit points equal to your castng modifier. Only one creature can have these temporary hit points at a time.</li>\n<li><strong>Wither</strong> -- It deals additional damage equal to your casting modifier to one affected creature.</li>\n<li><strong>Curse</strong> -- Subtracts 1d4 from the target's next attack roll or saving throw before the start of your next turn.</li>\n<li>\n<div>\n<div><strong>Bless</strong> -- Add 1d4 to target's next attack roll or saving throw before</div>\n<div>the start of your next turn.</div>\n</div>\n</li>\n</ul>\n<p>You can also confer these effects to another spell with a range longer than touch by making its range touch, or confer these effects as an action without casting a spell by touching a target (making a melee spell attack to do if the target is an unwilling creature). If you make the range of a curse spell touch, you no longer need the material component for the spell.</p>\n<hr />\n<p><strong>FoundryVTT: </strong>Limitation of only one bless at a time is not automated.</p>",
       "chat": "",
       "unidentified": ""
     },
@@ -22,7 +22,7 @@
       "value": null,
       "width": null,
       "units": "touch",
-      "type": ""
+      "type": "creature"
     },
     "range": {
       "value": null,
@@ -120,7 +120,7 @@
     "exportSource": {
       "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "9.269",
+      "coreVersion": "9.280",
       "systemVersion": "1.6.2"
     }
   }

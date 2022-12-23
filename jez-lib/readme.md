@@ -87,6 +87,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[resourceSpend(actor5eUuid, resourceName, aItemUuid, options = {})](#resourcespendactor5eUuid-resourcename-aitemuuid-options--)))** -- For PCs, decrement resource, verifying it exists and at least a value of 1.
 * **[runRuneVFX(...)](#runRuneVFX)** -- Run a three stage run VFX on specified token.
 * **[selectItemOnActor(sToken, prompts, nextFunc)](#selectitemonactorstoken-prompts-nextfunc)** -- Complex function that runs a series of dialogs to return a list of actors who have an item selected from targeted actor.
+* **[selectedTokens(macro)](selectedTokens(macro))** -- Returns count of selected tokens or posts message complaining if non are.
 * **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)** -- Converts passed subject and returns Actor5e object.
 * **[setCEDescAsGM()](#setcedescasgmsubject-effectname-description-optionobj--)** -- Wrapper for setCEDesc() adding RunAsGM.
 * **[setItemUses(item, uses, options = {})](#setitemusesitem-uses-options--)** -- Sets the number of uses for specified item
@@ -1653,6 +1654,29 @@ async function workHorse(dataObj) {
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)
+
+### selectedTokens(macro)
+
+Simple minded macro intended to be used by utility functions to validate the number of tokens selected on screen.
+
+If no tokens are selected it posts a chat message complaining that "macro" can't work without having some selections and returns zero (which tests as falsy)
+
+If tokens are selected, it returns a count of the tokens (which will test as truthy).Inputs Are
+
+<details> <summary>Sample Useage</summary>
+
+```javascript
+const TOKEN_COUNT = jez.selectedTokens(MACRO)
+if (TOKEN_COUNT) {...}
+    msg = `Processed ${TOKEN_COUNT} tokens`
+    jez.postMessage({ color: jez.randomDarkColor(), fSize: 14, icon: 'Icons_JGB/Misc/Jez.png', title: 'Cleanse Complete', msg: msg})
+}
+```
+</details>
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
 
 ---
 

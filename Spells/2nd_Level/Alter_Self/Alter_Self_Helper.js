@@ -204,7 +204,7 @@ async function pickItemCallBack(selection) {
             return (choice)
     }
     msg += "<br><br>This effect may be altered each turn at the cost of an action."
-    jezPostMessage({color:"purple", fSize:14, msg:msg, title:"Alter Self Effect", icon:cardImg })
+    // jezPostMessage({color:"purple", fSize:14, msg:msg, title:"Alter Self Effect", icon:cardImg })
     return(choice)
 }
 
@@ -250,7 +250,6 @@ async function createWeapon(damType) {
             },
             "source": `Alter Self: ${damType} Weapon`,
             "weaponType": "natural"
-
         },
         "img": WEAP_IMG,
         "effects": []
@@ -395,53 +394,5 @@ function jezGetActor5EfromID(passedID) {
     content = await content.replace(searchString, replaceString);
     await chatMessage.update({ content: content });
     await ui.chat.scrollBottom();
-    return;
-}
-/***************************************************************************************************
- * Post a new chat message -- msgParm should be a string for a simple message or an object with 
- * some or all of these fields set below for the chat object.  
- * 
- * Example Calls:
- *  jezPostMessage("Hi there!")
- *  jezPostMessage({color:"purple", fSize:18, msg:"Bazinga", title:"Sheldon says..." })
- * 
- ***************************************************************************************************/
-async function jezPostMessage(msgParm) {
-    const FUNCNAME = "postChatMessage(msgParm)";
-    jez.log(`--------------${FUNCNAME}-----------`, "Starting", `${MACRONAME} ${FUNCNAME}`,
-        "msgParm", msgParm);
-    let typeOfParm = typeof (msgParm)
-    switch (typeOfParm) {
-        case "string":
-            await ChatMessage.create({ content: msgParm });
-            break;
-        case "object":
-            let chat = {} 
-            chat.title = msgParm?.title || "Generic Chat Message"
-            chat.fSize = msgParm?.fSize || 12
-            chat.color = msgParm?.color || "black"   
-            chat.icon  = msgParm?.icon  || "icons/vtt-512.png"   
-            chat.msg   = msgParm?.msg   || "Maybe say something useful..."  
-            chatCard = `
-            <div class="dnd5e chat-card item-card midi-qol-item-card">
-                <header class="card-header flexrow">
-                    <img src="${chat.icon}" title="${chat.title}" width="36" height="36">
-                    <h3 class="item-name">${chat.title}</h3>
-                </header>
-                <div class="card-buttons">
-                    <p style="color:${chat.color};font-size:${chat.fSize}px">
-                        ${chat.msg}</p>
-                </div>
-            </div>`
-            await ChatMessage.create({ content: chatCard });
-            break;
-        default:
-            errorMsg`Icky Poo Poo!  Parameter passed was neither a string nor object (${typeOfParm})`
-            jez.log(errorMsg, msgParm)
-            ui.notifications.error(errorMsg)
-    }
-    await jez.wait(100);
-    await ui.chat.scrollBottom();
-    jez.log(`--------------${FUNCNAME}-----------`, "Finished", `${MACRONAME} ${FUNCNAME}`);
     return;
 }

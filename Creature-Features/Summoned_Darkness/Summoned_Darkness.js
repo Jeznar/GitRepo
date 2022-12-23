@@ -135,7 +135,7 @@ async function doOnUse(options = {}) {
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: aToken.actor.uuid, effects: [effectData] });  
     //-------------------------------------------------------------------------------------------------------------------------------
     // 
-    msg = `Maybe say something useful...`
+    msg = `${aToken.name} summons an inky pool of darkness into reality.`
     postResults(msg)
     if (TL > 0) jez.trace(`${TAG} --- Finished ---`);
     return true;
