@@ -1,4 +1,4 @@
-const MACRONAME = "Firey_Teleportation.0.2.js"
+const MACRONAME = "Firey_Teleportation.0.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *
  * RAW Description
@@ -10,10 +10,11 @@ const MACRONAME = "Firey_Teleportation.0.2.js"
  *
  * 12/05/22 0.1 Creation of Macro from Thunder_Step.0.1.js
  * 12/06/22 0.2 Add temporary markers to spots choosen for teleport destinations
+ * 12/24/22 0.3 Skip placing targetimg marker if no buddies being teleported.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 0;                               // Trace Level for this macro
+const TL = 2;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //-----------------------------------------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`${TAG} === Starting ===`);
@@ -63,14 +64,14 @@ function postResults(msg) {
     const TAG = `${MACRO} ${FNAME} |`
     if (TL > 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 2) jez.trace("postResults Parameters", "msg", msg)
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
     if (TL > 1) jez.trace(`${TAG}--- Finished ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 async function doOnUse(options = {}) {
     const FUNCNAME = "doOnUse(options={})";
     const FNAME = FUNCNAME.split("(")[0]
@@ -79,19 +80,20 @@ async function doOnUse(options = {}) {
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
     await jez.wait(100)
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Set function variables
     //
     const DAM_LOCATION = aToken.center
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Pick teleportation buddies, potentially all adjacent tokens
     //
     if (TL > 2) jez.trace(`${TAG} Pick Teleportation Buddies`)
     let bTokenArray = await pickTeleportBuddies({ traceLvl: TL });
+    console.log('bTokenArray',bTokenArray)
     if (TL > 2) jez.trace(`${TAG} Received back`, bTokenArray)
-    if (bTokenArray && TL > 1) jez.trace(`${TAG} Our teleport buddy/ies is/are:`, bTokenArray)
-    else jez.trace(`${TAG} We have no teleport buddy.`)
-    //-----------------------------------------------------------------------------------------------
+    if (bTokenArray.length > 0) if (TL > 1) jez.trace(`${TAG} Our teleport buddy/ies is/are:`, bTokenArray)
+    else if (TL > 1) jez.trace(`${TAG} We have no teleport buddy.`)
+    //------------------------------------------------------------------------------------------------------------------------------
     // Build array of teleportation buddy/ies name(s)
     //
     let bTokenNames = []
@@ -99,7 +101,7 @@ async function doOnUse(options = {}) {
         bTokenNames.push(bTokenArray[i].name)
     }
     if (TL > 1) jez.trace(`${TAG} ${bTokenNames?.length} bTokenNames`, bTokenNames)
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Build list of tokens that can be damaged, exclude the caster and buddy or buddies
     //
     let damTokens = []
@@ -112,10 +114,10 @@ async function doOnUse(options = {}) {
         }
     }
     if (TL > 2) {
-        for (let i = 0; i < damTokens.length; i++) jez.trace(`${TAG} ${i+1} Damage ${damTokens[i].name}`)
-        for (let i = 0; i < bTokenArray.length; i++) jez.trace(`${TAG} ${i+1} Buddy  ${bTokenArray[i].name}`)
+        for (let i = 0; i < damTokens.length; i++) jez.trace(`${TAG} ${i + 1} Damage ${damTokens[i].name}`)
+        for (let i = 0; i < bTokenArray.length; i++) jez.trace(`${TAG} ${i + 1} Buddy  ${bTokenArray[i].name}`)
     }
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Perform the teleport
     //
     if (TL > 2) jez.trace(`${TAG} ${aToken.name} before ==> {${aToken.x}, ${aToken.y}} center`, aToken.center)
@@ -128,12 +130,12 @@ async function doOnUse(options = {}) {
     }
     if (TL > 2) jez.trace(`${TAG} ${aToken.name} after ===> {${NEW_LOC?.x}, ${NEW_LOC?.y}} center`, NEW_LOC)
 
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Fire off the damage element at the DAM_LOCATION
     //
     damageVFX(DAM_LOCATION)
     inflictDamage(damTokens, { traceLvl: TL })
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
     if (bTokenArray.length === 0) msg = `In a burst of flames <b>${aToken.name}</b> has teleported
@@ -149,7 +151,8 @@ async function doOnUse(options = {}) {
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Pick a teleportation buddy, returning the buddy token object or null
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+
 async function pickTeleportBuddies(options = {}) {
     const FUNCNAME = "pickTeleportBuddies(options={})";
     const FNAME = FUNCNAME.split("(")[0]
@@ -157,7 +160,7 @@ async function pickTeleportBuddies(options = {}) {
     const TL = options.traceLvl ?? 0
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     //
     //
     const queryTitle = "Select Willing Creature(s) to Teleport";
@@ -167,11 +170,11 @@ async function pickTeleportBuddies(options = {}) {
     <p>The using player needs to make sure each creature selected is <i>willing</i>.</p>`;
     let adjTokNames = [];
     let buddyObjArray = [];
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     //
     //
     let ADJ_TOK_OBJS = await jez.inRangeTargets(aToken, 8, { direction: "o2t", traceLvl: 0, chkSight: true });
-    if (TL > 1) jez.trace(`${TAG} `,ADJ_TOK_OBJS)
+    if (TL > 1) jez.trace(`${TAG} `, ADJ_TOK_OBJS)
     if (TL > 1) jez.trace(`${TAG} ${ADJ_TOK_OBJS.length} Adjacent Token Objects`, ADJ_TOK_OBJS);
     if (!ADJ_TOK_OBJS || ADJ_TOK_OBJS.length === 0) {
         if (TL > 1) jez.trace(`${TAG} No effectable targets in range`, "i");
@@ -198,9 +201,9 @@ async function pickTeleportBuddies(options = {}) {
     return buddyObjArray
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * requires Warpgate, Sequencer, and JB2A patreon module
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+
 async function doTeleport(aToken, bTokenArray, options = {}) {
     const FUNCNAME = "doTeleport(aToken, bTokenArray, options = {})";
     const FNAME = FUNCNAME.split("(")[0]
@@ -209,34 +212,34 @@ async function doTeleport(aToken, bTokenArray, options = {}) {
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'aToken', aToken,
         'bTokenArray', bTokenArray, "options", options);
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Function variables
     //
     let markerName = ""
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Pick spot for the active token
     //
     let destination = await teleport(aToken, aToken.center, MAX_DISTANCE)
     if (TL > 1) jez.trace(`${TAG} First teleport spot picked`, destination)
     if (!destination) return null
     markerName = `${MACRO}-${aToken.id}-${destination.x}x-${destination.y}y-0`
-    destinantionVFX(destination, markerName, VFX_PRIME_TARGET)
+    if (bTokenArray.length > 0) destinantionVFX(destination, markerName, VFX_PRIME_TARGET)
     //destVFXNames.push(markerName)
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Pick spot for the buddy token(s), if any
     //
     if (bTokenArray.length > 0) {
         for (let i = 0; i < bTokenArray.length; i++) {
             let bDestination = await teleport(bTokenArray[i], destination, 5)
             if (TL > 1) jez.trace(`${TAG} ${i + 1} teleport spot picked`, bDestination)
-            markerName = `${MACRO}-${bTokenArray[i].id}-${bDestination.x}x-${bDestination.y}y-${i+1}`
+            markerName = `${MACRO}-${bTokenArray[i].id}-${bDestination.x}x-${bDestination.y}y-${i + 1}`
             destinantionVFX(bDestination, markerName, VFX_SECOND_TARGET)
         }
     }
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Delete the temporary targeting markers, if any
     //
-    if (TL > 1) jez.trace(`${TAG} Delete the temporary marker VFX`,destVFXNames);
+    if (TL > 1) jez.trace(`${TAG} Delete the temporary marker VFX`, destVFXNames);
     for (let i = 0; i < destVFXNames.length; i++) {
         if (TL > 1) jez.trace(`${TAG} Deleting #${i} ${destVFXNames[i]}`);
         // await jez.wait(2000)
@@ -244,11 +247,11 @@ async function doTeleport(aToken, bTokenArray, options = {}) {
         let rc = await Sequencer.EffectManager.endEffects({ name: destVFXNames[i] });
         if (TL > 1) jez.trace(`${TAG} Sequencer.EffectManager.endEffects returned`, rc)
     }
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Thats all folks
     //
     return (destination)
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Local teleport function
     //
     async function teleport(token5e, origin, range) {
@@ -292,7 +295,8 @@ async function doTeleport(aToken, bTokenArray, options = {}) {
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is invoked each round by DAE
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+
 async function runVFX(token, location, options = {}) {
     const FUNCNAME = "runVFX(options={})";
     const FNAME = FUNCNAME.split("(")[0]
@@ -301,7 +305,7 @@ async function runVFX(token, location, options = {}) {
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'token', token,
         'location', location, "options", options);
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Comments, perhaps
     //
     // conjuration `jb2a.magic_signs.circle.02.conjuration.intro.${COLOR}`
@@ -342,7 +346,8 @@ async function runVFX(token, location, options = {}) {
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Play the damage VFX
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+
 async function damageVFX(coords) {
     // Fireball VFX file : jb2a.fireball.explosion.orange
     await jez.wait(1000)
@@ -359,8 +364,9 @@ async function damageVFX(coords) {
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Start the destinantion space targeted VFX
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- async function destinantionVFX(coords, VFX_NAME, VFX_FILE) {
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+
+async function destinantionVFX(coords, VFX_NAME, VFX_FILE) {
     // Fireball VFX file : jb2a.fireball.explosion.orange
     destVFXNames.push(VFX_NAME)
     new Sequence()
@@ -375,9 +381,10 @@ async function damageVFX(coords) {
         .persist()
         .play()
 }
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is invoked each round by DAE
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+
 async function inflictDamage(targetTokens, options = {}) {
     const FUNCNAME = "doEach(options={})";
     const FNAME = FUNCNAME.split("(")[0]
@@ -386,7 +393,7 @@ async function inflictDamage(targetTokens, options = {}) {
     if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
     if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'targetTokens', targetTokens,
         "options", options);
-    //-----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Some handy function variables and constant
     //
     const FLAVOR = "Does this provide flavor?"
@@ -395,7 +402,7 @@ async function inflictDamage(targetTokens, options = {}) {
     let damaged = []
     let madeNames = ""
     let failNames = ""
-    //----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Roll saves weeding out any immunes
     //
     let targetCount = targetTokens.length
@@ -417,13 +424,13 @@ async function inflictDamage(targetTokens, options = {}) {
         }
     }
     if (TL > 1) jez.trace(`${TAG} Results`, "Made Saves", madeSaves, "Failed Saves", failSaves)
-    //----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Roll the damage Dice
     //
     let damRoll = new Roll(`${DAM_DICE}`).evaluate({ async: false });
     if (TL > 1) jez.trace(`${TAG} Damage Rolled ${damRoll.total}`, damRoll)
     game.dice3d?.showForRoll(damRoll);
-    //----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Apply damage to those that failed saving throws
     //
     if (TL > 2) jez.trace(`${TAG} Applying damage to failed saves`)
@@ -431,13 +438,7 @@ async function inflictDamage(targetTokens, options = {}) {
         { flavor: `Damage from ${aItem.name}`, itemCardId: args[0].itemCardId });
     const FULL_DAM = damRoll.total
     MidiQOL.applyTokenDamage([{ damage: FULL_DAM, type: DAM_TYPE }], FULL_DAM, new Set(failSaves), aItem, new Set());
-    //----------------------------------------------------------------------------------
-    // Apply damage to those that made saving throws
-    //
-    // if (TL > 2) jez.trace(`${TAG} Applying damage to made saves`)
-    // const HALF_DAM = Math.floor(damRoll.total / 2)
-    // MidiQOL.applyTokenDamage([{ damage: HALF_DAM, type: DAM_TYPE }], HALF_DAM, new Set(madeSaves), aItem, new Set());
-    //----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
     // Add results to chat card
     //
     let chatMessage = await game.messages.get(args[args.length - 1].itemCardId);
