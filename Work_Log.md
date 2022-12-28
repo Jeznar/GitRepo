@@ -491,6 +491,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.24 **Firey Teleportation**: Skip placing targeting marker if no buddies being teleported.
 
+22.12.28 **Mirror Image** rewritten replacing ASE implementation. Uses world macro and a run as GM to pull off shenanigans.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

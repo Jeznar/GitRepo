@@ -1,7 +1,7 @@
 {
   "name": "Mirror Image",
   "type": "spell",
-  "img": "systems/dnd5e/icons/spells/wind-grasp-magenta-2.jpg",
+  "img": "icons/magic/defensive/illusion-evasion-echo-purple.webp",
   "data": {
     "description": {
       "value": "<p>Three illusory duplicates of yourself appear in your space. Until the spell ends, the duplicates move with you and mimic your actions, shifting position so it's impossible to track which image is real. You can use your action to dismiss the illusory duplicates.</p>\n<p>Each time a creature targets you with an attack during the spell's duration, roll a [[/r 1d20 # Mirror Image Check]] to determine whether the attack instead targets one of your duplicates.</p>\n<p>If you have three duplicates, you must roll a 6 or higher to change the attack's target to a duplicate. With two duplicates, you must roll an 8 or higher. With one duplicate, you must roll an 11 or higher.</p>\n<p>A duplicate's AC equals 10 + your Dexterity modifier. If an attack hits a duplicate, the duplicate is destroyed. A duplicate can be destroyed only by an attack that hits it. It ignores all other damage and effects. The spell ends when all three duplicates are destroyed.</p>\n<p>A creature is unaffected by this spell if it can't see, if it relies on senses other than sight, such as blindsight, or if it can perceive illusions as false, as with truesight.</p>",
@@ -15,14 +15,14 @@
       "condition": ""
     },
     "duration": {
-      "value": null,
-      "units": ""
+      "value": 1,
+      "units": "minute"
     },
     "target": {
       "value": null,
       "width": null,
       "units": "",
-      "type": ""
+      "type": "self"
     },
     "range": {
       "value": null,
@@ -43,7 +43,10 @@
     "actionType": "other",
     "attackBonus": 0,
     "chatFlavor": "",
-    "critical": null,
+    "critical": {
+      "threshold": null,
+      "damage": null
+    },
     "damage": {
       "parts": [],
       "versatile": "",
@@ -73,16 +76,75 @@
       "supply": 0
     },
     "preparation": {
-      "mode": "prepared",
-      "prepared": true
+      "mode": "innate",
+      "prepared": false
     },
     "scaling": {
       "mode": "none",
       "formula": ""
-    }
+    },
+    "attunement": 0
   },
-  "effects": [],
-  "sort": 0,
+  "effects": [
+    {
+      "_id": "3d5v7zv2mzuwi2w4",
+      "changes": [
+        {
+          "key": "flags.jez.mirrorImage.count",
+          "mode": 5,
+          "value": "3",
+          "priority": "50"
+        },
+        {
+          "key": "macro.itemMacro",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Spells/2nd_Level/mirror-image/mirror-image-3.jpg",
+      "label": "Mirror Image",
+      "transfer": false,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": false
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": null,
+      "selectedKey": [
+        "__",
+        "macro.itemMacro"
+      ]
+    }
+  ],
   "flags": {
     "enhancedcombathud": {
       "set1p": false,
@@ -90,35 +152,48 @@
       "set3p": false
     },
     "midi-qol": {
-      "onUseMacroName": ""
+      "onUseMacroName": "[postActiveEffects]ItemMacro",
+      "effectActivation": false,
+      "forceCEOn": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
     },
     "core": {
       "sourceId": "Item.NGJhOTg0ZWQyYTRj"
     },
-    "advancedspelleffects": {
-      "enableASE": true,
-      "spellEffect": "Mirror Image",
-      "effectOptions": {
-        "castEffectColor": "blue",
-        "runeColor": "0x00b4ff",
-        "orbitRadius": 40,
-        "orbitDuration": 24,
-        "imageOpacity": 0.4,
-        "imageDestroyDelay": 2,
-        "imageDestroyEffectColor": "blue",
-        "castSound": "",
-        "castSoundDelay": 0,
-        "castVolume": 1,
-        "imageDestroySound": "",
-        "imageDestroySoundDelay": 0,
-        "imageDestroyVolume": 1
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Mirror Image",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Mirror_Image_ItemMacro.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * This macro works in concert with Mirror_Image_World to implement the Mirror Images spell.  This one has the following tasks:\n * \n * - Launch the VFX images around the caster \n * - Create a spell cast message\n * - Backstop the image cleanup when spell drops\n * \n * 12/28/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst EFFECTNAME = 'Mirror_Image'\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Delete any orphan images from earlier casting\n    //\n    await Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-1`, object: aToken });\n    await Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-2`, object: aToken });\n    await Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-3`, object: aToken });\n    await jez.wait(1500) // Protection from deleting our new image\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Startup thoes images\n    //\n    runVFX(aToken, `${EFFECTNAME}-1`, { clockwise: true, flip: true })\n    await jez.wait(Math.floor(Math.random() * 500) + 500)\n    runVFX(aToken, `${EFFECTNAME}-2`, { clockwise: false, flip: false })\n    await jez.wait(Math.floor(Math.random() * 500) + 500)\n    runVFX(aToken, `${EFFECTNAME}-3`, { flip: true })\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    msg = `${aToken.name} is surrounded by three illusory duplicates that may be hit any time the caster is targeted with a single \n    target spell.`\n    postResults(msg)\n    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOff(options = {}) {\n    const FUNCNAME = \"doOff(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Delete the images if they are still bouncing around.\n    //\n    Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-3`, object: aToken });\n    await jez.wait(750)\n    Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-2`, object: aToken });\n    await jez.wait(750)\n    Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-1`, object: aToken });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    //\n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n    return;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Create three VFX images orbiting the caster\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\n async function runVFX(target, vfxname, options = {}) {\n    const FUNCNAME = \"runVFX(target, vfxname, options = {})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    const CLOCKWISE = options.clockwise ?? Math.floor(Math.random() * 2)\n    const FLIP = options.flip ?? (Math.floor(Math.random() * 2)) ? true : false\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME}`, 'target', target, 'vfxname', vfxname, \"options\", options);\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Set values to control the VFX\n    //\n    const ANGLE_START = (CLOCKWISE) ? 0 : 360\n    const ANGLE_STOP = (CLOCKWISE) ? 360 : 0\n    const ORBIT_PERIOD = Math.floor(Math.random() * 2000) + 2000\n    const SCALE = (Math.floor(Math.random() * 3) - 1) / 10 + 0.8\n    const OPACITY = (Math.floor(Math.random() * 4) - 2) / 10 + 0.6\n    const VFX_FILE = target.data.img\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Fire up ye'ole VFX\n    //\n    const seq = new Sequence().effect()\n        .scaleToObject(SCALE)\n        .opacity(OPACITY)\n        .persist()\n        .name(vfxname)\n        .file(VFX_FILE)\n        .mirrorX(FLIP)\n        .attachTo(target)\n        .attachTo(token)\n        .zeroSpriteRotation(true)\n        .loopProperty(\"spriteContainer\", \"rotation\", { from: ANGLE_START, to: ANGLE_STOP, duration: ORBIT_PERIOD })\n        .spriteOffset({ x: 0.4 }, { gridUnits: true })\n        .fadeIn(500)\n        .fadeOut(150)\n    await seq.play()\n    //------------------------------------------------------------------------------------------------------------------------------\n    // Update item in side bar, by calling a macro from this macro\n    //\n    jez.log(`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
       }
     },
     "exportSource": {
-      "world": "travels-in-barovia",
+      "world": "travels-in-barovia-ce",
       "system": "dnd5e",
-      "coreVersion": "0.8.9",
-      "systemVersion": "1.5.3"
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
     }
   }
 }
