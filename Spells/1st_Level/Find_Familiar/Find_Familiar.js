@@ -1,4 +1,4 @@
-const MACRONAME = "Find_Familiar.1.8.js"
+const MACRONAME = "Find_Familiar.1.9.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Look in the sidebar for creatures that can serve as fams and provide a list of options for
  * the find fam spell. Then, execute the summon with jez.spawnAt (WarpGate)
@@ -22,10 +22,11 @@ const MACRONAME = "Find_Familiar.1.8.js"
  * 09/02/22 1.6 Add support for CHAIN_MASTER_VOICE
  * 09/03/22 1.7 Change the disposition of familiar to match the summoner's disposition
  * 12/09/22 1.8 Remove extra macro.itemmacro that causes error on familiar dismissal
+ * 02/06/23 1.9 Add a wait statement that avoids a key doesn't exist error
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
-const TL = 0;                               // Trace Level for this macro
+const TL = 5;                               // Trace Level for this macro
 const FAM_FLDR = "Familiars"
 const FAM_FLDR_CHAIN = "Familiars Pact of the Chain"
 const PACT_OF_THE_CHAIN = "Pact of the Chain"
@@ -278,6 +279,7 @@ async function callBack1(itemSelected) {
         templateName: itemSelected,         // Name of the actor in the actor directory
         traceLvl: 0
     }
+    await jez.wait(100)                     // Short deleay here prevents a doesn't exist error v1.9
     //-----------------------------------------------------------------------------------------------
     // If a temp ability to swap senses for this familiar exists, delete it
     //

@@ -1,0 +1,152 @@
+{
+  "name": "Resilient (Intelligence)",
+  "type": "feat",
+  "img": "Icons_JGB/Feats/Resilience/Resilience-INT.png",
+  "data": {
+    "description": {
+      "value": "<p>This feat grants the following benefits:</p>\n<ul>\n<li>Increase the chosen ability score by 1, to a maximum of 20.</li>\n<li>You gain proficiency in saving throws using the chosen ability.</li>\n</ul>\n<hr />\n<p><strong>FoundryVTT</strong>: This is automated - adding the feat's item to a character sheet will provide the named benefits.  It does not alter the original character sheet data.</p>",
+      "chat": "Increase your DEX score by 1 and you gain proficiency in DEX saving throws.\n\n",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    }
+  },
+  "effects": [
+    {
+      "_id": "jnvorujxmte0ttz0",
+      "changes": [
+        {
+          "key": "data.abilities.dex.value",
+          "mode": 2,
+          "value": "+1",
+          "priority": "20"
+        },
+        {
+          "key": "flags.midi-qol.advantage.ability.save.dex",
+          "mode": 2,
+          "value": "0",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Feats/Resilience/Resilience-INT.png",
+      "label": "Resilient (Intelligence)",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": [
+        "data.abilities.dex.value",
+        "flags.midi-qol.advantage.ability.save.dex"
+      ]
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "featId": 67,
+      "prerequisites": []
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.feats.4cUk3Z2vN50ax9Lt"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

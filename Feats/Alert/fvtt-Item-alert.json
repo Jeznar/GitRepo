@@ -1,0 +1,144 @@
+{
+  "name": "Alert",
+  "type": "feat",
+  "img": "Icons_JGB/Feats/Alert/Alert.png",
+  "data": {
+    "description": {
+      "value": "<p>Always on the lookout for danger, you gain the following benefits:</p>\n<ul>\n<li>You gain a +5 bonus to initiative.</li>\n<li>You can't be surprised while you are conscious.</li>\n<li>Other creatures don’t gain advantage on attack rolls against you as a result of being unseen by you.</li>\n</ul>\n<hr />\n<p><strong>FoundryVTT</strong>: The first benefit is automated, others handled manually.</p>",
+      "chat": "You gain a +5 bonus to initiative, you can't be surprised while you are conscious, and other creatures don’t gain advantage on attack rolls against you as a result of being unseen by you.\n\n",
+      "unidentified": ""
+    },
+    "source": "Player's Handbook pg 165",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "ability": null,
+    "actionType": "",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [
+    {
+      "_id": "94e6dtyoiwls0lad",
+      "changes": [
+        {
+          "key": "data.attributes.init.bonus",
+          "mode": 2,
+          "value": "+5",
+          "priority": "20"
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null
+      },
+      "icon": "Icons_JGB/Feats/Alert/Alert.png",
+      "label": "Alert",
+      "transfer": true,
+      "flags": {
+        "dae": {
+          "selfTarget": false,
+          "stackable": "none",
+          "durationExpression": "",
+          "macroRepeat": "none",
+          "specialDuration": [],
+          "transfer": true
+        },
+        "core": {
+          "statusId": ""
+        },
+        "dnd5e-helpers": {
+          "rest-effect": "Ignore"
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "radius": null,
+          "alignment": "",
+          "type": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false
+        }
+      },
+      "tint": "",
+      "selectedKey": "data.attributes.init.bonus"
+    }
+  ],
+  "flags": {
+    "ddbimporter": {
+      "featId": 12,
+      "prerequisites": []
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.feats.DVZilx8RuBB4Rbqi"
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

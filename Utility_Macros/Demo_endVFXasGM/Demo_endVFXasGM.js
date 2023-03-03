@@ -62,33 +62,17 @@ async function doOnUse(options = {}) {
     // await Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-1`, object: tToken });
     // await Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-2`, object: tToken });
     // await Sequencer.EffectManager.endEffects({ name: `${EFFECTNAME}-3`, object: tToken });
-    endVFXasGM({ name: `${EFFECTNAME}-3`, object: tToken, traceLvl: 5 })
+    // endVFXasGM({ name: `${EFFECTNAME}-3`, object: tToken, traceLvl: 5 })
     // endVFXasGM({ name: `${EFFECTNAME}-2`, object: tToken, traceLvl: 5 })
     // endVFXasGM({ name: `${EFFECTNAME}-1`, object: tToken, traceLvl: 5 })
+
+    const GM_MACRO = jez.getMacroRunAsGM("endVFXasGM") // This call will display ui.notification.error
+    await GM_MACRO.execute({ name: `${EFFECTNAME}-1}`, object: tToken.id, traceLvl: 5 })
+    await GM_MACRO.execute({ name: `${EFFECTNAME}-2}`, object: tToken.id, traceLvl: 5 })
+    await GM_MACRO.execute({ name: `${EFFECTNAME}-3}`, object: tToken.id, traceLvl: 5 })
+
     //-------------------------------------------------------------------------------------------------------------------------------
     // 
     if (TL > 0) jez.trace(`${TAG} --- Finished ---`);
-    return true;
-}
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
- * Perform the code that runs when this macro is invoked each round by DAE
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
-async function endVFXasGM(parms) {
-    const FUNCNAME = "endVFXasGM(parms)";
-    const FNAME = FUNCNAME.split("(")[0]
-    const TAG = `${MACRO} ${FNAME} |`
-    const TL = parms.traceLvl ?? 0
-    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
-    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "parms", parms);
-    //-------------------------------------------------------------------------------------------------------------------------------
-    // Get the Macro loaded
-    //
-    const GM_MACRO = jez.getMacroRunAsGM("endVFXasGM") // This call will display ui.notification.error
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //
-    await GM_MACRO.execute(parms)
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //
-    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return true;
 }
