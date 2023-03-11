@@ -493,6 +493,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.12.28 **Mirror Image** rewritten replacing ASE implementation. Uses world macro and a run as GM to pull off shenanigans.
 
+23.03.11 **Witch's Glare** created a modified version of Kibble's Evil Eye for Occultist.  Places effect like bane or immune.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

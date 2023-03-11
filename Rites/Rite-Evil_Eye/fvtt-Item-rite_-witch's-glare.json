@@ -1,0 +1,124 @@
+{
+  "name": "Rite: Witch's Glare",
+  "type": "feat",
+  "img": "Icons_JGB/Rites/Rite-Evil_Eye/Evil_Eye.png",
+  "data": {
+    "description": {
+      "value": "<p>You gain the ability to lay the most unsettling glare upon a creature.</p>\n<p>As a <strong>reaction</strong> to a creature within 15 feet attacking you, you can unleash a terrifying glare at them (occuring after the attack completes). The target creature must make a <strong>WIS Save </strong>or suffers the effect of Bane until the end of your next turn.</p>\n<p>Once a creature has succeeded on a save against this ability, they are immune to it for 24 hours.</p>\n<p>Additionally, you gain proficiency in the Intimidation skill.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: The owning creature must target the attacker before using this ability as a reaction, other aspects are automated.</p>\n<p>Manually add proficency in the Intimidation skill to the owning actor. </p>\n<p> </p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "reaction",
+      "cost": 1,
+      "condition": "Use versus creature that just completed attack against you"
+    },
+    "duration": {
+      "value": 1,
+      "units": "round"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 15,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "Gazes upon attacker, attempting to unnerve him/her/it.",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "Occultist (Witch)",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": null
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Rite: Witch's Glare",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Rite-Evil_Eye.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Home Brewed modification of Kibble's Occultist Evil Eye.  This implementation inflicts Bane instead of Frightened to avoid \n * further overlap of that ability. Immunity implemented as till end of next long rest or next new day.\n * \n *   You gain the ability to lay the most unsettling gaze upon a creature. As a reaction to a creature within 15 feet attacking \n *   you, you can unleash a terrifying glare at them (occuring after the attack completes). The target creature must make a Wisdom \n *   saving throw against your spell save DC or become frightened of you until the end of your next turn. \"Once a creature has \n *   succeeded on a save against this ability, they are immune to it for 24 hours.\n * \n *   Additionally, you gain proficiency in the Intimidation skill.\n * \n * Basic outline of implementation\n * -------------------------------\n * o Add proficency with Intimidation manually to the owning actor\n * o Wis Saving throw implemented on the item card\n * o OnUse Function \n *   - Check for immunity effect on the target, if found exit with message\n *   - Check saving throw, if it succeeded, Apply immunity DAE effect, exit with message\n *   - If failed apply the Evil Eye effect (Bane till end of caster's next turn)\n *   - Post appropriate message\n * \n * 03/11/23 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\nconst GLARE_IMMUNE_NAME = `Witch's Glare Immune`\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\n\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function preCheck() {\n    if (args[0].targets.length !== 1)\n        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, 'w')\n    return true\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    if (!await preCheck()) return (false);\n    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any\n    let tActor = tToken?.actor;\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Is the target immune (has the appropriate DAE immunity effect)\n    //\n    const GLARE_IMMUNE = await tToken?.actor?.effects?.find(ef => ef?.data?.label === GLARE_IMMUNE_NAME\n             && ef?.data?.origin ===  L_ARG.uuid)\n    if (TL > 1) jez.trace(`${TAG} GLARE_IMMUNE`, GLARE_IMMUNE)\n    if (GLARE_IMMUNE) {\n        msg = `${tToken.name} is immune to ${tToken.name};s ${aItem.name}.`;\n        postResults(msg);\n        return // Exiting if immune\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Did the target Make Save?\n    //\n    if (args[0].failedSaves.length !== 1) {\n        msg = `${tToken.name} made save: no effect and ${tToken.name} is now immune to ${aItem.name}.`;\n        postResults(msg);\n        // Add the GLARE_IMMUNE_NAME effect to the target\n        const CE_DESC = `Immune to ${aToken.name}'s ${aItem.name} until next long rest or day`\n        let effectData = {\n            label: GLARE_IMMUNE_NAME,\n            icon: 'Icons_JGB/Rites/Rite-Evil_Eye/Evil_Eye_Immune.png',\n            origin: L_ARG.uuid,\n            disabled: false,\n            flags: {\n                convenientDescription: CE_DESC,\n                dae: { specialDuration: [\"longRest\", \"newDay\"] },\n                core: { statusId: 'Force Display'}\n            },\n        };\n        await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: [effectData] });\n        return; // Exiting if save was made\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Apply the Evil Eye effect (Bane till end of caster's next turn)\n    //\n    const CE_DESC = `Suffers -1d4-2 on attack and save attempts`\n    let effectData = {\n        label: `${aToken.name}'s Glare`,\n        icon: aItem.img,\n        origin: L_ARG.uuid,\n        disabled: false,\n        flags: {\n            convenientDescription: CE_DESC,\n            dae: { specialDuration: [\"turnEndSource\"] },\n            core: { statusId: 'Force Display'}\n        },\n        duration: { seconds: 12, startTime: game.time.worldTime },\n        changes: [\n            { key: `data.bonuses.abilities.save`, mode: jez.ADD, value: '-1d4 -2', priority: 20 },\n            { key: `data.bonuses.mwak.attack`, mode: jez.ADD, value: '-1d4 -2', priority: 20 },\n            { key: `data.bonuses.msak.attack`, mode: jez.ADD, value: '-1d4 -2', priority: 20 },\n            { key: `data.bonuses.rwak.attack`, mode: jez.ADD, value: '-1d4 -2', priority: 20 },\n            { key: `data.bonuses.rsak.attack`, mode: jez.ADD, value: '-1d4 -2', priority: 20 },\n        ]\n    };\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tToken.actor.uuid, effects: [effectData] });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    msg = `${aToken.name} suffers -1d4-2 on attack and save attempts until end of ${aToken.name}'s next turn.`\n    postResults(msg)\n    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
