@@ -399,7 +399,7 @@
     "lockRotation": false,
     "rotation": 0,
     "alpha": 1,
-    "vision": true,
+    "vision": false,
     "dimSight": 0,
     "brightSight": 0,
     "dimLight": 0,
@@ -441,6 +441,13 @@
           "distance": null,
           "square": false
         }
+      },
+      "tagger": {
+        "tags": ""
+      },
+      "monks-little-details": {
+        "token-combat-animation": "",
+        "token-highlight": ""
       }
     },
     "randomImg": false,
@@ -469,6 +476,50 @@
       "darkness": {
         "min": 0,
         "max": 1
+      },
+      "color": null
+    },
+    "actor": {
+      "data": {
+        "flags": {
+          "conditional-visibility": {
+            "blindsight": {
+              "visionLevelValue": 0
+            },
+            "blinded": {
+              "visionLevelValue": 0
+            },
+            "darkvision": {
+              "visionLevelValue": 0
+            },
+            "devilssight": {
+              "visionLevelValue": 0
+            },
+            "seeinvisible": {
+              "visionLevelValue": 0
+            },
+            "tremorsense": {
+              "visionLevelValue": 0
+            },
+            "truesight": {
+              "visionLevelValue": 0
+            },
+            "dataforcevisible": false,
+            "datausestealthpassive": false,
+            "hidden": {
+              "visionLevelValue": 0
+            },
+            "indarkness": {
+              "visionLevelValue": 0
+            },
+            "invisible": {
+              "visionLevelValue": 0
+            },
+            "obscured": {
+              "visionLevelValue": 0
+            }
+          }
+        }
       }
     }
   },
@@ -577,12 +628,12 @@
     },
     {
       "_id": "5TcKbEWgTrEMYGvU",
-      "name": "Shortsword",
+      "name": "Shortsword (Fey)",
       "type": "weapon",
       "img": "icons/weapons/swords/sword-guard-brown.webp",
       "data": {
         "description": {
-          "value": "<p>Fey - Fuming thrusts its shortsword toward its target.</p>",
+          "value": "<p>Fey - Fuming thrusts its shortsword toward its target.</p>\n<p><em>Melee Weapon Attack</em>:</p>\n<ul>\n<li>Summoner's&nbsp;spell attack modifier to hit,</li>\n<li>Reach 5 ft.,</li>\n<li>One target.&nbsp;</li>\n<li>Hit: 1d6 + 3 + the spell&rsquo;s level piercing damage + 1d6 force damage</li>\n</ul>",
           "chat": "",
           "unidentified": ""
         },
@@ -616,7 +667,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": ""
         },
         "consume": {
@@ -675,18 +726,14 @@
           "foc": false,
           "ada": false,
           "mgc": false,
-          "sil": false,
-          "nodam": false,
-          "fulldam": false,
-          "halfdam": false,
-          "critOther": false
+          "sil": false
         },
         "proficient": true,
         "preparation": null
       },
       "effects": [],
       "folder": null,
-      "sort": 10000,
+      "sort": 100000,
       "permission": {
         "default": 0,
         "OWMxOGU2MjdiMzhi": 3,
@@ -980,7 +1027,8 @@
   "effects": [],
   "flags": {
     "core": {
-      "sheetClass": ""
+      "sheetClass": "",
+      "sourceId": "Actor.IYbT2YoSrwFYmCw5"
     },
     "gm-notes": {},
     "exportSource": {

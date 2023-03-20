@@ -399,7 +399,7 @@
     "lockRotation": false,
     "rotation": 0,
     "alpha": 1,
-    "vision": true,
+    "vision": false,
     "dimSight": 0,
     "brightSight": 0,
     "dimLight": 0,
@@ -441,6 +441,13 @@
           "distance": null,
           "square": false
         }
+      },
+      "tagger": {
+        "tags": ""
+      },
+      "monks-little-details": {
+        "token-combat-animation": "",
+        "token-highlight": ""
       }
     },
     "randomImg": false,
@@ -469,6 +476,50 @@
       "darkness": {
         "min": 0,
         "max": 1
+      },
+      "color": null
+    },
+    "actor": {
+      "data": {
+        "flags": {
+          "conditional-visibility": {
+            "blindsight": {
+              "visionLevelValue": 0
+            },
+            "blinded": {
+              "visionLevelValue": 0
+            },
+            "darkvision": {
+              "visionLevelValue": 0
+            },
+            "devilssight": {
+              "visionLevelValue": 0
+            },
+            "seeinvisible": {
+              "visionLevelValue": 0
+            },
+            "tremorsense": {
+              "visionLevelValue": 0
+            },
+            "truesight": {
+              "visionLevelValue": 0
+            },
+            "dataforcevisible": false,
+            "datausestealthpassive": false,
+            "hidden": {
+              "visionLevelValue": 0
+            },
+            "indarkness": {
+              "visionLevelValue": 0
+            },
+            "invisible": {
+              "visionLevelValue": 0
+            },
+            "obscured": {
+              "visionLevelValue": 0
+            }
+          }
+        }
       }
     }
   },
@@ -572,226 +623,6 @@
         },
         "core": {
           "sourceId": "Item.ZDc5ODM4ZDRhNWZj"
-        }
-      }
-    },
-    {
-      "_id": "5TcKbEWgTrEMYGvU",
-      "name": "Shortsword",
-      "type": "weapon",
-      "img": "icons/weapons/swords/sword-guard-brown.webp",
-      "data": {
-        "description": {
-          "value": "<p>Fey - Tricksy thrusts its shortsword toward its target.</p>",
-          "chat": "",
-          "unidentified": ""
-        },
-        "source": "",
-        "quantity": 1,
-        "weight": 1,
-        "price": 0,
-        "attunement": 0,
-        "equipped": true,
-        "rarity": "",
-        "identified": true,
-        "activation": {
-          "type": "action",
-          "cost": 1,
-          "condition": ""
-        },
-        "duration": {
-          "value": 0,
-          "units": ""
-        },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
-        "range": {
-          "value": 5,
-          "long": null,
-          "units": "ft"
-        },
-        "uses": {
-          "value": 0,
-          "max": 0,
-          "per": ""
-        },
-        "consume": {
-          "type": "",
-          "target": "",
-          "amount": null
-        },
-        "ability": "dex",
-        "actionType": "mwak",
-        "attackBonus": "0",
-        "chatFlavor": "",
-        "critical": {
-          "threshold": null,
-          "damage": ""
-        },
-        "damage": {
-          "parts": [
-            [
-              "1d6 + @mod",
-              "piercing"
-            ]
-          ],
-          "versatile": ""
-        },
-        "formula": "",
-        "save": {
-          "ability": "",
-          "dc": null,
-          "scaling": "spell"
-        },
-        "armor": {
-          "value": 10
-        },
-        "hp": {
-          "value": 0,
-          "max": 0,
-          "dt": null,
-          "conditions": ""
-        },
-        "weaponType": "martialM",
-        "baseItem": "",
-        "properties": {
-          "amm": false,
-          "fir": false,
-          "fin": false,
-          "hvy": false,
-          "lgt": false,
-          "lod": false,
-          "rch": false,
-          "rel": false,
-          "spc": false,
-          "thr": false,
-          "two": false,
-          "ver": false,
-          "ret": false,
-          "foc": false,
-          "ada": false,
-          "mgc": false,
-          "sil": false,
-          "nodam": false,
-          "fulldam": false,
-          "halfdam": false,
-          "critOther": false
-        },
-        "proficient": true,
-        "preparation": null
-      },
-      "effects": [],
-      "folder": null,
-      "sort": 10000,
-      "permission": {
-        "default": 0,
-        "OWMxOGU2MjdiMzhi": 3,
-        "ZjFlOWYxZjM5ZTZj": 3
-      },
-      "flags": {
-        "ddbimporter": {
-          "dndbeyond": {
-            "type": "Shortsword",
-            "damage": {
-              "parts": []
-            },
-            "classFeatures": [],
-            "filterType": "Weapon",
-            "tags": [
-              "Damage",
-              "Combat"
-            ],
-            "sources": []
-          },
-          "id": 0,
-          "entityTypeId": 0,
-          "definitionEntityTypeId": 1782728300,
-          "definitionId": 30,
-          "originalName": "Shortsword"
-        },
-        "betterRolls5e": {
-          "quickDamage": {
-            "context": {
-              "0": ""
-            },
-            "value": {
-              "0": true
-            },
-            "altValue": {
-              "0": true
-            }
-          },
-          "quickVersatile": {
-            "altValue": true
-          },
-          "quickCharges": {
-            "value": {
-              "use": false,
-              "resource": true
-            },
-            "altValue": {
-              "use": false,
-              "resource": true
-            }
-          }
-        },
-        "magicitems": {
-          "enabled": false,
-          "equipped": false,
-          "attuned": false,
-          "charges": "0",
-          "chargeType": "c1",
-          "destroy": false,
-          "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
-          "rechargeable": false,
-          "recharge": "0",
-          "rechargeType": "t1",
-          "rechargeUnit": "r1",
-          "sorting": "l"
-        },
-        "cf": {
-          "id": "temp_god5dulh2zn"
-        },
-        "core": {
-          "sourceId": "Compendium.My-Shared-DDB.items.vcu6E9FxXVLKehxl"
-        },
-        "enhancedcombathud": {
-          "set1p": false,
-          "set2p": false,
-          "set3p": false,
-          "set1s": false,
-          "set2s": false,
-          "set3s": false
-        },
-        "midi-qol": {
-          "criticalThreshold": "20",
-          "onUseMacroName": "",
-          "fumbleThreshold": null,
-          "effectActivation": false
-        },
-        "betterCurses": {
-          "isCurse": false,
-          "curseName": "",
-          "formula": "",
-          "mwak": false,
-          "rwak": false,
-          "msak": false,
-          "rsak": false
-        },
-        "midiProperties": {
-          "nodam": false,
-          "fulldam": false,
-          "halfdam": false,
-          "rollOther": false,
-          "critOther": false,
-          "magicdam": false,
-          "magiceffect": false,
-          "concentration": false,
-          "toggleEffect": false
         }
       }
     },
@@ -1094,6 +925,25 @@
           },
           "targetToken": {
             "enable": false
+          },
+          "below": false,
+          "autoOverride": {
+            "enable": false
+          },
+          "version": 4,
+          "audio": {
+            "a01": {
+              "enable": false,
+              "file": "",
+              "delay": 0,
+              "volume": 0.25
+            },
+            "e01": {
+              "enable": false,
+              "file": "",
+              "delay": 0,
+              "volume": 0.25
+            }
           }
         },
         "enhancedcombathud": {
@@ -1137,7 +987,7 @@
               "author": "ZjFlOWYxZjM5ZTZj",
               "img": "icons/svg/dice-target.svg",
               "scope": "global",
-              "command": "const MACRONAME = \"Summoned_Darkness.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * This is an ability for the Tricksy Fey:\n * \n *   Immediately after using  Fey Step, a 5 foot radius sphere of darkness may be summoned into an adjacent space. The darkness \n *   remains until the end of your next turn.\n * \n * 12/17/22 0.1 Created from Magehand.0.7\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst MINION = \"Summoned Darkness, 5 Foot\"\nconst MINION_NAME = `Tricksy Darkness`\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function preCheck() {\n    if (args[0].targets.length !== 1)\n        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, 'w')\n    return true\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Portals need the same color for pre and post effects, so get that set here. Even though only used\n    // when we are doing portals.  This is needed to force the same choice for pre and post VFX.\n    //\n    const PORTAL_COLORS = [ \"Dark_Blue\", \"Dark_Green\", \"Dark_Purple\", \"Dark_Red\", \"Dark_RedYellow\", \"Dark_Yellow\" ]\n    let index = Math.floor((Math.random() * PORTAL_COLORS.length))\n    let portalColor = PORTAL_COLORS[index]\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Build the dataObject for our summon call\n    //\n    let argObj = {\n        defaultRange: 5,                   // Defaults to 30, but this varies per spell\n        duration: 4000,                     // Duration of the intro VFX\n        img: aItem.img,                     // Image to use on the summon location cursor\n        introTime: 250,                     // Amount of time to wait for Intro VFX\n        introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file\n        templateName: MINION, \n        minionName: MINION_NAME,\n        name: aItem.name,                   // Name of action (message only), typically aItem.name\n        outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file\n        source: aToken,                     // Coords for source (with a center), typically aToken\n        width: 1,                           // Width of token to be summoned, 1 is the default\n        traceLvl: TL                        // Trace level, matching calling function decent choice\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Set up Portal effect\n    //\n    argObj.duration = 4000\n    argObj.introTime = 250\n    argObj.introVFX = `~Portals/Portal_${portalColor}_H_400x400.webm`\n    argObj.outroVFX = `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`\n    if (TL > 2) for (let key in argObj) jez.trace(`${MACRO} | argObj.${key}`, argObj[key])\n    //-------------------------------------------------------------------------------------------------------------------------------\n    const SPAWN_ARRAY = await jez.spawnAt(MINION, aToken, aActor, aItem, argObj)\n    const DARKNESS_TOKEN_ID = SPAWN_ARRAY[0]\n    if (TL > 1) jez.trace(`${TAG} jez.spawnAt returned`,DARKNESS_TOKEN_ID)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Add an effect that expires at the end of the Fey's next turn (in combat) which will trigger doOff and delete the summoned\n    // darkness token.\n    //\n    const EXPIRE = [\"turnStart\", \"newDay\", \"longRest\", \"shortRest\"];\n    const CE_DESC = `Darkness lasts but only 6 seconds`\n    let effectData = {\n      label: aItem.name,\n      icon: aItem.img,\n      origin: L_ARG.uuid,\n      disabled: false,\n      duration: { seconds: 12, startTime: game.time.worldTime },\n      flags: { \n        dae: { macroRepeat: \"none\", specialDuration: EXPIRE }, \n        convenientDescription: CE_DESC \n      },\n      changes: [\n           { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${DARKNESS_TOKEN_ID}`, priority: 20 },\n      ]\n    };\n    if (TL > 1) jez.trace(`${FNAME} | effectData`,effectData);\n    if (TL > 3) jez.trace(`${FNAME} | MidiQOL.socket().executeAsGM(\"createEffects\"`,\"aToken.actor.uuid\",\n    aToken.actor.uuid,\"effectData\",effectData);\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });  \n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    msg = `Maybe say something useful...`\n    postResults(msg)\n    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n\n//-------------------------------------------------------------------------------------------------\n// Search for pre-existing magehand, if found, despawn it.\n//\n// let previousSummon = canvas.tokens.placeables.find(ef => ef.name === MINION_NAME)\n// if (previousSummon) warpgate.dismiss(previousSummon.id, game.scenes.viewed.id)\n\n\n\n//-------------------------------------------------------------------------------------------------\n// Post message\n//\n// let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n// msg = `<b>${aToken.name}</b> summons <b>${MINION_NAME}</b> to the field.`;\n// jez.addMessage(chatMessage, { color: jez.randomDarkColor(), fSize: 15, msg: msg, tag: \"saves\" })\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/",
+              "command": "const MACRONAME = \"Summoned_Darkness.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * This is an ability for the Tricksy Fey:\n * \n *   Immediately after using  Fey Step, a 5 foot radius sphere of darkness may be summoned into an adjacent space. The darkness \n *   remains until the end of your next turn.\n * \n * 12/17/22 0.1 Created from Magehand.0.7\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.trace(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst MINION = \"Summoned Darkness, 5 Foot\"\nconst MINION_NAME = `Tricksy Darkness`\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.trace(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Check the setup of things.  Post bad message and return false fr bad, true for ok!\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function preCheck() {\n    if (args[0].targets.length !== 1)\n        return jez.badNews(`Must target exactly one target.  ${args[0]?.targets?.length} were targeted.`, 'w')\n    return true\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.trace(\"postResults Parameters\", \"msg\", msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.trace(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Portals need the same color for pre and post effects, so get that set here. Even though only used\n    // when we are doing portals.  This is needed to force the same choice for pre and post VFX.\n    //\n    const PORTAL_COLORS = [ \"Dark_Blue\", \"Dark_Green\", \"Dark_Purple\", \"Dark_Red\", \"Dark_RedYellow\", \"Dark_Yellow\" ]\n    let index = Math.floor((Math.random() * PORTAL_COLORS.length))\n    let portalColor = PORTAL_COLORS[index]\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Build the dataObject for our summon call\n    //\n    let argObj = {\n        defaultRange: 5,                   // Defaults to 30, but this varies per spell\n        duration: 4000,                     // Duration of the intro VFX\n        img: aItem.img,                     // Image to use on the summon location cursor\n        introTime: 250,                     // Amount of time to wait for Intro VFX\n        introVFX: `~Portals/Portal_${portalColor}_H_400x400.webm`, // default introVFX file\n        templateName: MINION, \n        minionName: MINION_NAME,\n        name: aItem.name,                   // Name of action (message only), typically aItem.name\n        outroVFX: `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`, // default outroVFX file\n        source: aToken,                     // Coords for source (with a center), typically aToken\n        width: 1,                           // Width of token to be summoned, 1 is the default\n        traceLvl: TL                        // Trace level, matching calling function decent choice\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Set up Portal effect\n    //\n    argObj.duration = 4000\n    argObj.introTime = 250\n    argObj.introVFX = `~Portals/Portal_${portalColor}_H_400x400.webm`\n    argObj.outroVFX = `~Portals/Masked/Portal_${portalColor}_H_NoBG_400x400.webm`\n    if (TL > 2) for (let key in argObj) jez.trace(`${MACRO} | argObj.${key}`, argObj[key])\n    //-------------------------------------------------------------------------------------------------------------------------------\n    const SPAWN_ARRAY = await jez.spawnAt(MINION, aToken, aActor, aItem, argObj)\n    const DARKNESS_TOKEN_ID = SPAWN_ARRAY[0]\n    if (TL > 1) jez.trace(`${TAG} jez.spawnAt returned`,DARKNESS_TOKEN_ID)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Add an effect that expires at the end of the Fey's next turn (in combat) which will trigger doOff and delete the summoned\n    // darkness token.\n    //\n    const EXPIRE = [\"turnStart\", \"newDay\", \"longRest\", \"shortRest\"];\n    const CE_DESC = `Darkness lasts but only 6 seconds`\n    let effectData = {\n      label: aItem.name,\n      icon: aItem.img,\n      origin: L_ARG.uuid,\n      disabled: false,\n      duration: { seconds: 12, startTime: game.time.worldTime },\n      flags: { \n        dae: { macroRepeat: \"none\", specialDuration: EXPIRE }, \n        convenientDescription: CE_DESC \n      },\n      changes: [\n           { key: `macro.execute`, mode: jez.ADD, value: `DeleteTokenMacro ${DARKNESS_TOKEN_ID}`, priority: 20 },\n      ]\n    };\n    if (TL > 1) jez.trace(`${FNAME} | effectData`,effectData);\n    if (TL > 3) jez.trace(`${FNAME} | MidiQOL.socket().executeAsGM(\"createEffects\"`,\"aToken.actor.uuid\",\n    aToken.actor.uuid,\"effectData\",effectData);\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aToken.actor.uuid, effects: [effectData] });  \n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    msg = `${aToken.name} summons an inky pool of darkness into reality.`\n    postResults(msg)\n    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);\n    return true;\n}\n\n//-------------------------------------------------------------------------------------------------\n// Search for pre-existing magehand, if found, despawn it.\n//\n// let previousSummon = canvas.tokens.placeables.find(ef => ef.name === MINION_NAME)\n// if (previousSummon) warpgate.dismiss(previousSummon.id, game.scenes.viewed.id)\n\n\n\n//-------------------------------------------------------------------------------------------------\n// Post message\n//\n// let chatMessage = game.messages.get(args[args.length - 1].itemCardId);\n// msg = `<b>${aToken.name}</b> summons <b>${MINION_NAME}</b> to the field.`;\n// jez.addMessage(chatMessage, { color: jez.randomDarkColor(), fSize: 15, msg: msg, tag: \"saves\" })\n/***************************************************************************************************\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***************************************************************************************************/",
               "folder": null,
               "sort": 0,
               "permission": {
@@ -1146,6 +996,222 @@
               "flags": {}
             }
           }
+        }
+      }
+    },
+    {
+      "_id": "qGj3PaheCU9hijPo",
+      "name": "Shortsword (Fey)",
+      "type": "weapon",
+      "img": "icons/weapons/swords/sword-guard-brown.webp",
+      "data": {
+        "description": {
+          "value": "<p>Fey - Fuming thrusts its shortsword toward its target.</p>\n<p><em>Melee Weapon Attack</em>:</p>\n<ul>\n<li>Summoner's spell attack modifier to hit,</li>\n<li>Reach 5 ft.,</li>\n<li>One target. </li>\n<li>Hit: 1d6 + 3 + the spell’s level piercing damage + 1d6 force damage</li>\n</ul>",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": "",
+        "quantity": 1,
+        "weight": 1,
+        "price": 0,
+        "attunement": 0,
+        "equipped": true,
+        "rarity": "",
+        "identified": true,
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": 0,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": 5,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": 0,
+          "max": "0",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "ability": "dex",
+        "actionType": "mwak",
+        "attackBonus": "0",
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [
+            [
+              "1d6 + @mod",
+              "piercing"
+            ]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "armor": {
+          "value": 10
+        },
+        "hp": {
+          "value": 0,
+          "max": 0,
+          "dt": null,
+          "conditions": ""
+        },
+        "weaponType": "martialM",
+        "baseItem": "",
+        "properties": {
+          "amm": false,
+          "fir": false,
+          "fin": false,
+          "hvy": false,
+          "lgt": false,
+          "lod": false,
+          "rch": false,
+          "rel": false,
+          "spc": false,
+          "thr": false,
+          "two": false,
+          "ver": false,
+          "ret": false,
+          "foc": false,
+          "ada": false,
+          "mgc": false,
+          "sil": false
+        },
+        "proficient": true,
+        "preparation": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "OWMxOGU2MjdiMzhi": 3,
+        "ZjFlOWYxZjM5ZTZj": 3
+      },
+      "flags": {
+        "ddbimporter": {
+          "dndbeyond": {
+            "type": "Shortsword",
+            "damage": {
+              "parts": []
+            },
+            "classFeatures": [],
+            "filterType": "Weapon",
+            "tags": [
+              "Damage",
+              "Combat"
+            ],
+            "sources": []
+          },
+          "id": 0,
+          "entityTypeId": 0,
+          "definitionEntityTypeId": 1782728300,
+          "definitionId": 30,
+          "originalName": "Shortsword"
+        },
+        "betterRolls5e": {
+          "quickDamage": {
+            "context": {
+              "0": ""
+            },
+            "value": {
+              "0": true
+            },
+            "altValue": {
+              "0": true
+            }
+          },
+          "quickVersatile": {
+            "altValue": true
+          },
+          "quickCharges": {
+            "value": {
+              "use": false,
+              "resource": true
+            },
+            "altValue": {
+              "use": false,
+              "resource": true
+            }
+          }
+        },
+        "magicitems": {
+          "enabled": false,
+          "equipped": false,
+          "attuned": false,
+          "charges": "0",
+          "chargeType": "c1",
+          "destroy": false,
+          "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+          "rechargeable": false,
+          "recharge": "0",
+          "rechargeType": "t1",
+          "rechargeUnit": "r1",
+          "sorting": "l"
+        },
+        "cf": {
+          "id": "temp_god5dulh2zn"
+        },
+        "core": {
+          "sourceId": "Compendium.My-Shared-DDB.items.vcu6E9FxXVLKehxl"
+        },
+        "enhancedcombathud": {
+          "set1p": false,
+          "set2p": false,
+          "set3p": false,
+          "set1s": false,
+          "set2s": false,
+          "set3s": false
+        },
+        "midi-qol": {
+          "criticalThreshold": "20",
+          "onUseMacroName": "",
+          "fumbleThreshold": null,
+          "effectActivation": false
+        },
+        "betterCurses": {
+          "isCurse": false,
+          "curseName": "",
+          "formula": "",
+          "mwak": false,
+          "rwak": false,
+          "msak": false,
+          "rsak": false
+        },
+        "midiProperties": {
+          "nodam": false,
+          "fulldam": false,
+          "halfdam": false,
+          "rollOther": false,
+          "critOther": false,
+          "magicdam": false,
+          "magiceffect": false,
+          "concentration": false,
+          "toggleEffect": false
         }
       }
     }

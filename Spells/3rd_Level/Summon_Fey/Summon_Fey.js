@@ -1,6 +1,6 @@
-const MACRONAME = "Summon_Fey.0.2.js"
+const MACRONAME = "Summon_Fey.0.3.js"
 console.log(MACRONAME)
-/*****************************************************************************************
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Rebuild Summon Fey which used to utilize the Automated Evocations module.
  * 
  *   You call forth a fey spirit. It manifests in an unoccupied space that you can see 
@@ -20,16 +20,17 @@ console.log(MACRONAME)
  * 
  * 01/14/22 0.1 Creation of Macro
  * 11/26/22 0.2 Update to not use AE module
- *****************************************************************************************/
+ * 03/20/23 0.3 Fix to attack/damage of the shortsword which is now named "Shortsword (Fey)"
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
 const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
-//---------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`${TAG} === Starting ===`);
 if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
 const LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents
-//---------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
 let aToken;
 if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
@@ -40,7 +41,7 @@ let aActor = aToken.actor;
 let aItem;
 if (args[0]?.item) aItem = args[0]?.item;
 else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-//---------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
 const RUNASGMMACRO = "DeleteTokenMacro";
@@ -48,20 +49,20 @@ const viewedScene = game.scenes.viewed;
 const EFFECT_NAME = 'Summon Fey'
 const SPELL_LEVEL = args[0].spellLevel
 const SPELL_DC = aActor.data.data.attributes.spelldc
-//----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });     // Midi ItemMacro On Use
 if (args[0] === "off") await doOff({ traceLvl: TL });                           // DAE removal
 if (TL > 1) jez.trace(`${TAG} === Finished ===`);
 return;
-/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
  *                                                             END_OF_MAIN_MACRO_BODY
- ****************************************************************************************************
+ ***********************************************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
- *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 async function doOnUse(options = {}) {
     const FUNCNAME = "doOnUse(options={})";
     const FNAME = FUNCNAME.split("(")[0]
@@ -127,19 +128,19 @@ async function doOnUse(options = {}) {
         scale: 0.5,						    // 
         source: aToken,                     // Coords for source (with a center), typically aToken
         width: 1,                           // Width of token to be summoned, 1 is the default
-        traceLvl: TL                        // Trace level, matching calling function decent choice
+        traceLvl: 0                         // Trace level, matching calling function decent choice
     }
-    // ---------------------------------------------------------------------------------------------
-    // Get updates dependeing on mood and caster values
-    //
-    argObj.updates = customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, {traceLvl: TL})
-    if (TL > 1) jez.trace(`${TAG} Updates for our ${MOOD} Fey`,argObj.updates)
     //--------------------------------------------------------------------------------------------------
     // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
     // to update the img attribute or set basic image to match this item
     //
     let summonData = await game.actors.getName(MINION)
     argObj.img = summonData ? summonData.img : aItem.img
+    // ---------------------------------------------------------------------------------------------
+    // Get updates dependeing on mood and caster values
+    //
+    argObj.updates = customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, summonData, { traceLvl: TL })
+    if (TL > 1) jez.trace(`${TAG} Updates for our ${MOOD} Fey`, argObj.updates)
     //--------------------------------------------------------------------------------------------------
     // Do the actual summon
     //
@@ -150,23 +151,23 @@ async function doOnUse(options = {}) {
     // Modify existing DAE effect to despawn our summon on termination
     //
     let effect = await aActor.effects.find(i => i.data.label === EFFECT_NAME);
-    if (!effect) return jez.badNews(`${TAG} Oddly, could not find ${EFFECT_NAME} on ${aToken.name}`,'e')
+    if (!effect) return jez.badNews(`${TAG} Oddly, could not find ${EFFECT_NAME} on ${aToken.name}`, 'e')
     effect.data.changes.push({
-        key: `macro.itemMacro`, mode: jez.CUSTOM, value:`"${MINION_NAME}" ${FEY_ID}`, priority: 20
+        key: `macro.itemMacro`, mode: jez.CUSTOM, value: `"${MINION_NAME}" ${FEY_ID}`, priority: 20
     })
     const result = await effect.update({ 'changes': effect.data.changes });
-    if(!result) return jez.badNews(`${TAG} Sadly, could not update ${EFFECT_NAME} on ${aToken.name}`,'e')
+    if (!result) return jez.badNews(`${TAG} Sadly, could not update ${EFFECT_NAME} on ${aToken.name}`, 'e')
     if (TL > 1) jez.trace(`${TAG} Active Effect ${EFFECT_NAME} on ${aToken.name} updated!`, result);
     //--------------------------------------------------------------------------------------------------
     // Add our Fey to combat tracker with appropriate initiative, if summoner is in combat
     //
     const ATOKEN_INIT_VALUE = aToken?.combatant?.data?.initiative
-    if (!ATOKEN_INIT_VALUE) jez.badNews(`${aToken.name} not in combat, can't add ${MINION_NAME}.`,'i')
+    if (!ATOKEN_INIT_VALUE) jez.badNews(`${aToken.name} not in combat, can't add ${MINION_NAME}.`, 'i')
     else {
         const FEY_INIT = ATOKEN_INIT_VALUE - 0.001
-        await jez.combatAddRemove('Add', FEY_ID, {traceLvl: TL})
-        await jez.wait(1000) 
-        await jez.combatInitiative(FEY_ID, { formula: FEY_INIT, traceLvl: 0 }) 
+        await jez.combatAddRemove('Add', FEY_ID, { traceLvl: 0 })
+        await jez.wait(1000)
+        await jez.combatInitiative(FEY_ID, { formula: FEY_INIT, traceLvl: 0 })
     }
     //--------------------------------------------------------------------------------------------------
     // Final Message
@@ -214,7 +215,7 @@ async function doOff(options = {}) {
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Run a simple smoke VFX on specified location
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
- async function runVFXSmoke(coords) {
+async function runVFXSmoke(coords) {
     const VFX_SMOKE = `modules/jb2a_patreon/Library/Generic/Smoke/SmokePuff01_*_Regular_Grey_400x400.webm`
     new Sequence()
         .effect()
@@ -242,19 +243,23 @@ function postResults(msg) {
  * Return a data object appropriate for each of the three Fey moods to be used to customize the
  * summoned token by spell level (for up casts)
  ***************************************************************************************************/
-function customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, options = {}) {
+function customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, SUMMON_DATA, options = {}) {
     const FUNCNAME = "postResults(msg)";
     const FNAME = FUNCNAME.split("(")[0]
     const TAG = `${MACRO} ${FNAME} |`
     const TL = options.traceLvl ?? 0
     if (TL > 1) jez.trace(`${TAG} --- Starting ---`);
-    if (TL > 2) jez.trace("customization Parameters", 'MINION_NAME', MINION_NAME,
-        'SPELL_LEVEL', SPELL_LEVEL, 'MOOD       ', MOOD, 'SPELL_DC   ', SPELL_DC, 
-        "options    ", options)
+    if (TL > 2) jez.trace("Customization Parms", 'MINION_NAME', MINION_NAME,
+        'SPELL_LEVEL', SPELL_LEVEL, 'MOOD       ', MOOD, 'SPELL_DC   ', SPELL_DC,
+        'SUMMON_DATA', SUMMON_DATA, "options    ", options)
     //-----------------------------------------------------------------------------------------------
     // Function Variables
     //
     let updates = {}
+    const DEX_MOD = SUMMON_DATA.data.data.abilities.dex.mod
+    const PROFICENCY = SUMMON_DATA.data.data.attributes.prof
+    const EXTRA_ATTACK_BONUS = SPELL_DC - 8 - DEX_MOD - PROFICENCY // Additional bonus over natural for Fey
+    if (TL > 1) jez.trace(`${TAG} EXTRA_ATTACK_BONUS (${EXTRA_ATTACK_BONUS}), DEX_MOD (${DEX_MOD}), PROFICENCY (${PROFICENCY})`)
     //-----------------------------------------------------------------------------------------------
     // Fuming Mood
     //
@@ -274,13 +279,20 @@ function customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, options = {}) {
                         "data.description.value": `<p>The summoned <b>fey</b> makes <b>${Math.floor(SPELL_LEVEL / 2)}
                         </b> attack(s) per attack action.</p>`
                     },
-                    "Shortsword": {
-                        "data.attackBonus": SPELL_DC - 8,
-                        "data.damage.parts": [[`1d6+@mod+${(SPELL_LEVEL || 3)}`, "piercing"]],
+                    "Shortsword (Fey)": {
+                        "data.attackBonus": EXTRA_ATTACK_BONUS,
+                        "data.damage.parts": [
+                            [`1d6[piercing]+@mod+${(SPELL_LEVEL || 3)}`, "piercing"],
+                            [`1d6[force]`, "force"],
+                        ],
                         "data.description.value":
-                            `<p><b>Melee Weapon Attack:</b> ${aToken.name}'s spell attack modifier to hit, 
-                            reach 5 ft., one target. Hit: 1d6 + 3 (DEX Mod) + ${SPELL_LEVEL} (spell's level) piercing damage
-                            + 1d6 force damage.</p>`,
+                            `<p><strong>Melee Weapon Attack</strong></p>
+                            <ul>
+                            <li>${aToken.name}'s spell attack modifier (${SPELL_DC - 8}) to hit,</li>
+                            <li>Reach 5 ft.,</li>
+                            <li>One target,</li>
+                            <li>Hit: 1d6 + 3 (Dex Mod) + the spell's level (${(SPELL_LEVEL || 3)}) piercing damage + 1d6 force damage</li>
+                            </ul>`,
                     }
                 },
             }
@@ -305,13 +317,20 @@ function customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, options = {}) {
                         "data.description.value": `<p>The summoned <b>fey</b> makes <b>${Math.floor(SPELL_LEVEL / 2)}
                         </b> attack(s) per attack action.</p>`
                     },
-                    "Shortsword": {
-                        "data.attackBonus": SPELL_DC - 8,
-                        "data.damage.parts": [[`1d6+@mod+${(SPELL_LEVEL || 3)}`, "piercing"]],
+                    "Shortsword (Fey)": {
+                        "data.attackBonus": EXTRA_ATTACK_BONUS,
+                        "data.damage.parts": [
+                            [`1d6[piercing]+@mod+${(SPELL_LEVEL || 3)}`, "piercing"],
+                            [`1d6[force]`, "force"],
+                        ],
                         "data.description.value":
-                            `<p><b>Melee Weapon Attack:</b> ${aToken.name}'s spell attack modifier to hit, 
-                            reach 5 ft., one target. Hit: 1d6 + 3 (DEX Mod) + ${SPELL_LEVEL} (spell's level) piercing damage
-                            + 1d6 force damage.</p>`,
+                            `<p><strong>Melee Weapon Attack</strong></p>
+                            <ul>
+                            <li>${aToken.name}'s spell attack modifier (${SPELL_DC - 8}) to hit,</li>
+                            <li>Reach 5 ft.,</li>
+                            <li>One target,</li>
+                            <li>Hit: 1d6 + 3 (Dex Mod) + the spell's level (${(SPELL_LEVEL || 3)}) piercing damage + 1d6 force damage</li>
+                            </ul>`,
                     },
                     "Mirthful Fey Charm": {
                         "data.save.dc": (SPELL_DC || 8),
@@ -320,7 +339,7 @@ function customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, options = {}) {
                             one creature it can see within 10 feet of it, The creature must make a 
                             DC${SPELL_DC} wisdom save or be 
                             @JournalEntry[i3AsMG5XwVIvE8TK]{charmed} by the fey and ${aToken.name} for 
-                            1 minute or until the target takes any damage.` 
+                            1 minute or until the target takes any damage.`
                     }
                 },
             }
@@ -345,14 +364,21 @@ function customization(MINION_NAME, SPELL_LEVEL, MOOD, SPELL_DC, options = {}) {
                         "data.description.value": `<p>The summoned <b>fey</b> makes <b>${Math.floor(SPELL_LEVEL / 2)}
                         </b> attack(s) per attack action.</p>`
                     },
-                    "Shortsword": {
-                        "data.attackBonus": SPELL_DC - 8,
-                        "data.damage.parts": [[`1d6+@mod+${(SPELL_LEVEL || 3)}`, "piercing"]],
+                    "Shortsword (Fey)": {
+                        "data.attackBonus": EXTRA_ATTACK_BONUS,
+                        "data.damage.parts": [
+                            [`1d6[piercing]+@mod+${(SPELL_LEVEL || 3)}`, "piercing"],
+                            [`1d6[force]`, "force"],
+                        ],
                         "data.description.value":
-                            `<p><b>Melee Weapon Attack:</b> ${aToken.name}'s spell attack modifier to hit, 
-                            reach 5 ft., one target. Hit: 1d6 + 3 (DEX Mod) + ${SPELL_LEVEL} (spell's level) piercing damage
-                            + 1d6 force damage.</p>`,
-                    },
+                            `<p><strong>Melee Weapon Attack</strong></p>
+                            <ul>
+                            <li>${aToken.name}'s spell attack modifier (${SPELL_DC - 8}) to hit,</li>
+                            <li>Reach 5 ft.,</li>
+                            <li>One target,</li>
+                            <li>Hit: 1d6 + 3 (Dex Mod) + the spell's level (${(SPELL_LEVEL || 3)}) piercing damage + 1d6 force damage</li>
+                            </ul>`,
+                    }
                 },
             }
         }

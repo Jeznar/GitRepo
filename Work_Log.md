@@ -497,6 +497,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.03.18 **Wind Wall** created.  This item reqiure players to manually mark the wall on the map.  It automates damage and duration. The "Concentrating" effect is modified to trigger a doEach (displaying reminder message) and a doOff (prompting removal of the map marking). It also includes an exterior link added to the chat log for more information. 
 
+23.03.19 **Summon Fey** several fixes affecting sword ability that had too high a damage bonus and was missing force component
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
