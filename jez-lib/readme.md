@@ -37,6 +37,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[deleteEmbeddedDocs(type, ids)](#embeddeddoc-functions)** -- Deletes an embedded document, wraps a RunAsGM function
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
 * **[fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {})](#fireraytarget_token-active_token-options--)** -- Executes one beholder style beam
+* **[getActiveEffect(subject, LAMBDA, options = {})](#getactiveeffect_subject_lamda_options--)** -- Fetch an active effect is there is one
 * **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
@@ -529,6 +530,56 @@ const CE_DESC = await jez.getCEDesc(tToken, EFFECT, { traceLvl: TL })
 </details>
 
 Related Function: **[setCEDesc()](#setcedescsubject-effectname-description-optionobj--)**
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getActiveEffect(subject, LAMBDA, options = {})
+
+This function will searches for a named activeEffect on a passed token/actor, returning the active effect or null if none found.
+More exactly it evaluates the passed Lambda function against the effects (if any) on the passed actor or token. It will return the activeEffect data object or null if it was not found in the time allowed.
+
+**subject** should be a token5e, actor5e, or id of one of those two
+
+**LAMBDA** is an arrow function that will be used to locate the desired effect on the subject.
+Example Lambda functions
+
+* ef => ef.data.label === "Grappling" 
+* ef => ef.data.label.startsWith(HP_DRAIN)
+* ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid
+ 
+**Options** can have the following values meanigfully set:
+
+* maxCheck(10)   - Maximum number of times to run the check
+* traceLvl(0)    - Trace Level, this is a zero or a (presumably) small integer used to control trace verbosity.
+* waitTime(2500) - Total amount of time (ms) that this function should wait (retrying) before giving up and returning a null 
+
+<details> <summary>Sample Calls</summary>
+
+```javascript
+for (let token of canvas.tokens.controlled) {
+    if (TL > 0) jez.trace(`${TAG} Running against ${token.name}`);
+    //
+    // Find effect exactly matching content of EFFECT_NAME 
+    const LAMBDA1 = ef => ef.data.label === EFFECT_NAME
+    const EFFECT1 = await jez.getActiveEffect(token, LAMBDA1, { traceLvl: TL, maxCheck: 8, waitTime: 2000 })
+    if (!EFFECT1) console.log(`LAMDA1 ${EFFECT_NAME} *NOT* found on ${token.name}`, EFFECT1)
+    else console.log(`LAMDA1 ${EFFECT_NAME} *WAS* found on ${token.name}`, EFFECT1)
+    //
+    // Find effect exactly starting with content of EFFECT_NAME 
+    const EFFECT2 = await jez.getActiveEffect(token, ef => ef.data.label.startsWith(EFFECT_NAME))
+    if (!EFFECT2) console.log(`LAMDA1 ${EFFECT_NAME} *NOT* found on ${token.name}`, EFFECT2)
+    else console.log(`LAMDA1 ${EFFECT_NAME} *WAS* found on ${token.name}`, EFFECT2)
+    //
+	 // Find effect matching two criteria, name and origin ID 
+    const LAMBDA3 = ef => ef.data.label === EFFECT_NAME && ef.data.origin === 'Actor.hMu40c42yhTjep9M'
+    const EFFECT3 = await jez.getActiveEffect(token, LAMBDA3)
+    if (!EFFECT3) console.log(`LAMDA1 ${EFFECT_NAME} *NOT* found on ${token.name}`, EFFECT3)
+    else console.log(`LAMDA1 ${EFFECT_NAME} *WAS* found on ${token.name}`, EFFECT3)
+}
+```
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 
