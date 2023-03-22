@@ -37,7 +37,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[deleteEmbeddedDocs(type, ids)](#embeddeddoc-functions)** -- Deletes an embedded document, wraps a RunAsGM function
 * **[deleteItems(itemName, type, subject)](#deleteItemsitemName-type-subject)** -- Deletes all copies of specified item
 * **[fireRay(TARGET_TOKEN, ACTIVE_TOKEN, OPTIONS = {})](#fireraytarget_token-active_token-options--)** -- Executes one beholder style beam
-* **[getActiveEffect(subject, LAMBDA, options = {})](#getactiveeffect_subject_lamda_options--)** -- Fetch an active effect is there is one
+* **[getActiveEffect(subject, LAMBDA, options = {})](#getactiveeffectsubject-lambda-options--)** -- Fetch an active effect is there is one
 * **[getActor5eDataObj(subject)](#get-functions)** -- Returns the subject's actor5e data object
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
