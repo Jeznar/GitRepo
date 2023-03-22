@@ -4172,17 +4172,17 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
     *  ef => ef.data.label === GRAPPLED_COND && ef.data.origin === aActor.uuid
     * 
     * Options can have the following values meanigfully set:
-    *   maxCheck(10)   - Maximum number of times to run the check
-    *   traceLvl(0)    - Trace Level, this is a zero or a (presumably) small integer used to control trace verbosity.
-    *   waitTime(2500) - Total amount of time (ms) that this function should wait (retrying) before giving up and returning a null 
+    *   maxCheck(2)   - Maximum number of times to run the check
+    *   traceLvl(0)   - Trace Level, this is a zero or a (presumably) small integer used to control trace verbosity.
+    *   waitTime(500) - Total amount of time (ms) that this function should wait (retrying) before giving up and returning a null 
     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
     static async getActiveEffect(subject, LAMBDA, options = {}) {
         const FUNCNAME = "getActiveEffect(subject, LAMBDA, options = {})";
         const FNAME = FUNCNAME.split("(")[0]
         const TAG = `jez.${FNAME} |`
-        const MAX_CHECK = options.maxCheck ?? 10
+        const MAX_CHECK = options.maxCheck ?? 2
         const TL = options.traceLvl ?? 0
-        const WAIT_TIME = options.waitTime ?? 2500
+        const WAIT_TIME = options.waitTime ?? 500
         if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
         if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "subject", subject, "LAMBDA", LAMBDA, "options", options);
         if (TL > 2) jez.trace(`${TAG} Options`,

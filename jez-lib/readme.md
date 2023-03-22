@@ -551,9 +551,9 @@ Example Lambda functions
  
 **Options** can have the following values meanigfully set:
 
-* maxCheck(10)   - Maximum number of times to run the check
-* traceLvl(0)    - Trace Level, this is a zero or a (presumably) small integer used to control trace verbosity.
-* waitTime(2500) - Total amount of time (ms) that this function should wait (retrying) before giving up and returning a null 
+* maxCheck(2)   - Maximum number of times to run the check (1 and 10 also make sense)
+* traceLvl(0)   - Trace Level, this is a zero or a (presumably) small integer used to control trace verbosity.
+* waitTime(500) - Total amount of time (ms) that this function should wait (retrying) before giving up and returning a null 
 
 <details> <summary>Sample Calls</summary>
 
