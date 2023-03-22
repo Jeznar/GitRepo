@@ -503,6 +503,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.03.22 Added getActiveEffect to library.  This one checks multiple times for effect (if so configured by options) and allows various searches.
 
+22.03.22 Updated set no regen to use doEach casll to new delayed_remove macro that takes down the debuff 1 second into turn.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
