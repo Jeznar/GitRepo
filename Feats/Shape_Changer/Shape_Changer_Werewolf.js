@@ -1,6 +1,9 @@
-const MACRONAME = "Shape_Changer_Wereraven.0.2.js"
+const MACRONAME = "Shape_Changer_Werewolf.0.1.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
- * Macro that manages the changing of appearance and naming of a token to automate the shape change ability of a Wereraven
+ * Macro that manages the changing of appearance and naming of a token to automate the shape change ability of a Werewolf
+ * 
+ * Armor Class 11 in humanoid form, 12 natural armor in wolf or hybrid form
+ * Speed 30 ft., (40 ft. in wolf form)
  * 
  * o Build arrays of information that define
  *   - Names of Shapes
@@ -12,8 +15,7 @@ const MACRONAME = "Shape_Changer_Wereraven.0.2.js"
  * o Update the token image
  * o Post a chat log message
  * 
- * 03/21/23 0.1 Creation of Macro from Shape_Changer_Vampire
- * 03/24/23 0.2 Update to use an object to contain the various values
+ * 03/24/23 0.1 reation of Macro from Shape_Changer_Wereraven.0.2
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -36,13 +38,16 @@ const OLD_NAME = aToken.name
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
+// Find a token to use as wolf
+const WOLF_DIR = 'Tokens/Beasts/Wolf/'
+const WOLF_IMG = await pickToken(WOLF_DIR, aActor.data.token.name, {traceLvl: TL})
 //  Values for update object
 let values = {
     baseName: aActor.data.token.name,
     baseImg: aActor.data.token.img,
     names: [aActor.data.token.name,
-        "Wereraven",
-        "Raven",
+        "Werewolf",
+        "Wolf",
     ],
     descs: [
         `${aActor.data.token.name}'s humanoid form`,
@@ -51,18 +56,23 @@ let values = {
     ],
     moves: [
         { burrow: 0, climb: 0, fly: 0, hover: false, swim: 0, units: "ft", walk: 30 },
-        { burrow: 0, climb: 0, fly: 50, over: false, swim: 0, units: "ft", walk: 30 },
-        { burrow: 0, climb: 0, fly: 50, hover: false, swim: 0, units: "ft", walk: 10 },
+        { burrow: 0, climb: 0, fly: 0, over: false, swim: 0, units: "ft", walk: 30 },
+        { burrow: 0, climb: 0, fly: 0, hover: false, swim: 0, units: "ft", walk: 40 },
     ],
     images: [
         aActor.data.token.img,
-        `Tokens/Monsters/Wereraven/wereraven.png`,
-        `Tokens/Beasts/Raven.png`,
+        `Tokens/Monsters/Werewolf/Werewolf.png`,
+        WOLF_IMG,
     ],
     sizes: [
         { name: "med", height: 1, width: 1 },
         { name: "med", height: 1, width: 1 },
-        { name: "sm", height: 0.5, width: 0.5 }
+        { name: "med", height: 1, width: 1 }
+    ],
+    acs: [
+        { calc: "default" },
+        { calc: "flat", flat: 12 },
+        { calc: "flat", flat: 12 }
     ]
 }
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -153,7 +163,11 @@ async function doOnUse(options = {}) {
     // await jez.updateEmbeddedDocs("Token", updates)
 
 
-    await jez.actorUpdate(aToken, { "data.attributes.movement": values.moves[SEL], "data.traits.size": values.sizes[SEL].name })
+    await jez.actorUpdate(aToken, { 
+        "data.attributes.movement": values.moves[SEL], 
+        "data.traits.size": values.sizes[SEL].name,
+        "data.attributes.ac": values.acs[SEL],
+    })
     
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -235,7 +249,6 @@ async function applyTokenMagic(TARGET, FILTERID, options = {}) {
         }
         ];
     let result = await TokenMagic.addFilters(TARGET, params); // addFilters: async addFilters(placeable, paramsArray, replace = false)
-    console.log(`result:`, result)
     //-------------------------------------------------------------------------------------------------------------------------------
     // 
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
@@ -259,4 +272,39 @@ async function removeTokenMagic(TARGET, FILTERID, options = {}) {
     // 
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Fetch a token from those passed, return null if no choice available
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function pickToken(DIR, IDEAL, options = {}) {
+    const FUNCNAME = "pickToken(DIR, IDEAL, options = {})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'DIR', DIR, 'IDEAL', IDEAL, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    const FILE_LIST = await FilePicker.browse('data', `${DIR}*.png`,{ wildcard: true });
+    // Step through file names, stripping directory and looking for a name that matches the IDEAL and eliminate any that contain 
+    // Avatar as a word.
+    let tokenImgNames = []
+    for (let i = 0; i < FILE_LIST.files.length; i++) {
+        if (TL > 3) jez.trace(`${TAG} Considering Image ${i}:`, FILE_LIST.files[i])
+        const ATOMS = FILE_LIST.files[i].split('/')
+        const NAME = ATOMS[ATOMS.length-1]
+        //  filter our names that contain the name avatar
+        if (NAME.toLowerCase().match(/\bavatar\b/)) continue
+        if (TL > 2) jez.trace(`${TAG} File Name ${i}:`, NAME)
+        // check for our IDEAL name, which will be returned if present, stripping file extension
+        if (NAME.split('.')[0] === IDEAL) return FILE_LIST.files[i]
+        tokenImgNames.push(FILE_LIST.files[i])
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Pick one of the files and return it
+    //
+    if (TL > 1) jez.trace(`${TAG} --- Finishing ---`);
+    if (tokenImgNames.length) return(tokenImgNames[Math.floor(Math.random() * tokenImgNames.length)])
+    return null;
 }

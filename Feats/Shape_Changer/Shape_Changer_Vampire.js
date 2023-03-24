@@ -1,4 +1,4 @@
-const MACRONAME = "Shape_Changer_Dask.0.1.js"
+const MACRONAME = "Shape_Changer_Vamp.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Macro that manages the changing of appearance and naming of a token to automate the shape change ability of a Vampires
  * 
@@ -13,10 +13,11 @@ const MACRONAME = "Shape_Changer_Dask.0.1.js"
  * o Post a chat log message
  * 
  * 03/21/23 0.1 Creation of Macro
+ * 03/24/23 0.2 Enhanced scan for wolf form and updated code to handle different size creatures (bat)
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 const WAIT = 2500;                          // Time to play the VFX in ms
 let msg = "";                               // Global message string
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -35,22 +36,48 @@ const OLD_NAME = aToken.name
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-const BASE_NAME = aActor.data.token.name
-const BASE_IMG = aActor.data.token.img
-const SHAPE_NAMES = [BASE_NAME, "Bat", "Wolf", "Mist"]
-const SHAPE_DESC = [
-    `${BASE_NAME}'s natural form`,
-    "appear to be mundane animal",
-    "appear to be mundane animal",
-    "become a cloud of mist"
-]
-const WOLF_INDEX = Math.floor(Math.random() * 9) // Assumes there are 9 wolf image files that match naming.
-const SHAPE_IMAGE = [
-    BASE_IMG,
-    `Tokens/CoS_NPC/Ravenloft/Vampire_Shape_Shifts/Bat_Small.png`,
-    `Tokens/CoS_NPC/Ravenloft/Vampire_Shape_Shifts/Wolf_0${WOLF_INDEX}.png`,
-    `Tokens/CoS_NPC/Ravenloft/Vampire_Shape_Shifts/mist.png`,
-]
+// Find a token to use as wolf
+const WOLF_DIR = 'Tokens/Beasts/Wolf/'
+const WOLF_IMG = await pickToken(WOLF_DIR, aActor.data.token.name, {traceLvl: TL})
+//  Values for update object
+let values = {
+    baseName: aActor.data.token.name,
+    baseImg: aActor.data.token.img,
+    names: [aActor.data.token.name,
+        "Wolf",
+        "Bat",
+        "Mist",
+    ],
+    descs: [
+        `${aActor.data.token.name}'s natural form`,
+            "appear to be mundane wolf",
+            "appear to be mundane bat",
+            "become a cloud of mist"
+    ],
+    moves: [
+        { burrow: 0, climb: 0, fly: 0, hover: false, swim: 0, units: "ft", walk: 30 },
+        { burrow: 0, climb: 0, fly: 0, hover: false, swim: 0, units: "ft", walk: 40 },   // Wolf
+        { burrow: 0, climb: 0, fly: 30, hover: false, swim: 0, units: "ft", walk: 5 },  // Bat
+        { burrow: 0, climb: 0, fly: 20, hover: true, swim: 0, units: "ft", walk: 40 },  // Mist
+    ],
+    images: [
+        aActor.data.token.img,
+        WOLF_IMG,
+        `Tokens/Beasts/Bat.png`,
+        `Tokens/CoS_NPC/Ravenloft/Vampire_Shape_Shifts/mist.png`,
+    ],
+    sizes: [
+        { name: "med", height: 1, width: 1 },
+        { name: "med", height: 1, width: 1 },
+        { name: "tiny", height: 0.5, width: 0.5 },
+        { name: "med", height: 1, width: 1 }
+    ],
+    // acs: [
+    //     { calc: "default" },
+    //     { calc: "flat", flat: 12 },
+    //     { calc: "flat", flat: 12 }
+    // ]
+}
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -96,9 +123,9 @@ async function doOnUse(options = {}) {
     //-------------------------------------------------------------------------------------------------------------------------------
     // Build array containing: Index, Name, Description for each persona
     //
-    for (let i = 0; i < SHAPE_NAMES.length; i++) {
-        if (TL > 1) jez.trace(`${TAG}  Building line ${i + 1} for ${SHAPE_NAMES[i]}`);
-        shapeLines.push(`${i + 1}. ${SHAPE_NAMES[i]} - ${SHAPE_DESC[i]}`)
+    for (let i = 0; i < values.names.length; i++) {
+        if (TL > 1) jez.trace(`${TAG}  Building line ${i + 1} for ${values.names[i]}`);
+        shapeLines.push(`${i + 1}. ${values.names[i]} - ${values.descs[i]}`)
     }
     //-------------------------------------------------------------------------------------------------------------------------------
     // Ask for new form to be selected from a Radio dialog
@@ -106,8 +133,8 @@ async function doOnUse(options = {}) {
     const queryTitle = "Select New Appearance/Form"
     const queryText = "Pick one from the list (or I'll do it for you!)"
     let selection = await jez.pickRadioListArray(queryTitle, queryText, dummyFunction, shapeLines);
-    const SEL = selection ? selection.match(/[0-9]+/) - 1 : Math.floor(Math.random() * SHAPE_NAMES.length)
-    if (TL > 1) jez.trace(`${TAG} Shape selected: ${SEL}`, SHAPE_NAMES[SEL])
+    const SEL = selection ? selection.match(/[0-9]+/) - 1 : Math.floor(Math.random() * values.names.length)
+    if (TL > 1) jez.trace(`${TAG} Shape selected: ${SEL}`, values.names[SEL])
     //-------------------------------------------------------------------------------------------------------------------------------
     // Play VFX on the transforming token
     //
@@ -119,12 +146,21 @@ async function doOnUse(options = {}) {
     let updates = [];
     updates.push({
         _id: aToken.id,
-        name: SHAPE_NAMES[SEL],
-        img: SHAPE_IMAGE[SEL],
+        name: values.names[SEL],
+        img: values.images[SEL],
+        height: values.sizes[SEL].height,
+        width: values.sizes[SEL].width
     });
-    if (TL > 1) jez.trace(`${TAG}  Updating Token to ${SEL}`, 'Name', SHAPE_NAMES[SEL], 'Image', SHAPE_IMAGE[SEL]);
+    if (TL > 1) jez.trace(`${TAG}  Updating Token to ${SEL}`, 'Name', values.names[SEL], 'Image', values.images[SEL]);
     await jez.updateEmbeddedDocs("Token", updates)
-    if (TL > 3) jez.trace(`${TAG} More Detailed Trace Info.`)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Update the actor with new movement values
+    //
+    await jez.actorUpdate(aToken, { 
+        "data.attributes.movement": values.moves[SEL], 
+        "data.traits.size": values.sizes[SEL].name,
+    })
+    console.log('==>', values.sizes[SEL].name)
     //-------------------------------------------------------------------------------------------------------------------------------
     // Remove VFX from the transforming token
     //
@@ -132,7 +168,7 @@ async function doOnUse(options = {}) {
     //-------------------------------------------------------------------------------------------------------------------------------
     // Exit message
     //
-    msg = `${OLD_NAME} has shifted appearance to ${SHAPE_NAMES[SEL]}`
+    msg = `${OLD_NAME} has shifted appearance to ${values.names[SEL]}`
     postResults(msg)
     if (TL > 0) jez.trace(`${TAG} --- Finished ---`);
     return true;
@@ -228,4 +264,39 @@ async function removeTokenMagic(TARGET, FILTERID, options = {}) {
     // 
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
     return;
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Fetch a token from those passed, return null if no choice available
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function pickToken(DIR, IDEAL, options = {}) {
+    const FUNCNAME = "pickToken(DIR, IDEAL, options = {})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, 'DIR', DIR, 'IDEAL', IDEAL, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // 
+    //
+    const FILE_LIST = await FilePicker.browse('data', `${DIR}*.png`,{ wildcard: true });
+    // Step through file names, stripping directory and looking for a name that matches the IDEAL and eliminate any that contain 
+    // Avatar as a word.
+    let tokenImgNames = []
+    for (let i = 0; i < FILE_LIST.files.length; i++) {
+        if (TL > 3) jez.trace(`${TAG} Considering Image ${i}:`, FILE_LIST.files[i])
+        const ATOMS = FILE_LIST.files[i].split('/')
+        const NAME = ATOMS[ATOMS.length-1]
+        //  filter our names that contain the name avatar
+        if (NAME.toLowerCase().match(/\bavatar\b/)) continue
+        if (TL > 2) jez.trace(`${TAG} File Name ${i}:`, NAME)
+        // check for our IDEAL name, which will be returned if present, stripping file extension
+        if (NAME.split('.')[0] === IDEAL) return FILE_LIST.files[i]
+        tokenImgNames.push(FILE_LIST.files[i])
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Pick one of the files and return it
+    //
+    if (TL > 1) jez.trace(`${TAG} --- Finishing ---`);
+    if (tokenImgNames.length) return(tokenImgNames[Math.floor(Math.random() * tokenImgNames.length)])
+    return null;
 }
