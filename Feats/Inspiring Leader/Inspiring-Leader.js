@@ -244,7 +244,7 @@ async function pickBuffies(tokenNames, xtraMsg, filteredNames, options = {}) {
     //
     let queryTitle = "Select Up to Six to Receive Buff"
     if (filteredNames.length <= 6) queryTitle = "Select Creatures to Receive Buff"
-    let queryText = `Pick creatures that should be bolsetered by this spell.<br><br>${xtraMsg}`
+    let queryText = `Pick up to six (6) creatures that should be bolsetered by this spell.<br><br>${xtraMsg}`
     let filterMsg = ""
     if (filteredNames.length > 0) {
         if (!filterMsg) filterMsg = `Some in range creatures (${filteredNames.length}) have benefited from <b>${aItem.name}</b> since 
