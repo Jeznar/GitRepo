@@ -1,4 +1,4 @@
-const MACRONAME = "Inspiring_Leader.1.1.js"
+const MACRONAME = "Inspiring_Leader.1.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Total rewrite of Inspiring_Leader.0.6.js that implemements the Inspiring Leader Feat.
  * 
@@ -20,6 +20,7 @@ const MACRONAME = "Inspiring_Leader.1.1.js"
  * 
  * 12/19/22 1.0 Creation of Macro
  * 12/23/22 1.1 Some polish applied
+ * 03/24/23 1.2 Updated mdialog text to always include maximum number of targets
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const FNAME = MACRO
