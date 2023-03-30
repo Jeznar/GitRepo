@@ -513,6 +513,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.03.30 Updated Dask's shapechanger to manage expertise for Victoria in religion
 
+23.03.30 Added random barovian and vistana men to the choices for Dask's shapechanger
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

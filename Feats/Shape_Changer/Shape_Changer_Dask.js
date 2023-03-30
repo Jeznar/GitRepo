@@ -1,4 +1,4 @@
-const MACRONAME = "Shape_Changer_Dask.0.3.js"
+const MACRONAME = "Shape_Changer_Dask.0.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Macro that manages the changing of appearance and naming of a token to automate the shape change ability of a Changeling
  * race creature.  This is being built specifically for Dask, it will need modification for otehr shapechangers or to accomodate
@@ -17,6 +17,7 @@ const MACRONAME = "Shape_Changer_Dask.0.3.js"
  * 03/21/23 0.1 Creation of Macro
  * 03/26/23 0.2 Update to use object to contain default information (from Shape_Changer_Vampire)
  * 03/30/22 0.3 Add/Remove expertise on religeon for Victoria
+ * 03/30/22 0.4 Add generic bavarian man and vistani man form
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -37,7 +38,7 @@ const VERSION = Math.floor(game.VERSION);
 const GAME_RND = game.combat ? game.combat.round : 0;
 const OLD_NAME = aToken.name
 //-----------------------------------------------------------------------------------------------------------------------------------
-// Set Macro specific globals
+// Populate variables for random bavarian & vistana man and woman
 //
 // Find a image to use as a random Barovian Woman (BW_IMG)
 const BW_DIR = 'Tokens/People_Barovian/Woman/'
@@ -63,9 +64,37 @@ if (vwnTable) {
     vwn = roll.results[0].data.text;
 } else if (TL > 1) jez.trace(`${TAG} No Barovian Woman Name table found, using default.`)
 const VW_NAME = vwn
+//
+// Find a image to use as a random Barovian Man (BM_IMG)
+const BM_DIR = 'Tokens/People_Barovian/Man/'
+const BM_IMG = await pickToken(BM_DIR, aActor.data.token.name, { traceLvl: TL })
+// Get a Barovian woman's first name from roll table
+let bmn = `Barovian Man`
+let bmnTable = game.tables.getName('Name-First-Barovian-Male');
+if (bmnTable) {
+    if (TL > 1) jez.trace(`${TAG} Barovian Man Name table`, bmnTable)
+    let roll = await bmnTable.roll();
+    bmn = roll.results[0].data.text;
+} else if (TL > 1) jez.trace(`${TAG} No Barovian Man Name table found, using default.`)
+const BM_NAME = bmn
+// Find a image to use as a random Vistani Man (VM_IMG)
+const VM_DIR = 'Tokens/CoS_NPC/Vistani/AM'
+const VM_IMG = await pickToken(VM_DIR, aActor.data.token.name, { traceLvl: TL })
+// Get a Vistana man's first name from roll table
+let vmn = `Vistana Man`
+let vmnTable = game.tables.getName('Name-First-Vistani-Male');
+if (vmnTable) {
+    if (TL > 1) jez.trace(`${TAG} Barovian Man Name table`, vmnTable)
+    let roll = await vmnTable.roll();
+    vmn = roll.results[0].data.text;
+} else if (TL > 1) jez.trace(`${TAG} No Barovian MaN Name table found, using default.`)
+const VM_NAME = vmn
+//-----------------------------------------------------------------------------------------------------------------------------------
 //  Values for update object
+//
 const SIZE_OBJ = { name: "med", height: 1, width: 1 } // SIZE is the same for all changeling images
-const NAME_ARRAY = [aActor.data.token.name, "Draya", "Ireena", "Liliana", "Roxana", "Ruxandra", "Tempest", "Victoria", BW_NAME, VW_NAME]
+const NAME_ARRAY = [aActor.data.token.name, "Draya", "Ireena", "Liliana", "Roxana", "Ruxandra", "Tempest", "Victoria", BW_NAME, 
+    VW_NAME, BM_NAME, VM_NAME]
 let values = {
     baseName: aActor.data.token.name,
     baseImg: aActor.data.token.img,
@@ -80,7 +109,9 @@ let values = {
         "Tiefling form known for causing trouble",
         "Fallen Feathered Friend -- Priestess",
         "Barovian Woman (Skin)",
-        "Vistana Woman (Skin)"
+        "Vistana Woman (Skin)",
+        "Barovian Man (Skin)",
+        "Vistana Man (Skin)",
     ],
     images: [
         aActor.data.token.img,
@@ -93,9 +124,11 @@ let values = {
         `Tokens/Players/Dask/${NAME_ARRAY[7]}.png`,
         BW_IMG,
         VW_IMG,
+        BM_IMG,
+        VM_IMG,
     ],
-    sizes: [SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ],
-    religion: [ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0 ] // Victoria has expertise, all others have no religion skill
+    sizes: [SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ],
+    religion: [ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 ] // Victoria has expertise, all others have no religion skill
 }
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
