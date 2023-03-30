@@ -511,6 +511,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.03.24 Enhanced Shape Changer: Vampire, Wereraven, Werewolf to read directory for wolf form file names
 
+23.03.30 Updated Dask's shapechanger to manage expertise for Victoria in religion
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
