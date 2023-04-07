@@ -1,4 +1,4 @@
-const MACRONAME = "Shape_Changer_Dask.0.4.js"
+const MACRONAME = "Shape_Changer_Dask.0.5.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Macro that manages the changing of appearance and naming of a token to automate the shape change ability of a Changeling
  * race creature.  This is being built specifically for Dask, it will need modification for otehr shapechangers or to accomodate
@@ -16,8 +16,9 @@ const MACRONAME = "Shape_Changer_Dask.0.4.js"
  * 
  * 03/21/23 0.1 Creation of Macro
  * 03/26/23 0.2 Update to use object to contain default information (from Shape_Changer_Vampire)
- * 03/30/22 0.3 Add/Remove expertise on religeon for Victoria
- * 03/30/22 0.4 Add generic bavarian man and vistani man form
+ * 03/30/23 0.3 Add/Remove expertise on religeon for Victoria
+ * 03/30/23 0.4 Add generic bavarian man and vistani man form
+ * 04/01/23 0.5 Add Dask-with-Crimson-Nails, Natural Form
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -94,7 +95,7 @@ const VM_NAME = vmn
 //
 const SIZE_OBJ = { name: "med", height: 1, width: 1 } // SIZE is the same for all changeling images
 const NAME_ARRAY = [aActor.data.token.name, "Draya", "Ireena", "Liliana", "Roxana", "Ruxandra", "Tempest", "Victoria", BW_NAME, 
-    VW_NAME, BM_NAME, VM_NAME]
+    VW_NAME, BM_NAME, VM_NAME, "Dask-with-Crimson-Nails" ]
 let values = {
     baseName: aActor.data.token.name,
     baseImg: aActor.data.token.img,
@@ -112,6 +113,7 @@ let values = {
         "Vistana Woman (Skin)",
         "Barovian Man (Skin)",
         "Vistana Man (Skin)",
+        "Natural form"
     ],
     images: [
         aActor.data.token.img,
@@ -126,9 +128,10 @@ let values = {
         VW_IMG,
         BM_IMG,
         VM_IMG,
+        `Tokens/Players/Dask/${NAME_ARRAY[12]}.png`,
     ],
-    sizes: [SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ],
-    religion: [ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 ] // Victoria has expertise, all others have no religion skill
+    sizes: [SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ, SIZE_OBJ],
+    religion: [ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 ] // Victoria has expertise, all others have no religion skill
 }
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
