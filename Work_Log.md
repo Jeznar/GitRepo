@@ -521,6 +521,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 22.04.10 Created **Shove** action and added it to Animated Halberd.
 
+22.04.11 Created **Falling** to be used as a keyboard macro to handle falling damage with Tasha's additions
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
