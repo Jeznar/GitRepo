@@ -1,7 +1,7 @@
 const MACRONAME = "Quips.0.1.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Grab a quip from rollable table with the name ${aToken.name}, pop it as a speech bubble and place on a chat card.
- * 
+ *
  * 04/15/23 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
@@ -46,7 +46,7 @@ function postResults(msg) {
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
     //-------------------------------------------------------------------------------------------------------------------------------
-    // 
+    //
     if (TL > 1) jez.trace(`${TAG} --- Finished ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
@@ -69,7 +69,8 @@ async function doOnUse(options = {}) {
     //-------------------------------------------------------------------------------------------------------------------------------
     // Obtain a quip
     //
-    let roll = await table.roll();
+    // let roll = await table.roll();
+    let roll = await table.draw({displayChat: false});
     msg = roll.results[0].data.text;
     //-------------------------------------------------------------------------------------------------------------------------------
     // Post quip as a chat bubble
