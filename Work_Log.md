@@ -515,13 +515,15 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.03.30 Added random barovian and vistana men to the choices for Dask's shapechanger
 
-22.04.07 Created **Inspire** for Strahd's fated ally to use to grant inspiration. 
+23.04.07 Created **Inspire** for Strahd's fated ally to use to grant inspiration. 
 
-22.04.10 Added Strahd's Minion ability that uses a roll table to select creatures that are with him.  Rolling quantity.
+23.04.10 Added Strahd's Minion ability that uses a roll table to select creatures that are with him.  Rolling quantity.
 
-22.04.10 Created **Shove** action and added it to Animated Halberd.
+23.04.10 Created **Shove** action and added it to Animated Halberd.
 
-22.04.11 Created **Falling** to be used as a keyboard macro to handle falling damage with Tasha's additions
+23.04.11 Created **Falling** to be used as a keyboard macro to handle falling damage with Tasha's additions
+
+23.04.15 Created **Quips** to read from a roll table and display result.  Specifically used to power Strahd Speaks ability.
 
 [Link back to my Documentation Listing](README.md) 
 
