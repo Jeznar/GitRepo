@@ -63,17 +63,21 @@ async function doOnUse(options = {}) {
     //-------------------------------------------------------------------------------------------------------------------------------
     // Find the appropriate quip roll table
     //
+    const TABLE_NAME = `${aToken.name} Quips`
+    let table = game.tables.getName(TABLE_NAME);
+    if (!table) return jez.badNews(`Could not find ${TABLE_NAME} rollable table`,'e')
     //-------------------------------------------------------------------------------------------------------------------------------
     // Obtain a quip
     //
+    let roll = await table.roll();
+    msg = roll.results[0].data.text;
     //-------------------------------------------------------------------------------------------------------------------------------
     // Post quip as a chat bubble
     //
+    bubbleForAll(aToken.id, msg, true, true)
     //-------------------------------------------------------------------------------------------------------------------------------
     // Post quip to chat message
     //
-    msg = `Say something useful...`
-    postResults(msg)
-    if (TL > 0) jez.trace(`${TAG} --- Finished ---`);
+    postResults(`"<b><i>${msg}</b></i>"`)
     return true;
 }
