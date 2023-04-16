@@ -525,6 +525,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.04.15 Created **Quips** to read from a roll table and display result.  Specifically used to power Strahd Speaks ability.
 
+23.04.16 Created **Kasimir's Dusk Elf Dagger** that does extra damage on a critical and radiant damage to undead.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
