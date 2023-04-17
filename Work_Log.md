@@ -527,6 +527,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.04.16 Created **Kasimir's Dusk Elf Dagger** that does extra damage on a critical and radiant damage to undead.
 
+23.04.17 **Hide** action created.  Applies a CE named Hidden with description modified to have the check result.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
