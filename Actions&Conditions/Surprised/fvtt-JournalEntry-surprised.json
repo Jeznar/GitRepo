@@ -1,0 +1,12 @@
+{
+  "name": "Surprised",
+  "content": "<p>Can't move or take an action on your first turn of the combat, and you can't take a reaction until that turn ends. </p>\n<p>This is not a condition per se, but it functions as one.</p>\n<p>See<a href=\"https://www.dndbeyond.com/sources/basic-rules/combat#Surprise\" target=\"_blank\" rel=\"noopener\"> D&amp;D Beyond</a> for RAW text.  </p>\n<p><img src=\"Icons_JGB/Conditions/surprised.png\" width=\"256\" height=\"256\" /></p>",
+  "flags": {
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}

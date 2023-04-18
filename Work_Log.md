@@ -529,6 +529,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.04.17 **Hide** action created.  Applies a CE named Hidden with description modified to have the check result.
 
+23.04.18 **Surprised** added as a 'condition' to CE and Journal.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
