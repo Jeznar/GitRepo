@@ -533,6 +533,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.04.18 **Change_Size** created to allow an actor to change token size as one of its items.
 
+23.04.22 **Mage Hand** updated to put a timer on the summoned hand and to modify the action type if actor has the Mage Hand Legerdemain ability.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
