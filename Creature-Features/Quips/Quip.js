@@ -1,8 +1,20 @@
-const MACRONAME = "Quips.0.1.js"
+const MACRONAME = "Quips.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Grab a quip from rollable table with the name ${aToken.name}, pop it as a speech bubble and place on a chat card.
  *
+ * Parse and display quips which will be a string of the following
+ * form:
+ * 
+ * Quip text here. ...2000...Another message...The last thing
+ * 
+ * In the above, only the first phrase up to the ellipsis (three periods) '...' is required. The ellipsis
+ * may be followed by:
+ * - number which will serve as a delay override in milliseconds
+ * - another phrase
+ * - end of quip.
+ * 
  * 04/15/23 0.1 Creation of Macro
+ * 05/01/23 0.2 Extend syntax to support a controllable delay in th eplayback.
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -23,7 +35,8 @@ const GAME_RND = game.combat ? game.combat.round : 0;
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-
+const DELAY = 3000 // Default delay in replay in milliseconds
+let statement = '' // Store the statement to be displayed in chat card
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -65,20 +78,60 @@ async function doOnUse(options = {}) {
     //
     const TABLE_NAME = `${aToken.name} Quips`
     let table = game.tables.getName(TABLE_NAME);
-    if (!table) return jez.badNews(`Could not find ${TABLE_NAME} rollable table`,'e')
+    if (!table) return jez.badNews(`Could not find ${TABLE_NAME} rollable table`, 'e')
     //-------------------------------------------------------------------------------------------------------------------------------
     // Obtain a quip
     //
     // let roll = await table.roll();
-    let roll = await table.draw({displayChat: false});
+    let roll = await table.draw({ displayChat: false });
     msg = roll.results[0].data.text;
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Process the quip
+    //
+    await processQuip(msg, { traceLvl: TL })
     //-------------------------------------------------------------------------------------------------------------------------------
     // Post quip as a chat bubble
     //
-    bubbleForAll(aToken.id, msg, true, true)
+    // bubbleForAll(aToken.id, msg, true, true)
     //-------------------------------------------------------------------------------------------------------------------------------
     // Post quip to chat message
     //
-    postResults(`"<b><i>${msg}</b></i>"`)
+    postResults(`<i>${statement}</i>`)
     return true;
+}
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
+ * Process that Quip!
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
+async function processQuip(QUIP, options = {}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.trace(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.trace(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Go!
+    //
+    let ATOMS = QUIP.split("...")
+    jez.trace(`${TAG} ${ATOMS.length} atoms:`, ATOMS)
+    for (let i = 0; i < ATOMS.length; i++) {
+        jez.trace(`${TAG} ${i} ${ATOMS[i]}`)
+        bubbleForAll(aToken.id, ATOMS[i], true, true)
+        if (!isNaN(ATOMS[i + 1])) { // Returns true is value is a number
+            jez.trace(`${TAG} >>> ${i + 1} is a number ${ATOMS[i + 1]}`)
+            statement = statement + ATOMS[i] 
+            if (i+1 < ATOMS.length) {
+                statement = statement + '...'
+                await jez.wait(ATOMS[++i])
+            }
+        }
+        else {
+            statement = statement + ATOMS[i] 
+            if (i+1 < ATOMS.length) {
+                await jez.wait(DELAY)
+                statement = statement + '...'
+            }
+        }
+        console.log('statement', statement)
+    }
 }

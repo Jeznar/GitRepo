@@ -537,6 +537,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.04.30 Creation of **Change Token Vision & Light** from Sky-Captain-13's version.  Added no vision and blind settings
 
+23.05.01 Extend syntax for **Quips** to support a controllable delay in the playback.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
