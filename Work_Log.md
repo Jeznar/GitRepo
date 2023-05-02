@@ -539,6 +539,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.05.01 Extend syntax for **Quips** to support a controllable delay in the playback.
 
+23.05.02 Fix to **Life Drain** for Snow Maiden, Spector and Wraith.  All of them used a depreciated DAE setting.  Now they have an onUse Macro.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
