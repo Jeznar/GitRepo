@@ -7,4 +7,4 @@ let attackTable = await game.tables.find(table => table.name === TABLE);
 // let msg = ROLL.results[0].data.text;
 // console.log(msg)
 //Draw from your table, this does the "roll"
-attackTable.draw();
+attackTable.draw({rollMode: 'blindroll'});

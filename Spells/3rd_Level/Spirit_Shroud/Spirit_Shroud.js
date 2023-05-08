@@ -1,4 +1,4 @@
-const MACRONAME = "Spirit_Shroud.0.1.js"
+const MACRONAME = "Spirit_Shroud.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Import of Crymic's Spirit Shroud 11.7.22: https://www.patreon.com/posts/spirit-shroud-74323874
  * I've massaged the format to make it use variable names I am familiar with and restructered to
@@ -7,6 +7,7 @@ const MACRONAME = "Spirit_Shroud.0.1.js"
  * https://www.patreon.com/crymic
  * 
  * 12/01/22 0.1 Creation of Macro
+ * 05/04/23 0.2 Changed effect label to a Speed Debuff, was a Healing Debuff 
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the VERSION number and extension
 const TAG = `${MACRO} |`
@@ -227,7 +228,7 @@ async function doBonusDamage(options = {}) {
         flags: { dae: { stackable: "noneOirign", specialDuration: ["turnStartSource"] } },
         duration: { rounds: 1, turns: 1, startRound: GAME_RND, startTime: game.time.worldTime },
         icon: "icons/skills/wounds/blood-cells-vessel-red-orange.webp",
-        label: `Healing Debuff`
+        label: `Speed Debuff (reduced by 10)` // Functions as CE_DESC when not otherswise set
     }
     let effect = findTarget.actor.effects.find(i => (VERSION > 9 ? i.label : i.data.label) === "Healing Debuff");
     if (!effect) await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: findTarget.actor.uuid, effects: [effectData] });

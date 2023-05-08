@@ -62,40 +62,32 @@ A useful bit of info [lives here](https://foundryvtt.wiki/en/development/guides/
 
 More info: [Reddit](https://www.reddit.com/r/FoundryVTT/comments/rgpt78/can_i_create_a_roll_command_directly_in_a_journal/)
 
-Example bludgeoning roll:  `[[/roll 8d10]]{Bludgeoning Damage} `
+Example poison roll:  `[[/roll 8d10[poison]]]{Poison Damage}`
 
 ### Skill Checks
 
-Several popular skill checks as follows:
+Standard skill checks as follows:
 
 ~~~javascript
-[[/r 1d20 + @skills.acr.total]]{Acrobatics Check} 
-[[/r 1d20 + @skills.per.total]]{Perception Check} 
-[[/r 1d20 + @skills.ins.total]]{Insight Check} 
-[[/r 1d20 + @skills.inv.total]]{Investigation Check} 
-[[/r 1d20 + @skills.ste.total]]{Stealth Check}
+[[/r 1d20 + @skills.acr.total]]{Acrobatics (DEX) Check} 
+[[/r 1d20 + @skills.ani.total]]{Animal Handling (WIS) Check} 
+[[/r 1d20 + @skills.arc.total]]{Arcana (INT) Check} 
+[[/r 1d20 + @skills.ath.total]]{Athletics (STR) Check} 
+[[/r 1d20 + @skills.dec.total]]{Deception (CHA) Check} 
+[[/r 1d20 + @skills.his.total]]{History (INT) Check} 
+[[/r 1d20 + @skills.ins.total]]{Insight (WIS) Check} 
+[[/r 1d20 + @skills.inv.total]]{Investigation (INT) Check} 
+[[/r 1d20 + @skills.itm.total]]{Intimidation (CHA) Check} 
+[[/r 1d20 + @skills.nat.total]]{Medicine (WIS) Check} 
+[[/r 1d20 + @skills.nat.total]]{Nature (INT) Check} 
+[[/r 1d20 + @skills.per.total]]{Perception (WIS) Check} 
+[[/r 1d20 + @skills.prc.total]]{Persuasion (CHA) Check} 
+[[/r 1d20 + @skills.prf.total]]{Performance (CHA) Check} 
+[[/r 1d20 + @skills.rel.total]]{Religion (INT) Check} 
+[[/r 1d20 + @skills.slt.total]]{Sleight of Hand (DEX) Check} 
+[[/r 1d20 + @skills.ste.total]]{Stealth (DEX) Check}
+[[/r 1d20 + @skills.sur.total]]{Survival (WIS) Check}
 ~~~
-
-The three letter abbreviations are:
-
-* acr - Acrobatics (Dex)
-* ani - Animal Handling (Wis)
-* arc - Arcana (Int)
-* ath - Athletics (Str)
-* dec - Deception (Cha)
-* his - History (Int)
-* ins - Insight (Wis)
-* inv - Investigation (Int)
-* itm - Intimidation (Cha)
-* med - Medicine (Wis)
-* nat - Nature (Int)
-* per - Perception (Wis)
-* prc - Persuasion (Cha)
-* prf - Performance (Cha)
-* rel - Religion (Int)
-* slt - Sleight of Hand (Dex)
-* ste - Stealth (Dex)
-* sur - Survival (Wis)
 
 |Abr.|Ability (stat)|Roll Text (for Foundry)|
 |---|---|---|
@@ -118,20 +110,17 @@ The three letter abbreviations are:
 |ste|Stealth (Dex)|[[/r 1d20 + @skills.ste.total]]{Stealth Check}|
 |sur|Survival (Wis)|[[/r 1d20 + @skills.sur.total]]{Survival Check}|
 
-
-
-
 ### Saving Throws
 
 Six stat based saving throws as follows:
 
 ~~~
-[[/r 1d20 + @abilities.str.save]]{Strength Save}
-[[/r 1d20 + @abilities.dex.save]]{Dexterity Save}
-[[/r 1d20 + @abilities.con.save]]{Constitution Save}
-[[/r 1d20 + @abilities.int.save]]{Intelligence Save}
-[[/r 1d20 + @abilities.wis.save]]{Wisdom Save}
-[[/r 1d20 + @abilities.cha.save]]{Charisma Save}
+[[/r 1d20 + @abilities.str.save]]{STR Save}
+[[/r 1d20 + @abilities.dex.save]]{DEX Save}
+[[/r 1d20 + @abilities.con.save]]{CON Save}
+[[/r 1d20 + @abilities.int.save]]{INT Save}
+[[/r 1d20 + @abilities.wis.save]]{WIS Save}
+[[/r 1d20 + @abilities.cha.save]]{CHA Save}
 ~~~
 
 ### Stat Checks
@@ -139,12 +128,12 @@ Six stat based saving throws as follows:
 Six stat based checks as follows:
 
 ~~~
-[[/r 1d20 + @abilities.str.mod]]{Strength Check}
-[[/r 1d20 + @abilities.dex.mod]]{Dexterity Check}
-[[/r 1d20 + @abilities.con.mod]]{Constitution Check}
-[[/r 1d20 + @abilities.int.mod]]{Intelligence Check}
-[[/r 1d20 + @abilities.wis.mod]]{Wisdom Check}
-[[/r 1d20 + @abilities.cha.mod]]{Charisma Check}
+[[/r 1d20 + @abilities.str.mod]]{STR Check}
+[[/r 1d20 + @abilities.dex.mod]]{DEX Check}
+[[/r 1d20 + @abilities.con.mod]]{CON Check}
+[[/r 1d20 + @abilities.int.mod]]{INT Check}
+[[/r 1d20 + @abilities.wis.mod]]{WIS Check}
+[[/r 1d20 + @abilities.cha.mod]]{CHA Check}
 ~~~
 
 ## Introduction to PIXI
