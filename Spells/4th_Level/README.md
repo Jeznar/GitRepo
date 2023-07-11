@@ -362,7 +362,15 @@ This implementation:
 
 ### Wall of Fire
 
-Wall of Fire implemented as an [Advanced Spell Effects macro](https://github.com/Vauryx/advancedspelleffects/wiki/Currently-Available-Spells#wall-of-fire).  It's a bit odd, but seems to largely work.
+The ASE implementation of this spell has been deprecated in my game.  As written it was sometimes right and other times, it automatically does the wrong thing.
+
+In its place the new implementation creates and manages an at-will temporary spell that allows damage to be inflicted appropriately by the players.  It requires the players to mark the wall location manually, which is much more flexible than the ASED approach. 
+
+Some of the interesting things this spell does:
+
+1. Adds/Edits a temp item onto the caster's sheet
+2. Scales the temp item to account for upcasting
+3. Updates concentrating so it shows the spell being concentrated on and when concentration breaks it removes the temp item. 
 
 [*Back to 4th Level Spell List*](#4th-level-spells)
 

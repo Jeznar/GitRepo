@@ -541,7 +541,9 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.05.02 Fix to **Life Drain** for Snow Maiden, Spector and Wraith.  All of them used a depreciated DAE setting.  Now they have an onUse Macro.
 
-23/05.02 Updated **Shield Bash** to use am ItemMacro to mark target prone.
+23.05.02 Updated **Shield Bash** to use am ItemMacro to mark target prone.
+
+23.07.11 Wrote new **Wall of Fire** that manages/edits a temp item, modifies concentration to clean up and have a more useful CE_DESC.
 
 [Link back to my Documentation Listing](README.md) 
 
