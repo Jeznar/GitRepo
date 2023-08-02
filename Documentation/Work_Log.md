@@ -545,6 +545,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.07.11 Wrote new **Wall of Fire** that manages/edits a temp item, modifies concentration to clean up and have a more useful CE_DESC.
 
+23.08.02 Update/Fix to Advanced Spell Effect's (ASE) callLightening spell to render correct size tile.  Changes in: callLighting.js & utilityFunctions.js
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
