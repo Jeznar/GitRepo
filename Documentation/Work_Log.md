@@ -547,6 +547,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.08.02 Update/Fix to Advanced Spell Effect's (ASE) callLightening spell to render correct size tile.  Changes in: callLighting.js & utilityFunctions.js
 
+23.08.02 Repeat previous callLighting change to Darkness spell 
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
