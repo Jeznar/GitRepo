@@ -1,4 +1,4 @@
-const MACRONAME = "Help.0.6.js"
+const MACRONAME = "Help.0.8.js"
 /*********************************************************************************************
  * Implement the "helpful" half of the RAW Help Axtion in a somewhat approximate way.
  * 
@@ -26,6 +26,7 @@ const MACRONAME = "Help.0.6.js"
  * 11/20/21 0.5 JGB Posting error results to action card
  * 11/20/21 0.6 JGB Require target to be helped to be friendly
  * 07/04/22 0.7 JGB Convert to CE for effect management
+ * 08/02/23 0.8 JGB Commented out range check and added CEDesc update
  **********************************************************************************************/
  const debug = 2;
  let trcLvl = 1
@@ -48,10 +49,10 @@ if (!oneTarget()) {
     postResults(`${player.name} seems to have had a PEBCAK.<br>Target one entity, please`);
     return;  
 }
-if (!inRange(player, targetD, range)) {
-    postResults(`${player.name} is too far from ${targetD.name} to help.`);
-    return;  
-}
+// if (!inRange(player, targetD, range)) {
+//     postResults(`${player.name} is too far from ${targetD.name} to help.`);
+//     return;  
+// }
 if (jezcon.hasCE(effect,targetD.actor.uuid,{traceLvl: 0})) {  // Only apply if not already present
     postResults(`${targetD.name} has already been helped.`);
     return;  
@@ -63,6 +64,13 @@ if (jezcon.hasCE(effect,targetD.actor.uuid,{traceLvl: 0})) {  // Only apply if n
 *************************************************************************/
 jezcon.add({ effectName: 'Helped', uuid: targetD.actor.uuid })
 postResults(`${targetD.name} is helped by ${player.name}, gaining advantage on next ability check within 1 turn.`);
+
+/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+ * Update the Convienet Description to contain some more yummy infos. 
+ *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
+const NEW_DESC = `Help from ${player.name} grants advantage on next ability check within one turn`;
+await jez.setCEDesc(targetD.id, effect, NEW_DESC, { traceLvl: 0 });
+
 return;
 
 
@@ -85,18 +93,18 @@ return;
  * Check to see if two entities are in range with 2.5 foot added
  * to allow for diagonal measurement to "corner" adjacancies
 *************************************************************************/
-function inRange(firstEntity, secondEntity, maxRange) {
-    let distance = canvas.grid.measureDistance(firstEntity, secondEntity);
-    distance = distance.toFixed(1);             // Chop the extra decimals, if any
-    if (debug) console.log(` Considering ${secondEntity.name} at ${distance} distance`);
-    if (distance > (maxRange + 2.5)) {
-        let message = ` ${secondEntity.name} is not in range (${distance}) of ${firstEntity.name}, end ${MACRONAME}`;
-        // ui.notifications.warn(message);
-        if (debug) console.log(message);
-        return(false);
-    } 
-    return(true);
-}
+// function inRange(firstEntity, secondEntity, maxRange) {
+//     let distance = canvas.grid.measureDistance(firstEntity, secondEntity);
+//     distance = distance.toFixed(1);             // Chop the extra decimals, if any
+//     if (debug) console.log(` Considering ${secondEntity.name} at ${distance} distance`);
+//     if (distance > (maxRange + 2.5)) {
+//         let message = ` ${secondEntity.name} is not in range (${distance}) of ${firstEntity.name}, end ${MACRONAME}`;
+//         // ui.notifications.warn(message);
+//         if (debug) console.log(message);
+//         return(false);
+//     } 
+//     return(true);
+// }
 /************************************************************************
  * Verify exactly one target selected, boolean return
 *************************************************************************/

@@ -1,4 +1,4 @@
-const MACRONAME = "Hinder.0.3.js"
+const MACRONAME = "Hinder.0.4.js"
 /*********************************************************************************************
  * Implement the "hurtful" half of the RAW Help Axtion in a somewhat approximate way.
  * 
@@ -18,7 +18,8 @@ const MACRONAME = "Hinder.0.3.js"
  * 
  * 11/17/21 0.1 JGB created from Help_0.1
  * 11/17/21 0.2 JGB Code Cleaning
- * 07/04/22 0.7 JGB Convert to CE for effect management
+ * 07/04/22 0.3 JGB Convert to CE for effect management
+ * 08/02/23 0.4 JGB Commented out range check and added CEDesc update
  **********************************************************************************************/
 let trcLvl = 1
 const debug = 0;
@@ -41,22 +42,24 @@ if (game.user.targets.ids.length != 1) {
     return;
 } else if (debug) console.log(` targeting one target`);
 // Target needs to be in range
-let range = 5; range += 2.5;    // Add a half square buffer for diagonal adjacancy 
-let distance = canvas.grid.measureDistance(player, targetD);
-distance = distance.toFixed(1);             // Chop the extra decimals, if any
-if (debug) console.log(` Considering ${targetD.name} at ${distance} distance`);
-if (distance > range) {
-    let message = ` ${targetD.name} is not in range (${distance}), end ${MACRONAME}`;
-    ui.notifications.warn(message);
-    if (debug) console.log(message);
-    return;
-}
+// let range = 5; range += 2.5;    // Add a half square buffer for diagonal adjacancy 
+// let distance = canvas.grid.measureDistance(player, targetD);
+// distance = distance.toFixed(1);             // Chop the extra decimals, if any
+// if (debug) console.log(` Considering ${targetD.name} at ${distance} distance`);
+// if (distance > range) {
+//     let message = ` ${targetD.name} is not in range (${distance}), end ${MACRONAME}`;
+//     ui.notifications.warn(message);
+//     if (debug) console.log(message);
+//     return;
+// }
 if (jezcon.hasCE("Hindered", targetD.actor.uuid))
     postResults(`${targetD.name} has already been hindered, no additional effect.`)
 else {
     jezcon.add({ effectName: 'Hindered', uuid: targetD.actor.uuid })
     postResults(`${targetD.name} is hindered by the actions of ${player.name}, 
         granting advantage to next attacker within 1 turn.`)
+    const NEW_DESC = `Hindered by ${player.name}, grants advantage to next attacker within one turn`;
+    await jez.setCEDesc(targetD.id, 'Hindered', NEW_DESC, { traceLvl: 0 });
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY

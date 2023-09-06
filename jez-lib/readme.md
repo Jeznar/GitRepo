@@ -1875,7 +1875,7 @@ Those two functions manage the VFX that is run immediately before the summoning 
 | snap         | Integer          | -1                        | Value passed to **[jez.warpCrossHairs(...)](#warpcrosshairs)**                
 | source       | Object           | {center:{x:315,y:385}}    | Coordinates for source (within center), typically aToken
 | suppressTokenMold | Integer     | 2000 or introTime + 500   | Time (in ms) to suppress TokenMold's renaming setting must be longer than **introTime**             
-| templateName | String           | `${%MINION%}`             | Name of actor in sidebar, the MINION argument wrapped in percentage symbols 
+| templateName | String           | `${%MINION%}` or MINION   | Name of actor in sidebar, the MINION argument wrapped in percentage symbols first and then naked 
 | traceLvl     | Integer          | null                      | Level of code tracing to console log, 0 turns it off               
 | updates      | Object           | See Updates Object below  | Updates to be applied to the summoned token, this will often want to be {} for linked tokens.                
 | waitForSuppress | Integer       | 100 ms                    | Time (in ms) to wait of for Suppression to begin                
@@ -2067,6 +2067,34 @@ return (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))
 <details> <summary>**Portal Effect Recording**</summary>
 
 ![Summon_Portal.gif](images/Summon_Portal.gif)
+</details>
+
+#### Simple Call
+
+<details> <summary>**Simple Call Example**</summary>
+
+This one uses mostly defaults, but also sets the elevation of the summoned token.
+
+~~~javascript
+//--------------------------------------------------------------------------------------------------
+// Build the dataObject for our summon call, all we need to do is customize the name and elevation
+//
+let argObj = {
+  minionName: `Raven ${counter}`,
+  img: summonData?.img ?? aItem.img
+}
+argObj.updates = {
+   token: {
+       name: argObj.minionName,
+       elevation: ELEVATION,
+   },
+}
+//--------------------------------------------------------------------------------------------------
+// Do the actual summon
+//
+summonedMinionId = await jez.spawnAt(MINION, aToken, aActor, aItem, argObj)
+
+~~~
 </details>
 
 [*Back to Functions list*](#functions-in-this-module)

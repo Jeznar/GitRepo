@@ -10,7 +10,7 @@ const MACRONAME = "VileIncubator.0.1.js"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
  const TAG = `${MACRO} |`
- const TL = 5;                               // Trace Level for this macro
+ const TL = 0;                               // Trace Level for this macro
  let msg = "";                               // Global message string
  //---------------------------------------------------------------------------------------------------
  if (TL>0) jez.trace(`${TAG} === Starting ===`);
@@ -41,23 +41,30 @@ let argObj = {
     outroVFX: '~Smoke/SmokePuff01_*_${color}_400x400.webm', // default outroVFX file
     source: aToken,                     // Coords for source (with a center), typically aToken
     width: 2,                           // Width of token to be summoned, 1 is the default
-    traceLvl: TL,                        // Trace level, matching calling function decent choice
+    traceLvl: 0,                        // Trace level, matching calling function decent choice
     templateName: MINION,
 }
 //-------------------------------------------------------------------------------------------------------------------------------
-let spiderIds = []
+const ATOKEN_INIT_VALUE = aToken?.combatant?.data?.initiative // Get initiative value, if any
+if (TL > 1) jez.trace(`${TAG} ${aToken.name} initiative`, ATOKEN_INIT_VALUE);
 for (let i = 1; i < 3; i++) {
     argObj.minionName = MINION + ' ' + i;
     const HAND_TOKEN_ID = (await jez.spawnAt(MINION, aToken, aActor, aItem, argObj))[0]
-    spiderIds.push(HAND_TOKEN_ID)
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Add our Summoned critter to combat tracker immediately after summoner if in combat
+    //
+    if (ATOKEN_INIT_VALUE) {
+        const WFS_INIT = ATOKEN_INIT_VALUE - (i * 0.001)
+        await jez.combatAddRemove('Add', HAND_TOKEN_ID, { traceLvl: TL })
+        await jez.wait(500)
+        await jez.combatInitiative(HAND_TOKEN_ID, { formula: WFS_INIT, traceLvl: 0 })
+    }
 }
-if (TL>1) jez.log(`${TAG} spiderIds`, spiderIds)
-
 //-------------------------------------------------------------------------------------------------------------------------------
 // Post message
 //
 let chatMessage = game.messages.get(args[args.length - 1].itemCardId);
-msg = `<b>${aToken.name}</b> spawns two ${MINION}}</b> to the field.`;
+msg = `<b>${aToken.name}</b> spawns two ${MINION}</b>.`;
 jez.addMessage(chatMessage, { color: jez.randomDarkColor(), fSize: 15, msg: msg, tag: "saves" })
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  *    END_OF_MAIN_MACRO_BODY

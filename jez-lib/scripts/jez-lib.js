@@ -2783,8 +2783,11 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      * MINION is a string defining the name of the MINION
      * aToken token5e data object for the reference token (from which range is measured)
      * ARGS is a whopper of an object that can contain multiple values, read code or README
+     * 
+     * 23/09/06 Update to check for non=% wrapped minion and not require center explicit specification (use aToken as default)
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
     static async spawnAt(MINION, aToken, aActor, aItem, ARGS) {
+        // async function spawnAt(MINION, aToken = null, aActor, aItem, ARGS) {
         // async function spawnAt(MINION, aToken, aActor, aItem, ARGS) {
         const FUNCNAME = "jez.spawnAt(MINION, ARGS)";
         const FNAME = FUNCNAME.split("(")[0]
@@ -2817,7 +2820,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             outroVFX: '~Smoke/SmokePuff01_01_Regular_${color}_400x400.webm', // default outroVFX file
             scale: 0.7,                         // Scale for the VFX
             snap: -1,                           // Snap value passed to jez.warpCrosshairs
-            source: { center: { x: 315, y: 385 } },  // Coords for source (within center), typically aToken
+            source: aToken,                     // Coords for source (within center), typically aToken
             suppressTokenMold: 2000,            // Time (in ms) to suppress TokenMold's renaming setting
             templateName: `%${MINION}%`,
             traceLvl: 0,
@@ -2853,6 +2856,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             source: ARGS.source ?? defVal.source,
             suppressTokenMold: ARGS.suppressTokenMold ?? defVal.suppressTokenMold,
             templateName: ARGS.templateName ?? defVal.templateName,
+            token: aToken ?? defVal.token,      // Use aToken if provided
             traceLvl: ARGS.traceLvl ?? defVal.templateName,
             updates: 'updates' in ARGS ? ARGS.updates : defVal.updates,
             waitForSuppress: ARGS.waitForSuppress ?? defVal.waitForSuppress,
@@ -2946,10 +2950,20 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (!game.modules.get(REQUIRED_MODULE)) return jez.badNews(`${FNAME} | ${REQUIRED_MODULE} must be active.  Please fix!`, "error")
         else if (TL > 1) jez.trace(`${FNAME} | Found ${REQUIRED_MODULE} continuing...`)
         //-----------------------------------------------------------------------------------------------------------------------------------
-        // Make sure that dataObj.templateName exists in actor directory and stash its data object
+        // Make sure that dataObj.templateName exists in actor directory and stash its data object, try without % wraps if present
         //
         let summonData = await game.actors.getName(dataObj.templateName)
-        if (!summonData) return jez.badNews(`${FNAME} | Could not find ${dataObj.templateName} in Actor directory, please fix`, "error")
+        let strippedName = dataObj.templateName.slice(1, dataObj.templateName.length - 1)
+        if (!summonData) {
+            let msg = `Could not find ${dataObj.templateName} in Actor directory, please fix`
+            if (dataObj.templateName[0] === '%' && dataObj.templateName[dataObj.templateName.length - 1] === '%') {
+                if (TL > 1) jez.trace(`${FNAME} | Trying stripped name for ${dataObj.templateName}:  ${strippedName}`)
+                summonData = await game.actors.getName(strippedName)
+                if (!summonData) msg = `Could not find ${dataObj.templateName} or ${strippedName} in Actor directory, please fix`
+                dataObj.templateName = strippedName;
+            }
+        }
+        if (!summonData) return jez.badNews(`${FNAME} | ${msg}`, "error")
         else if (TL > 1) jez.trace(`${FNAME} | Found ${summonData} continuing...`, summonData)
         //-----------------------------------------------------------------------------------------------------------------------------------
         // Get and set maximum sumoning range

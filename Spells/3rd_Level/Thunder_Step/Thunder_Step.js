@@ -1,10 +1,11 @@
-const MACRONAME = "Thunder_Step.0.2.js"
+const MACRONAME = "Thunder_Step.0.3.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Total rewrite of what was a macro less, two step Thunder Step implementation.  
  * This is now just one step and is highly automated.
  * 
  * 12/04/22 0.1 Creation of Macro
  * 12/06/22 0.2 Add temporary markers to spots choosen for teleport destinations
+ * 08/14/23 0.3 Fix so damage scales with level of spell
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -24,7 +25,8 @@ const GAME_RND = game.combat ? game.combat.round : 0;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-const DAM_DICE = '3d10'
+const SPELL_LVL = L_ARG?.spellLevel ? L_ARG.spellLevel : 3
+const DAM_DICE = `${SPELL_LVL}d10`
 const DAM_TYPE = 'thunder'
 const SAVE_TYPE = 'con'
 const SAVE_DC = aActor.data.data.attributes.spelldc;
