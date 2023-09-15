@@ -85,12 +85,10 @@ async function doOnUse(options = {}) {
             img: summonData?.img ?? aItem.img
         }
         argObj.updates = {
-            // actor: { name: famName },
             token: {
                 name: argObj.minionName,
                 elevation: ELEVATION,
             },
-        // embedded: { Item: {} } // Need an empty entry here to hold one or more additions
         }
         //--------------------------------------------------------------------------------------------------
         // Do the actual summon
