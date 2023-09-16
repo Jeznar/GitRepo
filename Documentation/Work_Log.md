@@ -551,6 +551,8 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.09.15 Created Rot Grub bite that does applies a DAE OverTime dot effect and displays a die roll with the .toMessage() method
 
+23.09.16 Created Remorhaz abilities including a bite that incorporates a swallow and vomit function.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
