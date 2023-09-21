@@ -42,7 +42,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
 * **[getCEDesc()](#getcedescsubject-effectname-optionobj--)** -- Converts passed subject and returns Actor5e object.
-* **[getCharLevel(subject, [options = {}])](#getCharacterLevel)** -- Returns the subject's character level
+* **[getCharLevel(subject, [options = {}])](#get-functions)** -- Returns the subject's character level
 * **[getClassLevel(subject, className, options = {})](#get-functions)** -- Returns the subject's specific class level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
@@ -94,8 +94,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **[setItemUses(item, uses, options = {})](#setitemusesitem-uses-options--)** -- Sets the number of uses for specified item
 * **[spawnAt(MINION, aToken, aActor, aItem, argObj)](#spawnatminion-atoken-aactor-aitem-argobj)** -- this one is ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.* **[suppressTokenMoldRenaming(\<delay = 500\>, \<{traceLvl:1}\>)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** -- Suppresses token-mold renaming for specified number of milliseconds
 * **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
-* **[tileCreate(tileProps, [options = {}])](#tilecreatetileprops)** -- Creates a tile with specified properties
-* **[tileDelete(tileId, [options = {}])](#tiledeletetileid)** -- Deletes a tile with specified ID
+* **[tileCreate(tileProps, [options = {}])](#tilecreatetileprops-options--)** -- Creates a tile with specified properties
+* **[tileDelete(tileId, [options = {}])](#tiledeletetileid-options--)** -- Deletes a tile with specified ID
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
 * **[trc(level, threshold, ...parms)](#trclevel-threshold-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
