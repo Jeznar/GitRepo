@@ -43,8 +43,7 @@ class jez {
      * jez.trc(1, trcLvl, "Post this message to the console", variable)
      ***************************************************************************************************/
     static trc(level, threshold, ...parms) {
-        console.warn(`Depricated call to jez.trc`)
-        // return  // Forced silence 11.17.22
+        return  // Forced silence 11.17.22
         if (level > threshold) return false
         return jez.writeTrcLog(" T R C ", ...parms)
     }
@@ -61,7 +60,7 @@ class jez {
      * if (TL>2) jez.trace(`${FNAME} | Post this message to the console`, variable)
      ***************************************************************************************************/
     static trace(...parms) {
-        return jez.writeTrcLog("Trace", ...parms)
+        return jez.writeTrcLog(" Trace ", ...parms)
     }
     /***************************************************************************************************
      * Log
@@ -71,7 +70,7 @@ class jez {
      * Ex: jez.log("Post this message to the console", variable)
      ***************************************************************************************************/
     static log(...parms) {
-        return jez.writeTrcLog("Jez ", ...parms)
+        return jez.writeTrcLog("jez-log", ...parms)
     }
     /***************************************************************************************************
      * Write Trace/Log to console
@@ -711,13 +710,8 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *  let level = aActor.classes[getClass].data.data.levels;
      * Maybe that is a cool way to do the same thing?
      ***************************************************************************************************/
-    static getCharLevel(subject, options = {}) {
-        const FUNCNAME = "getCharLevel(subject, options = {})";
-        const FNAME = FUNCNAME.split("(")[0]
-        const TAG = `jez.${FNAME} |`
-        const TL = options.traceLvl ?? 0
-        if (TL === 1) jez.log(`${TAG} --- Starting ---`);
-        if (TL > 1) jez.log(`${TAG} ${FUNCNAME}`, 'subject', subject, 'options', options);
+    static getCharLevel(subject) {
+        let trcLvl = 0
         //----------------------------------------------------------------------------------------------
         // Convert the passed parameter to Actor5e
         //
@@ -737,34 +731,28 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         //
         let charLevel = 0
         // PC's can have multiple classes, add them all up
-        if (TL > 2) jez.log('Class Levels',
-            "actor5e.data.document          ", actor5e.data.document,
-            "actor5e.data.document?._classes", actor5e.data.document?._classes);
+        jez.trc(3, trcLvl, "*** actor5e.data.document", actor5e.data.document)
+        jez.trc(3, trcLvl, "*** actor5e.data.document?._classes", actor5e.data.document?._classes)
         if (actor5e.data.document?._classes) {
-            if (TL > 3) jez.log(`${TAG} ==> Found data in actor5e.data.document?._classes`, actor5e.data.document?._classes)
+            jez.trc(3, trcLvl, "==> Found data in actor5e.data.document?._classes", actor5e.data.document?._classes)
             for (const CLASS in actor5e.data.document?._classes) {
+                jez.trc(4, trcLvl, "Type of levels", jez.typeOf(actor5e.data.document._classes?.[CLASS]?.data?.data?.levels))
                 let level = parseInt(actor5e.data.document._classes?.[CLASS]?.data?.data?.levels)
-                if (TL > 3) jez.log('Level Data',
-                    "Type of levels", jez.typeOf(level),
-                    "level         ", level);
+                jez.trc(4, trcLvl, "level", level)
                 charLevel += level
             }
         }
         else {
-            if (TL > 3) jez.log(`${TAG} ==> Trying for classes actor5e.classes`, actor5e.classes)
+            jez.trc(0, trcLvl, "==> Trying for classes actor5e.classes", actor5e.classes)
             for (const CLASS in actor5e.classes) {
+                jez.trc(4, trcLvl, "Type of levels", jez.typeOf(actor5e.classes?.[CLASS]?.data?.data?.levels))
                 let level = parseInt(actor5e.classes?.[CLASS]?.data?.data?.levels)
-                if (TL > 3) jez.log('Level Data',
-                    "Type of levels", jez.typeOf(level),
-                    "level         ", level);
+                jez.trc(4, trcLvl, "level", level)
                 charLevel += level
             }
         }
         // NPC's don't have classes, use CR instead
-        if (!charLevel) {
-            charLevel = actor5e.data.data.details.cr
-            if (TL > 3) jez.log(`NPC's don't have classes, use CR instead: `, charLevel) 
-        }
+        if (!charLevel) charLevel = actor5e.data.data.details.cr
         return (charLevel)
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
@@ -2503,22 +2491,20 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *     height: GRID_SIZE * 3                   // ditto
      * };
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-    static async tileCreate(tileProps, options = {}) {
-        const FUNCNAME = "tileCreate(tileProps, options = {})";
-        const FNAME = FUNCNAME.split("(")[0]
-        const TAG = `jez.${FNAME} |`
-        const TL = options.traceLvl ?? 0
-        if (TL === 1) jez.log(`${TAG} --- Starting ---`);
-        if (TL > 1) jez.log(`${TAG} ${FUNCNAME}`, 'tileProps', tileProps, 'options', options);
-        //----------------------------------------------------------------------------------------------
+    static async tileCreate(tileProps) {
+        const FUNCNAME = "jez.tileCreate(tileProps)";
+        const TRACE_LEVEL = 0
+        jez.trc(3, TRACE_LEVEL, `--- Starting --- ${FUNCNAME} ---`);
+        jez.trc(4, TRACE_LEVEL, "Parameters", "tileProps", tileProps)
+        // let newTile = await Tile.create(tileProps)   // Depricated
         // Following line throws a permission error for non-GM acountnts running this code.
         // let newTile = await game.scenes.current.createEmbeddedDocuments("Tile", [tileProps]);  // FoundryVTT 9.x
         let existingTiles = game.scenes.current.tiles.contents
         let newTile = await jez.createEmbeddedDocs("Tile", [tileProps])
-        if (TL > 2) jez.log(`${TAG} jez.createEmbeddedDocs returned`, newTile);
+        jez.trc(3, "jez.createEmbeddedDocs returned", newTile);
         if (newTile) {
             let returnValue = newTile[0].data._id
-            if (TL > 1) jez.log(`${TAG} Returning: `, returnValue);
+            jez.trc(2, `--- Finished --- ${FUNCNAME} --- Generated:`, returnValue);
             return returnValue; // If newTile is defined, return the id.
         }
         else {   // newTile will be undefined for players, so need to fish for a tile ID
@@ -2527,15 +2513,15 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
             let delay = 2
             await jez.wait(3)           // wait for a very short time and see if a new tile has appeared
             for (i = 1; i < 40; i++) {
-                if (TL > 1) jez.log(`Seeking new tile, try ${i} at ${delay * i} ms after return`);
+                jez.trc(3, TRACE_LEVEL, `Seeking new tile, try ${i} at ${delay * i} ms after return`)
                 gameTiles = game.scenes.current.tiles.contents
                 if (gameTiles.length > existingTiles.length) break
                 await jez.wait(delay)   // wait for a very short time and see if a new tile has appeared
             }
             if (i === 40) return jez.badNews(`Could not find new tile, sorry about that`, "warn")
-            if (TL > 2) jez.log(`${TAG} Seemingly, the new tile has id: `, gameTiles[gameTiles.length - 1].id);
+            jez.trc(3, TRACE_LEVEL, "Seemingly, the new tile has id", gameTiles[gameTiles.length - 1].id)
             let returnValue = gameTiles[gameTiles.length - 1].id
-            if (TL > 1) jez.log(`--- Finished --- ${FUNCNAME} --- Return: `, returnValue);
+            jez.trc(2, TRACE_LEVEL, `--- Finished --- ${FUNCNAME} --- Found:`, returnValue);
             return returnValue
         }
     }

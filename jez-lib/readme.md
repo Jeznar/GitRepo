@@ -31,7 +31,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[addMessage(chatMessage, msgParm)](#addmessagechatmessage-msgparm)** -- Adds to an existing message in the **Chat Log**
 * **[badNews(message, \<badness\>)](#badnewsmessage-badnews)** -- Displays warning message on console and ui then returns false
 * **[createEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Creates an embedded document, wraps a RunAsGM function
-* **[combatAddRemove(ACTION, SUBJECT, options = {})](#combataddremoveaction-subject-options--)** -- Add/Remove/Toggle Token in combat tracker
+* **[combatAddRemove(ACTION, SUBJECT, [options = {}])](#combataddremoveaction-subject-options--)** -- Add/Remove/Toggle Token in combat tracker
 * **[combatInitiative(SUBJECT, options = {})](#combatinitiativesubject-options--)** Roll token's initiative if not already rolled
 * **[deleteEffectAsGM(UUID, options = {})](#deleteeffectasgmuuid-options--)** GM wrapped macro to delete an entity by UUID
 * **[deleteEmbeddedDocs(type, ids)](#embeddeddoc-functions)** -- Deletes an embedded document, wraps a RunAsGM function
@@ -42,7 +42,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getCastMod(subject)](#get-functions)** -- Returns the subject's casting stat modifier
 * **[getCastStat(subject)](#get-functions)** -- Returns the subject's casting stat string (e.g. "int")
 * **[getCEDesc()](#getcedescsubject-effectname-optionobj--)** -- Converts passed subject and returns Actor5e object.
-* **[getCharLevel(subject)](#getCharacterLevel)** -- Returns the subject's character level
+* **[getCharLevel(subject, [options = {}])](#getCharacterLevel)** -- Returns the subject's character level
 * **[getClassLevel(subject, className, options = {})](#get-functions)** -- Returns the subject's specific class level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
@@ -94,8 +94,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **[setItemUses(item, uses, options = {})](#setitemusesitem-uses-options--)** -- Sets the number of uses for specified item
 * **[spawnAt(MINION, aToken, aActor, aItem, argObj)](#spawnatminion-atoken-aactor-aitem-argobj)** -- this one is ambitious.  It aims to make the summoning, customizing and placement of VFXs for that summoning a one call affair.* **[suppressTokenMoldRenaming(\<delay = 500\>, \<{traceLvl:1}\>)](#suppresstokenmoldrenamingdelay--500-traceLvl1)** -- Suppresses token-mold renaming for specified number of milliseconds
 * **[subjectToActor()](#subjectToActorsubject-fname)** -- Converts passed subject and returns Actor5e object.
-* **[tileCreate(tileProps)](#tilecreatetileprops)** -- Creates a tile with specified properties
-* **[tileCreate(tileId)](#tiledeletetileid)** -- Deletes a tile with specified ID
+* **[tileCreate(tileProps, [options = {}])](#tilecreatetileprops)** -- Creates a tile with specified properties
+* **[tileDelete(tileId, [options = {}])](#tiledeletetileid)** -- Deletes a tile with specified ID
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
 * **[trc(level, threshold, ...parms)](#trclevel-threshold-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
@@ -485,8 +485,8 @@ A series of functions that return simple integer values or false on errors with 
 #### Functions
 - **jez.getCastMod(subject)** -- Returns the subject's casting stat modifier
 - **jez.getCastStat(subject)** -- Returns the subject's casting stat string (e.g. "int")
-- **jez.getCharLevel(subject)** -- Returns the subject's character level (useful for Cantrip scaling)
-- **jez.getClassLevel(subject, className, options = {})** -- For PCs returns the class level of the character's named class.  For NPCs returns the character level.
+- **jez.getCharLevel(subject, [options = {}])** -- Returns the subject's character level (useful for Cantrip scaling), optional options
+- **jez.getClassLevel(subject, className, [options = {}])** -- For PCs returns the class level of the character's named class.  For NPCs returns the character level.
 - **jez.getStatMod(subject,stat)** -- Returns the subject's modifier for passed stat string
 - **jez.getSpellDC(subject)** -- Returns the subject's spell save DC
 - **jez.getProfMod(subject)** -- Returns the subject's proficiency modifier
@@ -497,6 +497,7 @@ A series of functions that return simple integer values or false on errors with 
 * Stat: A string from: "str", "dex", "con", "int", "wis", "chr"
 * ClassName: A string naming a character class, e.g. "Druid", "wizard", "FIGHTER"
 * SubjectId: 16 character identifier for a token in the current scene
+* options: object that can define traceLvl as a small integer to trigger logging statements
 
 #### And Two more
 Two additional get functions intended to make handling the overloaded inputs a bit easier to code:
@@ -2154,11 +2155,13 @@ Known Use Functions: **[getCEDesc()](#getcedescsubject-effectname-optionobj--)**
 
 ---
 
-### tileCreate(tileProps) 
+### tileCreate(tileProps, [options = {}]) 
 
 This function creates a tile in the current scene with the specified properties.  This is intended to hide the niggling details of needing GM level permissions to make a tile.  It hides a RunAsGM macro and a bit of fishing for the created tile id when run by a non-GM account.
 
-The argument needs to be an object that is ultimately useable by `game.scenes.current.createEmbeddedDocuments(args[0], args[1])` as args[1]. The first argument passed to that function will be 'Tile' and is hidden by this function. 
+The argument needs to be an object that is ultimately useable by `game.scenes.current.createEmbeddedDocuments(args[0], args[1])` as args[1]. The first argument passed to that function will be 'Tile' and is hidden by this function.  
+
+The options object can define "traceLvl" as a small integer value and will trigger console trace statements, defaults to 0.
 
 Following is an example object:
 
@@ -2183,21 +2186,23 @@ let tileProps = {
 The return value will be the id of the tile just created.  This may well be needed for subsequent deletion. Here is an example call:
 
 ~~~javascript
-let tileId = await jez.tileCreate(tileProps)
+let tileId = await jez.tileCreate(tileProps, {traceLvl: 2})
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
 ---
 
-### tileDelete(tileId) 
+### tileDelete(tileId, [options = {}]) 
 
 This function deletes a tile with the specified tile ID.  This is intended to hide the niggling details of needing GM level permissions to make a tile.  It hides a RunAsGM macro and a bit of fishing for the created tile id when run by a non-GM account.
+
+The options object can define "traceLvl" as a small integer value and will trigger console trace statements, defaults to 0.
 
 Here is an example call:
 
 ~~~javascript
-jez.tileDelete(tileId)
+jez.tileDelete(tileId, {traceLvl: 2})
 ~~~
 
 [*Back to Functions list*](#functions-in-this-module)

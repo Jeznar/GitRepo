@@ -1,22 +1,23 @@
-const MACRONAME = "test_tileCreateDelete.0.1.js"
+const MACRONAME = "test_tileCreateDelete.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Test harness for two library functions.  
  * 
  * This needs to be inserted as an ItemMacro on an item that places a targeting template.
  * 
  * 06/29/22 0.1 Creation
+ * 09/21/23 0.2 Update to use jez.log insrtead of jez.trc
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 1;
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+const TAG = `${MACRO} |`
+const TL = 1;                             // Trace Level for this macro
 let msg = "";
+//-----------------------------------------------------------------------------------------------------------------------------------
+if (TL > 0) jez.log(`${TAG} === Starting ===`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
-if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
+if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -24,10 +25,15 @@ jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
  ****************************************************************************************************
  * Perform the code that runs when this macro is invoked as an ItemMacro "OnUse"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
-async function doOnUse() {
-    const FUNCNAME = "doOnUse()";
-    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    //-----------------------------------------------------------------------------------------------
+async function doOnUse(options = {}) {
+    const FUNCNAME = "doOnUse(options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.log(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+    await jez.wait(100)
+    //-------------------------------------------------------------------------------------------------------------------------------
     // Store some needed info
     //
     // Grab the size of grid in pixels per square
@@ -51,7 +57,7 @@ async function doOnUse() {
     // Call library function to create the new tile, catching the id returned.  This replaces a bunch 
     // of code including jez.createEmbeddedDocs("Tile", [tileProps])
     //
-    let tileId = await jez.tileCreate(tileProps)
+    let tileId = await jez.tileCreate(tileProps, {traceLvl: TL})
     //-----------------------------------------------------------------------------------------------
     // Cool heals for a bit before moving on to the delete
     //
@@ -63,6 +69,6 @@ async function doOnUse() {
     //-----------------------------------------------------------------------------------------------
     // That's all folks
     //
-    jez.trc(1, trcLvl, `--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 1) jez.log(`${TAG} === Finished ===`);
     return;
 }

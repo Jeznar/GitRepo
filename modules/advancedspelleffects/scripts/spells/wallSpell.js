@@ -7,7 +7,7 @@ export class wallSpell extends baseSpellClass {
 
     constructor(data) {
         const TAG = `wallSpell.constructor |`
-        const TL = 2;
+        const TL = 0;
         super();
         this.data = data;
 
@@ -46,7 +46,7 @@ export class wallSpell extends baseSpellClass {
 
     async cast() {
         const TAG = `wallSpell.cast |`
-        const TL = 2;
+        const TL = 0;
         this._setWallCategory();
         this._setWallOptions();
         if (TL > 1) jez.trace(`${TAG} this`,this);
@@ -122,7 +122,7 @@ export class wallSpell extends baseSpellClass {
 
     _setWallOptions() {
         const TAG = `wallSpell_setWallOptions |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} wallCategory:`, this.wallCategory);
         if (TL > 1) jez.trace(`${TAG} effectOptions:`, this.effectOptions);
         switch (this.wallCategory) {
@@ -187,7 +187,7 @@ export class wallSpell extends baseSpellClass {
 
     _getDialogData() {
         const TAG = `wallSpell.getDialogData |`
-        const TL = 2;
+        const TL = 0;
         const wallType = this.wallType;
         const wallOptions = this.wallOptions;
         if (TL > 1) jez.trace(`${TAG} wallOptions:`, wallOptions);
@@ -301,7 +301,7 @@ export class wallSpell extends baseSpellClass {
     _getTexture(options, wallType, useWebP = false) {
         let texture = "";
         const TAG = `wallSpell.getTexture |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} options:`, options);
         switch (wallType) {
             case "thorns":
@@ -365,7 +365,7 @@ export class wallSpell extends baseSpellClass {
     static async updateCombat(combat) {
         const isGM = utilFunctions.isFirstGM();
         const TAG = `wallSpell.updateCombat |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} Is first GM: `, isGM);
         if (!isGM) return;
         if (TL > 1) jez.trace(`${TAG} Updating combat: `, combat);
@@ -500,7 +500,7 @@ export class wallSpell extends baseSpellClass {
 
     static async preUpdateToken(tokenDocument, updateData) {
         const TAG = `wallSpell.preUpdateToken |`
-        const TL = 2;
+        const TL = 0;
         const isGM = utilFunctions.isFirstGM();
         if (!isGM) return;
 
@@ -612,7 +612,7 @@ export class wallSpell extends baseSpellClass {
 
     static async activateWallEffect(token, wallData) {
         const TAG = `wallSpell.activateWallEffect |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} Activating Wall Effect...`);
         if (TL > 1) jez.trace(`${TAG} Token: `, token);
         if (TL > 1) jez.trace(`${TAG} Wall Data: `, wallData);
@@ -693,7 +693,7 @@ export class wallSpell extends baseSpellClass {
 
     static async deleteMeasuredTemplate(template) {
         const TAG = `wallSpell.deleteMeasuredTemplate |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} template`, template);
         const walls = Tagger.getByTag([`wallSpell-${template.getFlag("advancedspelleffects", "wallType")}-Wall${template.id}`]).map(wall => wall.id);
         if (walls.length) {
@@ -703,7 +703,7 @@ export class wallSpell extends baseSpellClass {
 
     static async handleConcentration(casterActor, casterToken, effectOptions) {
         const TAG = `wallSpell.handleConcentration |`
-        const TL = 2;
+        const TL = 0;
         let wallSpellTemplates = Tagger.getByTag(`wallSpell-${effectOptions.wallType}-${casterActor.id}`);
         let wsTemplateIds = [];
         if (wallSpellTemplates.length > 0) {
@@ -727,7 +727,7 @@ export class wallSpell extends baseSpellClass {
 
     static async placeWalls(templateDocument, deleteOldWalls = false) {
         const TAG = `wallSpell.placeWalls |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} placing walls...`);
         if (templateDocument.data.t === CONST.MEASURED_TEMPLATE_TYPES.RECTANGLE) return;
 
@@ -815,7 +815,7 @@ export class wallSpell extends baseSpellClass {
 
     static sourceSquareV(center, distance, direction) {
         const TAG = `wallSpell.sourceSquareV |`
-        const TL = 2;
+        const TL = 0;
         const gridSize = canvas.grid.h;
         const length = (distance / 5) * gridSize;
 
@@ -887,7 +887,7 @@ export class wallSpell extends baseSpellClass {
 
     static async pickFireSide(templateDocument) {
         const TAG = `wallSpell.pickFireSide |`
-        const TL = 2;
+        const TL = 0;
         const wallData = templateDocument?.data;
         if (!wallData) return;
         let buttonDialogData;
@@ -946,7 +946,7 @@ export class wallSpell extends baseSpellClass {
 
     static async handleOnCast(templateDocument) {
         const TAG = `wallSpell.handleOnCast |`
-        const TL = 4;
+        const TL = 0;
         const wallData = templateDocument.getFlag('advancedspelleffects', 'wallOperationalData');
         if (!wallData) return;
         const wallEffectData = templateDocument.getFlag('advancedspelleffects', 'wallEffectData');
@@ -1066,7 +1066,7 @@ export class wallSpell extends baseSpellClass {
 
     static addTokenToText(token, roll, dc, damageRoll) {
         const TAG = `wallSpell.addTokenToText |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} damageRoll`, damageRoll);
         let saveResult = roll >= dc ? true : false;
 
@@ -1082,7 +1082,7 @@ export class wallSpell extends baseSpellClass {
 
     static async placePanels(aseData, template, panelDiag, type) {
         const TAG = `wallSpell.placePanels |`
-        const TL = 2;
+        const TL = 0;
 
         wallSpell.playEffects(aseData, template);
         wallSpell.placeWalls(template);
@@ -1243,7 +1243,7 @@ export class wallSpell extends baseSpellClass {
 
     static playEffects(aseData, template) {
         const TAG = `wallSpell.playEffects |`
-        const TL = 2;
+        const TL = 0;
         if (TL > 1) jez.trace(`${TAG} Playing effects...`);
         if (TL > 1) jez.trace(`${TAG} template: `, template);
         if (TL > 1) jez.trace(`${TAG} aseData:  `, aseData);
@@ -1307,7 +1307,7 @@ export class wallSpell extends baseSpellClass {
 
     static async getRequiredSettings(currFlags) {
         const TAG = `wallSpell.getRequiredSettings |`
-        const TL = 2;
+        const TL = 0;
         if (!currFlags) currFlags = {};
         let spellOptions = [];
         let animOptions = [];

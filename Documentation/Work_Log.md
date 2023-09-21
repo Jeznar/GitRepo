@@ -553,6 +553,17 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 
 23.09.16 Created Remorhaz abilities including a bite that incorporates a swallow and vomit function.
 
+23.09.21 Update jez.trc to issue a console.warn about depreciation and proceed with logging.  Also, update jez.lib functions that call jez.trc to accept an optional passed options object defining traceLvl which is converted to TL and used for conditional execution of the jez.log calls.  Functions updated:
+
+* getCharLevel
+* tileCreate
+* tileDelete
+
+Fix standalone scripts to use jes.log instead of jez.trc
+
+* CreateEmbeddedDocuments
+* DeleteEmbeddedDocuments
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
