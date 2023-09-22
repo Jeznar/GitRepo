@@ -1,4 +1,4 @@
-const MACRONAME = "Grapple_Initiate_1.3.js"
+const MACRONAME = "Grapple_Initiate_1.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Initiate a grapple as an action, if already grappling, drop the grapple
  * 
@@ -22,29 +22,32 @@ const MACRONAME = "Grapple_Initiate_1.3.js"
  * 12/06/21 1.0 JGB Add scroll to bottom and results message
  * 05/04/22 1.1 JGB Update for Foundry 9.x
  * 07/04/22 1.2 JGB Convert to CE for effect management
- * 07//7/22 1.3 JGB Updated to use UUID for the paired effect call
+ * 07/07/22 1.3 JGB Updated to use UUID for the paired effect call
+ * 09/22/23 1.4 JGB Replace jez.trc with jez.log
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let msg = ""
-let trcLvl = 4
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+const TL = 3;
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
 //---------------------------------------------------------------------------------------------------
 // Set the value for the Active Actor (aActor)
 //
 let aActor;
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor;
-else aActor = game.actors.get(LAST_ARG.actorId);
+if (L_ARG.tokenId) aActor = canvas.tokens.get(L_ARG.tokenId).actor;
+else aActor = game.actors.get(L_ARG.actorId);
 //
 // Set the value for the Active Token (aToken)
 let aToken;
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
-else aToken = game.actors.get(LAST_ARG.tokenId);
+if (L_ARG.tokenId) aToken = canvas.tokens.get(L_ARG.tokenId);
+else aToken = game.actors.get(L_ARG.tokenId);
 //
 // Set the value for the Active Item (aItem)
 let aItem;
 if (args[0]?.item) aItem = args[0]?.item;
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+else aItem = L_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // 
 //
@@ -92,27 +95,26 @@ async function main() {
     let playerWin = "";
     let targetWin = "";
     playerRoll.total >= targetRoll.total ? playerWin = `success` : targetWin = `success`;
-    if (playerWin) jez.trc(2, trcLvl, " Target is grappled");
-    else jez.trc(2, trcLvl, " Target avoided grapple");
+    if (TL > 1) if (playerWin) jez.log(`${TAG} Target is grappled`); else jez.log(`${TAG} Target avoided grapple`);
     /**************************************************************************
      *  Apply Grappled Condition
      *************************************************************************/
     if (playerWin) {
-        jez.trc(2, trcLvl, " Apply grappled condition");
+        if (TL > 1) jez.log(`${TAG} Apply grappled condition`);
         jezcon.add({ effectName: 'Grappled', uuid: tToken.actor.uuid, origin: aActor.uuid })
         let message = `<b>${aToken.name}</b> has grappled <b>${tToken.name}</b>`
-        jez.trc(2, trcLvl, message);
+        if (TL > 1) jez.log(`${TAG} ${message}`);
         postResults(message);
     } else {
         let message = `<b>${aToken.name}</b> failed to grapple <b>${tToken.name}</b>`
-        jez.trc(2, trcLvl, message);
+        if (TL > 1) jez.log(`${TAG} ${message}`);
         postResults(message);
     }
     /**************************************************************************
      *  Apply Grappling Condition
      *************************************************************************/
     if (playerWin) {
-        jez.trc(2, trcLvl, "Apply grappled condition");
+        if (TL > 1) jez.log(`${TAG} Apply grappled condition`);
         await jez.wait(250)
         jezcon.add({ effectName: 'Grappling', uuid: aToken.actor.uuid })
         //-------------------------------------------------------------------------------
@@ -182,7 +184,7 @@ async function main() {
      </div>
      
  </div>`;
-        jez.trc(2, trcLvl, " Built damage results string");
+        if (TL > 1) jez.log(`${TAG} Built damage results string`);
         const chatMessage = game.messages.get(args[0].itemCardId);
         let content = duplicate(chatMessage.data.content);
         const searchString = /<div class="midi-qol-other-roll">[\s\S]*<div class="end-midi-qol-other-roll">/g;
@@ -197,11 +199,8 @@ async function main() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 function postResults(msg) {
     const FUNCNAME = "postResults(msg)";
-    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(2, trcLvl, "postResults Parameters", "msg", msg)
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    jez.trc(1, trcLvl, `--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
 }
 /************************************************************************
  * Verify exactly one target selected, boolean return

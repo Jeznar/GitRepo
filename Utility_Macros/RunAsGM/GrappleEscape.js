@@ -1,4 +1,4 @@
-const MACRONAME = "GrappleEscape.0.1.js"
+const MACRONAME = "GrappleEscapeAsGM.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Run as GM Macro that creates/deletes a temporary item in the target's inventory to attempt attempt
  * to escape the grapple from this actor.
@@ -12,11 +12,15 @@ const MACRONAME = "GrappleEscape.0.1.js"
  * 
  * 
  * 07/05/22 0.1 Creation of Macro
+ * 09/22/23 0.2 Replace jez.trc with jez.log
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 4
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
+let msg = ""
+const TL = 0;
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
 //---------------------------------------------------------------------------------------------------
 // Parse and the input arguments
 //
@@ -24,7 +28,6 @@ let action = args[0] ?? "create"
 let aTokenUuid = args[1] ?? 'Scene.MzEyYTVkOTQ4NmZk.Token.cBMsqVwfwf1MxRxV'
 let tTokenUuid = args[2] ?? 'Scene.MzEyYTVkOTQ4NmZk.Token.pcAVMUbbnGZ1lz4h'
 let aActorUuid = args[3] ?? `Actor.8D0C9nOodjwHDGQT`
-// jez.trc(2, trcLvl, "----------------", "action", action, "aTokenName", aTokenName, "aActorUuid", aActorUuid, "tActorUuid", tActorUuid)
 //---------------------------------------------------------------------------------------------------
 // Onto the main event
 //
@@ -47,30 +50,18 @@ async function main() {
     const HELPER_MACRO = "%%Escape%%"
     if (!await preCheck()) return (false);
     //-------------------------------------------------------------------------------------------
-    // Convert received actor.uuid's into the needed Actor5e data objects
-    //
-    // const aActor = await game.dfreds.effectInterface._foundryHelpers.getActorByUuid(aActorUuid)
-    // if (!aActor) return badNews(`aActor with uuid ${aActorUuid} not found, aActor not set, aborting.`, "warn")
-    // jez.trc(2, trcLvl, `aActor ${aActor.name} with uuid ${aActorUuid}, found!`, aActor)
-    // jez.trc(2,trcLvl,"aToken",aActor.parent._object)
-    //
-    // const tActor = await game.dfreds.effectInterface._foundryHelpers.getActorByUuid(tActorUuid)
-    // if (!tActor) return badNews(`tActor with ${tActorUuid} could not be found, tActor not set, aborting.`, "warn")
-    // jez.trc(2, trcLvl, `tActor ${tActor.name} with uuid ${tActorUuid}, found!`, tActor)
-    // jez.trc(2,trcLvl,"tToken",tActor.parent._object)
-    //-------------------------------------------------------------------------------------------
     // Convert received token.uuid's into Token5e data objects
     //
     let aTokenId = aTokenUuid.split(".")[3]
     let aToken = canvas.tokens.placeables.find(ef => ef.id === aTokenId)
-    if (!aToken) return badNews(`aToken with id ${aTokenId} not found, aToken not set, aborting.`, "warn")
-    jez.trc(2, trcLvl, `aToken ${aToken.name} with uuid ${aTokenId}, found!`, aToken)
+    if (!aToken) return jez.badNews(`aToken with id ${aTokenId} not found, aToken not set, aborting.`, "warn")
+    if (TL > 1) jez.log(`${TAG} aToken ${aToken.name} with uuid ${aTokenId}, found!`, aToken)
     const CUSTOM_MACRO = `Escape ${aToken.name}`
     //
     let tTokenId = tTokenUuid.split(".")[3]
     let tToken = canvas.tokens.placeables.find(ef => ef.id === tTokenId)
-    if (!tToken) return badNews(`tToken with id ${tTokenId} not found, tToken not set, aborting.`, "warn")
-    jez.trc(2, trcLvl, `aToken ${tToken.name} with uuid ${tTokenId}, found!`, tToken)
+    if (!tToken) return jez.badNews(`tToken with id ${tTokenId} not found, tToken not set, aborting.`, "warn")
+    if (TL > 1) jez.log(`${TAG} aToken ${tToken.name} with uuid ${tTokenId}, found!`, tToken)
     //-------------------------------------------------------------------------------------------
     // Proceed with create or delete
     //

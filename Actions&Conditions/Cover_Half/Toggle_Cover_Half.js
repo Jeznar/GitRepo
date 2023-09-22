@@ -1,4 +1,4 @@
-const macroName = "Toggle_Cover_Half.1.2.js"
+const macroName = "Toggle_Cover_Half.1.3.js"
 /*********************************************************************************************
  * Macro to toggle One-Half Cover condition.  It also needs to clear any existing 3/4 cover.
  *
@@ -9,11 +9,12 @@ const macroName = "Toggle_Cover_Half.1.2.js"
  *               1. Centralized place to add the silly +2+ wrapper,
  *               2. Makes the right click CUB menu useful for the condition.
  * 07/04/22 1.2 Convert to use Convenient Effects via jezcon library functions
+ * 09/22/23 1.3 Replace jez.trc with jez.log
  **********************************************************************************************/
 jez.log(macroName)
-let trcLvl = 0
+const TL = 0
 let uuids = await game.dfreds.effectInterface._foundryHelpers.getActorUuids()
-jez.trc(4, trcLvl, "uuids", uuids)
+if (TL > 0) jez.log("Toggle_Cover_Half | uuids", uuids)
 if (uuids.length === 0) return jez.badNews(`Please select at least one token`, "warning")
 
 for (const UUID of uuids) await jezcon.remove("Cover (Three-Quarters)", UUID)

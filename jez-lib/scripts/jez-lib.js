@@ -1477,7 +1477,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      **************************************************************************************************************/
     static async pairEffects(...args) {
         const FUNCNAME = "jez.pairEffects(...args)"
-        const TL = 2;
+        const TL = 0;
         const TAG = `jez.pairEffects |`
         if (TL > 0) jez.trace(`${TAG} === Called ${FUNCNAME} ===`)
         if (TL > 1) for (let i = 0; i < args.length; i++) jez.trace(`${TAG} args[${i}]`, args[i]);
@@ -2598,51 +2598,53 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
      *     Actor.NWUxMzMyNjVkYmM4.ActiveEffect.LigDCCx3Ud4LavLV
      *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
     static isEffectUUID(string) {
-        let trcLvl = 4
+        const TL = 0
+        const TAG = 'jez.isEffect | '
+        if (TL > 1) jez.log(`${TAG} Starting`)
         if (typeof string !== "string") return false            // Must be a string
-        jez.trc(2, trcLvl, "Type - Ok")
+        if (TL > 2) jez.log(`${TAG} Type - Ok`)
         // ---------------------------------------------------------------------------------------------
         // If we have an actor's UUID, process it, returning result
         //
         if (string.includes("Actor")) {
-            jez.trc(2, trcLvl, `Actor UUID | Processing ${string} as an Actor`)
+            if (TL > 2) jez.log(`${TAG} Actor UUID | Processing ${string} as an Actor`)
             if (string.length !== 52) return false                  // Must be 75 characters long
-            jez.trc(2, trcLvl, "Actor UUID | Length - Ok")
+            if (TL > 2) jez.log(`${TAG} Actor UUID | Length - Ok`)
             let stringArray = string.split(".")                     // Must be delimited by period characters
-            jez.trc(2, trcLvl, "Actor UUID | Token count", stringArray.length)
+            if (TL > 2) jez.log(`${TAG} Actor UUID | Token count`, stringArray.length)
             if (stringArray.length !== 4) return false              // Must contain 4 parts
-            jez.trc(2, trcLvl, "Actor UUID | Count of tokens - Ok")
+            if (TL > 2) jez.log(`${TAG} Actor UUID | Count of tokens - Ok`)
             if (stringArray[0] !== "Actor") return false           // First part must be "Actor"
-            jez.trc(2, trcLvl, "Actor UUID | Actor - Ok")
+            if (TL > 2) jez.log(`${TAG} Actor UUID | Actor - Ok`)
             if (stringArray[1].length !== 16) return false         // Second part must be 16 characters
-            jez.trc(2, trcLvl, "Actor UUID | Length 1 - Ok")
+            if (TL > 2) jez.log(`${TAG} Actor UUID | Length 1 - Ok`)
             if (stringArray[2] !== "ActiveEffect") return false    // Third part must be "ActiveEffect"
-            jez.trc(2, trcLvl, "Actor UUID | ActiveEffect - Ok")
+            if (TL > 2) jez.log(`${TAG} Actor UUID | ActiveEffect - Ok`)
             if (stringArray[3].length !== 16) return false         // Second part must be 16 characters
-            jez.trc(2, trcLvl, "Actor UUID | Length 2 - Ok")
+            if (TL > 2) jez.log(`${TAG} Actor UUID | Length 2 - Ok`)
             return true
         }
         if (string.includes("Token")) {
-            jez.trc(2, trcLvl, `Token | Processing ${string} as an Actor`)
+            if (TL > 2) jez.log(`${TAG} Token | Processing ${string} as an Actor`)
             if (string.length !== 75) return false                  // Must be 75 characters long
-            jez.trc(2, trcLvl, "Token UUID | Length - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | Length - Ok`)
             let stringArray = string.split(".")                     // Must be delimited by period characters
-            jez.trc(2, trcLvl, "Token UUID | Token count", stringArray.length)
-            // for (let i = 0; i < stringArray.length; i++) jez.trc(2, trcLvl, `stringArray[${i}]`, stringArray[i]);
+            if (TL > 2) jez.log(`${TAG} Token UUID | Token count`, stringArray.length)
+            // for (let i = 0; i < stringArray.length; i++) if (TL > 2) jez.log(`${TAG}  `stringArray[${i}]`, stringArray[i]);
             if (stringArray.length !== 6) return false              // Must contain 6 parts
-            jez.trc(2, trcLvl, "Token UUID | Count of tokens - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | Count of tokens - Ok`)
             if (stringArray[0] !== "Scene") return false           // First part must be "Scene"
-            jez.trc(2, trcLvl, "Token UUID | Scene - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | Scene - Ok`)
             if (stringArray[1].length !== 16) return false         // Second part must be 16 characters
-            jez.trc(2, trcLvl, "Token UUID | Length 1 - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | Length 1 - Ok`)
             if (stringArray[2] !== "Token") return false           // Third part must be "Token"
-            jez.trc(2, trcLvl, "Token UUID | Token - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | Token - Ok`)
             if (stringArray[3].length !== 16) return false         // Forth part must be 16 characters
-            jez.trc(2, trcLvl, "Token UUID | Length 2 - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | Length 2 - Ok`)
             if (stringArray[4] !== "ActiveEffect") return false    // Fifth part must be "ActiveEffect"
-            jez.trc(2, trcLvl, "Token UUID | ActiveEffect - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | ActiveEffect - Ok`)
             if (stringArray[5].length !== 16) return false         // Sixth part must be 16 characters
-            jez.trc(2, trcLvl, "Token UUID | Length 3 - Ok")
+            if (TL > 2) jez.log(`${TAG} Token UUID | Length 3 - Ok`)
             return true
         }
     }

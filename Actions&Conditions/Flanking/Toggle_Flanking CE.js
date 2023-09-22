@@ -1,4 +1,4 @@
-const MACRONAME = "Toggle_Flanking.1.2.js"
+const MACRONAME = "Toggle_Flanking.1.3.js"
 /*********************************************************************************************
  * Macro to toggle Flanking condition.
  *
@@ -8,8 +8,9 @@ const MACRONAME = "Toggle_Flanking.1.2.js"
  *               1. Centralized place to add the silly +2+ wrapper,
  *               2. Makes the right click CUB menu useful for the condition.
  * 07/04/22 1.2 Convert to use Convenient Effects via jezcon library functions
+ * 09/22/23 1.3 Replace jez.trc with jez.log
  **********************************************************************************************/
-let trcLvl = 0;
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
+const TL = 0;
+if (TL > 0) jez.log("Toggle_Flanking")
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
 jezcon.toggle("Flanking")

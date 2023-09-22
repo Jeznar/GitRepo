@@ -559,10 +559,23 @@ const regen = actor.items.find(i => i.name.startsWith(regenName) || i.name.start
 * tileCreate
 * tileDelete
 
-Fix standalone scripts to use jes.log instead of jez.trc
+Fix standalone scripts to use jez.log instead of jez.trc
 
 * CreateEmbeddedDocuments
 * DeleteEmbeddedDocuments
+
+23.09.21 Eliminate jez.trc from:
+
+* jez.isEffectUUID
+* Toggle_Cover_Half
+* CleanUpItem
+* Grapple_Escape_FixedDC
+* Grapple_Escape
+* Grapple_Initiate
+* GrappleEscapeAsGM
+* GrappleEscapeFixedDCAsGM
+
+
 
 [Link back to my Documentation Listing](README.md) 
 

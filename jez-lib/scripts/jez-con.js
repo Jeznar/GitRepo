@@ -100,7 +100,7 @@ class jezcon {
     static async add(param) {
         const FUNCNAME = 'jezcon.add(param)'
         const FNAME = FUNCNAME.split("(")[0]
-        const TL = param?.traceLvl ?? 1
+        const TL = param?.traceLvl ?? 0
         if (TL > 0) jez.trace(`${FUNCNAME} called with`, param)
         if (TL > 2) for (let i = 0; i < param.length; i++) jez.trace(`${FNAME} | Argument param[${i}]`, param[i]);
         game.dfreds.effectInterface.addEffect(param)
@@ -205,7 +205,7 @@ class jezcon {
     static hasCE(effectName, uuid, options = {}) {
         const FUNCNAME = 'jezcon.hasCE(effectName, uuid, options = {})'
         const FNAME = FUNCNAME.split("(")[0]
-        const TL = options?.traceLvl ?? 1
+        const TL = options?.traceLvl ?? 0
         if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName} on ${uuid}`)
         if (TL > 2) jez.trace(`${FNAME} | effectName`, effectName);
         if (TL > 2) jez.trace(`${FNAME} | uuid`, uuid);
@@ -224,7 +224,7 @@ class jezcon {
     static async remove(effectName, uuid, options = {}) {
         const FUNCNAME = 'jezcon.remove(effectName, uuid, options = {})'
         const FNAME = FUNCNAME.split("(")[0]
-        const TL = options?.traceLvl ?? 1
+        const TL = options?.traceLvl ?? 0
         let actor5e = null
         if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName} on ${uuid}`)
         if (TL > 2) {
@@ -293,7 +293,7 @@ class jezcon {
     static async toggle(effectName, { overlay, uuids = [], traceLvl } = {}) {
         const FUNCNAME = 'jezcon.toggle(effectName, { overlay, uuids = [], traceLevel } = {})'
         const FNAME = FUNCNAME.split("(")[0]
-        const TL = traceLvl ?? 1
+        const TL = traceLvl ?? 0
         if (TL > 0) jez.trace(`--- ${FUNCNAME} called for ${effectName}`)
         if (TL > 2) jez.trace(`${FNAME} | effectName`, effectName);
         if (TL > 2) jez.trace(`${FNAME} | uuids`, uuids);
