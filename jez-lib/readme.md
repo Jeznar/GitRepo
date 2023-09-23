@@ -97,7 +97,7 @@ The functions currently included in this module are (all need to be proceeded by
 * **[tileCreate(tileProps, [options = {}])](#tilecreatetileprops-options--)** -- Creates a tile with specified properties
 * **[tileDelete(tileId, [options = {}])](#tiledeletetileid-options--)** -- Deletes a tile with specified ID
 * **[tokensInRange(sel, range)](#tokensinrangeseltoken-range)** -- Returns an array of tokens within range of selected token
-* **[trc(level, threshold, ...parms)](#trclevel-threshold-parms)** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level
+* **[trc(level, threshold, ...parms)](#trclevel-threshold-parms)** -- **DEPRECATED -- DO NOT USE** -- Posts parameters, with some minimal formatting, to console if traceLevel greater than level 
 * **[typeOf(arg)](typeofarg)** -- Returns type of arg, differentiating arrays and objects.
 * **[updateEmbeddedDocs(type, updates)](#embeddeddoc-functions)** -- Updates an embedded document, wraps a RunAsGM function
 * **[vfxPreSummonEffects(template, optionObj](#vfxPreSummonEffectstemplate-optionObj)** -- Run pre VFX for warpgate summons
@@ -1041,11 +1041,20 @@ if (matches > 1) return jez.badNews(`"${nameOfItem}" of type "${typeOfItem}" not
 
 ### log(...parms)
 
-This function utilizes the [Developer Mode](https://github.com/League-of-Foundry-Developers/foundryvtt-devMode) module to determine if passed parameter(s) should be written to the console log.  All messages are prefaced with the module name (jez-lib) and a vertical bar symbol.  
+This function is used to log information.  Typically it is called conditional, comparing a tracing value (TL by convention) with a small integer value.  A TAG is usually embedded in the massage to clarify the source.  My existing code base has a lot of unconditional log calls that I am removing as code is touched. 
 
-If only a single parameter is passed, the function simply echos that parameter to the console.
+See  **[jez.writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)** for the effect of single, even and odd (more than 1) parameter passed.
 
-6/29/22: The actual work of this function is now handled by: **[jez.writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)**
+#### Typical Call
+
+~~~javascript
+const TL = 1
+const TAG = `${MACRO} |`
+...
+const FUNCNAME = "doAttack(aToken, tToken)";
+if (TL > 0) jez.log(`${TAG} --- Starting --- ${MACRO} ${FUNCNAME} ---`);
+if (TL > 1) jez.log(`${TAG} ----- Args -----`, `${aToken.name}`, aToken, `${tToken.name}`, tToken);
+~~~
 
 [*Back to Functions list*](#functions-in-this-module)
 
@@ -2228,6 +2237,8 @@ jez.log(`${inRangeCount} Token(s) found within ${RANGE} feet`, inRangers)
 
 ### trc(level, threshold, ...parms) 
 
+**DEPRECATED -- DO NOT USE**
+
 This function checks **level** against **traceLevel** (which is likely a global value).  If traceLevel is not declared in the code, then a **2** is assumed. If level is less than or equal to traceLevel, then **writeTrcLog** is called with a prefix of "* TRACE *"
 
 The actual work of this function is now handled by: **[jez.writeTrcLog(prefix, ...parms)](#writetrclogprefix-parms)**
@@ -2388,7 +2399,7 @@ Hey!   This one is easy.  It just does a wait for the specified milliseconds.  P
 
 ### writeTrcLog(prefix, ...parms)
 
-This function utilizes the [Developer Mode](https://github.com/League-of-Foundry-Developers/foundryvtt-devMode) module to determine if passed parameter(s) should be written to the console log.  All messages are prefaced with the module name (jez-lib) and a vertical bar symbol.  
+This function used the number passed parameter(s) to control how it logs information.  All messages are prefaced with the prefix and a vertical bar symbol.  
 
 **prefix** is used to tag the line of output with, you know, a prefix.
 
@@ -2397,7 +2408,7 @@ If only a single parameter is passed to **...parms**, the function simply echos 
 This function does the work for:
 
 * **[log(...parms)](#logparms)**
-* **[trc(level, ...parms)](#trclevel-parms)**
+* **[trc(level, ...parms)](#trclevel-parms)** **DEPRECATED -- DO NOT USE**
 
 Following describes the use of log with this function.  This one should not typically be used outside the above two functions. 
 
@@ -2408,7 +2419,7 @@ jez-lib | hello world
 jez-lib | ▸ Token5e {_events: i, _eventsCount: 2, …}
 ~~~
 
-Objects, arrays, and other compound data elements display with a *clickable* arrow indicating. they can be expanded to show more content.
+Objects, arrays, and other compound data elements display with a *clickable* arrow indicating they can be expanded to show more content.
 
 If two parameters are passed, they are written to a single line on the console separated by a colon. 
 

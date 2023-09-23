@@ -109,7 +109,7 @@ async function main() {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 async function doAttack(aToken, tToken) {
     const FUNCNAME = "doAttack(aToken, tToken)";
-    if (TL >  0) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 0) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
     if (TL > 1) jez.log(`${TAG} ---   Args   ---`, `${aToken.name}`, aToken, `${tToken.name}`, tToken);
     //----------------------------------------------------------------------------------------------
     // Roll up the damage
