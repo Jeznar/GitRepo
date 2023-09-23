@@ -564,7 +564,7 @@ Fix standalone scripts to use jez.log instead of jez.trc
 * CreateEmbeddedDocuments
 * DeleteEmbeddedDocuments
 
-23.09.21 Eliminate jez.trc from:
+23.09.22 Eliminate jez.trc from:
 
 * jez.isEffectUUID
 * Toggle_Cover_Half
@@ -574,6 +574,19 @@ Fix standalone scripts to use jez.log instead of jez.trc
 * Grapple_Initiate
 * GrappleEscapeAsGM
 * GrappleEscapeFixedDCAsGM
+
+23.09.23 Eliminate jez.trc from:
+
+* Help
+* Hinder
+* Crocodile Bite
+* Vampire_Claw
+* Earth_Tremor
+* Gust_of_Wind
+* Black Tentacles
+* Ice Storm
+* Cloudkill
+* Minor_Illusion
 
 
 

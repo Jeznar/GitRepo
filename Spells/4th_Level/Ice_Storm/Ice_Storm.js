@@ -1,4 +1,5 @@
-const MACRONAME = "Ice_Storm.0.3.js"
+const MACRONAME = "Ice_Storm.0.4.js"
+const TL = 0;
 /*****************************************************************************************
  * Tasks for this macro
  *  1. Place a tile containing a VFX to mark the difficult terrain
@@ -9,32 +10,30 @@ const MACRONAME = "Ice_Storm.0.3.js"
  * 06/29/22 0.2 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
  *              canvas.scene.deleteEmbeddedDocuments
  * 07/01/22 0.3 Swap in calls to jez.tileCreate and jez.tileDelete
+ * 09/23/23 0.4 Replace jez-dot-trc with jez.log
  *****************************************************************************************/
- const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
- let trcLvl = 1;
- jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
- for (let i = 0; i < args.length; i++) jez.trc(3, trcLvl,`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
+
 let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-else aActor = game.actors.get(LAST_ARG.actorId);
+if (L_ARG.tokenId) aActor = canvas.tokens.get(L_ARG.tokenId).actor; 
+else aActor = game.actors.get(L_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-else aToken = game.actors.get(LAST_ARG.tokenId);
+if (L_ARG.tokenId) aToken = canvas.tokens.get(L_ARG.tokenId); 
+else aToken = game.actors.get(L_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-let msg = "";
+else aItem = L_ARG.efData?.flags?.dae?.itemData;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
-//if (args[0] === "on") await doOn();                     // DAE Application
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-// DamageBonus must return a function to the caller
-//if (args[0]?.tag === "DamageBonus") return(doBonusDamage());    
-jez.log(`============== Finishing === ${MACRONAME} =================`);
+if (TL > 0) jez.log(`${TAG} ============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -43,7 +42,6 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  * Post results to the chat card
  ***************************************************************************************************/
  function postResults(msg) {
-    jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
@@ -52,12 +50,12 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
  async function doOff() {
     const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //-----------------------------------------------------------------------------------------------
     // Delete the tile we just built with library function. 
     //
     jez.tileDelete(args[1])  
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
 }
 /***************************************************************************************************
@@ -65,7 +63,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
 async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     // ---------------------------------------------------------------------------------------
     // Place a nifty tile... 
     //
@@ -75,13 +73,13 @@ async function doOnUse() {
     const TEMPLATE_ID = args[0].templateId
     // Call function to place the tile and grab the returned ID
     let newTileId = await placeTileVFX(TEMPLATE_ID, VFX_FILE, SQUARES_ACROSS);
-    jez.log("newTileId", newTileId)
+    if (TL > 1) jez.log(`${TAG} newTileId`, newTileId)
     // Grab the tile's TileDocument object from the scene
     let fetchedTile = await canvas.scene.tiles.get(newTileId)
-    jez.log(`fetchedTile ${fetchedTile.id}`, fetchedTile)
+    if (TL > 1) jez.log(`${TAG} fetchedTile ${fetchedTile.id}`, fetchedTile)
     // Format and result message 
     msg = `Placed Tile ID: ${fetchedTile.id}. <br>Image file used as source:<br>${fetchedTile.data.img}`;
-    jez.log("msg", msg);
+    if (TL > 1) jez.log(`${TAG} msg`, msg);
     // ---------------------------------------------------------------------------------------
     // Add an effect to the active token that expires at the end of its next turn. 
     // BUG: For some reason the special Duration code in this effect is tossing an error
@@ -124,7 +122,7 @@ async function doOnUse() {
     msg = `The ice storm leaves behind an area of difficult terrain until the end of 
     <b>${aToken.name}</b>'s next turn.`
     postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************
@@ -132,8 +130,8 @@ async function doOnUse() {
  ***************************************************************************************************/
  async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesAcross) {
     const FUNCNAME = "placeTileVFX(TEMPLATE_ID, vfxFile, tilesAcross)";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID,"vfxFile",vfxFile,"tilesAcross",tilesAcross)
+    if (TL > 0) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 1) jez.log(`${TAG} Parameters`,"TEMPLATE_ID",TEMPLATE_ID,"vfxFile",vfxFile,"tilesAcross",tilesAcross)
 
     // Grab the size of grid in pixels per square
     const GRID_SIZE = canvas.scene.data.grid;   

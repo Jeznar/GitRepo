@@ -1,4 +1,5 @@
-const MACRONAME = "Crocodile_Bite.0.8.js"
+const MACRONAME = "Crocodile_Bite.0.9.js"
+const TL = 5;
 /*****************************************************************************************
  * Macro that applies on hit:
  *  - Grappled and Restrained conditions to the target
@@ -12,16 +13,19 @@ const MACRONAME = "Crocodile_Bite.0.8.js"
  * 05/04/22 0.6 JGB Update for Foundry 9.x
  * 07/06/22 0.7 JGB Changed to use CE
  * 07/07/22 0.8 JGB Update to use uuid for pair effects call 
+ * 09/23/23 0.9 Replace jez-dot-trc with jez.log
  *****************************************************************************************/
-const DEBUG = true;
-let trcLvl = 1;
-let msg = "";       // string to be appended to the itemCard reporting results
-const LAST_ARG = args[args.length - 1];
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
 //---------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
 let aToken;         
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-else aToken = game.actors.get(LAST_ARG.tokenId);
+if (L_ARG.tokenId) aToken = canvas.tokens.get(L_ARG.tokenId); 
+else aToken = game.actors.get(L_ARG.tokenId);
 let aActor = aToken.actor; 
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
@@ -35,22 +39,22 @@ const RESTRAINED_JRNL = `@JournalEntry[${game.journal.getName(RESTRAINED_COND).i
 //--------------------------------------------------------------------------------------
 // Make sure the invoking item actually reported a hit
 if (wasHit()) {
-    if (DEBUG) console.log(` a hit was reported`);
+    if (TL > 1) jez.log(`${TAG} a hit was reported`);
 } else {
-    if (DEBUG) console.log(` ${msg}`);
+    if (TL > 1) jez.log(`${TAG} ${msg}`);
     await postResults(msg);
-    if (DEBUG) console.log(`Ending ${MACRONAME}`);
+    if (TL > 1) jez.log(`${TAG} Ending ${MACRONAME}`);
     return;
 }
 //--------------------------------------------------------------------------------------
 // Make sure one and only one token is targeted
 //
 if (oneTarget()) {
-    if (DEBUG) console.log(` one target is targeted (a good thing)`);
+    if (TL > 1) jez.log(`${TAG} one target is targeted (a good thing)`);
 } else {
-    if (DEBUG) console.log(` exception on number of targets selected: ${msg}`);
+    if (TL > 1) jez.log(`${TAG} exception on number of targets selected: ${msg}`);
     await postResults(msg);
-    if (DEBUG) console.log(`Ending ${MACRONAME}`);
+    if (TL > 1) jez.log(`${TAG} Ending ${MACRONAME}`);
     return;
 }
 let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
@@ -58,14 +62,14 @@ let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token
 // Make sure the target is no more than one size category larger than the actor
 //
 let sizeDelta = sizesLarger(aToken, tToken)
-if (DEBUG) console.log(` sizeDelta: ${sizeDelta}`);
+if (TL > 1) jez.log(`${TAG} sizeDelta: ${sizeDelta}`);
 if (sizeDelta > -2) {
-    if (DEBUG) console.log(` Size delta ok`);
+    if (TL > 1) jez.log(`${TAG} Size delta ok`);
 } else {
     msg += `${tToken.name} is too large for ${tToken.name} to grapple.`
-    if (DEBUG) console.log(` Target is too large`);
+    if (TL > 1) jez.log(`${TAG} Target is too large`);
     await postResults(msg);
-    if (DEBUG) console.log(`Ending ${MACRONAME}`);
+    if (TL > 1) jez.log(`${TAG} Ending ${MACRONAME}`);
     return;
 }
 //--------------------------------------------------------------------------------------
@@ -128,12 +132,8 @@ msg = `${tToken.name} has been ${GRAPPLED_JRNL} and ${RESTRAINED_JRNL} by ${aTok
  * Check to see if at least one target was hit, Return false if missed.
  ***************************************************************************************/
 function wasHit() {
-    let DEBUG = false;
-
     if (args[0].hitTargets.length === 0) {
-        msg = ` Missed ${tToken.name}, will not check for effects`;
-        if (DEBUG) console.log(msg);
-        return(false);
+        return jez.badNews(` Missed ${tToken.name}, will not check for effects`, 'i');
     } else {
         return(true);
     }
@@ -142,23 +142,13 @@ function wasHit() {
  * Verify exactly one target selected, boolean return
  ***************************************************************************************/
 function oneTarget() {
-    let DEBUG = false;
-    if (!game.user.targets) {
-        msg = `Targeted nothing, must target single token to be acted upon`;
-        // ui.notifications.warn(msg);
-        if (DEBUG) console.log(msg);
-        return (false);
-    }
-    if (game.user.targets.ids.length != 1) {
-        msg = `Please target a single token to be acted upon. <br>Targeted ${game.user.targets.ids.length} tokens`;
-        // ui.notifications.warn(msg);
-        if (DEBUG) console.log(msg);
-        return (false);
-    }
-    if (DEBUG) console.log(` targeting one target`);
+    if (!game.user.targets) 
+        return jez.badNews(`Targeted nothing, must target single token to be acted upon`,'w')
+    if (game.user.targets.ids.length != 1) 
+        return jez.badNews(`Please target a single token. <br>Targeted ${game.user.targets.ids.length} tokens`,'w');
+    if (TL > 1) jez.log(`${TAG} targeting one target`);
     return (true);
 }
-
 /****************************************************************************************
  * Return the number of sizes larger the second token is than the first.  
  *  - Negative return indicates Token1 is smaller than Token2 by that many increments.
@@ -166,8 +156,6 @@ function oneTarget() {
  *  - Positive return indicates Token1 is larger than Token2 by that many increments.
  ***************************************************************************************/
 function sizesLarger(token1, token2) {
-    let DEBUG = false;
-
     class CreatureSizes {
         constructor(size) {
             this.SizeString = size;
@@ -186,37 +174,28 @@ function sizesLarger(token1, token2) {
     let token1SizeObject = new CreatureSizes(token1SizeString);
     let token1Size = token1SizeObject.SizeInt;  // Returns 0 on failure to match size string
     if (!token1Size) {
-        let msg = `Size of ${token1.name}, ${token1SizeString} failed to parse. End ${macroName}<br>`;
-        if (debug) console.log(msg);
-        ui.notifications.error(msg);
-        return(99);
+        jez.badNews(`Size of ${token1.name}, ${token1SizeString} failed to parse. End ${macroName}<br>`, 'e')
+        return (99);
     }
-    if (DEBUG) console.log(` Token1: ${token1SizeString} ${token1Size}`)
+    if (TL > 1) jez.log(`${TAG} Token1: ${token1SizeString} ${token1Size}`)
 
-     //token2 = canvas.tokens.get(args[0].targets[0].id);
-     let token2SizeString = token2.document._actor.data.data.traits.size;
-     let token2SizeObject = new CreatureSizes(token2SizeString);
-     let token2Size = token2SizeObject.SizeInt;  // Returns 0 on failure to match size string
-     if (!token2Size) {
-         msg = `Size of ${token2.name}, ${token2SizeString} failed to parse. End ${macroName}<br>`;
-         if (debug) console.log(msg);
-         ui.notifications.error(msg);
-         return(99);
-     }
-     if (DEBUG) console.log(` Token2: ${token2SizeString} ${token2Size}`)
+    let token2SizeString = token2.document._actor.data.data.traits.size;
+    let token2SizeObject = new CreatureSizes(token2SizeString);
+    let token2Size = token2SizeObject.SizeInt;  // Returns 0 on failure to match size string
+    if (!token2Size) {
+        jez.badNews(`Size of ${token2.name}, ${token2SizeString} failed to parse. End ${macroName}<br>`, 'e');
+        return (99);
+    }
+    if (TL > 1) jez.log(`${TAG} Token2: ${token2SizeString} ${token2Size}`)
 
-     let sizeDelta = token1Size - token2Size;
-     if (DEBUG) console.log(` sizeDelta ${sizeDelta}`)
-     return(sizeDelta);
+    let sizeDelta = token1Size - token2Size;
+    if (TL > 1) jez.log(`${TAG} sizeDelta ${sizeDelta}`)
+    return (sizeDelta);
 }
 /****************************************************************************************
  * Post the results to chat card
  ***************************************************************************************/
  function postResults(msg) {
-    const FUNCNAME = "postResults(msg)";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(2,trcLvl,"postResults Parameters","msg",msg)
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
 }

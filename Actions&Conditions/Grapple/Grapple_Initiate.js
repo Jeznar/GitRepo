@@ -23,11 +23,11 @@ const MACRONAME = "Grapple_Initiate_1.4.js"
  * 05/04/22 1.1 JGB Update for Foundry 9.x
  * 07/04/22 1.2 JGB Convert to CE for effect management
  * 07/07/22 1.3 JGB Updated to use UUID for the paired effect call
- * 09/22/23 1.4 JGB Replace jez.trc with jez.log
+ * 09/22/23 1.4 JGB Replace jez-dot-trc with jez.log
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let msg = ""
-const TL = 3;
+const TL = 0;
 const TAG = `${MACRO} |`
 if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
 if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);

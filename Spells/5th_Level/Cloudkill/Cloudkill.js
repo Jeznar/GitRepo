@@ -1,4 +1,5 @@
-const MACRONAME = "Cloudkill.0.4.js"
+const MACRONAME = "Cloudkill.0.5.js"
+const TL = 9;
 /*****************************************************************************************
  * Cloudkill!
  * 
@@ -23,22 +24,24 @@ const MACRONAME = "Cloudkill.0.4.js"
  * 06/29/22 0.3 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
  *              canvas.scene.deleteEmbeddedDocuments
  * 07/01/22 0.4 Swap in calls to jez.tileCreate and jez.tileDelete
+ * 09/23/23 0.5 Replace jez-dot-trc with jez.log
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 1;
-jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(3, trcLvl,`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
+
 let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-else aActor = game.actors.get(LAST_ARG.actorId);
+if (L_ARG.tokenId) aActor = canvas.tokens.get(L_ARG.tokenId).actor; 
+else aActor = game.actors.get(L_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-else aToken = game.actors.get(LAST_ARG.tokenId);
+if (L_ARG.tokenId) aToken = canvas.tokens.get(L_ARG.tokenId); 
+else aToken = game.actors.get(L_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-let msg = "";
+else aItem = L_ARG.efData?.flags?.dae?.itemData;
 const ITEM_NAME = "Cloudkill Effect"
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`               // Name as expected in Items Directory 
 const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}`   // Name of item in actor's spell book
@@ -49,8 +52,7 @@ const FEET_PER_GRID = 5                                 // Feet per on canvas gr
 //
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-//if (args[0] === "each") doEach();					    // DAE removal
-jez.log(`============== Finishing === ${MACRONAME} =================`);
+if (TL > 0) jez.log(`${TAG} ============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -59,9 +61,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  * Post results to the chat card
  ***************************************************************************************************/
  async function postResults(msg) {
-    jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.log("##### chatMsg",chatMsg)
     await jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
@@ -70,12 +70,12 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
  async function doOff() {
     const FUNCNAME = "doOff()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
     // Delete the cloudkill tile
     //
     const TILE_ID = args[1];    // Must be a 12 character string:  chN3vMQvayMx6kWQ
-    jez.log(TILE_ID.length)
+    if (TL > 1) jez.log(`${TAG} TILE_ID.length `, TILE_ID.length);
     if (TILE_ID.length != 16) return
     //-----------------------------------------------------------------------------------------------
     // Delete the tile we just built with library function. 
@@ -89,7 +89,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     msg = `${NEW_ITEM_NAME} has been deleted from ${aToken.name}`
     ui.notifications.info(msg);
 
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return;
   }
 /***************************************************************************************************
@@ -97,7 +97,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const TEMPLATE_ID = args[0].templateId
     const TEMPLATE = canvas.templates.objects.children.find(i => i.data._id === TEMPLATE_ID);
     //-----------------------------------------------------------------------------------------------
@@ -117,20 +117,20 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
         topLeft.y = TEMPLATE.center.y;
     }
     //----------------------------------------------------------------------------------------------
-    jez.log("Place the VFX Tile")
+    if (TL > 1) jez.log(`${TAG} Place the VFX Tile`)
     const TILE_ID = await placeTile(TEMPLATE_ID, topLeft);
     //----------------------------------------------------------------------------------------------
     copyEditItem(aToken)
-    jez.log("Post message to a chat card")
+    if (TL > 1) jez.log(`${TAG} Post message to a chat card`)
     msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name}'s spell book`
     ui.notifications.info(msg);
     //----------------------------------------------------------------------------------------------
-    jez.log("Call function to modify concentration effect to delete the VFX tile on concetration removal")
+    if (TL > 1) jez.log(`${TAG} Call function to modify concentration effect to delete the VFX tile on concetration removal`)
     modConcEffect(TILE_ID)
     //----------------------------------------------------------------------------------------------
     msg = `<b>${NEW_ITEM_NAME}</b> has been added to ${aToken.name}'s spell book, as an At-Will spell.`
     await postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRO} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRO} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************
@@ -138,8 +138,8 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
 async function placeTile(TEMPLATE_ID, templateCenter) {
     const FUNCNAME = "placeTile(TEMPLATE_ID, templateCenter)";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID,"templateCenter",templateCenter)
+    if (TL > 0) jez.log(`${TAG}--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 1) jez.log(`${TAG} Parameters`,"TEMPLATE_ID",TEMPLATE_ID,"templateCenter",templateCenter)
 
     canvas.templates.get(TEMPLATE_ID).document.delete();
     let tileProps = {        
@@ -165,7 +165,7 @@ async function modConcEffect(tileId) {
     //
     await jez.wait(1000)
     let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
-    jez.log(`**** ${EFFECT} found?`, effect)
+    if (TL > 0) jez.log(`${TAG} **** ${EFFECT} found?`, effect)
     if (!effect) {
         msg = `${EFFECT} sadly not found on ${aToken.name}.`
         ui.notifications.error(msg);
@@ -178,24 +178,24 @@ async function modConcEffect(tileId) {
     //    
     //effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`entangle_helper ${VFX_NAME} ${label}`, priority: 20})
     effect.data.changes.push({key: `macro.itemMacro`, mode: jez.CUSTOM, value:`${tileId}`, priority: 20})
-    jez.log(`effect.data.changes`, effect.data.changes)
+    if (TL > 1) jez.log(`${TAG} effect.data.changes`, effect.data.changes)
     //----------------------------------------------------------------------------------------------
     // Apply the modification to existing effect
     //
     const result = await effect.update({ 'changes': effect.data.changes });
-    if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
+    if (result) if (TL > 1) jez.log(`${TAG} Active Effect ${EFFECT} updated!`, result);
 }
 /***************************************************************************************************
  * Copy the temporary item to actor's spell book and edit it as appropriate
  ***************************************************************************************************/
 async function copyEditItem(token5e) {
     const FUNCNAME = "copyEditItem()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
     let oldActorItem = token5e.actor.data.items.getName(NEW_ITEM_NAME)
     if (oldActorItem) await deleteItem(token5e.actor, oldActorItem)
     //----------------------------------------------------------------------------------------------
-    jez.log("Get the item from the Items directory and slap it onto the active actor")
+    if (TL > 1) jez.log(`${TAG} Get the item from the Items directory and slap it onto the active actor`)
     let itemObj = game.items.getName(SPEC_ITEM_NAME)
     if (!itemObj) {
         msg = `Failed to find ${SPEC_ITEM_NAME} in the Items Directory`
@@ -203,12 +203,12 @@ async function copyEditItem(token5e) {
         postResults(msg)
         return (false)
     }
-    console.log('Item5E fetched by Name', itemObj)
+    if (TL > 1) jez.log(`${TAG} Item5E fetched by Name`, itemObj)
     await replaceItem(token5e.actor, itemObj)
     //----------------------------------------------------------------------------------------------
-    jez.log("Find the item on the actor")
+    if (TL > 1) jez.log(`${TAG} Find the item on the actor`)
     let aActorItem = token5e.actor.data.items.getName(SPEC_ITEM_NAME)
-    jez.log("aActorItem", aActorItem)
+    if (TL > 1) jez.log(`${TAG} aActorItem`, aActorItem)
     if (!aActorItem) {
         msg = `Failed to find ${SPEC_ITEM_NAME} on ${token5e.name}`
         ui.notifications.error(msg);
@@ -216,7 +216,7 @@ async function copyEditItem(token5e) {
         return (false)
     }
     //-----------------------------------------------------------------------------------------------
-    jez.log(`Remove the don't change this message assumed to be embedded in the item description.  It 
+    if (TL > 1) jez.log(`${TAG} Remove the don't change this message assumed to be embedded in the item description.  It 
      should be of the form: <p><strong>%%*%%</strong></p> followed by white space`)
     const searchString = `<p><strong>%%.*%%</strong></p>[\s\n\r]*`;
     const regExp = new RegExp(searchString, "g");
@@ -226,12 +226,12 @@ async function copyEditItem(token5e) {
     let itemUpdate = {
         'name': NEW_ITEM_NAME,              // Change to actor specific name for temp item
         'data.description.value': content,  // Drop in altered description
-        'data.level': LAST_ARG.spellLevel,  // Change spell level of temp item 
-        'data.damage.parts' : [[`${LAST_ARG.spellLevel}d8`, "poison"]]
+        'data.level': L_ARG.spellLevel,  // Change spell level of temp item 
+        'data.damage.parts' : [[`${L_ARG.spellLevel}d8`, "poison"]]
     }
-    jez.log("itemUpdate",itemUpdate)
+    if (TL > 1) jez.log(`${TAG} itemUpdate`,itemUpdate)
     await aActorItem.update(itemUpdate)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /*************************************************************************************

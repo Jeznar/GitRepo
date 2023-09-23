@@ -1,4 +1,5 @@
-const MACRONAME = "Black_Tentacles.0.5.js"
+const MACRONAME = "Black_Tentacles.0.6.js"
+const TL = 0;
 /*****************************************************************************************
  * Black Tentacles!
  * 
@@ -23,22 +24,24 @@ const MACRONAME = "Black_Tentacles.0.5.js"
  * 06/29/22 0.4 Fix for permission issue on game.scenes.current.createEmbeddedDocuments & 
  *              canvas.scene.deleteEmbeddedDocuments
  * 07/01/22 0.5 Swap in calls to jez.tileCreate and jez.tileDelete
+ * 09/23/23 0.6 Replace jez-dot-trc with jez.log
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 1;
-jez.trc(2, trcLvl, `=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(3, trcLvl,`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`${TAG} ============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
+
 let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-else aActor = game.actors.get(LAST_ARG.actorId);
+if (L_ARG.tokenId) aActor = canvas.tokens.get(L_ARG.tokenId).actor; 
+else aActor = game.actors.get(L_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-else aToken = game.actors.get(LAST_ARG.tokenId);
+if (L_ARG.tokenId) aToken = canvas.tokens.get(L_ARG.tokenId); 
+else aToken = game.actors.get(L_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-let msg = "";
+else aItem = L_ARG.efData?.flags?.dae?.itemData;
 const ITEM_NAME = "Black Tentacles Effect"
 const SPEC_ITEM_NAME = `%%${ITEM_NAME}%%`  // Name as expected in Items Directory 
 const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}` // Name of item in actor's spell book
@@ -48,7 +51,7 @@ const NEW_ITEM_NAME = `${aToken.name}'s ${ITEM_NAME}` // Name of item in actor's
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
 if (args[0] === "each") doEach();					    // DAE removal
-jez.log(`============== Finishing === ${MACRONAME} =================`);
+if (TL > 0) jez.log(`${TAG} ============== Finishing === ${MACRONAME} =================`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -57,9 +60,7 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  * Post results to the chat card
  ***************************************************************************************************/
  async function postResults(msg) {
-    jez.log(msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
-    jez.log("##### chatMsg",chatMsg)
     await jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
 /***************************************************************************************************
@@ -69,9 +70,9 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  async function doOff() {
     const FUNCNAME = "doOff()";
     const EFFECT = "Black Tentacles Effect" // Must match DAE effect applied by temp item
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const TILE_ID = args[1];    // Must be a 12 character string:  chN3vMQvayMx6kWQ
-    jez.log(TILE_ID.length)
+    if (TL > 1) jez.log(`${TAG} ${TILE_ID.length}`)
     if (TILE_ID.length != 16) return
     //-----------------------------------------------------------------------------------------------
     // Delete the tile we just built with library function. 
@@ -96,15 +97,15 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
     //
     for (let i = 0; i < tokenIdArray.length; i++) {
         let tToken = canvas.tokens.placeables.find(ef => ef.id === tokenIdArray[i])
-        jez.log(`Processing ${i}: ${tToken.name}`)
+        if (TL > 1) jez.log(`${TAG} Processing ${i}: ${tToken.name}`)
         let effect = await tToken.actor.effects.find(i => i.data.label === EFFECT);
-        jez.log(`  ${EFFECT} found?`, effect)
+        if (TL > 1) jez.log(`${TAG}   ${EFFECT} found?`, effect)
         if (effect) {
-            jez.log(`  ${EFFECT} found on ${aToken.name}, removing...`)
+            if (TL > 1) jez.log(`${TAG}   ${EFFECT} found on ${aToken.name}, removing...`)
             effect.delete();  // await??
-        } else jez.log(`  ${EFFECT} not found on ${aToken.name}, continuing...`)
+        } else if (TL > 1) jez.log(`${TAG}   ${EFFECT} not found on ${aToken.name}, continuing...`)
     }
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRONAME} ${FUNCNAME} --------------`);
     return;
   }
 /***************************************************************************************************
@@ -113,23 +114,23 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  async function doOnUse() {
     const FUNCNAME = "doOnUse()";
     let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     const TEMPLATE_ID = args[0].templateId
     const TEMPLATE = canvas.templates.objects.children.find(i => i.data._id === TEMPLATE_ID);
-    jez.log("Place the VFX Tile")
+    if (TL > 1) jez.log(`${TAG} Place the VFX Tile`)
     const TILE_ID = await placeTile(TEMPLATE_ID, TEMPLATE.center);
-    jez.log("TILE_ID", TILE_ID)
+    if (TL > 1) jez.log(`${TAG} TILE_ID`, TILE_ID)
     copyEditItem(aToken)
-    jez.log("Post message to a chat card")
+    if (TL > 1) jez.log(`${TAG} Post message to a chat card`)
     msg = `An At-Will Spell "${NEW_ITEM_NAME}" has been added to ${aToken.name}'s spell book`
     ui.notifications.info(msg);
-    jez.log("Clear the flag that will be used to store token.id values of afflicted tokens")
+    if (TL > 1) jez.log(`${TAG} Clear the flag that will be used to store token.id values of afflicted tokens`)
     DAE.unsetFlag(aToken.actor, MACRO);                         // await??
     // Call function to modify concentration effect to delete the VFX tile on concetration removal
     modConcEffect(TILE_ID)
     msg = `<b>${NEW_ITEM_NAME}</b> has been added to ${aToken.name}'s spell book, as an At-Will spell.`
     await postResults(msg)
-    jez.log(`-------------- Finished --- ${MACRO} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRO} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************
@@ -137,8 +138,8 @@ jez.log(`============== Finishing === ${MACRONAME} =================`);
  ***************************************************************************************************/
 async function placeTile(TEMPLATE_ID, templateCenter) {
     const FUNCNAME = "placeTile(TEMPLATE_ID, templateCenter)";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID,"templateCenter",templateCenter)
+    if (TL > 0) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 1) jez.log(`${TAG} Parameters`,"TEMPLATE_ID",TEMPLATE_ID,"templateCenter",templateCenter)
 
     canvas.templates.get(TEMPLATE_ID).document.delete();
     const GRID_SIZE = canvas.scene.data.grid; // Size of grid in pixels per square
@@ -159,13 +160,13 @@ async function doEach() {
     const FUNCNAME = "doEach()";
     const CHECK_DC = args[1];
     const ORIGIN_TOKEN_ID = args[2]
-    jez.log(`Check DC: ${CHECK_DC}, Origin Token ID: ${ORIGIN_TOKEN_ID}`)
+    if (TL > 1) jez.log(`Check DC: ${CHECK_DC}, Origin Token ID: ${ORIGIN_TOKEN_ID}`)
     let strMod = await jez.getStatMod(aToken, "str");
     let dexMod = await jez.getStatMod(aToken, "dex");
     let chkStat = "Strength"; let chkSta = "str"; let chkMod = strMod
     let oToken = canvas.tokens.placeables.find(ef => ef.id === ORIGIN_TOKEN_ID)
     if (dexMod > strMod) { chkStat = "Dexterity"; chkSta = "dex"; chkMod = dexMod }
-    jez.log(`------${FUNCNAME} Stats for escape check ------`, "chkStat", chkStat, "chkSta", chkSta, "chkMod", chkMod)
+    if (TL > 1) jez.log(`${TAG} ------${FUNCNAME} Stats for escape check ------`, "chkStat", chkStat, "chkSta", chkSta, "chkMod", chkMod)
     const DIALOG_TITLE = `Does ${aToken.name} attempt to break restraint?`
     const DIALOG_TEXT = `The twisty tentacles are keeping <b>${aToken.name}</b> restrained, 
         damaging it each round. Does <b>${aToken.name}</b> want to use its
@@ -182,9 +183,9 @@ async function doEach() {
                     effect from ${aItem.name}.`;
                     let check = (await aToken.actor.rollAbilityTest(chkSta,
                         { flavor: flavor, chatMessage: true, fastforward: true })).total;
-                    jez.log("Result of check roll", check);
+                    if (TL > 1) jez.log(`${TAG} Result of check roll`, check);
                     if (CHECK_DC < check) {
-                        await aToken.actor.deleteEmbeddedDocuments("ActiveEffect", [LAST_ARG.effectId]);
+                        await aToken.actor.deleteEmbeddedDocuments("ActiveEffect", [L_ARG.effectId]);
                         jez.postMessage({
                             color: jez.randomDarkColor(), fSize: 14, icon: aItem.img,
                             msg: `<b>${aToken.name}</b> succesfully broke free.<br>No longer ${RESTRAINED_JRNL}.`,
@@ -211,7 +212,7 @@ async function doEach() {
         },
         default: "yes",
     }).render(true);
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /***************************************************************************************************
@@ -224,7 +225,7 @@ async function modConcEffect(tileId) {
     //
     await jez.wait(1000)
     let effect = await aToken.actor.effects.find(i => i.data.label === EFFECT);
-    jez.log(`**** ${EFFECT} found?`, effect)
+    if (TL > 1) jez.log(`${TAG} **** ${EFFECT} found?`, effect)
     if (!effect) {
         msg = `${EFFECT} sadly not found on ${aToken.name}.`
         ui.notifications.error(msg);
@@ -237,24 +238,24 @@ async function modConcEffect(tileId) {
     //    
     //effect.data.changes.push({key: `macro.execute`, mode: jez.CUSTOM, value:`entangle_helper ${VFX_NAME} ${label}`, priority: 20})
     effect.data.changes.push({key: `macro.itemMacro`, mode: jez.CUSTOM, value:`${tileId}`, priority: 20})
-    jez.log(`effect.data.changes`, effect.data.changes)
+    if (TL > 1) jez.log(`${TAG} effect.data.changes`, effect.data.changes)
     //----------------------------------------------------------------------------------------------
     // Apply the modification to existing effect
     //
     const result = await effect.update({ 'changes': effect.data.changes });
-    if (result) jez.log(`Active Effect ${EFFECT} updated!`, result);
+    if (result) if (TL > 1) jez.log(`${TAG} Active Effect ${EFFECT} updated!`, result);
 }
 /***************************************************************************************************
  * Copy the temporary item to actor's spell book and edit it as appropriate
  ***************************************************************************************************/
 async function copyEditItem(token5e) {
     const FUNCNAME = "copyEditItem()";
-    jez.log(`-------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Starting --- ${MACRONAME} ${FUNCNAME} -----------------`);
     //----------------------------------------------------------------------------------------------
     let oldActorItem = token5e.actor.data.items.getName(NEW_ITEM_NAME)
     if (oldActorItem) await deleteItem(token5e.actor, oldActorItem)
     //----------------------------------------------------------------------------------------------
-    jez.log("Get the item from the Items directory and slap it onto the active actor")
+    if (TL > 1) jez.log(`${TAG} Get the item from the Items directory and slap it onto the active actor`)
     let itemObj = game.items.getName(SPEC_ITEM_NAME)
     if (!itemObj) {
         msg = `Failed to find ${SPEC_ITEM_NAME} in the Items Directory`
@@ -262,12 +263,12 @@ async function copyEditItem(token5e) {
         postResults(msg)
         return (false)
     }
-    console.log('Item5E fetched by Name', itemObj)
+    if (TL > 1) jez.log(`${TAG} Item5E fetched by Name`, itemObj)
     await replaceItem(token5e.actor, itemObj)
     //----------------------------------------------------------------------------------------------
-    jez.log("Edit the item on the actor")
+    if (TL > 1) jez.log(`${TAG} Edit the item on the actor`)
     let aActorItem = token5e.actor.data.items.getName(SPEC_ITEM_NAME)
-    jez.log("aActorItem", aActorItem)
+    if (TL > 1) jez.log(`${TAG} aActorItem`, aActorItem)
     if (!aActorItem) {
         msg = `Failed to find ${SPEC_ITEM_NAME} on ${token5e.name}`
         ui.notifications.error(msg);
@@ -275,7 +276,7 @@ async function copyEditItem(token5e) {
         return (false)
     }
     //-----------------------------------------------------------------------------------------------
-    jez.log(`Remove the don't change this message assumed to be embedded in the item description.  It 
+    if (TL > 1) jez.log(`${TAG} Remove the don't change this message assumed to be embedded in the item description.  It 
      should be of the form: <p><strong>%%*%%</strong></p> followed by white space`)
     const searchString = `<p><strong>%%.*%%</strong></p>[\s\n\r]*`;
     const regExp = new RegExp(searchString, "g");
@@ -288,7 +289,7 @@ async function copyEditItem(token5e) {
         //'effects[0].value.data.label': NEW_ITEM_NAME
     }
     await aActorItem.update(itemUpdate)
-    jez.log(`-------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
+    if (TL > 0) jez.log(`${TAG} -------------- Finished --- ${MACRONAME} ${FUNCNAME} -----------------`);
     return (true);
 }
 /*************************************************************************************

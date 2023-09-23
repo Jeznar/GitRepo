@@ -9,7 +9,7 @@ const macroName = "Toggle_Cover_Half.1.3.js"
  *               1. Centralized place to add the silly +2+ wrapper,
  *               2. Makes the right click CUB menu useful for the condition.
  * 07/04/22 1.2 Convert to use Convenient Effects via jezcon library functions
- * 09/22/23 1.3 Replace jez.trc with jez.log
+ * 09/22/23 1.3 Replace jez-dot-trc with jez.log
  **********************************************************************************************/
 jez.log(macroName)
 const TL = 0

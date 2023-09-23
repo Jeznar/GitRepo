@@ -1,4 +1,5 @@
-const MACRONAME = "Help.0.8.js"
+const MACRONAME = "Help.0.9.js"
+const TL = 0;
 /*********************************************************************************************
  * Implement the "helpful" half of the RAW Help Axtion in a somewhat approximate way.
  * 
@@ -27,12 +28,14 @@ const MACRONAME = "Help.0.8.js"
  * 11/20/21 0.6 JGB Require target to be helped to be friendly
  * 07/04/22 0.7 JGB Convert to CE for effect management
  * 08/02/23 0.8 JGB Commented out range check and added CEDesc update
+ * 09/23/23 0.9 JGB Replace jez-dot-trc with jez.log
  **********************************************************************************************/
- const debug = 2;
- let trcLvl = 1
-if (debug) console.log(`Starting: ${MACRONAME} arguments passed: ${args.length}`);
-if (debug > 2) { let i = 0; for (let arg in args) { console.log(` ${i++}: ${arg}`) }; }
-
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
 /************************************************************************
 * Set Variables for execution
 *************************************************************************/
@@ -49,10 +52,6 @@ if (!oneTarget()) {
     postResults(`${player.name} seems to have had a PEBCAK.<br>Target one entity, please`);
     return;  
 }
-// if (!inRange(player, targetD, range)) {
-//     postResults(`${player.name} is too far from ${targetD.name} to help.`);
-//     return;  
-// }
 if (jezcon.hasCE(effect,targetD.actor.uuid,{traceLvl: 0})) {  // Only apply if not already present
     postResults(`${targetD.name} has already been helped.`);
     return;  
@@ -70,10 +69,7 @@ postResults(`${targetD.name} is helped by ${player.name}, gaining advantage on n
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 const NEW_DESC = `Help from ${player.name} grants advantage on next ability check within one turn`;
 await jez.setCEDesc(targetD.id, effect, NEW_DESC, { traceLvl: 0 });
-
 return;
-
-
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -82,45 +78,17 @@ return;
  * Post results to the chat card
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
  function postResults(msg) {
-    const FUNCNAME = "postResults(msg)";
-    jez.trc(1,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(2,trcLvl,"postResults Parameters","msg",msg)
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    jez.trc(1,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
 }
-/************************************************************************
- * Check to see if two entities are in range with 2.5 foot added
- * to allow for diagonal measurement to "corner" adjacancies
-*************************************************************************/
-// function inRange(firstEntity, secondEntity, maxRange) {
-//     let distance = canvas.grid.measureDistance(firstEntity, secondEntity);
-//     distance = distance.toFixed(1);             // Chop the extra decimals, if any
-//     if (debug) console.log(` Considering ${secondEntity.name} at ${distance} distance`);
-//     if (distance > (maxRange + 2.5)) {
-//         let message = ` ${secondEntity.name} is not in range (${distance}) of ${firstEntity.name}, end ${MACRONAME}`;
-//         // ui.notifications.warn(message);
-//         if (debug) console.log(message);
-//         return(false);
-//     } 
-//     return(true);
-// }
 /************************************************************************
  * Verify exactly one target selected, boolean return
 *************************************************************************/
 function oneTarget() {
-    if (!game.user.targets) {
-        let message = `Targeted nothing, must target single token to be acted upon`;
-        // ui.notifications.warn(message);
-        if (debug) console.log(message);
-        return (false);
-    }
-    if (game.user.targets.ids.length != 1) {
-        let message = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;
-        // ui.notifications.warn(message);
-        if (debug) console.log(message);
-        return (false);
-    }
-    if (debug) console.log(` targeting one target`);
+    if (!game.user.targets) 
+        return jez.badNews(`Targeted nothing, must target single token to be acted upon`,'w');   
+    if (game.user.targets.ids.length != 1) 
+        return jez.badNews(`Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`,'w');
+    if (TL > 0) jez.log(`${TAG} targeting one target`);
     return (true);
 }

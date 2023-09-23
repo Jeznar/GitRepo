@@ -6,7 +6,7 @@ const FIXED_DC = '%FIXED_DC%'                       // 15
  * Attempt to escape grapple against a fixed DC 
  * 
  * 07/06/22 0.1 JGB Created from Grapple_Escape.0.8.js
- * 09/22/23 0.2 Replace jez.trc with jez.log
+ * 09/22/23 0.2 Replace jez-dot-trc with jez.log
  **********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 let msg = ""
 const TL = 4

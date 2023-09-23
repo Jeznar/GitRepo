@@ -6,7 +6,7 @@ const MACRONAME = "DeleteEmbeddedDocuments.0.2.js"
  * args[1] = array of ids to be deleted
  * 
  * 06/28/22 0.1 Creation of Macro
- * 09/21/23 0.2 Replace jez.trc with jez.log
+ * 09/21/23 0.2 Replace jez-dot-trc with jez.log
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/ 
 let TL = 0;
 if (TL > 0) jez.log(`=== Starting === ${MACRONAME} ===`);

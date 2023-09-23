@@ -1,4 +1,5 @@
-const MACRONAME = "Minor_Illusion.0.3.js"
+const MACRONAME = "Minor_Illusion.0.5.js"
+const TL = 9;
 /*****************************************************************************************
  * Run a three staget Illusion rune VFX in the 5' square tile created when the spell was targeted. 
  * Delete that VFX on spell completion or removal. 
@@ -6,28 +7,32 @@ const MACRONAME = "Minor_Illusion.0.3.js"
  * 06/01/22 0.1 Creation of Macro
  * 07/01/22 0.2 Swap in calls to jez.tileCreate and jez.tileDelete
  * 08/02/22 0.4 Add convenientDescription
+ * 09/23/23 0.5 JGB Replace jez-dot-trc with jez.log
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
+
 let trcLvl = 1;
-jez.trc(2,trcLvl,`=== Starting === ${MACRONAME} ===`);
-for (let i = 0; i < args.length; i++) jez.trc(3,trcLvl,`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+
 let aActor;         // Acting actor, creature that invoked the macro
-if (LAST_ARG.tokenId) aActor = canvas.tokens.get(LAST_ARG.tokenId).actor; 
-else aActor = game.actors.get(LAST_ARG.actorId);
+if (L_ARG.tokenId) aActor = canvas.tokens.get(L_ARG.tokenId).actor; 
+else aActor = game.actors.get(L_ARG.actorId);
 let aToken;         // Acting token, token for creature that invoked the macro
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId); 
-else aToken = game.actors.get(LAST_ARG.tokenId);
+if (L_ARG.tokenId) aToken = canvas.tokens.get(L_ARG.tokenId); 
+else aToken = game.actors.get(L_ARG.tokenId);
 let aItem;          // Active Item information, item invoking this macro
 if (args[0]?.item) aItem = args[0]?.item; 
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
-let msg = "";
+else aItem = L_ARG.efData?.flags?.dae?.itemData;
 //----------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0] === "off") await doOff();                   // DAE removal
 if (args[0]?.tag === "OnUse") await doOnUse();          // Midi ItemMacro On Use
-jez.trc(2,trcLvl,`=== Finishing === ${MACRONAME} ===`);
+if (TL > 1) jez.log(`${TAG} === Finishing === ${MACRONAME} ===`);
 /***************************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -36,7 +41,6 @@ jez.trc(2,trcLvl,`=== Finishing === ${MACRONAME} ===`);
  * Post results to the chat card
  ***************************************************************************************************/
  function postResults(msg) {
-    jez.trc(3,trcLvl,msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
@@ -45,7 +49,7 @@ jez.trc(2,trcLvl,`=== Finishing === ${MACRONAME} ===`);
  ***************************************************************************************************/
 async function doOff() {
     const FUNCNAME = "doOff()";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 1) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
     if (args[1] === "Tile") {
         //-----------------------------------------------------------------------------------------------
         // Delete the tile we just built with library function. 
@@ -59,7 +63,7 @@ async function doOff() {
         msg = `Some bad logic happened in ${MACRO}. Args[1] = ${args[1]}. Please tell Joe.`
         return jez.badNews(msg,"error")
     }
-    jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 1) jez.log(`${TAG} --- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
     return;
 }
 /***************************************************************************************************
@@ -67,7 +71,7 @@ async function doOff() {
  ***************************************************************************************************/
 async function doOnUse() {
     const FUNCNAME = "doOnUse()";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 1) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
     // ---------------------------------------------------------------------------------------
     // Place a nifty tile... 
     //
@@ -78,13 +82,13 @@ async function doOnUse() {
     // Call function to place the tile and grab the returned ID
     const VFX_FILE = `modules/jb2a_patreon/Library/Generic/Magic_Signs/Runes/IllusionRuneLoop_01_Regular_${jez.getRandomRuneColor()}_400x400.webm`
     let newTileId = await placeTileVFX(TEMPLATE_ID, VFX_FILE, SQUARES_LENGTH, SQUARES_HEIGHT);
-    jez.trc(3,trcLvl,"newTileId", newTileId)
+    if (TL > 2) jez.log(`${TAG} newTileId`, newTileId)
     // Grab the tile's TileDocument object from the scene
     let fetchedTile = await canvas.scene.tiles.get(newTileId)
-    jez.trc(3,trcLvl,`fetchedTile ${fetchedTile.id}`, fetchedTile)
+    if (TL > 2) jez.log(`${TAG} fetchedTile ${fetchedTile.id}`, fetchedTile)
     // Format and result message 
     msg = `Placed Tile ID: ${fetchedTile.id}. <br>Image file used as source:<br>${fetchedTile.data.img}`;
-    jez.trc(3,trcLvl,"msg", msg);
+    if (TL > 2) jez.log(`${TAG} msg`, msg);
     // ---------------------------------------------------------------------------------------
     // If a previous casting is still active, delete it before creating a new one.
     //
@@ -120,7 +124,7 @@ async function doOnUse() {
     // ---------------------------------------------------------------------------------------
     // That's all folks...
     //
-    jez.trc(2,trcLvl,`--- Finished --- ${MACRONAME} ${FUNCNAME} ---`,true);
+    if (TL > 1) jez.log(`${TAG} --- Finished --- ${MACRONAME} ${FUNCNAME} ---`,true);
     return (true);
 }
 /***************************************************************************************************
@@ -128,8 +132,8 @@ async function doOnUse() {
  ***************************************************************************************************/
 async function placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh) {
     const FUNCNAME = "placeTileVFX(TEMPLATE_ID, vfxFile, tilesWide, tilesHigh)";
-    jez.trc(2, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(3, trcLvl, "Parameters", "TEMPLATE_ID", TEMPLATE_ID, "vfxFile", vfxFile, "tilesWide", tilesWide, "tilesHigh", tilesHigh)
+    if (TL > 2) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 2) jez.log(`${TAG} Parameters`, "TEMPLATE_ID", TEMPLATE_ID, "vfxFile", vfxFile, "tilesWide", tilesWide, "tilesHigh", tilesHigh)
     // Grab the size of grid in pixels per square
     const GRID_SIZE = canvas.scene.data.grid;
     // Search for the MeasuredTemplate that should have been created by the calling item

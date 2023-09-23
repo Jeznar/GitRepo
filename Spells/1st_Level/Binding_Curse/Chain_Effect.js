@@ -5,7 +5,7 @@ const MACRONAME = "Chain_Effect.0.1.js"
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
- * 06/29/22 0.2 Update to use jez.trc
+ * 06/29/22 0.2 Update to use jez-dot-trc
  * 07/08/22 0.3 Update to use jez.trace
  * 12/01/22 0.4 Update to include jez.refundSpellSlot call
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/ 

@@ -1,4 +1,5 @@
-const MACRONAME = "Hinder.0.4.js"
+const MACRONAME = "Hinder.0.5.js"
+const TL = 0;
 /*********************************************************************************************
  * Implement the "hurtful" half of the RAW Help Axtion in a somewhat approximate way.
  * 
@@ -20,11 +21,14 @@ const MACRONAME = "Hinder.0.4.js"
  * 11/17/21 0.2 JGB Code Cleaning
  * 07/04/22 0.3 JGB Convert to CE for effect management
  * 08/02/23 0.4 JGB Commented out range check and added CEDesc update
+ * 09/23/23 0.9 Replace jez-dot-trc with jez.log
  **********************************************************************************************/
-let trcLvl = 1
-const debug = 0;
-if (debug) console.log(`Starting: ${MACRONAME} arguments passed: ${args.length}`);
-if (debug > 2) { let i = 0; for (let arg in args) { console.log(` ${i++}: ${arg}`) }; }
+const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
 /************************************************************************
 * Set Variables for execution
 *************************************************************************/
@@ -35,23 +39,9 @@ let player = canvas.tokens.get(args[0].tokenId);
 * Check Initial Conditions
 *************************************************************************/
 // Need to have exactly one target selected
-if (game.user.targets.ids.length != 1) {
-    let message = `Target a single token to be acted upon. Targeted ${game.user.targets.ids.length} tokens`;
-    ui.notifications.warn(message);
-    if (debug) console.log(message);
-    return;
-} else if (debug) console.log(` targeting one target`);
-// Target needs to be in range
-// let range = 5; range += 2.5;    // Add a half square buffer for diagonal adjacancy 
-// let distance = canvas.grid.measureDistance(player, targetD);
-// distance = distance.toFixed(1);             // Chop the extra decimals, if any
-// if (debug) console.log(` Considering ${targetD.name} at ${distance} distance`);
-// if (distance > range) {
-//     let message = ` ${targetD.name} is not in range (${distance}), end ${MACRONAME}`;
-//     ui.notifications.warn(message);
-//     if (debug) console.log(message);
-//     return;
-// }
+if (game.user.targets.ids.length != 1) 
+    return jez.badNews(`Target a single. Targeted ${game.user.targets.ids.length} tokens`, 'w')
+else if (TL>1) jez.log(`${TAG} targeting one target`);
 if (jezcon.hasCE("Hindered", targetD.actor.uuid))
     postResults(`${targetD.name} has already been hindered, no additional effect.`)
 else {
@@ -70,9 +60,6 @@ else {
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 function postResults(msg) {
     const FUNCNAME = "postResults(msg)";
-    jez.trc(1, trcLvl, `--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(2, trcLvl, "postResults Parameters", "msg", msg)
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    jez.trc(1, trcLvl, `--- Finished --- ${MACRONAME} ${FUNCNAME} ---`);
 }

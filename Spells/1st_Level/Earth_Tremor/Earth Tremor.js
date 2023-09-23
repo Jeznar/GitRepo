@@ -1,4 +1,5 @@
-const MACRONAME = "Earth_Tremor.0.5.js"
+const MACRONAME = "Earth_Tremor.0.6.js"
+const TL = 0;
 /*****************************************************************************************
  * Slap a text message on the item card indicating Who and What should be moved by the
  * spell.
@@ -17,19 +18,21 @@ const MACRONAME = "Earth_Tremor.0.5.js"
  * 06/29/22 0.3 Fix for permission issue on game.scenes.current.createEmbeddedDocuments
  * 06/30/22 0.4 Swap to jez.tileCreate and jez.tileDelete calls
  * 07/09/22 0.5 Replace CUB add for an array of targets with jezcon.addConditions()
+ * 09/23/23 0.6 Replace jez-dot-trc with jez.log
  *****************************************************************************************/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
-let trcLvl = 2;
-jez.trc(1, trcLvl, `=== Starting === ${MACRONAME} ===`);
+let msg = ""
+const TAG = `${MACRO} |`
+if (TL > 0) jez.log(`============== Starting === ${MACRONAME} =================`);
+if (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);
+const L_ARG = args[args.length - 1];
 
 const CONDITION = `Prone`;
 const ICON = `modules/combat-utility-belt/icons/prone.svg`;
-let msg = "";
 let xtraMsg = `<br><br>
     If the ground in that area is loose earth or stone, it becomes difficult terrain
     until cleared. <i><b>FoundryVTT:</b> Effect represented by a tile, that can be
     manually removed.</i>`
-for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]);
 // ---------------------------------------------------------------------------------------
 // Place a nifty tile...
 //
@@ -37,24 +40,24 @@ for (let i = 0; i < args.length; i++) jez.trc(2, trcLvl, `  args[${i}]`, args[i]
 const TEMPLATE_ID = args[0].templateId
 // Call function to place the tile and grab the returned ID
 let newTileId = await placeTileVFX(TEMPLATE_ID);
-jez.trc(3, trcLvl, "newTileId", newTileId)
+if (TL >  2) jez.log(`${TAG} newTileId`, newTileId)
 // Grab the tile's TileDocument object from the scene
 let fetchedTile = await canvas.scene.tiles.get(newTileId)
-jez.trc(3, trcLvl, `fetchedTile ${fetchedTile.id}`, fetchedTile)
+if (TL >  2) jez.log(`${TAG} fetchedTile ${fetchedTile.id}`, fetchedTile)
 // Format and result message
 msg = `Placed Tile ID: ${fetchedTile.id}. <br>Image file used as source:<br>${fetchedTile.data.img}`;
-jez.trc(2, trcLvl, "msg", msg);
+if (TL > 1) jez.log(`${TAG} msg`, msg);
 
 // ---------------------------------------------------------------------------------------
 // If no target failed, post result and terminate
 //
 let failCount = args[0].failedSaves.length
-jez.trc(2, trcLvl, `${failCount} args[0].failedSaves: `, args[0].failedSaves)
+if (TL > 1) jez.log(`${TAG} ${failCount} args[0].failedSaves: `, args[0].failedSaves)
 if (failCount === 0) {
     msg = `No creatures failed their saving throw.` + xtraMsg;
     await postResults(msg);
-    jez.trc(2, trcLvl, ` ${msg}`, args[0].saves);
-    jez.trc(1, trcLvl, `************ Ending ${MACRONAME} ****************`)
+    if (TL > 1) jez.log(`${TAG}  ${msg}`, args[0].saves);
+    if (TL > 0) jez.log(`${TAG} ************ Ending ${MACRONAME} ****************`)
     return;
 }
 // ---------------------------------------------------------------------------------------
@@ -64,8 +67,8 @@ let failures = [];
 let failureUuids = []; 
 for (let i = 0; i < failCount; i++) {
     const FAILED = args[0].failedSaves[i];
-    jez.trc(3, trcLvl, ` Target ${i+1} --> ${FAILED.data.actorId}`, FAILED);
-    jez.trc(3, trcLvl, ` Target ${i+1} Adding chump: `, FAILED)
+    if (TL > 2) jez.log(`${TAG}  Target ${i+1} --> ${FAILED.data.actorId}`, FAILED);
+    if (TL > 2) jez.log(`${TAG}  Target ${i+1} Adding chump: `, FAILED)
     failures.push(FAILED);
     failureUuids.push(FAILED.uuid);
     // await game.cub.addCondition(CONDITION, FAILED, {allowDuplicates:true, replaceExisting:true, warn:true});
@@ -75,14 +78,14 @@ for (let i = 0; i < failCount; i++) {
 //
 let gameRound = game.combat ? game.combat.round : 0;
 for (let i = 0; i < failCount; i++) {
-    jez.trc(2, trcLvl, ` ${i} Processing: `, failures[i])
+    if (TL > 1) jez.log(`${TAG}  ${i} Processing: `, failures[i])
     // Determine if target already has the affect
     //if (target.effects.find(ef => ef.data.label === effect)) {
     //if (failures[i].data.actorData.effects.find(ef => ef.data.label === CONDITION)) {
     if (failures[i].data.actorData.effects.find(ef => ef.label === CONDITION)) {
-        jez.trc(2, trcLvl, ` ${failures[i].name} is already ${CONDITION}. `, failures[i])
+        if (TL > 1) jez.log(`${TAG}  ${failures[i].name} is already ${CONDITION}. `, failures[i])
     } else {
-        jez.trc(2, trcLvl, ` ${failures[i].name} is not yet ${CONDITION}. `, failures[i])
+        if (TL > 1) jez.log(`${TAG}  ${failures[i].name} is not yet ${CONDITION}. `, failures[i])
         //----------------------------------------------------------------------------------------
         // add CUB Condition this is either/or with manual add in section following
         //
@@ -113,8 +116,8 @@ for (let i = 0; i < failCount; i++) {
 //
 msg = `Creatures that failed their saving have been knocked @JournalEntry[FBPUaHRxNyNXAOeh]{prone}.` + xtraMsg;
 await postResults(msg);
-jez.trc(2, trcLvl, ` ${msg}`);
-jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`);
+if (TL > 1) jez.log(`${TAG}  ${msg}`);
+if (TL > 0) jez.log(`${TAG} === Finished === ${MACRONAME} ===`);
 /***************************************************************************************
  *    END_OF_MAIN_MACRO_BODY
  *                                END_OF_MAIN_MACRO_BODY
@@ -123,7 +126,7 @@ jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`);
  * Post the results to chat card
  ***************************************************************************************/
  async function postResults(msg) {
-    jez.trc(3, trcLvl, msg);
+    if (TL > 2) jez.log(`${TAG} msg`, msg);
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
 }
@@ -132,8 +135,8 @@ jez.trc(1, trcLvl, `=== Finished === ${MACRONAME} ===`);
  ***************************************************************************************************/
  async function placeTileVFX(TEMPLATE_ID) {
     const FUNCNAME = "placeTileVFX(TEMPLATE_ID)";
-    jez.trc(2,trcLvl,`--- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
-    jez.trc(3,trcLvl,"Parameters","TEMPLATE_ID",TEMPLATE_ID)
+    if (TL > 1) jez.log(`${TAG} --- Starting --- ${MACRONAME} ${FUNCNAME} ---`);
+    if (TL > 2) jez.log(`${TAG} Parameters`,"TEMPLATE_ID",TEMPLATE_ID)
     // Grab the size of grid in pixels per square
     const GRID_SIZE = canvas.scene.data.grid;
     // Search for the MeasuredTemplate that should have been created by the calling item

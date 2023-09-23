@@ -19,7 +19,7 @@ const GRAPPLER_TOKEN_UUID = "%GRAPPLER_TOKEN_UUID%" // Scene.MzEyYTVkOTQ4NmZk.To
  * 12/06/21 0.6 JGB Cleanup existing Restrained if any
  * 07/04/22 0.7 JGB Convert to CE for effect management
  * 07/05/22 0.8 Major Shakeup to work as a pre-defined escape
- * 09/22/23 0.9 Replace jez.trc with jez.log
+ * 09/22/23 0.9 Replace jez-dot-trc with jez.log
  **********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]     // Trim of the version number and extension
 let msg = ""

@@ -40,38 +40,34 @@ class jez {
      * This is a variation on the log function that requires the first parameter to be an integer that
      * will be compared to the second parameter, presumably a global in the calling macro.  
      * 
-     * jez.trc(1, trcLvl, "Post this message to the console", variable)
+     * jez-dot-trc(1, trcLvl, "Post this message to the console", variable)
      ***************************************************************************************************/
     static trc(level, threshold, ...parms) {
-        console.warn(`Depricated call to jez.trc`)
+        console.warn(`Depricated call to jez-dot-trc`)
         // return  // Forced silence 11.17.22
         if (level > threshold) return false
         return jez.writeTrcLog(" T R C ", ...parms)
     }
     /***************************************************************************************************
-     * Trace
+     * Trace (Log function is preferred)
      * 
-     * This is a variation on the log function that requires the first parameter to be an integer that
-     * will be compared to the second parameter, presumably a global in the calling macro.  
+     * Call the writeTrcLog function with prefix "JezLog" and all passed arguments
      *
      * Example 
-     * const FUNCNAME = 'addCondition(effectName, targets, options)'
-     * const FNAME = FUNCNAME.split("(")[0] 
-     * ...
      * if (TL>2) jez.trace(`${FNAME} | Post this message to the console`, variable)
      ***************************************************************************************************/
     static trace(...parms) {
-        return jez.writeTrcLog("Trace", ...parms)
+        return jez.writeTrcLog("JezTrc", ...parms)
     }
     /***************************************************************************************************
      * Log
      * 
-     * Call the writeTrcLog function with prefix "jez-log" and all passed arguments
+     * Call the writeTrcLog function with prefix "JezLog" and all passed arguments
      * 
-     * Ex: jez.log("Post this message to the console", variable)
+     * Ex: if (TL>2) jez.log("Post this message to the console", variable)
      ***************************************************************************************************/
     static log(...parms) {
-        return jez.writeTrcLog("Jez ", ...parms)
+        return jez.writeTrcLog("JezLog", ...parms)
     }
     /***************************************************************************************************
      * Write Trace/Log to console

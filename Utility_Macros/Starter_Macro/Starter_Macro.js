@@ -3,7 +3,7 @@ const MACRONAME = "Starter_Macro.0.5.js"
  * Basic Structure for a rather complete macro
  * 
  * 02/11/22 0.1 Creation of Macro
- * 06/29/22 0.2 Update to use jez.trc
+ * 06/29/22 0.2 Update to use jez-dot-trc
  * 07/08/22 0.3 Update to use jez.trace
  * 12/01/22 0.4 Update to include jez.refundSpellSlot call
  * 09/21/23 0.5 Replace jez.trace with jez.log 
