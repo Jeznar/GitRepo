@@ -588,7 +588,12 @@ Fix standalone scripts to use jez.log instead of jez.trc
 * Cloudkill
 * Minor_Illusion
 
+23.09.25 Created Stirge Swarm with Blood Drain, Stirge Swarm and Satiated Stirge abilities.  The former is interesting:
 
+ 1. Looks at the calling actor's name to see if it includes "swarm" then sets values accordingly
+ 2. Uses paired effects to trigger removal of primary/secondary effects
+ 3. Uses a flag to track damage done as a drain and marks satiatiated effect when 'full'
+ 4. Uses tokenAttacher to attach the two tokens, moving the swarm with its victim
 
 [Link back to my Documentation Listing](README.md) 
 

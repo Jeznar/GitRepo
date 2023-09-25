@@ -1,0 +1,161 @@
+{
+  "name": "Blood Drain, Stirge Swarm",
+  "type": "weapon",
+  "img": "icons/skills/wounds/blood-spurt-spray-red.webp",
+  "data": {
+    "description": {
+      "value": "<p>The Stirge attacks with its Blood Drain. A creature, including the target, can use its action to detach the stirge.</p>\n<section class=\"secret\">\n<p><em>Melee Weapon Attack: </em><strong>+7 to hit,</strong>, <strong>5 ft.,</strong> one creature. Hit: <strong>19 </strong><strong>(6d4 + 4) <em>piercing damage</em></strong>.</p>\n<p>The stirge attaches to the target. While attached, the stirge doesn't attack. Instead, at the start of each of the stirge's turns, the target <strong>loses 30 (12d4 + 0) hit points due to blood loss.</strong> The %TOKENNAME% can detach itself voluntarily by spending 5 feet of its movement. It does so automatically after become satiated when it has drained<strong> 50 hit points</strong> of blood from the target or the target dies.</p>\n<div>While attached to a victim, it is difficult to hit, forcing disadvantage on attacks.</div>\n<p>A satiated swarm will attempt to leave the fight and in any case, can no longer drain blood. If forced to fight it can still bite, but will no longer attach and drain blood.</p>\n<hr />\n<p><strong>FoundryVTT:&nbsp;</strong>This ability will automagically attach tokens and track the drain.&nbsp; It can be used for both initial and follow up atatcks.</p>\n</section>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "quantity": 1,
+    "weight": 0,
+    "price": 0,
+    "attunement": 0,
+    "equipped": true,
+    "rarity": "",
+    "identified": true,
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "dex",
+    "actionType": "mwak",
+    "attackBonus": "0",
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "armor": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "weaponType": "natural",
+    "baseItem": "",
+    "properties": {
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false,
+      "ada": false,
+      "mgc": false,
+      "sil": false
+    },
+    "proficient": true,
+    "attuned": false
+  },
+  "effects": [],
+  "flags": {
+    "midi-qol": {
+      "fumbleThreshold": null,
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Blood Drain, Stirge Swarm",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Blood_Drain-Stirge_Swarm.0.1.js\"\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Implement a stirge swarm bloood drain mechanic. Roll to hit is handled by the base item card, this macro handles remainer \n * including damage and tracking progress to satiated.\n * \n *   The stirge attaches to the target. While attached, the stirge doesn't attack. Instead, at the start of each of the stirge's \n *   turns, the target loses 25 (6d4 + 4) hit points due to blood loss. The stirge swarm can detach itself by spending 5 feet of \n *   its movement. It does so after become satiated when it has drained 50 hit points of blood from the target or the target dies.\n *   While attached to a victim, it is difficult to hit, forcing disadvantage on attacks.\n * \n * This macro does a few interesting things:\n * 1. Looks at the calling actor's name to see if it includes \"swarm\" then sets values accordingly\n * 2. Uses paired effects to trigger removal of primary/secondary effects\n * 3. Uses a flag to track damage done as a drain and marks satiatiated effect when 'full'\n * 4. Uses tokenAttacher to attach the two tokens, moving the swarm with its victim\n * \n * 09/24/23 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nconst TL = 0;                               // Trace Level for this macro\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.log(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\nlet aActor = aToken.actor;\nlet aItem = (args[0]?.item) ? args[0]?.item : L_ARG.efData?.flags?.dae?.itemData\nconst VERSION = Math.floor(game.VERSION);\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst SATIATED_EFFECT_NAME = 'Satiated'\nconst SATIATED_IMG = 'Icons_JGB/Misc/blood2.svg'\nconst DRAINING_EFFECT_NAME = 'Draining'\nconst LATCHED_EFFECT_NAME = 'Latched'\nconst BLOOD_DRAINED_FLAG = `${MACRO}-Blood_Drained`\nconst LATCHED_TOKEN_ID_FLAG = `${MACRO}-Latched_Token`\n//-------------------------------------------------------------------------------------------------------------------------------\n// Set damage variables based on the name of the creature using this ability, either a swarm or not a swarm\n//\nlet isSwarm = aToken.name.toLowerCase().includes('swarm') ? true : false\nlet biteDice = isSwarm ? 6 : 1      // Swarm or not swarm d4's to roll\nlet drainDice = isSwarm ? 12 : 2    // Swarm or not swarm d4's to roll\nlet satiated = isSwarm ? 50 : 10    // Swarm or not swarm hit points to stop drinking\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (args[0] === \"off\") await doOff({ traceLvl: TL });                   // DAE removal\nif (TL > 1) jez.log(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.log(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.log(\"postResults Parameters\", \"msg\", msg)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    if (TL > 1) jez.log(`${TAG} --- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * \n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.log(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Check to see if aActor has the Satiated condition.  If so, it will not be able to drain blood.\n    //\n    const SATIATED_EFFECT = await aToken?.actor?.effects?.find(ef => ef?.data?.label === SATIATED_EFFECT_NAME &&\n        ef?.data?.origin === aToken.actor.uuid)\n    let isSatiated = SATIATED_EFFECT ? true : false\n    if (TL > 1) jez.log(`${TAG} ${aToken.name} is satiated?`, isSatiated)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Check to see if aActor is draining a target.  If so, it will not do bite damage, just drain blood.\n    //\n    const DRAINING_EFFECT = await aToken?.actor?.effects?.find(ef => ef?.data?.label === DRAINING_EFFECT_NAME &&\n        ef?.data?.origin === L_ARG.uuid)\n    let isDraining = DRAINING_EFFECT ? true : false\n    if (TL > 1) jez.log(`${TAG} ${aToken.name} is draining?`, isDraining)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // If we were not draining, check to see if hit target, if so do damage and add draining effect if not satiated, then terminate \n    //\n    if (TL > 3) jez.log(`${TAG} L_ARG.targetUuids[0]`, L_ARG.targetUuids[0])\n    let tToken = (await fromUuid(L_ARG.targetUuids[0])).object   // tToken will be a Token5e\n    let tActor = tToken?.actor;\n    if (!isDraining) {\n        if (TL > 1) jez.log(`${TAG} ${aToken.name} is trying to hit ${tToken?.name}`, tToken)\n        if (!L_ARG.hitTargetUuids[0]) {\n            postResults(`${aToken.name} missed ${tToken.name}.`)\n        } else {\n            let ceDesc, effectData\n            //------------------------------------------------------------------------------------------------------------------------\n            // Apply damage to our target\n            //\n            if (args[0].isCritical) biteDice = biteDice * 2;\n            let dRoll = await new Roll(`${biteDice}d4[piercing] + ${aActor.data.data.abilities.dex?.mod}`).roll({ async: true });\n            await game.dice3d?.showForRoll(dRoll);\n            new MidiQOL.DamageOnlyWorkflow(aActor, aToken, dRoll.total, \"piercing\", [tToken], dRoll, {\n                flavor: `${CONFIG.DND5E.damageTypes['piercing']}`, itemCardId: args[0].itemCardId\n            })\n            //------------------------------------------------------------------------------------------------------------------------\n            // Check to see if aActor is Satiated\n            //\n            if (isSatiated) {\n                await jez.wait(500)\n                postResults(`${aToken.name} is satiatiated with blood.  It does not latch on to drink more.`)\n                return\n            }\n            //------------------------------------------------------------------------------------------------------------------------\n            // Add Draining effect to aActor\n            //\n            ceDesc = `Draining blood from ${tToken.name}.`\n            effectData = {\n                label: DRAINING_EFFECT_NAME,\n                icon: aItem.img,\n                // origin: aActor.uuid,\n                origin: L_ARG.uuid,\n                disabled: false,\n                flags: {\n                    convenientDescription: ceDesc,\n                    core: { statusId: 'Force Display' }\n                },\n                changes: [\n                    { key: `macro.itemMacro`, mode: jez.CUSTOM, value: DRAINING_EFFECT_NAME, priority: 20 },\n                    { key: `flags.midi-qol.grants.disadvantage.attack.all`, mode: jez.ADD, value: 1, priority: 20 },\n                ]\n            };\n            await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: [effectData] });\n            //------------------------------------------------------------------------------------------------------------------------\n            // Add Latched token UUID as a flag\n            //\n            await DAE.setFlag(aActor, LATCHED_TOKEN_ID_FLAG, tToken.document.uuid)\n            //------------------------------------------------------------------------------------------------------------------------\n            // Add Latched effect to target\n            //\n            ceDesc = `Latched onto by ${aToken.name}.`\n            effectData = {\n                label: LATCHED_EFFECT_NAME,\n                icon: aItem.img,\n                origin: aActor.uuid,\n                disabled: false,\n                flags: {\n                    convenientDescription: ceDesc,\n                    core: { statusId: 'Force Display' }\n                },\n            };\n            await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: tActor.uuid, effects: [effectData] });\n            //------------------------------------------------------------------------------------------------------------------------\n            // Attach to just added effects to each other\n            //\n            // Find the latched effect on our target\n            const LATCHED_EFFECT = await tToken?.actor?.effects?.find(ef => ef?.data?.label === LATCHED_EFFECT_NAME &&\n                ef?.data?.origin === aActor.uuid)\n            if (TL > 2) jez.log(`${TAG} Latch Effect applied: `, LATCHED_EFFECT)\n            // Find the draining effect on our active actor\n            const DRAINING_EFFECT = await aToken?.actor?.effects?.find(ef => ef?.data?.label === DRAINING_EFFECT_NAME &&\n                ef?.data?.origin === L_ARG.uuid)\n            if (TL > 2) jez.log(`${TAG} Drain Effect applied: `, DRAINING_EFFECT)\n            // Don't really need to use a run as GM macro here, but it seems more future resistant\n            const GM_PAIR_EFFECTS = jez.getMacroRunAsGM(\"PairEffects\") \n            if (!GM_PAIR_EFFECTS) return jez.badNews(`Could not find PairEffects macro`,'e')\n            GM_PAIR_EFFECTS.execute(LATCHED_EFFECT.uuid, DRAINING_EFFECT.uuid)\n            //------------------------------------------------------------------------------------------------------------------------\n            // Use tokenAttacher to attach the aToken to the tToken\n            //\n            let newCoords = { x: token.x, y: token.y };\n            if (tToken.x + tToken.w - token.w < token.x) newCoords.x = tToken.x + tToken.w - token.w;\n            else if (tToken.x > token.x) newCoords.x = tToken.x;\n            if (tToken.y + tToken.h - token.h < token.y) newCoords.y = tToken.y + tToken.h - token.h;\n            else if (tToken.y > token.y) newCoords.y = tToken.y;\n            await token.document.update({ x: newCoords.x, y: newCoords.y });\n            ui.chat.processMessage(`I grip onto ${tToken.name} to drink deeply`);\n            await tokenAttacher.attachElementToToken(token, tToken, true);\n            await tokenAttacher.setElementsLockStatus(token, false, true);\n            await tokenAttacher.setElementsMoveConstrainedStatus(token, true, true, { type: tokenAttacher.CONSTRAINED_TYPE.TOKEN_CONSTRAINED });\n            //------------------------------------------------------------------------------------------------------------------------\n            // Completion message\n            //\n            postResults(`${aToken.name} has latched onto ${tToken.name} and begins drinking its fill.`)\n        }\n        return;\n    } else { // Stirge swarm is currently draining!\n        //---------------------------------------------------------------------------------------------------------------------------\n        // Find our target based on the data embedded in Draining effect.  Our roll to hit is going to be ignored \n        //\n        let latchedUuid = null, lToken = null;\n        for (let i = 0; i < DRAINING_EFFECT.data.changes.length; i++) {\n            const CHANGE_TOKENS = DRAINING_EFFECT.data.changes[i].value.split(\" \")\n            if (CHANGE_TOKENS[0] !== 'Remove_Paired_Effect') continue;  // If first token isn't what we need go to next line\n            if (CHANGE_TOKENS.length !== 2) continue;                   // Must have two tokens on line we seek\n            latchedUuid = CHANGE_TOKENS[1];                            // Second token is our effect UUID that contains UUID\n            endOfTargetPhrase = latchedUuid.indexOf(\".ActiveEffect.\")  // Get position of end of our Uuid\n            latchedUuid = latchedUuid.slice(0, endOfTargetPhrase)\n            if (TL > 1) jez.log(`${TAG} Latched UUID`, latchedUuid)\n            // if (TL > 1) jez.log(`${TAG} Effect Info`, 'Target UUID', tToken.actor.uuid, 'Latched UUID', latchedUuid)\n            // if (latchedUuid !== tActor.uuid) return jez.badNews(`Must be targeting creature latched, when draining.`, 'i')\n            // Get the lToken from the latchedUuid\n            let lTokenDocument5e = await fromUuid(latchedUuid)          // Retrieves document for the UUID\n            if (!lTokenDocument5e) return jez.badNews(`Could not find token ${latchedUuid}`)\n            lToken = lTokenDocument5e._object                       // Nabs the Token5e out of a aTokenDocument5e\n            break;\n        }\n        //------------------------------------------------------------------------------------------------------------------------\n        // Apply damage to our target\n        //\n        let dRoll = await new Roll(`${drainDice}d4[piercing] + ${aActor.data.data.abilities.con?.mod}`).roll({ async: true });\n        await game.dice3d?.showForRoll(dRoll);\n        new MidiQOL.DamageOnlyWorkflow(aActor, aToken, dRoll.total, \"piercing\", [lToken], dRoll, {\n            flavor: `${CONFIG.DND5E.damageTypes['piercing']}`, itemCardId: args[0].itemCardId\n        })\n        await jez.wait(500)\n        //------------------------------------------------------------------------------------------------------------------------\n        // Grab flag value that has been tracking our damage by draining so far add new drain check for Satiation\n        //\n        const FLAG_VALUE = await DAE.getFlag(aActor, BLOOD_DRAINED_FLAG)\n        const BLOOD_DRAINED_SO_FAR = FLAG_VALUE ? FLAG_VALUE : 0;\n        if (TL > 1) jez.log(`${TAG} ${BLOOD_DRAINED_SO_FAR} Blood drained previously plus new drain of ${dRoll.total}`)\n        await DAE.setFlag(aActor, BLOOD_DRAINED_FLAG, dRoll.total + BLOOD_DRAINED_SO_FAR);\n        if (dRoll.total + BLOOD_DRAINED_SO_FAR >= satiated) {\n            isSatiated = true\n            await DAE.unsetFlag(aActor, BLOOD_DRAINED_FLAG);\n        }\n        if (isSatiated) { // Add the DAE satiated effect\n            ceDesc = `Filled with blood, can drink no more.`\n            effectData = {\n                label: SATIATED_EFFECT_NAME,\n                icon: SATIATED_IMG,\n                origin: aActor.uuid,\n                disabled: false,\n                flags: {\n                    convenientDescription: ceDesc,\n                    core: { statusId: 'Force Display' }\n                },\n            };\n            await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: aActor.uuid, effects: [effectData] });\n            //-----------------------------------------------------------------------------------------------------------------------\n            // Call tokenAttacher to release the follow\n            //\n            await tokenAttacher.detachElementsFromToken([aToken], lToken, true);\n            await DAE.unsetFlag(aActor, LATCHED_TOKEN_ID_FLAG)\n            ui.chat.processMessage(`I have drank my fill.`);\n            //-----------------------------------------------------------------------------------------------------------------------\n            // Exit message\n            //\n            postResults(`${aToken.name} appears to be bloated with blood as it releases its grasp on ${lToken.name}`)\n            //-----------------------------------------------------------------------------------------------------------------------\n            // Clear the drinking effect\n            //\n            DRAINING_EFFECT.delete()\n        } else postResults(`${aToken.name} maintains its grasp on ${tToken.name}, as it continues drinking.`)\n    }\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    //\n    if (TL > 0) jez.log(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Perform the code that runs when this macro is removed by DAE, set Off\n * This runs on actor that has the affected removed from it.\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOff(options = {}) {\n    const FUNCNAME = \"doOff(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.log(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    //---------------------------------------------------------------------------------------------------------------------------\n    // Get the token from FLAG, then go get the token for the detacher to use.\n    //\n    const LATCHED_TOKEN_UUID = await DAE.getFlag(aActor, LATCHED_TOKEN_ID_FLAG)\n    if (TL > 1) jez.log(`${TAG} ${LATCHED_TOKEN_ID_FLAG}`, LATCHED_TOKEN_UUID)\n    if (!LATCHED_TOKEN_UUID) return                             // Can be blank if already deleted, in which case quit\n    let tTokenDocument5e = await fromUuid(LATCHED_TOKEN_UUID)   // Retrieves document for the UUID\n    let tToken = tTokenDocument5e._object                       // Nabs the Token5e out of a aTokenDocument5e\n    await DAE.unsetFlag(aActor, LATCHED_TOKEN_ID_FLAG)\n    //-----------------------------------------------------------------------------------------------------------------------\n    // Call tokenAttacher to release the follow\n    //\n    await tokenAttacher.detachElementsFromToken([aToken], tToken, true);    // true is supressing notifications\n    //-------------------------------------------------------------------------------------------------------------------------------\n    //\n    if (TL > 1) jez.log(`${TAG} --- Finished ---`);\n    return;\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.MEFgfFD6YUD9cE08"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
