@@ -1,0 +1,1 @@
+ let immune_type = find_target.actor.data === "character" ? ["undead", "construct"].some(race => (find_target.actor.data.data.details.race || "").toLowerCase().includes(race)) : ["undead", "construct"].some(value => (find_target.actor.data.data.details.type.value || "").toLowerCase().includes(value));

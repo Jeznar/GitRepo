@@ -595,6 +595,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
  3. Uses a flag to track damage done as a drain and marks satiatiated effect when 'full'
  4. Uses tokenAttacher to attach the two tokens, moving the swarm with its victim
 
+23.09.28 Created Fiddle with Vision macro that revokes/restores observer ownership permissions and special vision settings.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

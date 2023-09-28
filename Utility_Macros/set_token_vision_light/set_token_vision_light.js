@@ -1,4 +1,4 @@
-const MACRONAME = "Starter_Macro.0.4.js"
+const MACRONAME = "Set_Token_Vision_Light.0.4.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * A macro for Foundry that lets a user configure their token's vision and lighting settings.
  * https://github.com/Sky-Captain-13/foundry/blob/master/scriptMacros/tokenVision.js

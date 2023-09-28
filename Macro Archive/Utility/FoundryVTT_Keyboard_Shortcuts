@@ -1,0 +1,21 @@
+/***
+https://www.reddit.com/r/FoundryVTT/comments/niuu66/journals_in_hotbars/
+
+HappyCujo
+Create macro (script type) with: let journal = game.journal.getName('Exact Name of Journal'); 
+or let journal = game.journal.get('JOURNAL_ID');. And then you have two options: 
+journal.show('text'); to show text, or journal.show('image'); to show image. 
+It's taken from Foundry API. I recommend to look into it for more details, because there 
+is also second argument to bypass permissions If journal is empty or there is no image it 
+won't show anything (at least at FVTT v0.7.9)
+
+https://foundryvtt.com/api/JournalEntry.html#show
+
+Note: This only works for journal entries "owned" by the player showng them.
+***/
+
+let journalName = "FoundryVTT Keyboard Shortcuts"; // Must be exact match
+let force = true; // Boolean to override permissions
+let page = 'text'; // Show either "text" or "image"
+let journal = game.journal.getName(journalName);
+journal.show(page, force);

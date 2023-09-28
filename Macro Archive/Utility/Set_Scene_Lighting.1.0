@@ -1,0 +1,70 @@
+const macroName = "Set_Scene_Lighting.1.0"
+
+/*******************************************************************
+ * Script to setup Scene lighting, allowing choice of Day or Night.
+ * Night is intended for outdoor or anytime in no ambient light 
+ * (e.g. underground).
+ *  
+ * 10/15/21 1.0 JGB Creation
+ ******************************************************************/
+
+const debug = false;
+let day = true; 
+let action = 1;             // default to cancel
+
+if (debug) console.log(`Launching: ${macroName}`);
+if (debug) console.log(` Working on: ${canvas.scene.name}`);
+
+let wallsBlockVision = true;// Do walls block vision?
+let fog = true;             // Should fog exploration progress be tracked for this Scene?
+let globallight = true;     // Scene has light everywhere?
+let lightlevel = 0.1;       // The ambient light level, 0 represents mid-day and 1 mid-night
+let lightcutoff = 0.5;      // Light level below witch global illumination is turned off
+
+async function SetLighting() {
+    if (debug) console.log("SetLighting function executing.");
+    if (debug) console.log("Light level: " + lightlevel);
+    await canvas.scene.update({"tokenVision": wallsBlockVision, 
+            "fogExploration":       fog,
+            "darkness":             lightlevel, 
+            "globalLightThreshold": lightcutoff,
+            "globalLight":          globallight});
+    return;
+}
+
+new Dialog({
+    title:canvas.scene.name,
+    content:`Set Scene Lighting<br/><br/>`,
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                callback: () => action = 1
+            },
+            day: {
+                label: "Day Time",
+                callback: () => action = 2
+            },
+            night: {
+                label: "Night Time",
+                callback: () => action = 3
+            },
+        },
+        close: () => {
+             switch(action) {
+                case 1:
+                    if (debug) console.log("Cancel button selected");
+                    break;
+                case 2:
+                    if (debug) console.log("Setup Day Time lighting");
+                    SetLighting();
+                    break;
+                case 3:
+                    if (debug) console.log("Setup Night Time lighting");
+                    lightlevel = 0.55;
+                    SetLighting();
+                    break;
+                default:
+                    if (debug) console.log("No Buttons were pressed");
+           }
+        }
+    }).render(true);

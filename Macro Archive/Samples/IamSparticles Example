@@ -1,0 +1,61 @@
+const debug = true;  // JGB
+if (debug) console.log("1");
+
+async function popupText(textToWrite) {
+    let d2 = new Dialog({
+        title: "This is your text",
+        content: textToWrite,
+        buttons: {
+            OK: {
+               label: "OK"
+            }
+        },
+        default: "OK"
+    })
+    await ChatMessage.create({content: textToWrite});
+    d2.render(true);
+    return;
+ }
+ 
+ if (debug) console.log("2");
+ let dialogContent = `
+                     <div><h2>Type some Text Here</h2><div>
+                     <div><span style="flex:1">Text: <input id="inputText" style="width:350px"/></span></div>
+                     `;
+ let d = new Dialog({
+     title: "Stupid Chat Dialog",
+     content: dialogContent,
+     buttons: {
+         done: {
+             label: "Send!",
+             callback: (contents) => {
+                 popupText(contents.find("#inputText")[0].value)
+                 d.render(false)
+             }
+         }
+     },
+     default: "done"    
+ })
+ d.render(true)
+ if (debug) console.log("3");
+
+/* https://www.reddit.com/r/FoundryVTT/comments/lao88t/dialog_windows/
+
+The first section is the definition of the function popupText, which takes a string argument. In it, I create a
+second dialog that displays that string as the content. It also creates a ChatMessage with the same text
+(the "await" means that this code won't proceed until that instruction completes). Once a dialog has been
+instantiated, you have to tell it to render itself on the canvas.
+
+The rest is creating the initial dialog and rendering it. The tricky bit is the callback section of the done
+button. The syntax is called a lambda function. I suspect you're not familiar with them if you've only used
+Fortran. Basically, it's a sort of inline function definition. So I'm creating this function and assigning it as
+the callback for the button. When the button is clicked, it executes this code. the "(contents)" part defines
+the current context inside the function so that it has access to all the data in this dialog. The function calls
+popupText with the value of the "inputText" field that I defined in the dialogContent. It then re-renders the
+dialog so this initial dialog doesn't just disappear. It doesn't retain the inputText, though, which may be
+part of what you're having difficulty with. I'm not sure exactly why that is. I assume it means this is a new
+instance of the dialog.
+
+I'll be honest, I don't understand all the intricacies of dialogs in Foundry. The documentation is pretty thin.
+Most of what I do know I've discovered through trial and error, but I work in game development so I have
+experience with async code. Hopefully this helps. */

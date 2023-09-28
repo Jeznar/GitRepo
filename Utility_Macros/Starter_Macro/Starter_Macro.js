@@ -1,4 +1,5 @@
 const MACRONAME = "Starter_Macro.0.5.js"
+const TL = 1;                               // Trace Level for this macro
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Basic Structure for a rather complete macro
  * 
@@ -10,7 +11,6 @@ const MACRONAME = "Starter_Macro.0.5.js"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
-const TL = 1;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //-----------------------------------------------------------------------------------------------------------------------------------
 if (TL > 0) jez.log(`${TAG} === Starting ===`);
