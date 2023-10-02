@@ -1,20 +1,16 @@
-const MACRONAME = "Mind_Breaking_Fear.0.2.js"
+const MACRONAME = "Rutterkin_Crippling_Fear.0.1.js"
 const TL = 0;                               // Trace Level for this macro
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Implement Howler's Mind Breaking Fear
+ * Implement Rutterkin's Crippling Fear.  This ability should be used at the start of each creature's 
+ * turn when they are close enough to Rutterkins (3+) to be potentially affected.
  * 
- *   The howler emits a keening howl in a 60-foot cone. Each creature in that area that isn't 
- *   deafened must succeed on a DC 16 WIS Save or be frightened until the end of the howler's 
- *   next turn. While a creature is frightened in this way, its speed is halved, and it is 
- *   incapacitated. A target that successfully saves is immune to the Mind-Breaking Howl of all 
- *   howlers for the next 24 hours.
- *  
- * 1. Build list of targets that are not deafened and are not immune.  
- * 2. Hand out immunity to those that can hear the howl and made saves
- * 3. Loop though the afflicted adding the fear effect
+ *   When a creature that isn't a demon starts its turn within 30 feet of three or more rutterkins, 
+ *   it must make a DC 11 WIS Save. The creature has disadvantage on the save if it's within 30 feet 
+ *   of six or more rutterkins. On a successful save, the creature is immune to the Crippling Fear of 
+ *   all rutterkins for 24 hours. On a failed save, the creature becomes frightened of the rutterkins 
+ *   for 1 minute. While frightened in this way, the creature is restrained.
  * 
- * 10/01/23 0.1 Creation of Macro from Fear.0.2.js
- * 10/02/23 0.2 Added VFX
+ * 10/02/23 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -37,12 +33,14 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-const EFFECT_NAME = "Mind Breaking Fear"
-const EFFECT_IMMUNE_NAME = "Mind Breaking Fear Immune"
-const EFFECT_IMAGE = 'systems/dnd5e/icons/spells/horror-red-3.jpg'
-const EFFECT_IMMUNE_IMAGE = 'systems/dnd5e/icons/spells/horror-eerie-1.jpg'
+const EFFECT_NAME = "Crippling Fear of Rutterkins"
+const EFFECT_IMMUNE_NAME = "Crippling Fear Immune"
+const EFFECT_IMAGE = 'systems/dnd5e/icons/spells/horror-red-2.jpg'
+const EFFECT_IMMUNE_IMAGE = 'systems/dnd5e/icons/spells/horror-eerie-2.jpg'
 let ceDesc = ""
 const GAME_RND = game.combat ? game.combat.round : 0;
+const SAVE_DC = 11
+const SAVE_STAT = 'wis'
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -77,100 +75,94 @@ async function doOnUse(options = {}) {
     if (TL === 1) jez.log(`${TAG} --- Starting ---`);
     if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
     await jez.wait(100)
-    const FAILED_SAVES = LAST_ARG.failedSaves
-    const MADE_SAVES = LAST_ARG.saves
-    let affectedTokens = []
-    const INCAPACITATED_JRNL = `@JournalEntry[${game.journal.getName('Incapacitated').id}]{Incapacitated}`
-
     //-----------------------------------------------------------------------------------------------
-    // Wait a bit for the VFX to play
-    await jez.wait(3500);
-    //-----------------------------------------------------------------------------------------------
-    // 1. Weed out tokens that either have the deafened or immunity condition from those that failed
-    //    saving throws. 
+    // Function variables
     //
-    if (TL>2) jez.log(`${TAG} Saves failed by`, FAILED_SAVES)
-    if (FAILED_SAVES?.length === 0) {                // All targets made saves
-        if (TL > 2) jez.log(`${TAG} No targets failed saving throws`);
-        console.log(aItem)
-        postResults(`No targets failed saves against <b>${aToken.name}</b>'s ${aItem.name}.`)
-        return;
-    }
-    for (let i = 0; i < FAILED_SAVES.length; i++) {
-        if (jezcon.hasCE("Deafened", FAILED_SAVES[i].actor.uuid, { traceLvl: 0 })) {
-            if (TL > 2) jez.log(`${TAG} ${FAILED_SAVES[i].name} is deaf, skipping.`)
-            continue
-        }
-        if (jezcon.hasCE(EFFECT_IMMUNE_NAME, FAILED_SAVES[i].actor.uuid, { traceLvl: 0 })) {
-            if (TL > 2) jez.log(`${TAG} ${FAILED_SAVES[i].name} is immune, skipping.`)
-            continue
-        }
-        affectedTokens.push(FAILED_SAVES[i]._object)
-    }
-    if (TL>1) jez.log(`${TAG} Tokens affected`, affectedTokens)
+    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+    let tActor = tToken?.actor;
     //-----------------------------------------------------------------------------------------------
-    // 2. For those that saved, if they are not deaf and are not immune, hand out immunity effect 
+    // 1. If our target is a demon or already immune, it is immune.  Also skip if already affected.
     //
-    if (TL>2) jez.log(`${TAG} made saves`, MADE_SAVES)
-    if (MADE_SAVES?.length === 0) if (TL > 2) jez.log(`${TAG} No targets made saving throws`);
-    for (let i = 0; i < MADE_SAVES.length; i++) {
-        if (jezcon.hasCE("Deafened", MADE_SAVES[i].actor.uuid, { traceLvl: 0 })) {
-            if (TL > 2) jez.log(`${TAG} ${MADE_SAVES[i].name} is deaf, skipping.`)
-            continue
-        }
-        if (jezcon.hasCE(EFFECT_IMMUNE_NAME, MADE_SAVES[i].actor.uuid, { traceLvl: 0 })) {
-            if (TL > 2) jez.log(`${TAG} ${MADE_SAVES[i].name} is immune, skipping.`)
-            continue
-        }
-        await jez.wait(250 + 500 * Math.random());  // Delay a random bit
-        applyImmune(MADE_SAVES[i]._object)
+    let race = jez.getRace(tToken)
+    if (TL > 1) jez.log(`${TAG} | Target race`,race)
+    if (race.includes("demon")) {
+        postResults(`${tToken.name} is immune (${race})`)
+        return; 
+    }
+    let subRace = jez.getRaceSubType(tToken)
+    if (TL > 1) jez.log(`${TAG} | Target subRace`,subRace)
+    if (subRace.includes("demon")) {
+        postResults(`${tToken.name} is immune (${subRace})`)
+        return; 
+    }
+    if (jezcon.hasCE(EFFECT_IMMUNE_NAME, tToken.actor.uuid, { traceLvl: 0 })) {
+        if (TL > 1) jez.log(`${TAG} ${tToken.name} is already.`)
+        return postResults(`${tToken.name} is immune`)
+    }
+    if (jezcon.hasCE(EFFECT_NAME, tToken.actor.uuid, { traceLvl: 0 })) {
+        if (TL > 1) jez.log(`${TAG} ${tToken.name} is already affected.`)
+        return postResults(`${tToken.name} is already affected.`)
     }
     //-----------------------------------------------------------------------------------------------
-    // 3. If no tokens affected, post message and quit
+    // 2. Find Rutterkins that are within 30 feet of target
     //
-    if (affectedTokens?.length === 0) { 
-        msg = `No eligible targets failed save, no effect applied.`
-        if (TL > 2) jez.log(`${TAG} ${msg}`)
-        postResults(msg);
-        return;
+    let returned = await jez.inRangeTargets(tToken, 30, { traceLvl: 0 });
+    let rutterkinCount = 0
+    if (returned.length === 0) return jez.badNews(`No tokens in range`, "i")
+    for (let i = 0; i < returned.length; i++) {
+        // I'll assume if the string rutterkin is in the creature's actor name it is a Rutterkin
+        jez.log(`${FNAME} | ${i} Tokens: ${returned[i].actor.name}`)
+        if (returned[i].actor.name.toLowerCase().includes('rutterkin')) rutterkinCount++;
     }
+    if (TL > 1) jez.log(`${FNAME} | Rutterkin count`, rutterkinCount)
+    if (rutterkinCount < 3) return postResults(`Not enough Rutterkins near ${tToken.name} to worry about.`)
     //-----------------------------------------------------------------------------------------------
-    // 4. Loop through those that failed saves and apply the fear effect
+    // 3. Set disadvantage boolean, 6+ rutterkins is true
     //
-    let afflicted = ''
-    if (TL > 2) jez.log(`${TAG} Affected tokens`, affectedTokens)
-    for (let i = 0; i < affectedTokens.length; i++) {
-        let token5e = affectedTokens[i]
-        if (TL > 2) jez.log(`${TAG} Adding fear`, token5e)
-        if (TL > 2) jez.log(`${TAG} ${token5e.name} is affected`)
-        await jez.wait(250 + 500 * Math.random());  // Delay a random bit
-        if (!jezcon.hasCE(EFFECT_NAME, token5e.actor.uuid)) applyFear(token5e)
-        afflicted += '- ' + token5e.name
-        if (i < affectedTokens.length - 1) afflicted += `,<br>`
+    const HAS_DISADVANTAGE = rutterkinCount >= 6 ? true : false
+    if (TL>1) jez.log(`${FNAME} | Disadvantage on saving throw`, HAS_DISADVANTAGE)
+    //-----------------------------------------------------------------------------------------------
+    // 4. Roll saving throw for the target 
+    //
+    if (HAS_DISADVANTAGE)
+        save = (await tToken.actor.rollAbilitySave(SAVE_STAT, { disadvantage: true, chatMessage: true, fastforward: true }));
+    else
+        save = (await tToken.actor.rollAbilitySave(SAVE_STAT, { flavor: null, chatMessage: true, fastforward: true }));
+    //-----------------------------------------------------------------------------------------------
+    // 5. On a save, grant immunity to the target, on failure give bad stuff
+    //
+    if (save.total >= SAVE_DC) {    // Save was made
+        applyImmune(tToken)
+        postResults(`${tToken.name} resists the effect and is now immune to it for some time.`)
+    } else {
+        let aEffect = await tActor?.effects?.find(ef => ef?.data?.label === EFFECT_NAME)
+        if (aEffect) {
+            await aEffect.delete(); // clear prexisiting effect
+            await jez.wait(250)
+        }
+        applyFear(tToken)
+        postResults(`${tToken.name} is effected by ${aItem.name}.`)
     }
-    postResults(`Speed halved and ${INCAPACITATED_JRNL}:<br>${afflicted}`)
-    return
 }
 /***************************************************************************************************
  * Apply the Fear condition to a token, adding CEDesc
  ***************************************************************************************************/
 async function applyFear(token) {
-    const CE_DESC = `Affected by ${aToken.name}'s ${EFFECT_NAME}, speed is halved and incapacitated`
+    const CE_DESC = `Frightened of Rutterkins`
     let effectData = [{
         label: EFFECT_NAME,
         icon: EFFECT_IMAGE,
         origin: LAST_ARG.uuid,
         disabled: false,
         flags: {
-            dae: { stackable: false, specialDuration: ["turnEnd"] },
+            dae: { stackable: false },
             convenientDescription: CE_DESC,
             isConvenient: true,
             isCustomConvenient: true
         },
-        duration: { rounds: 2, seconds: 12, startRound: GAME_RND, startTime: game.time.worldTime },
+        duration: { rounds: 10, seconds: 60, startRound: GAME_RND, startTime: game.time.worldTime },
         changes: [
-            { key: `data.attributes.movement.all`, mode: jez.CUSTOM, value: "*0.5", priority: 20 },
-            { key: `macro.CE`, mode: jez.CUSTOM, value: `Incapacitated`, priority: 20 },
+            { key: `macro.CE`, mode: jez.CUSTOM, value: `Restrained`, priority: 20 },
         ]
     }];
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token.actor.uuid, effects: effectData });
@@ -194,8 +186,6 @@ async function applyImmune(token) {
             isCustomConvenient: true
         },
     }];
-    // let horrified = token.actor.effects.find(i => i.data.label === HORRIFIED_COND);
-    // if (!horrified) applyEffect(token, effectData);
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token.actor.uuid, effects: effectData });
 }
 /***************************************************************************************************

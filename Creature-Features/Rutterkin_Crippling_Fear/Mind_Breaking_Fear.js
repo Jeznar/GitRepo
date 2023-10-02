@@ -1,20 +1,16 @@
-const MACRONAME = "Mind_Breaking_Fear.0.2.js"
-const TL = 0;                               // Trace Level for this macro
+const MACRONAME = "Rutterkin_Crippling_Fear.0.1.js"
+const TL = 5;                               // Trace Level for this macro
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
- * Implement Howler's Mind Breaking Fear
+ * Implement Rutterkin's Crippling Fear.  This ability should be used at the start of each creature's 
+ * turn when they are close enough to Rutterkins (3+) to be potentially affected.
  * 
- *   The howler emits a keening howl in a 60-foot cone. Each creature in that area that isn't 
- *   deafened must succeed on a DC 16 WIS Save or be frightened until the end of the howler's 
- *   next turn. While a creature is frightened in this way, its speed is halved, and it is 
- *   incapacitated. A target that successfully saves is immune to the Mind-Breaking Howl of all 
- *   howlers for the next 24 hours.
- *  
- * 1. Build list of targets that are not deafened and are not immune.  
- * 2. Hand out immunity to those that can hear the howl and made saves
- * 3. Loop though the afflicted adding the fear effect
+ *   When a creature that isn’t a demon starts its turn within 30 feet of three or more rutterkins, 
+ *   it must make a DC 11 WIS Save. The creature has disadvantage on the save if it’s within 30 feet 
+ *   of six or more rutterkins. On a successful save, the creature is immune to the Crippling Fear of 
+ *   all rutterkins for 24 hours. On a failed save, the creature becomes frightened of the rutterkins 
+ *   for 1 minute. While frightened in this way, the creature is restrained.
  * 
- * 10/01/23 0.1 Creation of Macro from Fear.0.2.js
- * 10/02/23 0.2 Added VFX
+ * 10/02/23 0.1 Creation of Macro
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -37,8 +33,8 @@ else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
-const EFFECT_NAME = "Mind Breaking Fear"
-const EFFECT_IMMUNE_NAME = "Mind Breaking Fear Immune"
+const EFFECT_NAME = "Crippling Fear of Rutterkins"
+const EFFECT_IMMUNE_NAME = "Crippling Fear Immune"
 const EFFECT_IMAGE = 'systems/dnd5e/icons/spells/horror-red-3.jpg'
 const EFFECT_IMMUNE_IMAGE = 'systems/dnd5e/icons/spells/horror-eerie-1.jpg'
 let ceDesc = ""
@@ -81,10 +77,28 @@ async function doOnUse(options = {}) {
     const MADE_SAVES = LAST_ARG.saves
     let affectedTokens = []
     const INCAPACITATED_JRNL = `@JournalEntry[${game.journal.getName('Incapacitated').id}]{Incapacitated}`
-
     //-----------------------------------------------------------------------------------------------
-    // Wait a bit for the VFX to play
-    await jez.wait(3500);
+    // Function variables
+    //
+    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+    let tActor = tToken?.actor;
+    //-----------------------------------------------------------------------------------------------
+    // 1. If our target is a demon, it is immune
+    //
+    let race = jez.getRace(tToken)
+    if (race.includes("demon")) {
+        postResults(`${tToken.name} is immune (${race})`)
+        return; 
+    }
+    //-----------------------------------------------------------------------------------------------
+    // 2. Find Rutterkins that are within 30 feet of target
+    //
+    let returned = await jez.inRangeTargets(tToken, 30, { traceLvl: 0 });
+    if (returned.length === 0) return jez.badNews(`No tokens in range`, "i")
+    if (TL>1) for (let i = 0; i < returned.length; i++) jez.log(`${FNAME} | ${i} Tokens: ${returned[i].name}`)
+    
+return
+
     //-----------------------------------------------------------------------------------------------
     // 1. Weed out tokens that either have the deafened or immunity condition from those that failed
     //    saving throws. 
@@ -174,7 +188,6 @@ async function applyFear(token) {
         ]
     }];
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token.actor.uuid, effects: effectData });
-    runVFX(token)
 }
 /***************************************************************************************************
  * Apply the Immunity condition to a token, adding CEDesc
@@ -197,18 +210,4 @@ async function applyImmune(token) {
     // let horrified = token.actor.effects.find(i => i.data.label === HORRIFIED_COND);
     // if (!horrified) applyEffect(token, effectData);
     await MidiQOL.socket().executeAsGM("createEffects", { actorUuid: token.actor.uuid, effects: effectData });
-}
-/***************************************************************************************************
- * Run Frightened VFX on Target
- ***************************************************************************************************/
-async function runVFX(target) {
-    const VFX_LOOP = "modules/jb2a_patreon/Library/Generic/UI/IconHorror_*_200x200.webm"
-    new Sequence()
-        .effect()
-        .fadeIn(1000)
-        .fadeOut(1000)
-        .file(VFX_LOOP)
-        .atLocation(target)
-        .scaleToObject(1.25)
-        .play();
 }
