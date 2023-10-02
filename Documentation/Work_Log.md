@@ -597,6 +597,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.09.28 Created Fiddle with Vision macro that revokes/restores observer ownership permissions and special vision settings.
 
+23.10.02 Created Howler abilities including mind breaking howl.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

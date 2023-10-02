@@ -113,9 +113,6 @@ async function main() {
             msg: msg, title: title, token: dataObj})
         await DAE.unsetFlag(dataObj.actor, FLAG);
     }
-
-    return
-    
     //----------------------------------------------------------------------------------------------
     // Update item in side bar, by calling a macro from this macro
     //

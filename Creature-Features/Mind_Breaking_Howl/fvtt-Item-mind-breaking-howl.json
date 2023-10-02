@@ -1,0 +1,187 @@
+{
+  "name": "Mind-Breaking Howl",
+  "type": "feat",
+  "img": "systems/dnd5e/icons/spells/air-burst-air-2.jpg",
+  "data": {
+    "description": {
+      "value": "<p>The %TOKENNAME% emits a keening howl in a <strong>60-foot cone</strong>. Each creature in that area that isn&rsquo;t deafened must succeed on a <strong>DC 16 WIS Save</strong> or be <strong>frightened</strong> until the end of the %TOKENNAME%&rsquo;s next turn. While a creature is frightened in this way, its <strong>speed is halved</strong>, and it is <strong>incapacitated</strong>. A target that successfully<strong> saves is immune </strong>to the Mind-Breaking Howl of all howlers for the next 24 hours.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "Mordenkainen’s Tome of Foes pg 210",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": 60,
+      "width": null,
+      "units": "ft",
+      "type": "cone"
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "save",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "wis",
+      "dc": 16,
+      "scaling": "flat"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": 6,
+      "charged": true
+    },
+    "properties": {
+      "amm": false,
+      "fin": false,
+      "fir": false,
+      "foc": false,
+      "hvy": false,
+      "lgt": false,
+      "lod": false,
+      "rch": false,
+      "rel": false,
+      "ret": false,
+      "spc": false,
+      "thr": false,
+      "two": false,
+      "ver": false
+    },
+    "proficient": false
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "dndbeyond": {}
+    },
+    "monsterMunch": {
+      "titleHTML": "<strong>Mind-Breaking Howl (Recharge 6).</strong>",
+      "fullName": "Mind-Breaking Howl (Recharge 6)."
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "autoanimations": {
+      "version": 4,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "menuType": "cone",
+        "variant": "poison",
+        "enableCustom": false,
+        "repeat": null,
+        "delay": null,
+        "scaleX": null,
+        "scaleY": null,
+        "opacity": null,
+        "removeTemplate": true,
+        "persistent": false
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "template",
+      "animation": "breathweapon",
+      "color": "orange",
+      "audio": {
+        "a01": {
+          "enable": false
+        }
+      },
+      "preview": false
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Mind-Breaking Howl",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Mind_Breaking_Fear.0.1.js\"\nconst TL = 0;                               // Trace Level for this macro\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Implement Howler's Mind Breaking Fear\n * \n *   The howler emits a keening howl in a 60-foot cone. Each creature in that area that isn't \n *   deafened must succeed on a DC 16 WIS Save or be frightened until the end of the howler's \n *   next turn. While a creature is frightened in this way, its speed is halved, and it is \n *   incapacitated. A target that successfully saves is immune to the Mind-Breaking Howl of all \n *   howlers for the next 24 hours.\n *  \n * 1. Build list of targets that are not deafened and are not immune.  \n * 2. Hand out immunity to those that can hear the howl and made saves\n * 3. Loop though the afflicted adding the fear effect\n * \n * 10/01/23 0.1 Creation of Macro from Fear.0.2.js\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nlet msg = \"\";                               // Global message string\n//---------------------------------------------------------------------------------------------------\nif (TL > 1) jez.log(`${TAG} === Starting ===`);\nif (TL > 2) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\nconst LAST_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\n//---------------------------------------------------------------------------------------------------\n// Set the value for the Active Token (aToken)\nlet aToken;\nif (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);\nelse aToken = game.actors.get(LAST_ARG.tokenId);\nlet aActor = aToken.actor;\n//\n// Set the value for the Active Item (aItem)\nlet aItem;\nif (args[0]?.item) aItem = args[0]?.item;\nelse aItem = LAST_ARG.efData?.flags?.dae?.itemData;\n//---------------------------------------------------------------------------------------------------\n// Set Macro specific globals\n//\nconst EFFECT_NAME = \"Mind Breaking Fear\"\nconst EFFECT_IMMUNE_NAME = \"Mind Breaking Fear Immune\"\nconst EFFECT_IMAGE = 'systems/dnd5e/icons/spells/horror-red-3.jpg'\nconst EFFECT_IMMUNE_IMAGE = 'systems/dnd5e/icons/spells/horror-eerie-1.jpg'\nlet ceDesc = \"\"\nconst GAME_RND = game.combat ? game.combat.round : 0;\n//---------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });     // Midi ItemMacro On Use\nif (TL > 1) jez.log(`=== Finished === ${MACRONAME} ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ****************************************************************************************************\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nfunction postResults(msg) {\n    const FUNCNAME = \"postResults(msg)\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    if (TL > 1) jez.log(`${TAG} --- Starting ---`);\n    if (TL > 2) jez.log(\"postResults Parameters\", \"msg\", msg)\n    //-----------------------------------------------------------------------------------------------\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n    if (TL > 1) jez.log(`${TAG}--- Finished ---`);\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0\n * Do the things that need doing\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse()\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.log(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    const FAILED_SAVES = LAST_ARG.failedSaves\n    const MADE_SAVES = LAST_ARG.saves\n    let affectedTokens = []\n    const INCAPACITATED_JRNL = `@JournalEntry[${game.journal.getName('Incapacitated').id}]{Incapacitated}`\n\n    //-----------------------------------------------------------------------------------------------\n    // Wait a bit for the VFX to play\n    await jez.wait(3500);\n    //-----------------------------------------------------------------------------------------------\n    // 1. Weed out tokens that either have the deafened or immunity condition from those that failed\n    //    saving throws. \n    //\n    if (TL>2) jez.log(`${TAG} Saves failed by`, FAILED_SAVES)\n    if (FAILED_SAVES?.length === 0) {                // All targets made saves\n        if (TL > 2) jez.log(`${TAG} No targets failed saving throws`);\n        console.log(aItem)\n        postResults(`No targets failed saves against <b>${aToken.name}</b>'s ${aItem.name}.`)\n        return;\n    }\n    for (let i = 0; i < FAILED_SAVES.length; i++) {\n        if (jezcon.hasCE(\"Deafened\", FAILED_SAVES[i].actor.uuid, { traceLvl: 0 })) {\n            if (TL > 2) jez.log(`${TAG} ${FAILED_SAVES[i].name} is deaf, skipping.`)\n            continue\n        }\n        if (jezcon.hasCE(EFFECT_IMMUNE_NAME, FAILED_SAVES[i].actor.uuid, { traceLvl: 0 })) {\n            if (TL > 2) jez.log(`${TAG} ${FAILED_SAVES[i].name} is immune, skipping.`)\n            continue\n        }\n        affectedTokens.push(FAILED_SAVES[i]._object)\n    }\n    if (TL>1) jez.log(`${TAG} Tokens affected`, affectedTokens)\n    //-----------------------------------------------------------------------------------------------\n    // 2. For those that saved, if they are not deaf and are not immune, hand out immunity effect \n    //\n    if (TL>2) jez.log(`${TAG} made saves`, MADE_SAVES)\n    if (MADE_SAVES?.length === 0) if (TL > 2) jez.log(`${TAG} No targets made saving throws`);\n    for (let i = 0; i < MADE_SAVES.length; i++) {\n        if (jezcon.hasCE(\"Deafened\", MADE_SAVES[i].actor.uuid, { traceLvl: 0 })) {\n            if (TL > 2) jez.log(`${TAG} ${MADE_SAVES[i].name} is deaf, skipping.`)\n            continue\n        }\n        if (jezcon.hasCE(EFFECT_IMMUNE_NAME, MADE_SAVES[i].actor.uuid, { traceLvl: 0 })) {\n            if (TL > 2) jez.log(`${TAG} ${MADE_SAVES[i].name} is immune, skipping.`)\n            continue\n        }\n        await jez.wait(250 + 500 * Math.random());  // Delay a random bit\n        applyImmune(MADE_SAVES[i]._object)\n    }\n    //-----------------------------------------------------------------------------------------------\n    // 3. If no tokens affected, post message and quit\n    //\n    if (affectedTokens?.length === 0) { \n        msg = `No eligible targets failed save, no effect applied.`\n        if (TL > 2) jez.log(`${TAG} ${msg}`)\n        postResults(msg);\n        return;\n    }\n    //-----------------------------------------------------------------------------------------------\n    // 4. Loop through those that failed saves and apply the fear effect\n    //\n    let afflicted = ''\n    if (TL > 2) jez.log(`${TAG} Affected tokens`, affectedTokens)\n    for (let i = 0; i < affectedTokens.length; i++) {\n        let token5e = affectedTokens[i]\n        if (TL > 2) jez.log(`${TAG} Adding fear`, token5e)\n        if (TL > 2) jez.log(`${TAG} ${token5e.name} is affected`)\n        await jez.wait(250 + 500 * Math.random());  // Delay a random bit\n        if (!jezcon.hasCE(EFFECT_NAME, token5e.actor.uuid)) applyFear(token5e)\n        afflicted += '- ' + token5e.name\n        if (i < affectedTokens.length - 1) afflicted += `,<br>`\n    }\n    postResults(`Speed halved and ${INCAPACITATED_JRNL}:<br>${afflicted}`)\n    return\n}\n/***************************************************************************************************\n * Apply the Fear condition to a token, adding CEDesc\n ***************************************************************************************************/\nasync function applyFear(token) {\n    const CE_DESC = `Affected by ${aToken.name}'s ${EFFECT_NAME}, speed is halved and incapacitated`\n    let effectData = [{\n        label: EFFECT_NAME,\n        icon: EFFECT_IMAGE,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        flags: {\n            dae: { stackable: false, specialDuration: [\"turnEnd\"] },\n            convenientDescription: CE_DESC,\n            isConvenient: true,\n            isCustomConvenient: true\n        },\n        duration: { rounds: 2, seconds: 12, startRound: GAME_RND, startTime: game.time.worldTime },\n        changes: [\n            { key: `data.attributes.movement.all`, mode: jez.CUSTOM, value: \"*0.5\", priority: 20 },\n            { key: `macro.CE`, mode: jez.CUSTOM, value: `Incapacitated`, priority: 20 },\n        ]\n    }];\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: token.actor.uuid, effects: effectData });\n}\n/***************************************************************************************************\n * Apply the Immunity condition to a token, adding CEDesc\n ***************************************************************************************************/\nasync function applyImmune(token) {\n    const CE_DESC = `Immune to ${aToken.name}'s ${EFFECT_NAME} for some time.`\n    let effectData = [{\n        label: EFFECT_IMMUNE_NAME,\n        icon: EFFECT_IMMUNE_IMAGE,\n        origin: LAST_ARG.uuid,\n        disabled: false,\n        duration: { rounds: 14400, seconds: 86400, startRound: GAME_RND, startTime: game.time.worldTime },\n        flags: {\n            dae: { stackable: false },\n            convenientDescription: CE_DESC,\n            isConvenient: true,\n            isCustomConvenient: true\n        },\n    }];\n    // let horrified = token.actor.effects.find(i => i.data.label === HORRIFIED_COND);\n    // if (!horrified) applyEffect(token, effectData);\n    await MidiQOL.socket().executeAsGM(\"createEffects\", { actorUuid: token.actor.uuid, effects: effectData });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "core": {
+      "sourceId": "Item.MjT45Q2VMOo1ZSKV"
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
