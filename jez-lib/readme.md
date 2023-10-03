@@ -64,8 +64,8 @@ The functions currently included in this module are (all need to be proceeded by
 * **isEffectUUID(string)** -- Determines if string looks like an ActiveEffect's UUID, returning a boolean.
 * **isActor5e(obj)** -- Returns true if obj is an Actor5e object, otherwise false.
 * **[isEqual(obj1, obj2)](#isEqualobj1-obj2)** -- Somewhat simple minded object comparison function based on one found online.
-* **[isNPC(actorUuid, options = {})](#isnpcactorUuid-options--))** -- Returns boolean, true if provided UUID is a NPC
-* **[isPC(actorUuid, options = {})](#ispcactorUuid-options--))** -- Returns boolean, true if provided UUID is a PC
+* **[isNPC(subject, options = {})](#isnpcactorUuid-options--))** -- Returns boolean, true if provided UUID is a NPC
+* **[isPC(subject, options = {})](#ispcactorUuid-options--))** -- Returns boolean, true if provided UUID is a PC
 * **isToken5e(obj)** -- Returns true if obj is an Token5e object, otherwise false.
 * **[itemAddToActor(token5e, ItemName)](#item-functions)** -- Copies an item to Actor
 * **[itemDeleteFromActor(token5e, itemName, itemType)](#item-functions)** -- Deletes an item from Actor
@@ -868,9 +868,11 @@ Somewhat simple minded object comparison function based on one found online.
 
 ---
 
-### isNPC(actorUuid, options = {})
+### isNPC(subject, options = {})
 
 Returns true if the actor identified by actorUuid is a NPC, false otherwise.
+
+**Subject** identifies the actor question, it just be a type supported by getActor5eDataObj, this parameter is not required if effect is a UUID.
 
 <details> <summary>**Sample isNPC Use**</summary>
 
@@ -887,9 +889,11 @@ if (await jez.isNPC(aActor.uuid, { traceLvl: 0 })) console.log(`${aToken.name} i
 
 ---
 
-### isPC(actorUuid, options = {})
+### isPC(subject, options = {})
 
 Returns true if the actor identified by actorUuid is a PC, false otherwise.
+
+**Subject** identifies the actor in question, it just be a type supported by getActor5eDataObj, this parameter is not required if effect is a UUID.
 
 <details> <summary>**Sample isNPC Use**</summary>
 
@@ -897,7 +901,7 @@ This is an async function, so be sure to await the result.
 
 ~~~javascript
 ...
-if (await jez.isPC(aActor.uuid, { traceLvl: 0 })) console.log(`${aToken.name} is a PC`)
+if (await jez.isPC(aActor, { traceLvl: 0 })) console.log(`${aToken.name} is a PC`)
 ~~~
 
 </details>

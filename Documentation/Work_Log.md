@@ -601,6 +601,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.10.02 Created Rutterkin crippling fear
 
+23.10.03 Changed jez.isNPC and jez.isPC to accept all types supported by jez.getActor5eDataObj, eliminating annoying uuid.split is not a function error when passed wrong argument type.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
