@@ -17,8 +17,8 @@ if (!TOKEN_COUNT) return
 //---------------------------------------------------------------------------------------------------------------------------------
 for (let token of canvas.tokens.controlled) {
     console.log(`Token ${token.name}`,token.actor)
-    if (await /*jez.*/isPC(token, { traceLvl: TL })) pcsString += `<br>${token.name}`
-    if (await /*jez.*/isNPC(token.id, { traceLvl: TL })) npcsString += `<br>${token.name}`
+    if (await jez.isPC(token, { traceLvl: TL })) pcsString += `<br>${token.name}`
+    if (await jez.isNPC(token.id, { traceLvl: TL })) npcsString += `<br>${token.name}`
 }
 msg = `Checked ${TOKEN_COUNT} tokens<br><br>
     These are PCs<br>-----------------${pcsString}<br><br>
@@ -34,8 +34,8 @@ const ACTOR_NAMES = [ 'Giant Eagle', 'Amend', 'Olivia Ironlocke', 'Zombie' ]
 for (let i = 0; i < ACTOR_NAMES.length; i++) {
     actor5e = game.actors.getName(ACTOR_NAMES[i])
     console.log(`Actor ${actor5e.name}`,actor5e)
-    if (await /*jez.*/isPC(actor5e.uuid, { traceLvl: TL })) pcsString += `<br>${actor5e.name}`
-    if (await /*jez.*/isNPC(actor5e, { traceLvl: TL })) npcsString += `<br>${actor5e.name}`
+    if (await jez.isPC(actor5e.uuid, { traceLvl: TL })) pcsString += `<br>${actor5e.name}`
+    if (await jez.isNPC(actor5e, { traceLvl: TL })) npcsString += `<br>${actor5e.name}`
 }
 msg = `Checked ${ACTOR_NAMES.length} actors<br><br>
     These are PCs<br>-----------------${pcsString}<br><br>

@@ -1,5 +1,5 @@
 const MACRONAME = "Devourer_Imprison_Soul.0.1.js"
-const TL = 5                               // Trace Level for this macro
+const TL = 0                               // Trace Level for this macro
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Implement Devourer's Imprison Soul.  This ability is a mess!
  * 
@@ -15,6 +15,11 @@ const TL = 5                               // Trace Level for this macro
  *   bonus action, and the creature becomes an undead. If the victim had 2 or fewer Hit Dice, it 
  *   becomes a zombie. If it had 3 to 5 Hit Dice, it becomes a ghoul. Otherwise, it becomes a wight. 
  *   A devourer can imprison only one creature at a time.
+ * 
+ * Because I find it annoying that this doesn't work on an NPC, I'm adding the following homebrew:
+ * 
+ *   If the target is a recently deceased NPC, it can be imprisoned.  An imprisoned NPC can be 
+ *   expelled with the Devourer's next bonus action.
  * 
  * 10/02/23 0.1 Creation of Macro from Rutterkin_Crippling_Fear.0.1.js
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
@@ -45,12 +50,12 @@ const EFFECT_IMAGE = aItem.img
 const EFFECT2_IMAGE = "Icons_JGB/Misc/stomach.webp"
 let ceDesc = ""
 const GAME_RND = game.combat ? game.combat.round : 0;
-const MAX_RANGE = 33 // feet
+const MAX_RANGE = 30 // feet
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
 if (args[0]?.tag === "OnUse") await doOnUse({ traceLvl: TL });     // Midi ItemMacro On Use
-if (args[0] === "off") await doOff({ traceLvl: TL });                   // DAE removal
+if (args[0] === "off") await doOff({ traceLvl: TL });              // DAE removal
 if (TL > 1) jez.log(`=== Finished === ${MACRONAME} ===`);
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  *    END_OF_MAIN_MACRO_BODY
@@ -82,15 +87,6 @@ async function doOnUse(options = {}) {
     if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
     await jez.wait(100)
     //-----------------------------------------------------------------------------------------------
-    // Function variables
-    //
-    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
-    let tActor = tToken?.actor;
-
-    placeUndead(tToken, {traceLvl: TL})
-return
-
-    //-----------------------------------------------------------------------------------------------
     // Are we already digesting a target?
     //
     if (jezcon.hasCE(EFFECT2_NAME, aToken.actor.uuid)) {
@@ -105,24 +101,29 @@ return
         const TARGET_TOKEN = canvas.tokens.placeables.find(ef => ef.id === TARGET_ID)
         if (TL > 2) jez.log(`${TAG} Target Token`, TARGET_TOKEN)
         // Is our target dead?  (3 failed saves, if so, drop the effect and spit out an undead)
-        if (TARGET_TOKEN.actor.data.data.attributes.death.failure > 2) {
+        if (TL > 3) jez.log(`${TAG} Consume check`, 'jez.isNPC(TARGET_TOKEN)', await jez.isNPC(TARGET_TOKEN),
+        'TARGET_TOKEN.actor.data.data.attributes.death.failure', TARGET_TOKEN.actor.data.data.attributes.death.failure)
+        if (await jez.isNPC(TARGET_TOKEN) || TARGET_TOKEN.actor.data.data.attributes.death.failure > 2) {
             await tokenAttacher.detachElementsFromToken([TARGET_TOKEN], aToken, true);
             const EFFECT = await aToken?.actor?.effects?.find(ef => ef?.data?.label === EFFECT2_NAME)
             EFFECT.delete()
             placeUndead(TARGET_TOKEN, {traceLvl: TL})
-            return postResults(`${TARGET_TOKEN.name} is dead, remnants are vomited forth`)
+            healSelf(aToken, {traceLvl: TL})
+            await jez.wait(500)
+            return postResults(`${TARGET_TOKEN.name} has been consumed healing ${aToken.name}. 
+                Remnants are vomited forth and a undead rises `)
         }
+        if (await jez.isPC(TARGET_TOKEN) && TARGET_TOKEN.actor.data.data.attributes.death.failure < 3)
+            return postResults(`${TARGET_TOKEN.name} is not dead, yet.`)
         if (TL > 1) jez.log(`${TAG} ${aToken.name} is already ${EFFECT2_NAME}.`)
         return postResults(`${aToken.name} is already ${EFFECT2_NAME} ${TARGET_TOKEN.name}`)
-
-
-
-
-
-        // TODO: Check to see if our meal is finished and remains should be expelled
-
-
     }
+    //-----------------------------------------------------------------------------------------------
+    // Since not digesting, we need a target, make sure we have one
+    //
+    if (args[0].targets.length !== 1) return jez.badNews(`Need a target.`, 'w')
+    let tToken = canvas.tokens.get(args[0]?.targets[0]?.id); // First Targeted Token, if any
+    let tActor = tToken?.actor;
     //-----------------------------------------------------------------------------------------------
     // Do we have a legitimate target?  It must meet the spell criteria:
     //  1. Within 30 feet 
@@ -130,16 +131,21 @@ return
     //  3. Must be at 0 HP
     //  4. Must not have three failed death saves.
     //
+    // Above modified by my homebrew for NPC corpses
+    //
     const TOKEN_DATA = await tActor.getTokenData()
     if (TL > 1) jez.log(`${TAG} | TOKEN_DATA`,TOKEN_DATA)
     // Check the distance
     if (jez.getDistance5e(aToken, tToken) > MAX_RANGE) return postResults(`${tToken.name} is too far away.`)
     // Is the target a PC?
-    if (await jez.isNPC(tActor.uuid))  return postResults(`${tToken.name} is an NPC.`)
+    // if (await jez.isNPC(tActor.uuid))  return postResults(`${tToken.name} is an NPC.`)
     // Is the target at 0 HP?
-    if (tActor.data.data.attributes.hp.value > 0) return postResults(`${tToken.name} is not dieing.`)
+    // if (tActor.data.data.attributes.hp.value > 0) return postResults(`${tToken.name} is not dieing.`)
     // Has the target failed three death saves?
-    if (tActor.data.data.attributes.death.failure > 2) return postResults(`${tToken.name} is already dead.`)
+    // if (tActor.data.data.attributes.death.failure > 2) return postResults(`${tToken.name} is already dead.`)
+    if (tActor.data.data.attributes.hp.value > 0) return postResults(`${tToken.name} is not dieing.`)
+    if (await jez.isPC(tActor))
+        if (tActor.data.data.attributes.death.failure > 2) return postResults(`${tToken.name} is already dead.`)
     //------------------------------------------------------------------------------------------------------------------------
     // Use tokenAttacher to attach the tToken to the aToken
     //
@@ -172,9 +178,11 @@ return
     const GM_PAIR_EFFECTS = jez.getMacroRunAsGM("PairEffects") 
     if (!GM_PAIR_EFFECTS) return jez.badNews(`Could not find PairEffects macro`,'e')
     GM_PAIR_EFFECTS.execute(EFFECT.uuid, EFFECT2.uuid)
-
+    //-----------------------------------------------------------------------------------------------
+    // Post message
+    //
+    postResults(`${aToken.name} pulls the body of ${tToken.name} to it and shoves it within its exposed ribcage.`);
     return
-
 }
 /***************************************************************************************************
  * Apply the Fear condition to a token, adding CEDesc
@@ -236,7 +244,7 @@ async function placeUndead(tToken, options={}) {
     if (TL === 1) jez.log(`${TAG} --- Starting ---`);
     if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "tToken", tToken, "options", options);
     //-------------------------------------------------------------------------------------------------------------------------------
-    const HIT_DICE_CNT = jez.isPC(tToken) ? tToken.actor.data.data.details.level : tToken.actor.data.data.details.cr
+    const HIT_DICE_CNT = await jez.isPC(tToken) ? tToken.actor.data.data.details.level : tToken.actor.data.data.details.cr
     if (TL > 2) jez.log(`${TAG} HIT_DICE_CNT`, HIT_DICE_CNT)
     let spawn = "Wight"
     if (HIT_DICE_CNT <= 2) spawn = "Zombie"
@@ -251,7 +259,8 @@ async function placeUndead(tToken, options={}) {
     // Build the dataObject for our summon call, all we need to do is customize the name and elevation
     let argObj = {
         minionName: `${aToken.name}'s ${spawn}`,
-        img: summonData?.img ?? aItem.img
+        img: summonData?.img ?? aItem.img,
+        defaultRange: 15    // Keep the up chucked undead kinda close
     }
     if (TL > 2) jez.log(`${TAG} argObj`, argObj)
     // Do the actual summon
@@ -279,9 +288,10 @@ async function doOff(options = {}) {
     if (TL === 1) jez.log(`${TAG} --- Starting ---`);
     if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
     //-------------------------------------------------------------------------------------------------------------------------------
-    // Comments
+    // 
     //
     const TAR_TOKEN = canvas.tokens.placeables.find(ef => ef.id === args[1])
+    if (TL > 1) jez.log(`${TAG} TAR_TOKEN`, TAR_TOKEN);
     await tokenAttacher.detachElementsFromToken([aToken], TAR_TOKEN, true);
     //-------------------------------------------------------------------------------------------------------------------------------
     //
@@ -289,16 +299,64 @@ async function doOff(options = {}) {
     return;
 }
 /***************************************************************************************************
- * Run Frightened VFX on Target
+ * Devourer regains 25(4d10+3) hit points, immediately recharges Soul Rend... 
  ***************************************************************************************************/
-async function runVFX(target) {
-    const VFX_LOOP = "modules/jb2a_patreon/Library/Generic/UI/IconHorror_*_200x200.webm"
-    new Sequence()
-        .effect()
-        .fadeIn(1000)
-        .fadeOut(1000)
-        .file(VFX_LOOP)
-        .atLocation(target)
-        .scaleToObject(1.25)
-        .play();
+async function healSelf(tToken, options={}) {
+    const FUNCNAME = "placeUndead(tToken, options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.log(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "tToken", tToken, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //
+    const DAM_TYPE = "healing";
+    const DICE_NUM = 4;
+    const DICE_TYPE = 'd10';
+    const BONUS = 3;
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Do the healing
+    //
+    let healDamage = new Roll(`${DICE_NUM}${DICE_TYPE} + ${BONUS}`).evaluate({ async: false });
+    game.dice3d?.showForRoll(healDamage);   // Show 3D die on screen
+    await new MidiQOL.DamageOnlyWorkflow(aActor, aToken, healDamage.total, DAM_TYPE, [tToken],
+        healDamage, {flavor: `(${CONFIG.DND5E.healingTypes[DAM_TYPE]})`,
+        itemCardId: args[0].itemCardId, useOther: false
+    });
+    await replaceHitsWithHeals();
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Recharge soul rend
+    //
+    // Read the data for soul rend from the actor
+    // let soulRendData = aActor.items.get('Soul Rend');
+    let soulRendData = aToken.actor.items.find(i => i.data.name === "Soul Rend");
+    if (TL > 2) jez.trace(`${TAG} soulRendData before recharge`,soulRendData)
+    if (!soulRendData) return jez.badNews(`Soul Rend not found on ${aToken.name}`,"e")
+    // Duplicate soul rend data and update fields
+    let copy_item = duplicate(soulRendData);
+    if (TL > 2) jez.trace(`${TAG} copy_item`,copy_item)
+    copy_item.data.recharge.charged = true;
+    if (TL > 2) jez.trace(`${TAG} copy_item after update`,copy_item)
+    // Update soul rend 
+    await aActor.updateEmbeddedDocuments("Item", [copy_item])
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //
+    if (TL > 1) jez.log(`${TAG} --- Finished ---`);
+    return;
+}
+/***************************************************************************************
+ * Replace first " hits" with " heals" on chat card
+ ***************************************************************************************/
+async function replaceHitsWithHeals() {
+    const FUNCNAME = "replaceHitsWithHeals()";
+    jez.log("- - - - Starting ${MACRONAME} ${FUNCNAME} - - - - - - - - - - - - - - - - -");
+    let chatmsg = game.messages.get(args[0].itemCardId);
+    let content = await duplicate(chatmsg.data.content);
+    const searchString = / hits/g;
+    const replaceString = `<p style="color:Green;"> Heals</p>`;
+    content = await content.replace(searchString, replaceString);
+    await chatmsg.update({ content: content });
+    await ui.chat.scrollBottom();
+    jez.log("- - - - Finished ${MACRONAME} ${FUNCNAME} - - - - - - - - - - - - - - - -");
+    return;
 }
