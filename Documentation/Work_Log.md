@@ -605,6 +605,9 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.10.03 Created Devourer's Imprison soul
 
+23.10.03 Created Devourer's Soul Rend which includes manipulation of targets before the item is rolled.  This is cool.
+
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
