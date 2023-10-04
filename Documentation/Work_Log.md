@@ -609,6 +609,7 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.10.04 Created corpse flower corpses and harvest the dead abilities.
 
+23.10.04 Updated corpse flower corpses ability to add stench to spawns and a visual aura for the GM
 
 [Link back to my Documentation Listing](README.md) 
 

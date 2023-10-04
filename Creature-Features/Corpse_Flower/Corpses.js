@@ -1,9 +1,10 @@
-const MACRONAME = "Corpses.0.1.js"
+const MACRONAME = "Corpses.0.2.js"
 const TL = 5;                               // Trace Level for this macro
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Implement the corpses ability
  * 
- * 09/21/23 0.5 Replace jez.log with jez.log 
+ * 09/21/23 0.1 Creation
+ * 10/04/23 0.2 Add Stench of Death to spawn zombies as feature with an aura
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 const MACRO = MACRONAME.split(".")[0]       // Trim off the version number and extension
 const TAG = `${MACRO} |`
@@ -24,7 +25,6 @@ const GAME_RND = game.combat ? game.combat.round : 0;
 // Set Macro specific globals
 //
 const EFFECT_NAME = 'Corpses'
-
 //-----------------------------------------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -64,14 +64,11 @@ async function doOnUse(options = {}) {
     //-------------------------------------------------------------------------------------------------------------------------------
     // If we don't have a CORPSE_EFFECT one needs to be added.
     //
-    // const CORPSE_EFFECT = await jez.getActiveEffect(aActor.uuid, ef => ef.data.label === EFFECT_NAME, { traceLvl: 0 })
     let ceDesc = await jez.getCEDesc(aToken, EFFECT_NAME, { traceLvl: TL })
-    // if (TL > 3) jez.log(`${TAG} existing CORPSE_EFFECT, if any`, CORPSE_EFFECT)
     if (TL > 3) jez.log(`${TAG} existing ceDesc, if any`, ceDesc)
-    // if (!CORPSE_EFFECT) {
     if (!ceDesc) {
         // If we don't already have a corpses buff, lets place one 
-        let corpseCnt = Math.floor(Math.random()) * 6 + 4
+        let corpseCnt = Math.floor(Math.random() * 6) + 4
         const CE_DESC = `Corpses contained: ${corpseCnt}`
         let effectData = [{
             label: EFFECT_NAME,
@@ -92,15 +89,10 @@ async function doOnUse(options = {}) {
     //-------------------------------------------------------------------------------------------------------------------------------
     // Grab the corpse count from the CE_DESC of CORPSE_EFFECT.  If we have none remaining, exit.
     //
-    // if (TL > 2) jez.log(`${TAG} CORPSE_EFFECT`, CORPSE_EFFECT)
-    // if (TL > 2) jez.log(`${TAG} CORPSE_EFFECT.data`, CORPSE_EFFECT.data)
-    // if (TL > 2) jez.log(`${TAG} CORPSE_EFFECT.data.flags`, CORPSE_EFFECT.data.flags)
-    // if (TL > 2) jez.log(`${TAG} convenientDescription`, CORPSE_EFFECT.data.flags.convenientDescription)
     if (TL > 2) jez.log(`${TAG} convenientDescription`, ceDesc)
-    // let corpseCnt = CORPSE_EFFECT.data.flags.convenientDescription.split(" ")[2];
     let corpseCnt = ceDesc.split(" ")[2];
     if (TL > 3) jez.log(`${TAG} corpse count`, corpseCnt)
-    if (corpseCnt === 0) return postResults(`${aToken.name} has no aditional corpse to consume.`)
+    if (corpseCnt < 1) return postResults(`${aToken.name} has no aditional corpse to consume.`)
     //-------------------------------------------------------------------------------------------------------------------------------
     // Present a checkbox dialog asking for the action to take with a corpse 
     //
@@ -120,9 +112,7 @@ async function doOnUse(options = {}) {
     if (SELECTION.startsWith('Heal:')) {
         await healSelf(aToken, { traceLvl: TL })
         await jez.wait(500)
-        postResults(`A single corpse is consumed within ${aToken.name} and its equipment is expelled.`);
-        // await jez.wait(500)
-
+        postResults(`A single corpse is consumed within ${aToken.name} and its equipment is expelled, ${corpseCnt - 1} remain.`);
     }
     //-------------------------------------------------------------------------------------------------------------------------------
     // If we have chosen to spawn, do so.
@@ -130,18 +120,14 @@ async function doOnUse(options = {}) {
     if (SELECTION.startsWith('Spawn:')) {
         await placeUndead(aToken, { traceLvl: TL })
         await jez.wait(500)
-        postResults(`${aToken.name} expells a single corpse which it has animated.`);
-        // await jez.wait(500)
-
+        postResults(`${aToken.name} expells a single corpse which it has animated, ${corpseCnt - 1} remain.`);
     }
     //-------------------------------------------------------------------------------------------------------------------------------
     // Update the corpse count in the CE_DESC
     //
-    if (TL > 3) jez.log(`${TAG} More Detailed Trace Info.`)
+    await jez.setCEDesc(aToken, EFFECT_NAME, `Corpses contained: ${corpseCnt - 1}`, { traceLvl: TL });
     //-------------------------------------------------------------------------------------------------------------------------------
     // 
-    // msg = `Say something useful...`
-    postResults(msg)
     if (TL > 0) jez.log(`${TAG} --- Finished ---`);
     return true;
 }
@@ -215,18 +201,56 @@ async function placeUndead(aToken, options = {}) {
         img: summonData?.img ?? aItem.img,
         defaultRange: 15    // Keep the up chucked undead kinda close
     }
+    // Craft ouselves a slightly customized color for our spawn
+    let adjRH = (0 + Math.floor(Math.random() * 30)).toString(16)
+    let adjGH = (225 + Math.floor(Math.random() * 30)).toString(16)
+    let adjBH = (0 + Math.floor(Math.random() * 10)).toString(16)
+    if (TL > 3) jez.log(`${TAG} Color component values`, 'adjRH', adjRH, 'adjGH', adjGH,'adjBH', adjBH)
+    adjRH = (adjRH.length === 1)  ? `0` + adjRH : adjRH     // Add leading 0 if needed to make 2 place hex number
+    adjGH = (adjGH.length === 1)  ? `0` + adjGH : adjGH     // Add leading 0 if needed to make 2 place hex number
+    adjBH = (adjBH.length === 1)  ? `0` + adjBH : adjBH     // Add leading 0 if needed to make 2 place hex number
+    if (TL > 3) jez.log(`${TAG} Color component values`, 'adjRH', adjRH, 'adjGH', adjGH,'adjBH', adjBH)
+    let colorCodeH = `${adjRH}${adjGH}${adjBH}`
+    // Create a custom updates object that will mutate the spawn so that it has a visual aura for the GM indicating 10 feet range
+    //
+    if (TL > 1) jez.trace(`${TAG} Building a custom update object to indicate range`)
+    argObj.updates = {
+        actor: { 
+            name: `${aToken.name}'s ${spawn}`,
+        },
+        token: {
+            name: `${aToken.name}'s ${spawn}`,
+            disposition: aActor.data.token.disposition,
+            flags: {
+                'token-auras': {
+                    aura1: {
+                        colour: `#${colorCodeH}`,
+                        distance: 10,
+                        opacity: 0.15,
+                        square: false
+                    }
+                }
+            }
+        },
+        // embedded: { Item: {} } // Need an empty entry here to hold one or more additions
+    }
     if (TL > 2) jez.log(`${TAG} argObj`, argObj)
     // Do the actual summon
     summonedMinionId = await jez.spawnAt(spawn, aToken, aActor, aItem, argObj)
     if (TL > 2) jez.log(`${TAG} summonedMinionId`, summonedMinionId)
     // Add our summons to combat tracker after summoner if in combat
     const ATOKEN_INIT_VALUE = aToken?.combatant?.data?.initiative
-    if (TL > 1) jez.trace(`${TAG} ${aToken.name} initiative`, ATOKEN_INIT_VALUE);
+    if (TL > 1) jez.log(`${TAG} ${aToken.name} initiative`, ATOKEN_INIT_VALUE);
     if (ATOKEN_INIT_VALUE) {
         const SPAWN_INT = ATOKEN_INIT_VALUE - 1 / 1000;
         await jez.combatAddRemove('Add', summonedMinionId[0], { traceLvl: TL })
         await jez.wait(250)
         await jez.combatInitiative(summonedMinionId[0], { formula: SPAWN_INT, traceLvl: 0 })
     }
+    // Add the ability "Stench of Death" to our new minion
+    let fetchedTokenDoc = game.scenes.viewed.data.tokens.get(summonedMinionId[0])
+    if (TL > 1) jez.log(`${TAG} fetched TokenDoc`, fetchedTokenDoc)
+    await jez.itemAddToActor(fetchedTokenDoc, "Stench of Death")
+
     if (TL > 1) jez.log(`${TAG} --- Finished ---`);
 }

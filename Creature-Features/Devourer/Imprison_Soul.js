@@ -360,3 +360,51 @@ async function replaceHitsWithHeals() {
     jez.log("- - - - Finished ${MACRONAME} ${FUNCNAME} - - - - - - - - - - - - - - - -");
     return;
 }
+
+/***************************************************************************************************
+ * Additionally, at the start of its next turn, the devourer regurgitates the slain creature as a 
+ * bonus action, and the creature becomes an undead. If the victim had 2 or fewer Hit Dice, it 
+ * becomes a zombie. If it had 3 to 5 Hit Dice, it becomes a ghoul. Otherwise, it becomes a wight. 
+ * A devourer can imprison only one creature at a time.
+ ***************************************************************************************************/
+async function placeUndead(tToken, options={}) {
+    const FUNCNAME = "placeUndead(tToken, options={})";
+    const FNAME = FUNCNAME.split("(")[0]
+    const TAG = `${MACRO} ${FNAME} |`
+    const TL = options.traceLvl ?? 0
+    if (TL === 1) jez.log(`${TAG} --- Starting ---`);
+    if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "tToken", tToken, "options", options);
+    //-------------------------------------------------------------------------------------------------------------------------------
+    const HIT_DICE_CNT = await jez.isPC(tToken) ? tToken.actor.data.data.details.level : tToken.actor.data.data.details.cr
+    if (TL > 2) jez.log(`${TAG} HIT_DICE_CNT`, HIT_DICE_CNT)
+    let spawn = "Wight"
+    if (HIT_DICE_CNT <= 2) spawn = "Zombie"
+    if (HIT_DICE_CNT >= 3 && HIT_DICE_CNT <= 5) spawn = "Ghoul"
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Nab the data for our soon to be summoned critter so we can have the right image (img) and use it
+    // to update the img attribute or set basic image to match this item
+    //
+    let summonData = await game.actors.getName(spawn)
+    if (TL > 2) jez.log(`${TAG} summonData`, summonData)
+    if (!summonData) return jez.badNews(`Could not find ${spawn} template actor`, 'e')
+    // Build the dataObject for our summon call, all we need to do is customize the name and elevation
+    let argObj = {
+        minionName: `${aToken.name}'s ${spawn}`,
+        img: summonData?.img ?? aItem.img,
+        defaultRange: 15    // Keep the up chucked undead kinda close
+    }
+    if (TL > 2) jez.log(`${TAG} argObj`, argObj)
+    // Do the actual summon
+    summonedMinionId = await jez.spawnAt(spawn, aToken, aActor, aItem, argObj)
+    if (TL > 2) jez.log(`${TAG} summonedMinionId`, summonedMinionId)
+    // Add our summons to combat tracker after summoner if in combat
+    const ATOKEN_INIT_VALUE = aToken?.combatant?.data?.initiative
+    if (TL > 1) jez.trace(`${TAG} ${aToken.name} initiative`, ATOKEN_INIT_VALUE);
+    if (ATOKEN_INIT_VALUE) {
+        const SPAWN_INT = ATOKEN_INIT_VALUE - 1 / 1000;
+        await jez.combatAddRemove('Add', summonedMinionId[0], { traceLvl: TL })
+        await jez.wait(250)
+        await jez.combatInitiative(summonedMinionId[0], { formula: SPAWN_INT, traceLvl: 0 })
+    }
+    if (TL > 1) jez.log(`${TAG} --- Finished ---`);
+}
