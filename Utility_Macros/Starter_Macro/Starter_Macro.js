@@ -54,17 +54,8 @@ async function preCheck() {
  * Post results to the chat card
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/
 function postResults(msg) {
-    const FUNCNAME = "postResults(msg)";
-    const FNAME = FUNCNAME.split("(")[0]
-    const TAG = `${MACRO} ${FNAME} |`
-    if (TL > 1) jez.log(`${TAG} --- Starting ---`);
-    if (TL > 2) jez.log("postResults Parameters", "msg", msg)
-    //-------------------------------------------------------------------------------------------------------------------------------
     let chatMsg = game.messages.get(args[args.length - 1].itemCardId);
     jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: "saves" });
-    //-------------------------------------------------------------------------------------------------------------------------------
-    // 
-    if (TL > 1) jez.log(`${TAG} --- Finished ---`);
 }
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
  * Perform the code that runs when this macro is removed by DAE, set On
