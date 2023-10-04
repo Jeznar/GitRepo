@@ -607,6 +607,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.10.03 Created Devourer's Soul Rend which includes manipulation of targets before the item is rolled.  This is cool.
 
+23.10.04 Created corpse flower corpses and harvest the dead abilities.
+
 
 [Link back to my Documentation Listing](README.md) 
 
