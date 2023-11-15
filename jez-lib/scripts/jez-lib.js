@@ -4016,7 +4016,7 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         let resourceTable = mergeObject(resourceList, resourceValues);
         let findResourceSlot = resourceTable.find(i => i.label.toLowerCase() === RESOURCE_NAME.toLowerCase());
         if (!findResourceSlot) {
-            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${aToken.name}, Please add it.`, 'i');
+            if (!QUIET) jez.badNews(`${RESOURCE_NAME} Resource is missing on ${actor5e.name}, Please add it.`, 'i');
             return false
         }
         resourceSlot = findResourceSlot.name;

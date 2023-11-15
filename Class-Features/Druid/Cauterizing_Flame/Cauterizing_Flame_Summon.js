@@ -1,37 +1,42 @@
-const MACRONAME = "Cauterizing_Flame_Summon.0.1.js"
+const MACRONAME = "Cauterizing_Flame_Summon.0.2.js"
 /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
  * Call a token via warpgate which will be placed at the location specified by a crosshair. Two
  * abilities need to be edited to replace a magic word (%YOU%) with teh name of the summoning
  * token and a watchdog timeout effect needs to be added so the token removes itself at the end
  * of its duration.
  *
- * 12/16/22 0.1 Creation of Macro from Major_Image
+ * 11/14/23 0.1 Creation of Macro from Major_Image
+ * 11/15/23 0.2 Use a character resource by name 
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
-const TL = 0;                               // Trace Level for this macro
+const TL = 5;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
 if (TL > 2) for (let i = 0; i < args.length; i++) jez.trace(`  args[${i}]`, args[i]);
-const LAST_ARG = args[args.length - 1];
+const L_ARG = args[args.length - 1];
 //---------------------------------------------------------------------------------------------------
 // Set the value for the Active Token (aToken)
 let aToken;
-if (LAST_ARG.tokenId) aToken = canvas.tokens.get(LAST_ARG.tokenId);
-else aToken = game.actors.get(LAST_ARG.tokenId);
+if (L_ARG.tokenId) aToken = canvas.tokens.get(L_ARG.tokenId);
+else aToken = game.actors.get(L_ARG.tokenId);
 let aActor = aToken.actor;
 //
 // Set the value for the Active Item (aItem)
 let aItem;
 if (args[0]?.item) aItem = args[0]?.item;
-else aItem = LAST_ARG.efData?.flags?.dae?.itemData;
+else aItem = L_ARG.efData?.flags?.dae?.itemData;
 //---------------------------------------------------------------------------------------------------
 // Set Macro specific globals
 //
 const MINION = `Spectral Flame`;
 const DURATION = 60 // Seconds
 const CLOCK_IMG = "Icons_JGB/Misc/alarm_clock.png"
+const RESOURCE_NAME = L_ARG.item.name
+const SPELL_NAME = L_ARG.item.name
+console.log(SPELL_NAME)
+return
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -64,6 +69,28 @@ async function doOnUse() {
     const FNAME = FUNCNAME.split("(")[0]
     await jez.wait(100)
     if (TL === 1) jez.trace(`--- Starting --- ${MACRONAME} ${FNAME} ---`);
+
+    //---------------------------------------------------------------------------------------------------
+    // Ask if a resource should be consumed 
+    //
+    const Q_TITLE = `Consume ${RESOURCE_NAME} Resource?`
+    let qText = `<p>${aToken.name} is using <b>${SPELL_NAME}</b> to summon a spectral flame.  This can 
+    only be done as a reaction. The flame must be placed on just vanquished enemy. This typically 
+    consumes one charge of <b>Spectral Flame.</b></p>
+    <p>If you want to spend the charge (or use the NPC alternative), click <b>"Yes"</b>.</p>
+    <p>If you want to bypass spending the charge (with GM permission) click <b>"No"</b>.</p>
+    <p>If you want to cancel the spell click <b>"Close"</b> (top right of dialog).</p>`
+    const SPEND_RESOURCE = await Dialog.confirm({ title: Q_TITLE, content: qText, });
+    if (SPEND_RESOURCE === null) return jez.badNews(`${SPELL_NAME} cancelled by player.`, 'i')
+    //---------------------------------------------------------------------------------------------------
+    // Deal with casting resource -- this needs to consider NPC and PC data structures
+    //
+    if (SPEND_RESOURCE) {
+        if (TL > 1) jez.trace(`${TAG} Time to use a resource`)
+        let spendResult = await jez.resourceSpend(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
+        if (!spendResult) return jez.badNews(`${SPELL_NAME} cancelled for lack of WildShapes`, 'w')
+    }
+
     //--------------------------------------------------------------------------------------
     // Perform the actual summon
     //
@@ -83,7 +110,7 @@ async function doOnUse() {
     let effectData = {
         label: aItem.name,
         icon: CLOCK_IMG,
-        origin: LAST_ARG.uuid,
+        origin: L_ARG.uuid,
         disabled: false,
         duration: {
             rounds: DURATION / 6, startRound: GAME_RND,

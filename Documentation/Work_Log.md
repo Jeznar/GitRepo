@@ -615,6 +615,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.11.15 Created Cauterizing Flames with a summon option.  The descriptions on the summon are edited while being summoned. 
 
+23.11.15 Added use of a resource to Cauterizing Flames and fixed bug in jez.lib that caused error handling of missing resource to fail
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
