@@ -613,6 +613,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.10.04 Added Full of Snakes for Distended Corpse.  It spawns a random choice of snake spawns and inserts them into current spot of combat tracker.
 
+23.11.15 Created Cauterizing Flames with a summon option.  The descriptions on the summon are edited while being summoned. 
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

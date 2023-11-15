@@ -1,0 +1,132 @@
+{
+  "name": "Healing Flame",
+  "type": "feat",
+  "img": "modules/jb2a_patreon/Library/Generic/Fire/Flame/Flames03_01_Regular_Blue_10x10ft_Thumb.webp",
+  "data": {
+    "description": {
+      "value": "<p><span style=\"color: #191813; font-size: 13px;\">When a creature %ATOKEN.NAME% can see enters the space containing this flame, %ATOKEN.NAME% can use a </span><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">reaction</strong><span style=\"color: #191813; font-size: 13px;\"> to extinguish the spectral flame there and </span><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">heal</strong><span style=\"color: #191813; font-size: 13px;\"> it. The healing equals </span><strong style=\"box-sizing: border-box; user-select: text; color: #191813; font-size: 13px;\">2d10 + %ATOKEN.NAME%'s WIS mod.</strong></p>\n<hr />\n<p><strong>FopundryVTT: </strong>This ability is triggered manually.&nbsp;</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "source": "",
+    "activation": {
+      "type": "reaction",
+      "cost": 1,
+      "condition": "Special"
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "touch",
+      "type": "creature"
+    },
+    "range": {
+      "value": 0,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": null,
+      "max": "",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "wis",
+    "actionType": "other",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": {
+      "threshold": null,
+      "damage": ""
+    },
+    "damage": {
+      "parts": [
+        [
+          "2d10 + @mod",
+          "healing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "requirements": "",
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "attunement": 0
+  },
+  "effects": [],
+  "flags": {
+    "magicitems": {
+      "enabled": false,
+      "equipped": false,
+      "attuned": false,
+      "charges": "0",
+      "chargeType": "c1",
+      "destroy": false,
+      "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+      "rechargeable": false,
+      "recharge": "0",
+      "rechargeType": "t1",
+      "rechargeUnit": "r1",
+      "sorting": "l"
+    },
+    "midi-qol": {
+      "effectActivation": false,
+      "onUseMacroName": "[postActiveEffects]ItemMacro"
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "core": {
+      "sourceId": "Item.zZAbblNrsPjcISTN"
+    },
+    "itemacro": {
+      "macro": {
+        "data": {
+          "_id": null,
+          "name": "Healing Flame",
+          "type": "script",
+          "author": "ZjFlOWYxZjM5ZTZj",
+          "img": "icons/svg/dice-target.svg",
+          "scope": "global",
+          "command": "const MACRONAME = \"Cauterizing_Flame_Extinguish.0.1.js\"\nconst TL = 0;                               // Trace Level for this macro\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * This macro deletes the using token.\n * \n * 11/14/22 0.1 Creation of Macro\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nconst MACRO = MACRONAME.split(\".\")[0]       // Trim off the version number and extension\nconst TAG = `${MACRO} |`\nlet msg = \"\";                               // Global message string\n//-----------------------------------------------------------------------------------------------------------------------------------\nif (TL > 0) jez.log(`${TAG} === Starting ===`);\nif (TL > 1) for (let i = 0; i < args.length; i++) jez.log(`  args[${i}]`, args[i]);\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Set standard variables\n//\nconst L_ARG = args[args.length - 1]; // See https://gitlab.com/tposney/dae#lastarg for contents\nlet aToken = (L_ARG.tokenId) ? canvas.tokens.get(L_ARG.tokenId) : game.actors.get(L_ARG.tokenId)\n//-----------------------------------------------------------------------------------------------------------------------------------\n// Run the main procedures, choosing based on how the macro was invoked\n//\nif (args[0]?.tag === \"OnUse\") await doOnUse({ traceLvl: TL });          // Midi ItemMacro On Use\nif (TL > 1) jez.log(`${TAG} === Finished ===`);\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n *    END_OF_MAIN_MACRO_BODY\n *                                END_OF_MAIN_MACRO_BODY\n *                                                             END_OF_MAIN_MACRO_BODY\n ***********************************************************************************************************************************\n * Perform the code that runs when this macro is invoked as an ItemMacro \"OnUse\"\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nasync function doOnUse(options = {}) {\n    const FUNCNAME = \"doOnUse(options={})\";\n    const FNAME = FUNCNAME.split(\"(\")[0]\n    const TAG = `${MACRO} ${FNAME} |`\n    const TL = options.traceLvl ?? 0\n    if (TL === 1) jez.log(`${TAG} --- Starting ---`);\n    if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, \"options\", options);\n    await jez.wait(100)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // Despawn our token\n    //\n    let sceneId = game.scenes.viewed.id\n    let sphereId = L_ARG.tokenId\n    warpgate.dismiss(sphereId, sceneId)\n    //-------------------------------------------------------------------------------------------------------------------------------\n    // \n    postResults(`${aToken.name} blinks out of existance.`)\n    if (TL > 0) jez.log(`${TAG} --- Finished ---`);\n    return true;\n}\n/*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*\n * Post results to the chat card\n *********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*/\nfunction postResults(msg) {\n    let chatMsg = game.messages.get(args[args.length - 1].itemCardId);\n    jez.addMessage(chatMsg, { color: jez.randomDarkColor(), fSize: 14, msg: msg, tag: \"saves\" });\n}",
+          "folder": null,
+          "sort": 0,
+          "permission": {
+            "default": 0
+          },
+          "flags": {}
+        }
+      }
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
