@@ -10,7 +10,7 @@ const MACRONAME = "Cauterizing_Flame_Summon.0.2.js"
  *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
 const MACRO = MACRONAME.split(".")[0]       // Trim of the version number and extension
 const TAG = `${MACRO} |`
-const TL = 5;                               // Trace Level for this macro
+const TL = 0;                               // Trace Level for this macro
 let msg = "";                               // Global message string
 //---------------------------------------------------------------------------------------------------
 if (TL > 1) jez.trace(`=== Starting === ${MACRONAME} ===`);
@@ -35,8 +35,6 @@ const DURATION = 60 // Seconds
 const CLOCK_IMG = "Icons_JGB/Misc/alarm_clock.png"
 const RESOURCE_NAME = L_ARG.item.name
 const SPELL_NAME = L_ARG.item.name
-console.log(SPELL_NAME)
-return
 //---------------------------------------------------------------------------------------------------
 // Run the main procedures, choosing based on how the macro was invoked
 //
@@ -88,7 +86,7 @@ async function doOnUse() {
     if (SPEND_RESOURCE) {
         if (TL > 1) jez.trace(`${TAG} Time to use a resource`)
         let spendResult = await jez.resourceSpend(aActor.uuid, RESOURCE_NAME, aItem.uuid, { traceLvl: TL, quiet: false })
-        if (!spendResult) return jez.badNews(`${SPELL_NAME} cancelled for lack of WildShapes`, 'w')
+        if (!spendResult) return jez.badNews(`${SPELL_NAME} cancelled for lack of ${RESOURCE_NAME}`, 'w')
     }
 
     //--------------------------------------------------------------------------------------

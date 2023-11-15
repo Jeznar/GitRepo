@@ -3025,6 +3025,10 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         if (TL > 3) jez.trace("Calling warpgate.spawnAt(...)", "x", x, "y", y,
             "dataObj.templateName", dataObj.templateName, "dataObj.updates", dataObj.updates,
             "dataObj.callbacks", dataObj.callbacks, "dataObj.options", dataObj.options)
+        //-----------------------------------------------------------------------------------------------------------------------------------
+        // Seemingly prevents first time summon failures
+        //
+        // await jez.wait(2500)
         return (await warpgate.spawnAt({ x, y }, dataObj.templateName, dataObj.updates, dataObj.callbacks, dataObj.options));
     }
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
