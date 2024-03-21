@@ -4223,6 +4223,68 @@ but yours are: ${queryTitle}, ${queryText}, ${pickCallBack}, ${queryOptions}`;
         }
         else return canvas.tokens.controlled.length
     }
+    /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0
+     * Read the specified directory for files that have the specified extensions.  Return an object 
+     * giving the file names by extenstion (as properties) or return a string describing any error 
+     * encountered.
+     * 
+     * Returned Object might appear like the following:
+     * {png: Array(13), jpg: Array(6)}
+     * > jpg: (6) ['Beak_Raven', 'Bite_Wereraven_hybrid', 'Blood_Staff', 'St.Markovia_Thighbone', ...}
+     * > png: (13) ['Baton', 'Beak_Raven', 'Dagger', 'Falchion', 'Fist', 'Greatsword', ...}
+     * 
+     * Options accepted
+     *  - traceLvl : Trace Level, defaults to 0
+     *  - DIR      : Directory to be searched. defaults to Icons_JGB/Seeming
+     *  - EXT      : Array of allowed extensions, defaults to ['jpg', 'jpeg', 'gif', 'webp', 'png']
+     * 
+     *********1*********2*********3*********4*********5*********6*********7*********8*********9*********/
+    static async getFileNames(options = {}) {
+        const FUNCNAME = "jez.getFileNames(options = {})";
+        const FNAME = FUNCNAME.split("(")[0]
+        const TAG = `jez.${FNAME} |`
+        const TL = options.traceLvl ?? 0
+        if (TL === 1) jez.log(`${TAG} --- Starting ---`);
+        if (TL > 1) jez.log(`${TAG} --- Starting --- ${FUNCNAME} ---`, "options", options);
+        //-----------------------------------------------------------------------------------------------
+        // Set our variables & constants
+        //
+        const EXTEN_ARRAY = options.EXT ?? ['jpg', 'jpeg', 'gif', 'webp', 'png']
+        const TARGET_DIR = options.DIR ?? 'Icons_JGB/Seeming'
+        let fileObj = {}                                        // Will hold files found
+        let foundSome = false                                   // Boolean to track if at least one found   
+        //-----------------------------------------------------------------------------------------------
+        // Use file picker to fetch files in specified directory
+        //
+        if (TL > 2) jez.log(`${TAG} Filepicker results:`, await FilePicker.browse("data", TARGET_DIR))
+        const { files } = await FilePicker.browse("data", TARGET_DIR);
+        if (TL > 1) jez.log(`${TAG} ${TARGET_DIR} contents`, files)
+        if (files === undefined) return `Sadly file picker returned undefined accessing ${TARGET_DIR}`
+        if (!files.length) return `No files found in ${TARGET_DIR}`
+        //-----------------------------------------------------------------------------------------------
+        // Parse files found into data object to be returned
+        //  Typical file format: Icons_JGB/Seeming/Mace_of_Dawnstar.png
+        // 
+        for (let i = 0; i < files.length; i++) {
+            const MOLECULES = files[i].split('/')               // --> array broken on '/' character
+            const FILENAME = MOLECULES[MOLECULES.length - 1]    // --> Filename with extension
+            const ATOMS = FILENAME.split('.')                   // --> array of filename broken on '.'
+            const EXT = ATOMS[ATOMS.length - 1]                 // --> Extension TODO: Handle no extension
+            let fileName = ''                                   // File name to be built
+            if (!EXTEN_ARRAY.includes(EXT)) continue            // Move to next file if extension not allowed
+            foundSome = true
+            for (let j = 0; j < ATOMS.length - 1; j++) {
+                fileName = fileName + ATOMS[j]
+                if (j < ATOMS.length - 2) fileName = fileName + '.'
+            }
+            if (!fileObj.hasOwnProperty(EXT)) fileObj[EXT] = []
+            fileName = fileName.replace(/%20/g, " ");           // Flip[ the %20 to actual spaces
+            fileObj[EXT].push(fileName)
+        }
+        if (!foundSome) return `No files found in ${TARGET_DIR} of type: ${EXTEN_ARRAY}`
+        return fileObj
+    }
+
     /*********1*********2*********3*********4*********5*********6*********7*********8*********9*********0*********1*********2*********3*
     * This function will searches for a named activeEffect on a passed token/actor, returning the active effect or null if none found.
     * More exacltly it evaluates the passed Lamda function against the effects (if any) on the passed actor or token.

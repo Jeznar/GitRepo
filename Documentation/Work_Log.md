@@ -619,6 +619,10 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 23.11.15 Created Flame Blade using an item copy/edit
 
+24.03.21 Added jez.getFileNames to grab file's with specific extensions from a specified file.
+
+24.03.21 Created **Seeming_Update_Token.0.1.js** and **Revert_Image.0.1.js** to automate changing token image and name in support of the **Seeming** spell effect.  This includes reading the Mac's file system to find available token images for the types supported.  The macro reads a hardcoded directory to get the names that can be used and then has two hard coded special case functions to handle the images and names.  The special case functions are fairly simple to edit.  I didn't bother with further automation.  
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

@@ -46,6 +46,10 @@ The functions currently included in this module are (all need to be proceeded by
 * **[getClassLevel(subject, className, options = {})](#get-functions)** -- Returns the subject's specific class level
 * **[getDistance5e(one, two)](#getdistance5eone-two)** -- Returns alternate D&D 5E distance between two placeables
 * **[getEffectDataObj(effect, subject)](#get-functions)** -- Returns the effect's data object
+
+* **[getFileNames(options = {}](#getFileNames)** -- Returns the effect's data object
+
+
 * **[getItemUses(item, options = {})](#getitemusesitem-options--)** -- Returns item use data object
 * **[getMacroRunAsGM(macroName)](#getmacrorunasgmmacroname)** -- Obtains a run as GM macro or issues error
 * **[getRandomRuneColor()](#getrandomrunecolor)** -- Return a string with a random valid JB2A rune color
@@ -591,6 +595,38 @@ for (let token of canvas.tokens.controlled) {
 This function returns the distance between two placeable entities (e.g. tokens) in the D&D 5E alternate rule set where diagonal movement is charged as 5-10-5-10-5 feet of movement.  The returned value will be evenly divisible by 5.
 
 I snarfed the logic from Vance Cole's lovely Distance macro, which can be found at: [macros/distance.js](https://github.com/VanceCole/macros/blob/master/distance.js) 
+
+[*Back to Functions list*](#functions-in-this-module)
+
+---
+
+### getFileNames(options = {})
+
+Read the specified directory for files that have the specified extensions.  Return an object giving the file names by extenstion (as properties) or return a string describing any error encountered.
+  
+Returned Object might appear like the following:
+
+> {png: Array(13), jpg: Array(6)}
+> 
+> * jpg: (6) ['Beak_Raven', 'Bite_Wereraven_hybrid', 'Blood_Staff', 'St.Markovia_Thighbone', ...}
+> * png: (13) ['Baton', 'Beak_Raven', 'Dagger', 'Falchion', 'Fist', 'Greatsword', ...}
+  
+Options accepted
+
+* traceLvl : Trace Level, defaults to 0
+* DIR      : Directory to be searched. defaults to Icons_JGB/Seeming
+* EXT      : Array of allowed extensions, defaults to ['jpg', 'jpeg', 'gif', 'webp', 'png'] 
+
+<details> <summary>**Sample Call**</summary>
+
+~~~javascript
+const IMAGE_DIR = 'Icons_JGB/Seeming'
+
+let filesObj = await jez.getFileNames({ DIR: IMAGE_DIR })
+~~~
+
+The above will return all of the file names in the traget directory that match the default extensions (see above).
+</details>
 
 [*Back to Functions list*](#functions-in-this-module)
 
