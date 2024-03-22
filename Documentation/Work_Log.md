@@ -625,6 +625,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 24.03.22 Updated **Longstrider**.  Created **Heal** with minimal automation. Created **Summon Elemental** that places a customized token, scaling based on caster stats and level of cast.  Created **Bones of the Earth** placing 6 (or more) columns that have a pre-created ability modified as they are placed, similar to warpgate.mutate but done directly with my code. 
 
+24.03.22 Implemented **Psychic Lance** with a macro that simply plays a VFX from the caster to the target.
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 
