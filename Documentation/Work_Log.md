@@ -623,6 +623,8 @@ Fix standalone scripts to use jez.log instead of jez.trc
 
 24.03.21 Created **Seeming_Update_Token.0.1.js** and **Revert_Image.0.1.js** to automate changing token image and name in support of the **Seeming** spell effect.  This includes reading the Mac's file system to find available token images for the types supported.  The macro reads a hardcoded directory to get the names that can be used and then has two hard coded special case functions to handle the images and names.  The special case functions are fairly simple to edit.  I didn't bother with further automation.  
 
+24.03.22 Updated **Longstrider**.  Created **Heal** with minimal automation. Created **Summon Elemental** that places a customized token, scaling based on caster stats and level of cast.  Created **Bones of the Earth** placing 6 (or more) columns that have a pre-created ability modified as they are placed, similar to warpgate.mutate but done directly with my code. 
+
 [Link back to my Documentation Listing](README.md) 
 
 [Link back to my Repo Listing](https://github.com/Jeznar/Jeznar/blob/main/README.md) 

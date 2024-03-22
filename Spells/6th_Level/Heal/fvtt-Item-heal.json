@@ -1,0 +1,203 @@
+{
+  "name": "Heal",
+  "type": "spell",
+  "img": "/systems/dnd5e/icons/spells/heal-jade-3.jpg",
+  "data": {
+    "description": {
+      "value": "<p>Choose a creature that you can see within range. A surge of positive energy washes through the creature, causing it to regain 70 hit points. This spell also ends blindness, deafness, and any diseases affecting the target. This spell has no effect on constructs or undead.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 7th level or higher, the amount of healing increases by 10 for each slot level above 6th.</p>\n<hr />\n<p><strong>FoundryVTT</strong>: Heal is only portion automated.   Ending <span style=\"font-family:var(--font-primary);font-size:var(--font-size-14)\">blindness, deafness, and any diseases</span><span style=\"font-family:var(--font-primary);font-size:var(--font-size-14)\"> on targets needs to be done manually.</span></p>",
+      "chat": "<p>Choose a creature that you can see within range. A surge of positive energy washes through the creature, causing it to regain 70 hit points. This spell also ends blindness, deafness, and any diseases affecting the target. This spell has no effect on constructs or undead.</p>\n<p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 7th level or higher, the amount of healing increases by 10 for each slot level above 6th.</p>",
+      "unidentified": ""
+    },
+    "source": "Basic Rules, Player's Handbook pg 250",
+    "activation": {
+      "type": "action",
+      "cost": 1,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "inst"
+    },
+    "target": {
+      "value": 1,
+      "width": null,
+      "units": "",
+      "type": "creature"
+    },
+    "range": {
+      "value": 60,
+      "long": null,
+      "units": "ft"
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "ability": "",
+    "actionType": "heal",
+    "attackBonus": 0,
+    "chatFlavor": "",
+    "critical": null,
+    "damage": {
+      "parts": [
+        [
+          "70",
+          "healing"
+        ]
+      ],
+      "versatile": ""
+    },
+    "formula": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "level": 6,
+    "school": "evo",
+    "components": {
+      "value": "",
+      "vocal": true,
+      "somatic": true,
+      "material": false,
+      "ritual": false,
+      "concentration": false
+    },
+    "materials": {
+      "value": "",
+      "consumed": false,
+      "cost": 0,
+      "supply": 0
+    },
+    "preparation": {
+      "mode": "prepared",
+      "prepared": true
+    },
+    "scaling": {
+      "mode": "level",
+      "formula": "10"
+    },
+    "attunement": 0
+  },
+  "effects": [],
+  "flags": {
+    "ddbimporter": {
+      "id": 138059,
+      "definitionId": 2139,
+      "entityTypeId": 435869154,
+      "dndbeyond": {
+        "lookup": "generic",
+        "lookupName": "generic",
+        "level": null,
+        "castAtLevel": null
+      },
+      "sources": [
+        {
+          "sourceId": 1,
+          "pageNumber": null,
+          "sourceType": 2
+        },
+        {
+          "sourceId": 2,
+          "pageNumber": 250,
+          "sourceType": 1
+        }
+      ],
+      "tags": [
+        "Healing"
+      ]
+    },
+    "betterRolls5e": {
+      "quickVersatile": {
+        "altValue": true
+      },
+      "quickCharges": {
+        "value": {
+          "use": true,
+          "resource": true
+        },
+        "altValue": {
+          "use": true,
+          "resource": true
+        }
+      }
+    },
+    "cf": {
+      "id": "temp_s4ls9woie3n"
+    },
+    "core": {
+      "sourceId": "Compendium.My-Shared-DDB.spells.sbWEmEu7Op466NEo"
+    },
+    "autoanimations": {
+      "version": 4,
+      "killAnim": false,
+      "animLevel": false,
+      "options": {
+        "ammo": false,
+        "staticType": "target",
+        "menuType": "leaves",
+        "variant": "03",
+        "enableCustom": true,
+        "repeat": 2,
+        "delay": 250,
+        "scale": 2,
+        "opacity": null,
+        "unbindAlpha": false,
+        "unbindVisibility": false,
+        "persistent": false,
+        "customPath": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_01_Green_400x400.webm"
+      },
+      "override": true,
+      "sourceToken": {
+        "enable": false
+      },
+      "targetToken": {
+        "enable": false
+      },
+      "levels3d": {
+        "type": ""
+      },
+      "macro": {
+        "enable": false
+      },
+      "animType": "static",
+      "animation": "complete",
+      "color": "green",
+      "audio": {
+        "a01": {
+          "enable": false
+        }
+      },
+      "preview": true,
+      "explosions": {
+        "enable": false
+      }
+    },
+    "midi-qol": {
+      "effectActivation": false
+    },
+    "midiProperties": {
+      "nodam": false,
+      "fulldam": false,
+      "halfdam": false,
+      "rollOther": false,
+      "critOther": false,
+      "magicdam": false,
+      "magiceffect": false,
+      "concentration": false,
+      "toggleEffect": false
+    },
+    "exportSource": {
+      "world": "travels-in-barovia-ce",
+      "system": "dnd5e",
+      "coreVersion": "9.280",
+      "systemVersion": "1.6.2"
+    }
+  }
+}
